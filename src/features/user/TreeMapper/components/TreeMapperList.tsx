@@ -6,7 +6,6 @@ import type {
   SampleTreeRegistration,
 } from '../../../common/types/intervention';
 
-import React from 'react';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from '../TreeMapper.module.scss';

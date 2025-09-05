@@ -1,7 +1,5 @@
 import type { IconProps } from '../../features/common/types/common';
 
-import React from 'react';
-
 const SatelliteAnalysisIcon = ({ color, width }: IconProps) => {
   return (
     <svg

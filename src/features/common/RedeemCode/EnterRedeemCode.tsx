@@ -7,7 +7,6 @@ import { Controller, useForm } from 'react-hook-form';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../../src/features/common/RedeemCode/style/RedeemModal.module.scss';
 import Button from '@mui/material/Button';
-import React from 'react';
 
 export interface EnterRedeemCodeProps {
   isLoading: boolean;

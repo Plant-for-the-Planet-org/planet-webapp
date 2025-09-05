@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import React, { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useLocale } from 'next-intl';
 

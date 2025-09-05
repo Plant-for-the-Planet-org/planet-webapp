@@ -1,6 +1,6 @@
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import React from 'react';
+
 import styles from './UserProfileLoader.module.scss';
 
 export const UserProfileLoader = () => {

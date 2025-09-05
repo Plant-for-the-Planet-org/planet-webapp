@@ -5,7 +5,7 @@ import ContentSection from './components/ContentSection';
 import ProjectGrid from './components/ProjectGrid';
 import LeaderBoard from './components/LeaderBoardSection';
 import AdditionalInfo from './components/AdditionalInfo';
-import React from 'react';
+
 import { useTenant } from '../../../features/common/Layout/TenantContext';
 interface Props {
   leaderboard: {

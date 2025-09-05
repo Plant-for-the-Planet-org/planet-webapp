@@ -3,8 +3,8 @@ import type {
   ConservationProjectConcise,
   TreeProjectConcise,
 } from '@planet-sdk/common/build/types/project/map';
-import React from 'react';
 
+import { useContext } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useLocale, useTranslations } from 'next-intl';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -41,7 +41,7 @@ export default function PopupProject({
   const tManageProjects = useTranslations('ManageProjects');
   const locale = useLocale();
   const { token } = useUserProps();
-  const { embed } = React.useContext(ParamsContext);
+  const { embed } = useContext(ParamsContext);
   const { tenantConfig } = useTenant();
 
   const ImageSource = project.image

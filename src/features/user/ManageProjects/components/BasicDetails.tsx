@@ -7,13 +7,7 @@ import type {
 } from '../../../common/types/project';
 import type { MapEvent } from 'react-map-gl';
 
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormControlLabel, Tooltip } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
@@ -125,8 +119,8 @@ export default function BasicDetails({
 
   const [acceptDonations, setAcceptDonations] = useState(false);
   const [IsSkipButtonVisible, setIsSkipButtonVisible] =
-    React.useState<boolean>(false);
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+    useState<boolean>(false);
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [style, setStyle] = useState(EMPTY_STYLE);
   const [viewport, setViewPort] = useState<ViewPort>({
     width: 760,

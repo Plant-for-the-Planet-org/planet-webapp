@@ -1,6 +1,5 @@
 import type { Review } from '@planet-sdk/common';
 
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../styles/ProjectReviews.module.scss';
 import SingleReview from './microComponents/SingleReview';

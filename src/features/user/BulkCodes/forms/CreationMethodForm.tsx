@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { SelectorOptionProps } from '../components/SelectorOption';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@mui/material';
 import SelectorOption from '../components/SelectorOption';
 import BulkCodesError from '../components/BulkCodesError';

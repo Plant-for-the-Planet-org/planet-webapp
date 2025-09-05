@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
 import MinusIcon from '../../../../../public/assets/images/icons/MinusIcon';
 import PlusIcon from '../../../../../public/assets/images/icons/PlusIcon';
 import styles from '../../styles/ZoomButtons.module.scss';

@@ -8,7 +8,7 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import React from 'react';
+import { useEffect } from 'react';
 import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
@@ -30,7 +30,7 @@ export default function Login({ pageProps }: Props): ReactElement {
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
@@ -47,7 +47,7 @@ export default function Login({ pageProps }: Props): ReactElement {
     auth0Error,
   } = useUserProps();
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadFunction() {
       // redirect
       if (user) {

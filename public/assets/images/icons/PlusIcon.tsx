@@ -1,8 +1,6 @@
 import type { ReactElement } from 'react';
 import type { IconProps } from '../../../../src/features/common/types/common';
 
-import React from 'react';
-
 export default function PlusIcon({
   color = '#333',
   width = '29',

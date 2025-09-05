@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react';
 import type { EmotionCache } from '@emotion/react';
 import type { AppType } from 'next/app';
 import type { DocumentContext, DocumentInitialProps } from 'next/document';
@@ -5,7 +6,6 @@ import type { DocumentContext, DocumentInitialProps } from 'next/document';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from '../src/createEmotionCache';
-import React from 'react';
 
 class MyDocument extends Document {
   static async getInitialProps(
@@ -57,7 +57,7 @@ MyDocument.getInitialProps = async (ctx) => {
   ctx.renderPage = () =>
     originalRenderPage({
       enhanceApp:
-        (App: AppType | React.ComponentType<{ emotionCache: EmotionCache }>) =>
+        (App: AppType | ComponentType<{ emotionCache: EmotionCache }>) =>
         (props) => {
           return <App emotionCache={cache} {...props} />;
         },
