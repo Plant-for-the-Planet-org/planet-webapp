@@ -17,7 +17,7 @@
     text-align: center;
   }
   button {
-    background: #0176d3;
+    background: $sfDsBlue600;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -25,14 +25,14 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #ffffff;
+    color: $sfDsWhite;
     padding: 13px 24px;
     cursor: pointer;
     margin-bottom: 50px;
   }
   hr {
     border: none;
-    background-color: #0b827c;
+    background-color: $sfDsTeal700;
     height: 1px;
     margin-bottom: 30px;
   }
@@ -46,8 +46,8 @@
       line-height: 40px;
       text-align: center;
       letter-spacing: -0.004em;
-      // color: #ffffff;
-      color: #032d60;
+      // color: $sfDsWhite;
+      color: $sfDsNavy900;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $sfFontDisplay1;
@@ -62,8 +62,8 @@
       font-size: $sfFontLarge;
       line-height: 28px;
       letter-spacing: -0.004em;
-      // color: #ffffff;
-      color: #032d60;
+      // color: $sfDsWhite;
+      color: $sfDsNavy900;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXLarge;
@@ -77,12 +77,12 @@
       font-weight: normal;
       font-size: $sfFontBase;
       line-height: 24px;
-      // color: #ffffff;
-      color: #032d60;
+      // color: $sfDsWhite;
+      color: $sfDsNavy900;
       margin-bottom: 30px;
       a {
         text-decoration: underline;
-        color: #0b5cab;
+        color: $sfDsBlue800;
       }
     }
     img {
@@ -111,8 +111,8 @@
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
-    // color: #ffffff;
-    color: #032d60;
+    // color: $sfDsWhite;
+    color: $sfDsNavy900;
     @include lgLaptopView {
       font-size: $sfFontMedium;
       line-height: 30px;
@@ -138,7 +138,7 @@
     font-size: $sfFontXL;
     line-height: 32px;
     letter-spacing: -0.4px;
-    color: $dsCoreText;
+    color: $sfDsBlack950;
     text-align: center;
     font-family: $secondaryFontFamily;
   }
