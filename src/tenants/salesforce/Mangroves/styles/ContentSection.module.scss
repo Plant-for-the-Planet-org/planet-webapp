@@ -19,7 +19,7 @@
       line-height: 40px;
       text-align: center;
       letter-spacing: -0.004em;
-      color: $dsDeepBlue;
+      color: $sfDsNavy900;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXXLarge;
@@ -34,7 +34,7 @@
       font-size: $fontLarge;
       line-height: 28px;
       letter-spacing: -0.004em;
-      color: $dsDeepBlue;
+      color: $sfDsNavy900;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXLarge;
@@ -54,11 +54,11 @@
       font-weight: normal;
       font-size: $sfFontBase;
       line-height: 24px;
-      color: $dsDeepBlue;
+      color: $sfDsNavy900;
       margin-bottom: 24px;
       a {
         text-decoration: underline;
-        color: $dsOceanBlue;
+        color: $sfDsBlue800;
       }
       em {
         font-style: italic;
@@ -185,7 +185,7 @@
   }
 
   .projectItem {
-    background-color: $dsWhite;
+    background-color: $sfDsWhite;
     padding: 10px;
     width: 320px;
     max-width: 100%;
@@ -193,12 +193,12 @@
     p {
       margin-bottom: 0;
       font-size: $fontMedium;
-      color: $dsWhite;
+      color: $sfDsWhite;
     }
   }
 
   button {
-    background: $dsOceanBlue;
+    background: $sfDsBlue600;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -206,7 +206,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: $dsWhite;
+    color: $sfDsWhite;
     padding: 13px 24px;
     cursor: pointer;
   }

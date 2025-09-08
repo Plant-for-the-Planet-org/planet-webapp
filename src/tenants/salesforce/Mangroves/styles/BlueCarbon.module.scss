@@ -10,7 +10,7 @@
   padding-top: 84px;
 
   button {
-    background: $dsOceanBlue;
+    background: $sfDsBlue600;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -18,13 +18,13 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: $dsWhite;
+    color: $sfDsWhite;
     padding: 13px 24px;
     cursor: pointer;
   }
   hr {
     border: none;
-    background-color: $dsPrimaryColor;
+    background-color: $sfDsTeal700;
     height: 1px;
     margin-bottom: 30px;
   }
@@ -39,8 +39,8 @@
       line-height: 40px;
       text-align: center;
       letter-spacing: -0.004em;
-      // color: $dsWhite;
-      color: $dsDeepBlue;
+      // color: $sfDsWhite;
+      color: $sfDsNavy900;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $sfFontDisplay1;
@@ -55,8 +55,8 @@
       font-size: $sfFontLarge;
       line-height: 28px;
       letter-spacing: -0.004em;
-      // color: $dsWhite;
-      color: $dsDeepBlue;
+      // color: $sfDsWhite;
+      color: $sfDsNavy900;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXLarge;
@@ -71,12 +71,12 @@
       font-weight: normal;
       font-size: $sfFontBase;
       line-height: 24px;
-      // color: $dsWhite;
-      color: $dsDeepBlue;
+      // color: $sfDsWhite;
+      color: $sfDsNavy900;
       margin-bottom: 24px;
       a {
         text-decoration: underline;
-        color: $dsOceanBlue;
+        color: $sfDsBlue800;
       }
       li {
         margin-left: 20px;
@@ -152,8 +152,8 @@
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
-    // color: $dsWhite;
-    color: $dsDeepBlue;
+    // color: $sfDsWhite;
+    color: $sfDsNavy900;
     @include lgLaptopView {
       font-size: $sfFontMedium;
       line-height: 30px;
