@@ -1,10 +1,15 @@
 import type { ReactElement } from 'react';
-import type { ViewState, ViewStateChangeEvent } from 'react-map-gl-v7/maplibre';
+import type {
+  MapMouseEvent,
+  ViewState,
+  ViewStateChangeEvent,
+} from 'react-map-gl-v7/maplibre';
 import type { MapState } from '../../../projectsV2/ProjectsMapContext';
 import type {
   ExtendedMapLibreMap,
   MapRef,
 } from '../../../common/types/projectv2';
+import type { Feature, FeatureCollection, Geometry } from 'geojson';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
@@ -22,6 +27,7 @@ import {
 import { zoomInToProjectSite } from '../../../../utils/mapsV2/zoomToProjectSite';
 import SatelliteLayer from './microComponent/SatelliteLayer';
 import ProjectSiteLayer from './microComponent/SiteLayer';
+import { Layer, Source } from 'react-map-gl-v7';
 
 interface Props {
   geoJson: any;
@@ -44,6 +50,42 @@ export default function MapComponent({
   const [viewport, setViewPort] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [satellite, setSatellite] = useState(false);
+  const [coordinates, setCoordinates] = useState<number[][]>([]);
+
+  // Handle click to add point
+  const handleClick = useCallback((e: MapMouseEvent) => {
+    const lngLat = [e.lngLat.lng, e.lngLat.lat];
+    setCoordinates((prev) => [...prev, lngLat]);
+  }, []);
+
+  // Finish drawing (double click closes polygon)
+  const handleDoubleClick = useCallback(() => {
+    if (coordinates.length < 3) return; // need at least 3 points
+    const closed = [...coordinates, coordinates[0]];
+    const newFeature: Feature<Geometry> = {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Polygon',
+        coordinates: [closed],
+      },
+    };
+
+    setGeoJson((prev: FeatureCollection<Geometry> | null) => {
+      if (!prev) {
+        return {
+          type: 'FeatureCollection',
+          features: [newFeature],
+        };
+      }
+      return {
+        ...prev,
+        features: [...prev.features, newFeature],
+      };
+    });
+
+    setCoordinates([]);
+  }, [coordinates]);
 
   useEffect(() => {
     async function loadMapStyle() {
@@ -89,9 +131,32 @@ export default function MapComponent({
         style={{ width: '100%', height: '400px' }}
         ref={mapRef}
         onMove={onMove}
+        onClick={handleClick}
+        onDblClick={handleDoubleClick}
+        attributionControl={false}
       >
         {satellite && <SatelliteLayer />}
         {<ProjectSiteLayer satellite={satellite} geoJson={geoJson} />}
+        {coordinates.length > 1 && (
+          <Source
+            id="drawing-preview"
+            type="geojson"
+            data={{
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                coordinates: coordinates,
+              },
+              properties: {},
+            }}
+          >
+            <Layer
+              id="drawing-preview-line"
+              type="line"
+              paint={{ 'line-color': '#FF0000', 'line-width': 2 }}
+            />
+          </Source>
+        )}
         <div className={styles.layerSwitcher}>
           <div
             onClick={() => setSatellite(false)}
@@ -110,7 +175,7 @@ export default function MapComponent({
             Satellite
           </div>
         </div>
-        <NavigationControl position="bottom-right" />
+        <NavigationControl position="bottom-right" showCompass={false} />
       </Map>
       <Dropzone
         accept={['.geojson', '.kml']}
