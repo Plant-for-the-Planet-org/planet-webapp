@@ -1,164 +1,97 @@
 import type { ReactElement } from 'react';
+import type { ViewState, ViewStateChangeEvent } from 'react-map-gl-v7/maplibre';
+import type { MapState } from '../../../projectsV2/ProjectsMapContext';
+import type {
+  ExtendedMapLibreMap,
+  MapRef,
+} from '../../../common/types/projectv2';
 
-import { useEffect, useRef, useState } from 'react';
-import bbox from '@turf/bbox';
-import ReactMapboxGl, { ZoomControl, Source, Layer } from 'react-mapbox-gl';
-import DrawControl from 'react-mapbox-gl-draw';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
 import { useTranslations } from 'next-intl';
-import WebMercatorViewport from '@math.gl/web-mercator';
 import gjv from 'geojson-validation';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import {
+  DEFAULT_MAP_STATE,
+  DEFAULT_VIEW_STATE,
+} from '../../../projectsV2/ProjectsMapContext';
+import { zoomInToProjectSite } from '../../../../utils/mapsV2/zoomToProjectSite';
+import SatelliteLayer from './microComponent/SatelliteLayer';
+import ProjectSiteLayer from './microComponent/SiteLayer';
 
 interface Props {
   geoJson: any;
   setGeoJson: Function;
   geoJsonError: any;
   setGeoJsonError: Function;
-  geoLocation: any;
 }
 
-const Map = ReactMapboxGl({ maxZoom: 15 });
+const defaultZoom = 1.4;
 
 export default function MapComponent({
   geoJson,
   setGeoJson,
   geoJsonError,
   setGeoJsonError,
-  geoLocation,
 }: Props): ReactElement {
-  const defaultMapCenter = [geoLocation.geoLongitude, geoLocation.geoLatitude];
-  const defaultZoom = 1.4;
   const t = useTranslations('ManageProjects');
-  const [viewport, setViewPort] = useState({
-    height: '400px',
-    width: '100%',
-    center: defaultMapCenter,
-    zoom: [defaultZoom],
-  });
-  const viewport2 = {
-    height: 400,
-    width: 500,
-    center: defaultMapCenter,
-    zoom: defaultZoom,
-  };
-  const [style, setStyle] = useState({
-    version: 8,
-    sources: {},
-    layers: [],
-  });
+  const reader = new FileReader();
+  const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
+  const [viewport, setViewPort] = useState<ViewState>(DEFAULT_VIEW_STATE);
+  const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [satellite, setSatellite] = useState(false);
 
-  const RASTER_SOURCE_OPTIONS = {
-    type: 'raster',
-    tiles: [
-      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    ],
-    tileSize: 128,
-  };
-
   useEffect(() => {
-    const promise = getMapStyle('openStreetMap');
-    promise.then((style: any) => {
-      if (style) {
-        setStyle(style);
+    async function loadMapStyle() {
+      const result = await getMapStyle('default');
+      if (result) {
+        setMapState({ ...mapState, mapStyle: result });
       }
-    });
+    }
+    loadMapStyle();
   }, []);
 
-  const reader = new FileReader();
-  const mapParentRef = useRef(null);
-  const drawControlRef = useRef(null);
-
-  const onDrawCreate = () => {
-    if (drawControlRef.current) {
-      setGeoJson(drawControlRef.current.draw.getAll());
-    }
-  };
-
-  const onDrawUpdate = () => {
-    if (drawControlRef.current) {
-      setGeoJson(drawControlRef.current.draw.getAll());
-    }
+  const handleViewStateChange = (newViewState: Partial<ViewState>) => {
+    setViewPort((prev) => ({
+      ...prev,
+      ...newViewState,
+    }));
   };
 
   useEffect(() => {
     if (geoJson) {
-      const bounds = bbox(geoJson);
-      const { longitude, latitude, zoom } = new WebMercatorViewport(
-        viewport2
-      ).fitBounds([
-        [bounds[0], bounds[1]],
-        [bounds[2], bounds[3]],
-      ]);
-      const newViewport = {
-        ...viewport,
-        center: [longitude, latitude],
-        zoom: [zoom],
-      };
-      setTimeout(() => {
-        if (drawControlRef.current) {
-          try {
-            drawControlRef.current.draw.add(geoJson);
-          } catch (e) {
-            setGeoJsonError(true);
-            setGeoJson(null);
-            console.log('We only support feature collection for now', e);
-          }
-        }
-      }, 1000);
-      setViewPort(newViewport);
+      if (!mapRef.current) return;
+      zoomInToProjectSite(mapRef, geoJson, 0, handleViewStateChange, 2600);
     } else {
       setViewPort({
         ...viewport,
-        center: defaultMapCenter,
-        zoom: [defaultZoom],
+        zoom: defaultZoom,
       });
     }
-  }, [geoJson]);
+  }, [geoJson, mapRef.current]);
+
+  const onMove = useCallback(
+    (evt: ViewStateChangeEvent) => {
+      handleViewStateChange(evt.viewState);
+    },
+    [handleViewStateChange]
+  );
 
   return (
-    <div
-      ref={mapParentRef}
-      className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}
-    >
+    <div className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}>
       <Map
         {...viewport}
-        style={style} // eslint-disable-line
-        containerStyle={{
-          height: '400px',
-          width: '100%',
-        }}
+        {...mapState}
+        style={{ width: '100%', height: '400px' }}
+        ref={mapRef}
+        onMove={onMove}
       >
-        {satellite && (
-          <>
-            <Source
-              id="satellite_source"
-              tileJsonSource={RASTER_SOURCE_OPTIONS}
-            />
-            <Layer
-              type="raster"
-              id="satellite_layer"
-              sourceId="satellite_source"
-            />
-          </>
-        )}
-        <DrawControl
-          ref={drawControlRef}
-          onDrawCreate={onDrawCreate}
-          onDrawUpdate={onDrawUpdate}
-          controls={{
-            point: false,
-            line_string: false,
-            polygon: true,
-            trash: true,
-            combine_features: false,
-            uncombine_features: false,
-          }}
-        />
+        {satellite && <SatelliteLayer />}
+        {<ProjectSiteLayer satellite={satellite} geoJson={geoJson} />}
         <div className={styles.layerSwitcher}>
           <div
             onClick={() => setSatellite(false)}
@@ -177,15 +110,12 @@ export default function MapComponent({
             Satellite
           </div>
         </div>
-        <ZoomControl position="bottom-right" />
+        <NavigationControl position="bottom-right" />
       </Map>
       <Dropzone
         accept={['.geojson', '.kml']}
         multiple={false}
         onDrop={(acceptedFiles) => {
-          if (drawControlRef.current) {
-            drawControlRef.current.draw.deleteAll();
-          }
           acceptedFiles.forEach((file: any) => {
             const fileType =
               file.name.substring(
@@ -214,13 +144,15 @@ export default function MapComponent({
               reader.onabort = () => console.log('file reading was aborted');
               reader.onerror = () => console.log('file reading has failed');
               reader.onload = (event) => {
-                const geo = JSON.parse(event.target.result);
-                if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
-                  setGeoJsonError(false);
-                  setGeoJson(geo);
-                } else {
-                  setGeoJsonError(true);
-                  console.log('invalid geojson');
+                if (typeof event.target?.result === 'string') {
+                  const geo = JSON.parse(event.target.result);
+                  if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
+                    setGeoJsonError(false);
+                    setGeoJson(geo);
+                  } else {
+                    setGeoJsonError(true);
+                    console.log('invalid geojson');
+                  }
                 }
               };
 

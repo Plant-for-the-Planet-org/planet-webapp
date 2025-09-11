@@ -8,7 +8,7 @@ import type { ProjectTimeTravelConfig } from '../../utils/mapsV2/timeTravel';
 import { useContext, useMemo, createContext, useState, useEffect } from 'react';
 import getMapStyle from '../../utils/maps/getMapStyle';
 
-interface MapState {
+export interface MapState {
   mapStyle: MapStyle;
   dragPan: boolean;
   scrollZoom: boolean;
@@ -31,7 +31,7 @@ export const DEFAULT_VIEW_STATE: ViewState = {
   padding: { top: 0, bottom: 0, left: 0, right: 0 },
 };
 
-const DEFAULT_MAP_STATE: MapState = {
+export const DEFAULT_MAP_STATE: MapState = {
   mapStyle: EMPTY_STYLE,
   dragPan: true,
   scrollZoom: true,

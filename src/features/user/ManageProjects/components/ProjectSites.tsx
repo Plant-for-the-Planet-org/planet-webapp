@@ -14,14 +14,14 @@ import type {
   Geometry,
 } from 'geojson';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useMemo } from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
-import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
+import Map, { Source, Layer } from 'react-map-gl-v7/maplibre';
 import bbox from '@turf/bbox';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
@@ -42,15 +42,29 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 
-const MapStatic = ReactMapboxGl({
-  interactive: false,
-  accessToken: '',
-});
+const defaultMapCenter = [36.96, -28.5];
+const defaultZoom = 1.4;
+const viewport = {
+  height: 320,
+  width: 200,
+  center: defaultMapCenter,
+  zoom: defaultZoom,
+};
+const defaultSiteDetails = {
+  name: '',
+  status: '',
+  geometry: {},
+};
 
-const Map = dynamic(() => import('./MapComponent'), {
+const SiteFormationMap = dynamic(() => import('./MapComponent'), {
   ssr: false,
   loading: () => <p></p>,
 });
+
+type ProjectSitesFormData = {
+  name: string;
+  status: string;
+};
 
 type SiteApiPayload = {
   name: string;
@@ -67,9 +81,10 @@ function EditSite({
   geoJsonProp,
   projectGUID,
   setSiteList,
-  seteditMode,
+  setEditMode,
   siteGUID,
   siteList,
+  tiles,
 }: EditSiteProps) {
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
@@ -94,6 +109,7 @@ function EditSite({
       geoLatitude: 36.96,
       geoLongitude: -28.5,
     },
+    tiles,
   };
 
   const editProjectSite = async (data: ProjectSitesFormData) => {
@@ -126,7 +142,7 @@ function EditSite({
         setSiteList(temp);
         setGeoJson(null);
         setIsUploadingData(false);
-        seteditMode(false);
+        setEditMode(false);
         setErrorMessage('');
       } catch (err) {
         setIsUploadingData(false);
@@ -212,7 +228,7 @@ function EditSite({
               </div>
             </div>
 
-            <Map {...MapProps} />
+            <SiteFormationMap {...MapProps} />
           </div>
 
           {errorMessage && errorMessage !== '' ? (
@@ -247,11 +263,6 @@ function EditSite({
   );
 }
 
-type ProjectSitesFormData = {
-  name: string;
-  status: string;
-};
-
 export default function ProjectSites({
   handleBack,
   handleNext,
@@ -271,29 +282,11 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<boolean>(true);
-  const [editMode, seteditMode] = useState<boolean>(false);
-  const [geoLocation, setgeoLocation] = useState<GeoLocation | undefined>(
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
     undefined
   );
   const [geoJson, setGeoJson] = useState<GeoJson | null>(null);
-  const defaultMapCenter = [36.96, -28.5];
-  const defaultZoom = 1.4;
-  const viewport = {
-    height: 320,
-    width: 200,
-    center: defaultMapCenter,
-    zoom: defaultZoom,
-  };
-  const style = {
-    version: 8,
-    sources: {},
-    layers: [],
-  };
-  const defaultSiteDetails = {
-    name: '',
-    status: '',
-    geometry: {},
-  };
 
   const [siteDetails, setSiteDetails] =
     useState<SiteDetails>(defaultSiteDetails);
@@ -302,21 +295,19 @@ export default function ProjectSites({
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
 
   // Assigning defaultSiteDetails as default
-
   const changeSiteDetails = (e: ChangeEvent<HTMLInputElement>): void => {
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
   };
 
-  const RASTER_SOURCE_OPTIONS = {
-    type: 'raster',
-    tiles: [
+  const tiles = useMemo(
+    () => [
       'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     ],
-    tileSize: 128,
-  };
+    []
+  );
 
   const handleModalClose = () => {
-    seteditMode(false);
+    setEditMode(false);
     setOpenModal(false);
   };
 
@@ -325,7 +316,6 @@ export default function ProjectSites({
     setGeoJson,
     geoJsonError,
     setGeoJsonError,
-    geoLocation,
   };
 
   const fetchProjSites = async () => {
@@ -342,7 +332,7 @@ export default function ProjectSites({
           geoLatitude: result.geoLatitude,
           geoLongitude: result.geoLongitude,
         };
-        setgeoLocation(geoLocation);
+        setGeoLocation(geoLocation);
 
         if (result?.sites.length > 0) {
           setShowForm(false);
@@ -468,7 +458,7 @@ export default function ProjectSites({
     setGeoJson(collection);
     setSiteDetails(defaultSiteDetails);
     setSiteGUID(site.id);
-    seteditMode(true);
+    setEditMode(true);
     setOpenModal(true);
   };
 
@@ -482,9 +472,10 @@ export default function ProjectSites({
     geoJsonProp: geoJson,
     projectGUID,
     setSiteList,
-    seteditMode,
+    setEditMode,
     siteGUID,
     siteList,
+    tiles,
   };
 
   return (
@@ -544,37 +535,47 @@ export default function ProjectSites({
                     >
                       <EditIcon color={'#000'} />
                     </IconButton>
-                    <MapStatic
-                      {...viewport}
-                      center={[longitude, latitude]}
-                      zoom={[zoom]}
-                      style={style} // eslint-disable-line
-                      containerStyle={{
-                        height: 200,
-                        width: 320,
-                      }}
+                    <Map
+                      style={{ height: 200, width: 320 }}
+                      zoom={zoom}
+                      interactive={false}
+                      attributionControl={false}
+                      latitude={latitude}
+                      longitude={longitude}
                     >
                       <Source
                         id="satellite_source"
-                        tileJsonSource={RASTER_SOURCE_OPTIONS}
-                      />
-                      <Layer
                         type="raster"
-                        id="satellite_layer"
-                        sourceId="satellite_source"
-                      />
-                      <GeoJSONLayer
+                        tiles={tiles}
+                        tileSize={128}
+                      >
+                        <Layer type="raster" id="satellite_layer" />
+                      </Source>
+                      <Source
+                        id={`geojson-${site.id}`}
+                        type="geojson"
                         data={site.geometry}
-                        fillPaint={{
-                          'fill-color': '#fff',
-                          'fill-opacity': 0.2,
-                        }}
-                        linePaint={{
-                          'line-color': '#68B030',
-                          'line-width': 2,
-                        }}
-                      />
-                    </MapStatic>
+                      >
+                        <Layer
+                          id={`fill-${site.id}`}
+                          type="fill"
+                          source={`geojson-${site.id}`}
+                          paint={{
+                            'fill-color': '#fff',
+                            'fill-opacity': 0.2,
+                          }}
+                        />
+                        <Layer
+                          id={`line-${site.id}`}
+                          type="line"
+                          source={`geojson-${site.id}`}
+                          paint={{
+                            'line-color': '#68B030',
+                            'line-width': 2,
+                          }}
+                        />
+                      </Source>
+                    </Map>
                   </div>
                 </div>
               );
@@ -644,7 +645,7 @@ export default function ProjectSites({
               />
             </InlineFormDisplayGroup>
 
-            {geoLocation && <Map {...MapProps} />}
+            {geoLocation && <SiteFormationMap {...MapProps} />}
 
             <Button
               id="projSiteSaveandAdd"
@@ -662,7 +663,7 @@ export default function ProjectSites({
               setGeoJson(null);
               setSiteDetails(defaultSiteDetails);
               setSiteGUID(null);
-              seteditMode(false);
+              setEditMode(false);
               setOpenModal(false);
             }}
             className={styles.formFieldLarge}
