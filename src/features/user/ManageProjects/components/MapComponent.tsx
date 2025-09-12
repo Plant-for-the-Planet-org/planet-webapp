@@ -12,11 +12,7 @@ import type {
 import type { Feature, FeatureCollection, Geometry } from 'geojson';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Map, {
-  NavigationControl,
-  Layer,
-  Source,
-} from 'react-map-gl-v7/maplibre';
+import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
@@ -31,6 +27,9 @@ import {
 import { zoomInToProjectSite } from '../../../../utils/mapsV2/zoomToProjectSite';
 import SatelliteLayer from './microComponent/SatelliteLayer';
 import ProjectSiteLayer from './microComponent/SiteLayer';
+import PolygonDrawIcon from '../../../../../public/assets/images/icons/manageProjects/PolygonDrawIcon';
+import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';
+import DrawingPreviewLayer from './microComponent/DrawingPreviewLayer';
 
 interface Props {
   geoJson: any;
@@ -54,12 +53,17 @@ export default function MapComponent({
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [satellite, setSatellite] = useState(false);
   const [coordinates, setCoordinates] = useState<number[][]>([]);
+  const [isDrawing, setIsDrawing] = useState(false);
 
   // Handle click to add point
-  const handleClick = useCallback((e: MapMouseEvent) => {
-    const lngLat = [e.lngLat.lng, e.lngLat.lat];
-    setCoordinates((prev) => [...prev, lngLat]);
-  }, []);
+  const handleClick = useCallback(
+    (e: MapMouseEvent) => {
+      if (!isDrawing) return;
+      const lngLat = [e.lngLat.lng, e.lngLat.lat];
+      setCoordinates((prev) => [...prev, lngLat]);
+    },
+    [isDrawing]
+  );
 
   // Finish drawing (double click closes polygon)
   const handleDoubleClick = useCallback(() => {
@@ -128,6 +132,24 @@ export default function MapComponent({
 
   return (
     <div className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}>
+      <div className={styles.polygonIcon}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setIsDrawing((prev) => !prev);
+          }}
+        >
+          <PolygonDrawIcon />
+        </button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setCoordinates([]);
+          }}
+        >
+          <DeleteIcon />
+        </button>
+      </div>
       <Map
         {...viewport}
         {...mapState}
@@ -137,28 +159,15 @@ export default function MapComponent({
         onClick={handleClick}
         onDblClick={handleDoubleClick}
         attributionControl={false}
+        cursor={isDrawing ? 'crosshair' : 'grab'}
       >
         {satellite && <SatelliteLayer />}
         {<ProjectSiteLayer satellite={satellite} geoJson={geoJson} />}
         {coordinates.length > 1 && (
-          <Source
-            id="drawing-preview"
-            type="geojson"
-            data={{
-              type: 'Feature',
-              geometry: {
-                type: 'LineString',
-                coordinates: coordinates,
-              },
-              properties: {},
-            }}
-          >
-            <Layer
-              id="drawing-preview-line"
-              type="line"
-              paint={{ 'line-color': '#FF0000', 'line-width': 2 }}
-            />
-          </Source>
+          <DrawingPreviewLayer
+            coordinates={coordinates}
+            satellite={satellite}
+          />
         )}
         <div className={styles.layerSwitcher}>
           <div

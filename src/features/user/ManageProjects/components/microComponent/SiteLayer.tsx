@@ -1,6 +1,13 @@
-import { Source, Layer } from 'react-map-gl-v7';
+import { Source, Layer } from 'react-map-gl-v7/maplibre';
+import themeProperties from '../../../../../theme/themeProperties';
 
-const ProjectSiteLayer = ({ satellite, geoJson }) => {
+interface SiteLayerProps {
+  satellite: boolean;
+  geoJson: any;
+}
+
+const ProjectSiteLayer = ({ satellite, geoJson }: SiteLayerProps) => {
+  const { colors } = themeProperties.designSystem;
   return (
     <Source id="project-site-source" type="geojson" data={geoJson}>
       {!satellite && (
@@ -9,7 +16,7 @@ const ProjectSiteLayer = ({ satellite, geoJson }) => {
           type="fill"
           source="project-site-source"
           paint={{
-            'fill-color': '#68B030',
+            'fill-color': colors.warmGreen,
             'fill-opacity': 0.2,
           }}
         />
@@ -19,7 +26,7 @@ const ProjectSiteLayer = ({ satellite, geoJson }) => {
         type="line"
         source="project-site-source"
         paint={{
-          'line-color': '#fff',
+          'line-color': colors.white,
           'line-width': 2,
         }}
         layout={{

@@ -409,6 +409,23 @@
   }
 }
 
+.polygonIcon {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 8px;
+  background-color: $dsWhite;
+  position: absolute;
+  z-index: 9999;
+  top: 6px;
+  left: 6px;
+
+  button {
+    cursor: pointer;
+  }
+}
+
 .mapboxContainer2 {
   position: relative;
   > div > div > div {
