@@ -24,10 +24,10 @@ export default function Recurrency({
 }: Props): ReactElement {
   const [selectedRecord, setSelectedRecord] = useState<number | null>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editModalOpen, seteditModalOpen] = useState(false);
-  const [pauseModalOpen, setpauseModalOpen] = useState(false);
-  const [cancelModalOpen, setcancelModalOpen] = useState(false);
-  const [reactivateModalOpen, setreactivateModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [pauseModalOpen, setPauseModalOpen] = useState(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [reactivateModalOpen, setReactivateModalOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState<Subscription | null>(null);
 
   useEffect(() => {
@@ -51,16 +51,16 @@ export default function Recurrency({
   };
 
   const handlePauseModalClose = () => {
-    setpauseModalOpen(false);
+    setPauseModalOpen(false);
   };
   const handleCancelModalClose = () => {
-    setcancelModalOpen(false);
+    setCancelModalOpen(false);
   };
   const handleReactivateModalClose = () => {
-    setreactivateModalOpen(false);
+    setReactivateModalOpen(false);
   };
   const handleEditModalClose = () => {
-    seteditModalOpen(false);
+    setEditModalOpen(false);
   };
 
   return (
@@ -91,10 +91,10 @@ export default function Recurrency({
                     selectedRecord={selectedRecord}
                     record={record}
                     recurrencies={recurrencies}
-                    seteditDonation={seteditModalOpen}
-                    setpauseDonation={setpauseModalOpen}
-                    setcancelDonation={setcancelModalOpen}
-                    setreactivateDonation={setreactivateModalOpen}
+                    setEditDonation={setEditModalOpen}
+                    setPauseDonation={setPauseModalOpen}
+                    setCancelDonation={setCancelModalOpen}
+                    setReactivateDonation={setReactivateModalOpen}
                   />
                 );
               })
@@ -108,10 +108,10 @@ export default function Recurrency({
             selectedRecord={selectedRecord}
             record={recurrencies[selectedRecord]}
             recurrencies={recurrencies}
-            seteditDonation={seteditModalOpen}
-            setpauseDonation={setpauseModalOpen}
-            setcancelDonation={setcancelModalOpen}
-            setreactivateDonation={setreactivateModalOpen}
+            setEditDonation={setEditModalOpen}
+            setPauseDonation={setPauseModalOpen}
+            setCancelDonation={setCancelModalOpen}
+            setReactivateDonation={setReactivateModalOpen}
           />
         )}
       </div>
