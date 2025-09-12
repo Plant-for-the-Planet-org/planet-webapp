@@ -41,6 +41,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
+import SiteDeleteConfirmationModal from './microComponent/SiteDeleteConfirmationModal';
 
 const defaultMapCenter = [36.96, -28.5];
 const defaultZoom = 1.4;
@@ -277,6 +278,7 @@ export default function ProjectSites({
     formState: { errors },
     control,
   } = useForm<ProjectSitesFormData>();
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [geoJsonError, setGeoJsonError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -287,12 +289,11 @@ export default function ProjectSites({
     undefined
   );
   const [geoJson, setGeoJson] = useState<GeoJson | null>(null);
-
   const [siteDetails, setSiteDetails] =
     useState<SiteDetails>(defaultSiteDetails);
   const [siteList, setSiteList] = useState<Site[]>([]);
   const [siteGUID, setSiteGUID] = useState<string | null>(null);
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Assigning defaultSiteDetails as default
   const changeSiteDetails = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -399,10 +400,11 @@ export default function ProjectSites({
       await deleteApiAuthenticated(`/app/projects/${projectGUID}/sites/${id}`);
       const siteListTemp = siteList.filter((item) => item.id !== id);
       setSiteList(siteListTemp);
-      setIsUploadingData(false);
     } catch (err) {
-      setIsUploadingData(false);
       setErrors(handleError(err as APIError));
+    } finally {
+      setIsUploadingData(false);
+      setIsModalOpen(false);
     }
   };
 
@@ -516,11 +518,16 @@ export default function ProjectSites({
                         .find((e) => site.status == e.value)
                         ?.label.toUpperCase()}
                     </div>
+                    <SiteDeleteConfirmationModal
+                      siteId={site.id}
+                      deleteProjectSite={deleteProjectSite}
+                      isModalOpen={isModalOpen}
+                      setIsModalOpen={setIsModalOpen}
+                      isUploadingData={isUploadingData}
+                    />
                     <IconButton
                       id={'trashIconProjS'}
-                      onClick={() => {
-                        deleteProjectSite(site.id);
-                      }}
+                      onClick={() => setIsModalOpen(true)}
                       size="small"
                       className={styles.uploadedMapDeleteButton}
                     >
@@ -677,7 +684,6 @@ export default function ProjectSites({
             <h4 className={styles.errorMessage}>{errorMessage}</h4>
           </div>
         ) : null}
-
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
             onClick={() => handleBack(ProjectCreationTabs.DETAILED_ANALYSIS)}

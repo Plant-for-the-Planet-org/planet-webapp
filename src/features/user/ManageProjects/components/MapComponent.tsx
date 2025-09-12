@@ -12,7 +12,11 @@ import type {
 import type { Feature, FeatureCollection, Geometry } from 'geojson';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
+import Map, {
+  NavigationControl,
+  Layer,
+  Source,
+} from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
@@ -27,7 +31,6 @@ import {
 import { zoomInToProjectSite } from '../../../../utils/mapsV2/zoomToProjectSite';
 import SatelliteLayer from './microComponent/SatelliteLayer';
 import ProjectSiteLayer from './microComponent/SiteLayer';
-import { Layer, Source } from 'react-map-gl-v7';
 
 interface Props {
   geoJson: any;
