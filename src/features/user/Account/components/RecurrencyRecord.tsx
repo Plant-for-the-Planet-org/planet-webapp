@@ -230,26 +230,26 @@ interface CommonProps {
   selectedRecord: number | null;
   record: Subscription;
   recurrencies: Subscription[];
-  seteditDonation: SetState<boolean>;
-  setpauseDonation: SetState<boolean>;
-  setcancelDonation: SetState<boolean>;
-  setreactivateDonation: SetState<boolean>;
+  setEditDonation: SetState<boolean>;
+  setPauseDonation: SetState<boolean>;
+  setCancelDonation: SetState<boolean>;
+  setReactivateDonation: SetState<boolean>;
 }
 
 interface ManageDonationProps {
   record: Subscription;
-  seteditDonation: SetState<boolean>;
-  setpauseDonation: SetState<boolean>;
-  setcancelDonation: SetState<boolean>;
-  setreactivateDonation: SetState<boolean>;
+  setEditDonation: SetState<boolean>;
+  setPauseDonation: SetState<boolean>;
+  setCancelDonation: SetState<boolean>;
+  setReactivateDonation: SetState<boolean>;
 }
 
 export function ManageDonation({
   record,
-  seteditDonation,
-  setpauseDonation,
-  setcancelDonation,
-  setreactivateDonation,
+  setEditDonation,
+  setPauseDonation,
+  setCancelDonation,
+  setReactivateDonation,
 }: ManageDonationProps): ReactElement {
   const t = useTranslations('Me');
 
@@ -279,7 +279,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.designSystem.colors.primaryColor }}
-          onClick={(e) => openModal(e, seteditDonation)}
+          onClick={(e) => openModal(e, setEditDonation)}
         >
           {t('editDonation')}
         </button>
@@ -290,7 +290,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.designSystem.colors.warmBlue }}
-          onClick={(e) => openModal(e, setreactivateDonation)}
+          onClick={(e) => openModal(e, setReactivateDonation)}
         >
           {record?.status === 'paused'
             ? t('resumeDonation')
@@ -303,7 +303,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.designSystem.colors.sunriseOrange }}
-          onClick={(e) => openModal(e, setpauseDonation)}
+          onClick={(e) => openModal(e, setPauseDonation)}
         >
           {t('pauseDonation')}
         </button>
@@ -314,7 +314,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.designSystem.colors.fireRed }}
-          onClick={(e) => openModal(e, setcancelDonation)}
+          onClick={(e) => openModal(e, setCancelDonation)}
         >
           {t('cancelDonation')}
         </button>
@@ -343,10 +343,10 @@ export default function RecurrencyRecord({
   handleRecordToggle,
   selectedRecord,
   record,
-  seteditDonation,
-  setpauseDonation,
-  setcancelDonation,
-  setreactivateDonation,
+  setEditDonation,
+  setPauseDonation,
+  setCancelDonation,
+  setReactivateDonation,
 }: Props): ReactElement {
   const outerDivClasses = isModal
     ? styles.recordModal
@@ -384,10 +384,10 @@ export default function RecurrencyRecord({
             {record.status !== 'incomplete' && (
               <ManageDonation
                 record={record}
-                seteditDonation={seteditDonation}
-                setpauseDonation={setpauseDonation}
-                setcancelDonation={setcancelDonation}
-                setreactivateDonation={setreactivateDonation}
+                setEditDonation={setEditDonation}
+                setPauseDonation={setPauseDonation}
+                setCancelDonation={setCancelDonation}
+                setReactivateDonation={setReactivateDonation}
               />
             )}
           </div>
