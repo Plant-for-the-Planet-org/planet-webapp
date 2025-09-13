@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { Feature, Polygon } from 'geojson';
 import type { SiteProperties } from '../ProjectSiteDropDown';
-import type {
-  Intervention,
-  SampleTreeRegistration,
-} from '../../../common/types/intervention';
+import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useState } from 'react';
 import ProjectSiteDropdown from '../ProjectSiteDropDown';

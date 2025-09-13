@@ -1,9 +1,9 @@
+import type { SetState } from '../../../common/types/common';
 import type {
   Intervention,
-  SingleTreeRegistration,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
-import type { SetState } from '../../../common/types/common';
+  SingleTreeRegistration,
+} from '@planet-sdk/common';
 
 import { useEffect, useState } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';

@@ -1,6 +1,5 @@
 import type { AbstractIntlMessages } from 'next-intl';
 import type { SetState } from '../../../../../src/features/common/types/common';
-import type { Intervention } from '../../../../../src/features/common/types/intervention';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
@@ -13,6 +12,7 @@ import type {
   TreeProjectExtended,
   ConservationProjectExtended,
   ProjectExtended,
+  Intervention,
 } from '@planet-sdk/common';
 
 import { useEffect, useState, useContext } from 'react';

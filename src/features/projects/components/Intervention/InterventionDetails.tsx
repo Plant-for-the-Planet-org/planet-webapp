@@ -1,9 +1,6 @@
 import type { ReactElement } from 'react';
-import type {
-  Intervention,
-  SampleTreeRegistration,
-} from '../../../common/types/intervention';
 import type { SliderImage } from './ImageSlider';
+import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
