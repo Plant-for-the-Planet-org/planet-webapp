@@ -40,7 +40,7 @@ const articles: Article[] = [
     image: '/tenants/salesforce/images/growing-impact/success-1.jpg',
     foliage: '/tenants/salesforce/images/growing-impact/foliage-1.png',
     link: 'https://trailhead.salesforce.com/content/learn/modules/trees-to-combat-climate-change',
-    bgColor: styles.sfDsTeal30,
+    bgColor: styles.sfAccentTealDark,
   },
   {
     id: 2,
@@ -49,7 +49,7 @@ const articles: Article[] = [
     image: '/tenants/salesforce/images/growing-impact/success-2.jpg',
     foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
     link: 'https://www.salesforce.com/company/sustainability/',
-    bgColor: styles.sfCustomGreen1,
+    bgColor: styles.sfAccentGreenMuted,
   },
   {
     id: 3,
@@ -58,7 +58,7 @@ const articles: Article[] = [
     image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
     foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
     link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
-    bgColor: styles.sfDsTeal50,
+    bgColor: styles.sfAccentTeal,
   },
   {
     id: 4,
@@ -66,7 +66,7 @@ const articles: Article[] = [
     image: '/tenants/salesforce/images/growing-impact/success-4.jpg',
     foliage: '/tenants/salesforce/images/growing-impact/foliage-4.png',
     link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
-    bgColor: styles.sfCustomGreen2,
+    bgColor: styles.sfAccentGreenDark,
     partnerLogo: '/tenants/salesforce/images/partner-logo.png',
   },
   {
@@ -87,7 +87,7 @@ const articles: Article[] = [
         },
       ],
     },
-    bgColor: styles.sfDsTeal50,
+    bgColor: styles.sfAccentTeal,
   },
   {
     id: 6,
@@ -96,7 +96,7 @@ const articles: Article[] = [
     foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
     link: '/mangrove-challenge',
     linkCopy: 'Click here to learn more about the cause',
-    bgColor: styles.sfCustomGreen1,
+    bgColor: styles.sfAccentGreenMuted,
   },
 ];
 

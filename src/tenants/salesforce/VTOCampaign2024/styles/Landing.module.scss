@@ -47,7 +47,7 @@
     font-size: $sfFontXXL;
     line-height: 45px;
     letter-spacing: -0.006em;
-    color: $dsDeepBlue;
+    color: $sfBrandNavy;
     text-align: center;
     margin-bottom: 20px;
 
@@ -67,7 +67,7 @@
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
-    color: $dsDeepBlue;
+    color: $sfBrandNavy;
     margin-bottom: 26px;
     text-transform: uppercase;
     @include lgLaptopView {
@@ -83,7 +83,7 @@
     font-size: $sfFontBase;
     line-height: 24px;
     text-align: center;
-    color: $sfDsNavy900;
+    color: $sfBrandNavy;
     margin: 20px 0;
     @include lgLaptopView {
       font-size: $sfFontBase;
@@ -92,7 +92,7 @@
   }
 
   button {
-    background: $sfDsBlue600;
+    background: $sfBrandBlue;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -100,7 +100,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: $sfDsWhite;
+    color: $sfWhite;
     padding: 13px 24px;
     cursor: pointer;
   }

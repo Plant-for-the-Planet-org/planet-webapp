@@ -19,7 +19,7 @@
       line-height: 40px;
       text-align: center;
       letter-spacing: -0.004em;
-      color: $sfDsNavy900;
+      color: $sfBrandNavy;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXXLarge;
@@ -34,7 +34,7 @@
       font-size: $fontLarge;
       line-height: 28px;
       letter-spacing: -0.004em;
-      color: $sfDsNavy900;
+      color: $sfBrandNavy;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXLarge;
@@ -54,11 +54,11 @@
       font-weight: normal;
       font-size: $sfFontBase;
       line-height: 24px;
-      color: $sfDsNavy900;
+      color: $sfBrandNavy;
       margin-bottom: 24px;
       a {
         text-decoration: underline;
-        color: $sfDsBlue800;
+        color: $sfBrandBlueDeep;
       }
       em {
         font-style: italic;
@@ -88,7 +88,7 @@
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
-    color: $dsDeepBlue;
+    color: $sfBrandNavy;
 
     &.bold {
       font-weight: 600;
@@ -101,7 +101,7 @@
   }
 
   p.contentSectionQuote {
-    border-left: 5px solid $dsDeepBlue;
+    border-left: 5px solid $sfBrandNavy;
     margin: 10px 0 34px;
   }
 
@@ -123,7 +123,7 @@
     .projectListButton {
       background-color: $dsWhite;
       border-radius: 35px;
-      color: $dsDeepBlue;
+      color: $sfBrandNavy;
       font-weight: bold;
       display: flex;
       align-items: center;
@@ -161,8 +161,8 @@
       height: 100%;
       background: linear-gradient(
         264.03deg,
-        rgba(255, 255, 255, 0.7125) 13.14%,
-        rgba(255, 255, 255, 0.9) 65.48%
+        rgba($sfWhite, 0.7125) 13.14%,
+        rgba($sfWhite, 0.9) 65.48%
       );
     }
 
@@ -185,7 +185,7 @@
   }
 
   .projectItem {
-    background-color: $sfDsWhite;
+    background-color: $sfWhite;
     padding: 10px;
     width: 320px;
     max-width: 100%;
@@ -193,12 +193,12 @@
     p {
       margin-bottom: 0;
       font-size: $fontMedium;
-      color: $sfDsWhite;
+      color: $sfWhite;
     }
   }
 
   button {
-    background: $sfDsBlue600;
+    background: $sfBrandBlue;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -206,7 +206,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: $sfDsWhite;
+    color: $sfWhite;
     padding: 13px 24px;
     cursor: pointer;
   }
