@@ -44,7 +44,7 @@ const articles: Article[] = [
   },
   {
     id: 2,
-    copy: 'The Global Onboarding Team team donates a tree for every hire.',
+    copy: 'The Global Onboarding Team donates a tree for every hire.',
     subCopy: 'How do you benchmark goals?',
     image: '/tenants/salesforce/images/growing-impact/success-2.jpg',
     foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
