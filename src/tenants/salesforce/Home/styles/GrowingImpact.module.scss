@@ -194,3 +194,11 @@
     cursor: pointer;
   }
 }
+
+// export some colors from the theme for use in the component
+:export {
+  sfCustomGreen1: $sfCustomGreen1;
+  sfCustomGreen2: $sfCustomGreen2;
+  sfDsTeal30: $sfDsTeal50;
+  sfDsTeal50: $sfDsTeal50;
+}
