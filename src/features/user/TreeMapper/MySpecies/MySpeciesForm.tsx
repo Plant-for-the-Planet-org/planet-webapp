@@ -1,8 +1,5 @@
 import type { APIError } from '@planet-sdk/common';
-import type {
-  Species,
-  SpeciesSuggestionType,
-} from '../../../common/types/intervention';
+import type { Species, SpeciesSuggestionType } from '../Treemapper';
 
 import { useEffect, useState, useContext } from 'react';
 import StyledForm from '../../../common/Layout/StyledForm';

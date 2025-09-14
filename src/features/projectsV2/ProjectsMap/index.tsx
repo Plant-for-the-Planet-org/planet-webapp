@@ -1,9 +1,9 @@
 import type { ViewStateChangeEvent } from 'react-map-gl-v7/maplibre';
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { SetState } from '../../common/types/common';
-import type { SingleTreeRegistration } from '../../common/types/intervention';
 import type { ExtendedMapLibreMap, MapRef } from '../../common/types/projectv2';
 import type { SelectedTab } from './ProjectMapTabs';
+import type { SingleTreeRegistration } from '@planet-sdk/common';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';

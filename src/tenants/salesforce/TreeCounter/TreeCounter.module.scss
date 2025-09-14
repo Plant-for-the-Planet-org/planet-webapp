@@ -8,10 +8,6 @@
   width: 100%;
   max-width: 1000px;
   opacity: 0;
-
-  .footnote {
-    font-size: $sfFontSmall;
-  }
 }
 
 .treeCounterReady {
@@ -26,7 +22,7 @@
   font-weight: 500;
   line-height: 70px;
   text-align: center;
-  color: #032d60;
+  color: $sfBrandNavy;
   font-size: $sfFontDisplay2;
   @include mdTabletView {
     line-height: 100px;
@@ -41,37 +37,11 @@
 
 .treeCounterDataField {
   display: flex;
-  color: #4f4f4f;
-}
-
-.backgroundCircle {
-  border: 20px solid $light;
-  border-radius: 50%;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  background-color: #027e46;
-  box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);
+  color: $sfGray60;
 }
 
 .treeCounterLight {
   .treeCounterValue {
-    color: #fff;
-  }
-}
-
-@include smTabletView {
-  .treeCounterData {
-    height: 60%;
-  }
-  .treeCounterDataField > .countLabel {
-    font-size: $fontSmall;
-    font-weight: bold;
-    max-width: 200px;
-    margin-top: 0px;
+    color: $sfWhite;
   }
 }

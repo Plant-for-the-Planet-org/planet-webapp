@@ -41,6 +41,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
+import themeProperties from '../../../../theme/themeProperties';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -260,6 +261,7 @@ export default function ProjectSites({
 }: ProjectSitesProps): ReactElement {
   const { deleteApiAuthenticated, postApiAuthenticated, getApiAuthenticated } =
     useApi();
+  const { colors } = themeProperties.designSystem;
   const t = useTranslations('ManageProjects');
   const {
     handleSubmit,
@@ -542,7 +544,7 @@ export default function ProjectSites({
                       }}
                       className={styles.uploadedMapEditButton}
                     >
-                      <EditIcon color={'#000'} />
+                      <EditIcon color={colors.coreText} />
                     </IconButton>
                     <MapStatic
                       {...viewport}
@@ -566,11 +568,11 @@ export default function ProjectSites({
                       <GeoJSONLayer
                         data={site.geometry}
                         fillPaint={{
-                          'fill-color': '#fff',
+                          'fill-color': colors.white,
                           'fill-opacity': 0.2,
                         }}
                         linePaint={{
-                          'line-color': '#68B030',
+                          'line-color': colors.warmGreen,
                           'line-width': 2,
                         }}
                       />

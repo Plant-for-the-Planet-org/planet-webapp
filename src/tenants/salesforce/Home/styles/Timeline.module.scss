@@ -16,7 +16,7 @@
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
-    color: #032d60;
+    color: $sfBrandNavy;
     margin-bottom: 50px;
     position: absolute;
     top: 80px;
@@ -38,7 +38,7 @@
     line-height: 26px;
     text-align: center;
     letter-spacing: -0.001em;
-    color: #032d60;
+    color: $sfBrandNavy;
     margin-bottom: 5px;
   }
 
@@ -48,7 +48,7 @@
     font-weight: normal !important;
     font-size: $sfFontBase;
     line-height: 24px;
-    color: #181818;
+    color: $sfGray80;
 
     @include lgLaptopView {
       font-size: $sfFontBase !important;
@@ -58,7 +58,7 @@
 
     a {
       text-decoration: underline;
-      color: #0b5cab;
+      color: $sfBrandBlueDeep;
     }
   }
 }
@@ -85,7 +85,7 @@
   line-height: 20px;
   text-align: center;
   letter-spacing: -0.002em;
-  color: #032d60;
+  color: $sfBrandNavy;
   display: block;
   margin-bottom: 17px;
 }
@@ -103,7 +103,7 @@
   font-size: $fontSmall;
   line-height: 16px;
   text-transform: uppercase;
-  color: #0176d3;
+  color: $sfBrandBlue;
   &:after {
     content: '';
     margin-left: 5px;
@@ -170,14 +170,14 @@
 .progressBarContainer {
   width: 250px;
   height: 10px;
-  background-color: #e5e5e5;
+  background-color: $sfGray30;
   border-radius: 6px;
 }
 
 .progressBar {
   height: 100%;
   width: 25%;
-  background-color: #0176d3;
+  background-color: $sfBrandBlue;
   border-radius: 6px;
 }
 
@@ -196,7 +196,7 @@
   display: block;
   width: 10px;
   height: 10px;
-  border: 1px solid #0176d3;
+  border: 1px solid $sfBrandBlue;
   box-sizing: border-box;
   border-radius: 11px;
   cursor: pointer;
@@ -206,10 +206,10 @@
   display: block;
   width: 10px;
   height: 10px;
-  border: 1px solid #0176d3;
+  border: 1px solid $sfBrandBlue;
   box-sizing: border-box;
   border-radius: 11px;
-  background-color: #0176d3;
+  background-color: $sfBrandBlue;
   cursor: default;
 }
 
@@ -223,7 +223,7 @@
   position: absolute;
   top: 202px;
   left: 0px;
-  background-color: white;
+  background-color: $sfWhite;
   cursor: pointer;
   &[disabled] {
     opacity: 0;
@@ -234,7 +234,7 @@
   position: absolute;
   top: 202px;
   right: 0px;
-  background-color: white;
+  background-color: $sfWhite;
   cursor: pointer;
   &[disabled] {
     opacity: 0;

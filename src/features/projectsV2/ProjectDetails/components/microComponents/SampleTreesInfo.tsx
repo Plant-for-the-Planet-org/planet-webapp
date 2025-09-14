@@ -1,5 +1,5 @@
 import type { SetState } from '../../../../common/types/common';
-import type { SampleTreeRegistration } from '../../../../common/types/intervention';
+import type { SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useTranslations } from 'next-intl';
 import styles from '../../styles/InterventionInfo.module.scss';
