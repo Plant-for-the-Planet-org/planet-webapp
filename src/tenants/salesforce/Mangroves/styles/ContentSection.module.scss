@@ -144,7 +144,6 @@
   }
 
   .mbCallout {
-    background-color: $backgroundBase;
     border-radius: 24px;
     overflow: hidden;
     padding: 0;
@@ -173,27 +172,6 @@
       :last-child {
         margin-bottom: 0;
       }
-    }
-
-    .calloutQuote {
-      padding: 20px;
-      z-index: 1;
-      p {
-        margin-bottom: 0;
-      }
-    }
-  }
-
-  .projectItem {
-    background-color: $sfWhite;
-    padding: 10px;
-    width: 320px;
-    max-width: 100%;
-
-    p {
-      margin-bottom: 0;
-      font-size: $fontMedium;
-      color: $sfWhite;
     }
   }
 
