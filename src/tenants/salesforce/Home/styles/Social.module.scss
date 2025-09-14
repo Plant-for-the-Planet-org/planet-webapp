@@ -12,7 +12,7 @@
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
-    color: #032d60;
+    color: $sfBrandNavy;
     margin-bottom: 15px;
 
     @include lgLaptopView {
@@ -29,12 +29,12 @@
     line-height: 30px;
     text-align: center;
     letter-spacing: -0.002em;
-    color: #181818;
+    color: $sfGray80;
     small {
       font-weight: normal;
       font-size: $sfFontBase;
       line-height: 24px;
-      color: #1a1a1a;
+      color: $sfGray70;
     }
   }
   img {
@@ -44,7 +44,7 @@
     margin-bottom: 25px;
   }
   button {
-    background: #215ca0;
+    background: $sfBrandBlueDark;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -52,7 +52,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #ffffff;
+    color: $sfWhite;
     padding: 13px 24px;
     cursor: pointer;
   }
