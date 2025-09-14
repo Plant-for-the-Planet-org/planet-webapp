@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import type { SubmitForReviewProps } from '../../../common/types/project';
 
-import React from 'react';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import styles from './../StepForm.module.scss';
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';

@@ -12,7 +12,7 @@ import SeaOfTrees from './components/SeaOfTrees';
 import ContentSection from './components/ContentSection';
 import ClimateAction from './components/ClimateAction';
 import Social from './components/Social';
-import React from 'react';
+
 import { useTenant } from '../../../features/common/Layout/TenantContext';
 import themeProperties from '../../../theme/themeProperties';
 

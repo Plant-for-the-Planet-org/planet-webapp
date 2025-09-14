@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
 import AccessDenied from '../../../../../public/assets/images/icons/manageProjects/AccessDenied';
 
 function AccessDeniedLoader(): ReactElement {

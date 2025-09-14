@@ -4,8 +4,8 @@ import type {
   TreesDonated,
 } from '../../../../features/common/types/leaderboard';
 
+import { useState, useContext } from 'react';
 import { Modal } from '@mui/material';
-import React from 'react';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import styles from './Stats.module.scss';
 import StatsInfoModal from './StatsInfoModal';
@@ -22,15 +22,15 @@ export default function Stats({
   tenantScore,
   treesDonated,
 }: Props): ReactElement {
-  const [infoExpanded, setInfoExpanded] = React.useState<String | null>(null);
+  const [infoExpanded, setInfoExpanded] = useState<String | null>(null);
   const tPlanet = useTranslations('Planet');
   const locale = useLocale();
-  const [openModal, setModalOpen] = React.useState(false);
+  const [openModal, setModalOpen] = useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
   };
 
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>

@@ -19,7 +19,7 @@
       line-height: 40px;
       text-align: center;
       letter-spacing: -0.004em;
-      color: $dsDeepBlue;
+      color: $sfBrandNavy;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXLarge;
@@ -34,7 +34,7 @@
       font-size: $sfFontLarge;
       line-height: 28px;
       letter-spacing: -0.004em;
-      color: $dsDeepBlue;
+      color: $sfBrandNavy;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXLarge;
@@ -48,11 +48,11 @@
       font-weight: normal;
       font-size: $sfFontBase;
       line-height: 24px;
-      color: $dsDeepBlue;
+      color: $sfBrandNavy;
       margin-bottom: 30px;
       a {
         text-decoration: underline;
-        color: $dsOceanBlue;
+        color: $sfBrandBlueDeep;
       }
     }
     img {
@@ -77,7 +77,7 @@
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
-    color: $dsDeepBlue;
+    color: $sfBrandNavy;
     @include lgLaptopView {
       font-size: $sfFontMedium;
       line-height: 30px;

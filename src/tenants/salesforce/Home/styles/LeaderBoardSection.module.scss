@@ -34,7 +34,7 @@
   align-self: center;
   text-align: center;
   width: 90vw;
-  background-color: $dsWhite;
+  background-color: $sfWhite;
   z-index: 999;
   margin-top: -100px;
   padding: 50px 80px;
@@ -86,7 +86,7 @@
   font-size: $fontSmall;
   line-height: 21px;
   text-align: center;
-  color: #080707;
+  color: $sfBlack;
 }
 
 .leaderBoard > h2 {
@@ -97,7 +97,7 @@
   font-weight: 500;
   line-height: 100%;
   letter-spacing: -0.004em;
-  color: $dsDeepBlue;
+  color: $sfBrandNavy;
   margin-bottom: 30px;
 }
 
@@ -107,7 +107,7 @@
   justify-content: center;
   align-items: center;
   margin-top: 16px;
-  background-color: $dsBaseGrey;
+  background-color: $sfGray10;
   border-radius: 90px;
   height: 42px;
   margin-left: 10px;
@@ -125,8 +125,8 @@
   font-weight: normal;
   font-size: $fontSmall;
   line-height: 42px;
-  color: $dsDeepBlue;
-  background-color: $dsBaseGrey;
+  color: $sfBrandNavy;
+  background-color: $sfGray10;
   text-align: center;
   border-radius: 90px;
   width: 50%;
@@ -138,8 +138,8 @@
   font-weight: bold;
   font-size: $fontSmall;
   line-height: 42px;
-  color: $dsWhite;
-  background-color: $dsDeepBlue;
+  color: $sfWhite;
+  background-color: $sfBrandNavy;
   text-align: center;
   border-radius: 90px;
   width: 50%;
@@ -160,7 +160,7 @@
   flex-direction: row;
   justify-content: space-between;
   padding: 16px 0px;
-  border-bottom: 1px solid $dsMediumGreyTransparent30;
+  border-bottom: 1px solid $sfGray20;
 }
 
 .leaderBoardDonorName {
@@ -172,7 +172,7 @@
   font-weight: normal;
   font-size: $sfFontBase;
   line-height: 24px;
-  color: $dsCoreText;
+  color: $sfGray80;
 }
 
 .leaderBoardDonorTrees {
@@ -186,14 +186,14 @@
   font-family: $primaryFontFamily;
   font-size: $sfFontBase;
   line-height: 24px;
-  color: $dsCoreText;
+  color: $sfGray80;
 }
 
 .leaderBoardDonorTime {
   font-style: normal;
   font-weight: normal;
   font-size: $fontSixteen;
-  color: $dsSoftText2;
+  color: $sfGray40;
   mix-blend-mode: normal;
   opacity: 0.9;
   flex: none;

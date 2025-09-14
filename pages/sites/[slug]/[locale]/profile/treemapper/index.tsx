@@ -8,8 +8,8 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
+import { useEffect } from 'react';
 import Head from 'next/head';
-import React from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import TreeMapper from '../../../../../../src/features/user/TreeMapper';
 import { useTranslations } from 'next-intl';
@@ -31,7 +31,7 @@ function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }

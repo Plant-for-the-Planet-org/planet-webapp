@@ -1,8 +1,8 @@
+import type { SetState } from '../../../common/types/common';
 import type {
   MultiTreeRegistration,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
-import type { SetState } from '../../../common/types/common';
+} from '@planet-sdk/common';
 
 import { Fragment, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
@@ -35,7 +35,7 @@ const MultiTreeInfo = ({
       0
     );
     const calculatedArea = area(activeMultiTree.geometry);
-    const hectaresCovered = calculatedArea / 10000;
+    const hectaresCovered = calculatedArea > 0 ? calculatedArea / 10000 : 0;
     return { totalTreesCount, hectaresCovered };
   }, [
     activeMultiTree.geometry,

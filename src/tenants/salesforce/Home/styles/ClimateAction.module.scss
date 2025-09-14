@@ -29,7 +29,7 @@
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
-    color: $dsDeepBlue;
+    color: $sfBrandNavy;
 
     @include lgLaptopView {
       font-size: $fontXXLarge;
@@ -45,13 +45,13 @@
     line-height: 30px;
     text-align: center;
     letter-spacing: -0.002em;
-    color: $dsCoreText;
+    color: $sfGray80;
     margin-bottom: 60px;
     small {
       font-weight: normal;
       font-size: $sfFontBase;
       line-height: 24px;
-      color: $dsCoreText;
+      color: $sfGray70;
     }
   }
 }
@@ -71,7 +71,7 @@
     line-height: 15px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: $dsSoftText2;
+    color: $sfGray50;
     margin-bottom: 12px;
     display: block;
   }
@@ -82,7 +82,7 @@
     font-size: $sfFontMedium;
     line-height: 26px;
     letter-spacing: -0.001em;
-    color: $dsDeepBlue;
+    color: $sfBrandNavy;
     margin-bottom: 16px;
     @include lgLaptopView {
       margin-bottom: 5px;
@@ -101,7 +101,7 @@
     margin-bottom: 20px;
   }
   button {
-    background: $dsOceanBlue;
+    background: $sfBrandBlueDark;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -109,7 +109,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: $dsWhite;
+    color: $sfWhite;
     padding: 13px 24px;
     cursor: pointer;
   }

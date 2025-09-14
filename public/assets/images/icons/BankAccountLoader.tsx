@@ -1,7 +1,5 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
-
 function BankAccountListLoader(): ReactElement {
   return (
     <svg

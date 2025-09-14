@@ -14,7 +14,7 @@ import type {
   Geometry,
 } from 'geojson';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -72,7 +72,7 @@ function EditSite({
   siteGUID,
   siteList,
 }: EditSiteProps) {
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
   const t = useTranslations('ManageProjects');
   const {
@@ -80,11 +80,11 @@ function EditSite({
     formState: { errors },
     control,
   } = useForm<ProjectSitesFormData>();
-  const [geoJson, setGeoJson] = React.useState<GeoJson | null>(geoJsonProp);
-  const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const [geoJson, setGeoJson] = useState<GeoJson | null>(geoJsonProp);
+  const [geoJsonError, setGeoJsonError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
   const MapProps = {
     geoJson,
@@ -268,16 +268,16 @@ export default function ProjectSites({
     formState: { errors },
     control,
   } = useForm<ProjectSitesFormData>();
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  const [openModal, setOpenModal] = React.useState<boolean>(false);
-  const [showForm, setShowForm] = React.useState<boolean>(true);
-  const [editMode, seteditMode] = React.useState<boolean>(false);
-  const [geoLocation, setgeoLocation] = React.useState<GeoLocation | undefined>(
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
+  const [geoJsonError, setGeoJsonError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<boolean>(true);
+  const [editMode, seteditMode] = useState<boolean>(false);
+  const [geoLocation, setgeoLocation] = useState<GeoLocation | undefined>(
     undefined
   );
-  const [geoJson, setGeoJson] = React.useState<GeoJson | null>(null);
+  const [geoJson, setGeoJson] = useState<GeoJson | null>(null);
   const defaultMapCenter = [36.96, -28.5];
   const defaultZoom = 1.4;
   const viewport = {
@@ -298,14 +298,14 @@ export default function ProjectSites({
   };
 
   const [siteDetails, setSiteDetails] =
-    React.useState<SiteDetails>(defaultSiteDetails);
-  const [siteList, setSiteList] = React.useState<Site[]>([]);
-  const [siteGUID, setSiteGUID] = React.useState<string | null>(null);
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+    useState<SiteDetails>(defaultSiteDetails);
+  const [siteList, setSiteList] = useState<Site[]>([]);
+  const [siteGUID, setSiteGUID] = useState<string | null>(null);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
 
   // Assigning defaultSiteDetails as default
 
-  const changeSiteDetails = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const changeSiteDetails = (e: ChangeEvent<HTMLInputElement>): void => {
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
   };
 
@@ -356,7 +356,7 @@ export default function ProjectSites({
       redirect('/profile');
     }
   };
-  React.useEffect(() => {
+  useEffect(() => {
     fetchProjSites();
   }, [projectGUID]);
 

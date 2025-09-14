@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { CountryProject } from '@planet-sdk/common';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';

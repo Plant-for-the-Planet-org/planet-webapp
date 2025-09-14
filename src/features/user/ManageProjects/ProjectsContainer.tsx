@@ -8,7 +8,7 @@ import type {
 } from '@planet-sdk/common';
 
 import Link from 'next/link';
-import React, { useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
@@ -121,9 +121,9 @@ export default function ProjectsContainer() {
   const tDonate = useTranslations('Donate');
   const tManageProjects = useTranslations('ManageProjects');
   const { getApiAuthenticated } = useApi();
-  const [projects, setProjects] = React.useState<ProfileProjectFeature[]>([]);
-  const [loader, setLoader] = React.useState(true);
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
+  const [loader, setLoader] = useState(true);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { user, contextLoaded, token } = useUserProps();
   const { localizedPath } = useLocalizedPath();
   async function loadProjects() {
@@ -142,7 +142,7 @@ export default function ProjectsContainer() {
     }
   }
   // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded && token) {
       loadProjects();
     }

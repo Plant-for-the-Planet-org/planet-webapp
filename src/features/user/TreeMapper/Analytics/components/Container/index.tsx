@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react';
+
 import styles from './index.module.scss';
 
 /**
@@ -5,11 +7,11 @@ import styles from './index.module.scss';
  */
 interface Props {
   /** The element to be placed on the left side of the container. */
-  leftElement: React.ReactElement;
+  leftElement: ReactElement;
   /** The element to be placed on the right side of the container. */
-  rightElement?: React.ReactElement;
+  rightElement?: ReactElement;
   /** The main content of the container. */
-  children: React.ReactElement;
+  children: ReactElement;
   /**
    * The direction of the flex container. Can be either 'row' (horizontal) or 'column' (vertical).
    * @default 'row'

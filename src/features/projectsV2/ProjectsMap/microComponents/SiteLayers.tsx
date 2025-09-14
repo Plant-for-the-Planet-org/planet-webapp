@@ -1,6 +1,6 @@
+import type { ReactElement } from 'react';
 import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
 
-import React from 'react';
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
@@ -13,7 +13,7 @@ interface Props {
 export default function SiteLayers({
   geoJson,
   isSatelliteView,
-}: Props): React.ReactElement {
+}: Props): ReactElement {
   const { colors } = themeProperties.designSystem;
 
   return (

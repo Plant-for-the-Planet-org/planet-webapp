@@ -1,9 +1,9 @@
-import type { APIError } from '@planet-sdk/common';
 import type {
+  APIError,
   Intervention,
-  SingleTreeRegistration,
   SampleTreeRegistration,
-} from '../../common/types/intervention';
+  SingleTreeRegistration,
+} from '@planet-sdk/common';
 import type { ExtendedProject } from '../../common/types/projectv2';
 
 import { useContext, useEffect, useMemo } from 'react';

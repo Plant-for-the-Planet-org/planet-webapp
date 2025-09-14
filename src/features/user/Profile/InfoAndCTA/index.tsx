@@ -1,4 +1,3 @@
-import React from 'react';
 import SDGCardList from './SDGCardList';
 import styles from './InfoAndCta.module.scss';
 import PublicProfileActions from './PublicProfileActions';

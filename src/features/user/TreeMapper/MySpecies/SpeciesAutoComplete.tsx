@@ -1,12 +1,12 @@
 /* eslint-disable no-use-before-define */
+import type { ReactNode } from 'react';
 import type { Control, FieldValues, FieldPath } from 'react-hook-form';
 import type { APIError } from '@planet-sdk/common';
-import type { SpeciesSuggestionType } from '../../../common/types/intervention';
+import type { SpeciesSuggestionType } from '../Treemapper';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Controller } from 'react-hook-form';
 import { Autocomplete, TextField } from '@mui/material';
-
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -16,12 +16,12 @@ interface Props<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>
 > {
-  label: React.ReactNode;
+  label: ReactNode;
   name: TName;
   width?: string | undefined;
   control: Control<TFieldValues>;
   error?: boolean | undefined;
-  helperText?: React.ReactNode;
+  helperText?: ReactNode;
   // mySpecies?: any;
 }
 
@@ -42,16 +42,16 @@ export default function SpeciesSelect<
   error,
   helperText,
 }: Props<TFieldValues, TName>) {
-  const [speciesSuggestion, setspeciesSuggestion] = React.useState<
+  const [speciesSuggestion, setspeciesSuggestion] = useState<
     SpeciesSuggestionType[]
   >([]);
-  const [query, setQuery] = React.useState('');
+  const [query, setQuery] = useState('');
   const { postApi } = useApi();
   const t = useTranslations('Treemapper');
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
   // Code below can be removed if no longer needed, along with the `mySpecies` prop
-  /* React.useEffect(() => {
+  /* useEffect(() => {
     if (mySpecies && mySpecies.length > 0) {
       const species = mySpecies.map((item: any) => ({
         id: item.id,
@@ -89,7 +89,7 @@ export default function SpeciesSelect<
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     suggestSpecies(query);
   }, [query]);
 

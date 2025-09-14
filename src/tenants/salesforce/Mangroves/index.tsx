@@ -4,7 +4,7 @@ import Landing from './components/Landing';
 import ContentSection from './components/ContentSection';
 import ProjectGrid from './components/ProjectGrid';
 import AboveFooter from './components/AboveFooter';
-import React from 'react';
+
 import BlueCarbon from './components/BlueCarbon';
 import { useTenant } from '../../../features/common/Layout/TenantContext';
 import themeProperties from '../../../theme/themeProperties';

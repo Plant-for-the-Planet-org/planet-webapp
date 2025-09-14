@@ -1,6 +1,6 @@
 import type { ProfileV2Props } from '../../../../common/types/profile';
 
-import React from 'react';
+import { useState } from 'react';
 import { ShareIcon } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import WebappButton from '../../../../common/WebappButton';
 import ShareModal from '../ShareModal';
@@ -14,7 +14,7 @@ interface SocialMediaShareButtonProps {
 const SocialMediaShareButton = ({
   userProfile,
 }: SocialMediaShareButtonProps) => {
-  const [isShareModelOpen, setIsShareModelOpen] = React.useState(false);
+  const [isShareModelOpen, setIsShareModelOpen] = useState(false);
   const { tenantConfig } = useTenant();
   const t = useTranslations('Profile');
 

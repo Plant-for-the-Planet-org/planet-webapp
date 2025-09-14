@@ -12,7 +12,7 @@ import type {
   UnissuedReceiptDataAPI,
 } from '../../user/DonationReceipt/donationReceiptTypes';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { RECEIPT_STATUS } from '../../user/DonationReceipt/donationReceiptTypes';
 import {
   transformAddress,

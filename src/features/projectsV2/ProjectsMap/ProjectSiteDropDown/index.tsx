@@ -1,10 +1,7 @@
 import type { SetState } from '../../../common/types/common';
 import type { Feature, MultiPolygon, Polygon } from 'geojson';
-import type {
-  Intervention,
-  SampleTreeRegistration,
-} from '../../../common/types/intervention';
 import type { DropdownType } from '../../../common/types/projectv2';
+import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -64,11 +61,15 @@ const ProjectSiteDropdown = ({
   const { query } = router;
   const siteList = useMemo(() => {
     if (!projectSites) return [];
-    return projectSites.map((site, index: number) => ({
-      siteName: site.properties.name,
-      siteArea: area(site) / 10000,
-      id: index,
-    }));
+    return projectSites.map((site, index: number) => {
+      const calculatedSiteAreaInM2 = area(site);
+      return {
+        siteName: site.properties.name,
+        siteArea:
+          calculatedSiteAreaInM2 > 0 ? calculatedSiteAreaInM2 / 10000 : 0,
+        id: index,
+      };
+    });
   }, [projectSites]);
 
   const getId = useCallback(

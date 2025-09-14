@@ -1,7 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../common/types/payments';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
@@ -41,16 +41,16 @@ export const CancelModal = ({
   record,
   fetchRecurrentDonations,
 }: CancelModalProps) => {
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
-  const [option, setOption] = React.useState('cancelImmediately');
-  const [showCalender, setShowCalender] = React.useState(false);
-  const [date, setdate] = React.useState<Date | null>(new Date());
-  const [disabled, setDisabled] = React.useState(false);
+  const [option, setOption] = useState('cancelImmediately');
+  const [showCalender, setShowCalender] = useState(false);
+  const [date, setdate] = useState<Date | null>(new Date());
+  const [disabled, setDisabled] = useState(false);
   const t = useTranslations('Me');
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDisabled(false);
   }, [cancelModalOpen]);
 

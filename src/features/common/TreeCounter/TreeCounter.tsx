@@ -1,7 +1,7 @@
 import type { CircularProgressProps } from '@mui/material/CircularProgress';
 
 import MuiCircularProgress from '@mui/material/CircularProgress';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import treeCounterStyles from './TreeCounter.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';

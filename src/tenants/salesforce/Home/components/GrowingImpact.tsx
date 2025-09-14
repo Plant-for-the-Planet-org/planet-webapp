@@ -1,7 +1,6 @@
 import styles from './../styles/GrowingImpact.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 import Timeline from './Timeline';
-import themeProperties from '../../../../theme/themeProperties';
 
 type BaseArticle = {
   id: number;
@@ -33,7 +32,6 @@ type Article = SingleLinkArticle | MultipleLinkArticle;
 function isSingleLinkArticle(article: Article): article is SingleLinkArticle {
   return 'link' in article;
 }
-const { deepGreen, primaryColor } = themeProperties.designSystem.colors;
 const articles: Article[] = [
   {
     id: 1,
@@ -42,16 +40,16 @@ const articles: Article[] = [
     image: '/tenants/salesforce/images/growing-impact/success-1.jpg',
     foliage: '/tenants/salesforce/images/growing-impact/foliage-1.png',
     link: 'https://trailhead.salesforce.com/content/learn/modules/trees-to-combat-climate-change',
-    bgColor: deepGreen,
+    bgColor: styles.sfAccentTealDark,
   },
   {
     id: 2,
-    copy: 'The Global Onboarding Team team donates a tree for every hire.',
+    copy: 'The Global Onboarding Team donates a tree for every hire.',
     subCopy: 'How do you benchmark goals?',
     image: '/tenants/salesforce/images/growing-impact/success-2.jpg',
     foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
     link: 'https://www.salesforce.com/company/sustainability/',
-    bgColor: deepGreen,
+    bgColor: styles.sfAccentGreenMuted,
   },
   {
     id: 3,
@@ -60,7 +58,7 @@ const articles: Article[] = [
     image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
     foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
     link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
-    bgColor: primaryColor,
+    bgColor: styles.sfAccentTeal,
   },
   {
     id: 4,
@@ -68,7 +66,7 @@ const articles: Article[] = [
     image: '/tenants/salesforce/images/growing-impact/success-4.jpg',
     foliage: '/tenants/salesforce/images/growing-impact/foliage-4.png',
     link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
-    bgColor: deepGreen,
+    bgColor: styles.sfAccentGreenDark,
     partnerLogo: '/tenants/salesforce/images/partner-logo.png',
   },
   {
@@ -89,7 +87,7 @@ const articles: Article[] = [
         },
       ],
     },
-    bgColor: primaryColor,
+    bgColor: styles.sfAccentTeal,
   },
   {
     id: 6,
@@ -98,9 +96,10 @@ const articles: Article[] = [
     foliage: '/tenants/salesforce/images/growing-impact/foliage-2.png',
     link: '/mangrove-challenge',
     linkCopy: 'Click here to learn more about the cause',
-    bgColor: deepGreen,
+    bgColor: styles.sfAccentGreenMuted,
   },
 ];
+
 export default function GrowingImpact() {
   return (
     <section className={styles.growingImpactSection}>

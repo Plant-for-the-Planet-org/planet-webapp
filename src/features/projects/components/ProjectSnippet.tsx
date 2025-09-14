@@ -6,7 +6,7 @@ import type {
   TreeProjectExtended,
 } from '@planet-sdk/common';
 
-import React from 'react';
+import { useContext } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useLocale, useTranslations } from 'next-intl';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -60,7 +60,7 @@ export default function ProjectSnippet({
   const tCountry = useTranslations('Country');
   const tManageProjects = useTranslations('ManageProjects');
   const storedCampaign = sessionStorage.getItem('campaign');
-  const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const { embed, callbackUrl } = useContext(ParamsContext);
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
