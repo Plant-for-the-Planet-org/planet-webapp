@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import MoonIcon from '../../../../../public/assets/images/footer/MoonIcon';
 import SunIcon from '../../../../../public/assets/images/footer/SunIcon';
 import { ThemeContext } from '../../../../theme/themeContext';

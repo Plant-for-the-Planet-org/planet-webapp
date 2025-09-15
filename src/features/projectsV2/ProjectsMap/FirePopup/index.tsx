@@ -1,16 +1,19 @@
+import type { SetStateAction } from 'react';
 import type { FireFeature } from '../../../common/types/fireLocation';
 import type { PopperProps } from '@mui/material';
 import type { Modifier } from '@popperjs/core';
 
+import { useState, useRef } from 'react';
 import { Popper } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import RightArrowIcon from '../../../../../public/assets/images/icons/projectV2/RightArrowIcon';
 import InfoIconPopup from '../../ProjectDetails/components/microComponents/InfoIconPopup';
 import FireIcon from '../../../../../public/assets/images/icons/FireIcon';
 import FirePopupIcon from '../../../../../public/assets/images/icons/FirePopupIcon';
 import styles from './FirePopup.module.scss';
 import { getDeviceType } from '../../../../utils/projectV2';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   isOpen: boolean;
@@ -21,8 +24,9 @@ type ConfidencesType =
   | 'mediumAlertConfidenceText'
   | 'lowAlertConfidenceText';
 
+const { colors } = themeProperties.designSystem;
 function popperModifiers(options: {
-  arrowRef: React.SetStateAction<HTMLElement | null>;
+  arrowRef: SetStateAction<HTMLElement | null>;
   clippingBoundary: HTMLElement | null;
 }): Partial<Modifier<any, any>>[] | undefined {
   return [
@@ -58,12 +62,12 @@ function popperModifiers(options: {
 }
 
 export default function FirePopup({ isOpen, feature }: Props) {
-  const anchorRef = React.useRef(null);
-  const popperRef = React.useRef<HTMLDivElement>(null);
-  const [arrowRef, setArrowRef] = React.useState<HTMLElement | null>(null);
-  const [showPopup, setShowPopup] = React.useState(isOpen);
+  const anchorRef = useRef(null);
+  const popperRef = useRef<HTMLDivElement>(null);
+  const [arrowRef, setArrowRef] = useState<HTMLElement | null>(null);
+  const [showPopup, setShowPopup] = useState(isOpen);
   const [popperPlacement, setPopperPlacement] =
-    React.useState<PopperProps['placement']>('top');
+    useState<PopperProps['placement']>('top');
   const tProjectDetails = useTranslations('ProjectDetails');
 
   useEffect(() => {
@@ -156,7 +160,7 @@ export default function FirePopup({ isOpen, feature }: Props) {
                 : tProjectDetails('daysAgo', {
                     age: alertAge.amount,
                   })}
-              <InfoIconPopup width={9} height={9} color={'#828282'}>
+              <InfoIconPopup width={9} height={9} color={colors.softText2}>
                 <div className={styles.infoIconPopupContainer}>
                   {tProjectDetails('firePopupText')}
                 </div>
@@ -181,7 +185,7 @@ export default function FirePopup({ isOpen, feature }: Props) {
                   important: (chunks) => <span>{chunks}</span>,
                 })}
               </p>
-              <RightArrowIcon width={5} color={'#4F4F4F'} />
+              <RightArrowIcon width={5} color={colors.softText} />
             </a>
           </div>
         </aside>

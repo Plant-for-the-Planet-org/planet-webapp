@@ -1,7 +1,8 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import type { InnerSlider, Settings } from 'react-slick';
+import type { SetState } from '../types/common';
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -14,7 +15,7 @@ import styles from './CarouselSlider.module.scss';
 
 interface ExtendedInnerSlider extends InnerSlider {
   props: Settings & {
-    children: React.ReactNode[]; // Override the type of children in Settings
+    children: ReactNode[]; // Override the type of children in Settings
   };
 }
 
@@ -53,7 +54,7 @@ interface CarouselSliderProps {
   carouselData: ReactElement[];
   settings: Settings;
   currentSlide: number;
-  setCurrentSlide: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentSlide: SetState<number>;
   totalSlides: number;
 }
 

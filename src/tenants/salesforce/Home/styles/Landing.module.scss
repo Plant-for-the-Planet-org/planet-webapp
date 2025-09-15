@@ -49,7 +49,7 @@
     font-size: $sfFontXXL;
     line-height: 45px;
     letter-spacing: -0.006em;
-    color: #032d60;
+    color: $sfBrandNavy;
     text-align: center;
     margin-bottom: 20px;
 
@@ -69,7 +69,7 @@
     line-height: 28px;
     text-align: center;
     letter-spacing: -0.004em;
-    color: #032d60;
+    color: $sfBrandNavy;
     margin-bottom: 26px;
     text-transform: uppercase;
     @include lgLaptopView {
@@ -87,7 +87,7 @@
     font-size: $sfFontBase;
     line-height: 24px;
     text-align: center;
-    color: #032d60;
+    color: $sfBrandNavy;
     margin-bottom: 20px;
     @include lgLaptopView {
       font-size: $sfFontBase;
@@ -96,7 +96,7 @@
   }
 
   button {
-    background: #0176d3;
+    background: $sfBrandBlue;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -104,7 +104,7 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #ffffff;
+    color: $sfWhite;
     padding: 13px 24px;
     cursor: pointer;
   }
@@ -112,7 +112,7 @@
   .footnote {
     font-size: $fontXSmall;
     font-weight: 500;
-    color: #ffffff;
+    color: $sfWhite;
     padding-top: 20px;
     max-width: 800px;
     @include smTabletView {

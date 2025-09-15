@@ -1,11 +1,11 @@
+import type { SetState } from '../../../common/types/common';
 import type {
   Intervention,
-  SingleTreeRegistration,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
-import type { SetState } from '../../../common/types/common';
+  SingleTreeRegistration,
+} from '@planet-sdk/common';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
@@ -33,7 +33,7 @@ function TreemapperIntervention({
   const locale = useLocale();
   const router = useRouter();
   let treeCount = 0;
-  const [plantationArea, setPlantationArea] = React.useState(0);
+  const [plantationArea, setPlantationArea] = useState(0);
 
   if (
     intervention.type === 'multi-tree-registration' &&
@@ -57,7 +57,7 @@ function TreemapperIntervention({
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (intervention.type === 'multi-tree-registration') {
       const calculatedArea = area(intervention.geometry);
       setPlantationArea(calculatedArea > 0 ? calculatedArea / 10000 : 0);

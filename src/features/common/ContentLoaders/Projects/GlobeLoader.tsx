@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 
 import { motion } from 'framer-motion';
-import React from 'react';
+
 import GlobeLoader from '../../../../../public/assets/images/icons/Globe';
 
 function GlobeContentLoader(): ReactElement {

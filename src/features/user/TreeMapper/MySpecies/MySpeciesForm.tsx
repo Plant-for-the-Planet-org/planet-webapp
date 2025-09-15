@@ -1,10 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
-import type {
-  Species,
-  SpeciesSuggestionType,
-} from '../../../common/types/intervention';
+import type { Species, SpeciesSuggestionType } from '../Treemapper';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import StyledForm from '../../../common/Layout/StyledForm';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -32,9 +29,9 @@ export default function MySpeciesForm() {
   const tTreemapper = useTranslations('Treemapper');
   const tCommon = useTranslations('Common');
   const { token, contextLoaded } = useUserProps();
-  const { setErrors } = React.useContext(ErrorHandlingContext);
-  const [species, setSpecies] = React.useState<Species[]>([]);
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const [species, setSpecies] = useState<Species[]>([]);
+  const [isUploadingData, setIsUploadingData] = useState(false);
   const { getApiAuthenticated, deleteApiAuthenticated, postApiAuthenticated } =
     useApi();
 
@@ -95,7 +92,7 @@ export default function MySpeciesForm() {
     setIsUploadingData(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded && token) {
       fetchMySpecies();
     }

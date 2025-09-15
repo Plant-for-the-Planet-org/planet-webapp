@@ -1,13 +1,12 @@
 import type { ReactElement } from 'react';
+import type { Feature, Point, Polygon } from 'geojson';
 import type {
   Intervention,
   MultiTreeRegistration,
-  SingleTreeRegistration,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
-import type { Feature, Point, Polygon } from 'geojson';
+  SingleTreeRegistration,
+} from '@planet-sdk/common';
 
-import React from 'react';
 import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';

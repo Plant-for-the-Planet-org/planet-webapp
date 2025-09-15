@@ -5,7 +5,7 @@ import type {
   ExpensesScopeProjects,
 } from '../../../common/types/project';
 
-import React from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -47,7 +47,7 @@ export default function ProjectSpending({
 }: ProjectSpendingProps): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const {
     formState: { errors, isDirty },
     getValues,
@@ -56,13 +56,11 @@ export default function ProjectSpending({
   } = useForm<ExpenseFormData>({ mode: 'all' });
   const { postApiAuthenticated, deleteApiAuthenticated, getApiAuthenticated } =
     useApi();
-  const [amount, setAmount] = React.useState<number | string>(0);
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  const [showForm, setShowForm] = React.useState<boolean>(true);
-  const [uploadedFiles, setUploadedFiles] = React.useState<ProjectExpense[]>(
-    []
-  );
+  const [amount, setAmount] = useState<number | string>(0);
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState<boolean>(true);
+  const [uploadedFiles, setUploadedFiles] = useState<ProjectExpense[]>([]);
 
   const onSubmit = async (pdf: string | ArrayBuffer | null | undefined) => {
     setIsUploadingData(true);
@@ -97,7 +95,7 @@ export default function ProjectSpending({
     }
   };
 
-  const onDrop = React.useCallback(
+  const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
@@ -163,7 +161,7 @@ export default function ProjectSpending({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchProjSpending();
   }, [projectGUID]);
 
@@ -191,9 +189,6 @@ export default function ProjectSpending({
                     <p style={{ fontWeight: 'bold' }}>€ {report.amount} </p>
                     <p>in {report.year} </p>
                   </div>
-                  {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
-                                        <PencilIcon color={"#000"} />
-                                    </div> */}
                   <IconButton
                     id={'trashIconProjSpend'}
                     onClick={() => deleteProjectSpending(report.id)}

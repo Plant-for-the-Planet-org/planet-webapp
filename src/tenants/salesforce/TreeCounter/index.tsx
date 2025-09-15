@@ -1,4 +1,3 @@
-import React from 'react';
 import treeCounterStyles from './TreeCounter.module.scss';
 
 interface Props {

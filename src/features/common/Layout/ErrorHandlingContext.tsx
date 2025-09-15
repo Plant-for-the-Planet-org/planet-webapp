@@ -1,11 +1,10 @@
-import type { SetStateAction, Dispatch, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { SerializedError } from '@planet-sdk/common';
+import type { SetState } from '../types/common';
 
-import React, { createContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-
-type SetState<T> = Dispatch<SetStateAction<T>>;
 
 interface ErrorHandlingContextInterface {
   errors: SerializedError[] | null;

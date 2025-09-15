@@ -15,7 +15,7 @@
     height: 962px;
   }
   button {
-    background: #0176d3;
+    background: $sfBrandBlue;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -23,14 +23,14 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #ffffff;
+    color: $sfWhite;
     padding: 13px 24px;
     cursor: pointer;
     margin-bottom: 50px;
   }
   hr {
     border: none;
-    background-color: #0b827c;
+    background-color: $sfAccentTeal;
     height: 1px;
     margin-bottom: 30px;
   }
@@ -46,8 +46,8 @@
         line-height: 40px;
         text-align: center;
         letter-spacing: -0.004em;
-        // color: #ffffff;
-        color: #032d60;
+        // color: $sfWhite;
+        color: $sfBrandNavy;
         margin-bottom: 10px;
         @include lgLaptopView {
           font-size: $sfFontDisplay1;
@@ -62,8 +62,8 @@
         font-size: $sfFontLarge;
         line-height: 28px;
         letter-spacing: -0.004em;
-        // color: #ffffff;
-        color: #032d60;
+        // color: $sfWhite;
+        color: $sfBrandNavy;
         margin-bottom: 10px;
         @include lgLaptopView {
           font-size: $fontXXLarge;
@@ -78,8 +78,8 @@
         font-size: $sfFontBase;
         line-height: 24px;
         letter-spacing: -0.004em;
-        // color: #ffffff;
-        color: #032d60;
+        // color: $sfWhite;
+        color: $sfBrandNavy;
         margin-bottom: 10px;
         @include lgLaptopView {
           font-size: $fontLarge;
@@ -94,12 +94,12 @@
         font-weight: normal;
         font-size: $sfFontBase;
         line-height: 24px;
-        // color: #ffffff;
-        color: #032d60;
+        // color: $sfWhite;
+        color: $sfBrandNavy;
         margin-bottom: 30px;
         a {
           text-decoration: underline;
-          color: #0b5cab;
+          color: $sfBrandBlueDeep;
         }
       }
       li {
@@ -121,7 +121,7 @@
       justify-content: center;
     }
     .projectItem {
-      background-color: #ffffff;
+      background-color: $sfWhite;
       padding: 10px;
       width: 320px;
       max-width: 100%;
@@ -136,145 +136,11 @@
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
-    // color: #ffffff;
-    color: #032d60;
+    // color: $sfWhite;
+    color: $sfBrandNavy;
     @include lgLaptopView {
       font-size: $sfFontMedium;
       line-height: 30px;
-    }
-  }
-
-  .treeCounterSectionRow {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .treeCounterSectionText {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 40px 0;
-  }
-
-  .treeCounterSectionTextHeader {
-    font-weight: 600;
-    font-size: $sfFontXL;
-    line-height: 32px;
-    letter-spacing: -0.4px;
-    color: #080707;
-    text-align: center;
-    font-family: $secondaryFontFamily;
-  }
-
-  .treeCounterSectionTextPara {
-    font-family: $primaryFontFamily;
-    color: $primaryFontColor;
-    font-size: $fontSixteen;
-    line-height: 20px;
-    text-align: center;
-  }
-
-  .treeCounterSectionTextLink {
-    font-family: $primaryFontFamily;
-    color: $primaryColor;
-    font-size: $fontMedium;
-    font-weight: bold;
-  }
-
-  .treeCounterSection {
-    display: flex;
-    flex-direction: column;
-    // justify-content: center;
-    // align-items: center;
-    width: 100%;
-    max-width: 100vw;
-    overflow: hidden;
-    // height: 70vh;
-    // align-self: center;
-    // margin: 30px auto;
-  }
-
-  .treeCounterContainer {
-    height: 50vh;
-    // max-height: 500px;
-  }
-
-  .treeCounter {
-    position: absolute;
-    top: 0px;
-    right: -50px;
-    z-index: 1;
-    width: 320px;
-    height: 320px;
-  }
-
-  .treeCounterImage {
-    height: auto;
-    width: 50%;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-  }
-  @include smTabletView {
-    .treeCounterSection {
-      height: 60vh;
-      padding-top: 10vh;
-      margin: 40px 0;
-      max-height: 420px;
-    }
-
-    .treeCounterContainer {
-      height: 55vh;
-    }
-
-    .treeCounterSectionRow {
-      flex-direction: row;
-    }
-
-    .treeCounter {
-      // right: -40px;
-      width: 330px;
-      height: 330px;
-    }
-
-    .treeCounterImage {
-      left: 40px;
-    }
-
-    .treeCounterSectionTextHeader {
-      font-size: $fontXXLarge;
-      line-height: 40px;
-      text-align: left;
-    }
-
-    .treeCounterSectionTextPara {
-      font-size: $fontSixteen;
-      line-height: 24px;
-      text-align: left;
-    }
-  }
-
-  @include mdTabletView {
-    .treeCounterSection {
-      overflow: visible;
-    }
-  }
-
-  @include lgLaptopView {
-    .treeCounterSectionRow {
-      padding-bottom: 0px;
-    }
-
-    .treeCounterSectionText {
-      padding-top: 10vh;
-      justify-content: flex-start;
-    }
-    .treeCounter {
-      right: -40px;
-      width: 400px;
-      height: 400px;
     }
   }
 }

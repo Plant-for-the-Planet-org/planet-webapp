@@ -1,10 +1,7 @@
 import type { SetState } from '../../../common/types/common';
 import type { Feature, MultiPolygon, Polygon } from 'geojson';
-import type {
-  Intervention,
-  SampleTreeRegistration,
-} from '../../../common/types/intervention';
 import type { DropdownType } from '../../../common/types/projectv2';
+import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';

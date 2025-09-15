@@ -1,9 +1,9 @@
 import type { MapEvent } from 'react-map-gl';
 import type { PopupData } from './maps/Markers';
-import type { Intervention } from '../../common/types/intervention';
 import type { ReactElement } from 'react';
+import type { Intervention } from '@planet-sdk/common';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import MapGL, { NavigationControl, Popup } from 'react-map-gl';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import styles from '../styles/ProjectsMap.module.scss';
@@ -51,7 +51,7 @@ export default function ProjectsMap(): ReactElement {
   } = useProjectProps();
 
   const t = useTranslations('Maps');
-  const { embed, showProjectList } = React.useContext(ParamsContext);
+  const { embed, showProjectList } = useContext(ParamsContext);
   //Map
   const _onStateChange = (state: any) => setMapState({ ...state });
   const _onViewportChange = (view: any) => setViewPort({ ...view });
@@ -71,7 +71,7 @@ export default function ProjectsMap(): ReactElement {
     loadMapStyle();
   }, []);
 
-  const [showDetails, setShowDetails] = React.useState<ShowDetailsProps>({
+  const [showDetails, setShowDetails] = useState<ShowDetailsProps>({
     coordinates: null,
     show: false,
   });
@@ -135,13 +135,13 @@ export default function ProjectsMap(): ReactElement {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (zoomLevel !== 2) {
       setShowDetails({ ...showDetails, show: false });
     }
   }, [zoomLevel]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (embed === 'true' && showProjectList === 'false') {
       const newViewport = {
         ...viewport,

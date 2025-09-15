@@ -6,15 +6,16 @@ import type {
   Geometry,
   GeometryObject,
 } from 'geojson';
-import type {
-  Species,
-  Intervention,
-} from '../../../../common/types/intervention';
+import type { Species } from '../../Treemapper';
 import type { InterventionFormData, SpeciesFormData } from '../../Treemapper';
 import type { SetState } from '../../../../common/types/common';
-import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
+import type {
+  APIError,
+  Intervention,
+  ProfileProjectFeature,
+} from '@planet-sdk/common';
 
-import React from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import styles from '../Import.module.scss';
 import { useTranslations } from 'next-intl';
@@ -162,12 +163,12 @@ export default function PlantingLocation({
 }: Props): ReactElement {
   const { getApiAuthenticated } = useApi();
   const { user, contextLoaded } = useUserProps();
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [projects, setProjects] = React.useState<ProfileProjectFeature[]>([]);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
   const importMethods = ['import', 'editor'];
-  const [geoJsonError, setGeoJsonError] = React.useState(false);
-  const [mySpecies, setMySpecies] = React.useState<Species[] | null>(null);
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const [geoJsonError, setGeoJsonError] = useState(false);
+  const [mySpecies, setMySpecies] = useState<Species[] | null>(null);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated } = useApi();
   const tTreemapper = useTranslations('Treemapper');
   const tMe = useTranslations('Me');
@@ -219,7 +220,7 @@ export default function PlantingLocation({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded) {
       loadProjects();
       loadMySpecies();
@@ -249,7 +250,7 @@ export default function PlantingLocation({
     }
   };
 
-  const onDrop = React.useCallback((acceptedFiles) => {
+  const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: File) => {
       const reader = new FileReader();
       reader.readAsText(file);

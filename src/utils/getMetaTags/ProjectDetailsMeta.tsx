@@ -4,7 +4,6 @@ import type {
   TreeProjectExtended,
 } from '@planet-sdk/common';
 
-import React from 'react';
 import { useTenant } from '../../features/common/Layout/TenantContext';
 import getImageUrl from '../getImageURL';
 import Head from 'next/head';

@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import styles from './SiteMapLayerControls.module.scss';
 import BiomassChangeIcon from '../../../../../public/assets/images/icons/projectV2/BiomassChangeIcon';
 import TreeCoverIcon from '../../../../../public/assets/images/icons/projectV2/TreeCoverIcon';
+import themeProperties from '../../../../theme/themeProperties';
 
 export type LayerKey = 'biomass' | 'tree-cover';
 
@@ -29,6 +30,9 @@ export type LayerOption = {
   legend: LegendData;
 };
 
+const { forestGreen, white, hintText, warmRed, primaryColor } =
+  themeProperties.designSystem.colors;
+
 export const availableLayerOptions: LayerOption[] = [
   {
     id: 'biomass',
@@ -40,8 +44,7 @@ export const availableLayerOptions: LayerOption[] = [
       max: 20,
       average: 18,
       unit: 'tons',
-      gradient:
-        'linear-gradient(270deg, #219653 0%, #FFF 49.48%, #BDBDBD 75.52%, #E86F56 100%)',
+      gradient: `linear-gradient(270deg, ${forestGreen} 0%, ${white} 49.48%, ${hintText} 75.52%, ${warmRed} 100%)`,
     },
   },
   {
@@ -50,7 +53,7 @@ export const availableLayerOptions: LayerOption[] = [
     icon: <TreeCoverIcon />,
     legend: {
       type: 'percent',
-      gradient: 'linear-gradient(270deg, #007A49 0%, #FFF 100%)',
+      gradient: `linear-gradient(270deg, ${primaryColor} 0%, ${white} 100%)`,
     },
   },
 ];

@@ -1,12 +1,8 @@
 import type { ReactElement } from 'react';
 import type { Links } from '../../../common/types/payments';
 import type { SetState } from '../../../common/types/common';
-import type {
-  Intervention,
-  SampleTreeRegistration,
-} from '../../../common/types/intervention';
+import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
-import React from 'react';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from '../TreeMapper.module.scss';

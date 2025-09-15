@@ -1,6 +1,6 @@
 import type { ProfileV2Props } from '../../../../common/types/profile';
 
-import React from 'react';
+import { useContext } from 'react';
 import styles from './ShareModal.module.scss';
 import { Modal, Fade, TextField } from '@mui/material';
 import { ThemeContext } from '../../../../../theme/themeContext';
@@ -35,7 +35,7 @@ const ShareModal = ({
   handleShareModalClose,
   userProfile,
 }: ShareModalProps) => {
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { tenantConfig } = useTenant();
   const t = useTranslations('Profile');
   const linkToShare = `${tenantConfig.config.tenantURL}/t/${userProfile?.slug}`;

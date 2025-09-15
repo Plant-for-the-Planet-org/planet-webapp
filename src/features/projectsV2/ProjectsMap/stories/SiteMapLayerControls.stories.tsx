@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import SiteMapLayerControls from '../SiteMapLayerControls';
+import themeProperties from '../../../../theme/themeProperties';
 
 const meta: Meta<typeof SiteMapLayerControls> = {
   title: 'Projects/Details/SiteMapLayerControls',
@@ -11,7 +12,7 @@ const meta: Meta<typeof SiteMapLayerControls> = {
     (Story) => (
       <div
         style={{
-          backgroundColor: 'green',
+          backgroundColor: themeProperties.designSystem.colors.leafGreen,
           height: '550px',
           position: 'relative',
         }}

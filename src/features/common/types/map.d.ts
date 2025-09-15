@@ -4,6 +4,7 @@ import type { MutableRefObject } from 'react';
 import type { UserPublicProfile } from '@planet-sdk/common';
 import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import type { FlyToInterpolator } from 'react-map-gl';
+import type { SetState } from './common';
 
 export interface ClusterMarker {
   geometry: {
@@ -137,11 +138,9 @@ export interface RegisteredTreesGeometry {
 }
 
 export interface RegisterTreesFormProps {
-  setContributionGUID: React.Dispatch<React.SetStateAction<string>>;
-  setContributionDetails: React.Dispatch<
-    React.SetStateAction<ContributionProps | null>
-  >;
-  setRegistered: React.Dispatch<React.SetStateAction<boolean>>;
+  setContributionGUID: SetState<string>;
+  setContributionDetails: SetState<ContributionProps | null>;
+  setRegistered: SetState<boolean>;
 }
 
 // Map styling

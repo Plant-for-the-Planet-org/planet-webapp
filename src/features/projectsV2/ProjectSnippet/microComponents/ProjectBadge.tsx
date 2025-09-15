@@ -1,4 +1,4 @@
-import type { ReactElement, JSX } from 'react';
+import type { ReactElement } from 'react';
 
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -28,7 +28,7 @@ interface TitleAndIconReturnType {
     | 'offSiteReviewed';
 }
 interface BadgeLabelProps {
-  icon: JSX.Element;
+  icon: ReactElement;
   title: string;
   isInteractive: boolean;
 }

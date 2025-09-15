@@ -1,7 +1,5 @@
 import type { IconProps } from '../../../../src/features/common/types/common';
 
-import React from 'react';
-
 function PolygonIcon({ color = '#2F3336' }: IconProps) {
   return (
     <svg

@@ -7,7 +7,7 @@ import type {
 } from '../../../common/types/project';
 import type { ReactElement, FocusEvent } from 'react';
 
-import React, { useCallback, useEffect, useContext, useState } from 'react';
+import { useCallback, useEffect, useContext, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
@@ -24,6 +24,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
+import themeProperties from '../../../../theme/themeProperties';
 
 type UploadImageApiPayload = {
   imageFile: string;
@@ -74,7 +75,8 @@ export default function ProjectMedia({
     mode: 'all',
     defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
   });
-  const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
+  const { colors } = themeProperties.designSystem;
+  const [uploadedImages, setUploadedImages] = useState<UploadImage[]>([]);
 
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>('');
@@ -315,7 +317,11 @@ export default function ProjectMedia({
                         size="small"
                       >
                         <Star
-                          color={image.isDefault ? '#ECB641' : '#2f3336'}
+                          color={
+                            image.isDefault
+                              ? colors.goldenYellow
+                              : colors.coreText
+                          }
                           className={image.isDefault ? 'selected' : ''}
                         />
                       </IconButton>

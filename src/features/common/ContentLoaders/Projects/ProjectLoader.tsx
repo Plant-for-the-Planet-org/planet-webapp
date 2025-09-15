@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
 import ContentLoader from 'react-content-loader';
 
 function ProjectLoader(): ReactElement {
