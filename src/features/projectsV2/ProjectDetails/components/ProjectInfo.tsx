@@ -77,7 +77,7 @@ const ProjectInfo = ({
       (isConservationProject && conservationProjectConditions.some(Boolean)) ||
       generalConditions.some(Boolean)
     );
-  }, [metadata, isTreeProject, isConservationProject]);
+  }, [metadata, isTreeProject, isConservationProject, sites]);
 
   const shouldRenderAdditionalInfo = useMemo(() => {
     const {
