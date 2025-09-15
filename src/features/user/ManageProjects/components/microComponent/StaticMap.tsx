@@ -1,34 +1,41 @@
 import type { Polygon } from 'geojson';
+import type {
+  ExtendedMapLibreMap,
+  MapRef,
+} from '../../../../common/types/projectv2';
 
 import Map, { Source, Layer } from 'react-map-gl-v7/maplibre';
 import themeProperties from '../../../../../theme/themeProperties';
+import { useRef } from 'react';
+import { bbox } from '@turf/turf';
 
 interface StaticMapProps {
-  zoom: number;
-  latitude: number;
-  longitude: number;
   tiles: string[];
   siteId: string;
   siteGeometry: Polygon;
 }
+const { colors } = themeProperties.designSystem;
 
-const StaticMap = ({
-  zoom,
-  latitude,
-  longitude,
-  tiles,
-  siteId,
-  siteGeometry,
-}: StaticMapProps) => {
-  const { colors } = themeProperties.designSystem;
+const StaticMap = ({ tiles, siteId, siteGeometry }: StaticMapProps) => {
+  const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
+
   return (
     <Map
+      ref={mapRef}
       style={{ height: 200, width: 320 }}
-      zoom={zoom}
       interactive={false}
       attributionControl={false}
-      latitude={latitude}
-      longitude={longitude}
+      onLoad={() => {
+        if (!mapRef.current) return;
+        const bounds = bbox(siteGeometry);
+        mapRef.current.fitBounds(
+          [
+            [bounds[0], bounds[1]], // SW
+            [bounds[2], bounds[3]], // NE
+          ],
+          { padding: 30, animate: false }
+        );
+      }}
     >
       <Source id="satellite_source" type="raster" tiles={tiles} tileSize={128}>
         <Layer type="raster" id="satellite_layer" />

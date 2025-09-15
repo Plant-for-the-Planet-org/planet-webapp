@@ -20,8 +20,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import { WebMercatorViewport } from 'react-map-gl';
-import bbox from '@turf/bbox';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import {
@@ -44,14 +42,6 @@ import SiteDeleteConfirmationModal from './microComponent/SiteDeleteConfirmation
 import StaticMap from './microComponent/StaticMap';
 import themeProperties from '../../../../theme/themeProperties';
 
-const defaultMapCenter = [36.96, -28.5];
-const defaultZoom = 1.4;
-const viewport = {
-  height: 320,
-  width: 200,
-  center: defaultMapCenter,
-  zoom: defaultZoom,
-};
 const defaultSiteDetails = {
   name: '',
   status: '',
@@ -492,24 +482,6 @@ export default function ProjectSites({
               return site.geometry !== null;
             })
             .map((site) => {
-              const bounds = bbox(site.geometry);
-              const { longitude, latitude, zoom } = new WebMercatorViewport(
-                viewport
-              ).fitBounds(
-                [
-                  [bounds[0], bounds[1]],
-                  [bounds[2], bounds[3]],
-                ],
-                {
-                  padding: {
-                    top: 50,
-                    bottom: 50,
-                    left: 50,
-                    right: 50,
-                  },
-                }
-              );
-
               return (
                 <div key={site.id}>
                   <div className={styles.mapboxContainer}>
@@ -544,9 +516,6 @@ export default function ProjectSites({
                       <EditIcon color={colors.coreText} />
                     </IconButton>
                     <StaticMap
-                      zoom={zoom}
-                      latitude={latitude}
-                      longitude={longitude}
                       siteId={site.id}
                       siteGeometry={site.geometry}
                       tiles={tiles}
