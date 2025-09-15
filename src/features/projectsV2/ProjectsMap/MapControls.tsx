@@ -74,7 +74,7 @@ const MapControls = ({
 
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
-    singleProject?.sites?.length > 1;
+    singleProject?.sites?.length > 0;
   const canShowSatelliteToggle =
     !(
       isMobile &&
