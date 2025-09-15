@@ -27,9 +27,8 @@ import {
 import { zoomInToProjectSite } from '../../../../utils/mapsV2/zoomToProjectSite';
 import SatelliteLayer from './microComponent/SatelliteLayer';
 import ProjectSiteLayer from './microComponent/SiteLayer';
-import PolygonDrawIcon from '../../../../../public/assets/images/icons/manageProjects/PolygonDrawIcon';
-import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';
 import DrawingPreviewLayer from './microComponent/DrawingPreviewLayer';
+import MapControllers from './microComponent/MapControllers';
 
 interface Props {
   geoJson: any;
@@ -132,24 +131,11 @@ export default function MapComponent({
 
   return (
     <div className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}>
-      <div className={styles.polygonIcon}>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            setIsDrawing((prev) => !prev);
-          }}
-        >
-          <PolygonDrawIcon />
-        </button>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            setCoordinates([]);
-          }}
-        >
-          <DeleteIcon />
-        </button>
-      </div>
+      <MapControllers
+        setIsDrawing={setIsDrawing}
+        coordinates={coordinates}
+        setCoordinates={setCoordinates}
+      />
       <Map
         {...viewport}
         {...mapState}

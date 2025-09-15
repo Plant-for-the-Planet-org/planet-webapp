@@ -76,6 +76,7 @@
   max-width: 320px;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 
 .reviewButtons {
@@ -409,7 +410,7 @@
   }
 }
 
-.polygonIcon {
+.mapControllers {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -423,6 +424,11 @@
 
   button {
     cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 }
 
