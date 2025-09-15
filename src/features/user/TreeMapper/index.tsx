@@ -1,9 +1,8 @@
-import type { APIError } from '@planet-sdk/common';
 import type {
-  ExtendedScopeInterventions,
+  APIError,
   Intervention,
   SampleTreeRegistration,
-} from '../../common/types/intervention';
+} from '@planet-sdk/common';
 import type { Links } from '../../common/types/payments';
 import type { ReactElement } from 'react';
 
@@ -23,6 +22,23 @@ import { useApi } from '../../../hooks/useApi';
 const InterventionMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
 });
+
+interface Filters {
+  all: string;
+  'location-partial': string;
+  'location-complete': string;
+  'location-single': string;
+  'location-multi': string;
+  'location-sample': string;
+  'revision-pending': string;
+}
+export interface ExtendedScopeInterventions {
+  items: Intervention[] | SampleTreeRegistration[];
+  total: number;
+  count: number;
+  _links: Links;
+  _filters: Filters;
+}
 
 function TreeMapper(): ReactElement {
   const router = useRouter();

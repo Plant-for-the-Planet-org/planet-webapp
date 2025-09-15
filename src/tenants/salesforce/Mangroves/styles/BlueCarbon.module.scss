@@ -10,7 +10,7 @@
   padding-top: 84px;
 
   button {
-    background: #0176d3;
+    background: $sfBrandBlue;
     border-radius: 4px;
     font-family: $primaryFontFamily;
     font-style: normal;
@@ -18,13 +18,13 @@
     font-size: $fontSmall;
     line-height: 130%;
     text-transform: uppercase;
-    color: #ffffff;
+    color: $sfWhite;
     padding: 13px 24px;
     cursor: pointer;
   }
   hr {
     border: none;
-    background-color: #0b827c;
+    background-color: $sfAccentTeal;
     height: 1px;
     margin-bottom: 30px;
   }
@@ -39,8 +39,8 @@
       line-height: 40px;
       text-align: center;
       letter-spacing: -0.004em;
-      // color: #ffffff;
-      color: #032d60;
+      // color: $sfWhite;
+      color: $sfBrandNavy;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $sfFontDisplay1;
@@ -55,8 +55,8 @@
       font-size: $sfFontLarge;
       line-height: 28px;
       letter-spacing: -0.004em;
-      // color: #ffffff;
-      color: #032d60;
+      // color: $sfWhite;
+      color: $sfBrandNavy;
       margin-bottom: 10px;
       @include lgLaptopView {
         font-size: $fontXXLarge;
@@ -71,12 +71,12 @@
       font-weight: normal;
       font-size: $sfFontBase;
       line-height: 24px;
-      // color: #ffffff;
-      color: #032d60;
+      // color: $sfWhite;
+      color: $sfBrandNavy;
       margin-bottom: 24px;
       a {
         text-decoration: underline;
-        color: #0b5cab;
+        color: $sfBrandBlueDeep;
       }
       li {
         margin-left: 20px;
@@ -88,7 +88,6 @@
     }
 
     .helpOutCallout {
-      background-color: $backgroundBase;
       border-radius: 24px;
       overflow: hidden;
       padding: 0;
@@ -106,16 +105,16 @@
         height: 100%;
         background: linear-gradient(
           264.03deg,
-          rgba(255, 255, 255, 0.7125) 13.14%,
-          rgba(255, 255, 255, 0.9) 65.48%
+          rgba($sfWhite, 0.7125) 13.14%,
+          rgba($sfWhite, 0.9) 65.48%
         );
 
         @include smTabletView {
           background: linear-gradient(
             264.03deg,
-            rgba(255, 255, 255, 0.3) 15%,
-            rgba(255, 255, 255, 0.7) 30%,
-            rgba(255, 255, 255, 0.9) 65.48%
+            rgba($sfWhite, 0.3) 15%,
+            rgba($sfWhite, 0.7) 30%,
+            rgba($sfWhite, 0.9) 65.48%
           );
         }
       }
@@ -152,8 +151,8 @@
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
-    // color: #ffffff;
-    color: #032d60;
+    // color: $sfWhite;
+    color: $sfBrandNavy;
     @include lgLaptopView {
       font-size: $sfFontMedium;
       line-height: 30px;

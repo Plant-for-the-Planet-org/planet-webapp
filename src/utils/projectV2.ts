@@ -1,5 +1,9 @@
 import type {
+  Intervention,
+  OtherInterventions,
   ProjectSite,
+  SampleTreeRegistration,
+  SingleTreeRegistration,
   TreeProjectClassification,
 } from '@planet-sdk/common';
 import type { MapGeoJSONFeature, PointLike } from 'react-map-gl-v7/maplibre';
@@ -12,12 +16,6 @@ import type {
   MapProject,
   ProjectSiteFeature,
 } from '../features/common/types/projectv2';
-import type {
-  Intervention,
-  SingleTreeRegistration,
-  OtherInterventions,
-  SampleTreeRegistration,
-} from '../features/common/types/intervention';
 import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextInterface';
 
 import centroid from '@turf/centroid';

@@ -47,7 +47,6 @@ const defaultSiteDetails = {
   status: '',
   geometry: {},
 };
-const { colors } = themeProperties.designSystem;
 const SiteFormationMap = dynamic(() => import('./MapComponent'), {
   ssr: false,
   loading: () => <p></p>,
@@ -263,6 +262,7 @@ export default function ProjectSites({
 }: ProjectSitesProps): ReactElement {
   const { deleteApiAuthenticated, postApiAuthenticated, getApiAuthenticated } =
     useApi();
+  const { colors } = themeProperties.designSystem;
   const t = useTranslations('ManageProjects');
   const {
     handleSubmit,
