@@ -33,6 +33,8 @@
     "plantingDate": "Planting Date",
     "plantingDensity": "Planting Density",
     "plantingDensityUnit": "{formattedCount} trees per ha",
+    "projectArea": "Project Area",
+    "projectAreaUnit": "{formattedArea} ha",
     "speciesCount": "Species Planted ({count})",
     "sampleTrees": "Sample Trees ({count})",
     "sampleTree": "Sample Tree",
