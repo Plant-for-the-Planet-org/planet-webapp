@@ -21,7 +21,6 @@ import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
-import Map, { Source, Layer } from 'react-map-gl-v7/maplibre';
 import bbox from '@turf/bbox';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
@@ -42,6 +41,8 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import SiteDeleteConfirmationModal from './microComponent/SiteDeleteConfirmationModal';
+import StaticMap from './microComponent/StaticMap';
+import themeProperties from '../../../../theme/themeProperties';
 
 const defaultMapCenter = [36.96, -28.5];
 const defaultZoom = 1.4;
@@ -56,7 +57,7 @@ const defaultSiteDetails = {
   status: '',
   geometry: {},
 };
-
+const { colors } = themeProperties.designSystem;
 const SiteFormationMap = dynamic(() => import('./MapComponent'), {
   ssr: false,
   loading: () => <p></p>,
@@ -540,49 +541,16 @@ export default function ProjectSites({
                       }}
                       className={styles.uploadedMapEditButton}
                     >
-                      <EditIcon color={'#000'} />
+                      <EditIcon color={colors.coreText} />
                     </IconButton>
-                    <Map
-                      style={{ height: 200, width: 320 }}
+                    <StaticMap
                       zoom={zoom}
-                      interactive={false}
-                      attributionControl={false}
                       latitude={latitude}
                       longitude={longitude}
-                    >
-                      <Source
-                        id="satellite_source"
-                        type="raster"
-                        tiles={tiles}
-                        tileSize={128}
-                      >
-                        <Layer type="raster" id="satellite_layer" />
-                      </Source>
-                      <Source
-                        id={`geojson-${site.id}`}
-                        type="geojson"
-                        data={site.geometry}
-                      >
-                        <Layer
-                          id={`fill-${site.id}`}
-                          type="fill"
-                          source={`geojson-${site.id}`}
-                          paint={{
-                            'fill-color': '#fff',
-                            'fill-opacity': 0.2,
-                          }}
-                        />
-                        <Layer
-                          id={`line-${site.id}`}
-                          type="line"
-                          source={`geojson-${site.id}`}
-                          paint={{
-                            'line-color': '#68B030',
-                            'line-width': 2,
-                          }}
-                        />
-                      </Source>
-                    </Map>
+                      siteId={site.id}
+                      siteGeometry={site.geometry}
+                      tiles={tiles}
+                    />
                   </div>
                 </div>
               );
