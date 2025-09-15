@@ -10,7 +10,7 @@ const SatelliteLayer = () => {
   );
 
   return (
-    <Source id="satellite-source" type="raster" tiles={tiles} tileSize={128}>
+    <Source id="satellite-source" type="raster" tiles={tiles} tileSize={256}>
       <Layer
         type="raster"
         id="satellite-layer"

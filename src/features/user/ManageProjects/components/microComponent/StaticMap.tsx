@@ -4,7 +4,7 @@ import type {
   MapRef,
 } from '../../../../common/types/projectv2';
 
-import Map, { Source, Layer } from 'react-map-gl-v7/maplibre';
+import MapGL, { Source, Layer } from 'react-map-gl-v7/maplibre';
 import themeProperties from '../../../../../theme/themeProperties';
 import { useRef } from 'react';
 import { bbox } from '@turf/turf';
@@ -20,7 +20,7 @@ const StaticMap = ({ tiles, siteId, siteGeometry }: StaticMapProps) => {
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
 
   return (
-    <Map
+    <MapGL
       ref={mapRef}
       style={{ height: 200, width: 320 }}
       interactive={false}
@@ -60,7 +60,7 @@ const StaticMap = ({ tiles, siteId, siteGeometry }: StaticMapProps) => {
           }}
         />
       </Source>
-    </Map>
+    </MapGL>
   );
 };
 

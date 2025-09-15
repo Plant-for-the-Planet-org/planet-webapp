@@ -222,7 +222,7 @@ interface EditSiteProps {
   geoJsonProp: GeoJson | null;
   projectGUID: string;
   setSiteList: SetState<Site[]>;
-  setEditMode: Function;
+  setEditMode: SetState<boolean>;
   siteGUID: Nullable<string>;
   siteList: Site[];
   tiles: string[];

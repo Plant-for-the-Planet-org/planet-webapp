@@ -13,7 +13,7 @@ import type { SetState } from '../../../common/types/common';
 import type { Feature, FeatureCollection, Geometry } from 'geojson';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
+import MapGL, { NavigationControl } from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
@@ -98,7 +98,7 @@ export default function MapComponent({
     async function loadMapStyle() {
       const result = await getMapStyle('default');
       if (result) {
-        setMapState({ ...mapState, mapStyle: result });
+        setMapState((prev) => ({ ...prev, mapStyle: result }));
       }
     }
     loadMapStyle();
@@ -137,7 +137,7 @@ export default function MapComponent({
         coordinates={coordinates}
         setCoordinates={setCoordinates}
       />
-      <Map
+      <MapGL
         {...viewport}
         {...mapState}
         style={{ width: '100%', height: '400px' }}
@@ -145,7 +145,6 @@ export default function MapComponent({
         onMove={onMove}
         onClick={handleClick}
         onDblClick={handleDoubleClick}
-        attributionControl={false}
         cursor={isDrawing ? 'crosshair' : 'grab'}
       >
         {satellite && <SatelliteLayer />}
@@ -175,7 +174,7 @@ export default function MapComponent({
           </div>
         </div>
         <NavigationControl position="bottom-right" showCompass={false} />
-      </Map>
+      </MapGL>
       <Dropzone
         accept={['.geojson', '.kml']}
         multiple={false}
@@ -211,7 +210,15 @@ export default function MapComponent({
               reader.onload = (event) => {
                 if (typeof event.target?.result === 'string') {
                   const geo = JSON.parse(event.target.result);
-                  if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
+                  const isFC =
+                    geo &&
+                    geo.type === 'FeatureCollection' &&
+                    Array.isArray(geo.features);
+                  if (
+                    gjv.isGeoJSONObject(geo) &&
+                    isFC &&
+                    geo.features.length > 0
+                  ) {
                     setGeoJsonError(false);
                     setGeoJson(geo);
                   } else {
