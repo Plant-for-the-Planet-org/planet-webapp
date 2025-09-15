@@ -9,6 +9,7 @@ import type {
   ExtendedMapLibreMap,
   MapRef,
 } from '../../../common/types/projectv2';
+import type { SetState } from '../../../common/types/common';
 import type { Feature, FeatureCollection, Geometry } from 'geojson';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -33,8 +34,8 @@ import MapControllers from './microComponent/MapControllers';
 interface Props {
   geoJson: any;
   setGeoJson: Function;
-  geoJsonError: any;
-  setGeoJsonError: Function;
+  geoJsonError: boolean;
+  setGeoJsonError: SetState<boolean>;
 }
 
 const defaultZoom = 1.4;
@@ -190,6 +191,7 @@ export default function MapComponent({
               reader.onabort = () => console.log('file reading was aborted');
               reader.onerror = () => console.log('file reading has failed');
               reader.onload = (event) => {
+                if (typeof event.target?.result !== 'string') return null;
                 const dom = new DOMParser().parseFromString(
                   event.target.result,
                   'text/xml'
