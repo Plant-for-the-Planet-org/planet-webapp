@@ -34,6 +34,8 @@
     "plantingDate": "Pflanzdatum",
     "plantingDensity": "Pflanzdichte",
     "plantingDensityUnit": "{formattedCount} Bäume pro ha",
+    "projectArea": "Projektfläche",
+    "projectAreaUnit": "{formattedArea} ha",
     "speciesCount": "Gepflanzte Arten ({count})",
     "sampleTrees": "Beispielbäume ({count})",
     "sampleTree": "Beispielbaum",
