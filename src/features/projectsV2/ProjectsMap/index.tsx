@@ -36,7 +36,7 @@ import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
-import SiteLayers from './SiteLayers';
+import SiteDataLayers from './SiteDataLayers';
 import SiteMapLayerControls from './SiteMapLayerControls';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
@@ -362,7 +362,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         >
           {shouldShowExploreLayers && <ExploreLayers />}
           {shouldShowSiteLayers && (
-            <SiteLayers selectedSiteLayerKey={selectedSiteLayer.id} />
+            <SiteDataLayers selectedSiteLayerKey={selectedSiteLayer.id} />
           )}
           {shouldShowSingleProjectsView && (
             <SingleProjectView {...singleProjectViewProps} />

@@ -10,7 +10,7 @@ interface Props {
   isSatelliteBackground: boolean;
 }
 
-export default function SiteLayers({
+export default function SitePolygonLayers({
   geoJson,
   isSatelliteBackground,
 }: Props): ReactElement {

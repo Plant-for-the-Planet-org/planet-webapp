@@ -7,14 +7,14 @@ import { useProjects } from '../ProjectsContext';
 
 const TILE_SIZE = 128;
 
-interface SiteLayersProps {
+interface SiteDataLayersProps {
   // Probably needs to be moved to context instead of props
   selectedSiteLayerKey: SiteLayerKey;
 }
 
-const SiteLayers = ({
+const SiteDataLayers = ({
   selectedSiteLayerKey,
-}: SiteLayersProps): ReactElement | null => {
+}: SiteDataLayersProps): ReactElement | null => {
   const { siteLayersData } = useProjectsMap();
   const { selectedSiteId } = useProjects();
 
@@ -48,4 +48,4 @@ const SiteLayers = ({
     </Source>
   );
 };
-export default SiteLayers;
+export default SiteDataLayers;

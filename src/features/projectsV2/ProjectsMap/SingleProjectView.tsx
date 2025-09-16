@@ -8,7 +8,7 @@ import { useProjects } from '../ProjectsContext';
 import { useProjectsMap } from '../ProjectsMapContext';
 import SatelliteLayer from './microComponents/SatelliteLayer';
 import { zoomInToProjectSite } from '../../../utils/mapsV2/zoomToProjectSite';
-import SiteLayers from './microComponents/SiteLayers';
+import SitePolygonLayers from './microComponents/SitePolygonLayers';
 import InterventionLayers from './microComponents/InterventionLayers';
 import { zoomToPolygonIntervention } from '../../../utils/mapsV2/zoomToPolygonIntervention';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
@@ -110,7 +110,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
     <>
       {canShowSites ? (
         <>
-          <SiteLayers
+          <SitePolygonLayers
             isSatelliteBackground={selectedTab === 'satellite'}
             geoJson={sitesGeoJson}
           />
