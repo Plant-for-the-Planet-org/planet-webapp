@@ -1,20 +1,21 @@
 import type { ReactElement } from 'react';
+import type { SetState } from '../../../common/types/common';
 import type {
   Intervention,
   MultiTreeRegistration,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
-import type { SetState } from '../../../common/types/common';
+} from '@planet-sdk/common';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 const ImageSlider = dynamic(
   () => import('../../../projects/components/Intervention/ImageSlider'),
@@ -53,7 +54,7 @@ export function InterventionInfo({
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
   const locale = useLocale();
-  const [sampleTreeImages, setSampleTreeImages] = React.useState<
+  const [sampleTreeImages, setSampleTreeImages] = useState<
     SampleTreeImageProps[]
   >([]);
 
@@ -118,7 +119,7 @@ export function InterventionInfo({
       </div>
     ));
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedIntervention?.type === 'multi-tree-registration') {
       if (
         selectedIntervention &&
@@ -166,9 +167,7 @@ export function InterventionInfo({
         )}
       {selectedIntervention.type !== 'multi-tree-registration' &&
         selectedIntervention.coordinates?.length > 0 && (
-          <div
-            className={`${styles.projectImageSliderContainer} ${styles.singlePl}`}
-          >
+          <div className={`${styles.projectImageSliderContainer}`}>
             <ImageSliderSingle
               images={selectedIntervention.coordinates}
               height={233}
@@ -390,7 +389,7 @@ export default function InterventionPage({
   interventions,
 }: Props): ReactElement {
   const router = useRouter();
-
+  const { localizedPath } = useLocalizedPath();
   const handleBackButton = () => {
     if (selectedIntervention?.type === 'sample-tree-registration') {
       for (const iKey in interventions) {
@@ -404,7 +403,7 @@ export default function InterventionPage({
         }
       }
     } else {
-      router.replace('/profile/treemapper');
+      router.replace(localizedPath('/profile/treemapper'));
     }
   };
 
@@ -415,9 +414,6 @@ export default function InterventionPage({
 
   return (
     <div className={styles.locationDetails}>
-      <div className={styles.pullUpContainer}>
-        <div className={styles.pullUpBar}></div>
-      </div>
       <div className={styles.locationNav}>
         <div onClick={handleBackButton} className={styles.backButton}>
           <BackButton />

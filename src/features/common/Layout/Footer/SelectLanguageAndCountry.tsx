@@ -8,7 +8,7 @@ import {
   FormControlLabel,
   RadioGroup,
 } from '@mui/material';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import {
   getCountryDataBy,
   sortCountriesByTranslation,

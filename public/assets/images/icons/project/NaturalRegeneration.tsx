@@ -1,5 +1,3 @@
-import React from 'react';
-
 const NaturalRegeneration = () => {
   return (
     <svg viewBox="0 0 34 29" fill="none" xmlns="http://www.w3.org/2000/svg">

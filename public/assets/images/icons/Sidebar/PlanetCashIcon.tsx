@@ -1,8 +1,6 @@
 import type { ReactElement } from 'react';
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
-import React from 'react';
-
 function PlanetCashIcon({ color = '#000' }: IconProps): ReactElement {
   return (
     <svg

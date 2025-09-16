@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import React from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
@@ -9,12 +9,14 @@ import TimeTravelIcon from '../../../../../public/assets/images/icons/TimeTravel
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/VegetationChange.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import themeProperties from '../../../../theme/themeProperties';
 
 export default function ProjectTabs(): ReactElement {
-  const { embed, showProjectDetails } = React.useContext(ParamsContext);
+  const { embed, showProjectDetails } = useContext(ParamsContext);
   const router = useRouter();
   const t = useTranslations('Maps');
   const { selectedMode, setSelectedMode, rasterData } = useProjectProps();
+  const { warmGreen } = themeProperties.designSystem.colors;
 
   const containerClasses =
     embed !== 'true'
@@ -35,7 +37,7 @@ export default function ProjectTabs(): ReactElement {
             selectedMode === 'location'
               ? {
                   color: '#fff',
-                  backgroundColor: styles.primaryColor,
+                  backgroundColor: warmGreen,
                   border: 'none',
                 }
               : {}
@@ -53,7 +55,7 @@ export default function ProjectTabs(): ReactElement {
             selectedMode === 'imagery'
               ? {
                   color: '#fff',
-                  backgroundColor: styles.primaryColor,
+                  backgroundColor: warmGreen,
                   border: 'none',
                 }
               : {}
@@ -76,7 +78,7 @@ export default function ProjectTabs(): ReactElement {
               selectedMode === 'vegetation'
                 ? {
                     color: '#fff',
-                    backgroundColor: styles.primaryColor,
+                    backgroundColor: warmGreen,
                     border: 'none',
                   }
                 : {}

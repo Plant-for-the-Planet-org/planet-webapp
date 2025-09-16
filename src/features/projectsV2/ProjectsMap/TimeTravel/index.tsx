@@ -23,6 +23,7 @@ import { useProjectsMap } from '../../ProjectsMapContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import TimeTravelDropdown from '../../TimeTravelDropdown';
 import styles from './TimeTravel.module.scss';
+import themeProperties from '../../../../theme/themeProperties';
 
 const EMPTY_STYLE = {
   version: 8 as const,
@@ -339,7 +340,7 @@ export default function TimeTravel({
         source: polygonSourceId,
         layout: {},
         paint: {
-          'line-color': '#fff',
+          'line-color': themeProperties.designSystem.colors.white,
           'line-width': 4,
         },
       });

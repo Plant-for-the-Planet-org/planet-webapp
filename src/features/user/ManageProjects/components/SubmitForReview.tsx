@@ -1,18 +1,18 @@
 import type { ReactElement } from 'react';
 import type { SubmitForReviewProps } from '../../../common/types/project';
 
-import React from 'react';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import styles from './../StepForm.module.scss';
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
 import { useTranslations } from 'next-intl';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
-import router from 'next/router';
 import { Button, FormControlLabel } from '@mui/material';
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 function SubmitForReview({
   submitForReview,
@@ -22,6 +22,9 @@ function SubmitForReview({
   handlePublishChange,
 }: SubmitForReviewProps): ReactElement {
   const t = useTranslations('ManageProjects');
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
+
   function UnderReviewComponent() {
     return (
       <CenteredContainer>
@@ -56,7 +59,7 @@ function SubmitForReview({
 
           <Button
             variant="contained"
-            onClick={() => router.push('/profile/projects')}
+            onClick={() => router.push(localizedPath('/profile/projects'))}
           >
             <p>{t('exit')}</p>
           </Button>
@@ -123,7 +126,7 @@ function SubmitForReview({
 
           <Button
             variant="contained"
-            onClick={() => router.push('/profile/projects')}
+            onClick={() => router.push(localizedPath('/profile/projects'))}
           >
             <p>{t('exit')}</p>
           </Button>
@@ -151,7 +154,7 @@ function SubmitForReview({
           </Button>
           <Button
             variant="contained"
-            onClick={() => router.push('/profile/projects')}
+            onClick={() => router.push(localizedPath('/profile/projects'))}
           >
             <p>{t('exit')}</p>
           </Button>
@@ -180,7 +183,7 @@ function SubmitForReview({
           </Button>
           <Button
             variant="contained"
-            onClick={() => router.push('/profile/projects')}
+            onClick={() => router.push(localizedPath('/profile/projects'))}
           >
             <p>{t('exit')}</p>
           </Button>

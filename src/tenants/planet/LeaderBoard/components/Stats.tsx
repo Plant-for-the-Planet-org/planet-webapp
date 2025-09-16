@@ -4,14 +4,15 @@ import type {
   TreesDonated,
 } from '../../../../features/common/types/leaderboard';
 
+import { useState, useContext } from 'react';
 import { Modal } from '@mui/material';
-import React from 'react';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import styles from './Stats.module.scss';
 import StatsInfoModal from './StatsInfoModal';
 import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   tenantScore: TenantScore;
@@ -21,15 +22,15 @@ export default function Stats({
   tenantScore,
   treesDonated,
 }: Props): ReactElement {
-  const [infoExpanded, setInfoExpanded] = React.useState<String | null>(null);
+  const [infoExpanded, setInfoExpanded] = useState<String | null>(null);
   const tPlanet = useTranslations('Planet');
   const locale = useLocale();
-  const [openModal, setModalOpen] = React.useState(false);
+  const [openModal, setModalOpen] = useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
   };
 
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -72,7 +73,7 @@ export default function Stats({
         <div className={styles.statCard}>
           <h2
             className={styles.statNumber}
-            style={{ color: styles.dangerColor }}
+            style={{ color: themeProperties.designSystem.colors.fireRed }}
           >
             {localizedAbbreviatedNumber(locale, Number(10000000000), 2)}
           </h2>

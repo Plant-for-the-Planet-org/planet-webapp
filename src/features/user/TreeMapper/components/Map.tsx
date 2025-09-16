@@ -1,17 +1,17 @@
 import type { ReactElement } from 'react';
-import type {
-  Intervention,
-  MultiTreeRegistration,
-  SampleTreeRegistration,
-} from '../../../common/types/intervention';
 import type { RequiredMapStyle } from '../../../common/types/map';
 import type { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
 import type { MapEvent } from 'react-map-gl';
 import type { SetState } from '../../../common/types/common';
 import type { Feature, Point, Polygon } from 'geojson';
 import type { AllGeoJSON } from '@turf/turf';
+import type {
+  Intervention,
+  MultiTreeRegistration,
+  SampleTreeRegistration,
+} from '@planet-sdk/common';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../TreeMapper.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import area from '@turf/area';
@@ -31,6 +31,7 @@ import { easeCubic } from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 import themeProperties from '../../../../theme/themeProperties';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 interface Props {
   interventions: Intervention[] | null;
@@ -58,21 +59,22 @@ export default function MyTreesMap({
   setSelectedIntervention,
 }: Props): ReactElement {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { isMobile } = useProjectProps();
   const { primaryColor, white } = themeProperties.designSystem.colors;
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
-  const [viewport, setViewPort] = React.useState({
+  const [viewport, setViewPort] = useState({
     width: Number('100%'),
     height: Number('100%'),
     latitude: defaultMapCenter[0],
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
-  const [satellite, setSatellite] = React.useState(false);
-  const [geoJson, setGeoJson] = React.useState<GeoJson | null>(null);
-  const [plIds, setPlIds] = React.useState<string[] | null>(null);
-  const [style, setStyle] = React.useState({
+  const [satellite, setSatellite] = useState(false);
+  const [geoJson, setGeoJson] = useState<GeoJson | null>(null);
+  const [plIds, setPlIds] = useState<string[] | null>(null);
+  const [style, setStyle] = useState({
     version: 8,
     sources: {},
     layers: [],
@@ -96,7 +98,7 @@ export default function MyTreesMap({
   const getPlantationArea = (mt: MultiTreeRegistration) => {
     if (mt && mt.type === 'multi-tree-registration') {
       const polygonAreaSqMeters = area(mt.geometry);
-      return polygonAreaSqMeters / 10000;
+      return polygonAreaSqMeters > 0 ? polygonAreaSqMeters / 10000 : 0;
     } else {
       return 0;
     }
@@ -105,7 +107,7 @@ export default function MyTreesMap({
   const getPolygonColor = (mt: MultiTreeRegistration) => {
     const treeCount = getTreeCount(mt);
     const plantationArea = getPlantationArea(mt);
-    const density = treeCount / plantationArea;
+    const density = plantationArea > 0 ? treeCount / plantationArea : 0;
     if (density > 2500) {
       return 0.5;
     } else if (density > 2000) {
@@ -158,7 +160,7 @@ export default function MyTreesMap({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const promise = getMapStyle('default');
     promise.then((style: RequiredMapStyle) => {
       if (style) {
@@ -167,7 +169,7 @@ export default function MyTreesMap({
     });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (interventions) {
       const features = [];
       const ids = [];
@@ -199,7 +201,7 @@ export default function MyTreesMap({
     }
   }, [interventions]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedIntervention) {
       zoomToLocation(selectedIntervention.geometry);
     }
@@ -216,7 +218,7 @@ export default function MyTreesMap({
           if (Object.prototype.hasOwnProperty.call(interventions, key)) {
             const element = interventions[Number(key)];
             if (element.id === source) {
-              router.replace(`/profile/treemapper/?l=${source}`);
+              router.replace(localizedPath(`/profile/treemapper/?l=${source}`));
               break;
             }
           }

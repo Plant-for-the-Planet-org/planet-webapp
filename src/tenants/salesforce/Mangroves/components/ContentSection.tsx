@@ -3,8 +3,10 @@ import styles from './../styles/ContentSection.module.scss';
 import Link from 'next/link';
 import MangroveMapIcon from '../../../../../public/assets/images/icons/MangroveMapIcon';
 import ViewIcon from '../../../../../public/assets/images/icons/ViewIcon';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 export default function ContentSection() {
+  const { localizedPath } = useLocalizedPath();
   return (
     <div className={`${styles.contentSectionContainer}`}>
       <div className={`${gridStyles.fluidContainer} ${styles.contentSection}`}>
@@ -41,12 +43,12 @@ export default function ContentSection() {
                 alt=""
               />
             </div>
-            <Link href="/?filter=mangroves">
+            <Link href={localizedPath('/?filter=mangroves')}>
               <button className={styles.projectMapButton}>
                 <MangroveMapIcon /> View Project Map
               </button>
             </Link>
-            <Link href="#project-grid">
+            <Link href={'#project-grid'}>
               <button className={styles.projectListButton}>
                 <ViewIcon /> View Project List
               </button>

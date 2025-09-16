@@ -3,7 +3,7 @@ import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import type { APIError, CountryProject } from '@planet-sdk/common';
 
 import { useLocale, useTranslations } from 'next-intl';
-import React, { useEffect, useCallback, useContext, useState } from 'react';
+import { useEffect, useCallback, useContext, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import CreationMethodForm from './forms/CreationMethodForm';

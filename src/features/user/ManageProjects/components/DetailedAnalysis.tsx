@@ -8,7 +8,7 @@ import type {
   ExtendedProfileProjectProperties,
 } from '../../../common/types/project';
 
-import React, { useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import styles from './../StepForm.module.scss';
@@ -28,6 +28,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
+import themeProperties from '../../../../theme/themeProperties';
 
 type BaseFormData = {
   employeesCount: string;
@@ -103,9 +104,10 @@ export default function DetailedAnalysis({
 }: DetailedAnalysisProps): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
-  const [siteOwners, setSiteOwners] = React.useState<SiteOwners[]>([
+  const { colors } = themeProperties.designSystem;
+  const [siteOwners, setSiteOwners] = useState<SiteOwners[]>([
     {
       id: 1,
       title: tManageProjects('siteOwnerPrivate'),
@@ -143,11 +145,9 @@ export default function DetailedAnalysis({
       isSet: false,
     },
   ]);
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
 
-  const [plantingSeasons, setPlantingSeasons] = React.useState<
-    PlantingSeason[]
-  >([
+  const [plantingSeasons, setPlantingSeasons] = useState<PlantingSeason[]>([
     { id: 1, title: tCommon('january'), isSet: false },
     { id: 2, title: tCommon('february'), isSet: false },
     { id: 3, title: tCommon('march'), isSet: false },
@@ -162,7 +162,7 @@ export default function DetailedAnalysis({
     { id: 12, title: tCommon('december'), isSet: false },
   ]);
 
-  const [interventionOptions, setInterventionOptions] = React.useState<
+  const [interventionOptions, setInterventionOptions] = useState<
     InterventionOption[]
   >([
     ['assisting-seed-rain', false],
@@ -184,14 +184,14 @@ export default function DetailedAnalysis({
     ['stop-tree-harvesting', false],
   ]);
 
-  const [mainInterventions, setMainInterventions] = React.useState<
+  const [mainInterventions, setMainInterventions] = useState<
     InterventionTypes[]
   >([]);
-  const [isInterventionsMissing, setIsInterventionsMissing] = React.useState<
+  const [isInterventionsMissing, setIsInterventionsMissing] = useState<
     boolean | null
   >(null);
 
-  const [minDensity, setMinDensity] = React.useState<number | string | null>(0);
+  const [minDensity, setMinDensity] = useState<number | string | null>(0);
 
   const handleSetPlantingSeasons = (id: number) => {
     const month = plantingSeasons[id - 1];
@@ -292,7 +292,7 @@ export default function DetailedAnalysis({
     }
   }
   // for validating max planting density value > planting density value
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       projectDetails &&
       projectDetails.purpose === 'trees' &&
@@ -375,7 +375,7 @@ export default function DetailedAnalysis({
 
   // Use Effect to hide error message after 10 seconds
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (projectDetails) {
       const { metadata, purpose: projectPurpose } = projectDetails;
       const formData: TreeFormData | ConservationFormData =
@@ -794,7 +794,7 @@ export default function DetailedAnalysis({
                           id="check-solid"
                           d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
                           transform="translate(0 -65.098)"
-                          fill="#fff"
+                          fill={colors.white}
                         />
                       </svg>
                     </div>
@@ -842,7 +842,7 @@ export default function DetailedAnalysis({
                         id="check-solid"
                         d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
                         transform="translate(0 -65.098)"
-                        fill="#fff"
+                        fill={colors.white}
                       />
                     </svg>
                   </div>
@@ -1186,7 +1186,7 @@ export default function DetailedAnalysis({
                         id="check-solid"
                         d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
                         transform="translate(0 -65.098)"
-                        fill="#fff"
+                        fill={colors.white}
                       />
                     </svg>
                   </div>

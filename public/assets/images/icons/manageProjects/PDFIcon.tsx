@@ -1,7 +1,5 @@
 import type { IconProps } from '../../../../../src/features/common/types/common';
 
-import React from 'react';
-
 function PDFIcon({ color = 'currentColor' }: IconProps) {
   return (
     <svg

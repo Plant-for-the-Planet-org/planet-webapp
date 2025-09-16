@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import type { RequiredMapStyle } from '../../../../common/types/map';
 import type { ViewPort } from '../../../../common/types/project';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../../TreeMapper.module.scss';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MapGL, { NavigationControl } from 'react-map-gl';
@@ -11,11 +11,11 @@ import LayerDisabled from '../../../../../../public/assets/images/icons/LayerDis
 import SatelliteLayer from '../../../../projects/components/maps/SatelliteLayer';
 
 export default function MyTreesMap(): ReactElement {
-  const [satellite, setSatellite] = React.useState(false);
+  const [satellite, setSatellite] = useState(false);
 
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
-  const [viewport, setViewPort] = React.useState({
+  const [viewport, setViewPort] = useState({
     width: Number('100%'),
     height: Number('100%'),
     latitude: defaultMapCenter[0],
@@ -23,13 +23,13 @@ export default function MyTreesMap(): ReactElement {
     zoom: defaultZoom,
   });
 
-  const [style, setStyle] = React.useState({
+  const [style, setStyle] = useState({
     version: 8,
     sources: {},
     layers: [],
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const promise = getMapStyle('default');
     promise.then((style: RequiredMapStyle) => {
       if (style) {

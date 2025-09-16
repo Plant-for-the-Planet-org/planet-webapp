@@ -1,9 +1,8 @@
 import type { ReactElement } from 'react';
-import type { MultiTreeRegistration } from '../../../../common/types/intervention';
-import type { SampleTree } from '../../../../common/types/intervention';
+import type { SampleTree } from '../../Treemapper';
 import type { Control, FieldArrayWithId, FieldErrors } from 'react-hook-form';
+import type { MultiTreeRegistration } from '@planet-sdk/common';
 
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
@@ -62,7 +61,7 @@ export default function SampleTreeCard({
           <DeleteIcon />
         </div>
       </div>
-      <div className={styles.sampleTreeSummary}>
+      <div>
         {`${
           sampleTrees[index]?.height
             ? ` • ${t('height')} ${sampleTrees[index]?.height}`

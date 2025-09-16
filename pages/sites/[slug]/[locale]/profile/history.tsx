@@ -7,7 +7,7 @@ import type {
   PaymentHistory,
 } from '../../../../../src/features/common/types/payments';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useTranslations } from 'next-intl';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../../../../src/features/user/Account/History';
@@ -43,19 +43,21 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
-  const [progress, setProgress] = React.useState(0);
-  const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [filter, setFilter] = React.useState<string | null>(null);
-  const [paymentHistory, setPaymentHistory] =
-    React.useState<PaymentHistory | null>(null);
-  const [accountingFilters, setAccountingFilters] =
-    React.useState<Filters | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [filter, setFilter] = useState<string | null>(null);
+  const [paymentHistory, setPaymentHistory] = useState<PaymentHistory | null>(
+    null
+  );
+  const [accountingFilters, setAccountingFilters] = useState<Filters | null>(
+    null
+  );
 
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
 
   const { tenantConfig } = pageProps;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }
@@ -117,7 +119,7 @@ function AccountHistory({ pageProps }: Props): ReactElement {
     }, 1000);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded && token) fetchPaymentHistory();
   }, [filter, contextLoaded, token]);
 
@@ -129,11 +131,6 @@ function AccountHistory({ pageProps }: Props): ReactElement {
     paymentHistory,
     fetchPaymentHistory,
   };
-
-  // // TODO - remove this
-  // if (typeof window !== 'undefined') {
-  //   router.push('/');
-  // }
 
   return tenantConfig ? (
     <>

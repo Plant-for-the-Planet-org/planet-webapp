@@ -1,11 +1,18 @@
 import type { MapProject } from '../../../common/types/projectv2';
 
-import { useCallback, useContext, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import ProjectPopup from '../ProjectPopup';
 import SingleMarker from './SingleMarker';
-import router from 'next/router';
-import { useLocale } from 'next-intl';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];
@@ -29,46 +36,62 @@ type OpenPopupState = {
 type PopupState = ClosedPopupState | OpenPopupState;
 
 const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
-
-  const locale = useLocale();
   const { embed, callbackUrl } = useContext(ParamsContext);
 
-  const visitProject = (projectSlug: string): void => {
-    router.push(
-      `/${locale}/${projectSlug}${
-        embed === 'true'
-          ? `${
-              callbackUrl != undefined
-                ? `?embed=true&callback=${callbackUrl}`
-                : '?embed=true'
-            }`
-          : ''
-      }`
-    );
-  };
-
-  const initiatePopupOpen = (project: MapProject) => {
-    if (
-      popupState.show === false ||
-      popupState.project.properties.id !== project.properties.id
-    ) {
-      timerRef.current = setTimeout(() => {
-        setPopupState({
-          show: true,
-          project: project,
-        });
-      }, 300);
-    }
-  };
-
-  const handleMarkerLeave = () => {
+  const clearTimer = useCallback(() => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
-  };
+  }, []);
+
+  useEffect(() => clearTimer, [clearTimer]);
+
+  const visitProject = useCallback(
+    (projectSlug: string): void => {
+      const searchParams = new URLSearchParams();
+
+      if (embed === 'true') {
+        searchParams.set('embed', 'true');
+
+        if (typeof callbackUrl === 'string') {
+          searchParams.set('callback', callbackUrl);
+        }
+      }
+
+      const queryString = searchParams.toString();
+      const path = `/${projectSlug}${queryString ? `?${queryString}` : ''}`;
+      router.push(localizedPath(path));
+    },
+    [localizedPath, embed, callbackUrl]
+  );
+
+  const initiatePopupOpen = useCallback(
+    (project: MapProject) => {
+      clearTimer();
+      timerRef.current = setTimeout(() => {
+        setPopupState((prev) => {
+          if (
+            prev.show === false ||
+            prev.project.properties.id !== project.properties.id
+          ) {
+            return {
+              show: true,
+              project,
+            };
+          }
+          return prev;
+        });
+      }, 300);
+    },
+    [clearTimer]
+  );
+
+  const handleMarkerLeave = useCallback(clearTimer, [clearTimer]);
 
   const initiatePopupClose = () => {
     setTimeout(() => {

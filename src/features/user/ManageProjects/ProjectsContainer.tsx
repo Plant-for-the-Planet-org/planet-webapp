@@ -8,7 +8,7 @@ import type {
 } from '@planet-sdk/common';
 
 import Link from 'next/link';
-import React, { useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
@@ -24,6 +24,7 @@ import SingleColumnView from '../../common/Layout/SingleColumnView';
 import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
 import { useApi } from '../../../hooks/useApi';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
 type ProjectProperties =
   | ProfileProjectPropertiesFund
@@ -39,6 +40,7 @@ function SingleProject({ project }: { project: ProjectProperties }) {
   const tCountry = useTranslations('Country');
   const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const count =
     project.unitType === 'tree'
       ? project.unitsContributed?.tree
@@ -98,10 +100,16 @@ function SingleProject({ project }: { project: ProjectProperties }) {
         </div>
       </div>
       <div className={styles.projectLinksContainer}>
-        <Link href={generateProjectLink(project.id, router.asPath, locale)}>
+        <Link
+          href={localizedPath(generateProjectLink(project.id, router.asPath))}
+        >
           <button className={styles.secondaryLink}>{tCommon('view')}</button>
         </Link>
-        <Link href={`/profile/projects/${project.id}?type=basic-details`}>
+        <Link
+          href={localizedPath(
+            `/profile/projects/${project.id}?type=basic-details`
+          )}
+        >
           <button className={styles.primaryLink}>{tCommon('edit')}</button>
         </Link>
       </div>
@@ -113,10 +121,11 @@ export default function ProjectsContainer() {
   const tDonate = useTranslations('Donate');
   const tManageProjects = useTranslations('ManageProjects');
   const { getApiAuthenticated } = useApi();
-  const [projects, setProjects] = React.useState<ProfileProjectFeature[]>([]);
-  const [loader, setLoader] = React.useState(true);
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
+  const [loader, setLoader] = useState(true);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { user, contextLoaded, token } = useUserProps();
+  const { localizedPath } = useLocalizedPath();
   async function loadProjects() {
     if (user) {
       try {
@@ -133,7 +142,7 @@ export default function ProjectsContainer() {
     }
   }
   // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded && token) {
       loadProjects();
     }
@@ -150,7 +159,7 @@ export default function ProjectsContainer() {
     >
       <SingleColumnView>
         <div className={styles.headerCTAs}>
-          <Link href="/profile/projects/new-project">
+          <Link href={localizedPath('/profile/projects/new-project')}>
             <button
               // id={'addProjectBut'}
               className="primaryButton"
@@ -158,7 +167,7 @@ export default function ProjectsContainer() {
               {tManageProjects('addProject')}
             </button>
           </Link>
-          <Link href="/profile/payouts">
+          <Link href={localizedPath('/profile/payouts')}>
             <button className="primaryButton">
               {tManageProjects('managePayoutsButton')}
             </button>

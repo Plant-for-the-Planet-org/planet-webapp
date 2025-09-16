@@ -88,7 +88,6 @@ const MapControls = ({
     setSelectedSampleTree,
     activeDropdown,
     setActiveDropdown,
-    canShowInterventionDropdown,
   };
 
   const interventionDropDownProps = {

@@ -1,6 +1,6 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import theme from '../../../theme/theme';
 import { useTheme } from '../../../theme/themeContext';
 import CookiePolicy from './CookiePolicy';
@@ -9,7 +9,7 @@ import Header from './Header';
 import Navbar from './Navbar';
 import { ParamsContext } from './QueryParamsContext';
 
-const Layout: FC = ({ children }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   const { theme: themeType } = useTheme();
   const { embed, page } = useContext(ParamsContext);
 

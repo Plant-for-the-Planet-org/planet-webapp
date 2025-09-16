@@ -2,14 +2,14 @@ import type { ReactElement } from 'react';
 import type { SetState } from '../../../common/types/common';
 import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
-import { useRouter } from 'next/router';
-import React from 'react';
+import { useState, useContext, useRef } from 'react';
 import { Marker, Popup } from 'react-map-gl';
 import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
-import { useLocale } from 'next-intl';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 type PopupClosedData = {
   show: false;
@@ -35,10 +35,10 @@ export default function Markers({
 }: Props): ReactElement {
   let timer: NodeJS.Timeout;
   const router = useRouter();
-  const locale = useLocale();
-  const [open, setOpen] = React.useState(false);
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const { localizedPath } = useLocalizedPath();
+  const [open, setOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { embed, callbackUrl } = useContext(ParamsContext);
   const handleClose = () => {
     setOpen(false);
   };
@@ -51,15 +51,17 @@ export default function Markers({
   };
   const goToProject = (projectSlug: string): void => {
     router.push(
-      `/${locale}/projects-archive/${projectSlug}${
-        embed === 'true'
-          ? `${
-              callbackUrl != undefined
-                ? `?embed=true&callback=${callbackUrl}`
-                : '?embed=true'
-            }`
-          : ''
-      }`
+      localizedPath(
+        `/projects-archive/${projectSlug}${
+          embed === 'true'
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`
+      )
     );
   };
 

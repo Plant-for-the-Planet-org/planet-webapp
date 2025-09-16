@@ -1,10 +1,11 @@
 import type { ReactElement } from 'react';
+import type { ChangeEvent } from 'react';
 
-import React from 'react';
+import { useEffect, useContext } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Modal, FormGroup, FormControlLabel } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import {
@@ -18,12 +19,13 @@ import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
 import { getParams } from '../../../../utils/LayerManagerUtils';
 import ExploreInfoModal from './ExploreInfoModal';
 import { easeCubic } from 'd3-ease';
-import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 interface LayerType {
   id: string;
@@ -59,11 +61,11 @@ export default function Explore(): ReactElement {
   } = useProjectProps();
 
   const t = useTranslations('Maps');
-  const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
 
-  const { theme } = React.useContext(ThemeContext);
-  const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const { theme } = useContext(ThemeContext);
+  const { embed, callbackUrl } = useContext(ParamsContext);
   const { isImpersonationModeOn } = useUserProps();
 
   const handleModalClose = () => {
@@ -79,7 +81,7 @@ export default function Explore(): ReactElement {
     setExplorePotential(event.target.checked);
   }; */
   const handleExploreDeforestationChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement>
   ) => {
     setExploreDeforestation(event.target.checked);
   };
@@ -139,7 +141,7 @@ export default function Explore(): ReactElement {
   };
 
   const handleExploreProjectsChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement>
   ) => {
     setExploreProjects(event.target.checked);
     setShowProjects(event.target.checked);
@@ -171,24 +173,24 @@ export default function Explore(): ReactElement {
       // setMapState(newMapState);
       setViewPort(newViewport);
       router.push(
-        `${locale}/projects-archive${
-          embed === 'true'
-            ? `${
-                callbackUrl != undefined
-                  ? `?embed=true&callback=${callbackUrl}`
-                  : '?embed=true'
-              }`
-            : ''
-        }`,
+        localizedPath(
+          `/projects-archive${
+            embed === 'true'
+              ? `${
+                  callbackUrl != undefined
+                    ? `?embed=true&callback=${callbackUrl}`
+                    : '?embed=true'
+                }`
+              : ''
+          }`
+        ),
         undefined,
-        {
-          shallow: true, //As Explore is only shown on the index route, we don't want to reload the page
-        }
+        { shallow: true }
       );
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener('mousedown', (event) => {
       if (exploreExpanded) {
         if (
@@ -204,7 +206,7 @@ export default function Explore(): ReactElement {
     });
   });
 
-  // React.useEffect(() => {
+  // useEffect(() => {
   //   if (exploreExpanded) {
   //     setMapState({ ...mapState, dragPan: false });
   //   } else {

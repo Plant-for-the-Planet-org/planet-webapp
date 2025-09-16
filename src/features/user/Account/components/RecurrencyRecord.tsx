@@ -1,10 +1,11 @@
-import type { Dispatch, ReactElement, SetStateAction } from 'react';
+import type { ReactElement, MouseEvent } from 'react';
 import type {
   MultipleDestinations,
   Subscription,
 } from '../../../common/types/payments';
-import React, { useMemo } from 'react';
+import type { SetState } from '../../../common/types/common';
 
+import { useMemo } from 'react';
 import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -229,26 +230,26 @@ interface CommonProps {
   selectedRecord: number | null;
   record: Subscription;
   recurrencies: Subscription[];
-  seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
-  setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
-  setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
-  setreactivateDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditDonation: SetState<boolean>;
+  setPauseDonation: SetState<boolean>;
+  setCancelDonation: SetState<boolean>;
+  setReactivateDonation: SetState<boolean>;
 }
 
 interface ManageDonationProps {
   record: Subscription;
-  seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
-  setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
-  setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
-  setreactivateDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditDonation: SetState<boolean>;
+  setPauseDonation: SetState<boolean>;
+  setCancelDonation: SetState<boolean>;
+  setReactivateDonation: SetState<boolean>;
 }
 
 export function ManageDonation({
   record,
-  seteditDonation,
-  setpauseDonation,
-  setcancelDonation,
-  setreactivateDonation,
+  setEditDonation,
+  setPauseDonation,
+  setCancelDonation,
+  setReactivateDonation,
 }: ManageDonationProps): ReactElement {
   const t = useTranslations('Me');
 
@@ -266,8 +267,8 @@ export function ManageDonation({
     record?.status === 'paused' || new Date(record?.endsAt || '') > new Date();
 
   const openModal = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    setModalOpen: Dispatch<SetStateAction<boolean>>
+    e: MouseEvent<HTMLButtonElement>,
+    setModalOpen: SetState<boolean>
   ) => {
     e.preventDefault();
     setModalOpen(true);
@@ -278,7 +279,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.designSystem.colors.primaryColor }}
-          onClick={(e) => openModal(e, seteditDonation)}
+          onClick={(e) => openModal(e, setEditDonation)}
         >
           {t('editDonation')}
         </button>
@@ -289,7 +290,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.designSystem.colors.warmBlue }}
-          onClick={(e) => openModal(e, setreactivateDonation)}
+          onClick={(e) => openModal(e, setReactivateDonation)}
         >
           {record?.status === 'paused'
             ? t('resumeDonation')
@@ -302,7 +303,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.designSystem.colors.sunriseOrange }}
-          onClick={(e) => openModal(e, setpauseDonation)}
+          onClick={(e) => openModal(e, setPauseDonation)}
         >
           {t('pauseDonation')}
         </button>
@@ -313,7 +314,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.designSystem.colors.fireRed }}
-          onClick={(e) => openModal(e, setcancelDonation)}
+          onClick={(e) => openModal(e, setCancelDonation)}
         >
           {t('cancelDonation')}
         </button>
@@ -342,10 +343,10 @@ export default function RecurrencyRecord({
   handleRecordToggle,
   selectedRecord,
   record,
-  seteditDonation,
-  setpauseDonation,
-  setcancelDonation,
-  setreactivateDonation,
+  setEditDonation,
+  setPauseDonation,
+  setCancelDonation,
+  setReactivateDonation,
 }: Props): ReactElement {
   const outerDivClasses = isModal
     ? styles.recordModal
@@ -383,10 +384,10 @@ export default function RecurrencyRecord({
             {record.status !== 'incomplete' && (
               <ManageDonation
                 record={record}
-                seteditDonation={seteditDonation}
-                setpauseDonation={setpauseDonation}
-                setcancelDonation={setcancelDonation}
-                setreactivateDonation={setreactivateDonation}
+                setEditDonation={setEditDonation}
+                setPauseDonation={setPauseDonation}
+                setCancelDonation={setCancelDonation}
+                setReactivateDonation={setReactivateDonation}
               />
             )}
           </div>

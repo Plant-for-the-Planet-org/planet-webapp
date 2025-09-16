@@ -1,12 +1,12 @@
+import type { ReactElement, MouseEvent } from 'react';
 import type {
   Intervention,
   MultiTreeRegistration,
-  SingleTreeRegistration,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
+  SingleTreeRegistration,
+} from '@planet-sdk/common';
 import type { Feature, Point, Polygon } from 'geojson';
 
-import React from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
 import area from '@turf/area';
@@ -22,7 +22,7 @@ interface SampleTreeMarkerProps {
   sampleTree: SampleTreeRegistration;
   selectedSampleTree: SampleTreeRegistration | null;
   toggleSampleTree: (
-    e: React.MouseEvent<HTMLDivElement>,
+    e: MouseEvent<HTMLDivElement>,
     sampleTree: SampleTreeRegistration
   ) => void;
 }
@@ -52,7 +52,7 @@ const SampleTreeMarker = ({
   </Marker>
 );
 
-export default function InterventionLayers(): React.ReactElement {
+export default function InterventionLayers(): ReactElement {
   const {
     interventions,
     hoveredIntervention,
@@ -68,7 +68,7 @@ export default function InterventionLayers(): React.ReactElement {
   const locale = useLocale();
 
   const toggleSampleTree = (
-    e: React.MouseEvent<HTMLDivElement>,
+    e: MouseEvent<HTMLDivElement>,
     tree: SingleTreeRegistration | SampleTreeRegistration
   ) => {
     e.stopPropagation();
@@ -120,7 +120,7 @@ export default function InterventionLayers(): React.ReactElement {
   const getPolygonColor = (multiTree: MultiTreeRegistration) => {
     const treeCount = getTreeCount(multiTree);
     const plantationArea = getPlantationArea(multiTree);
-    const density = treeCount / plantationArea;
+    const density = plantationArea > 0 ? treeCount / plantationArea : 0;
     if (density > 2500) {
       return 0.5;
     } else if (density > 2000) {
@@ -135,13 +135,12 @@ export default function InterventionLayers(): React.ReactElement {
   };
 
   const getDateDiff = (intervention: Intervention) => {
-    if (!intervention.interventionStartDate) {
-      return null;
-    }
+    const plantDate =
+      intervention.interventionStartDate ?? intervention.plantDate;
+    if (!plantDate) return '';
+
     const today = new Date();
-    const plantationDate = new Date(
-      intervention.interventionStartDate?.slice(0, 10)
-    );
+    const plantationDate = new Date(plantDate.slice(0, 10));
     const differenceInTime = today.getTime() - plantationDate.getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     if (differenceInDays < 1) {
@@ -153,7 +152,7 @@ export default function InterventionLayers(): React.ReactElement {
         days: localizedAbbreviatedNumber(locale, differenceInDays, 0),
       });
     } else {
-      return null;
+      return '';
     }
   };
 

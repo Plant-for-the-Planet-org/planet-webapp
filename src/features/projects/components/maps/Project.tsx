@@ -12,15 +12,16 @@ import type {
 import type { SetState } from '../../../common/types/common';
 import type { Position } from 'geojson';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { getRasterData } from '../../../../utils/apiRequests/api';
 import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
 import Sites from './Sites';
-import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { zoomToPolygonIntervention } from '../../../../utils/maps/zoomToPolygonIntervention';
+import { useRouter } from 'next/router';
 
 interface Props {
   project: TreeProjectExtended | ConservationProjectExtended;
@@ -39,15 +40,14 @@ export default function Project({
     geoJson,
     selectedSite,
     siteExists,
-    rasterData,
-    setRasterData,
     hoveredPl,
     isMobile,
     setSiteViewPort,
   } = useProjectProps();
-
   const router = useRouter();
-  const [plantPolygonCoordinates, setPlantPolygonCoordinates] = React.useState<
+  const { localizedPath } = useLocalizedPath();
+
+  const [plantPolygonCoordinates, setPlantPolygonCoordinates] = useState<
     Position[] | null
   >(null);
 
@@ -94,7 +94,7 @@ export default function Project({
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       interventions &&
       selectedPl &&
@@ -104,10 +104,14 @@ export default function Project({
       setPlantPolygonCoordinates(selectedPl.geometry.coordinates[0]);
     }
     if (selectedPl)
-      router.push(`/projects-archive/${project.slug}?ploc=${selectedPl?.hid}`);
+      router.push(
+        localizedPath(
+          `/projects-archive/${project.slug}?ploc=${selectedPl?.hid}`
+        )
+      );
   }, [selectedPl]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedPl) {
       if (selectedPl.geometry.type === 'Polygon') {
         const locationCoordinates = selectedPl.geometry.coordinates[0];

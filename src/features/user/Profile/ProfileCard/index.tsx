@@ -1,6 +1,5 @@
 import type { ProfileV2Props } from '../../../common/types/profile';
 
-import React from 'react';
 import { Avatar } from '@mui/material';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from './ProfileCard.module.scss';
@@ -9,12 +8,14 @@ import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/h
 import Link from 'next/link';
 import ProfileActions from './ProfileActions';
 import DonorCircleMemberBadge from './MicroComponents/DonorCircleMemberBadge';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
   const isPrivateAccount = profilePageType === 'private';
   const userImageUrl = userProfile?.image
     ? getImageUrl('profile', 'thumb', userProfile.image)
     : '';
+  const { localizedPath } = useLocalizedPath();
   return (
     <div className={styles.profileCardContainer}>
       <div className={styles.profileBackground}>
@@ -30,7 +31,7 @@ const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
       </div>
       <div className={styles.profileDetailsContainer}>
         {isPrivateAccount && (
-          <Link href="/profile/edit">
+          <Link href={localizedPath('/profile/edit')}>
             <button className={styles.editProfileIcon}>
               <SettingsIcon />
             </button>

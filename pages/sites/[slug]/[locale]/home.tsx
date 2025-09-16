@@ -12,8 +12,9 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
+import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
-import React from 'react';
+import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
 import SalesforceHome from '../../../../src/tenants/salesforce/Home';
 import SternHome from '../../../../src/tenants/stern/Home';
 import BasicHome from '../../../../src/tenants/common/Home';
@@ -35,25 +36,22 @@ interface Props {
 
 export default function Home({ pageProps }: Props) {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
 
-  const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
-    null
-  );
-  const [tenantScore, setTenantScore] = React.useState<TenantScore | null>(
-    null
-  );
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
+  const [tenantScore, setTenantScore] = useState<TenantScore | null>(null);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadTenantScore() {
       try {
         const newTenantScore = await getApi<TenantScore>('/app/tenantScore');
@@ -65,7 +63,7 @@ export default function Home({ pageProps }: Props) {
     loadTenantScore();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadLeaderboard() {
       try {
         const newLeaderBoard = await getApi<LeaderBoardList>(
@@ -85,7 +83,7 @@ export default function Home({ pageProps }: Props) {
     )
   ) {
     if (typeof window !== 'undefined') {
-      router.push('/');
+      router.push(localizedPath('/'));
     }
   }
 

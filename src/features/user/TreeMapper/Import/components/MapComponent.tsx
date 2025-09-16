@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import type { GeoJSON } from 'geojson';
 import type { RequiredMapStyle } from '../../../../common/types/map';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { featureCollection } from '@turf/helpers';
 import bbox from '@turf/bbox';
 import ReactMapboxGl, { ZoomControl, GeoJSONLayer } from 'react-mapbox-gl';
@@ -29,7 +29,7 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
   const defaultZoom = 1.4;
   const { white, warmGreen } = themeProperties.designSystem.colors;
 
-  const [viewport, setViewPort] = React.useState<viewportProps>({
+  const [viewport, setViewPort] = useState<viewportProps>({
     height: '100%',
     width: '100%',
     center: defaultMapCenter,
@@ -43,12 +43,12 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
     zoom: defaultZoom,
   };
 
-  const [style, setStyle] = React.useState({
+  const [style, setStyle] = useState({
     version: 8,
     sources: {},
     layers: [],
   });
-  React.useEffect(() => {
+  useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style: RequiredMapStyle) => {
       if (style) {
@@ -57,7 +57,7 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
     });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (geoJson) {
       const geo = featureCollection([
         { type: 'Feature', geometry: geoJson, properties: {} },

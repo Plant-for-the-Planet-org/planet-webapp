@@ -8,7 +8,7 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import React from 'react';
+import { useEffect } from 'react';
 import Footer from '../../../../src/features/common/Layout/Footer';
 import LandingSection from '../../../../src/features/common/Layout/LandingSection';
 import VerifyEmailComponent from '../../../../src/features/common/VerifyEmail/VerifyEmail';
@@ -29,7 +29,7 @@ export default function VerifyEmail({ pageProps }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }

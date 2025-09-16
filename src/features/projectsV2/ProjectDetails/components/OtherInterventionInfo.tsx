@@ -1,7 +1,7 @@
 import type {
   OtherInterventions,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
+} from '@planet-sdk/common';
 import type { SetState } from '../../../common/types/common';
 
 import { useMemo, Fragment } from 'react';
@@ -39,6 +39,8 @@ const OtherInterventionInfo = ({
   const hasSampleTrees = sampleTrees.length > 0;
   const hasPlantedSpecies = plantedSpecies.length > 0;
   const hasInterventionMetadata = interventionMetadata.length > 0;
+  const plantDate =
+    interventionInfo.interventionStartDate || interventionInfo.plantDate;
 
   const { totalTreesCount } = useMemo(() => {
     const totalTreesCount = hasPlantedSpecies
@@ -72,7 +74,7 @@ const OtherInterventionInfo = ({
       <OtherInterventionInfoHeader
         hid={interventionInfo.hid}
         interventionType={interventionInfo.type}
-        plantDate={interventionInfo.interventionStartDate}
+        plantDate={plantDate}
         key="interventionHeader"
       />
       {shouldDisplayImageCarousel && (
@@ -90,8 +92,6 @@ const OtherInterventionInfo = ({
       <OtherInterventionMetadata
         key="plantingDetails"
         metadata={interventionMetadata}
-        plantDate={interventionInfo.interventionStartDate}
-        type={interventionInfo.type}
       />
     ),
     hasPlantedSpecies && (
@@ -99,6 +99,7 @@ const OtherInterventionInfo = ({
         key="speciesPlanted"
         totalTreesCount={totalTreesCount}
         plantedSpecies={plantedSpecies}
+        plantProject={selectedIntervention?.plantProject}
       />
     ),
     hasSampleTrees && (

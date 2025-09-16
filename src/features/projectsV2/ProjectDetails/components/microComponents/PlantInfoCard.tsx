@@ -1,15 +1,12 @@
-import type {
-  Measurements,
-  SampleTreeRegistration,
-} from '../../../../common/types/intervention';
 import type { SetState } from '../../../../common/types/common';
+import type { Measurements, SampleTreeRegistration } from '@planet-sdk/common';
 
 import styles from '../../styles/InterventionInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
 interface Props {
-  interventionStartDate: string | null | undefined;
+  plantDate: string | null | undefined;
   tag: string | undefined | null;
   scientificName: string | undefined | null;
   measurements: Measurements | undefined;
@@ -18,7 +15,7 @@ interface Props {
 }
 
 const PlantInfoCard = ({
-  interventionStartDate,
+  plantDate,
   tag,
   scientificName,
   measurements,
@@ -29,15 +26,15 @@ const PlantInfoCard = ({
   const sampleTreeConfig = [
     {
       label: tProjectDetails('plantingDate'),
-      data: interventionStartDate ? formatDate(interventionStartDate) : null,
-      shouldRender: interventionStartDate !== undefined,
+      data: plantDate ? formatDate(plantDate) : null,
+      shouldRender: Boolean(plantDate),
     },
     {
       label: tProjectDetails('treeTag'),
       data: tProjectDetails('tag', {
         number: tag,
       }),
-      shouldRender: tag !== undefined || tag !== null,
+      shouldRender: Boolean(tag),
     },
   ];
 

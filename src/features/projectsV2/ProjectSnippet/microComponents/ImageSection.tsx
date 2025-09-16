@@ -1,8 +1,9 @@
+import type { MouseEvent } from 'react';
 import type { ImageSectionProps } from '..';
 
 import { useCallback, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
 import ProjectBadge from './ProjectBadge';
 import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
@@ -13,7 +14,7 @@ import TopProjectReports from './TopProjectReports';
 import styles from '../styles/ProjectSnippet.module.scss';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { getLocalizedPath } from '../../../../utils/projectV2';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const MAX_NAME_LENGTH = 32;
 
@@ -38,7 +39,7 @@ const ImageSection = (props: ImageSectionProps) => {
 
   const tProjectsCommon = useTranslations('Project');
   const router = useRouter();
-  const locale = useLocale();
+  const { localizedPath } = useLocalizedPath();
   const { embed, callbackUrl, showBackIcon } = useContext(ParamsContext);
   const isEmbed = embed === 'true';
   const showBackButton =
@@ -48,17 +49,19 @@ const ImageSection = (props: ImageSectionProps) => {
     if (setPreventShallowPush) setPreventShallowPush(true);
 
     const previousPageRoute = sessionStorage.getItem('backNavigationUrl');
-    const defaultRoute = `/${locale}`;
+    const defaultRoute = `/`;
 
     const baseRoute = previousPageRoute || defaultRoute;
     const isAbsoluteUrl =
       baseRoute.startsWith('http://') || baseRoute.startsWith('https://');
 
     // Get the final route, localizing relative path
-    const finalRoute = isAbsoluteUrl
+    const path = isAbsoluteUrl
       ? baseRoute.split('?')[0] // For absolute URLs, just strip query params
-      : getLocalizedPath(baseRoute, locale);
+      : localizedPath(baseRoute);
 
+    // Cleans up internal routing parameters like `locale`, `slug` etc.
+    const pathWithoutQuery = path.split('?')[0];
     // Handle query parameters for the new navigation
     const queryParams = isEmbed
       ? {
@@ -70,7 +73,7 @@ const ImageSection = (props: ImageSectionProps) => {
     // Navigate and clean up
     router
       .push({
-        pathname: finalRoute,
+        pathname: pathWithoutQuery,
         query: isAbsoluteUrl ? {} : queryParams,
       })
       .then(() => sessionStorage.removeItem('backNavigationUrl'))
@@ -89,7 +92,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const isTouchDevice =
     typeof window !== 'undefined' && 'ontouchstart' in window;
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
+    (e: MouseEvent) => {
       if (isTouchDevice) {
         e.stopPropagation();
         e.preventDefault();

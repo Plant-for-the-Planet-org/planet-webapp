@@ -1,6 +1,7 @@
+import type { SyntheticEvent } from 'react';
 import type { APIError, User } from '@planet-sdk/common';
 
-import React from 'react';
+import { useState, useContext } from 'react';
 import { Modal, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
@@ -25,9 +26,9 @@ export default function EmbedModal({
   setEmbedModalOpen,
 }: Props) {
   const t = useTranslations('EditProfile');
-  const { setErrors } = React.useContext(ErrorHandlingContext);
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const router = useRouter();
   const { putApiAuthenticated } = useApi();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
@@ -37,10 +38,7 @@ export default function EmbedModal({
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
-  const handleSnackbarClose = (
-    event?: React.SyntheticEvent,
-    reason?: string
-  ) => {
+  const handleSnackbarClose = (event?: SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -68,7 +66,7 @@ export default function EmbedModal({
     }
   };
 
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <>
@@ -87,17 +85,6 @@ export default function EmbedModal({
               {t('accountPrivacyChangeText')}
             </div>
           </div>
-          {/* <div className={styles.isPrivateAccountDiv}>
-                        <div>
-                            <div className={styles.mainText}>
-                                {t('editProfile:publicAccount')}
-                            </div>
-                        </div>
-                        <ToggleSwitch
-                            checked={!isPrivate}
-                            onChange={handleToggleChange}
-                        />
-                    </div> */}
           <div
             className={styles.formFieldLarge}
             style={{ justifyContent: 'center' }}

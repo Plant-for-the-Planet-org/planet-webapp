@@ -8,7 +8,7 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import React from 'react';
+import { useEffect } from 'react';
 import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
@@ -19,6 +19,7 @@ import {
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
 
 interface Props {
   pageProps: PageProps;
@@ -26,9 +27,10 @@ interface Props {
 
 export default function Login({ pageProps }: Props): ReactElement {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
@@ -45,7 +47,7 @@ export default function Login({ pageProps }: Props): ReactElement {
     auth0Error,
   } = useUserProps();
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadFunction() {
       // redirect
       if (user) {
@@ -53,10 +55,10 @@ export default function Login({ pageProps }: Props): ReactElement {
           const redirectLink = localStorage.getItem('redirectLink');
           if (redirectLink) {
             localStorage.removeItem('redirectLink');
-            router.push(redirectLink);
+            router.push(localizedPath(redirectLink));
           }
         } else {
-          router.push('/profile');
+          router.push(localizedPath('/profile'));
         }
       }
     }

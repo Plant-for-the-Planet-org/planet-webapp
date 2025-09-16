@@ -1,7 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../common/types/payments';
 
-import React from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
@@ -40,25 +40,25 @@ export const PauseModal = ({
   record,
   fetchRecurrentDonations,
 }: PauseModalProps) => {
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
-  const [option, setOption] = React.useState<string>();
-  const [showCalender, setShowCalender] = React.useState(false);
-  const [date, setdate] = React.useState<Date | null>(
+  const [option, setOption] = useState<string>();
+  const [showCalender, setShowCalender] = useState(false);
+  const [date, setdate] = useState<Date | null>(
     new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24)
   );
-  const [disabled, setDisabled] = React.useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const t = useTranslations('Me');
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setdate(
       new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24)
     );
   }, [record?.currentPeriodEnd]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDisabled(false);
   }, [pauseModalOpen]);
 

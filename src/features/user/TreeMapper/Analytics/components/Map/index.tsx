@@ -265,7 +265,8 @@ export const MapContainer = () => {
           // Calculate the area based on the feature's coordinates using Turf.js
           const polygonAreaSqMeters = area(intervention.geometry);
           const treeCount = intervention.properties.treeCount;
-          const density = treeCount / polygonAreaSqMeters;
+          const density =
+            polygonAreaSqMeters > 0 ? treeCount / polygonAreaSqMeters : 0;
 
           // Add the calculated density to the feature properties
           return {
@@ -366,7 +367,7 @@ export const MapContainer = () => {
   // If the input is a HID, the plant location with the matching HID will be selected
   // If the input is a Date, the plant locations with the matching Date will be selected
   const handleSearchChange = (
-    event: React.ChangeEvent<HTMLInputElement> | React.ClipboardEvent
+    event: ChangeEvent<HTMLInputElement> | ClipboardEvent
   ) => {
     let value = '';
 

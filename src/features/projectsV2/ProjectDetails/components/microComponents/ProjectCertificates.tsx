@@ -1,6 +1,5 @@
 import type { Certificate } from '@planet-sdk/common';
 
-import React from 'react';
 import styles from '../../styles/ProjectInfo.module.scss';
 import DownloadsLabel from './DownloadsLabel';
 import DownloadButton from './DownloadButton';

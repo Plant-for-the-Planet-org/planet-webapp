@@ -1,8 +1,8 @@
 import type { SetState } from '../../../common/types/common';
 import type {
-  SingleTreeRegistration,
   SampleTreeRegistration,
-} from '../../../common/types/intervention';
+  SingleTreeRegistration,
+} from '@planet-sdk/common';
 
 import PlantInfoCard from './microComponents/PlantInfoCard';
 import styles from '../styles/InterventionInfo.module.scss';
@@ -24,7 +24,8 @@ const SingleTreeInfo = ({
   if (!activeSingleTree) return null;
 
   const plantInfoProps = {
-    interventionStartDate: activeSingleTree.interventionStartDate,
+    plantDate:
+      activeSingleTree.interventionStartDate || activeSingleTree.plantDate,
     tag: activeSingleTree.tag,
     scientificName: activeSingleTree.scientificName,
     measurements: activeSingleTree.measurements,

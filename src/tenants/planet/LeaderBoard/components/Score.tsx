@@ -1,6 +1,6 @@
 import type { APIError } from '@planet-sdk/common';
 
-import React from 'react';
+import { useState, useContext } from 'react';
 import styles from './LeaderBoard.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
@@ -14,6 +14,7 @@ import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHa
 import { handleError } from '@planet-sdk/common';
 import { MuiAutoComplete } from '../../../../features/common/InputTypes/MuiAutoComplete';
 import { useApi } from '../../../../hooks/useApi';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 interface Props {
   leaderboard: any;
@@ -34,14 +35,15 @@ type UserApiPayload = {
 };
 
 export default function LeaderBoardSection(leaderboard: Props) {
-  const [selectedTab, setSelectedTab] = React.useState('recent');
+  const [selectedTab, setSelectedTab] = useState('recent');
   const leaderboardData = leaderboard.leaderboard;
   const tLeaderboard = useTranslations('Leaderboard');
   const tCommon = useTranslations('Common');
   const locale = useLocale();
-  const { setErrors } = React.useContext(ErrorHandlingContext);
-  const [users, setUsers] = React.useState<LeaderboardUser[]>([]);
   const { postApi } = useApi();
+  const { localizedPath } = useLocalizedPath();
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const fetchUsers = async (query: string) => {
     try {
       const res = await postApi<LeaderboardUser[], UserApiPayload>(
@@ -155,8 +157,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                     >
                       <Link
                         prefetch={false}
-                        href="/t/[id]"
-                        as={`/t/${option.slug}`}
+                        href={localizedPath(`/t/${option.slug}`)}
                         className={styles['autocomplete-option']}
                       >
                         <div

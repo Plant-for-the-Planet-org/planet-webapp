@@ -10,7 +10,7 @@ import type { APIError } from '@planet-sdk/common';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { PaymentOptions } from '../../../../../../../src/features/user/BulkCodes/BulkCodesTypes';
 
-import React, { useEffect, useCallback, useContext } from 'react';
+import { useEffect, useCallback, useContext } from 'react';
 import UserLayout from '../../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import BulkCodes, {
   BulkCodeSteps,
@@ -32,6 +32,7 @@ import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
 import { useApi } from '../../../../../../../src/hooks/useApi';
+import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
 
 interface Props {
   pageProps: PageProps;
@@ -41,6 +42,7 @@ export default function BulkCodeIssueCodesPage({
   pageProps,
 }: Props): ReactElement {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Me');
   const { setTenantConfig } = useTenant();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
@@ -88,7 +90,7 @@ export default function BulkCodeIssueCodesPage({
             redirect('/');
           }
         } else {
-          router.push(`/profile/bulk-codes`);
+          router.push(localizedPath('/profile/bulk-codes'));
         }
       }
 
@@ -101,14 +103,14 @@ export default function BulkCodeIssueCodesPage({
           ) {
             setBulkMethod(_bulkMethod);
           } else {
-            router.push(`/profile/bulk-codes`);
+            router.push(localizedPath('/profile/bulk-codes'));
           }
         }
       }
     }
   }, [router.isReady, planetCashAccount, token, contextLoaded, projectList]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }

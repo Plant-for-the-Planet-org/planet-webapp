@@ -1,6 +1,5 @@
 import type { AbstractIntlMessages } from 'next-intl';
 import type { SetState } from '../../../../../src/features/common/types/common';
-import type { Intervention } from '../../../../../src/features/common/types/intervention';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
@@ -13,10 +12,12 @@ import type {
   TreeProjectExtended,
   ConservationProjectExtended,
   ProjectExtended,
+  Intervention,
 } from '@planet-sdk/common';
 
+import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
-import React from 'react';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { useProjectProps } from '../../../../../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../../../../../src/features/projectsV2/ProjectsMap/Credits';
@@ -49,10 +50,11 @@ export default function Donate({
 }: Props) {
   const router = useRouter();
   const { getApi } = useApi();
-  const [internalCurrencyCode, setInternalCurrencyCode] = React.useState<
+  const { localizedPath } = useLocalizedPath();
+  const [internalCurrencyCode, setInternalCurrencyCode] = useState<
     string | undefined | null
   >(undefined);
-  const [internalLanguage, setInternalLanguage] = React.useState('');
+  const [internalLanguage, setInternalLanguage] = useState('');
   const locale = useLocale();
   const {
     geoJson,
@@ -69,19 +71,19 @@ export default function Donate({
 
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setZoomLevel(2);
   }, []);
 
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadProject() {
       if (
         !internalCurrencyCode ||
@@ -129,7 +131,7 @@ export default function Donate({
     }
   }, [router.query.p, currencyCode, locale]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadPl(
       project: ConservationProjectExtended | TreeProjectExtended
     ) {
@@ -151,7 +153,7 @@ export default function Donate({
     }
   }, [project]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       geoJson?.features[0].properties.id &&
       !router.query.site &&
@@ -168,29 +170,28 @@ export default function Donate({
       searchParams.append('site', geoJson.features[0].properties.id);
 
       const newSearch = searchParams.toString();
-      const newPath = `/${locale}/projects-archive/${project.slug}${
+      const newPath = `/projects-archive/${project.slug}${
         newSearch.length > 0 ? `?${newSearch}` : ''
       }`;
-
-      router.push(newPath);
+      router.push(localizedPath(newPath));
     }
   }, [project?.slug, router.query.site, router.query.ploc, locale, geoJson]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //for selecting one of the site of project if user use link  to directly visit to site from home page
     if (project && geoJson && router.query.site) {
       const siteIndex: number = geoJson?.features.findIndex((singleSite) => {
         return router.query.site === singleSite?.properties.id;
       });
       if (siteIndex === -1) {
-        router.push(`/projects-archive/${project.slug}`);
+        router.push(localizedPath(`/projects-archive/${project.slug}`));
       } else {
         setSelectedSite(siteIndex);
       }
     }
   }, [setSelectedSite, geoJson, project]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //for selecting one of the intervention . if user use link  to directly visit to intervention from home page
     if (geoJson && router.query.ploc && interventions && project) {
       const singleIntervention: Intervention | undefined = interventions?.find(
@@ -200,7 +201,7 @@ export default function Donate({
       );
 
       if (singleIntervention === undefined) {
-        router.push(`/projects-archive/${project.slug}`);
+        router.push(localizedPath(`/projects-archive/${project.slug}`));
       } else {
         setSelectedPl(singleIntervention);
       }

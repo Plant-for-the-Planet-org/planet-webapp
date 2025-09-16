@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { ViewState } from 'react-map-gl-v7';
 import type { MapStyle } from 'react-map-gl-v7/maplibre';
 import type { SetState } from '../common/types/common';
@@ -128,11 +128,11 @@ interface ProjectsMapProviderProps {
   isQueryParamsLoaded?: boolean;
 }
 
-export const ProjectsMapProvider: FC<ProjectsMapProviderProps> = ({
+export const ProjectsMapProvider = ({
   children,
   isEmbedded = false,
   isQueryParamsLoaded = false,
-}) => {
+}: ProjectsMapProviderProps) => {
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapOptions, setMapOptions] = useState<MapOptions>({

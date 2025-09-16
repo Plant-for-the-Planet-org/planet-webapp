@@ -1,12 +1,13 @@
 import type { ReactElement } from 'react';
-import type { MultiTreeRegistration } from '../../../../common/types/intervention';
+import type { MultiTreeRegistration } from '@planet-sdk/common';
 
-import React from 'react';
+import { useState } from 'react';
 import styles from '../Import.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
+import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 interface Props {
   intervention: MultiTreeRegistration;
@@ -18,10 +19,12 @@ export default function ReviewSubmit({
   handleBack,
 }: Props): ReactElement {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const tTreemapper = useTranslations('Treemapper');
   const tMaps = useTranslations('Maps');
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [submitted, setSubmitted] = React.useState(true);
+
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [submitted, setSubmitted] = useState(true);
 
   const handleSubmit = () => {
     setIsUploadingData(true);
@@ -37,7 +40,7 @@ export default function ReviewSubmit({
             <h2>{tTreemapper('submittedSuccess')}</h2>
             <p>{tTreemapper('submittedSuccessDescription')}</p>
             <Button
-              onClick={() => router.push('/profile/treemapper')}
+              onClick={() => router.push(localizedPath('/profile/treemapper'))}
               variant="contained"
               color="primary"
             >
@@ -48,9 +51,7 @@ export default function ReviewSubmit({
       ) : (
         <>
           <div className={styles.stepTitle}>{tTreemapper('summary')}</div>
-          <div className={styles.stepDescription}>
-            {tTreemapper('reviewSubmitDescription')}
-          </div>
+          <div>{tTreemapper('reviewSubmitDescription')}</div>
           {intervention ? (
             <div className={styles.stepContent}>
               <div className={styles.grid}>
@@ -109,9 +110,9 @@ export default function ReviewSubmit({
                     {intervention.sampleInterventions &&
                       intervention.sampleInterventions.map((spl, index) => {
                         return (
-                          <div key={index} className={styles.value}>
+                          <div key={index}>
                             {index + 1}.{' '}
-                            <span className={styles.link}>
+                            <span>
                               {'otherSpecies' in spl && spl.otherSpecies}
                             </span>
                             <br />

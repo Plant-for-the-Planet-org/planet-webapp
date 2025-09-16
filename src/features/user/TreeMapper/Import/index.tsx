@@ -1,8 +1,7 @@
 import type { ReactElement } from 'react';
-import type { APIError } from '@planet-sdk/common';
-import type { Intervention } from '../../../common/types/intervention';
+import type { APIError, Intervention } from '@planet-sdk/common';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
 import { useTranslations } from 'next-intl';
@@ -46,7 +45,7 @@ export default function ImportData(): ReactElement {
   const router = useRouter();
   const tTreemapper = useTranslations('Treemapper');
   const tCommon = useTranslations('Common');
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated } = useApi();
   function getSteps() {
     return [
@@ -55,13 +54,11 @@ export default function ImportData(): ReactElement {
       tTreemapper('submitted'),
     ];
   }
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
-  const [intervention, setIntervention] = React.useState<Intervention | null>(
-    null
-  );
-  const [userLang, setUserLang] = React.useState('en');
-  const [geoJson, setGeoJson] = React.useState(null);
+  const [intervention, setIntervention] = useState<Intervention | null>(null);
+  const [userLang, setUserLang] = useState('en');
+  const [geoJson, setGeoJson] = useState(null);
 
   const fetchIntervention = async (id: string) => {
     try {
@@ -77,13 +74,13 @@ export default function ImportData(): ReactElement {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router && router.query.loc && !Array.isArray(router.query.loc)) {
       fetchIntervention(router.query.loc);
     }
   }, [router]);
 
-  const [activeMethod, setActiveMethod] = React.useState('import');
+  const [activeMethod, setActiveMethod] = useState('import');
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -93,7 +90,7 @@ export default function ImportData(): ReactElement {
     setActiveStep(activeStep - 1);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);

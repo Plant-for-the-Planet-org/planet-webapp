@@ -1,6 +1,6 @@
 import type { LeaderBoardList } from '../../../features/common/types/leaderboard';
 
-import React from 'react';
+import { useState } from 'react';
 import styles from './LeaderBoard.module.scss';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { useLocale, useTranslations } from 'next-intl';
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function LeaderBoardSection(leaderboard: Props) {
-  const [selectedTab, setSelectedTab] = React.useState('recent');
+  const [selectedTab, setSelectedTab] = useState('recent');
   const leaderboardData = leaderboard.leaderboard;
   const tLeaderboard = useTranslations('Leaderboard');
   const tCommon = useTranslations('Common');
@@ -20,7 +20,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>
         <h2>{tLeaderboard('forestFrontrunners')}</h2>
-        <div className={styles.leaderBoardTable}>
+        <>
           <div className={styles.leaderBoardTableHeader}>
             <button
               id={'LeaderBoardRecent'}
@@ -83,7 +83,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
           ) : (
             <p>loading</p>
           )}
-        </div>
+        </>
       </div>
       <img
         className={styles.leaderBoardBushImage}

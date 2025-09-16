@@ -12,7 +12,7 @@ import type {
 } from 'next';
 
 import { useRouter } from 'next/router';
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import ProjectsList from '../../../../../src/features/projects/screens/Projects';
 import ProjectsListMeta from '../../../../../src/utils/getMetaTags/ProjectsListMeta';
 import getStoredCurrency from '../../../../../src/utils/countryCurrency/getStoredCurrency';
@@ -31,6 +31,7 @@ import {
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../../tenant.config';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 
 interface Props {
   currencyCode: string;
@@ -57,31 +58,32 @@ export default function Donate({
   // Set tenent
   // set local storage
 
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const locale = useLocale();
   const router = useRouter();
   const { getApi } = useApi();
-  const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
-  const [directGift, setDirectGift] = React.useState<DirectGiftI | null>(null);
-  const [showDirectGift, setShowDirectGift] = React.useState(true);
-  const [internalLanguage, setInternalLanguage] = React.useState('');
+  const { localizedPath } = useLocalizedPath();
+  const [internalCurrencyCode, setInternalCurrencyCode] = useState('');
+  const [directGift, setDirectGift] = useState<DirectGiftI | null>(null);
+  const [showDirectGift, setShowDirectGift] = useState(true);
+  const [internalLanguage, setInternalLanguage] = useState('');
 
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
     if (getdirectGift) {
       setDirectGift(JSON.parse(getdirectGift));
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (directGift) {
       if (directGift.show === false) {
         setShowDirectGift(false);
@@ -90,21 +92,21 @@ export default function Donate({
   }, [directGift]);
 
   // Deprecation Notice: This route will be removed in next major version
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof router.query.p === 'string') {
       const safePath = encodeURIComponent(router.query.p);
-      router.push(encodeURI(`/projects-archive/${safePath}`));
+      router.push(localizedPath(encodeURI(`/projects-archive/${safePath}`)));
     }
   }, [router]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setShowSingleProject(false);
     setProject(null);
     setZoomLevel(1);
   }, []);
 
   // Load all projects
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadProjects() {
       if (
         !internalCurrencyCode ||

@@ -1,6 +1,6 @@
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 
-import React, { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useLocale } from 'next-intl';
 
@@ -29,7 +29,7 @@ export const ParamsContext = createContext<ParamsContextType>({
   page: null,
 });
 
-const QueryParamsProvider: FC = ({ children }) => {
+const QueryParamsProvider = ({ children }: { children: ReactNode }) => {
   const locale = useLocale();
   const [isContextLoaded, setIsContextLoaded] = useState(false);
   const [embed, setEmbed] = useState<QueryParamType>(undefined);

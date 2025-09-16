@@ -10,8 +10,9 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
 
-import React from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
@@ -42,22 +43,23 @@ type RedeemCodePayload = {
 function ClaimDonation({ pageProps }: Props): ReactElement {
   const t = useTranslations('Redeem');
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
   const { user, contextLoaded, loginWithRedirect } = useUserProps();
   const { postApiAuthenticated } = useApi();
-  const { errors, setErrors } = React.useContext(ErrorHandlingContext);
-  const [code, setCode] = React.useState<string>('');
-  const [redeemedCodeData, setRedeemedCodeData] = React.useState<
+  const { errors, setErrors } = useContext(ErrorHandlingContext);
+  const [code, setCode] = useState<string>('');
+  const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       router &&
       router.query.type &&
@@ -71,13 +73,13 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   }, [router, router.query.type]);
 
   const redeemAnotherCode = () => {
-    router.push(`/profile/redeem/${code}?inputCode=${true}`);
+    router.push(localizedPath(`/profile/redeem/${code}?inputCode=${true}`));
     setRedeemedCodeData(undefined);
   };
 
   const closeRedeem = () => {
     if (typeof window !== 'undefined') {
-      router.push(`/`);
+      router.push(localizedPath('/'));
     }
   };
 
@@ -125,14 +127,14 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.query.code && typeof router.query.code === 'string') {
       setCode(router.query.code);
     }
   }, [router.query.code]);
 
   // // Check if the user is logged in or not.
-  React.useEffect(() => {
+  useEffect(() => {
     // If the user is not logged in - send the user to log in page, store the claim redirect link in the localstorage.
     // When the user logs in, redirect user to the claim link from the localstorage and clear the localstorage.
     // For this  fetch the link from the storage, clears the storage and then redirects the user using the link
@@ -148,7 +150,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     }
   }, [contextLoaded, user]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //redeem code using route
     if (user && contextLoaded) {
       if (

@@ -1,7 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../common/types/payments';
 
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
@@ -50,9 +50,9 @@ export const EditModal = ({
   record,
   fetchRecurrentDonations,
 }: EditModalProps) => {
-  const { theme } = React.useContext(ThemeContext);
-  const [userLang, setUserLang] = React.useState('en');
-  const [disabled, setDisabled] = React.useState(false);
+  const { theme } = useContext(ThemeContext);
+  const [userLang, setUserLang] = useState('en');
+  const [disabled, setDisabled] = useState(false);
   const { putApiAuthenticated } = useApi();
   const t = useTranslations('Me');
   const locale = useLocale();
@@ -63,14 +63,14 @@ export const EditModal = ({
   } = useForm<FormData>({
     mode: 'all',
   });
-  const { setErrors } = React.useContext(ErrorHandlingContext);
-  React.useEffect(() => {
+  const { setErrors } = useContext(ErrorHandlingContext);
+  useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);
     }
   }, []);
-  React.useEffect(() => {
+  useEffect(() => {
     setDisabled(false);
   }, [editModalOpen]);
 

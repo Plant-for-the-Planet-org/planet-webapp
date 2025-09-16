@@ -8,13 +8,14 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import UserLayout from '../../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import BulkCodes, {
   BulkCodeSteps,
 } from '../../../../../../../src/features/user/BulkCodes';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
 import { useBulkCode } from '../../../../../../../src/features/common/Layout/BulkCodeContext';
 import { BulkCodeMethods } from '../../../../../../../src/utils/constants/bulkCodeConstants';
 import { useTranslations } from 'next-intl';
@@ -36,10 +37,11 @@ export default function BulkCodeSelectProjectPage({
 }: Props): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { bulkMethod, setBulkMethod } = useBulkCode();
   const { setTenantConfig } = useTenant();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
@@ -56,7 +58,7 @@ export default function BulkCodeSelectProjectPage({
         ) {
           setBulkMethod(_bulkMethod);
         } else {
-          router.push(`/profile/bulk-codes`);
+          router.push(localizedPath('/profile/bulk-codes'));
         }
       }
     }

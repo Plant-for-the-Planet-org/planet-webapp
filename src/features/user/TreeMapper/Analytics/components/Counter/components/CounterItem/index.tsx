@@ -36,7 +36,7 @@ export const CounterItem = ({ quantity, label }: Props) => {
   return (
     <Grid item className={styles.container}>
       <p className={styles.quantity}> {formatNumber(quantity)} </p>
-      <p className={styles.label}> {label} </p>
+      <p>{label}</p>
     </Grid>
   );
 };

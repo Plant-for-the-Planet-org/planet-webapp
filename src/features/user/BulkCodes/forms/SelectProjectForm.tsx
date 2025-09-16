@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { CountryProject } from '@planet-sdk/common';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
@@ -11,22 +11,25 @@ import BulkCodesError from '../components/BulkCodesError';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const SelectProjectForm = (): ReactElement | null => {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const tCommon = useTranslations('Common');
   const { method } = router.query;
   const { project, setProject, projectList, planetCashAccount } = useBulkCode();
   const { user } = useUserProps();
-
   const [localProject, setLocalProject] = useState<CountryProject | null>(
     project
   );
-
   const handleFormSubmit = () => {
     if (localProject) {
       setProject(localProject);
-      router.push(`/profile/bulk-codes/${method}/${localProject.guid}`);
+      if (typeof method !== 'string') return;
+      router.push(
+        localizedPath(`/profile/bulk-codes/${method}/${localProject.guid}`)
+      );
     }
   };
 

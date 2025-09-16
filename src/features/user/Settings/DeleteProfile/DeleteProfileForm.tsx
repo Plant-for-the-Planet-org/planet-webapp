@@ -1,28 +1,34 @@
+import type { ChangeEvent } from 'react';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 
-import React from 'react';
+import { useState, useContext } from 'react';
 import styles from './DeleteProfile.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../../common/Layout/CustomModal';
-import router from 'next/router';
 import { useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
 
 export default function DeleteProfileForm() {
   const { user, logoutUser } = useUserProps();
   const tCommon = useTranslations('Common');
-  const handleChange = (e: React.ChangeEvent<{}>) => {
+
+  const handleChange = (e: ChangeEvent<{}>) => {
     e.preventDefault();
   };
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { deleteApiAuthenticated } = useApi();
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [isModalOpen, setisModalOpen] = React.useState(false); //true when subscriptions are present
-  const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
+
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); //true when subscriptions are present
+  const [canDeleteAccount, setcanDeleteAccount] = useState(false);
 
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
@@ -38,7 +44,7 @@ export default function DeleteProfileForm() {
       for (const error of serializedErrors) {
         switch (error.message) {
           case 'active_subscriptions':
-            setisModalOpen(true);
+            setIsModalOpen(true);
             break;
 
           default:
@@ -51,12 +57,12 @@ export default function DeleteProfileForm() {
     }
   };
   const handleSubscriptions = () => {
-    setisModalOpen(false);
-    router.push('/profile/recurrency');
+    setIsModalOpen(false);
+    router.push(localizedPath('/profile/recurrency'));
   };
 
   const closeModal = () => {
-    setisModalOpen(false);
+    setIsModalOpen(false);
     setcanDeleteAccount(false);
   };
 
@@ -86,9 +92,7 @@ export default function DeleteProfileForm() {
             }
           }}
         ></TextField>
-        <p className={styles.deleteConsent}>
-          {tCommon('deleteAccountConsent')}
-        </p>
+        <p>{tCommon('deleteAccountConsent')}</p>
         <p>
           <strong>{tCommon('deleteCondition')}</strong>
         </p>

@@ -1,15 +1,16 @@
 import type { ReactElement } from 'react';
 
+import { useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import ReactPlayer from 'react-player/lazy';
 import ReadMoreReact from 'read-more-react';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
@@ -20,6 +21,7 @@ import ProjectTabs from '../components/maps/ProjectTabs';
 import InterventionDetails from '../components/Intervention/InterventionDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import TopProjectReports from '../components/projectDetails/TopProjectReports';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import themeProperties from '../../../theme/themeProperties';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
@@ -39,7 +41,6 @@ function SingleProjectDetails(): ReactElement {
 
   const tDonate = useTranslations('Donate');
   const tMaps = useTranslations('Maps');
-  const locale = useLocale();
   const {
     project,
     geoJson,
@@ -50,7 +51,7 @@ function SingleProjectDetails(): ReactElement {
     setSelectedPl,
     sampleIntervention,
   } = useProjectProps();
-
+  const { localizedPath } = useLocalizedPath();
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
@@ -60,10 +61,10 @@ function SingleProjectDetails(): ReactElement {
   const isEmbed = embed === 'true';
   const [hideProjectContainer, setHideProjectContainer] = useState(isEmbed);
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const [openModal, setModalOpen] = React.useState(false);
+  const [openModal, setModalOpen] = useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
   };
@@ -88,22 +89,24 @@ function SingleProjectDetails(): ReactElement {
       setHoveredPl(null);
       setSelectedPl(null);
       router.push(
-        `/projects-archive/${project.slug}/${
-          isEmbed
-            ? `${
-                callbackUrl != undefined
-                  ? `?embed=true&callback=${callbackUrl}`
-                  : '?embed=true'
-              }`
-            : ''
-        }`
+        localizedPath(
+          `/projects-archive/${project.slug}/${
+            isEmbed
+              ? `${
+                  callbackUrl != undefined
+                    ? `?embed=true&callback=${callbackUrl}`
+                    : '?embed=true'
+                }`
+              : ''
+          }`
+        )
       );
     } else {
       if (document.referrer) {
         window.history.go(-2);
       } else {
         router.replace({
-          pathname: `/${locale}/projects-archive`,
+          pathname: localizedPath(`/projects-archive`),
           query: {
             ...(isEmbed ? { embed: 'true' } : {}),
             ...(isEmbed && callbackUrl !== undefined

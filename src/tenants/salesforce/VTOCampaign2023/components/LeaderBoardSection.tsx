@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import styles from './../styles/LeaderBoardSection.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
-  const [selectedTab, setSelectedTab] = React.useState('recent');
+  const [selectedTab, setSelectedTab] = useState('recent');
   const isLeaderboardAvailable =
     isLoaded &&
     leaderboard &&
@@ -34,7 +34,7 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
       <div className={styles.leaderBoard}>
         <h2>Tree Donation Tracker</h2>
         {isLeaderboardAvailable ? (
-          <div className={styles.leaderBoardTable}>
+          <>
             <div className={styles.leaderBoardTableHeader}>
               <button
                 id={'leaderBoardSecRecent'}
@@ -102,7 +102,7 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
             ) : (
               <p>loading</p>
             )}
-          </div>
+          </>
         ) : (
           <div>Leaderboard data not available.</div>
         )}
