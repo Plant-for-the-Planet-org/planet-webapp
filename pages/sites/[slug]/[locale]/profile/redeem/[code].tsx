@@ -71,10 +71,14 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   }, [contextLoaded, user]);
 
   useEffect(() => {
-    if (router.query.code && typeof router.query.code === 'string') {
+    if (
+      router.isReady &&
+      router.query.code &&
+      typeof router.query.code === 'string'
+    ) {
       setCode(router.query.code);
     }
-  }, [router.query.code]);
+  }, [router.isReady, router.query.code]);
 
   async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);

@@ -65,7 +65,7 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
     ) {
       // re-initiating the profile
       setProfile(null);
-      loadPublicProfile(router.query.profile as string);
+      loadPublicProfile(router.query.profile);
     }
   }, [router.isReady, router.query.profile]);
 
