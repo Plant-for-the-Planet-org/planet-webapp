@@ -1,11 +1,11 @@
-import type { FeatureCollection as GeoJson } from 'geojson';
+import type { SitesGeoJSON } from '../../../../common/types/ProjectPropsContextInterface';
 
 import { Source, Layer } from 'react-map-gl-v7/maplibre';
 import themeProperties from '../../../../../theme/themeProperties';
 
 interface SiteLayerProps {
   satellite: boolean;
-  geoJson: GeoJson;
+  geoJson: SitesGeoJSON | null;
 }
 
 const ProjectSiteLayer = ({ satellite, geoJson }: SiteLayerProps) => {

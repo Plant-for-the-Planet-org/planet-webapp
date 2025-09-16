@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
 import type {
   MapMouseEvent,
   ViewState,
@@ -10,7 +11,12 @@ import type {
   MapRef,
 } from '../../../common/types/projectv2';
 import type { SetState } from '../../../common/types/common';
-import type { Feature, FeatureCollection, Geometry } from 'geojson';
+import type {
+  Feature,
+  GeoJsonProperties,
+  MultiPolygon,
+  Polygon,
+} from 'geojson';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import MapGL, { NavigationControl } from 'react-map-gl-v7/maplibre';
@@ -32,8 +38,8 @@ import DrawingPreviewLayer from './microComponent/DrawingPreviewLayer';
 import MapControllers from './microComponent/MapControllers';
 
 interface Props {
-  geoJson: any;
-  setGeoJson: Function;
+  geoJson: SitesGeoJSON | null;
+  setGeoJson: SetState<SitesGeoJSON | null>;
   geoJsonError: boolean;
   setGeoJsonError: SetState<boolean>;
 }
@@ -69,7 +75,7 @@ export default function MapComponent({
   const handleDoubleClick = useCallback(() => {
     if (coordinates.length < 3) return; // need at least 3 points
     const closed = [...coordinates, coordinates[0]];
-    const newFeature: Feature<Geometry> = {
+    const newFeature: Feature<Polygon | MultiPolygon, GeoJsonProperties> = {
       type: 'Feature',
       properties: {},
       geometry: {
@@ -78,7 +84,7 @@ export default function MapComponent({
       },
     };
 
-    setGeoJson((prev: FeatureCollection<Geometry> | null) => {
+    setGeoJson((prev: SitesGeoJSON | null) => {
       if (!prev) {
         return {
           type: 'FeatureCollection',
