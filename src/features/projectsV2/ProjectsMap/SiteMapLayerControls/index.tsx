@@ -1,19 +1,18 @@
-import type { LayerOption } from './SiteLayerOptions';
-
 import { useState, useRef, useEffect } from 'react';
 import LayerInfoPopup from './LayerInfoPopup';
 import SiteLayerInfo from './SiteLayerInfo';
 import SiteLayerSelector from './SiteLayerSelector';
-import { availableLayerOptions } from './SiteLayerOptions';
 import styles from './SiteMapLayerControls.module.scss';
+import { useProjectsMap } from '../../ProjectsMapContext';
 
 const SiteMapLayerControls = () => {
   const [isLayerInfoOpen, setIsLayerInfoOpen] = useState(false);
-  // TODO: move to context
-  const [selectedLayer, setSelectedLayer] = useState<LayerOption>(
-    availableLayerOptions[0]
-  );
+  const { selectedSiteLayer } = useProjectsMap();
   const popupRef = useRef<HTMLDivElement>(null);
+
+  if (!selectedSiteLayer) {
+    return null;
+  }
 
   useEffect(() => {
     const handleInteractionOutside = (event: MouseEvent | TouchEvent) => {
@@ -59,16 +58,13 @@ const SiteMapLayerControls = () => {
         <LayerInfoPopup
           ref={popupRef}
           closePopup={closeLayerInfoPopup}
-          selectedLayer={selectedLayer}
+          selectedLayer={selectedSiteLayer}
         />
       )}
-      <SiteLayerSelector
-        setSelectedLayer={setSelectedLayer}
-        selectedLayer={selectedLayer}
-      />
+      <SiteLayerSelector />
       <SiteLayerInfo
         openInfoPopup={openLayerInfoPopup}
-        selectedLayer={selectedLayer}
+        selectedLayer={selectedSiteLayer}
       />
     </div>
   );

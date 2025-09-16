@@ -7,12 +7,12 @@ import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 
 interface Props {
   geoJson: SitesGeoJSON;
-  isSatelliteView: boolean;
+  isSatelliteBackground: boolean;
 }
 
-export default function SiteLayers({
+export default function SitePolygonLayers({
   geoJson,
-  isSatelliteView,
+  isSatelliteBackground,
 }: Props): ReactElement {
   const { colors } = themeProperties.designSystem;
 
@@ -31,7 +31,9 @@ export default function SiteLayers({
         type="line"
         source="project-site"
         paint={{
-          'line-color': isSatelliteView ? colors.white : colors.primaryColor,
+          'line-color': isSatelliteBackground
+            ? colors.white
+            : colors.primaryColor,
           'line-width': 4,
         }}
         layout={{

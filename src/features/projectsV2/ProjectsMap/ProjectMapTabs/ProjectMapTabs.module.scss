@@ -16,6 +16,7 @@
   z-index: 40;
   color: $dark;
 }
+
 .singleTabOption {
   display: flex;
   flex-direction: row;
@@ -32,6 +33,7 @@
 .singleTabOption svg {
   width: 18px;
 }
+
 .singleTabOption p {
   display: none;
 }
@@ -42,26 +44,23 @@
   background-color: $dsPrimaryColor;
 }
 
-.showSeparator1,
-.showSeparator2 {
-  background: $dsCoreText;
-  width: 0.5px;
+.separator {
+  width: 0; // Zero width so it doesn't affect layout
   height: 30px;
-  position: absolute;
-  top: 20%;
-  opacity: 0.3;
-}
+  position: relative;
+  margin: 0 -4px; // Counteract half the gap of the tabsContainer (8px) on each side
 
-.showSeparator1 {
-  left: 63px;
-}
-
-.showSeparator2 {
-  left: 144px;
-}
-
-.hideSeparator {
-  display: none;
+  // Pseudo-element to create the separator line without affecting full tab width and causing layout shift
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0.5px;
+    height: 100%;
+    background: $dsCoreText;
+    opacity: 0.3;
+  }
 }
 
 @include xlDesktopView {
@@ -71,12 +70,5 @@
       font-size: $fontXSmall;
       font-weight: 700;
     }
-  }
-  .showSeparator1 {
-    left: 164px;
-  }
-
-  .showSeparator2 {
-    left: 345px;
   }
 }

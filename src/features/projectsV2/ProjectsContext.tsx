@@ -45,6 +45,7 @@ interface ProjectsState {
   setHoveredIntervention: SetState<Intervention | null>;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
+  selectedSiteId: string | null;
   setPreventShallowPush: SetState<boolean>;
   isLoading: boolean;
   setIsLoading: SetState<boolean>;
@@ -119,6 +120,17 @@ export const ProjectsProvider = ({
   const { tenantConfig } = useTenant();
   const { getApi } = useApi();
   const { ploc: requestedIntervention, site: requestedSite } = router.query;
+
+  const selectedSiteId = useMemo(() => {
+    if (
+      selectedSite === null ||
+      singleProject === null ||
+      singleProject.sites === null ||
+      selectedSite >= singleProject.sites.length //bounds check
+    )
+      return null;
+    return singleProject.sites[selectedSite].properties.id;
+  }, [singleProject, selectedSite]);
 
   // Read filter from URL only on initial load
   useEffect(() => {
@@ -494,6 +506,7 @@ export const ProjectsProvider = ({
       setSelectedSampleTree,
       selectedSite,
       setSelectedSite,
+      selectedSiteId,
       selectedInterventionType,
       setSelectedInterventionType,
       setPreventShallowPush,
@@ -514,6 +527,7 @@ export const ProjectsProvider = ({
       selectedSampleTree,
       hoveredIntervention,
       selectedSite,
+      selectedSiteId,
       preventShallowPush,
       selectedInterventionType,
       showDonatableProjects,

@@ -1,5 +1,7 @@
 @import '../../../../theme/theme';
 
+$nonMobileMargin: 10px;
+
 .siteMapLayerControls {
   width: 100%;
   max-width: 100%;
@@ -15,7 +17,8 @@
 
   @include smTabletView {
     max-width: 420px;
-    right: 10px;
+    bottom: $nonMobileMargin;
+    left: $nonMobileMargin;
     flex-direction: row;
 
     > * {
@@ -58,6 +61,12 @@
   flex-direction: row;
   gap: 4px;
   align-items: center;
+
+  &.disabled {
+    cursor: auto;
+    opacity: 0.7;
+    pointer-events: none;
+  }
 
   .dropdownButtonIcon,
   .dropdownButtonArrow {

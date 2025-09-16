@@ -1,7 +1,7 @@
 # HARDCODED COLORS REPORT
 
 Project path: /Users/mohit3/plant-for-the-planet/planet-webapp
-Date: 2025-07-29T07:26:18.853Z
+Date: 2025-08-15T12:23:26.676Z
 
 ## DETAILED FINDINGS
 
@@ -926,7 +926,7 @@ File: src/features/projects/components/maps/ExploreInfoModal.tsx
 - Line 112: #d5d5d5 in "<CancelIcon color="#d5d5d5" />"
 
 File: src/features/projects/components/maps/Interventions.tsx
---------------------------------------------------------------
+-------------------------------------------------------------
 - Line 167: #ffffff in "'fill-color': satellite ? '#ffffff' : '#007A49',"
 - Line 167: #007A49 in "'fill-color': satellite ? '#ffffff' : '#007A49',"
 - Line 199: #2f3336 in "'text-color': satellite ? '#ffffff' : '#2f3336',"
@@ -956,16 +956,16 @@ File: src/features/projects/screens/SingleProjectDetails.tsx
 ------------------------------------------------------------
 - Line 168: #fff in "<CancelIcon color="#fff" />"
 
-File: src/features/projects/styles/MapPopup.scss
-------------------------------------------------
-- Line 4: rgba(0, 0, 0, 0.16) in "box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);"
-
 File: src/features/projects/styles/Intervention.module.scss
-------------------------------------------------------------
+-----------------------------------------------------------
 - Line 116: #fff in "color: #fff;"
 - Line 72: rgb(186, 238, 137) in "background-color: rgb(186, 238, 137);"
 - Line 129: rgba(0, 122, 73, 0.5) in "background-color: rgba(0, 122, 73, 0.5);"
 - Line 134: rgba(0, 122, 73, 1) in "background-color: rgba(0, 122, 73, 1);"
+
+File: src/features/projects/styles/MapPopup.scss
+------------------------------------------------
+- Line 4: rgba(0, 0, 0, 0.16) in "box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);"
 
 File: src/features/projects/styles/ProjectSnippet.module.scss
 -------------------------------------------------------------
@@ -1005,7 +1005,7 @@ File: src/features/projectsV2/ProjectDetails/stories/AdditionalInfo.stories.tsx
 - Line 33: green in "'Mida Creek is a stopover of many migratory birds and a foraging heaven for green turtles. Mida Creek is a UNESCO Biosphere Reserve that promote conservation of biodiversity hence that need to increase the forest cover through restoration of the degraded sites.',"
 
 File: src/features/projectsV2/ProjectDetails/styles/InterventionInfo.module.scss
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 - Line 12: rgba(0, 0, 0, 0.1) in "box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);"
 
 File: src/features/projectsV2/ProjectDetails/styles/ProjectInfo.module.scss
@@ -1052,14 +1052,6 @@ File: src/features/projectsV2/ProjectsMap/SiteMapLayerControls/LayerInfoPopup.ts
 - Line 28: white in "change appears white and mild decreases in grey."
 - Line 28: grey in "change appears white and mild decreases in grey."
 
-File: src/features/projectsV2/ProjectsMap/SiteMapLayerControls/SiteLayerOptions.tsx
------------------------------------------------------------------------------------
-- Line 44: #219653 in "'linear-gradient(270deg, #219653 0%, #FFF 49.48%, #BDBDBD 75.52%, #E86F56 100%)',"
-- Line 44: #FFF in "'linear-gradient(270deg, #219653 0%, #FFF 49.48%, #BDBDBD 75.52%, #E86F56 100%)',"
-- Line 44: #BDBDBD in "'linear-gradient(270deg, #219653 0%, #FFF 49.48%, #BDBDBD 75.52%, #E86F56 100%)',"
-- Line 44: #E86F56 in "'linear-gradient(270deg, #219653 0%, #FFF 49.48%, #BDBDBD 75.52%, #E86F56 100%)',"
-- Line 53: #007A49 in "gradient: 'linear-gradient(270deg, #007A49 0%, #FFF 100%)',"
-
 File: src/features/projectsV2/ProjectsMap/TimeTravel/TimeTravel.module.scss
 ---------------------------------------------------------------------------
 - Line 14: rgba(0, 0, 0, 0.3) in "filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.3));"
@@ -1070,8 +1062,8 @@ File: src/features/projectsV2/ProjectsMap/TimeTravel/index.tsx
 
 File: src/features/projectsV2/ProjectsMap/stories/SingleMapTab.stories.tsx
 --------------------------------------------------------------------------
-- Line 15: #fff in "icon: <SatelliteIcon color={'#fff'} />,"
-- Line 24: #000 in "icon: <SatelliteIcon color={'#000'} />,"
+- Line 15: #fff in "icon: <TimeTravelIcon color={'#fff'} />,"
+- Line 24: #000 in "icon: <TimeTravelIcon color={'#000'} />,"
 
 File: src/features/projectsV2/ProjectsMap/stories/SiteMapLayerControls.stories.tsx
 ----------------------------------------------------------------------------------
@@ -1099,11 +1091,11 @@ File: src/features/user/Account/ReactivateModal.tsx
 
 File: src/features/user/ManageProjects/StepForm.module.scss
 -----------------------------------------------------------
-- Line 329: rgba(0, 0, 0, 0.16) in "box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);"
-- Line 444: rgba(60, 60, 60, 1) in "box-shadow: 0 7px 30px -10px rgba(60, 60, 60, 1);"
-- Line 495: rgba(47, 51, 54, 0) in "rgba(47, 51, 54, 0) 60%,"
-- Line 496: rgba(47, 51, 54, 0.22) in "rgba(47, 51, 54, 0.22) 76%,"
-- Line 497: rgba(47, 51, 54, 0.74) in "rgba(47, 51, 54, 0.74)"
+- Line 318: rgba(0, 0, 0, 0.16) in "box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);"
+- Line 433: rgba(60, 60, 60, 1) in "box-shadow: 0 7px 30px -10px rgba(60, 60, 60, 1);"
+- Line 484: rgba(47, 51, 54, 0) in "rgba(47, 51, 54, 0) 60%,"
+- Line 485: rgba(47, 51, 54, 0.22) in "rgba(47, 51, 54, 0.22) 76%,"
+- Line 486: rgba(47, 51, 54, 0.74) in "rgba(47, 51, 54, 0.74)"
 
 File: src/features/user/ManageProjects/components/DetailedAnalysis.tsx
 ----------------------------------------------------------------------
@@ -1159,7 +1151,7 @@ File: src/features/user/TreeMapper/Analytics/components/Counter/index.module.scs
 - Line 7: rgba(0, 0, 0, 0.35) in "box-shadow: 0px 0px 20px -10px rgba(0, 0, 0, 0.35);"
 
 File: src/features/user/TreeMapper/Analytics/components/Map/components/InterventionDetailsZeroState.tsx
---------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
 - Line 11: #BDBDBD in "<path d="M307 206.518H-9V206.676H307V206.518Z" fill="#BDBDBD" />"
 - Line 38: #828282 in "fill="#828282""
 - Line 46: #E0E0E0 in "fill="#E0E0E0""
@@ -1535,6 +1527,14 @@ File: src/utils/mapsV2/mapSettings.config.ts
 - Line 404: #E86F56 in "{ categoryKey: 'high', color: '#E86F56' },"
 - Line 405: #C03418 in "{ categoryKey: 'veryHigh', color: '#C03418' },"
 - Line 406: #861E04 in "{ categoryKey: 'extreme', color: '#861E04' },"
+
+File: src/utils/mapsV2/siteLayerOptions.tsx
+-------------------------------------------
+- Line 46: #219653 in "'linear-gradient(270deg, #219653 0%, #FFF 49.48%, #BDBDBD 75.52%, #E86F56 100%)',"
+- Line 46: #FFF in "'linear-gradient(270deg, #219653 0%, #FFF 49.48%, #BDBDBD 75.52%, #E86F56 100%)',"
+- Line 46: #BDBDBD in "'linear-gradient(270deg, #219653 0%, #FFF 49.48%, #BDBDBD 75.52%, #E86F56 100%)',"
+- Line 46: #E86F56 in "'linear-gradient(270deg, #219653 0%, #FFF 49.48%, #BDBDBD 75.52%, #E86F56 100%)',"
+- Line 55: #007A49 in "gradient: 'linear-gradient(270deg, #007A49 0%, #FFF 100%)',"
 
 ## STATISTICS
 

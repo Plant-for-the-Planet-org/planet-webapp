@@ -62,7 +62,7 @@ export default function InterventionLayers(): ReactElement {
     selectedSampleTree,
     selectedInterventionType,
   } = useProjects();
-  const { isSatelliteView, viewState } = useProjectsMap();
+  const { viewState } = useProjectsMap();
 
   const t = useTranslations('Maps');
   const locale = useLocale();
@@ -261,7 +261,7 @@ export default function InterventionLayers(): ReactElement {
           id={MAIN_MAP_LAYERS.SELECTED_LINE}
           type="line"
           paint={{
-            'line-color': isSatelliteView ? colors.white : FillColor,
+            'line-color': FillColor,
             'line-width': 4,
           }}
           filter={['==', ['get', 'highlightLine'], true]}
@@ -275,7 +275,7 @@ export default function InterventionLayers(): ReactElement {
             'text-font': ['Ubuntu Regular'],
           }}
           paint={{
-            'text-color': isSatelliteView ? colors.white : colors.coreText,
+            'text-color': colors.coreText,
           }}
           filter={['!=', ['get', 'dateDiff'], '']}
         />

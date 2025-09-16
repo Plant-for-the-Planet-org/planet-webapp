@@ -8,7 +8,7 @@ import { useProjects } from '../ProjectsContext';
 import { useProjectsMap } from '../ProjectsMapContext';
 import SatelliteLayer from './microComponents/SatelliteLayer';
 import { zoomInToProjectSite } from '../../../utils/mapsV2/zoomToProjectSite';
-import SiteLayers from './microComponents/SiteLayers';
+import SitePolygonLayers from './microComponents/SitePolygonLayers';
 import InterventionLayers from './microComponents/InterventionLayers';
 import { zoomToPolygonIntervention } from '../../../utils/mapsV2/zoomToPolygonIntervention';
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
@@ -17,6 +17,8 @@ import FireLocationsMarker from './microComponents/FireLocationsMarker';
 import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
 import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
+import { useFetchSiteLayers } from '../../../utils/mapsV2/useFetchSiteLayers';
+import { useSiteLayerAutoSelection } from '../../../utils/mapsV2/useSiteLayerAutoSelection';
 
 interface Props {
   mapRef: MapRef;
@@ -25,18 +27,18 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
-  const { singleProject, selectedSite, selectedIntervention, interventions } =
-    useProjects();
+  const { singleProject, selectedSite, selectedIntervention } = useProjects();
   if (singleProject === null) return null;
 
-  const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
-    useProjectsMap();
-
+  const { handleViewStateChange } = useProjectsMap();
+  useFetchSiteLayers();
+  useSiteLayerAutoSelection();
   const router = useRouter();
   const { ploc: requestedIntervention, site: requestedSite } = router.query;
 
   const canShowSites = sitesGeoJson.features.length > 0;
-  const displayIntervention = selectedTab === 'field' && !isSatelliteView;
+  const canShowInterventions = selectedTab === 'field';
+  const canShowSatelliteLayer = selectedTab === 'satellite';
 
   // Zoom to plant location
   useEffect(() => {
@@ -103,25 +105,16 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
       }
     }
   }, [selectedSite, requestedSite, router.isReady]);
-  // Enable satellite view for 'conservation' projects or 'trees' projects without plant locations(tree mapper data).
-  useEffect(() => {
-    const isSatelliteView =
-      singleProject.purpose === 'conservation' ||
-      (singleProject.purpose === 'trees' &&
-        Array.isArray(interventions) &&
-        interventions.length === 0);
 
-    setIsSatelliteView(isSatelliteView);
-  }, [interventions, singleProject.purpose]);
   return (
     <>
       {canShowSites ? (
         <>
-          <SiteLayers
-            isSatelliteView={isSatelliteView}
+          <SitePolygonLayers
+            isSatelliteBackground={selectedTab === 'satellite'}
             geoJson={sitesGeoJson}
           />
-          {isSatelliteView && <SatelliteLayer />}
+          {canShowSatelliteLayer && <SatelliteLayer />}
         </>
       ) : (
         <ProjectLocationMarker
@@ -130,7 +123,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
           purpose={singleProject.purpose}
         />
       )}
-      {displayIntervention && <InterventionLayers />}
+      {canShowInterventions && <InterventionLayers />}
       <FeatureFlag condition={isFirealertFiresEnabled()}>
         <FireLocationsMarker />
       </FeatureFlag>

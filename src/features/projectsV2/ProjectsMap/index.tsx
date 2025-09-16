@@ -36,6 +36,8 @@ import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
+import SiteDataLayers from './SiteDataLayers';
+import SiteMapLayerControls from './SiteMapLayerControls';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -67,6 +69,8 @@ function ProjectsMap(props: ProjectsMapProps) {
     timeTravelConfig,
     setTimeTravelConfig,
     isExploreMode,
+    siteLayersData,
+    selectedSiteLayer,
   } = useProjectsMap();
   const {
     interventions,
@@ -79,6 +83,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     singleProject,
     selectedIntervention,
     selectedSampleTree,
+    selectedSiteId,
   } = useProjects();
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -170,6 +175,12 @@ function ProjectsMap(props: ProjectsMapProps) {
   const shouldShowMapTabs = selectedTab !== null;
   const shouldShowExploreLayers =
     props.page === 'project-list' && isExploreMode;
+  const shouldShowSiteLayers =
+    props.page === 'project-details' &&
+    selectedTab === 'satellite' &&
+    selectedSiteId !== null &&
+    siteLayersData[selectedSiteId]?.length > 0 &&
+    selectedSiteLayer !== null;
 
   const mobileOS = useMemo(() => getDeviceType(), [props.isMobile]);
   const mapControlProps = {
@@ -350,6 +361,9 @@ function ProjectsMap(props: ProjectsMapProps) {
           style={{ width: '100%', height: '100%' }}
         >
           {shouldShowExploreLayers && <ExploreLayers />}
+          {shouldShowSiteLayers && (
+            <SiteDataLayers selectedSiteLayerKey={selectedSiteLayer.id} />
+          )}
           {shouldShowSingleProjectsView && (
             <SingleProjectView {...singleProjectViewProps} />
           )}
@@ -360,6 +374,7 @@ function ProjectsMap(props: ProjectsMapProps) {
             <NavigationControl position="bottom-right" showCompass={false} />
           )}
         </Map>
+        {shouldShowSiteLayers && <SiteMapLayerControls />}
       </div>
       {shouldShowMultiTreeInfo && (
         <MultiTreeInfo

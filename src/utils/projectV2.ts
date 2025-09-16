@@ -494,3 +494,35 @@ export function prepareInterventionMetadata(
     .map(([key, value]) => formatMetadataEntry(key, value))
     .filter((entry): entry is { key: string; value: string } => !!entry);
 }
+
+/**
+ * Get the starting year of a project based on its metadata and purpose.
+ * @param {ExtendedProject} project The project object to extract the starting year from.
+ * @returns The starting year as a string, or null if not available.
+ */
+export function getProjectStartingYear(
+  project: ExtendedProject
+): string | null {
+  if (!project || !project.metadata) {
+    return null;
+  }
+
+  if (project.purpose === 'trees' && project.metadata.firstTreePlanted) {
+    try {
+      const date = new Date(project.metadata.firstTreePlanted);
+      if (isNaN(date.getTime())) {
+        return null;
+      }
+      return date.getFullYear().toString();
+    } catch {
+      return null;
+    }
+  }
+  if (
+    project.purpose === 'conservation' &&
+    project.metadata.startingProtectionYear
+  ) {
+    return project.metadata.startingProtectionYear.toString();
+  }
+  return null;
+}

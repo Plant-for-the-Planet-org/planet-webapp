@@ -2,13 +2,13 @@ import type { ReactElement } from 'react';
 
 import styles from './ProjectMapTabs.module.scss';
 import SingleTab from './SingleTab';
-// import SatelliteAnalysisIcon from '../../../../temp/icons/SatelliteAnalysisIcon';
 import { useTranslations } from 'next-intl';
 import FieldDataIcon from '../../../../../public/assets/images/icons/FieldDataIcon';
-import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
+import TimeTravelIcon from '../../../../../public/assets/images/icons/TimeTravelIcon';
+import SatelliteAnalysisIcon from '../../../../../public/assets/images/icons/SatelliteAnalysisIcon';
 import themeProperties from '../../../../theme/themeProperties';
 
-export type SelectedTab = 'field' | 'timeTravel';
+export type SelectedTab = 'satellite' | 'field' | 'timeTravel';
 
 interface TabsProps {
   selectedTab: SelectedTab;
@@ -23,49 +23,39 @@ const MapTabs = ({
 }: TabsProps): ReactElement | null => {
   const { colors } = themeProperties.designSystem;
   const availableTabs: SelectedTab[] = [
+    'satellite',
     'field',
     ...(isTimeTravelEnabled ? (['timeTravel'] as const) : []),
   ];
-
-  // Code below will probably be used in the future, so don't remove it
-  /* const allTabsList: SelectedTab[] = ['satellite', 'field', 'timeTravel']; */
-  /* const setSeparatorVisibility = (
-    selectedTab: SelectedTab,
-    separatorId: number
-  ) => {
-    const index = allTabsList.indexOf(selectedTab);
-    if (separatorId !== index - 1 && separatorId !== index) return true;
-    return false;
-  }; */
 
   const tMaps = useTranslations('Maps');
 
   if (availableTabs.length === 1) return null;
 
+  const needsSeparator = (index: number) => {
+    // No separator after last tab
+    if (index >= availableTabs.length - 1) return false;
+
+    const currentTab = availableTabs[index];
+    const nextTab = availableTabs[index + 1];
+
+    // Show separator only if both current and next tabs are unselected
+    return selectedTab !== currentTab && selectedTab !== nextTab;
+  };
+
   return (
     <div className={styles.tabsContainer}>
-      {/* Code below will be used in the future, don't remove it */}
-      {/* <SingleTab
+      <SingleTab
         icon={
           <SatelliteAnalysisIcon
-            color={
-              selectedTab === 'satellite'
-                ? colors.white
-								: colors.coreText
-            }
+            color={selectedTab === 'satellite' ? colors.white : colors.coreText}
           />
         }
-        title={tProjectDetails('satelliteAnalysis')}
+        title={tMaps('satelliteAnalysis')}
         isSelected={selectedTab === 'satellite'}
         onClickHandler={() => setSelectedTab('satellite')}
       />
-      <div
-        className={
-          setSeparatorVisibility(selectedTab, 0)
-            ? styles.showSeparator1
-            : styles.hideSeparator
-        }
-      ></div> */}
+      {needsSeparator(0) && <div className={styles.separator} />}
       <SingleTab
         icon={
           <FieldDataIcon
@@ -76,18 +66,11 @@ const MapTabs = ({
         isSelected={selectedTab === 'field'}
         onClickHandler={() => setSelectedTab('field')}
       />
-      {/* Code below will be used in the future, don't remove it */}
-      {/* <div
-        className={
-          setSeparatorVisibility(selectedTab, 1)
-            ? styles.showSeparator2
-            : styles.hideSeparator
-        }
-      ></div> */}
+      {needsSeparator(1) && <div className={styles.separator} />}
       {isTimeTravelEnabled && (
         <SingleTab
           icon={
-            <SatelliteIcon
+            <TimeTravelIcon
               color={
                 selectedTab === 'timeTravel' ? colors.white : colors.coreText
               }

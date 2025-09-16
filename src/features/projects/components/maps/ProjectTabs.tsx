@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
-import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
+import TimeTravelIcon from '../../../../../public/assets/images/icons/TimeTravelIcon';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/VegetationChange.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
@@ -62,7 +62,7 @@ export default function ProjectTabs(): ReactElement {
           }
           className={`${styles.options} ${styles.compact}`}
         >
-          <SatelliteIcon color={selectedMode === 'imagery' ? '#fff' : null} />{' '}
+          <TimeTravelIcon color={selectedMode === 'imagery' ? '#fff' : null} />{' '}
           <p>
             {t('timeTravel')}
             <sup>{t('beta')}</sup>

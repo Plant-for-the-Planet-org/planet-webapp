@@ -1,11 +1,11 @@
-import type { LayerOption } from './SiteLayerOptions';
+import type { SiteLayerOption } from '../../../../utils/mapsV2/siteLayerOptions';
 
 import LayerInfoTooltip from './LayerInfoTooltip';
 import SiteLayerLegend from './SiteLayerLegend';
 import styles from './SiteMapLayerControls.module.scss';
 
 interface SiteLayerInfoProps {
-  selectedLayer: LayerOption;
+  selectedLayer: SiteLayerOption;
   openInfoPopup: () => void;
 }
 
