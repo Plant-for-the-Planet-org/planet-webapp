@@ -142,6 +142,8 @@ export default function MapComponent({
         setIsDrawing={setIsDrawing}
         coordinates={coordinates}
         setCoordinates={setCoordinates}
+        satellite={satellite}
+        setSatellite={setSatellite}
       />
       <MapGL
         {...viewport}
@@ -161,24 +163,6 @@ export default function MapComponent({
             satellite={satellite}
           />
         )}
-        <div className={styles.layerSwitcher}>
-          <div
-            onClick={() => setSatellite(false)}
-            className={`${styles.layerOption} ${
-              satellite ? '' : styles.active
-            }`}
-          >
-            Map
-          </div>
-          <div
-            onClick={() => setSatellite(true)}
-            className={`${styles.layerOption} ${
-              satellite ? styles.active : ''
-            }`}
-          >
-            Satellite
-          </div>
-        </div>
         <NavigationControl position="bottom-right" showCompass={false} />
       </MapGL>
       <Dropzone

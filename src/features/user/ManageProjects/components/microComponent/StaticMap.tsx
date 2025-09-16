@@ -37,7 +37,7 @@ const StaticMap = ({ tiles, siteId, siteGeometry }: StaticMapProps) => {
         );
       }}
     >
-      <Source id="satellite_source" type="raster" tiles={tiles} tileSize={128}>
+      <Source id="satellite_source" type="raster" tiles={tiles} tileSize={256}>
         <Layer type="raster" id="satellite_layer" />
       </Source>
       <Source id={`geojson-${siteId}`} type="geojson" data={siteGeometry}>
