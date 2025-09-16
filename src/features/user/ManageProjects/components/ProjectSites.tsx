@@ -281,6 +281,7 @@ export default function ProjectSites({
   const [siteList, setSiteList] = useState<Site[]>([]);
   const [siteGUID, setSiteGUID] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSiteId, setSelectedSiteId] = useState<string>('');
 
   // Assigning defaultSiteDetails as default
   const changeSiteDetails = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -487,16 +488,12 @@ export default function ProjectSites({
                         .find((e) => site.status == e.value)
                         ?.label.toUpperCase()}
                     </div>
-                    <SiteDeleteConfirmationModal
-                      siteId={site.id}
-                      deleteProjectSite={deleteProjectSite}
-                      isModalOpen={isModalOpen}
-                      setIsModalOpen={setIsModalOpen}
-                      isUploadingData={isUploadingData}
-                    />
                     <IconButton
                       id={'trashIconProjS'}
-                      onClick={() => setIsModalOpen(true)}
+                      onClick={() => {
+                        setSelectedSiteId(site.id);
+                        setIsModalOpen(true);
+                      }}
                       size="small"
                       className={styles.uploadedMapDeleteButton}
                     >
@@ -521,7 +518,6 @@ export default function ProjectSites({
               );
             })}
         </InlineFormDisplayGroup>
-
         {showForm ? (
           <div
             className={`${isUploadingData ? styles.shallowOpacity : ''}`}
@@ -647,6 +643,13 @@ export default function ProjectSites({
             {t('skip')}
           </Button>
         </div>
+        <SiteDeleteConfirmationModal
+          siteId={selectedSiteId}
+          deleteProjectSite={deleteProjectSite}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          isUploadingData={isUploadingData}
+        />
       </StyledForm>
     </CenteredContainer>
   );
