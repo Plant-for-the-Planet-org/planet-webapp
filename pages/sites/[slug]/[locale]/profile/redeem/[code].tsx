@@ -68,13 +68,13 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
         router.push(localizedPath('/login'));
       }
     }
-  }, [contextLoaded, user, router]);
+  }, [contextLoaded, user]);
 
   useEffect(() => {
-    if (router && router.query.code && typeof router.query.code === 'string') {
+    if (router.query.code && typeof router.query.code === 'string') {
       setCode(router.query.code);
     }
-  }, [router]);
+  }, [router.query.code]);
 
   async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);

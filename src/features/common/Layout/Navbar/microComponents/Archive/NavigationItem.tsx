@@ -46,9 +46,8 @@ const NavigationItem = ({
   };
 
   const isActive = useMemo(() => {
-    const { pathname } = router;
     const strippedPathname =
-      pathname.replace(/^\/sites\/\[slug\]\/\[locale\]/, '') || '/';
+      router.pathname.replace(/^\/sites\/\[slug\]\/\[locale\]/, '') || '/';
 
     // Check if it's a donate path and the current link is the home page
     const isDonatePath = ['/', '/[p]', '/[p]/[id]'].includes(strippedPathname);
@@ -70,7 +69,7 @@ const NavigationItem = ({
     }
 
     return false;
-  }, [router, navLinkOptions]);
+  }, [router.pathname, navLinkOptions]);
 
   return navLinkOptions.visible ? (
     <div

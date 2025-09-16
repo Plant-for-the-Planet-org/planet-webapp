@@ -206,7 +206,7 @@ export default function Donate({
         setSelectedPl(singleIntervention);
       }
     }
-  }, [router, router.query.ploc, interventions, setSelectedPl, project]);
+  }, [geoJson, router.query.ploc, interventions, project]);
 
   return pageProps.tenantConfig ? (
     <>

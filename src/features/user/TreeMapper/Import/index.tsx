@@ -75,10 +75,10 @@ export default function ImportData(): ReactElement {
   };
 
   useEffect(() => {
-    if (router && router.query.loc && !Array.isArray(router.query.loc)) {
+    if (router.query.loc && !Array.isArray(router.query.loc)) {
       fetchIntervention(router.query.loc);
     }
-  }, [router]);
+  }, [router.query.loc]);
 
   const [activeMethod, setActiveMethod] = useState('import');
 

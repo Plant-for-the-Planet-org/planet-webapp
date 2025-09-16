@@ -97,7 +97,7 @@ export default function Donate({
       const safePath = encodeURIComponent(router.query.p);
       router.push(localizedPath(encodeURI(`/projects-archive/${safePath}`)));
     }
-  }, [router]);
+  }, [router.query.p]);
 
   useEffect(() => {
     setShowSingleProject(false);

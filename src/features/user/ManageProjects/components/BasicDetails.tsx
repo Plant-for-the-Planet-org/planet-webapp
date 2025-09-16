@@ -261,7 +261,7 @@ export default function BasicDetails({
     if (projectDetails?.id) {
       setIsSkipButtonVisible(true);
     }
-  }, [router]);
+  }, [projectDetails?.id]);
 
   useEffect(() => {
     if (projectDetails) {
