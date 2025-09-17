@@ -146,10 +146,10 @@ const ProjectInfo = ({
   const projectAreaInHectares = useMemo(() => {
     try {
       if (sites && sites.length > 0) {
-        const totalArea = sites.reduce((total, site) => {
+        const totalAreaSqM = sites.reduce((total, site) => {
           return total + (area(site.geometry) || 0);
         }, 0);
-        return totalArea / 10000;
+        return totalAreaSqM / 10000; // convert sqm → hectares
       }
     } catch (error) {
       console.error('Error calculating project area in hectares:', error);
