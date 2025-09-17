@@ -5,7 +5,6 @@ import type {
   ViewState,
   ViewStateChangeEvent,
 } from 'react-map-gl-v7/maplibre';
-import type { MapState } from '../../../projectsV2/ProjectsMapContext';
 import type {
   ExtendedMapLibreMap,
   MapRef,
@@ -17,6 +16,7 @@ import type {
   MultiPolygon,
   Polygon,
 } from 'geojson';
+import type { MapState } from '../../../../utils/mapsV2/mapDefaults';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import MapGL, { NavigationControl } from 'react-map-gl-v7/maplibre';
@@ -27,15 +27,15 @@ import tj from '@mapbox/togeojson';
 import { useTranslations } from 'next-intl';
 import gjv from 'geojson-validation';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
-import {
-  DEFAULT_MAP_STATE,
-  DEFAULT_VIEW_STATE,
-} from '../../../projectsV2/ProjectsMapContext';
 import { zoomInToProjectSite } from '../../../../utils/mapsV2/zoomToProjectSite';
 import SatelliteLayer from './microComponent/SatelliteLayer';
 import ProjectSiteLayer from './microComponent/SiteLayer';
 import DrawingPreviewLayer from './microComponent/DrawingPreviewLayer';
 import MapControllers from './microComponent/MapControllers';
+import {
+  DEFAULT_MAP_STATE,
+  DEFAULT_VIEW_STATE,
+} from '../../../../utils/mapsV2/mapDefaults';
 
 interface Props {
   geoJson: SitesGeoJSON | null;
