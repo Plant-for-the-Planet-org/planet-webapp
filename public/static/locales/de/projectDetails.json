@@ -34,6 +34,8 @@
     "plantingDate": "Pflanzdatum",
     "plantingDensity": "Pflanzdichte",
     "plantingDensityUnit": "{formattedCount} Bäume pro ha",
+    "projectArea": "Projektfläche",
+    "projectAreaUnit": "{formattedArea} ha",
     "speciesCount": "Gepflanzte Arten ({count})",
     "sampleTrees": "Beispielbäume ({count})",
     "sampleTree": "Beispielbaum",
@@ -69,7 +71,7 @@
     "projectSpending": "Projekt Ausgaben",
     "abandonment": "Verlassen seit",
     "yearAbandonedInfo": "Wann war der letzte signifikante menschliche Eingriff in das Gebiet? Einschließlich Abholzung, Landwirtschaft, Viehweide, vom Menschen verursachte Brände.",
-    "treePerHa": "Bäume pro ha",
+    "treePerHa": "Bäume / ha",
     "employees": "Beschäftigte",
     "previousImage": "Vorheriges Bild",
     "nextImage": "Nächstes Bild"
