@@ -59,11 +59,11 @@ function ManageSingleProject({
   }, [router.isReady]);
 
   useEffect(() => {
-    if (router && router.query.id && !Array.isArray(router.query.id)) {
+    if (router.query.id && !Array.isArray(router.query.id)) {
       setProjectGUID(router.query.id);
       setReady(true);
     }
-  }, [router]);
+  }, [router.query.id]);
 
   useEffect(() => {
     async function loadProject() {

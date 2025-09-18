@@ -61,7 +61,6 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
 
   useEffect(() => {
     if (
-      router &&
       router.query.type &&
       router.query.code &&
       typeof router.query.code === 'string'
@@ -70,7 +69,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
         setCode(router.query.code);
       }
     }
-  }, [router, router.query.type]);
+  }, [router.query.type, router.query.code]);
 
   const redeemAnotherCode = () => {
     router.push(localizedPath(`/profile/redeem/${code}?inputCode=${true}`));

@@ -179,7 +179,7 @@ const PlanetWeb = ({
     } else {
       setIsMap(false);
     }
-  }, [router]);
+  }, [router.pathname]);
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
