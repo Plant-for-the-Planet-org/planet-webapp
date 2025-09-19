@@ -4,30 +4,18 @@ import type {
   BasicDetailsProps,
   ExtendedProfileProjectProperties,
 } from '../../../common/types/project';
-import type {
-  MapLayerMouseEvent,
-  ViewState,
-  ViewStateChangeEvent,
-} from 'react-map-gl-v7/maplibre';
-import type {
-  ExtendedMapLibreMap,
-  MapRef,
-} from '../../../common/types/projectv2';
 
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormControlLabel, Tooltip } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from './../StepForm.module.scss';
-import MapGL, { Marker, NavigationControl } from 'react-map-gl-v7/maplibre';
-
 import { MenuItem, TextField } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
   getFormattedNumber,
   parseNumber,
 } from '../../../../utils/getFormattedNumber';
-import getMapStyle from '../../../../utils/maps/getMapStyle';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -39,15 +27,10 @@ import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { getAddressFromCoordinates } from '../../../../utils/geocoder';
-import {
-  DEFAULT_MAP_STATE,
-  DEFAULT_VIEW_STATE,
-} from '../../../projectsV2/ProjectsMapContext';
-import { ProjectLocationIcon } from '../../../../../public/assets/images/icons/projectV2/ProjectLocationIcon';
 import themeProperties from '../../../../theme/themeProperties';
+import ProjectLocationMap from './microComponents/ProjectLocationMap';
 
-type BaseFormData = {
+export type BaseFormData = {
   name: string;
   slug: string;
   website: string;
@@ -62,7 +45,7 @@ type BaseFormData = {
   };
 };
 
-type TreeFormData = BaseFormData & {
+export type TreeFormData = BaseFormData & {
   classification: string;
   countTarget: string;
   unitType: 'tree' | 'm2';
@@ -100,7 +83,7 @@ type ConservationProjectApiPayload = BaseProjectApiPayload & {
 
 type ProjectApiPayload = TreeProjectApiPayload | ConservationProjectApiPayload;
 
-type ProjectCoordinates = {
+export type ProjectCoordinates = {
   lng: number;
   lat: number;
 };
@@ -115,7 +98,6 @@ export default function BasicDetails({
 }: BasicDetailsProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const locale = useLocale();
-  const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated, postApiAuthenticated } = useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -126,36 +108,10 @@ export default function BasicDetails({
   const [IsSkipButtonVisible, setIsSkipButtonVisible] =
     useState<boolean>(false);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
-  const [viewState, setViewState] = useState(DEFAULT_VIEW_STATE);
-  const [mapState, setMapState] = useState(DEFAULT_MAP_STATE);
   const [projectCoords, setProjectCoords] = useState<ProjectCoordinates | null>(
     null
   );
-  const [mapLoaded, setMapLoaded] = useState<boolean>(false);
 
-  useEffect(() => {
-    async function loadMapStyle() {
-      const result = await getMapStyle('openStreetMap');
-      if (result) {
-        setMapState({ ...mapState, mapStyle: result });
-      }
-    }
-    loadMapStyle();
-  }, []);
-
-  const handleViewStateChange = (newViewState: Partial<ViewState>) => {
-    setViewState((prev) => ({
-      ...prev,
-      ...newViewState,
-    }));
-  };
-
-  const onMove = useCallback(
-    (evt: ViewStateChangeEvent) => {
-      handleViewStateChange(evt.viewState);
-    },
-    [handleViewStateChange]
-  );
   const changeLat = (e: ChangeEvent<HTMLInputElement>) => {
     const latNumericValue = Number(e.target.value);
 
@@ -333,12 +289,6 @@ export default function BasicDetails({
           lng: projectDetails.geoLongitude,
           lat: projectDetails.geoLatitude,
         });
-        setViewState((prev) => ({
-          ...prev,
-          latitude: projectDetails.geoLatitude,
-          longitude: projectDetails.geoLongitude,
-          zoom: 7,
-        }));
       }
       reset(basicDetails);
       if (projectDetails.acceptDonations) {
@@ -412,38 +362,6 @@ export default function BasicDetails({
       }
     }
   };
-
-  const onClick = useCallback(
-    async (e: MapLayerMouseEvent) => {
-      const latitude = e.lngLat.lat;
-      const longitude = e.lngLat.lat;
-      if (e.lngLat) {
-        setProjectCoords({
-          lat: latitude,
-          lng: longitude,
-        });
-      }
-      try {
-        const result = await getAddressFromCoordinates(latitude, longitude);
-
-        if (result?.address.CountryCode) {
-          clearErrors(['latitude', 'longitude']);
-        } else {
-          setError('latitude', {
-            message: t('coordinateError.seaCoordinates'),
-          });
-          setError('longitude', {
-            message: t('coordinateError.seaCoordinates'),
-          });
-        }
-      } catch (error) {
-        console.error('Reverse geocoding error:', error);
-      }
-      setValue('latitude', latitude.toString());
-      setValue('longitude', longitude.toString());
-    },
-    [setError, clearErrors, setValue]
-  );
 
   return (
     <CenteredContainer>
@@ -753,30 +671,13 @@ export default function BasicDetails({
             >
               {t('projectLocation')}
             </p>
-            <MapGL
-              {...viewState}
-              {...mapState}
-              ref={mapRef}
-              onMove={onMove}
-              onClick={onClick}
-              style={{ width: '100%', height: '400px', overflow: 'hidden' }}
-              attributionControl={false}
-              onLoad={() => setMapLoaded(true)}
-            >
-              {projectCoords !== null && mapLoaded && (
-                <Marker
-                  latitude={projectCoords.lat}
-                  longitude={projectCoords.lng}
-                >
-                  <ProjectLocationIcon
-                    color={themeProperties.designSystem.colors.primaryColor}
-                  />
-                </Marker>
-              )}
-
-              <NavigationControl position="bottom-right" />
-            </MapGL>
-
+            <ProjectLocationMap
+              clearErrors={clearErrors}
+              setError={setError}
+              setValue={setValue}
+              projectCoords={projectCoords}
+              setProjectCoords={setProjectCoords}
+            />
             <div className={styles.basicDetailsCoordinatesContainer}>
               <div
                 className={`${styles.formFieldHalf} ${styles.latLongField}`}
