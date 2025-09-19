@@ -3,7 +3,6 @@ import type { User } from '@planet-sdk/common';
 import { useState } from 'react';
 import ContributionsMap from '../ContributionsMap';
 import styles from './ProfileLayout.module.scss';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import ProfileCard from '../ProfileCard';
@@ -16,7 +15,6 @@ import MyContributions from '../MyContributions';
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 
 const ProfileLayout = () => {
-  const router = useRouter();
   const { user, contextLoaded } = useUserProps();
   const [profile, setProfile] = useState<null | User>(null);
   const {
@@ -42,7 +40,7 @@ const ProfileLayout = () => {
         setUserInfo(_userInfo);
       }
     }
-  }, [contextLoaded, profile, router]);
+  }, [contextLoaded, user]);
 
   const isProfileLoaded = profile !== null && profile !== undefined;
   const isContributionsDataLoaded =

@@ -58,12 +58,16 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
   }
 
   useEffect(() => {
-    if (router?.isReady && router?.query?.profile) {
-      // reintiating the profile
+    if (
+      router.isReady &&
+      router.query.profile &&
+      typeof router.query.profile === 'string'
+    ) {
+      // re-initiating the profile
       setProfile(null);
-      loadPublicProfile(router.query.profile as string);
+      loadPublicProfile(router.query.profile);
     }
-  }, [router]);
+  }, [router.isReady, router.query.profile]);
 
   return tenantConfig ? (
     <>
