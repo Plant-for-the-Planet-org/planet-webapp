@@ -46,7 +46,8 @@ const QueryParamsProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (router.isReady) {
-      const { query, pathname } = router;
+      const query = router.query;
+      const pathname = router.pathname;
       if (pathname === '/sites/[slug]/[locale]') {
         setPage('project-list');
       } else if (query.p !== undefined) {
@@ -65,7 +66,7 @@ const QueryParamsProvider = ({ children }: { children: ReactNode }) => {
         setEnableIntro(query.enable_intro);
       setIsContextLoaded(true);
     }
-  }, [router]);
+  }, [router.isReady, router.query, router.pathname]);
 
   useEffect(() => {
     if (localStorage.getItem('language') !== locale)
