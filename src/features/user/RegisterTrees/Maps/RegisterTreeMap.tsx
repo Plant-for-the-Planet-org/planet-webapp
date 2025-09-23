@@ -28,7 +28,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import styles from '../RegisterModal.module.scss';
 import zoomToLocation from '../../../../utils/mapsV2/zoomToLocation';
-import { ProjectLocationIcon } from '../../../../../storybook-static/assets/images/icons/projectV2/ProjectLocationIcon';
+import { ProjectLocationIcon } from '../../../../../public/assets/images/icons/projectV2/ProjectLocationIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import { centerMapOnCoordinates } from '../../../../utils/projectV2';
 import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';
