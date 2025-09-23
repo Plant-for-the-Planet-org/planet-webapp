@@ -29,6 +29,27 @@
       "active_account_exists": "An active account already exists. Deactivate that account before activating another account.",
       "duplicate_account": "You have already created an account for {country}",
       "default": "Something went wrong while creating an account. Please try after a while."
+    },
+    "topUpManagement": {
+      "labelToggle": "Auto Refill PlanetCash when balance is low",
+      "labelThreshold": "When Balance goes below ({currency})",
+      "labelRefillAmount": "Amount to refill ({currency})",
+      "labelStatus": "Status",
+      "labelPaymentMethod": "Payment Method",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "paymentMethodInfo": {
+        "sepa_debit": "IBAN ending in {last4}",
+        "card": "Card ending in {last4}",
+        "unknown": "Unknown payment method"
+      },
+      "validationErrors": {
+        "thresholdRequired": "Please enter a threshold amount",
+        "amountRequired": "Please enter a refill amount",
+        "thresholdMinimum": "Threshold amount should be positive",
+        "amountMinimum": "Refill amount should be positive"
+      },
+      "saveButton": "Save Top-Up Settings"
     }
   }
 }

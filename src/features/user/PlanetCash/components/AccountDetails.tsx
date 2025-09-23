@@ -3,6 +3,7 @@ import type { PlanetCashAccount } from '../../../common/types/planetcash';
 
 import { styled, Grid, Button, Divider } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
+import TopUpManagement from './TopUpManagement';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -160,6 +161,12 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
           </Grid>
         )}
       </Grid>
+      {account.paymentMethods.length > 0 && (
+        <>
+          <Grid item component={Divider} />
+          <TopUpManagement account={account} />
+        </>
+      )}
     </Grid>
   );
 };
