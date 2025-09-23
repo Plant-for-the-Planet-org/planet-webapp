@@ -1,26 +1,15 @@
 import type { ChangeEvent } from 'react';
 import type { ContributionProperties } from './RegisterTrees/SingleContribution';
 import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
-import type { ViewportProps } from '../../common/types/map';
-import type {
-  RegisterTreesFormProps,
-  RegisteredTreesGeometry,
-} from '../../common/types/map';
+import type { RegisterTreesFormProps } from '../../common/types/map';
+import type { Point, Polygon } from 'geojson';
 
 import { useEffect, useState, useContext } from 'react';
 import { handleError } from '@planet-sdk/common';
 import { MenuItem, TextField, Button } from '@mui/material';
-import { easeCubic } from 'd3-ease';
-import dynamic from 'next/dynamic';
 import { Controller, useForm } from 'react-hook-form';
-import MapGL, {
-  FlyToInterpolator,
-  Marker,
-  NavigationControl,
-} from 'react-map-gl';
 import { useTranslations } from 'next-intl';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
-import getMapStyle from '../../../utils/maps/getMapStyle';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
@@ -32,19 +21,21 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../hooks/useApi';
-
-const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
-  ssr: false,
-  loading: () => <p></p>,
-});
+import dynamic from 'next/dynamic';
 
 type RegisteredTreesApiPayload = {
   treeCount: string;
   treeSpecies: string;
   plantProject: string | null;
   plantDate: Date;
-  geometry: RegisteredTreesGeometry; // Adjust this type based on the actual geometry structure (e.g., GeoJSON)
+  geometry: RegisteredTreesGeometry;
 };
+export type RegisteredTreesGeometry = Point | Polygon;
+
+const RegisterTreeMap = dynamic(() => import('./Maps/RegisterTreeMap'), {
+  ssr: false,
+  loading: () => <p></p>,
+});
 
 function RegisterTreesForm({
   setContributionGUID,
@@ -53,82 +44,16 @@ function RegisterTreesForm({
 }: RegisterTreesFormProps) {
   const { user, contextLoaded, setRefetchUserData } = useUserProps();
   const t = useTranslations('Me');
-  const EMPTY_STYLE = {
-    version: 8,
-    sources: {},
-    layers: [],
-  };
-  const [mapState, setMapState] = useState({
-    mapStyle: EMPTY_STYLE,
-  });
   const [isMultiple, setIsMultiple] = useState(false);
+  const [userLocation, setUserLocation] = useState<number[] | null>(null);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
-  const screenWidth = window.innerWidth;
-  const isMobile = screenWidth <= 767;
-  const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
-  const defaultZoom = isMobile ? 1 : 1.4;
-  const [interventionCoordinates, setInterventionCoordinates] = useState<
-    number[] | undefined
-  >(undefined);
   const [geometry, setGeometry] = useState<RegisteredTreesGeometry | undefined>(
     undefined
   );
-  const [viewport, setViewPort] = useState<ViewportProps>({
-    height: '100%',
-    width: '100%',
-    latitude: defaultMapCenter[0],
-    longitude: defaultMapCenter[1],
-    zoom: defaultZoom,
-  });
   const [userLang, setUserLang] = useState('en');
-  const [userLocation, setUserLocation] = useState<number[] | null>(null);
   const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
-  const [isStyleReady, setIsStyleReady] = useState(false);
   const { postApiAuthenticated, getApiAuthenticated } = useApi();
-
-  useEffect(() => {
-    const promise = getMapStyle('openStreetMap');
-    promise.then((style) => {
-      if (style) {
-        setMapState({ ...mapState, mapStyle: style });
-        setIsStyleReady(true);
-      }
-    });
-  }, [isStyleReady]);
-
-  useEffect(() => {
-    if (localStorage.getItem('language')) {
-      const userLang = localStorage.getItem('language');
-      if (userLang) setUserLang(userLang);
-    }
-
-    async function getUserLocation() {
-      const location = await getStoredConfig('loc');
-      if (location) {
-        setUserLocation([
-          Number(location.longitude) || 0,
-          Number(location.latitude) || 0,
-        ]);
-      }
-    }
-    getUserLocation();
-  }, []);
-
-  useEffect(() => {
-    if (userLocation) {
-      const newViewport = {
-        ...viewport,
-        longitude: userLocation[0],
-        latitude: userLocation[1],
-        zoom: 10,
-        transitionDuration: 2000,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: easeCubic,
-      };
-      setViewPort(newViewport);
-    }
-  }, [userLocation]);
 
   const [isUploadingData, setIsUploadingData] = useState(false);
   const defaultBasicDetails = {
@@ -162,9 +87,7 @@ function RegisterTreesForm({
     if (treeCount < 10000000) {
       if (
         geometry &&
-        (geometry.type === 'Point' ||
-          (geometry.features?.length !== undefined &&
-            geometry.features?.length >= 1))
+        (geometry.type === 'Point' || geometry.type === 'Polygon')
       ) {
         setIsUploadingData(true);
         const registeredTreesPayload: RegisteredTreesApiPayload = {
@@ -217,8 +140,24 @@ function RegisterTreesForm({
     }
   }, [contextLoaded]);
 
-  const _onStateChange = (state: any) => setMapState({ ...state });
-  const _onViewportChange = (view: any) => setViewPort({ ...view });
+  useEffect(() => {
+    if (localStorage.getItem('language')) {
+      const userLang = localStorage.getItem('language');
+      if (userLang) setUserLang(userLang);
+    }
+
+    async function getUserLocation() {
+      const location = await getStoredConfig('loc');
+      if (location) {
+        setUserLocation([
+          Number(location.longitude) || 0,
+          Number(location.latitude) || 0,
+        ]);
+      }
+    }
+    getUserLocation();
+  }, []);
+
   return (
     <>
       <StyledForm>
@@ -336,58 +275,17 @@ function RegisterTreesForm({
               <p>{t('selectLocation')}</p>
             )}
           </div>
-          <div className={`${styles.locationMap}`}>
-            {isMultiple && isStyleReady ? (
-              <DrawMap setGeometry={setGeometry} userLocation={userLocation} />
-            ) : (
-              <MapGL
-                {...mapState}
-                {...viewport}
-                onViewportChange={_onViewportChange}
-                onViewStateChange={_onStateChange}
-                onClick={(event) => {
-                  setInterventionCoordinates(event.lngLat);
-                  setGeometry({
-                    type: 'Point',
-                    coordinates: event.lngLat,
-                  });
-                  setViewPort({
-                    ...viewport,
-                    latitude: event.lngLat[1],
-                    longitude: event.lngLat[0],
-                    transitionDuration: 400,
-                    transitionInterpolator: new FlyToInterpolator(),
-                    transitionEasing: easeCubic,
-                  });
-                }}
-                mapOptions={{
-                  customAttribution:
-                    '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
-                }}
-              >
-                {interventionCoordinates ? (
-                  <Marker
-                    latitude={interventionCoordinates[1]}
-                    longitude={interventionCoordinates[0]}
-                    offsetLeft={5}
-                    offsetTop={-16}
-                    style={{ left: '28px' }}
-                  >
-                    <div className={styles.marker}></div>
-                  </Marker>
-                ) : null}
-                <div className={styles.mapNavigation}>
-                  <NavigationControl showCompass={false} />
-                </div>
-              </MapGL>
-            )}
-          </div>
+          <RegisterTreeMap
+            isMultiple={isMultiple}
+            geometry={geometry}
+            setGeometry={setGeometry}
+            userLocation={userLocation}
+          />
           {errorMessage !== null && (
             <div className={styles.center}>
               <p className={styles.formErrors}>{`${errorMessage}`}</p>
             </div>
           )}
-
           <div>
             <Button
               id={'RegTressSubmit'}
