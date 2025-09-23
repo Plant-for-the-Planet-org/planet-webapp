@@ -15,6 +15,7 @@ import styles from '../PlanetCash.module.scss';
 import StyledForm from '../../../common/Layout/StyledForm';
 import WebappButton from '../../../common/WebappButton';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
+import { useApi } from '../../../../hooks/useApi';
 
 type TopUpFormData = {
   isAutoRefillEnabled: boolean;
@@ -29,6 +30,7 @@ interface TopUpManagementProps {
 
 const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   const tTopUp = useTranslations('PlanetCash.topUpManagement');
+  const { putApiAuthenticated } = useApi();
 
   const defaultTopUpDetails = useMemo(() => {
     const hasExistingTopUp =
@@ -82,18 +84,26 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   };
 
   const saveTopUpSettings = async (data: TopUpFormData) => {
+    if (!data.isAutoRefillEnabled) {
+      return;
+    }
+
     console.log('Saving top-up settings:', data);
 
-    try {
-      // Only PUT when auto-refill is enabled (form is only visible when enabled)
-      const payload = {
-        topUpThreshold: Math.round(parseFloat(data.topUpThreshold) * 100),
-        topUpAmount: Math.round(parseFloat(data.topUpAmount) * 100),
-        paymentMethod: data.paymentMethod,
-      };
+    const payload = {
+      topUpThreshold: Math.round(parseFloat(data.topUpThreshold) * 100),
+      topUpAmount: Math.round(parseFloat(data.topUpAmount) * 100),
+      paymentMethod: data.paymentMethod,
+    };
 
-      // TODO: PUT /app/planetCash/${account.id}/autoTopUp
+    try {
       console.log('Saving auto top-up with payload:', payload);
+
+      const res = await putApiAuthenticated(
+        `/app/planetCash/${account.id}/autoTopUp`,
+        { payload }
+      );
+      console.log('API response:', res);
 
       // TODO: Show success message and refresh account data
       console.log('Top-up settings saved successfully');
