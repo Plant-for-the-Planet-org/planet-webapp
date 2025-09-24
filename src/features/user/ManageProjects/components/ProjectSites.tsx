@@ -71,7 +71,6 @@ function EditSite({
   setEditMode,
   siteGUID,
   siteList,
-  tiles,
 }: EditSiteProps) {
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
@@ -96,7 +95,6 @@ function EditSite({
       geoLatitude: 36.96,
       geoLongitude: -28.5,
     },
-    tiles,
   };
 
   const editProjectSite = async (data: ProjectSitesFormData) => {
@@ -288,13 +286,6 @@ export default function ProjectSites({
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
   };
 
-  const tiles = useMemo(
-    () => [
-      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    ],
-    []
-  );
-
   const handleModalClose = () => {
     setEditMode(false);
     setOpenModal(false);
@@ -465,7 +456,6 @@ export default function ProjectSites({
     setEditMode,
     siteGUID,
     siteList,
-    tiles,
   };
 
   return (
@@ -508,11 +498,7 @@ export default function ProjectSites({
                     >
                       <EditIcon color={colors.coreText} />
                     </IconButton>
-                    <StaticMap
-                      siteId={site.id}
-                      siteGeometry={site.geometry}
-                      tiles={tiles}
-                    />
+                    <StaticMap siteId={site.id} siteGeometry={site.geometry} />
                   </div>
                 </div>
               );

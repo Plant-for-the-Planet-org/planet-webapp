@@ -225,7 +225,6 @@ interface EditSiteProps {
   setEditMode: SetState<boolean>;
   siteGUID: Nullable<string>;
   siteList: Site[];
-  tiles: string[];
 }
 
 // project spending

@@ -6,19 +6,23 @@ import type {
 
 import MapGL, { Source, Layer } from 'react-map-gl-v7/maplibre';
 import themeProperties from '../../../../../theme/themeProperties';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { bbox } from '@turf/turf';
 
 interface StaticMapProps {
-  tiles: string[];
   siteId: string;
   siteGeometry: Polygon;
 }
 const { colors } = themeProperties.designSystem;
 
-const StaticMap = ({ tiles, siteId, siteGeometry }: StaticMapProps) => {
+const StaticMap = ({ siteId, siteGeometry }: StaticMapProps) => {
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
-
+  const tiles = useMemo(
+    () => [
+      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    ],
+    []
+  );
   return (
     <MapGL
       ref={mapRef}
