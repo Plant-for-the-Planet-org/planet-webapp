@@ -7,6 +7,7 @@ export interface PaymentMethodInterface {
   type: PaymentMethodType;
   brand: string; //e.g. 'visa', 'mastercard', 'sepa';
   last4: string; //last 4 digits of card or iban in case of sepa;
+  isDefault: boolean;
 }
 
 export interface PlanetCashAccount {
@@ -19,6 +20,7 @@ export interface PlanetCashAccount {
   creditLimit: number;
   currency: string; //'EUR';
   country: string; //'DE';
+  topUpEnabled: boolean;
   topUpThreshold: Nullable<number>;
   topUpAmount: Nullable<number>;
   temporaryCreditLimit: number;
