@@ -32,10 +32,13 @@ interface SingleContributionProps {
   slug?: string | null;
 }
 
-const StaticMap = dynamic(() => import('./StaticMap'), {
-  ssr: false,
-  loading: () => <p></p>,
-});
+const RegisterTreeStaticMap = dynamic(
+  () => import('../Maps/RegisterTreeStaticMap'),
+  {
+    ssr: false,
+    loading: () => <p></p>,
+  }
+);
 
 export default function SingleContribution({
   contribution,
@@ -69,7 +72,7 @@ export default function SingleContribution({
         <div className={styles.infoRow}>
           <div className={styles.infoItem}>
             <div className={styles.previewMap}>
-              <StaticMap geoJson={contribution.geometry} />
+              <RegisterTreeStaticMap geoJson={contribution.geometry} />
             </div>
           </div>
         </div>
