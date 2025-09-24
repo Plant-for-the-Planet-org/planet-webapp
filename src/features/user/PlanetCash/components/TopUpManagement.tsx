@@ -1,14 +1,16 @@
 import type { ChangeEvent, ReactElement } from 'react';
+import type { APIError, SerializedError } from '@planet-sdk/common';
 import type {
   PaymentMethodInterface,
   PlanetCashAccount,
 } from '../../../common/types/planetcash';
 
-import { useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { MenuItem, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
+import { handleError } from '@planet-sdk/common';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import styles from '../PlanetCash.module.scss';
@@ -16,6 +18,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import WebappButton from '../../../common/WebappButton';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import { useApi } from '../../../../hooks/useApi';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 type TopUpFormData = {
   isAutoRefillEnabled: boolean;
@@ -31,6 +34,7 @@ interface TopUpManagementProps {
 const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   const tTopUp = useTranslations('PlanetCash.topUpManagement');
   const { putApiAuthenticated } = useApi();
+  const { setErrors } = useContext(ErrorHandlingContext);
 
   const defaultTopUpDetails = useMemo(() => {
     const hasExistingTopUp =
@@ -55,6 +59,7 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
     control,
     reset,
     watch,
+    setError,
     formState: { errors },
   } = useForm<TopUpFormData>({
     mode: 'onBlur',
@@ -83,13 +88,54 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
     return checked;
   };
 
+  const handleSaveTopUpError = (err: unknown) => {
+    console.error('Failed to save top-up settings:', err);
+    const serializedErrors = handleError(err as APIError);
+    const _serializedErrors: SerializedError[] = [];
+
+    for (const error of serializedErrors) {
+      console.dir(error);
+      switch (error.message) {
+        case 'payment_method_not_found':
+          _serializedErrors.push({
+            message: tTopUp('apiErrors.paymentMethodNotFound'),
+          });
+          break;
+        case 'field_validation_failed':
+          _serializedErrors.push({
+            message: tTopUp('apiErrors.fieldValidationFailed'),
+          });
+          if (error.parameters?.errors) {
+            const fieldErrors = error.parameters.errors as Record<
+              string,
+              string[]
+            >;
+            for (const fieldName in fieldErrors) {
+              const messages = fieldErrors[fieldName];
+              if (messages.length > 0) {
+                setError(fieldName as keyof TopUpFormData, {
+                  type: 'server',
+                  message: messages[0],
+                });
+              }
+            }
+          }
+          break;
+        default:
+          _serializedErrors.push({
+            message: tTopUp('apiErrors.default'),
+          });
+          _serializedErrors.push(error);
+          break;
+      }
+    }
+    setErrors(_serializedErrors);
+  };
+
   const saveTopUpSettings = async (data: TopUpFormData) => {
     if (!data.isAutoRefillEnabled) {
       return;
     }
-
-    console.log('Saving top-up settings:', data);
-
     const payload = {
       topUpThreshold: Math.round(parseFloat(data.topUpThreshold) * 100),
       topUpAmount: Math.round(parseFloat(data.topUpAmount) * 100),
@@ -97,19 +143,15 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
     };
 
     try {
-      console.log('Saving auto top-up with payload:', payload);
-
       const res = await putApiAuthenticated(
         `/app/planetCash/${account.id}/autoTopUp`,
         { payload }
       );
-      console.log('API response:', res);
 
       // TODO: Show success message and refresh account data
       console.log('Top-up settings saved successfully');
-    } catch (error) {
-      // TODO: Handle error (show error message)
-      console.error('Failed to save top-up settings:', error);
+    } catch (err) {
+      handleSaveTopUpError(err);
     }
   };
 
