@@ -24,7 +24,7 @@ import {
   DEFAULT_MAP_STATE,
   DEFAULT_VIEW_STATE,
 } from '../../../projectsV2/ProjectsMapContext';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import styles from '../RegisterModal.module.scss';
 import zoomToLocation from '../../../../utils/mapsV2/zoomToLocation';
@@ -39,6 +39,13 @@ interface RegisterTreeMapProps {
   setGeometry: SetState<RegisteredTreesGeometry | undefined>;
   userLocation: number[] | null;
 }
+
+const MAP_CONFIG = {
+  DEFAULT_ZOOM_LEVEL: 10,
+  ZOOM_ANIMATION_DURATION: 2000,
+  MIN_POLYGON_POINTS: 4,
+  BORDER_RADIUS: '8px',
+} as const;
 
 const createPoint = (lng: number, lat: number): Point => ({
   type: 'Point',
@@ -55,12 +62,6 @@ const addPolygonVertex = (
   return { ...polygon, coordinates: [updated] };
 };
 
-const closePolygon = (polygon: Polygon): Polygon => {
-  const ring = polygon.coordinates[0];
-  if (ring.length < 4) return polygon;
-  return { ...polygon, coordinates: [[...ring.slice(0, -1), ring[0]]] };
-};
-
 const startPolygon = (lng: number, lat: number): Polygon => ({
   type: 'Polygon',
   coordinates: [
@@ -71,6 +72,13 @@ const startPolygon = (lng: number, lat: number): Polygon => ({
     ],
   ],
 });
+
+const closePolygon = (polygon: Polygon): Polygon => {
+  if (!polygon || polygon.type !== 'Polygon') return polygon;
+  const ring = polygon.coordinates[0];
+  // Replace the last placeholder with the first coordinate
+  return { ...polygon, coordinates: [[...ring.slice(0, -1), ring[0]]] };
+};
 
 const RegisterTreeMap = ({
   isMultiple,
@@ -84,15 +92,28 @@ const RegisterTreeMap = ({
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [isPolygonComplete, setIsPolygonComplete] = useState(false);
 
-  const isPointGeometry =
-    geometry?.type === 'Point' && Array.isArray(geometry?.coordinates);
-  const isPolygonGeometry =
-    geometry?.type === 'Polygon' && Array.isArray(geometry?.coordinates);
+  const canClosePolygon = useMemo(() => {
+    if (!isMultiple || !geometry || geometry.type !== 'Polygon') return false;
+    const ring = geometry.coordinates?.[0];
+    // Need at least 4 points (including closing point) for a valid polygon
+    return (
+      Array.isArray(ring) &&
+      ring.length >= MAP_CONFIG.MIN_POLYGON_POINTS &&
+      !isPolygonComplete
+    );
+  }, [isMultiple, geometry, isPolygonComplete]);
+
+  const isPointGeometry = geometry?.type === 'Point';
+  const isPolygonGeometry = geometry?.type === 'Polygon';
   const isPolygonInProgress =
-    geometry?.type === 'Polygon' &&
-    Array.isArray(geometry.coordinates?.[0]) &&
-    geometry.coordinates[0].length > 1;
+    geometry?.type === 'Polygon' && geometry.coordinates[0].length > 1;
+  const cursorType = isMultiple
+    ? isPolygonComplete
+      ? 'default'
+      : 'crosshair'
+    : 'pointer';
 
   const handleViewStateChange = useCallback(
     (newViewState: Partial<ViewState>) => {
@@ -105,17 +126,30 @@ const RegisterTreeMap = ({
   );
 
   useEffect(() => {
-    if (userLocation && mapRef.current) {
+    return () => {
+      // Should cleanup map resources
+      if (mapRef.current) {
+        mapRef.current.remove();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (userLocation && mapRef.current && mapLoaded) {
       zoomToLocation(
         handleViewStateChange,
         userLocation[0],
         userLocation[1],
-        10,
-        2000,
+        MAP_CONFIG.DEFAULT_ZOOM_LEVEL,
+        MAP_CONFIG.ZOOM_ANIMATION_DURATION,
         mapRef
       );
     }
-  }, [userLocation, mapRef.current]);
+  }, [userLocation, mapLoaded]);
+
+  useEffect(() => {
+    if (isMultiple) setGeometry(undefined);
+  }, [isMultiple]);
 
   useEffect(() => {
     async function loadMapStyle() {
@@ -138,6 +172,7 @@ const RegisterTreeMap = ({
     (e: MapMouseEvent) => {
       const { lng, lat } = e.lngLat;
       if (isMultiple) {
+        if (isPolygonComplete) return;
         setGeometry((prev) => {
           if (prev?.type === 'Polygon') {
             return addPolygonVertex(prev, lng, lat);
@@ -149,22 +184,36 @@ const RegisterTreeMap = ({
         centerMapOnCoordinates(mapRef, [lng, lat]);
       }
     },
-    [isMultiple, setGeometry]
+    [isMultiple, isPolygonComplete]
   );
 
   const handleMapDoubleClick = useCallback(() => {
-    if (isMultiple && geometry?.type === 'Polygon') {
-      setGeometry(closePolygon(geometry));
+    if (canClosePolygon) {
+      setGeometry((prev) => {
+        if (!prev || prev.type !== 'Polygon') return prev;
+        return closePolygon(prev);
+      });
+      setIsPolygonComplete(true);
     }
-  }, [isMultiple, geometry, setGeometry]);
+  }, [canClosePolygon]);
+
+  const handleClearGeometry = useCallback(() => {
+    setGeometry(undefined);
+    setIsPolygonComplete(false);
+  }, []);
 
   return (
     <section className={styles.registerTreeMapContainer}>
+      {!mapLoaded && (
+        <div role="status" aria-live="polite">
+          Map Loading...
+        </div>
+      )}
       {geometry && isMultiple && (
         <button
           className={styles.polygonDeleteButton}
-          onClick={() => setGeometry(undefined)}
-          aria-label="Clear geometry"
+          onClick={handleClearGeometry}
+          aria-label="Clear polygon geometry"
         >
           <DeleteIcon />
         </button>
@@ -177,8 +226,12 @@ const RegisterTreeMap = ({
         onLoad={() => setMapLoaded(true)}
         onClick={handleMapClick}
         onDblClick={handleMapDoubleClick}
-        style={{ width: '100%', height: '100%', borderRadius: '8px' }}
-        cursor={isMultiple ? 'crosshair' : 'pointer'}
+        style={{
+          width: '100%',
+          height: '100%',
+          borderRadius: MAP_CONFIG.BORDER_RADIUS,
+        }}
+        cursor={cursorType}
       >
         {isPointGeometry && mapLoaded && (
           <Marker
@@ -202,7 +255,7 @@ const RegisterTreeMap = ({
           </Source>
         )}
 
-        {isPolygonInProgress && mapLoaded && (
+        {isPolygonInProgress && mapLoaded && !isPolygonComplete && (
           <Source
             id="polygon-line-preview"
             type="geojson"
