@@ -35,6 +35,8 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   const tTopUp = useTranslations('PlanetCash.topUpManagement');
   const { putApiAuthenticated } = useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
+  const { updateAccount } = usePlanetCash();
+
 
   const defaultTopUpDetails = useMemo(() => {
     const hasExistingTopUp =
@@ -143,11 +145,11 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
     };
 
     try {
-      const res = await putApiAuthenticated(
+      const res = await putApiAuthenticated<PlanetCashAccount>(
         `/app/planetCash/${account.id}/autoTopUp`,
         { payload }
       );
-
+      updateAccount(res);
       // TODO: Show success message and refresh account data
       console.log('Top-up settings saved successfully');
     } catch (err) {
