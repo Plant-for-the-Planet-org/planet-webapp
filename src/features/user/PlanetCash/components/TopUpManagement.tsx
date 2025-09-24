@@ -40,6 +40,7 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   const { updateAccount } = usePlanetCash();
 
   const [isProcessingDelete, setIsProcessingDelete] = useState(false);
+  const [isProcessingSave, setIsProcessingSave] = useState(false);
   const [isDisableConfirmationOpen, setIsDisableConfirmationOpen] =
     useState(false);
 
@@ -161,28 +162,35 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
     setErrors(_serializedErrors);
   };
 
-  const saveTopUpSettings = async (data: TopUpFormData) => {
-    if (!data.isAutoRefillEnabled) {
-      return;
-    }
-    const payload = {
-      topUpThreshold: Math.round(parseFloat(data.topUpThreshold) * 100),
-      topUpAmount: Math.round(parseFloat(data.topUpAmount) * 100),
-      paymentMethod: data.paymentMethod,
-    };
+  const saveTopUpSettings = useCallback(
+    async (data: TopUpFormData) => {
+      if (!data.isAutoRefillEnabled || isProcessingSave) {
+        return;
+      }
+      const payload = {
+        topUpThreshold: Math.round(parseFloat(data.topUpThreshold) * 100),
+        topUpAmount: Math.round(parseFloat(data.topUpAmount) * 100),
+        paymentMethod: data.paymentMethod,
+      };
 
-    try {
-      const res = await putApiAuthenticated<PlanetCashAccount>(
-        `/app/planetCash/${account.id}/autoTopUp`,
-        { payload }
-      );
-      updateAccount(res);
-      // TODO: Show success message and refresh account data
-      console.log('Top-up settings saved successfully');
-    } catch (err) {
-      handleSaveTopUpError(err);
-    }
-  };
+      setIsProcessingSave(true);
+
+      try {
+        const res = await putApiAuthenticated<PlanetCashAccount>(
+          `/app/planetCash/${account.id}/autoTopUp`,
+          { payload }
+        );
+        updateAccount(res);
+        // TODO: Show success message
+        console.log('Top-up settings saved successfully');
+      } catch (err) {
+        handleSaveTopUpError(err);
+      } finally {
+        setIsProcessingSave(false);
+      }
+    },
+    [account.id, isProcessingSave, handleSaveTopUpError, putApiAuthenticated]
+  );
 
   const formatPaymentMethodInfo = (
     paymentMethod: PaymentMethodInterface
