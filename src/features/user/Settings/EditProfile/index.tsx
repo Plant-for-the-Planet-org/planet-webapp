@@ -11,7 +11,7 @@ export default function EditProfile(): ReactElement {
   const t = useTranslations('Me');
 
   return (
-    <DashboardView title={t('editProfile')} subtitle={null}>
+    <DashboardView title={t('editProfile')}>
       <SingleColumnView>
         <CenteredContainer>
           <EditProfileForm />
