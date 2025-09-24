@@ -54,7 +54,13 @@
         "fieldValidationFailed": "Some fields have invalid values. Please check and try again.",
         "default": "Something went wrong while saving top-up settings. If this issue persists, please contact support@plant-for-the-planet.org."
       },
-      "saveButton": "Save Top-Up Settings"
+      "saveButton": "Save Top-Up Settings",
+      "disableConfirmationDialog": {
+        "confirmButtonText": "Confirm",
+        "cancelButtonText": "Cancel",
+        "title": "Disable Auto Refill?",
+        "subtitle": "Are you sure you want to disable auto refill? This will remove your current auto refill settings."
+      }
     }
   }
 }

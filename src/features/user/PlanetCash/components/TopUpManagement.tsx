@@ -5,7 +5,7 @@ import type {
   PlanetCashAccount,
 } from '../../../common/types/planetcash';
 
-import { useContext, useEffect, useMemo } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { MenuItem, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
@@ -19,6 +19,8 @@ import WebappButton from '../../../common/WebappButton';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import { useApi } from '../../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
+import CustomModal from '../../../common/Layout/CustomModal';
 
 type TopUpFormData = {
   isAutoRefillEnabled: boolean;
@@ -33,10 +35,13 @@ interface TopUpManagementProps {
 
 const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   const tTopUp = useTranslations('PlanetCash.topUpManagement');
-  const { putApiAuthenticated } = useApi();
+  const { putApiAuthenticated, deleteApiAuthenticated } = useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { updateAccount } = usePlanetCash();
 
+  const [isProcessingDelete, setIsProcessingDelete] = useState(false);
+  const [isDisableConfirmationOpen, setIsDisableConfirmationOpen] =
+    useState(false);
 
   const defaultTopUpDetails = useMemo(() => {
     const hasExistingTopUp =
@@ -62,6 +67,7 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
     reset,
     watch,
     setError,
+    setValue,
     formState: { errors },
   } = useForm<TopUpFormData>({
     mode: 'onBlur',
@@ -74,21 +80,42 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
     reset(defaultTopUpDetails);
   }, [defaultTopUpDetails, reset]);
 
-  const handleToggleChange = async (checked: boolean) => {
-    if (!checked) {
-      // Call DELETE API immediately when toggle is turned off
-      try {
-        // TODO: DELETE /app/planetCash/${account.id}/autoTopUp
-        console.log('Disabling auto top-up for account:', account.id);
-        // TODO: Show success message and refresh account data
-      } catch (error) {
-        // TODO: Handle error (show error message)
-        console.error('Failed to disable auto top-up:', error);
-        // TODO: Revert toggle state on error
+  const handleToggleChange = useCallback(
+    async (checked: boolean, onChange: (value: boolean) => void) => {
+      if (checked) {
+        onChange(checked);
+      } else {
+        if (!isProcessingDelete) {
+          setIsDisableConfirmationOpen(true);
+        }
       }
+    },
+    [isProcessingDelete]
+  );
+
+  const handleConfirmDisable = useCallback(async () => {
+    setIsDisableConfirmationOpen(false);
+    setValue('isAutoRefillEnabled', false);
+
+    if (!account.topUpEnabled) {
+      return;
     }
-    return checked;
-  };
+
+    setIsProcessingDelete(true);
+
+    try {
+      const res = await deleteApiAuthenticated<PlanetCashAccount>(
+        `/app/planetCash/${account.id}/autoTopUp`
+      );
+      updateAccount(res);
+    } catch (err) {
+      console.error('Failed to disable auto top-up:', err);
+      setErrors(handleError(err as APIError));
+      setValue('isAutoRefillEnabled', true);
+    } finally {
+      setIsProcessingDelete(false);
+    }
+  }, [account.id, account.topUpEnabled, deleteApiAuthenticated, setValue]);
 
   const handleSaveTopUpError = (err: unknown) => {
     console.error('Failed to save top-up settings:', err);
@@ -212,13 +239,11 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
                 checked={value}
                 onChange={(event) => {
                   const checked = event.target.checked;
-                  onChange(checked);
-                  if (!checked) {
-                    handleToggleChange(checked);
-                  }
+                  handleToggleChange(checked, onChange);
                 }}
                 inputProps={{ 'aria-label': 'auto refill toggle' }}
                 id="is-refill-enabled"
+                disabled={isProcessingDelete}
               />
             )}
           />
@@ -327,6 +352,21 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
             />
           </>
         )}
+        <CustomModal
+          isOpen={isDisableConfirmationOpen}
+          handleContinue={handleConfirmDisable}
+          handleCancel={() => {
+            setIsDisableConfirmationOpen(false);
+          }}
+          continueButtonText={tTopUp(
+            'disableConfirmationDialog.confirmButtonText'
+          )}
+          cancelButtonText={tTopUp(
+            'disableConfirmationDialog.cancelButtonText'
+          )}
+          modalTitle={tTopUp('disableConfirmationDialog.title')}
+          modalSubtitle={tTopUp('disableConfirmationDialog.subtitle')}
+        />
       </div>
     </StyledForm>
   );
