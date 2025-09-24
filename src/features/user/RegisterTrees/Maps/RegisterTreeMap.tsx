@@ -89,6 +89,10 @@ const RegisterTreeMap = ({
     geometry?.type === 'Point' && Array.isArray(geometry?.coordinates);
   const isPolygonGeometry =
     geometry?.type === 'Polygon' && Array.isArray(geometry?.coordinates);
+  const isPolygonInProgress =
+    geometry?.type === 'Polygon' &&
+    Array.isArray(geometry.coordinates?.[0]) &&
+    geometry.coordinates[0].length > 1;
 
   const handleViewStateChange = useCallback(
     (newViewState: Partial<ViewState>) => {
@@ -191,14 +195,30 @@ const RegisterTreeMap = ({
               id="polygon-fill"
               type="fill"
               paint={{
-                'fill-color': colors.sunriseOrange,
+                'fill-color': colors.warmGreen,
                 'fill-opacity': 0.4,
               }}
             />
+          </Source>
+        )}
+
+        {isPolygonInProgress && mapLoaded && (
+          <Source
+            id="polygon-line-preview"
+            type="geojson"
+            data={{
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                coordinates: geometry.coordinates[0],
+              },
+              properties: {},
+            }}
+          >
             <Layer
-              id="polygon-outline"
+              id="polygon-line"
               type="line"
-              paint={{ 'line-color': colors.coreText, 'line-width': 2 }}
+              paint={{ 'line-color': colors.primaryColor, 'line-width': 2 }}
             />
           </Source>
         )}
