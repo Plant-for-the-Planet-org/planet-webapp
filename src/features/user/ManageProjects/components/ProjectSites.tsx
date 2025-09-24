@@ -8,21 +8,14 @@ import type {
   Site,
   SitesScopeProjects,
 } from '../../../common/types/project';
-import type {
-  FeatureCollection as GeoJson,
-  GeoJsonProperties,
-  Geometry,
-} from 'geojson';
+import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useMemo } from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import { WebMercatorViewport } from 'react-map-gl';
-import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
-import bbox from '@turf/bbox';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import {
@@ -41,21 +34,28 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
+import SiteDeleteConfirmationModal from './microComponent/SiteDeleteConfirmationModal';
+import StaticMap from './microComponent/StaticMap';
 import themeProperties from '../../../../theme/themeProperties';
 
-const MapStatic = ReactMapboxGl({
-  interactive: false,
-  accessToken: '',
-});
-
-const Map = dynamic(() => import('./MapComponent'), {
+const defaultSiteDetails = {
+  name: '',
+  status: '',
+  geometry: {},
+};
+const SiteFormationMap = dynamic(() => import('./MapComponent'), {
   ssr: false,
   loading: () => <p></p>,
 });
 
+type ProjectSitesFormData = {
+  name: string;
+  status: string;
+};
+
 type SiteApiPayload = {
   name: string;
-  geometry: GeoJson<Geometry, GeoJsonProperties>;
+  geometry: SitesGeoJSON;
   status: string;
 };
 
@@ -68,7 +68,7 @@ function EditSite({
   geoJsonProp,
   projectGUID,
   setSiteList,
-  seteditMode,
+  setEditMode,
   siteGUID,
   siteList,
 }: EditSiteProps) {
@@ -127,7 +127,7 @@ function EditSite({
         setSiteList(temp);
         setGeoJson(null);
         setIsUploadingData(false);
-        seteditMode(false);
+        setEditMode(false);
         setErrorMessage('');
       } catch (err) {
         setIsUploadingData(false);
@@ -213,7 +213,7 @@ function EditSite({
               </div>
             </div>
 
-            <Map {...MapProps} />
+            <SiteFormationMap {...MapProps} />
           </div>
 
           {errorMessage && errorMessage !== '' ? (
@@ -248,11 +248,6 @@ function EditSite({
   );
 }
 
-type ProjectSitesFormData = {
-  name: string;
-  status: string;
-};
-
 export default function ProjectSites({
   handleBack,
   handleNext,
@@ -268,57 +263,31 @@ export default function ProjectSites({
     formState: { errors },
     control,
   } = useForm<ProjectSitesFormData>();
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [geoJsonError, setGeoJsonError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<boolean>(true);
-  const [editMode, seteditMode] = useState<boolean>(false);
-  const [geoLocation, setgeoLocation] = useState<GeoLocation | undefined>(
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
     undefined
   );
-  const [geoJson, setGeoJson] = useState<GeoJson | null>(null);
-  const defaultMapCenter = [36.96, -28.5];
-  const defaultZoom = 1.4;
-  const viewport = {
-    height: 320,
-    width: 200,
-    center: defaultMapCenter,
-    zoom: defaultZoom,
-  };
-  const style = {
-    version: 8,
-    sources: {},
-    layers: [],
-  };
-  const defaultSiteDetails = {
-    name: '',
-    status: '',
-    geometry: {},
-  };
-
+  const [geoJson, setGeoJson] = useState<SitesGeoJSON | null>(null);
   const [siteDetails, setSiteDetails] =
     useState<SiteDetails>(defaultSiteDetails);
   const [siteList, setSiteList] = useState<Site[]>([]);
   const [siteGUID, setSiteGUID] = useState<string | null>(null);
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSiteId, setSelectedSiteId] = useState<string>('');
 
   // Assigning defaultSiteDetails as default
-
   const changeSiteDetails = (e: ChangeEvent<HTMLInputElement>): void => {
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
   };
 
-  const RASTER_SOURCE_OPTIONS = {
-    type: 'raster',
-    tiles: [
-      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    ],
-    tileSize: 128,
-  };
-
   const handleModalClose = () => {
-    seteditMode(false);
+    setEditMode(false);
     setOpenModal(false);
   };
 
@@ -327,7 +296,6 @@ export default function ProjectSites({
     setGeoJson,
     geoJsonError,
     setGeoJsonError,
-    geoLocation,
   };
 
   const fetchProjSites = async () => {
@@ -344,7 +312,7 @@ export default function ProjectSites({
           geoLatitude: result.geoLatitude,
           geoLongitude: result.geoLongitude,
         };
-        setgeoLocation(geoLocation);
+        setGeoLocation(geoLocation);
 
         if (result?.sites.length > 0) {
           setShowForm(false);
@@ -411,10 +379,11 @@ export default function ProjectSites({
       await deleteApiAuthenticated(`/app/projects/${projectGUID}/sites/${id}`);
       const siteListTemp = siteList.filter((item) => item.id !== id);
       setSiteList(siteListTemp);
-      setIsUploadingData(false);
     } catch (err) {
-      setIsUploadingData(false);
       setErrors(handleError(err as APIError));
+    } finally {
+      setIsUploadingData(false);
+      setIsModalOpen(false);
     }
   };
 
@@ -456,7 +425,7 @@ export default function ProjectSites({
       geometry: {},
     };
 
-    const collection: GeoJson = {
+    const collection: SitesGeoJSON = {
       type: 'FeatureCollection',
       features: [
         {
@@ -470,7 +439,7 @@ export default function ProjectSites({
     setGeoJson(collection);
     setSiteDetails(defaultSiteDetails);
     setSiteGUID(site.id);
-    seteditMode(true);
+    setEditMode(true);
     setOpenModal(true);
   };
 
@@ -484,7 +453,7 @@ export default function ProjectSites({
     geoJsonProp: geoJson,
     projectGUID,
     setSiteList,
-    seteditMode,
+    setEditMode,
     siteGUID,
     siteList,
   };
@@ -500,24 +469,6 @@ export default function ProjectSites({
               return site.geometry !== null;
             })
             .map((site) => {
-              const bounds = bbox(site.geometry);
-              const { longitude, latitude, zoom } = new WebMercatorViewport(
-                viewport
-              ).fitBounds(
-                [
-                  [bounds[0], bounds[1]],
-                  [bounds[2], bounds[3]],
-                ],
-                {
-                  padding: {
-                    top: 50,
-                    bottom: 50,
-                    left: 50,
-                    right: 50,
-                  },
-                }
-              );
-
               return (
                 <div key={site.id}>
                   <div className={styles.mapboxContainer}>
@@ -530,7 +481,8 @@ export default function ProjectSites({
                     <IconButton
                       id={'trashIconProjS'}
                       onClick={() => {
-                        deleteProjectSite(site.id);
+                        setSelectedSiteId(site.id);
+                        setIsModalOpen(true);
                       }}
                       size="small"
                       className={styles.uploadedMapDeleteButton}
@@ -546,43 +498,12 @@ export default function ProjectSites({
                     >
                       <EditIcon color={colors.coreText} />
                     </IconButton>
-                    <MapStatic
-                      {...viewport}
-                      center={[longitude, latitude]}
-                      zoom={[zoom]}
-                      style={style} // eslint-disable-line
-                      containerStyle={{
-                        height: 200,
-                        width: 320,
-                      }}
-                    >
-                      <Source
-                        id="satellite_source"
-                        tileJsonSource={RASTER_SOURCE_OPTIONS}
-                      />
-                      <Layer
-                        type="raster"
-                        id="satellite_layer"
-                        sourceId="satellite_source"
-                      />
-                      <GeoJSONLayer
-                        data={site.geometry}
-                        fillPaint={{
-                          'fill-color': colors.white,
-                          'fill-opacity': 0.2,
-                        }}
-                        linePaint={{
-                          'line-color': colors.warmGreen,
-                          'line-width': 2,
-                        }}
-                      />
-                    </MapStatic>
+                    <StaticMap siteId={site.id} siteGeometry={site.geometry} />
                   </div>
                 </div>
               );
             })}
         </InlineFormDisplayGroup>
-
         {showForm ? (
           <div
             className={`${isUploadingData ? styles.shallowOpacity : ''}`}
@@ -646,7 +567,7 @@ export default function ProjectSites({
               />
             </InlineFormDisplayGroup>
 
-            {geoLocation && <Map {...MapProps} />}
+            {geoLocation && <SiteFormationMap {...MapProps} />}
 
             <Button
               id="projSiteSaveandAdd"
@@ -664,7 +585,7 @@ export default function ProjectSites({
               setGeoJson(null);
               setSiteDetails(defaultSiteDetails);
               setSiteGUID(null);
-              seteditMode(false);
+              setEditMode(false);
               setOpenModal(false);
             }}
             className={styles.formFieldLarge}
@@ -678,7 +599,6 @@ export default function ProjectSites({
             <h4 className={styles.errorMessage}>{errorMessage}</h4>
           </div>
         ) : null}
-
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
             onClick={() => handleBack(ProjectCreationTabs.DETAILED_ANALYSIS)}
@@ -709,6 +629,13 @@ export default function ProjectSites({
             {t('skip')}
           </Button>
         </div>
+        <SiteDeleteConfirmationModal
+          siteId={selectedSiteId}
+          deleteProjectSite={deleteProjectSite}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          isUploadingData={isUploadingData}
+        />
       </StyledForm>
     </CenteredContainer>
   );

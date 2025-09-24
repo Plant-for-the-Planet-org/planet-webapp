@@ -11,7 +11,12 @@ import type {
   ProjectPurposeTypes,
   ProjectSite,
 } from '@planet-sdk/common/build/types/project/common';
-import type { FeatureCollection, Polygon, MultiPolygon } from 'geojson';
+import type {
+  FeatureCollection,
+  Polygon,
+  MultiPolygon,
+  GeoJsonProperties,
+} from 'geojson';
 import type { SetState } from './common';
 import type { RefObject } from 'react';
 import type { MapRef } from 'react-map-gl/src/components/static-map';
@@ -87,7 +92,7 @@ export type MapProject = ProjectMapInfo<
 
 export type SitesGeoJSON = FeatureCollection<
   Polygon | MultiPolygon,
-  ProjectSite
+  ProjectSite | GeoJsonProperties
 >;
 
 interface ProjectPropsContextInterface {

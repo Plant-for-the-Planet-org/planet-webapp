@@ -249,6 +249,9 @@
       "seaCoordinates": "The selected location appears to be in the sea. Please choose a nearby point on land.",
       "latitudeRange": "Latitude must be between -90 and 90.",
       "longitudeRange": "Longitude must be between -180 and 180."
-    }
+    },
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "siteDeleteConfirmation": "Are you sure you want to delete this site?"
   }
 }
