@@ -8,7 +8,7 @@ import type {
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { MenuItem, TextField } from '@mui/material';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { handleError } from '@planet-sdk/common';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
@@ -21,6 +21,7 @@ import { useApi } from '../../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import CustomModal from '../../../common/Layout/CustomModal';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 type TopUpFormData = {
   isAutoRefillEnabled: boolean;
@@ -35,6 +36,7 @@ interface TopUpManagementProps {
 
 const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   const tTopUp = useTranslations('PlanetCash.topUpManagement');
+  const locale = useLocale();
   const { putApiAuthenticated, deleteApiAuthenticated } = useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { updateAccount } = usePlanetCash();
@@ -67,7 +69,7 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
     control,
     reset,
     watch,
-    setError,
+    setError: setFormError,
     setValue,
     formState: { errors },
   } = useForm<TopUpFormData>({
@@ -124,32 +126,35 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
     const _serializedErrors: SerializedError[] = [];
 
     for (const error of serializedErrors) {
-      console.dir(error);
       switch (error.message) {
         case 'payment_method_not_found':
           _serializedErrors.push({
             message: tTopUp('apiErrors.paymentMethodNotFound'),
           });
           break;
-        case 'field_validation_failed':
-          _serializedErrors.push({
-            message: tTopUp('apiErrors.fieldValidationFailed'),
+        case 'top_up_amount_too_low':
+          setFormError('topUpAmount', {
+            message: tTopUp('apiErrors.topUpAmountTooLow', {
+              minAmountWithCurrency: getFormattedCurrency(
+                locale,
+                account.currency,
+                (error.parameters?.min_amount || 0) / 100,
+                true
+              ),
+            }),
           });
-          if (error.parameters?.errors) {
-            const fieldErrors = error.parameters.errors as Record<
-              string,
-              string[]
-            >;
-            for (const fieldName in fieldErrors) {
-              const messages = fieldErrors[fieldName];
-              if (messages.length > 0) {
-                setError(fieldName as keyof TopUpFormData, {
-                  type: 'server',
-                  message: messages[0],
-                });
-              }
-            }
-          }
+          break;
+        case 'top_up_threshold_too_low':
+          setFormError('topUpThreshold', {
+            message: tTopUp('apiErrors.topUpThresholdTooLow', {
+              minThresholdWithCurrency: getFormattedCurrency(
+                locale,
+                account.currency,
+                (error.parameters?.min_threshold || 0) / 100,
+                true
+              ),
+            }),
+          });
           break;
         default:
           _serializedErrors.push({

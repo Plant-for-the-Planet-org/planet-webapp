@@ -51,7 +51,8 @@
       },
       "apiErrors": {
         "paymentMethodNotFound": "There is an issue with the selected payment method. Please select a different payment method. You can also reach out to support@plant-for-the-planet.org for help.",
-        "fieldValidationFailed": "Some fields have invalid values. Please check and try again.",
+        "topUpAmountTooLow": "The refill amount must be at least {minAmountWithCurrency}.",
+        "topUpThresholdTooLow": "The threshold amount must be at least {minThresholdWithCurrency}.",
         "default": "Something went wrong while saving top-up settings. If this issue persists, please contact support@plant-for-the-planet.org."
       },
       "saveButton": "Save Top-Up Settings",
