@@ -57,15 +57,6 @@ export default function RegisterTreeStaticMap({
   );
 
   useEffect(() => {
-    return () => {
-      // Should cleanup map resources
-      if (mapRef.current) {
-        mapRef.current.remove();
-      }
-    };
-  }, []);
-
-  useEffect(() => {
     if (!mapLoaded || !mapRef) return;
     if (pointReady) {
       const [longitude, latitude] = geoJson.coordinates;

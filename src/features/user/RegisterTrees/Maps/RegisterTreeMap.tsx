@@ -9,8 +9,8 @@ import type {
   MapRef,
 } from '../../../common/types/projectv2';
 import type { Point, Polygon } from 'geojson';
-import type { RegisteredTreesGeometry } from '../RegisterTreesWidget';
 import type { SetState } from '../../../common/types/common';
+import type { RegisteredTreesGeometry } from '../../../common/types/map';
 
 import {
   Layer,
@@ -124,15 +124,6 @@ const RegisterTreeMap = ({
     },
     []
   );
-
-  useEffect(() => {
-    return () => {
-      // Should cleanup map resources
-      if (mapRef.current) {
-        mapRef.current.remove();
-      }
-    };
-  }, []);
 
   useEffect(() => {
     if (userLocation && mapRef.current && mapLoaded) {

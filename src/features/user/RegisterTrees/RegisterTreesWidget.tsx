@@ -1,8 +1,10 @@
 import type { ChangeEvent } from 'react';
 import type { ContributionProperties } from './RegisterTrees/SingleContribution';
 import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
-import type { RegisterTreesFormProps } from '../../common/types/map';
-import type { Point, Polygon } from 'geojson';
+import type {
+  RegisteredTreesGeometry,
+  RegisterTreesFormProps,
+} from '../../common/types/map';
 
 import { useEffect, useState, useContext } from 'react';
 import { handleError } from '@planet-sdk/common';
@@ -30,7 +32,6 @@ type RegisteredTreesApiPayload = {
   plantDate: Date;
   geometry: RegisteredTreesGeometry;
 };
-export type RegisteredTreesGeometry = Point | Polygon;
 
 const RegisterTreeMap = dynamic(() => import('./Maps/RegisterTreeMap'), {
   ssr: false,
