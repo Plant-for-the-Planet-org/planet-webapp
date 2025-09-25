@@ -125,33 +125,6 @@ const RegisterTreeMap = ({
     []
   );
 
-  useEffect(() => {
-    if (userLocation && mapRef.current && mapLoaded) {
-      zoomToLocation(
-        handleViewStateChange,
-        userLocation[0],
-        userLocation[1],
-        MAP_CONFIG.DEFAULT_ZOOM_LEVEL,
-        MAP_CONFIG.ZOOM_ANIMATION_DURATION,
-        mapRef
-      );
-    }
-  }, [userLocation, mapLoaded]);
-
-  useEffect(() => {
-    if (isMultiple) setGeometry(undefined);
-  }, [isMultiple]);
-
-  useEffect(() => {
-    async function loadMapStyle() {
-      const result = await getMapStyle('openStreetMap');
-      if (result) {
-        setMapState((prev) => ({ ...prev, mapStyle: result }));
-      }
-    }
-    loadMapStyle();
-  }, []);
-
   const onMove = useCallback(
     (evt: ViewStateChangeEvent) => {
       handleViewStateChange(evt.viewState);
@@ -191,6 +164,31 @@ const RegisterTreeMap = ({
   const handleClearGeometry = useCallback(() => {
     setGeometry(undefined);
     setIsPolygonComplete(false);
+  }, []);
+
+  useEffect(() => {
+    if (userLocation && mapRef.current && mapLoaded) {
+      zoomToLocation(
+        handleViewStateChange,
+        userLocation[0],
+        userLocation[1],
+        MAP_CONFIG.DEFAULT_ZOOM_LEVEL,
+        MAP_CONFIG.ZOOM_ANIMATION_DURATION,
+        mapRef
+      );
+    }
+  }, [userLocation, mapLoaded]);
+
+  useEffect(() => handleClearGeometry(), [isMultiple]);
+
+  useEffect(() => {
+    async function loadMapStyle() {
+      const result = await getMapStyle('openStreetMap');
+      if (result) {
+        setMapState((prev) => ({ ...prev, mapStyle: result }));
+      }
+    }
+    loadMapStyle();
   }, []);
 
   return (
