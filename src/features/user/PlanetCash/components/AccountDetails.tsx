@@ -161,7 +161,7 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
           </Grid>
         )}
       </Grid>
-      {account.paymentMethods.length > 0 && (
+      {account.paymentMethods?.length > 0 && (
         <>
           <Grid item component={Divider} />
           <TopUpManagement account={account} />
