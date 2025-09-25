@@ -90,7 +90,7 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
 
   const handleToggleChange = useCallback(
     async (checked: boolean, onChange: (value: boolean) => void) => {
-      if (checked) {
+      if (checked || !account.topUpEnabled) {
         onChange(checked);
       } else {
         if (!isProcessingDelete) {
