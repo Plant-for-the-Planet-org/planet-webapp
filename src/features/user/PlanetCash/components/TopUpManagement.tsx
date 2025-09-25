@@ -21,6 +21,7 @@ import { useApi } from '../../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import CustomModal from '../../../common/Layout/CustomModal';
+import CustomSnackbar from '../../../common/CustomSnackbar';
 import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 type TopUpFormData = {
@@ -49,6 +50,7 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   const [isProcessingSave, setIsProcessingSave] = useState(false);
   const [isDisableConfirmationOpen, setIsDisableConfirmationOpen] =
     useState(false);
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
 
   const defaultTopUpDetails = useMemo(() => {
     const hasExistingTopUp =
@@ -116,6 +118,7 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
         `/app/planetCash/${account.id}/autoTopUp`
       );
       updateAccount(res);
+      setShowSuccessSnackbar(true);
     } catch (err) {
       console.error('Failed to disable auto top-up:', err);
       setErrors(handleError(err as APIError));
@@ -191,8 +194,7 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
           { payload }
         );
         updateAccount(res);
-        // TODO: Show success message
-        console.log('Top-up settings saved successfully');
+        setShowSuccessSnackbar(true);
       } catch (err) {
         handleSaveTopUpError(err);
       } finally {
@@ -231,6 +233,10 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   ): void => {
     e.target.value = e.target.value.replace(/[^0-9]/g, '');
   };
+
+  const closeSuccessSnackbar = useCallback(() => {
+    setShowSuccessSnackbar(false);
+  }, []);
 
   const hasMultiplePaymentMethods = account.paymentMethods.length > 1;
 
@@ -384,6 +390,11 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
           modalSubtitle={tTopUp('disableConfirmationDialog.subtitle')}
         />
       </div>
+      <CustomSnackbar
+        isVisible={showSuccessSnackbar}
+        snackbarText={tTopUp('successMessage')}
+        handleClose={closeSuccessSnackbar}
+      />
     </StyledForm>
   );
 };

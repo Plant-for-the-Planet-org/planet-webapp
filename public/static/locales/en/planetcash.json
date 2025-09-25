@@ -61,7 +61,8 @@
         "cancelButtonText": "Cancel",
         "title": "Disable Auto Refill?",
         "subtitle": "Are you sure you want to disable auto refill? This will remove your current auto refill settings."
-      }
+      },
+      "successMessage": "Auto Refill settings saved successfully"
     }
   }
 }
