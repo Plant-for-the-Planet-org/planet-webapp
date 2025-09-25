@@ -76,7 +76,7 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
     watch,
     setError: setFormError,
     setValue,
-    formState: { errors },
+    formState: { errors: formErrors, isValid, isDirty },
   } = useForm<TopUpFormData>({
     mode: 'onBlur',
     defaultValues: defaultTopUpDetails,
@@ -98,7 +98,7 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
         }
       }
     },
-    [isProcessingDelete]
+    [isProcessingDelete, account.topUpEnabled]
   );
 
   const handleConfirmDisable = useCallback(async () => {
@@ -288,10 +288,10 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
                   }}
                   onBlur={onBlur}
                   value={value}
-                  error={errors.topUpThreshold !== undefined}
+                  error={formErrors.topUpThreshold !== undefined}
                   helperText={
-                    errors.topUpThreshold !== undefined &&
-                    errors.topUpThreshold.message
+                    formErrors.topUpThreshold !== undefined &&
+                    formErrors.topUpThreshold.message
                   }
                 />
               )}
@@ -319,10 +319,10 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
                   }}
                   onBlur={onBlur}
                   value={value}
-                  error={errors.topUpAmount !== undefined}
+                  error={formErrors.topUpAmount !== undefined}
                   helperText={
-                    errors.topUpAmount !== undefined &&
-                    errors.topUpAmount.message
+                    formErrors.topUpAmount !== undefined &&
+                    formErrors.topUpAmount.message
                   }
                 />
               )}
@@ -363,6 +363,8 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
               variant="primary"
               text={tTopUp('saveButton')}
               onClick={handleSubmit(saveTopUpSettings)}
+              loading={isProcessingSave}
+              disabled={!isDirty || !isValid}
             />
           </>
         )}

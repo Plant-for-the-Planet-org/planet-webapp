@@ -24,6 +24,8 @@ interface LinkProps extends CommonProps {
 interface ButtonProps extends CommonProps {
   onClick: () => void;
   elementType: 'button';
+  loading?: boolean;
+  disabled?: boolean;
 }
 
 type WebappButtonProps = LinkProps | ButtonProps;
@@ -118,11 +120,24 @@ function WebappButton({
         e.preventDefault(); //ignores href if provided without elementType='link'
         otherProps.onClick();
       }}
+      disabled={otherProps.loading || otherProps.disabled}
     >
       {otherProps.icon !== undefined && (
         <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
       )}
-      <div className={styles.webappButtonLabel}>{otherProps.text}</div>
+      <div className={styles.webappButtonLabel}>
+        {otherProps.loading ? (
+          <div
+            className={
+              variant === 'secondary'
+                ? styles['spinner--secondary-button']
+                : styles.spinner
+            }
+          />
+        ) : (
+          otherProps.text
+        )}
+      </div>
     </button>
   );
 }
