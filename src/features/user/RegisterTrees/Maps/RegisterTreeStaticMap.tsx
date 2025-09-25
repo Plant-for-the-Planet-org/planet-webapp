@@ -57,7 +57,7 @@ export default function RegisterTreeStaticMap({
   );
 
   useEffect(() => {
-    if (!mapLoaded || !mapRef) return;
+    if (!mapLoaded || !mapRef.current) return;
     if (pointReady) {
       const [longitude, latitude] = geometry.coordinates;
 

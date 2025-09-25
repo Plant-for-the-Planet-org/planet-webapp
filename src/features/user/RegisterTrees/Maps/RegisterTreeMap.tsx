@@ -52,32 +52,28 @@ const createPoint = (lng: number, lat: number): Point => ({
   coordinates: [lng, lat],
 });
 
+const startPolygon = (lng: number, lat: number): Polygon => ({
+  type: 'Polygon',
+  coordinates: [[[lng, lat]]], // Only one point initially
+});
+
 const addPolygonVertex = (
   polygon: Polygon,
   lng: number,
   lat: number
-): Polygon => {
-  const ring = polygon.coordinates[0];
-  const updated = [...ring.slice(0, -1), [lng, lat], ring[0]];
-  return { ...polygon, coordinates: [updated] };
-};
-
-const startPolygon = (lng: number, lat: number): Polygon => ({
-  type: 'Polygon',
-  coordinates: [
-    [
-      [lng, lat],
-      [lng, lat],
-      [lng, lat],
-    ],
-  ],
+): Polygon => ({
+  ...polygon,
+  coordinates: [[...polygon.coordinates[0], [lng, lat]]],
 });
 
+// Close the polygon when the user finishes (e.g., double-click)
 const closePolygon = (polygon: Polygon): Polygon => {
-  if (!polygon || polygon.type !== 'Polygon') return polygon;
-  const ring = polygon.coordinates[0];
-  // Replace the last placeholder with the first coordinate
-  return { ...polygon, coordinates: [[...ring.slice(0, -1), ring[0]]] };
+  const coords = polygon.coordinates[0];
+  if (coords.length < 3) throw new Error('Polygon must have at least 3 points');
+  return {
+    ...polygon,
+    coordinates: [[...coords, coords[0]]], // duplicate first point at the end
+  };
 };
 
 const RegisterTreeMap = ({
@@ -105,10 +101,17 @@ const RegisterTreeMap = ({
     );
   }, [isMultiple, geometry, isPolygonComplete]);
 
-  const isPointGeometry = geometry?.type === 'Point';
-  const isPolygonGeometry = geometry?.type === 'Polygon';
+  const isPolygon =
+    geometry?.type === 'Polygon' && Array.isArray(geometry.coordinates?.[0]);
+  const polygonCoords = isPolygon ? geometry.coordinates[0] : [];
+  const isPolygonValid =
+    isPolygon &&
+    geometry.coordinates[0].length >= MAP_CONFIG.MIN_POLYGON_POINTS;
   const isPolygonInProgress =
-    geometry?.type === 'Polygon' && geometry.coordinates[0].length > 1;
+    isPolygon && polygonCoords.length > 1 && !isPolygonComplete;
+
+  const isPoint = geometry?.type === 'Point';
+
   const cursorType = isMultiple
     ? isPolygonComplete
       ? 'default'
@@ -222,7 +225,7 @@ const RegisterTreeMap = ({
         }}
         cursor={cursorType}
       >
-        {isPointGeometry && mapLoaded && (
+        {isPoint && mapLoaded && (
           <Marker
             longitude={geometry.coordinates[0]}
             latitude={geometry.coordinates[1]}
@@ -231,7 +234,7 @@ const RegisterTreeMap = ({
           </Marker>
         )}
 
-        {isPolygonGeometry && mapLoaded && (
+        {isPolygonValid && mapLoaded && (
           <Source
             id="polygon-preview"
             type="geojson"
@@ -248,7 +251,7 @@ const RegisterTreeMap = ({
           </Source>
         )}
 
-        {isPolygonInProgress && mapLoaded && !isPolygonComplete && (
+        {isPolygonInProgress && mapLoaded && (
           <Source
             id="polygon-line-preview"
             type="geojson"
