@@ -128,11 +128,9 @@ function WebappButton({
       <div className={styles.webappButtonLabel}>
         {otherProps.loading ? (
           <div
-            className={
-              variant === 'secondary'
-                ? styles['spinner--secondary-button']
-                : styles.spinner
-            }
+            className={`${styles.spinner} ${
+              variant === 'secondary' ? styles['spinner--secondary-button'] : ''
+            }`}
           />
         ) : (
           otherProps.text
