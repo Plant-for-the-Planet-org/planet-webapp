@@ -125,16 +125,15 @@ function WebappButton({
       {otherProps.icon !== undefined && (
         <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
       )}
-      <div className={styles.webappButtonLabel}>
-        {otherProps.loading ? (
-          <div
-            className={`${styles.spinner} ${
-              variant === 'secondary' ? styles['spinner--secondary-button'] : ''
-            }`}
-          />
-        ) : (
-          otherProps.text
-        )}
+      <div className={styles.webappButtonLabelContainer}>
+        <span
+          className={`${styles.webappButtonLabel} ${
+            otherProps.loading ? styles.visuallyHidden : ''
+          }`}
+        >
+          {otherProps.text}
+        </span>
+        {otherProps.loading && <div className="spinner" aria-hidden="true" />}
       </div>
     </button>
   );
