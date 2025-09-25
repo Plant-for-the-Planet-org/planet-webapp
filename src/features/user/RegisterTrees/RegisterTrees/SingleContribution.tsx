@@ -72,7 +72,7 @@ export default function SingleContribution({
         <div className={styles.infoRow}>
           <div className={styles.infoItem}>
             <div className={styles.previewMap}>
-              <RegisterTreeStaticMap geoJson={contribution.geometry} />
+              <RegisterTreeStaticMap geometry={contribution.geometry} />
             </div>
           </div>
         </div>

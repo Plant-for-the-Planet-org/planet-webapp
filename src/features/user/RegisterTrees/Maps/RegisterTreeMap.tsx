@@ -232,7 +232,11 @@ const RegisterTreeMap = ({
         )}
 
         {isPolygonGeometry && mapLoaded && (
-          <Source id="polygon-preview" type="geojson" data={geometry}>
+          <Source
+            id="polygon-preview"
+            type="geojson"
+            data={{ type: 'Feature', geometry, properties: {} }}
+          >
             <Layer
               id="polygon-fill"
               type="fill"

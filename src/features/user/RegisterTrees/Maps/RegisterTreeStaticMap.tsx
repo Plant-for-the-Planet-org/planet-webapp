@@ -21,13 +21,13 @@ import themeProperties from '../../../../theme/themeProperties';
 import { zoomToPolygonIntervention } from '../../../../utils/mapsV2/zoomToPolygonIntervention';
 
 interface Props {
-  geoJson: Point | Polygon | undefined;
+  geometry: Point | Polygon | undefined;
 }
 
 export default function RegisterTreeStaticMap({
-  geoJson,
+  geometry,
 }: Props): ReactElement {
-  if (geoJson === undefined) return <></>;
+  if (geometry === undefined) return <></>;
 
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
   const { colors } = themeProperties.designSystem;
@@ -36,8 +36,8 @@ export default function RegisterTreeStaticMap({
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  const pointReady = mapLoaded && geoJson?.type === 'Point';
-  const polygonReady = mapLoaded && geoJson?.type === 'Polygon';
+  const pointReady = mapLoaded && geometry?.type === 'Point';
+  const polygonReady = mapLoaded && geometry?.type === 'Polygon';
 
   const handleViewStateChange = useCallback(
     (newViewState: Partial<ViewState>) => {
@@ -59,7 +59,7 @@ export default function RegisterTreeStaticMap({
   useEffect(() => {
     if (!mapLoaded || !mapRef) return;
     if (pointReady) {
-      const [longitude, latitude] = geoJson.coordinates;
+      const [longitude, latitude] = geometry.coordinates;
 
       zoomToLocation(
         handleViewStateChange,
@@ -73,13 +73,13 @@ export default function RegisterTreeStaticMap({
 
     if (polygonReady) {
       zoomToPolygonIntervention(
-        geoJson.coordinates[0],
+        geometry.coordinates[0],
         mapRef,
         handleViewStateChange,
         2400
       );
     }
-  }, [geoJson, mapLoaded]);
+  }, [geometry, mapLoaded]);
 
   useEffect(() => {
     async function loadMapStyle() {
@@ -103,15 +103,19 @@ export default function RegisterTreeStaticMap({
     >
       {pointReady && (
         <Marker
-          longitude={geoJson.coordinates[0]}
-          latitude={geoJson.coordinates[1]}
+          longitude={geometry.coordinates[0]}
+          latitude={geometry.coordinates[1]}
           anchor="bottom"
         >
           <ProjectLocationIcon color={colors.primaryColor} />
         </Marker>
       )}
       {polygonReady && (
-        <Source id="polygon-source" type="geojson" data={geoJson}>
+        <Source
+          id="polygon-source"
+          type="geojson"
+          data={{ type: 'Feature', geometry, properties: {} }}
+        >
           <Layer
             id="polygon-fill"
             type="fill"
