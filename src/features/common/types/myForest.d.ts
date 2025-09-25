@@ -19,13 +19,11 @@ export type ContributionStats = {
   };
   areaRestoredInM2: {
     personal: number;
-    /** not currently needed, but included for consistency. Gifts with units 'm2' are not currently supported. Initialize as 0.  */
-    received: 0;
+    received: number; // Now supports received gifts with m2 units
   };
   areaConservedInM2: {
     personal: number;
-    /** not currently needed but included for consistency. Gifts with units 'm2' are not currently supported. Initialize as 0. */
-    received: 0;
+    received: number; // Now supports received gifts with m2 units
   };
 };
 
@@ -64,7 +62,7 @@ export type SingleGiftReceived = {
   dataType: 'receivedGift';
   quantity: number;
   plantDate: DateString;
-  unitType: 'tree';
+  unitType: 'tree' | 'm2';
   isGift: true;
   giftDetails: GiftReceivedDetails;
 };
@@ -158,6 +156,8 @@ export type GiftsQueryResult = {
   projectName: string;
   country: string;
   plantDate: DateString;
+  purpose: 'trees' | 'conservation';
+  unitType: 'tree' | 'm2' | null;
 };
 
 // Procedure Response types
