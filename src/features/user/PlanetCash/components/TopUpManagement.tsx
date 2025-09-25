@@ -35,6 +35,10 @@ interface TopUpManagementProps {
 }
 
 const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
+  if (!account.paymentMethods || account.paymentMethods.length === 0) {
+    return <></>;
+  }
+
   const tTopUp = useTranslations('PlanetCash.topUpManagement');
   const locale = useLocale();
   const { putApiAuthenticated, deleteApiAuthenticated } = useApi();
@@ -60,7 +64,8 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
         account.topUpAmount !== null
           ? (account.topUpAmount / 100).toString()
           : '',
-      paymentMethod: account.paymentMethods[0]?.id || '',
+      paymentMethod:
+        account.topUpPaymentMethod || account.paymentMethods[0].id || '',
     };
   }, [account]);
 
@@ -226,10 +231,6 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   ): void => {
     e.target.value = e.target.value.replace(/[^0-9]/g, '');
   };
-
-  if (!account.paymentMethods || account.paymentMethods.length === 0) {
-    return <></>;
-  }
 
   const hasMultiplePaymentMethods = account.paymentMethods.length > 1;
 

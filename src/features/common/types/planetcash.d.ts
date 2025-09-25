@@ -23,6 +23,7 @@ export interface PlanetCashAccount {
   topUpEnabled: boolean;
   topUpThreshold: Nullable<number>;
   topUpAmount: Nullable<number>;
+  topUpPaymentMethod: Nullable<string>;
   temporaryCreditLimit: number;
   paymentMethods: Array<PaymentMethodInterface>;
 }
