@@ -128,7 +128,15 @@ export default function RegisterTreeStaticMap({
               'fill-color': colors.warmGreen,
               'fill-opacity': 0.4,
             }}
-          ></Layer>
+          />
+          <Layer
+            id="polygon-outline"
+            type="line"
+            paint={{
+              'line-color': colors.primaryColor,
+              'line-width': 1,
+            }}
+          />
         </Source>
       )}
     </MapGL>
