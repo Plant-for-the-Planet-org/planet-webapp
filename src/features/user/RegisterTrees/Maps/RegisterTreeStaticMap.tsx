@@ -31,12 +31,13 @@ export default function RegisterTreeStaticMap({
 
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
   const { colors } = themeProperties.designSystem;
+
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  const isPointGeometry = geoJson?.type === 'Point';
-  const isPolygonGeometry = geoJson?.type === 'Polygon';
+  const pointReady = mapLoaded && geoJson?.type === 'Point';
+  const polygonReady = mapLoaded && geoJson?.type === 'Polygon';
 
   const handleViewStateChange = useCallback(
     (newViewState: Partial<ViewState>) => {
@@ -66,9 +67,9 @@ export default function RegisterTreeStaticMap({
 
   useEffect(() => {
     if (!mapLoaded || !mapRef) return;
-    if (isPointGeometry) {
-      const longitude = geoJson.coordinates[0];
-      const latitude = geoJson.coordinates[1];
+    if (pointReady) {
+      const [longitude, latitude] = geoJson.coordinates;
+
       zoomToLocation(
         handleViewStateChange,
         longitude,
@@ -79,7 +80,7 @@ export default function RegisterTreeStaticMap({
       );
     }
 
-    if (isPolygonGeometry) {
+    if (polygonReady) {
       zoomToPolygonIntervention(
         geoJson.coordinates[0],
         mapRef,
@@ -109,7 +110,7 @@ export default function RegisterTreeStaticMap({
       interactive={false}
       style={{ width: '100%', height: '100%' }}
     >
-      {isPointGeometry && mapLoaded && (
+      {pointReady && (
         <Marker
           longitude={geoJson.coordinates[0]}
           latitude={geoJson.coordinates[1]}
@@ -118,7 +119,7 @@ export default function RegisterTreeStaticMap({
           <ProjectLocationIcon color={colors.primaryColor} />
         </Marker>
       )}
-      {isPolygonGeometry && mapLoaded && (
+      {polygonReady && (
         <Source id="polygon-source" type="geojson" data={geoJson}>
           <Layer
             id="polygon-fill"
