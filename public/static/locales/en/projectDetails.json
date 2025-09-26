@@ -100,6 +100,10 @@
       "timeTravelOptionsLabel": "Time Travel Options"
     },
     "previousImage": "Previous Image",
-    "nextImage": "Next Image"
+    "nextImage": "Next Image",
+    "videoPlayer": {
+      "loadVideo": "Load Video (connects to YouTube)",
+      "consentText": "By loading the video, you agree to YouTube's privacy policy."
+    }
   }
 }
