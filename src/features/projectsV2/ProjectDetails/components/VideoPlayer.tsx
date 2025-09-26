@@ -21,10 +21,18 @@ interface Props {
 
 // Helper function to check if URL is from YouTube domain
 const isYouTubeDomain = (url: string): boolean => {
-  const normalizedUrl = url.toLowerCase();
-  return (
-    normalizedUrl.includes('youtube.com') || normalizedUrl.includes('youtu.be')
-  );
+  try {
+    const { hostname } = new URL(url);
+    const allowedHosts = [
+      'youtube.com',
+      'www.youtube.com',
+      'youtu.be',
+      'www.youtu.be',
+    ];
+    return allowedHosts.includes(hostname.toLowerCase());
+  } catch (e) {
+    return false;
+  }
 };
 
 const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
