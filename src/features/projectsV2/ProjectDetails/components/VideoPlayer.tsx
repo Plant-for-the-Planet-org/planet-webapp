@@ -15,6 +15,8 @@ const PlayButton = () => {
 
 interface Props {
   videoUrl: string;
+  hasConsent: boolean;
+  onConsentChange: (hasConsent: boolean) => void;
 }
 
 // Helper function to check if URL is from YouTube domain
@@ -25,13 +27,12 @@ const isYouTubeDomain = (url: string): boolean => {
   );
 };
 
-const VideoPlayer = ({ videoUrl }: Props) => {
+const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
   const tVideoPlayer = useTranslations('ProjectDetails.videoPlayer');
   const [playerDimensions, setPlayerDimensions] = useState({
     width: 0,
     height: 0,
   });
-  const [hasConsent, setHasConsent] = useState(false);
   const [isYouTubeVideo, setIsYouTubeVideo] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -61,7 +62,7 @@ const VideoPlayer = ({ videoUrl }: Props) => {
   }, []);
 
   const handleLoadVideo = () => {
-    setHasConsent(true);
+    onConsentChange(true);
   };
 
   const { height, width } = playerDimensions;

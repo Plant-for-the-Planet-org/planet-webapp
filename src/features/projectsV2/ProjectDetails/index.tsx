@@ -6,7 +6,7 @@ import type {
 } from '@planet-sdk/common';
 import type { ExtendedProject } from '../../common/types/projectv2';
 
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
 import { useProjects } from '../ProjectsContext';
@@ -55,6 +55,7 @@ const ProjectDetails = ({
   const { getApi } = useApi();
   const { tenantConfig } = useTenant();
   const { p: projectSlug } = router.query;
+  const [hasVideoConsent, setHasVideoConsent] = useState(false);
 
   const fetchInterventions = async (projectId: string) => {
     setIsLoading(true);
@@ -227,6 +228,8 @@ const ProjectDetails = ({
             project={singleProject}
             isMobile={isMobile}
             setSelectedMode={setSelectedMode}
+            hasVideoConsent={hasVideoConsent}
+            onVideoConsentChange={setHasVideoConsent}
           />
         )}
       </div>
