@@ -8,7 +8,7 @@ import type {
   ExtendedMapLibreMap,
   MapRef,
 } from '../../../common/types/projectv2';
-import type { Point, Polygon } from 'geojson';
+import type { Geometry, Point, Polygon } from 'geojson';
 import type { SetState } from '../../../common/types/common';
 import type { RegisteredTreesGeometry } from '../../../common/types/map';
 
@@ -32,18 +32,20 @@ import { ProjectLocationIcon } from '../../../../../public/assets/images/icons/p
 import themeProperties from '../../../../theme/themeProperties';
 import { centerMapOnCoordinates } from '../../../../utils/projectV2';
 import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';
+import { useTranslations } from 'next-intl';
 
 interface RegisterTreeMapProps {
   isMultiple: boolean;
   geometry: RegisteredTreesGeometry | undefined;
   setGeometry: SetState<RegisteredTreesGeometry | undefined>;
   userLocation: number[] | null;
+  setErrorMessage: SetState<string | null>;
 }
 
 const MAP_CONFIG = {
   DEFAULT_ZOOM_LEVEL: 10,
   ZOOM_ANIMATION_DURATION: 2000,
-  MIN_POLYGON_POINTS: 4,
+  MIN_POLYGON_POINTS: 3,
   BORDER_RADIUS: '8px',
 } as const;
 
@@ -76,13 +78,24 @@ const closePolygon = (polygon: Polygon): Polygon => {
   };
 };
 
+function isPointGeometry(geo: Geometry | undefined): geo is Point {
+  return geo?.type === 'Point';
+}
+
+function isPolygonGeometry(geo: Geometry | undefined): geo is Polygon {
+  return geo?.type === 'Polygon';
+}
+
 const RegisterTreeMap = ({
   isMultiple,
   geometry,
   setGeometry,
   userLocation,
+  setErrorMessage,
 }: RegisterTreeMapProps) => {
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const t = useTranslations('Me');
   const { colors } = themeProperties.designSystem;
 
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
@@ -90,27 +103,20 @@ const RegisterTreeMap = ({
   const [mapLoaded, setMapLoaded] = useState(false);
   const [isPolygonComplete, setIsPolygonComplete] = useState(false);
 
-  const canClosePolygon = useMemo(() => {
-    if (!isMultiple || !geometry || geometry.type !== 'Polygon') return false;
-    const ring = geometry.coordinates?.[0];
-    // Need at least 4 points (including closing point) for a valid polygon
-    return (
-      Array.isArray(ring) &&
-      ring.length >= MAP_CONFIG.MIN_POLYGON_POINTS &&
-      !isPolygonComplete
-    );
-  }, [isMultiple, geometry, isPolygonComplete]);
+  const isPolygon = isPolygonGeometry(geometry);
+  const isPoint = isPointGeometry(geometry);
 
-  const isPolygon =
-    geometry?.type === 'Polygon' && Array.isArray(geometry.coordinates?.[0]);
   const polygonCoords = isPolygon ? geometry.coordinates[0] : [];
   const isPolygonValid =
-    isPolygon &&
-    geometry.coordinates[0].length >= MAP_CONFIG.MIN_POLYGON_POINTS;
+    isPolygon && polygonCoords.length >= MAP_CONFIG.MIN_POLYGON_POINTS;
   const isPolygonInProgress =
     isPolygon && polygonCoords.length > 1 && !isPolygonComplete;
 
-  const isPoint = geometry?.type === 'Point';
+  // Polygon can only be closed if it's valid and not already complete
+  const canClosePolygon = useMemo(() => {
+    if (!isMultiple || !geometry) return false;
+    return isPolygonValid && !isPolygonComplete;
+  }, [isMultiple, geometry, isPolygonComplete]);
 
   const cursorType = isMultiple
     ? isPolygonComplete
@@ -137,24 +143,45 @@ const RegisterTreeMap = ({
 
   const handleMapClick = useCallback(
     (e: MapMouseEvent) => {
-      const { lng, lat } = e.lngLat;
-      if (isMultiple) {
-        if (isPolygonComplete) return;
-        setGeometry((prev) => {
-          if (prev?.type === 'Polygon') {
-            return addPolygonVertex(prev, lng, lat);
-          }
-          return startPolygon(lng, lat);
-        });
-      } else {
-        setGeometry(createPoint(lng, lat));
-        centerMapOnCoordinates(mapRef, [lng, lat]);
+      setErrorMessage(null);
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
       }
+
+      clickTimeoutRef.current = setTimeout(() => {
+        const { lng, lat } = e.lngLat;
+        if (isMultiple) {
+          if (isPolygonComplete) return;
+          setGeometry((prev) => {
+            if (prev?.type === 'Polygon') {
+              return addPolygonVertex(prev, lng, lat);
+            }
+            return startPolygon(lng, lat);
+          });
+        } else {
+          // Point mode → center map after placing marker
+          setGeometry(createPoint(lng, lat));
+          centerMapOnCoordinates(mapRef, [lng, lat]);
+        }
+      }, 250);
     },
     [isMultiple, isPolygonComplete]
   );
 
   const handleMapDoubleClick = useCallback(() => {
+    //  Double click detected → cancel single click action
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current);
+      clickTimeoutRef.current = null;
+    }
+
+    // Validate polygon before closing
+    if (!isPolygonValid) {
+      setErrorMessage(t('polygonMinimumPoints'));
+      setGeometry(undefined);
+      return;
+    }
+
     if (canClosePolygon) {
       setGeometry((prev) => {
         if (!prev || prev.type !== 'Polygon') return prev;

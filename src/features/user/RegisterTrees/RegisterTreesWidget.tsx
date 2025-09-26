@@ -281,6 +281,7 @@ function RegisterTreesForm({
             geometry={geometry}
             setGeometry={setGeometry}
             userLocation={userLocation}
+            setErrorMessage={setErrorMessage}
           />
           {errorMessage !== null && (
             <div className={styles.center}>

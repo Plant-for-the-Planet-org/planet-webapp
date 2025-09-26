@@ -291,6 +291,7 @@
     "platform-payout": "Platform Payout",
     "vplatform-payout": "Platform Payout",
     "bankDetails": "Bank Details",
-    "refundAmount": "Refunded Amount"
+    "refundAmount": "Refunded Amount",
+    "polygonMinimumPoints": "A polygon needs at least 3 points. Please click at least three locations on the map."
   }
 }
