@@ -26,22 +26,22 @@ const isYouTubeDomain = (url: string): boolean => {
     const lowerHostname = hostname.toLowerCase();
 
     // More secure approach: check for exact matches and proper subdomains
-    const isYouTubeDomain =
+    const isMainYTHost =
       lowerHostname === 'youtube.com' ||
       (lowerHostname.endsWith('.youtube.com') &&
         lowerHostname.length > '.youtube.com'.length);
 
-    const isYouTubeNoCookieDomain =
+    const isYTNoCookieHost =
       lowerHostname === 'youtube-nocookie.com' ||
       (lowerHostname.endsWith('.youtube-nocookie.com') &&
         lowerHostname.length > '.youtube-nocookie.com'.length);
 
-    const isYouTuBeDomain =
+    const isYTShortLinkHost =
       lowerHostname === 'youtu.be' ||
       (lowerHostname.endsWith('.youtu.be') &&
         lowerHostname.length > '.youtu.be'.length);
 
-    return isYouTubeDomain || isYouTubeNoCookieDomain || isYouTuBeDomain;
+    return isMainYTHost || isYTNoCookieHost || isYTShortLinkHost;
   } catch (e) {
     return false;
   }
@@ -136,7 +136,6 @@ const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
         light={!isYouTubeVideo}
         controls={true}
         playIcon={<PlayButton />}
-        playing={isYouTubeVideo}
         config={{
           youtube: {
             playerVars: { autoplay: 1, rel: 0 },
