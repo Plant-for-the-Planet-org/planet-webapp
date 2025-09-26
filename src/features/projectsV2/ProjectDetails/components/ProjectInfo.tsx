@@ -21,12 +21,16 @@ interface ProjectInfoProps {
   project: ExtendedProject;
   isMobile: boolean;
   setSelectedMode: SetState<ViewMode> | undefined;
+  hasVideoConsent: boolean;
+  onVideoConsentChange: (consent: boolean) => void;
 }
 
 const ProjectInfo = ({
   project,
   isMobile,
   setSelectedMode,
+  hasVideoConsent,
+  onVideoConsentChange,
 }: ProjectInfoProps) => {
   const tCountry = useTranslations('Country');
   const {
@@ -164,7 +168,13 @@ const ProjectInfo = ({
     <section className={styles.projectInfoSection}>
       {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
       {description && <AboutProject description={description} />}
-      {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
+      {videoUrl && (
+        <VideoPlayer
+          videoUrl={videoUrl}
+          hasConsent={hasVideoConsent}
+          onConsentChange={onVideoConsentChange}
+        />
+      )}
       {images?.length > 0 && (
         <ImageSlider
           images={images}
