@@ -23,13 +23,25 @@ interface Props {
 const isYouTubeDomain = (url: string): boolean => {
   try {
     const { hostname } = new URL(url);
-    const allowedHosts = [
-      'youtube.com',
-      'www.youtube.com',
-      'youtu.be',
-      'www.youtu.be',
-    ];
-    return allowedHosts.includes(hostname.toLowerCase());
+    const lowerHostname = hostname.toLowerCase();
+
+    // More secure approach: check for exact matches and proper subdomains
+    const isYouTubeDomain =
+      lowerHostname === 'youtube.com' ||
+      (lowerHostname.endsWith('.youtube.com') &&
+        lowerHostname.length > '.youtube.com'.length);
+
+    const isYouTubeNoCookieDomain =
+      lowerHostname === 'youtube-nocookie.com' ||
+      (lowerHostname.endsWith('.youtube-nocookie.com') &&
+        lowerHostname.length > '.youtube-nocookie.com'.length);
+
+    const isYouTuBeDomain =
+      lowerHostname === 'youtu.be' ||
+      (lowerHostname.endsWith('.youtu.be') &&
+        lowerHostname.length > '.youtu.be'.length);
+
+    return isYouTubeDomain || isYouTubeNoCookieDomain || isYouTuBeDomain;
   } catch (e) {
     return false;
   }
