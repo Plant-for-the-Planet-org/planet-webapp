@@ -7,7 +7,7 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import WebappButton from '../../../common/WebappButton';
 import styles from '../styles/ProjectSnippet.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
@@ -87,7 +87,7 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
         {allowDonations && (
           <div className={styles.perUnitCost}>
             {tAllProjects('ratePerUnit', {
-              amount: getFormatedCurrency(locale, currency, unitCost),
+              amount: getFormattedCurrency(locale, currency, unitCost),
               unit: unitType,
             })}
           </div>

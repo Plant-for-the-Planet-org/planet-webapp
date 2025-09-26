@@ -9,7 +9,7 @@ import type {
 import { useContext } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useLocale, useTranslations } from 'next-intl';
-import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
+import getFormattedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
@@ -247,7 +247,7 @@ export default function ProjectSnippet({
             </div>
           ) : (
             <div className={styles.perUnitCost}>
-              {getFormatedCurrency(locale, project.currency, project.unitCost)}{' '}
+              {getFormattedCurrency(locale, project.currency, project.unitCost)}{' '}
               <span>
                 {project.unitType === 'tree' && tDonate('perTree')}
                 {project.unitType === 'm2' && tDonate('perM2')}

@@ -7,7 +7,7 @@ import type { SetState } from '../../../common/types/common';
 
 import { useMemo } from 'react';
 import styles from '../AccountHistory.module.scss';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { useLocale, useTranslations } from 'next-intl';
 import TransferDetails from './TransferDetails';
@@ -112,7 +112,7 @@ export function RecordHeader({
       </div>
       <div className={styles.right}>
         <p className={`${styles.top} ${styles.amount}`}>
-          {getFormatedCurrency(locale, record.currency, record.amount)}
+          {getFormattedCurrency(locale, record.currency, record.amount)}
         </p>
         <p className={`${styles.status} ${statusStyle}`}>
           {record?.status === 'trialing' ? 'active' : t(record?.status)}
@@ -156,7 +156,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       {record.amount && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('amount')}</p>
-          <p>{getFormatedCurrency(locale, record.currency, record.amount)}</p>
+          <p>{getFormattedCurrency(locale, record.currency, record.amount)}</p>
         </div>
       )}
       {record.frequency && (
@@ -175,7 +175,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('totalDonated')}</p>
           <p>
-            {getFormatedCurrency(locale, record.currency, record.totalDonated)}
+            {getFormattedCurrency(locale, record.currency, record.totalDonated)}
           </p>
         </div>
       )}
