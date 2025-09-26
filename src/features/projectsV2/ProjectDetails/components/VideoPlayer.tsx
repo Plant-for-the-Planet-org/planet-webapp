@@ -89,7 +89,19 @@ const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
               buttonClasses={styles.consentButton}
             />
             <small className={styles.consentText}>
-              {tVideoPlayer('consentText')}
+              {tVideoPlayer.rich('consentText', {
+                googlePrivacyLink: (chunks) => (
+                  <a
+                    target="_blank"
+                    href="https://policies.google.com/privacy"
+                    rel="noreferrer"
+                    className="planet-links"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {chunks}
+                  </a>
+                ),
+              })}
             </small>
           </div>
         </div>

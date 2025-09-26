@@ -30,8 +30,8 @@
 .consentBackground {
   display: grid;
   place-items: center;
-  aspect-ratio: 16 / 9; // Modern CSS - much cleaner
-  background: $dsDarkGrey;
+  aspect-ratio: 16 / 9;
+  background: $dsMediumGreyTransparent50;
   border-radius: 13px;
   padding: 20px;
   gap: 12px;
@@ -54,18 +54,18 @@
 }
 
 .consentButton {
-  background-color: $dsFireRed;
+  background-color: $dsDarkGrey;
   color: $dsWhite;
-  border-color: $dsFireRed;
+  border-color: $dsDarkGrey;
 
   &:hover {
     opacity: 0.8;
-    background: $dsFireRed;
-    border-color: $dsFireRed;
+    background: $dsDarkGrey;
+    border-color: $dsDarkGrey;
   }
 }
 
 .consentText {
   font-size: $fontXSmall;
-  color: $dsWhite;
+  font-weight: 500;
 }

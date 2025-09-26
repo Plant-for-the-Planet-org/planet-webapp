@@ -103,7 +103,7 @@
     "nextImage": "Next Image",
     "videoPlayer": {
       "loadVideo": "Load Video (connects to YouTube)",
-      "consentText": "By loading the video, you agree to YouTube's privacy policy."
+      "consentText": "Clicking Load Video means you consent to YouTube's <googlePrivacyLink>Privacy Policy</googlePrivacyLink> and cookies."
     }
   }
 }
