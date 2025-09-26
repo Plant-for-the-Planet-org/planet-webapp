@@ -127,6 +127,10 @@ const ProjectDetails = ({
     }
   }, [projectSlug, locale, currencyCode, tenantConfig?.id, router.isReady]);
 
+  useEffect(() => {
+    setHasVideoConsent(false);
+  }, [projectSlug]);
+
   const activeMultiTree = useMemo(() => {
     if (hoveredIntervention?.type === 'multi-tree-registration') {
       return hoveredIntervention;
