@@ -94,7 +94,7 @@ const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
                   <a
                     target="_blank"
                     href="https://policies.google.com/privacy"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="planet-links"
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -127,7 +127,7 @@ const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
         playing={isYouTubeVideo}
         config={{
           youtube: {
-            playerVars: { autoPlay: 1, rel: 0 },
+            playerVars: { autoplay: 1, rel: 0 },
           },
         }}
         url={videoUrl}
