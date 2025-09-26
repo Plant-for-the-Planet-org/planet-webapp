@@ -121,12 +121,13 @@ const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
         height={height}
         width={width}
         loop={true}
-        light={true}
+        light={!isYouTubeVideo}
         controls={true}
         playIcon={<PlayButton />}
+        playing={isYouTubeVideo}
         config={{
           youtube: {
-            playerVars: { autoPlay: 1 },
+            playerVars: { autoPlay: 1, rel: 0 },
           },
         }}
         url={videoUrl}
