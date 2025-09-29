@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import type { BankAccount } from '../../../common/types/payouts';
 
 import { styled, Grid, Button, Divider } from '@mui/material';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
@@ -76,7 +76,7 @@ const BankAccountDetails = ({
         {account.currency !== null && account.payoutMinAmount !== null && (
           <Grid container item xs={6} sm={4} className="accountHeaderRight">
             {tManagePayouts('minPayoutText', {
-              amount: getFormatedCurrency(
+              amount: getFormattedCurrency(
                 locale,
                 account.currency,
                 account.payoutMinAmount,
