@@ -4,7 +4,7 @@ import type { PlanetCashAccount } from '../../../common/types/planetcash';
 import { styled, Grid, Button, Divider } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
 import TopUpManagement from './TopUpManagement';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
@@ -97,7 +97,7 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
         </Grid>
         <Grid container item xs={12} sm={4} className="accountHeaderRight">
           <Grid item className="balance">
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               account.currency,
               (account.balance + account.creditLimit) / 100
@@ -125,7 +125,7 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
         <Grid item component={SingleDetail} xs={6} md={4}>
           <h3 className="detailTitle">{t('labelBalance')}</h3>
           <div className="detailInfo">
-            {getFormatedCurrency(
+            {getFormattedCurrency(
               locale,
               account.currency,
               account.balance / 100
@@ -136,7 +136,7 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
           <Grid item component={SingleDetail} xs={6} md={4}>
             <h3 className="detailTitle">{t('labelCreditLimit')}</h3>
             <div className="detailInfo">
-              {getFormatedCurrency(
+              {getFormattedCurrency(
                 locale,
                 account.currency,
                 account.creditLimit / 100

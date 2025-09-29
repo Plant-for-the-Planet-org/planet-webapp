@@ -7,7 +7,7 @@ import type {
 import { useContext } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useLocale, useTranslations } from 'next-intl';
-import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
+import getFormattedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
@@ -194,7 +194,7 @@ export default function PopupProject({
             </div>
           ) : (
             <div className={styles.perUnitCost}>
-              {getFormatedCurrency(locale, project.currency, project.unitCost)}{' '}
+              {getFormattedCurrency(locale, project.currency, project.unitCost)}{' '}
               <span>
                 {project.unitType === 'tree' && tDonate('perTree')}
                 {project.unitType === 'm2' && tDonate('perM2')}

@@ -74,6 +74,10 @@
     "treePerHa": "Bäume / ha",
     "employees": "Beschäftigte",
     "previousImage": "Vorheriges Bild",
-    "nextImage": "Nächstes Bild"
+    "nextImage": "Nächstes Bild",
+    "videoPlayer": {
+      "loadVideo": "Video laden (Verbindung zu YouTube)",
+      "consentText": "Durch Klick auf Video laden stimmen Sie YouTube's <googlePrivacyLink>Privacy Policy</googlePrivacyLink> und Cookies zu."
+    }
   }
 }
