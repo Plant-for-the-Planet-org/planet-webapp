@@ -1,6 +1,11 @@
 export const isYouTubeDomain = (url: string): boolean => {
   try {
-    const { hostname } = new URL(url);
+    let fullUrl = url;
+    if (!url.match(/^https?:\/\//)) {
+      fullUrl = `https://${url}`;
+    }
+
+    const { hostname } = new URL(fullUrl);
     const lowerHostname = hostname.toLowerCase();
 
     const isMainYTHost =
@@ -32,6 +37,10 @@ export const validateYouTubeUrl = (url: string): boolean => {
   // Reject URLs containing spaces (indicates invalid URL or trailing garbage)
   if (trimmedUrl.includes(' ')) return false;
 
+  if (!isYouTubeDomain(trimmedUrl)) {
+    return false;
+  }
+
   try {
     let urlObj: URL;
 
@@ -39,11 +48,6 @@ export const validateYouTubeUrl = (url: string): boolean => {
       urlObj = new URL(`https://${trimmedUrl}`);
     } else {
       urlObj = new URL(trimmedUrl);
-    }
-
-    // Use the shared domain checking logic
-    if (!isYouTubeDomain(urlObj.href)) {
-      return false;
     }
 
     const hostname = urlObj.hostname.toLowerCase();
