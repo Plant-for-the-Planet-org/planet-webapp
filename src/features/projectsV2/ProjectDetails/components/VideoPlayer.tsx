@@ -4,6 +4,7 @@ import PlayButtonIcon from '../../../../../public/assets/images/icons/projectV2/
 import ReactPlayer from 'react-player/lazy';
 import { useTranslations } from 'next-intl';
 import WebappButton from '../../../common/WebappButton';
+import { isYouTubeDomain } from '../../../../utils/youTubeValidation';
 
 const PlayButton = () => {
   return (
@@ -18,34 +19,6 @@ interface Props {
   hasConsent: boolean;
   onConsentChange: (hasConsent: boolean) => void;
 }
-
-// Helper function to check if URL is from YouTube domain
-const isYouTubeDomain = (url: string): boolean => {
-  try {
-    const { hostname } = new URL(url);
-    const lowerHostname = hostname.toLowerCase();
-
-    // More secure approach: check for exact matches and proper subdomains
-    const isMainYTHost =
-      lowerHostname === 'youtube.com' ||
-      (lowerHostname.endsWith('.youtube.com') &&
-        lowerHostname.length > '.youtube.com'.length);
-
-    const isYTNoCookieHost =
-      lowerHostname === 'youtube-nocookie.com' ||
-      (lowerHostname.endsWith('.youtube-nocookie.com') &&
-        lowerHostname.length > '.youtube-nocookie.com'.length);
-
-    const isYTShortLinkHost =
-      lowerHostname === 'youtu.be' ||
-      (lowerHostname.endsWith('.youtu.be') &&
-        lowerHostname.length > '.youtu.be'.length);
-
-    return isMainYTHost || isYTNoCookieHost || isYTShortLinkHost;
-  } catch (e) {
-    return false;
-  }
-};
 
 const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
   const tVideoPlayer = useTranslations('ProjectDetails.videoPlayer');
