@@ -1,3 +1,9 @@
+/**
+ * Checks if a given URL belongs to YouTube or its related domains (youtu.be, youtube-nocookie.com).
+ * This function is case-insensitive and handles URLs with or without protocols.
+ * @param url - The URL to check.
+ * @returns True if the URL belongs to YouTube or its related domains, false otherwise.
+ */
 export const isYouTubeDomain = (url: string): boolean => {
   try {
     let fullUrl = url;
@@ -29,6 +35,13 @@ export const isYouTubeDomain = (url: string): boolean => {
   }
 };
 
+/**
+ * Validates a YouTube URL.
+ * Rejects URLs with spaces, ensures the domain is YouTube or its related domains,
+ * and checks for valid YouTube video ID patterns.
+ * @param url - The URL to validate.
+ * @returns True if the URL is a valid YouTube URL, false otherwise.
+ */
 export const validateYouTubeUrl = (url: string): boolean => {
   if (!url || typeof url !== 'string') return true;
 
@@ -54,7 +67,7 @@ export const validateYouTubeUrl = (url: string): boolean => {
 
     // For youtu.be (short URLs)
     if (hostname === 'youtu.be') {
-      const videoId = urlObj.pathname.slice(1);
+      const videoId = urlObj.pathname.replace(/^\/+|\/+$/g, '');
       if (!videoId) return false;
       return /^[a-zA-Z0-9_-]{11}$/.test(videoId);
     }
@@ -74,6 +87,13 @@ export const validateYouTubeUrl = (url: string): boolean => {
       return /^[a-zA-Z0-9_-]{11}$/.test(videoId);
     } else if (path.startsWith('/v/')) {
       const videoId = path.split('/v/')[1]?.split('?')[0];
+      if (!videoId) return false;
+      return /^[a-zA-Z0-9_-]{11}$/.test(videoId);
+    } else if (path.startsWith('/shorts/')) {
+      const videoId = path
+        .split('/shorts/')[1]
+        ?.split('?')[0]
+        ?.replace(/\/+$/, '');
       if (!videoId) return false;
       return /^[a-zA-Z0-9_-]{11}$/.test(videoId);
     }
