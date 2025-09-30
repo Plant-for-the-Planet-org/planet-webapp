@@ -25,6 +25,7 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import themeProperties from '../../../../theme/themeProperties';
+import { validateYouTubeUrl } from '../../../../utils/youTubeValidation';
 
 type UploadImageApiPayload = {
   imageFile: string;
@@ -251,6 +252,7 @@ export default function ProjectMedia({
       setErrors(handleError(err as APIError));
     }
   };
+
   return (
     <CenteredContainer>
       <StyledForm>
@@ -266,10 +268,8 @@ export default function ProjectMedia({
             name="youtubeURL"
             control={control}
             rules={{
-              pattern: {
-                value:
-                  /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/,
-                message: t('youtubeURLValidation'),
+              validate: (value: string) => {
+                return validateYouTubeUrl(value) || t('youtubeURLValidation');
               },
             }}
             render={({ field: { onChange, value, onBlur } }) => (
