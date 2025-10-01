@@ -3,6 +3,7 @@ import type { SetState } from '../../../../common/types/common';
 import DeleteIcon from '../../../../../../public/assets/images/icons/DeleteIcon';
 import PolygonDrawIcon from '../../../../../../public/assets/images/icons/manageProjects/PolygonDrawIcon';
 import styles from '../../StepForm.module.scss';
+import { useTranslations } from 'next-intl';
 
 interface MapControllersProp {
   setIsDrawing: SetState<boolean>;
@@ -19,6 +20,7 @@ const MapControls = ({
   isSatelliteMode,
   setIsSatelliteMode,
 }: MapControllersProp) => {
+  const tManageProjects = useTranslations('ManageProjects');
   return (
     <>
       <div className={styles.mapControllers}>
@@ -49,7 +51,7 @@ const MapControls = ({
             isSatelliteMode ? '' : styles.active
           }`}
         >
-          Map
+          {tManageProjects('mapType.map')}
         </div>
         <div
           onClick={() => setIsSatelliteMode(true)}
@@ -57,7 +59,7 @@ const MapControls = ({
             isSatelliteMode ? styles.active : ''
           }`}
         >
-          Satellite
+          {tManageProjects('mapType.satellite')}
         </div>
       </div>
     </>
