@@ -1,0 +1,42 @@
+@import '../../../theme/theme';
+
+$spacing-xs: 8px;
+$spacing-sm: 16px;
+$spacing-md: 20px;
+
+.refillToggleLabel {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  cursor: pointer;
+}
+
+.topUpIcon {
+  color: $dsPrimaryColor;
+}
+
+.infoRow {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  @include smTabletView {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: $spacing-sm;
+  }
+}
+
+.infoItem {
+  flex: 1;
+}
+
+.detailTitle {
+  font-weight: 700;
+  margin-bottom: 9px;
+  font-size: $fontSmall;
+}
+
+.detailInfo {
+  font-size: $fontSmall;
+}
