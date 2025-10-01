@@ -12,10 +12,6 @@ $layoutPaddingSide: 20px;
   min-width: 350px;
   justify-content: space-between;
   cursor: pointer;
-  gap: 18px;
-  position: absolute;
-  z-index: 2;
-  right: calc($layoutPaddingSide + 10px);
 }
 
 .dropdownButtonAlignmentAbove {
@@ -70,7 +66,6 @@ $layoutPaddingSide: 20px;
   font-size: $fontXSmall;
   position: absolute;
   z-index: 4;
-  right: 30px;
   max-height: 42vh;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
@@ -88,7 +83,7 @@ $layoutPaddingSide: 20px;
 }
 
 .interventionListOptionsBelow {
-  top: calc($layoutPaddingTop + 124px);
+  top: calc($layoutPaddingTop + 76px);
 }
 
 .listItem {
