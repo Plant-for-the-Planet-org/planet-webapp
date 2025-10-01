@@ -141,7 +141,7 @@
   gap: 5px;
 }
 
-.layerSwitcher {
+.layerToggle {
   display: flex;
   flex-direction: row;
   position: absolute;
@@ -815,7 +815,7 @@
   margin-left: 8px;
 }
 
-.SiteDeleteConfirmationModal {
+.siteDeleteConfirmationModal {
   display: flex;
   flex-direction: column;
   gap: 18px;

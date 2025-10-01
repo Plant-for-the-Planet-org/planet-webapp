@@ -23,7 +23,7 @@ const SiteDeleteConfirmationModal = ({
   const t = useTranslations('ManageProjects');
   return (
     <Modal open={isModalOpen} aria-labelledby="delete-site-title">
-      <div className={styles.SiteDeleteConfirmationModal}>
+      <div className={styles.siteDeleteConfirmationModal}>
         <p className={styles.siteDeleteConfirmationText}>
           {t('siteDeleteConfirmation')}
         </p>

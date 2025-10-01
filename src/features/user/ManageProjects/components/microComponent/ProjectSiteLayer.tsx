@@ -4,15 +4,15 @@ import { Source, Layer } from 'react-map-gl-v7/maplibre';
 import themeProperties from '../../../../../theme/themeProperties';
 
 interface SiteLayerProps {
-  satellite: boolean;
+  isSatelliteMode: boolean;
   geoJson: SitesGeoJSON | null;
 }
 
-const ProjectSiteLayer = ({ satellite, geoJson }: SiteLayerProps) => {
+const ProjectSiteLayer = ({ isSatelliteMode, geoJson }: SiteLayerProps) => {
   const { colors } = themeProperties.designSystem;
   return (
     <Source id="project-site-source" type="geojson" data={geoJson}>
-      {!satellite && (
+      {!isSatelliteMode && (
         <Layer
           id="project-site-fill"
           type="fill"
@@ -32,7 +32,7 @@ const ProjectSiteLayer = ({ satellite, geoJson }: SiteLayerProps) => {
           'line-width': 2,
         }}
         layout={{
-          visibility: satellite ? 'visible' : 'none',
+          visibility: isSatelliteMode ? 'visible' : 'none',
         }}
       />
     </Source>

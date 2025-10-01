@@ -8,16 +8,16 @@ interface MapControllersProp {
   setIsDrawing: SetState<boolean>;
   coordinates: number[][];
   setCoordinates: SetState<number[][]>;
-  satellite: boolean;
-  setSatellite: SetState<boolean>;
+  isSatelliteMode: boolean;
+  setIsSatelliteMode: SetState<boolean>;
 }
 
-const MapControllers = ({
+const MapControls = ({
   setIsDrawing,
   coordinates,
   setCoordinates,
-  satellite,
-  setSatellite,
+  isSatelliteMode,
+  setIsSatelliteMode,
 }: MapControllersProp) => {
   return (
     <>
@@ -42,16 +42,20 @@ const MapControllers = ({
           </button>
         }
       </div>
-      <div className={styles.layerSwitcher}>
+      <div className={styles.layerToggle}>
         <div
-          onClick={() => setSatellite(false)}
-          className={`${styles.layerOption} ${satellite ? '' : styles.active}`}
+          onClick={() => setIsSatelliteMode(false)}
+          className={`${styles.layerOption} ${
+            isSatelliteMode ? '' : styles.active
+          }`}
         >
           Map
         </div>
         <div
-          onClick={() => setSatellite(true)}
-          className={`${styles.layerOption} ${satellite ? styles.active : ''}`}
+          onClick={() => setIsSatelliteMode(true)}
+          className={`${styles.layerOption} ${
+            isSatelliteMode ? styles.active : ''
+          }`}
         >
           Satellite
         </div>
@@ -60,4 +64,4 @@ const MapControllers = ({
   );
 };
 
-export default MapControllers;
+export default MapControls;

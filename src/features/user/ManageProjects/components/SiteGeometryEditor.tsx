@@ -29,9 +29,9 @@ import gjv from 'geojson-validation';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import { zoomInToProjectSite } from '../../../../utils/mapsV2/zoomToProjectSite';
 import SatelliteLayer from './microComponent/SatelliteLayer';
-import ProjectSiteLayer from './microComponent/SiteLayer';
+import ProjectSiteLayer from './microComponent/ProjectSiteLayer';
 import DrawingPreviewLayer from './microComponent/DrawingPreviewLayer';
-import MapControllers from './microComponent/MapControllers';
+import MapControls from './microComponent/MapControls';
 import {
   DEFAULT_MAP_STATE,
   DEFAULT_VIEW_STATE,
@@ -46,7 +46,7 @@ interface Props {
 
 const defaultZoom = 1.4;
 
-export default function MapComponent({
+export default function SiteGeometryEditor({
   geoJson,
   setGeoJson,
   geoJsonError,
@@ -57,7 +57,7 @@ export default function MapComponent({
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
   const [viewport, setViewPort] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
-  const [satellite, setSatellite] = useState(false);
+  const [isSatelliteMode, setIsSatelliteMode] = useState(false);
   const [coordinates, setCoordinates] = useState<number[][]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
 
@@ -138,12 +138,12 @@ export default function MapComponent({
 
   return (
     <div className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}>
-      <MapControllers
+      <MapControls
         setIsDrawing={setIsDrawing}
         coordinates={coordinates}
         setCoordinates={setCoordinates}
-        satellite={satellite}
-        setSatellite={setSatellite}
+        isSatelliteMode={isSatelliteMode}
+        setIsSatelliteMode={setIsSatelliteMode}
       />
       <MapGL
         {...viewport}
@@ -155,12 +155,17 @@ export default function MapComponent({
         onDblClick={handleDoubleClick}
         cursor={isDrawing ? 'crosshair' : 'grab'}
       >
-        {satellite && <SatelliteLayer />}
-        {<ProjectSiteLayer satellite={satellite} geoJson={geoJson} />}
+        {isSatelliteMode && <SatelliteLayer />}
+        {
+          <ProjectSiteLayer
+            isSatelliteMode={isSatelliteMode}
+            geoJson={geoJson}
+          />
+        }
         {coordinates.length > 1 && (
           <DrawingPreviewLayer
             coordinates={coordinates}
-            satellite={satellite}
+            isSatelliteMode={isSatelliteMode}
           />
         )}
         <NavigationControl position="bottom-right" showCompass={false} />

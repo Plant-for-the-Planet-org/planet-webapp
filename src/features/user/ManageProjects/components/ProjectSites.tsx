@@ -35,7 +35,7 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import SiteDeleteConfirmationModal from './microComponent/SiteDeleteConfirmationModal';
-import StaticMap from './microComponent/StaticMap';
+import SitePreviewMap from './microComponent/SitePreviewMap';
 import themeProperties from '../../../../theme/themeProperties';
 
 const defaultSiteDetails = {
@@ -43,7 +43,7 @@ const defaultSiteDetails = {
   status: '',
   geometry: {},
 };
-const SiteFormationMap = dynamic(() => import('./MapComponent'), {
+const SiteGeometryEditor = dynamic(() => import('./SiteGeometryEditor'), {
   ssr: false,
   loading: () => <p></p>,
 });
@@ -213,7 +213,7 @@ function EditSite({
               </div>
             </div>
 
-            <SiteFormationMap {...MapProps} />
+            <SiteGeometryEditor {...MapProps} />
           </div>
 
           {errorMessage && errorMessage !== '' ? (
@@ -498,7 +498,10 @@ export default function ProjectSites({
                     >
                       <EditIcon color={colors.coreText} />
                     </IconButton>
-                    <StaticMap siteId={site.id} siteGeometry={site.geometry} />
+                    <SitePreviewMap
+                      siteId={site.id}
+                      siteGeometry={site.geometry}
+                    />
                   </div>
                 </div>
               );
@@ -567,7 +570,7 @@ export default function ProjectSites({
               />
             </InlineFormDisplayGroup>
 
-            {geoLocation && <SiteFormationMap {...MapProps} />}
+            {geoLocation && <SiteGeometryEditor {...MapProps} />}
 
             <Button
               id="projSiteSaveandAdd"

@@ -3,12 +3,12 @@ import themeProperties from '../../../../../theme/themeProperties';
 
 interface DrawingPreviewLayerProps {
   coordinates: number[][];
-  satellite: boolean;
+  isSatelliteMode: boolean;
 }
 
 const DrawingPreviewLayer = ({
   coordinates,
-  satellite,
+  isSatelliteMode,
 }: DrawingPreviewLayerProps) => {
   const { colors } = themeProperties.designSystem;
   return (
@@ -28,7 +28,7 @@ const DrawingPreviewLayer = ({
         id="drawing-preview-line"
         type="line"
         paint={{
-          'line-color': satellite ? colors.white : colors.fireRed,
+          'line-color': isSatelliteMode ? colors.white : colors.fireRed,
           'line-width': 2,
         }}
       />

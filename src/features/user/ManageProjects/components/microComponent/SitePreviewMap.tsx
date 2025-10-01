@@ -15,7 +15,7 @@ interface StaticMapProps {
 }
 const { colors } = themeProperties.designSystem;
 
-const StaticMap = ({ siteId, siteGeometry }: StaticMapProps) => {
+const SitePreviewMap = ({ siteId, siteGeometry }: StaticMapProps) => {
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
   const tiles = useMemo(
     () => [
@@ -68,4 +68,4 @@ const StaticMap = ({ siteId, siteGeometry }: StaticMapProps) => {
   );
 };
 
-export default StaticMap;
+export default SitePreviewMap;
