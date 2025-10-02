@@ -139,6 +139,7 @@ export default function SiteGeometryEditor({
   return (
     <div className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}>
       <MapControls
+        isDrawing={isDrawing}
         setIsDrawing={setIsDrawing}
         coordinates={coordinates}
         setCoordinates={setCoordinates}

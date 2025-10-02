@@ -411,13 +411,10 @@
   }
 }
 
-.mapControllers {
+.mapControls {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-radius: 8px;
-  padding: 8px;
-  background-color: $dsWhite;
   position: absolute;
   z-index: 9999;
   top: 6px;
@@ -425,11 +422,15 @@
 
   button {
     cursor: pointer;
+    border-radius: 50%;
+    background-color: $dsWhite;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
   }
 
-  button:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
+  .activePolygonButton {
+    border: 2px solid $dsDarkGrey;
   }
 }
 

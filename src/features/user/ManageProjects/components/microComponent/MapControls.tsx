@@ -6,6 +6,7 @@ import styles from '../../StepForm.module.scss';
 import { useTranslations } from 'next-intl';
 
 interface MapControllersProp {
+  isDrawing: boolean;
   setIsDrawing: SetState<boolean>;
   coordinates: number[][];
   setCoordinates: SetState<number[][]>;
@@ -14,6 +15,7 @@ interface MapControllersProp {
 }
 
 const MapControls = ({
+  isDrawing,
   setIsDrawing,
   coordinates,
   setCoordinates,
@@ -21,28 +23,39 @@ const MapControls = ({
   setIsSatelliteMode,
 }: MapControllersProp) => {
   const tManageProjects = useTranslations('ManageProjects');
+  const showDeleteButton = coordinates.length > 0;
   return (
     <>
-      <div className={styles.mapControllers}>
+      <div className={styles.mapControls}>
         <button
           onClick={(e) => {
             e.preventDefault();
             setIsDrawing((prev) => !prev);
           }}
+          title={
+            isDrawing
+              ? 'Drawing mode active (click to stop)'
+              : 'Start polygon drawing'
+          }
+          aria-label={
+            isDrawing ? 'Stop Polygon Drawing' : 'Start Polygon Drawing'
+          }
+          className={isDrawing ? styles.activePolygonButton : ''}
         >
           <PolygonDrawIcon />
         </button>
-        {
+        {showDeleteButton && (
           <button
             onClick={(e) => {
               e.preventDefault();
               setCoordinates([]);
             }}
-            disabled={coordinates.length === 0}
+            title="Delete Polygon"
+            aria-label="Delete Polygon"
           >
             <DeleteIcon />
           </button>
-        }
+        )}
       </div>
       <div className={styles.layerToggle}>
         <div
@@ -51,7 +64,7 @@ const MapControls = ({
             isSatelliteMode ? '' : styles.active
           }`}
         >
-          {tManageProjects('mapType.map')}
+          {tManageProjects('mapView.map')}
         </div>
         <div
           onClick={() => setIsSatelliteMode(true)}
@@ -59,7 +72,7 @@ const MapControls = ({
             isSatelliteMode ? styles.active : ''
           }`}
         >
-          {tManageProjects('mapType.satellite')}
+          {tManageProjects('mapView.satellite')}
         </div>
       </div>
     </>

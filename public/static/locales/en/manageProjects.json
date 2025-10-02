@@ -253,7 +253,7 @@
     "delete": "Delete",
     "cancel": "Cancel",
     "siteDeleteConfirmation": "Are you sure you want to delete this site?",
-    "mapType": {
+    "mapView": {
       "map": "Map",
       "satellite": "Satellite"
     }
