@@ -11,15 +11,25 @@
   }
 }
 
-.projectDetailsControlsContainer {
+.siteInterventionDropdowns {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
   position: absolute;
+  z-index: 99;
+  top: 34px;
+  right: 29px;
+}
+
+.siteInterventionDropdownsMobile {
+  display: flex;
   align-items: center;
   justify-content: flex-end;
-  top: 101px;
+  position: absolute;
   gap: 5px;
+  top: 101px;
   right: 10px;
-
+  z-index: 99;
   &.embedModeMobile {
     top: 24px;
   }

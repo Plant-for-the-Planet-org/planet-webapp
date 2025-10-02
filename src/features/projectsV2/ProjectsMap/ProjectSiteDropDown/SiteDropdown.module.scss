@@ -12,11 +12,6 @@ $layoutPaddingSide: 20px;
   padding: 12px 0px 9px 12px;
   min-width: 350px;
   justify-content: space-between;
-  gap: 18px;
-  position: absolute;
-  z-index: 40;
-  top: calc($layoutPaddingTop + 10px);
-  right: calc($layoutPaddingSide + 10px);
 }
 .dropdownButton {
   cursor: pointer;
@@ -67,9 +62,8 @@ $layoutPaddingSide: 20px;
   width: 350px;
   font-size: $fontXSmall;
   position: absolute;
-  z-index: 50;
-  top: 84px;
-  right: 30px;
+  z-index: 99;
+  top: 44px;
   max-height: 58vh;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
