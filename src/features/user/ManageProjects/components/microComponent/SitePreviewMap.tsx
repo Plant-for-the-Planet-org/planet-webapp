@@ -19,7 +19,7 @@ const SitePreviewMap = ({ siteId, siteGeometry }: StaticMapProps) => {
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
   const tiles = useMemo(
     () => [
-      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     ],
     []
   );

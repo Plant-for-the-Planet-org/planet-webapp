@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import { Source, Layer } from 'react-map-gl-v7';
+import { Source, Layer } from 'react-map-gl-v7/maplibre';
 
 const SatelliteLayer = () => {
   const tiles = useMemo(
     () => [
-      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     ],
     []
   );
