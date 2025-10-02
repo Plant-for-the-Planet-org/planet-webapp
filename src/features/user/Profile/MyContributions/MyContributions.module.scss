@@ -373,10 +373,6 @@
   }
 
   .sectionOneLandscape {
-    @include xsPhoneView {
-      display: none;
-    }
-
     display: flex;
     gap: 16px;
 
@@ -393,6 +389,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    @include xsPhoneView {
+      display: none;
     }
   }
 
