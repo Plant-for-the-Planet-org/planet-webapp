@@ -1,4 +1,5 @@
 import type { SetState } from '../../../../common/types/common';
+import type { SiteInfo } from '../ProjectSites';
 
 import { CircularProgress, Modal } from '@mui/material';
 import WebappButton from '../../../../common/WebappButton';
@@ -9,7 +10,7 @@ interface SiteDeleteModalProps {
   isModalOpen: boolean;
   setIsModalOpen: SetState<boolean>;
   deleteProjectSite: (siteId: string) => Promise<void>;
-  siteId: string;
+  selectedSiteInfo: SiteInfo;
   isUploadingData: boolean;
 }
 
@@ -17,7 +18,7 @@ const SiteDeleteConfirmationModal = ({
   isModalOpen,
   setIsModalOpen,
   deleteProjectSite,
-  siteId,
+  selectedSiteInfo,
   isUploadingData,
 }: SiteDeleteModalProps) => {
   const t = useTranslations('ManageProjects');
@@ -25,7 +26,9 @@ const SiteDeleteConfirmationModal = ({
     <Modal open={isModalOpen} aria-labelledby="delete-site-title">
       <div className={styles.siteDeleteConfirmationModal}>
         <p className={styles.siteDeleteConfirmationText}>
-          {t('siteDeleteConfirmation')}
+          {t('siteDeleteConfirmation', {
+            siteName: selectedSiteInfo.siteName ?? '',
+          })}
         </p>
         {!isUploadingData ? (
           <div className={styles.buttonsContainer}>
@@ -35,12 +38,18 @@ const SiteDeleteConfirmationModal = ({
               variant="secondary"
               onClick={() => setIsModalOpen(false)}
             />
+            (
             <WebappButton
               text={t('delete')}
               elementType="button"
               variant="primary"
-              onClick={() => deleteProjectSite(siteId)}
+              onClick={() => {
+                if (selectedSiteInfo.siteId !== null) {
+                  deleteProjectSite(selectedSiteInfo.siteId);
+                }
+              }}
             />
+            )
           </div>
         ) : (
           <div className={styles.spinnerContainer}>

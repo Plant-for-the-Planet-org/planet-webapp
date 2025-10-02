@@ -59,6 +59,11 @@ type SiteApiPayload = {
   status: string;
 };
 
+export interface SiteInfo {
+  siteId: string | null;
+  siteName: string | null;
+}
+
 function EditSite({
   openModal,
   handleModalClose,
@@ -279,7 +284,10 @@ export default function ProjectSites({
   const [siteList, setSiteList] = useState<Site[]>([]);
   const [siteGUID, setSiteGUID] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedSiteId, setSelectedSiteId] = useState<string>('');
+  const [selectedSiteInfo, setSelectedSiteInfo] = useState<SiteInfo>({
+    siteId: null,
+    siteName: null,
+  });
 
   // Assigning defaultSiteDetails as default
   const changeSiteDetails = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -481,7 +489,10 @@ export default function ProjectSites({
                     <IconButton
                       id={'trashIconProjS'}
                       onClick={() => {
-                        setSelectedSiteId(site.id);
+                        setSelectedSiteInfo({
+                          siteId: site.id,
+                          siteName: site.name,
+                        });
                         setIsModalOpen(true);
                       }}
                       size="small"
@@ -633,7 +644,7 @@ export default function ProjectSites({
           </Button>
         </div>
         <SiteDeleteConfirmationModal
-          siteId={selectedSiteId}
+          selectedSiteInfo={selectedSiteInfo}
           deleteProjectSite={deleteProjectSite}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
