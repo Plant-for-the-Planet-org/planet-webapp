@@ -3,29 +3,19 @@ import type { APIError } from '@planet-sdk/common';
 import type {
   BasicDetailsProps,
   ExtendedProfileProjectProperties,
-  ViewPort,
 } from '../../../common/types/project';
-import type { MapEvent } from 'react-map-gl';
 
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormControlLabel, Tooltip } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from './../StepForm.module.scss';
-import MapGL, {
-  Marker,
-  NavigationControl,
-  FlyToInterpolator,
-} from 'react-map-gl';
-import { easeCubic } from 'd3-ease';
 import { MenuItem, TextField } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
   getFormattedNumber,
   parseNumber,
 } from '../../../../utils/getFormattedNumber';
-import getMapStyle from '../../../../utils/maps/getMapStyle';
-import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -37,9 +27,10 @@ import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { getAddressFromCoordinates } from '../../../../utils/geocoder';
+import themeProperties from '../../../../theme/themeProperties';
+import ProjectLocationMap from './microComponents/ProjectLocationMap';
 
-type BaseFormData = {
+export type BaseFormData = {
   name: string;
   slug: string;
   website: string;
@@ -54,7 +45,7 @@ type BaseFormData = {
   };
 };
 
-type TreeFormData = BaseFormData & {
+export type TreeFormData = BaseFormData & {
   classification: string;
   countTarget: string;
   unitType: 'tree' | 'm2';
@@ -92,12 +83,9 @@ type ConservationProjectApiPayload = BaseProjectApiPayload & {
 
 type ProjectApiPayload = TreeProjectApiPayload | ConservationProjectApiPayload;
 
-const defaultMapCenter = [0, 0];
-const defaultZoom = 1.4;
-const EMPTY_STYLE = {
-  version: 8,
-  sources: {},
-  layers: [],
+export type ProjectCoordinates = {
+  lng: number;
+  lat: number;
 };
 
 export default function BasicDetails({
@@ -110,7 +98,6 @@ export default function BasicDetails({
 }: BasicDetailsProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const locale = useLocale();
-  const mapRef = useRef(null);
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated, postApiAuthenticated } = useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -121,47 +108,38 @@ export default function BasicDetails({
   const [IsSkipButtonVisible, setIsSkipButtonVisible] =
     useState<boolean>(false);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
-  const [style, setStyle] = useState(EMPTY_STYLE);
-  const [viewport, setViewPort] = useState<ViewPort>({
-    width: 760,
-    height: 400,
-    latitude: defaultMapCenter[0],
-    longitude: defaultMapCenter[1],
-    zoom: defaultZoom,
-  });
-  const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
-
-  useEffect(() => {
-    //loads the default mapstyle
-    async function loadMapStyle() {
-      const result = await getMapStyle('openStreetMap');
-      if (result) {
-        setStyle(result);
-      }
-    }
-    loadMapStyle();
-  }, []);
+  const [projectCoords, setProjectCoords] = useState<ProjectCoordinates | null>(
+    null
+  );
 
   const changeLat = (e: ChangeEvent<HTMLInputElement>) => {
     const latNumericValue = Number(e.target.value);
-    if (latNumericValue && latNumericValue > -90 && latNumericValue < 90) {
-      setProjectCoords([
-        projectCoords ? projectCoords[0] : 0,
-        parseFloat(e.target.value),
-      ]);
+
+    if (
+      !isNaN(latNumericValue) &&
+      latNumericValue > -90 &&
+      latNumericValue < 90
+    ) {
+      setProjectCoords({
+        lat: latNumericValue,
+        lng: projectCoords?.lng ?? 0,
+      });
     }
   };
   const changeLon = (e: ChangeEvent<HTMLInputElement>) => {
     const lonNumericValue = Number(e.target.value);
-    if (lonNumericValue && lonNumericValue > -180 && lonNumericValue < 180) {
-      setProjectCoords([
-        parseFloat(e.target.value),
-        projectCoords ? projectCoords[1] : 0,
-      ]);
+
+    if (
+      !isNaN(lonNumericValue) &&
+      lonNumericValue > -180 &&
+      lonNumericValue < 180
+    ) {
+      setProjectCoords({
+        lat: projectCoords?.lat ?? 0,
+        lng: lonNumericValue,
+      });
     }
   };
-  const _onViewportChange = (view: ViewPort) => setViewPort({ ...view });
-
   const classifications = [
     {
       label: t('largeScalePlanting'),
@@ -307,15 +285,9 @@ export default function BasicDetails({
               },
             };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
-        setProjectCoords([
-          projectDetails.geoLongitude,
-          projectDetails.geoLatitude,
-        ]);
-        setViewPort({
-          ...viewport,
-          latitude: projectDetails.geoLatitude,
-          longitude: projectDetails.geoLongitude,
-          zoom: 7,
+        setProjectCoords({
+          lng: projectDetails.geoLongitude,
+          lat: projectDetails.geoLatitude,
         });
       }
       reset(basicDetails);
@@ -390,43 +362,6 @@ export default function BasicDetails({
       }
     }
   };
-
-  const handleMapClick = useCallback(
-    async (event: MapEvent) => {
-      const [longitude, latitude] = event.lngLat;
-      setProjectCoords(event.lngLat);
-
-      try {
-        const result = await getAddressFromCoordinates(latitude, longitude);
-
-        if (result?.address.CountryCode) {
-          clearErrors(['latitude', 'longitude']);
-        } else {
-          setError('latitude', {
-            message: t('coordinateError.seaCoordinates'),
-          });
-          setError('longitude', {
-            message: t('coordinateError.seaCoordinates'),
-          });
-        }
-      } catch (error) {
-        console.error('Reverse geocoding error:', error);
-      }
-
-      setViewPort((prev) => ({
-        ...prev,
-        latitude,
-        longitude,
-        transitionDuration: 400,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: easeCubic,
-      }));
-
-      setValue('latitude', latitude.toString());
-      setValue('longitude', longitude.toString());
-    },
-    [setError, clearErrors, setValue, t]
-  );
 
   return (
     <CenteredContainer>
@@ -736,28 +671,13 @@ export default function BasicDetails({
             >
               {t('projectLocation')}
             </p>
-            <MapGL
-              {...viewport}
-              ref={mapRef}
-              mapStyle={style}
-              onViewportChange={_onViewportChange}
-              onClick={handleMapClick}
-            >
-              {projectCoords ? (
-                <Marker
-                  latitude={projectCoords[1]}
-                  longitude={projectCoords[0]}
-                  offsetLeft={5}
-                  offsetTop={-16}
-                  style={{ left: '28px' }}
-                >
-                  <div className={styles.marker}></div>
-                </Marker>
-              ) : null}
-              <div className={styles.mapNavigation}>
-                <NavigationControl showCompass={false} />
-              </div>
-            </MapGL>
+            <ProjectLocationMap
+              clearErrors={clearErrors}
+              setError={setError}
+              setValue={setValue}
+              projectCoords={projectCoords}
+              setProjectCoords={setProjectCoords}
+            />
             <div className={styles.basicDetailsCoordinatesContainer}>
               <div
                 className={`${styles.formFieldHalf} ${styles.latLongField}`}
