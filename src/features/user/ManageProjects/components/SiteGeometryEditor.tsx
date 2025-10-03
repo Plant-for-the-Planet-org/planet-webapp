@@ -163,7 +163,12 @@ export default function SiteGeometryEditor({
         cursor={isDrawing ? 'crosshair' : 'grab'}
       >
         {isSatelliteMode && <SatelliteLayer />}
-        <ProjectSiteLayer isSatelliteMode={isSatelliteMode} geoJson={geoJson} />
+        {geoJson !== null && (
+          <ProjectSiteLayer
+            isSatelliteMode={isSatelliteMode}
+            geoJson={geoJson}
+          />
+        )}
         {coordinates.length > 1 && (
           <DrawingPreviewLayer
             coordinates={coordinates}
