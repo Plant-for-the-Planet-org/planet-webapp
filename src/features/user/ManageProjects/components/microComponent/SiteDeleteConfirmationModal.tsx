@@ -25,7 +25,7 @@ const SiteDeleteConfirmationModal = ({
   return (
     <Modal open={isModalOpen} aria-labelledby="delete-site-title">
       <div className={styles.siteDeleteConfirmationModal}>
-        <p className={styles.siteDeleteConfirmationText}>
+        <p id="delete-site-title" className={styles.siteDeleteConfirmationText}>
           {t('siteDeleteConfirmation', {
             siteName: selectedSiteInfo.siteName ?? '',
           })}
