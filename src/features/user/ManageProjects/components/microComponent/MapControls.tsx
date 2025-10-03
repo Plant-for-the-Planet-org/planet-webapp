@@ -1,9 +1,7 @@
 import type { SetState } from '../../../../common/types/common';
 
-import DeleteIcon from '../../../../../../public/assets/images/icons/DeleteIcon';
-import PolygonDrawIcon from '../../../../../../public/assets/images/icons/manageProjects/PolygonDrawIcon';
-import styles from '../../StepForm.module.scss';
-import { useTranslations } from 'next-intl';
+import SiteControls from './SiteControls';
+import LayerToggle from './LayerToggle';
 
 interface MapControllersProp {
   isDrawing: boolean;
@@ -22,59 +20,18 @@ const MapControls = ({
   isSatelliteMode,
   setIsSatelliteMode,
 }: MapControllersProp) => {
-  const tManageProjects = useTranslations('ManageProjects');
-  const showDeleteButton = coordinates.length > 0;
   return (
     <>
-      <div className={styles.mapControls}>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            setIsDrawing((prev) => !prev);
-          }}
-          title={
-            isDrawing
-              ? 'Drawing mode active (click to stop)'
-              : 'Start polygon drawing'
-          }
-          aria-label={
-            isDrawing ? 'Stop Polygon Drawing' : 'Start Polygon Drawing'
-          }
-          className={isDrawing ? styles.activePolygonButton : ''}
-        >
-          <PolygonDrawIcon />
-        </button>
-        {showDeleteButton && (
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setCoordinates([]);
-            }}
-            title="Delete Polygon"
-            aria-label="Delete Polygon"
-          >
-            <DeleteIcon />
-          </button>
-        )}
-      </div>
-      <div className={styles.layerToggle}>
-        <div
-          onClick={() => setIsSatelliteMode(false)}
-          className={`${styles.layerOption} ${
-            isSatelliteMode ? '' : styles.active
-          }`}
-        >
-          {tManageProjects('mapView.map')}
-        </div>
-        <div
-          onClick={() => setIsSatelliteMode(true)}
-          className={`${styles.layerOption} ${
-            isSatelliteMode ? styles.active : ''
-          }`}
-        >
-          {tManageProjects('mapView.satellite')}
-        </div>
-      </div>
+      <SiteControls
+        isDrawing={isDrawing}
+        setIsDrawing={setIsDrawing}
+        coordinates={coordinates}
+        setCoordinates={setCoordinates}
+      />
+      <LayerToggle
+        isSatelliteMode={isSatelliteMode}
+        setIsSatelliteMode={setIsSatelliteMode}
+      />
     </>
   );
 };
