@@ -76,6 +76,7 @@
   max-width: 320px;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 
 .reviewButtons {
@@ -140,7 +141,7 @@
   gap: 5px;
 }
 
-.layerSwitcher {
+.layerToggle {
   display: flex;
   flex-direction: row;
   position: absolute;
@@ -149,6 +150,7 @@
   border-radius: 8px !important;
   overflow: hidden;
   box-shadow: 0px 3px 6px #00000029;
+  z-index: 9999;
 }
 
 .layerOption {
@@ -406,6 +408,29 @@
         cursor: pointer;
       }
     }
+  }
+}
+
+.siteControls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: absolute;
+  z-index: 9999;
+  top: 6px;
+  left: 6px;
+
+  button {
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: $dsWhite;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .activePolygonButton {
+    border: 2px solid $dsDarkGrey;
   }
 }
 
@@ -789,4 +814,38 @@
 
 .toggleText {
   margin-left: 8px;
+}
+
+.siteDeleteConfirmationModal {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 16px;
+  background: $dsWhite;
+
+  .siteDeleteConfirmationText {
+    font-size: $fontSmall;
+  }
+
+  .buttonsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+
+    button {
+      flex: 1;
+    }
+  }
+
+  .spinnerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

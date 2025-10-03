@@ -4,8 +4,8 @@ import type { Map } from 'maplibre-gl';
 import type { MapRef } from '../../features/common/types/projectv2';
 
 import bbox from '@turf/bbox';
-import { DEFAULT_VIEW_STATE } from '../../features/projectsV2/ProjectsMapContext';
 import { MAIN_MAP_ANIMATION_DURATIONS } from '../projectV2';
+import { DEFAULT_VIEW_STATE } from './mapDefaults';
 
 export function zoomOutMap(map: Map, callback: () => void) {
   map.flyTo({
