@@ -117,7 +117,8 @@ export default function SiteGeometryEditor({
     }));
   };
 
-  useEffect(() => {
+  // Handle zooming to the project site
+  const handleZoomToProjectSite = () => {
     if (geoJson) {
       if (!mapRef.current) return;
       zoomInToProjectSite(mapRef, geoJson, 0, handleViewStateChange, 2600);
@@ -127,6 +128,11 @@ export default function SiteGeometryEditor({
         zoom: defaultZoom,
       });
     }
+  };
+
+  // UseEffect: Run zoom logic whenever geoJson or mapRef changes
+  useEffect(() => {
+    handleZoomToProjectSite();
   }, [geoJson, mapRef.current]);
 
   const onMove = useCallback(
