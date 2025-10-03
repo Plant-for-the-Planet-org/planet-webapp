@@ -38,7 +38,6 @@ const SiteDeleteConfirmationModal = ({
               variant="secondary"
               onClick={() => setIsModalOpen(false)}
             />
-            (
             <WebappButton
               text={t('delete')}
               elementType="button"
@@ -49,7 +48,6 @@ const SiteDeleteConfirmationModal = ({
                 }
               }}
             />
-            )
           </div>
         ) : (
           <div className={styles.spinnerContainer}>

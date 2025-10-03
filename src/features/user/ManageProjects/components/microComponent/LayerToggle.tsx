@@ -15,22 +15,26 @@ const LayerToggle = ({
   const tManageProjects = useTranslations('ManageProjects');
   return (
     <div className={styles.layerToggle}>
-      <div
+      <button
+        type="button"
         onClick={() => setIsSatelliteMode(false)}
         className={`${styles.layerOption} ${
           isSatelliteMode ? '' : styles.active
         }`}
+        aria-pressed={!isSatelliteMode}
       >
         {tManageProjects('mapView.map')}
-      </div>
-      <div
+      </button>
+      <button
+        type="button"
         onClick={() => setIsSatelliteMode(true)}
         className={`${styles.layerOption} ${
           isSatelliteMode ? styles.active : ''
         }`}
+        aria-pressed={isSatelliteMode}
       >
         {tManageProjects('mapView.satellite')}
-      </div>
+      </button>
     </div>
   );
 };

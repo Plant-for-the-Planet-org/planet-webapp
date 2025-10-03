@@ -163,12 +163,7 @@ export default function SiteGeometryEditor({
         cursor={isDrawing ? 'crosshair' : 'grab'}
       >
         {isSatelliteMode && <SatelliteLayer />}
-        {
-          <ProjectSiteLayer
-            isSatelliteMode={isSatelliteMode}
-            geoJson={geoJson}
-          />
-        }
+        <ProjectSiteLayer isSatelliteMode={isSatelliteMode} geoJson={geoJson} />
         {coordinates.length > 1 && (
           <DrawingPreviewLayer
             coordinates={coordinates}
@@ -181,7 +176,7 @@ export default function SiteGeometryEditor({
         accept={['.geojson', '.kml']}
         multiple={false}
         onDrop={(acceptedFiles) => {
-          acceptedFiles.forEach((file: any) => {
+          acceptedFiles.forEach((file: File) => {
             const fileType =
               file.name.substring(
                 file.name.lastIndexOf('.') + 1,
