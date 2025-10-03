@@ -10,7 +10,7 @@ import type {
 } from '../../../common/types/project';
 import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
 
-import { useEffect, useState, useContext, useMemo } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';

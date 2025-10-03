@@ -10,7 +10,13 @@ const SatelliteLayer = () => {
   );
 
   return (
-    <Source id="satellite-source" type="raster" tiles={tiles} tileSize={256}>
+    <Source
+      id="satellite-source"
+      type="raster"
+      tiles={tiles}
+      tileSize={256}
+      attribution="Esri, Maxar, Earthstar Geographics, and the GIS User Community"
+    >
       <Layer
         type="raster"
         id="satellite-layer"
