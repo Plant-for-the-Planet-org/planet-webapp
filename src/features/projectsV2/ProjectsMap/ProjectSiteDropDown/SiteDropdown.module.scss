@@ -1,7 +1,9 @@
 @import '../../../../theme/theme';
 
-$dropDownTriggerButtonWidth: 52px;
-$spacing: 8px;
+$dropDownTriggerButtonHeight: 52px;
+$dropDownOpenGap: 8px;
+$dropDownButtonMobileHeight: 40px;
+$dropDownOpenGapMobile: 6px;
 
 .dropdownButton,
 .dropdownDetails {
@@ -63,7 +65,7 @@ $spacing: 8px;
   font-size: $fontXSmall;
   position: absolute;
   z-index: 99;
-  top: calc($dropDownTriggerButtonWidth + $spacing);
+  top: calc($dropDownTriggerButtonHeight + $dropDownOpenGap);
   max-height: 58vh;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
@@ -111,7 +113,7 @@ $spacing: 8px;
     min-width: 93px;
     padding: 7px;
     position: unset;
-    height: 40px;
+    height: $dropDownButtonMobileHeight;
   }
   .labelTextContainer {
     justify-content: center;
@@ -132,7 +134,7 @@ $spacing: 8px;
   .siteListOptions {
     max-width: 140px;
     padding: 8px 12px;
-    top: 46px;
+    top: calc($dropDownButtonMobileHeight + $dropDownOpenGapMobile);
     left: 0;
     min-width: 160px;
     z-index: 50;

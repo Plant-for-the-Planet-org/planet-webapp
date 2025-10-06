@@ -1,7 +1,9 @@
 @import '../../../../theme/theme';
 
-$dropDownTriggerButtonWidth: 52px;
-$spacing: 8px;
+$dropDownTriggerButtonHeight: 52px;
+$dropDownOpenGap: 8px;
+$dropDownButtonMobileHeight: 40px;
+$dropDownOpenGapMobile: 6px;
 
 .dropdownButton {
   display: flex;
@@ -71,11 +73,11 @@ $spacing: 8px;
 }
 
 .interventionListOptionsAbove {
-  top: calc($dropDownTriggerButtonWidth + $spacing);
+  top: calc($dropDownTriggerButtonHeight + $dropDownOpenGap);
 }
 
 .interventionListOptionsBelow {
-  top: calc(2 * $dropDownTriggerButtonWidth + 2 * $spacing);
+  top: calc(2 * ($dropDownTriggerButtonHeight + $dropDownOpenGap));
 }
 
 .listItem {
@@ -114,7 +116,7 @@ $spacing: 8px;
     min-width: 93px;
     padding: 5px;
     position: unset;
-    height: 40px;
+    height: $dropDownButtonMobileHeight;
   }
   .labelTextContainer {
     justify-content: center;
@@ -135,7 +137,7 @@ $spacing: 8px;
   .interventionListOptions {
     max-width: 140px;
     padding: 8px 12px;
-    top: 46px;
+    top: calc($dropDownButtonMobileHeight + $dropDownOpenGapMobile);
     right: 14px;
     min-width: 160px;
     z-index: 50;
