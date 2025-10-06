@@ -256,6 +256,14 @@
     "mapView": {
       "map": "Map",
       "satellite": "Satellite"
+    },
+    "drawing": {
+      "polygon": {
+        "start": "Start polygon drawing",
+        "stop": "Stop Polygon Drawing",
+        "active": "Drawing mode active (click to stop)",
+        "delete": "Delete Polygon"
+      }
     }
   }
 }

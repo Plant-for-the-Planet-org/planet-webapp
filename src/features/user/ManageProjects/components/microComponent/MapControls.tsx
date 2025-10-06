@@ -1,6 +1,6 @@
 import type { SetState } from '../../../../common/types/common';
 
-import SiteControls from './SiteControls';
+import DrawingControls from './DrawingControls';
 import LayerToggle from './LayerToggle';
 
 interface MapControllersProp {
@@ -22,7 +22,7 @@ const MapControls = ({
 }: MapControllersProp) => {
   return (
     <>
-      <SiteControls
+      <DrawingControls
         isDrawing={isDrawing}
         setIsDrawing={setIsDrawing}
         coordinates={coordinates}

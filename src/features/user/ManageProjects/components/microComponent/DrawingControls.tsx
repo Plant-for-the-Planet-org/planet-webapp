@@ -3,23 +3,25 @@ import type { SetState } from '../../../../common/types/common';
 import DeleteIcon from '../../../../../../public/assets/images/icons/DeleteIcon';
 import PolygonDrawIcon from '../../../../../../public/assets/images/icons/manageProjects/PolygonDrawIcon';
 import styles from '../../StepForm.module.scss';
+import { useTranslations } from 'next-intl';
 
-interface SiteControlsProp {
+interface DrawingControlsProp {
   isDrawing: boolean;
   setIsDrawing: SetState<boolean>;
   coordinates: number[][];
   setCoordinates: SetState<number[][]>;
 }
 
-const SiteControls = ({
+const DrawingControls = ({
   isDrawing,
   setIsDrawing,
   coordinates,
   setCoordinates,
-}: SiteControlsProp) => {
+}: DrawingControlsProp) => {
   const showDeleteButton = coordinates.length > 0;
+  const tManageProjects = useTranslations('ManageProjects');
   return (
-    <div className={styles.siteControls}>
+    <div className={styles.drawingControls}>
       <button
         onClick={(e) => {
           e.preventDefault();
@@ -27,11 +29,13 @@ const SiteControls = ({
         }}
         title={
           isDrawing
-            ? 'Drawing mode active (click to stop)'
-            : 'Start polygon drawing'
+            ? tManageProjects('drawing.polygon.active')
+            : tManageProjects('drawing.polygon.start')
         }
         aria-label={
-          isDrawing ? 'Stop Polygon Drawing' : 'Start Polygon Drawing'
+          isDrawing
+            ? tManageProjects('drawing.polygon.stop')
+            : tManageProjects('drawing.polygon.start')
         }
         className={isDrawing ? styles.activePolygonButton : ''}
       >
@@ -43,8 +47,8 @@ const SiteControls = ({
             e.preventDefault();
             setCoordinates([]);
           }}
-          title="Delete Polygon"
-          aria-label="Delete Polygon"
+          title={tManageProjects('drawing.polygon.delete')}
+          aria-label={tManageProjects('drawing.polygon.delete')}
         >
           <DeleteIcon />
         </button>
@@ -53,4 +57,4 @@ const SiteControls = ({
   );
 };
 
-export default SiteControls;
+export default DrawingControls;
