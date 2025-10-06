@@ -72,14 +72,6 @@ $dropDownOpenGapMobile: 6px;
   }
 }
 
-.interventionListOptionsAbove {
-  top: calc($dropDownTriggerButtonHeight + $dropDownOpenGap);
-}
-
-.interventionListOptionsBelow {
-  top: calc(2 * ($dropDownTriggerButtonHeight + $dropDownOpenGap));
-}
-
 .listItem {
   display: flex;
   justify-content: space-between;
@@ -96,6 +88,16 @@ $dropDownOpenGapMobile: 6px;
 .selectedItem {
   text-shadow: 0 0 0.01px;
   font-weight: 700;
+}
+
+@include smTabletView {
+  .interventionListOptionsAbove {
+    top: calc($dropDownTriggerButtonHeight + $dropDownOpenGap);
+  }
+
+  .interventionListOptionsBelow {
+    top: calc(2 * ($dropDownTriggerButtonHeight + $dropDownOpenGap));
+  }
 }
 
 @include xsPhoneView {
