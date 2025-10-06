@@ -1,7 +1,7 @@
 @import '../../../../theme/theme';
 
-$layoutPaddingTop: 24px;
-$layoutPaddingSide: 20px;
+$dropDownTriggerButtonWidth: 52px;
+$spacing: 8px;
 
 .dropdownButton,
 .dropdownDetails {
@@ -12,6 +12,7 @@ $layoutPaddingSide: 20px;
   padding: 12px 0px 9px 12px;
   min-width: 350px;
   justify-content: space-between;
+  gap: 18px;
 }
 .dropdownButton {
   cursor: pointer;
@@ -58,12 +59,11 @@ $layoutPaddingSide: 20px;
   background-color: $dsWhite;
   padding: 6px 17px;
   border-radius: 12px;
-  margin-top: 12px;
   width: 350px;
   font-size: $fontXSmall;
   position: absolute;
   z-index: 99;
-  top: 44px;
+  top: calc($dropDownTriggerButtonWidth + $spacing);
   max-height: 58vh;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
@@ -132,7 +132,7 @@ $layoutPaddingSide: 20px;
   .siteListOptions {
     max-width: 140px;
     padding: 8px 12px;
-    top: 36px;
+    top: 46px;
     left: 0;
     min-width: 160px;
     z-index: 50;

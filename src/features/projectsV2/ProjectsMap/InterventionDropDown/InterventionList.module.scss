@@ -1,25 +1,18 @@
 @import '../../../../theme/theme';
 
-$layoutPaddingTop: 24px;
-$layoutPaddingSide: 20px;
+$dropDownTriggerButtonWidth: 52px;
+$spacing: 8px;
 
 .dropdownButton {
   display: flex;
   border-radius: 12px;
   background: $dsWhite;
   align-items: center;
-  padding: 12px 0px 9px 12px;
+  padding: 12px 0px 12px 12px;
   min-width: 350px;
   justify-content: space-between;
   cursor: pointer;
-}
-
-.dropdownButtonAlignmentAbove {
-  top: calc($layoutPaddingTop + 75px);
-}
-
-.dropdownButtonAlignmentBelow {
-  top: calc($layoutPaddingTop + 10px);
+  gap: 18px;
 }
 
 .interventionIconAndTextContainer {
@@ -61,7 +54,6 @@ $layoutPaddingSide: 20px;
   background-color: $dsWhite;
   padding: 6px 17px;
   border-radius: 12px;
-  margin-top: 12px;
   width: 350px;
   font-size: $fontXSmall;
   position: absolute;
@@ -79,11 +71,11 @@ $layoutPaddingSide: 20px;
 }
 
 .interventionListOptionsAbove {
-  top: calc($layoutPaddingTop + 60px);
+  top: calc($dropDownTriggerButtonWidth + $spacing);
 }
 
 .interventionListOptionsBelow {
-  top: calc($layoutPaddingTop + 76px);
+  top: calc(2 * $dropDownTriggerButtonWidth + 2 * $spacing);
 }
 
 .listItem {
@@ -143,8 +135,8 @@ $layoutPaddingSide: 20px;
   .interventionListOptions {
     max-width: 140px;
     padding: 8px 12px;
-    top: 36px;
-    right: 0px;
+    top: 46px;
+    right: 14px;
     min-width: 160px;
     z-index: 50;
     .listItem {

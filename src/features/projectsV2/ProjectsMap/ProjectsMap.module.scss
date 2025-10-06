@@ -1,5 +1,9 @@
 @import '../../../theme/theme';
 
+$navbarHeight: 60px;
+$navbarTopOffset: 16px;
+$spacing: 24px;
+
 .projectListControlsContainer {
   position: absolute;
   width: 100%;
@@ -27,7 +31,7 @@
   justify-content: flex-end;
   position: absolute;
   gap: 5px;
-  top: 101px;
+  top: calc($navbarHeight + $navbarTopOffset + $spacing);
   right: 10px;
   z-index: 99;
   &.embedModeMobile {
