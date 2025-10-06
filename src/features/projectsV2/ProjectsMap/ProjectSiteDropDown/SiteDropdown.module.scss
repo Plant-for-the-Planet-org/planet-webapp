@@ -96,6 +96,10 @@ $dropDownOpenGapMobile: 6px;
 }
 
 @include xsPhoneView {
+  .dropdownWrapper {
+    position: relative;
+  }
+
   .siteIconAndTextContainer {
     > svg {
       width: 16px;

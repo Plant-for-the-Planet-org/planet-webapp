@@ -99,6 +99,10 @@ $dropDownOpenGapMobile: 6px;
 }
 
 @include xsPhoneView {
+  .dropdownWrapper {
+    position: relative;
+  }
+
   .interventionIconAndTextContainer {
     > svg {
       width: 16px;
@@ -138,7 +142,7 @@ $dropDownOpenGapMobile: 6px;
     max-width: 140px;
     padding: 8px 12px;
     top: calc($dropDownButtonMobileHeight + $dropDownOpenGapMobile);
-    right: 14px;
+    left: 0;
     min-width: 160px;
     z-index: 50;
     .listItem {
