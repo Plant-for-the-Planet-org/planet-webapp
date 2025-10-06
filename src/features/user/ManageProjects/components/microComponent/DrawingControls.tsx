@@ -23,6 +23,7 @@ const DrawingControls = ({
   return (
     <div className={styles.drawingControls}>
       <button
+        type="button"
         onClick={(e) => {
           e.preventDefault();
           setIsDrawing((prev) => !prev);
@@ -43,6 +44,7 @@ const DrawingControls = ({
       </button>
       {showDeleteButton && (
         <button
+          type="button"
           onClick={(e) => {
             e.preventDefault();
             setCoordinates([]);
