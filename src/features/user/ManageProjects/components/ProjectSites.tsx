@@ -37,6 +37,7 @@ import { useApi } from '../../../../hooks/useApi';
 import SiteDeleteConfirmationModal from './microComponent/SiteDeleteConfirmationModal';
 import SitePreviewMap from './microComponent/SitePreviewMap';
 import themeProperties from '../../../../theme/themeProperties';
+import CustomModal from '../../../common/Layout/CustomModal';
 
 const defaultSiteDetails = {
   name: '',
@@ -643,12 +644,20 @@ export default function ProjectSites({
             {t('skip')}
           </Button>
         </div>
-        <SiteDeleteConfirmationModal
-          selectedSiteInfo={selectedSiteInfo}
-          deleteProjectSite={deleteProjectSite}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          isUploadingData={isUploadingData}
+        <CustomModal
+          isOpen={isModalOpen}
+          handleContinue={() => {
+            if (selectedSiteInfo.siteId !== null) {
+              deleteProjectSite(selectedSiteInfo.siteId);
+            }
+          }}
+          handleCancel={() => setIsModalOpen(false)}
+          modalTitle={t('siteDeleteConfirmation', {
+            siteName: selectedSiteInfo.siteName ?? '',
+          })}
+          modalSubtitle={''}
+          continueButtonText={t('delete')}
+          cancelButtonText={t('cancel')}
         />
       </StyledForm>
     </CenteredContainer>
