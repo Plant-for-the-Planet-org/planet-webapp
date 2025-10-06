@@ -233,7 +233,7 @@
   cursor: pointer;
   font-weight: bold;
 }
-.projSiteSaveandAdd {
+.projSiteSaveAndAdd {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -575,7 +575,7 @@
   width: 100%;
 }
 
-.geoJsonError {
+.projectSiteMapError {
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
   color: $dsFireRed;

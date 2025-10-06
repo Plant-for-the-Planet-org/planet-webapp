@@ -86,7 +86,6 @@ function EditSite({
     control,
   } = useForm<ProjectSitesFormData>();
   const [geoJson, setGeoJson] = useState<GeoJson | null>(geoJsonProp);
-  const [geoJsonError, setGeoJsonError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -94,8 +93,7 @@ function EditSite({
   const MapProps = {
     geoJson,
     setGeoJson,
-    geoJsonError,
-    setGeoJsonError,
+    setErrorMessage,
     geoLocation: {
       geoLatitude: 36.96,
       geoLongitude: -28.5,
@@ -270,7 +268,6 @@ export default function ProjectSites({
   } = useForm<ProjectSitesFormData>();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
-  const [geoJsonError, setGeoJsonError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<boolean>(true);
@@ -302,8 +299,7 @@ export default function ProjectSites({
   const MapProps = {
     geoJson,
     setGeoJson,
-    geoJsonError,
-    setGeoJsonError,
+    setErrorMessage,
   };
 
   const fetchProjSites = async () => {
@@ -366,13 +362,13 @@ export default function ProjectSites({
         setGeoJson(null);
         setIsUploadingData(false);
         setShowForm(false);
-        setErrorMessage('');
+        setErrorMessage(null);
       } catch (err) {
         setIsUploadingData(false);
         setErrors(handleError(err as APIError));
       }
     } else {
-      setErrorMessage(t('polygonRequired'));
+      setErrorMessage(t('errors.polygon.required'));
     }
   };
 
@@ -584,9 +580,9 @@ export default function ProjectSites({
             {geoLocation && <SiteGeometryEditor {...MapProps} />}
 
             <Button
-              id="projSiteSaveandAdd"
+              id="projSiteSaveAndAdd"
               onClick={handleSubmit(uploadProjectSite)}
-              className={styles.projSiteSaveandAdd}
+              className={styles.projSiteSaveAndAdd}
             >
               <p className={styles.inlineLinkButton}>{t('saveAndAddSite')}</p>
             </Button>
