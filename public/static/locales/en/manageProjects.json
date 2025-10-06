@@ -253,7 +253,7 @@
     },
     "drawing": {
       "polygon": {
-        "start": "Start polygon drawing",
+        "start": "Start polygon drawing by selecting three different points on the map",
         "stop": "Stop Polygon Drawing",
         "active": "Drawing mode active (click to stop)",
         "delete": "Delete Polygon"
