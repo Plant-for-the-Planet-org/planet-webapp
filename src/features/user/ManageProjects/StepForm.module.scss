@@ -434,7 +434,7 @@
   }
 }
 
-.mapboxContainer2 {
+.siteGeometryEditor {
   position: relative;
   > div > div > div {
     border-top-left-radius: 10px;
@@ -566,16 +566,6 @@
 
 /*  error */
 .errorMessage {
-  font-family: $primaryFontFamily;
-  font-size: $fontSmall;
-  color: $dsFireRed;
-  text-align: center;
-  font-weight: 600;
-  margin-top: 20px;
-  width: 100%;
-}
-
-.projectSiteMapError {
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
   color: $dsFireRed;
