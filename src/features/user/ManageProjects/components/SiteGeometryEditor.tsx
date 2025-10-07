@@ -113,12 +113,15 @@ export default function SiteGeometryEditor({
     loadMapStyle();
   }, []);
 
-  const handleViewStateChange = (newViewState: Partial<ViewState>) => {
-    setViewPort((prev) => ({
-      ...prev,
-      ...newViewState,
-    }));
-  };
+  const handleViewStateChange = useCallback(
+    (newViewState: Partial<ViewState>) => {
+      setViewPort((prev) => ({
+        ...prev,
+        ...newViewState,
+      }));
+    },
+    []
+  );
 
   // Handle zooming to the project site
   const handleZoomToProjectSite = () => {
