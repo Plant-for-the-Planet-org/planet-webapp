@@ -146,7 +146,7 @@ export default function SiteGeometryEditor({
   );
 
   return (
-    <div className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}>
+    <div className={`${styles.formFieldLarge} ${styles.siteGeometryEditor}`}>
       <MapControls
         isDrawing={isDrawing}
         setIsDrawing={setIsDrawing}
