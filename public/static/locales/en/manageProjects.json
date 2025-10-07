@@ -147,7 +147,6 @@
     "otherPlanting": "Other Planting",
     "projectType": "Project Type",
     "protectionSeasons": "Protection Seasons",
-    "polygonRequired": "Polygon is required",
     "fileSizeLimit": "File is larger than 10 mb",
     "fileImageOnly": "File type must be image",
     "filePDFOnly": "File type must be PDF",
@@ -245,17 +244,35 @@
     "financialReport": "Latest audited financial report",
     "PlantingReport": "Project Progress Report",
     "siteCount": "Site {siteId} of {totalCount}",
-    "coordinateError": {
-      "seaCoordinates": "The selected location appears to be in the sea. Please choose a nearby point on land.",
-      "latitudeRange": "Latitude must be between -90 and 90.",
-      "longitudeRange": "Longitude must be between -180 and 180."
-    },
     "delete": "Delete",
     "cancel": "Cancel",
     "siteDeleteConfirmation": "Are you sure you want to delete {siteName} ?",
     "mapView": {
       "map": "Map",
       "satellite": "Satellite"
+    },
+    "drawing": {
+      "polygon": {
+        "start": "Start polygon drawing (select at least 3 points)",
+        "stop": "Stop Polygon Drawing",
+        "active": "Drawing mode active (click to stop)",
+        "delete": "Delete Polygon"
+      }
+    },
+    "errors": {
+      "polygon": {
+        "minimumPoints": "A polygon requires at least 3 points",
+        "required": "Polygon is required"
+      },
+      "file": {
+        "invalidKml": "Invalid KML",
+        "invalidGeojson": "Invalid GeoJSON"
+      },
+      "coordinates": {
+        "seaCoordinates": "The selected location appears to be in the sea. Please choose a nearby point on land.",
+        "latitudeRange": "Latitude must be between -90 and 90.",
+        "longitudeRange": "Longitude must be between -180 and 180."
+      }
     }
   }
 }

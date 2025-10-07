@@ -15,7 +15,7 @@ const SatelliteLayer = () => {
       type="raster"
       tiles={tiles}
       tileSize={256}
-      attribution="Esri, Maxar, Earthstar Geographics, and the GIS User Community"
+      attribution="Esri, Maxar, Earthstar Geographics, and the GIS User Community via Esri World Imagery Wayback"
     >
       <Layer
         type="raster"

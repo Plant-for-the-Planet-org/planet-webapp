@@ -5,7 +5,7 @@ import themeProperties from '../../../../../theme/themeProperties';
 
 interface SiteLayerProps {
   isSatelliteMode: boolean;
-  geoJson: SitesGeoJSON | null;
+  geoJson: SitesGeoJSON;
 }
 
 const ProjectSiteLayer = ({ isSatelliteMode, geoJson }: SiteLayerProps) => {

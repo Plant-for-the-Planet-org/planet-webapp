@@ -42,7 +42,6 @@ function EditSite({
     control,
   } = useForm<ProjectSitesFormData>();
   const [geoJson, setGeoJson] = useState<GeoJson | null>(geoJsonProp);
-  const [geoJsonError, setGeoJsonError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -50,8 +49,7 @@ function EditSite({
   const MapProps = {
     geoJson,
     setGeoJson,
-    geoJsonError,
-    setGeoJsonError,
+    setErrorMessage,
     geoLocation: {
       geoLatitude: 36.96,
       geoLongitude: -28.5,
@@ -95,7 +93,7 @@ function EditSite({
         setErrors(handleError(err as APIError));
       }
     } else {
-      setErrorMessage(t('polygonRequired'));
+      setErrorMessage(t('errors.polygon.required'));
     }
   };
 

@@ -40,8 +40,7 @@ import {
 interface Props {
   geoJson: SitesGeoJSON | null;
   setGeoJson: SetState<SitesGeoJSON | null>;
-  geoJsonError: boolean;
-  setGeoJsonError: SetState<boolean>;
+  setErrorMessage: SetState<string | null>;
 }
 
 const defaultZoom = 1.4;
@@ -49,10 +48,9 @@ const defaultZoom = 1.4;
 export default function SiteGeometryEditor({
   geoJson,
   setGeoJson,
-  geoJsonError,
-  setGeoJsonError,
+  setErrorMessage,
 }: Props): ReactElement {
-  const t = useTranslations('ManageProjects');
+  const tManageProjects = useTranslations('ManageProjects');
   const reader = new FileReader();
   const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
   const [viewport, setViewPort] = useState<ViewState>(DEFAULT_VIEW_STATE);
@@ -64,6 +62,7 @@ export default function SiteGeometryEditor({
   // Handle click to add point
   const handleClick = useCallback(
     (e: MapMouseEvent) => {
+      setErrorMessage(null);
       if (!isDrawing) return;
       const lngLat = [e.lngLat.lng, e.lngLat.lat];
       setCoordinates((prev) => [...prev, lngLat]);
@@ -73,7 +72,11 @@ export default function SiteGeometryEditor({
 
   // Finish drawing (double click closes polygon)
   const handleDoubleClick = useCallback(() => {
-    if (coordinates.length < 3) return; // need at least 3 points
+    if (coordinates.length < 4) {
+      setErrorMessage(tManageProjects('errors.polygon.minimumPoints'));
+      setCoordinates([]);
+      return;
+    }
     const closed = [...coordinates, coordinates[0]];
     const newFeature: Feature<Polygon | MultiPolygon, GeoJsonProperties> = {
       type: 'Feature',
@@ -199,10 +202,10 @@ export default function SiteGeometryEditor({
                 );
                 const geo = tj.kml(dom);
                 if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
-                  setGeoJsonError(false);
+                  setErrorMessage(null);
                   setGeoJson(geo);
                 } else {
-                  setGeoJsonError(true);
+                  setErrorMessage(tManageProjects('errors.file.invalidKml'));
                 }
               };
             } else if (fileType === 'geojson') {
@@ -221,10 +224,12 @@ export default function SiteGeometryEditor({
                     isFC &&
                     geo.features.length > 0
                   ) {
-                    setGeoJsonError(false);
+                    setErrorMessage(null);
                     setGeoJson(geo);
                   } else {
-                    setGeoJsonError(true);
+                    setErrorMessage(
+                      tManageProjects('errors.file.invalidGeojson')
+                    );
                     console.log('invalid geojson');
                   }
                 }
@@ -238,13 +243,10 @@ export default function SiteGeometryEditor({
         {({ getRootProps, getInputProps }) => (
           <div {...getRootProps()} className={styles.dropZone}>
             <input {...getInputProps()} />
-            {t('dropGeoJson')}
+            {tManageProjects('dropGeoJson')}
           </div>
         )}
       </Dropzone>
-      {geoJsonError ? (
-        <div className={styles.geoJsonError}>Invalid geojson/kml</div>
-      ) : null}
     </div>
   );
 }
