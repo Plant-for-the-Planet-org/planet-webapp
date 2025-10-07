@@ -409,11 +409,11 @@ export default function ProjectSites({
           </Button>
         )}
 
-        {errorMessage && errorMessage !== '' ? (
+        {errorMessage !== null && (
           <div className={styles.formFieldLarge}>
             <h4 className={styles.errorMessage}>{errorMessage}</h4>
           </div>
-        ) : null}
+        )}
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
             onClick={() => handleBack(ProjectCreationTabs.DETAILED_ANALYSIS)}
