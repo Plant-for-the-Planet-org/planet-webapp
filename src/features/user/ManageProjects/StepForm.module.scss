@@ -150,7 +150,7 @@
   border-radius: 8px !important;
   overflow: hidden;
   box-shadow: 0px 3px 6px #00000029;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .layerOption {
@@ -416,7 +416,7 @@
   flex-direction: column;
   gap: 8px;
   position: absolute;
-  z-index: 9999;
+  z-index: 999;
   top: 6px;
   left: 6px;
 
@@ -434,7 +434,7 @@
   }
 }
 
-.mapboxContainer2 {
+.siteGeometryEditor {
   position: relative;
   > div > div > div {
     border-top-left-radius: 10px;
@@ -566,16 +566,6 @@
 
 /*  error */
 .errorMessage {
-  font-family: $primaryFontFamily;
-  font-size: $fontSmall;
-  color: $dsFireRed;
-  text-align: center;
-  font-weight: 600;
-  margin-top: 20px;
-  width: 100%;
-}
-
-.projectSiteMapError {
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
   color: $dsFireRed;

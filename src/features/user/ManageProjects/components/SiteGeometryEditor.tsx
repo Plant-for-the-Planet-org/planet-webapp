@@ -113,12 +113,15 @@ export default function SiteGeometryEditor({
     loadMapStyle();
   }, []);
 
-  const handleViewStateChange = (newViewState: Partial<ViewState>) => {
-    setViewPort((prev) => ({
-      ...prev,
-      ...newViewState,
-    }));
-  };
+  const handleViewStateChange = useCallback(
+    (newViewState: Partial<ViewState>) => {
+      setViewPort((prev) => ({
+        ...prev,
+        ...newViewState,
+      }));
+    },
+    []
+  );
 
   // Handle zooming to the project site
   const handleZoomToProjectSite = () => {
@@ -146,7 +149,7 @@ export default function SiteGeometryEditor({
   );
 
   return (
-    <div className={`${styles.formFieldLarge} ${styles.mapboxContainer2}`}>
+    <div className={`${styles.formFieldLarge} ${styles.siteGeometryEditor}`}>
       <MapControls
         isDrawing={isDrawing}
         setIsDrawing={setIsDrawing}
