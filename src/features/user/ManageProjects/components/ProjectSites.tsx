@@ -165,21 +165,17 @@ export default function ProjectSites({
         temp.push(_submitData);
         setSiteList(temp);
         setGeoJson(null);
-        setIsUploadingData(false);
         setShowForm(false);
         setErrorMessage(null);
+        handleNext(ProjectCreationTabs.PROJECT_SPENDING);
       } catch (err) {
-        setIsUploadingData(false);
         setErrors(handleError(err as APIError));
+      } finally {
+        setIsUploadingData(false);
       }
     } else {
       setErrorMessage(t('errors.polygon.required'));
     }
-  };
-
-  const uploadProjectSiteNext = (data: ProjectSitesFormData) => {
-    uploadProjectSite(data);
-    handleNext(ProjectCreationTabs.PROJECT_SPENDING);
   };
 
   const deleteProjectSite = async (id: string) => {
@@ -425,7 +421,7 @@ export default function ProjectSites({
           </Button>
 
           <Button
-            onClick={handleSubmit(uploadProjectSiteNext)}
+            onClick={handleSubmit(uploadProjectSite)}
             variant="contained"
             className="formButton"
           >
