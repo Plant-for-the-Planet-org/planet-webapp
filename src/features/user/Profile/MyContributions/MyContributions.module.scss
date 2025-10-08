@@ -130,27 +130,26 @@
   font-size: $fontXXSmall;
   font-weight: 700;
   color: $dsPrimaryColor;
+  background: $dsSoftGreen;
+}
+
+.giftLabelInner {
   background: linear-gradient(
       0deg,
       $dsWarmGreenTransparent10,
       $dsWarmGreenTransparent10
     ),
     linear-gradient(0deg, $dsWhite, $dsWhite);
-
   padding: 7px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 3px;
+  border-radius: 9px 9px 0 0;
 
   @include smTabletView {
     padding: 4px;
-  }
-
-  .giftLabelText {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    border-radius: 0 0 6px 6px;
   }
 }
 
@@ -159,6 +158,12 @@
   width: 10px;
   display: flex;
   align-items: center;
+}
+
+.giftLabelText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .itemImageContainer {
@@ -175,7 +180,7 @@
     background-image: url('/assets/images/project-contribution-default-portrait.png');
     width: 130px;
     height: 130px;
-    border-radius: 8px;
+    border-radius: 6px 6px 0 0;
   }
 }
 
