@@ -181,6 +181,11 @@
     width: 130px;
     height: 130px;
     border-radius: 6px 6px 0 0;
+    overflow: hidden;
+
+    &.roundedCorners {
+      border-radius: 6px;
+    }
   }
 }
 
@@ -333,6 +338,10 @@
   min-width: 0; // Allow shrinking below 450px
   max-width: 100%; // Ensure it doesn't exceed container width
 
+  &.trees {
+    border-color: $dsPrimaryColorTransparent10;
+  }
+
   &.conservation {
     border-color: $dsWarmBlueTransparent10;
   }
@@ -407,6 +416,11 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 6px;
+
+    &.trees {
+      background-color: $dsSoftGreen;
+    }
+
     &.conservation {
       background: $dsSoftBlue;
     }
