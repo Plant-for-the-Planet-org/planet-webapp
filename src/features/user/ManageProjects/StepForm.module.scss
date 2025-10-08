@@ -368,7 +368,7 @@
     color: $dsCoreText;
   }
 
-  .siteDrawControlContainer {
+  .siteActions {
     display: flex;
     gap: 10px;
     flex-direction: column;
@@ -387,9 +387,13 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      transition: all 0.2s ease;
 
       &:hover {
-        border: 1px solid $dsCoreText;
+        background-color: $dsDarkGrey;
+        svg path {
+          fill: $dsWhite;
+        }
       }
     }
   }

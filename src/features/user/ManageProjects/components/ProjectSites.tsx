@@ -475,7 +475,7 @@ export default function ProjectSites({
                         .find((e) => site.status == e.value)
                         ?.label.toUpperCase()}
                     </div>
-                    <div className={styles.siteDrawControlContainer}>
+                    <div className={styles.siteActions}>
                       <button
                         type="button"
                         aria-label={t('deleteSite')}
