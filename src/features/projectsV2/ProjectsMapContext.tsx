@@ -31,7 +31,7 @@ export const DEFAULT_VIEW_STATE: ViewState = {
   padding: { top: 0, bottom: 0, left: 0, right: 0 },
 };
 
-const DEFAULT_MAP_STATE: MapState = {
+export const DEFAULT_MAP_STATE: MapState = {
   mapStyle: EMPTY_STYLE,
   dragPan: true,
   scrollZoom: true,
