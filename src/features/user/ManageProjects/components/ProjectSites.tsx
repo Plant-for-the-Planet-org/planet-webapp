@@ -40,7 +40,7 @@ const SiteGeometryEditor = dynamic(() => import('./SiteGeometryEditor'), {
   loading: () => <p></p>,
 });
 
-type ProjectSitesFormData = {
+export type ProjectSitesFormData = {
   name: string;
   status: string;
 };
@@ -138,16 +138,16 @@ export default function ProjectSites({
   }, [projectGUID]);
 
   const uploadProjectSite = async (data: ProjectSitesFormData) => {
-    if (geoJson && geoJson.features.length !== 0) {
-      if (!data.name) return;
+    const hasGeo = geoJson !== null && geoJson.features.length !== 0;
+    const hasNameAndStatus = data.name && data.status;
 
+    if (hasGeo && hasNameAndStatus) {
       setIsUploadingData(true);
       const newSitePayload: SiteApiPayload = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
       };
-
       try {
         const res = await postApiAuthenticated<Site, SiteApiPayload>(
           `/app/projects/${projectGUID}/sites`,
@@ -167,14 +167,13 @@ export default function ProjectSites({
         setGeoJson(null);
         setShowForm(false);
         setErrorMessage(null);
-        handleNext(ProjectCreationTabs.PROJECT_SPENDING);
       } catch (err) {
         setErrors(handleError(err as APIError));
       } finally {
         setIsUploadingData(false);
       }
     } else {
-      setErrorMessage(t('errors.polygon.required'));
+      if (hasNameAndStatus) setErrorMessage(t('errors.polygon.required'));
     }
   };
 
@@ -190,6 +189,11 @@ export default function ProjectSites({
       setIsUploadingData(false);
       setIsModalOpen(false);
     }
+  };
+
+  const uploadProjectSiteNext = (data: ProjectSitesFormData) => {
+    uploadProjectSite(data);
+    handleNext(ProjectCreationTabs.PROJECT_SPENDING);
   };
 
   const status = [
@@ -421,7 +425,7 @@ export default function ProjectSites({
           </Button>
 
           <Button
-            onClick={handleSubmit(uploadProjectSite)}
+            onClick={handleSubmit(uploadProjectSiteNext)}
             variant="contained"
             className="formButton"
           >

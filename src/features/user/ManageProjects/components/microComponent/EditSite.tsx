@@ -1,6 +1,6 @@
 import type { EditSiteProps, Site } from '../../../../common/types/project';
 import type { APIError } from '@planet-sdk/common';
-import type { SiteApiPayload } from '../ProjectSites';
+import type { ProjectSitesFormData, SiteApiPayload } from '../ProjectSites';
 import type { ChangeEvent } from 'react';
 
 import styles from '../../StepForm.module.scss';
@@ -14,11 +14,6 @@ import { handleError } from '@planet-sdk/common';
 import { Button, Fade, MenuItem, Modal, TextField } from '@mui/material';
 import SiteGeometryEditor from '../SiteGeometryEditor';
 import BackArrow from '../../../../../../public/assets/images/icons/headerIcons/BackArrow';
-
-type ProjectSitesFormData = {
-  name: string;
-  status: string;
-};
 
 function EditSite({
   openModal,
