@@ -14,7 +14,9 @@ interface Props {
 const ItemImage = ({ imageUrl, giftDetails }: Props) => {
   return (
     <div
-      className={styles.itemImageContainer}
+      className={`${styles.itemImageContainer} ${
+        !giftDetails ? styles.roundedCorners : ''
+      }`}
       style={
         imageUrl
           ? {

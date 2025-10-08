@@ -1,29 +1,20 @@
 @import '../../../../theme/theme';
 
-$layoutPaddingTop: 24px;
-$layoutPaddingSide: 20px;
+$dropDownTriggerButtonHeight: 52px;
+$dropDownOpenGap: 8px;
+$dropDownButtonMobileHeight: 40px;
+$dropDownOpenGapMobile: 6px;
 
 .dropdownButton {
   display: flex;
   border-radius: 12px;
   background: $dsWhite;
   align-items: center;
-  padding: 12px 0px 9px 12px;
+  padding: 12px 0px 12px 12px;
   min-width: 350px;
   justify-content: space-between;
   cursor: pointer;
   gap: 18px;
-  position: absolute;
-  z-index: 2;
-  right: calc($layoutPaddingSide + 10px);
-}
-
-.dropdownButtonAlignmentAbove {
-  top: calc($layoutPaddingTop + 75px);
-}
-
-.dropdownButtonAlignmentBelow {
-  top: calc($layoutPaddingTop + 10px);
 }
 
 .interventionIconAndTextContainer {
@@ -65,12 +56,10 @@ $layoutPaddingSide: 20px;
   background-color: $dsWhite;
   padding: 6px 17px;
   border-radius: 12px;
-  margin-top: 12px;
   width: 350px;
   font-size: $fontXSmall;
   position: absolute;
   z-index: 4;
-  right: 30px;
   max-height: 42vh;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
@@ -81,14 +70,6 @@ $layoutPaddingSide: 20px;
   > button {
     width: 100%;
   }
-}
-
-.interventionListOptionsAbove {
-  top: calc($layoutPaddingTop + 60px);
-}
-
-.interventionListOptionsBelow {
-  top: calc($layoutPaddingTop + 124px);
 }
 
 .listItem {
@@ -109,7 +90,21 @@ $layoutPaddingSide: 20px;
   font-weight: 700;
 }
 
+@include smTabletView {
+  .interventionListOptionsAbove {
+    top: calc($dropDownTriggerButtonHeight + $dropDownOpenGap);
+  }
+
+  .interventionListOptionsBelow {
+    top: calc(2 * ($dropDownTriggerButtonHeight + $dropDownOpenGap));
+  }
+}
+
 @include xsPhoneView {
+  .dropdownWrapper {
+    position: relative;
+  }
+
   .interventionIconAndTextContainer {
     > svg {
       width: 16px;
@@ -127,7 +122,7 @@ $layoutPaddingSide: 20px;
     min-width: 93px;
     padding: 5px;
     position: unset;
-    height: 40px;
+    height: $dropDownButtonMobileHeight;
   }
   .labelTextContainer {
     justify-content: center;
@@ -148,8 +143,8 @@ $layoutPaddingSide: 20px;
   .interventionListOptions {
     max-width: 140px;
     padding: 8px 12px;
-    top: 36px;
-    right: 0px;
+    top: calc($dropDownButtonMobileHeight + $dropDownOpenGapMobile);
+    left: 0;
     min-width: 160px;
     z-index: 50;
     .listItem {

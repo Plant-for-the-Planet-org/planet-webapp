@@ -104,7 +104,7 @@ const ProjectSiteDropdown = ({
   };
 
   return (
-    <>
+    <div className={styles.dropdownWrapper}>
       <div
         className={`${
           hasMultipleSites ? styles.dropdownButton : styles.dropdownDetails
@@ -167,7 +167,7 @@ const ProjectSiteDropdown = ({
           setSelectedSampleTree={setSelectedSampleTree}
         />
       )}
-    </>
+    </div>
   );
 };
 
