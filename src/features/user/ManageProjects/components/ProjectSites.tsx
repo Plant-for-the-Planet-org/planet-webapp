@@ -448,10 +448,10 @@ export default function ProjectSites({
             }
           }}
           handleCancel={() => setIsModalOpen(false)}
-          modalTitle={t('siteDeleteConfirmation', {
+          modalTitle={t('deleteSite')}
+          modalSubtitle={t('siteDeleteConfirmation', {
             siteName: selectedSiteInfo.siteName ?? '',
           })}
-          modalSubtitle={''}
           continueButtonText={t('delete')}
           cancelButtonText={t('cancel')}
         />
