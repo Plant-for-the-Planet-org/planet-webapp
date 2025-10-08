@@ -181,6 +181,11 @@
     width: 130px;
     height: 130px;
     border-radius: 6px 6px 0 0;
+    overflow: hidden;
+
+    &.roundedCorners {
+      border-radius: 6px;
+    }
   }
 }
 
