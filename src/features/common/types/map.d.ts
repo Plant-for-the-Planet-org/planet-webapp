@@ -5,6 +5,7 @@ import type { UserPublicProfile } from '@planet-sdk/common';
 import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import type { FlyToInterpolator } from 'react-map-gl';
 import type { SetState } from './common';
+import type { Point, Polygon } from 'geojson';
 
 export interface ClusterMarker {
   geometry: {
@@ -131,11 +132,7 @@ export interface ViewportProps {
   transitionEasing?: (normalizedTime: number) => number;
 }
 
-export interface RegisteredTreesGeometry {
-  features?: [];
-  coordinates: [number, number] | number[][];
-  type: 'Polygon' | 'Point';
-}
+export type RegisteredTreesGeometry = Point | Polygon;
 
 export interface RegisterTreesFormProps {
   setContributionGUID: SetState<string>;
