@@ -9,7 +9,7 @@ import type {
   ProfileProjectPropertiesTrees,
   ProfileProjectPropertiesConservation,
 } from '@planet-sdk/common';
-import type { FeatureCollection as GeoJson } from 'geojson';
+import type { ProjectSiteFeatureCollection } from './map';
 import type { SetState } from './common';
 import type { ChangeEvent } from 'react';
 import type { ViewportFlyToInterpolator } from 'react-map-gl/src/utils/transition/viewport-fly-to-interpolator';
@@ -219,7 +219,7 @@ interface EditSiteProps {
   changeSiteDetails: (e: ChangeEvent<HTMLInputElement>) => void;
   siteDetails: SiteDetails;
   status: Option[];
-  geoJsonProp: GeoJson | null;
+  geoJsonProp: ProjectSiteFeatureCollection | null;
   projectGUID: string;
   setSiteList: SetState<Site[]>;
   setEditMode: SetState<boolean>;

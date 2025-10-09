@@ -85,7 +85,9 @@ function EditSite({
     formState: { errors },
     control,
   } = useForm<ProjectSitesFormData>();
-  const [geoJson, setGeoJson] = useState<GeoJson | null>(geoJsonProp);
+  const [geoJson, setGeoJson] = useState<ProjectSiteFeatureCollection | null>(
+    geoJsonProp
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const { setErrors } = useContext(ErrorHandlingContext);
