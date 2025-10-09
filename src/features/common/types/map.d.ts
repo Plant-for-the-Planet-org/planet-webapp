@@ -278,7 +278,7 @@ export interface SpatialReference {
 // Project site
 export type ProjectSiteFeatureCollection = FeatureCollection<
   Polygon | MultiPolygon,
-  ProjectSite | GeoJsonProperties
+  ProjectSite | Record<string, never>
 >;
 
 // Map
