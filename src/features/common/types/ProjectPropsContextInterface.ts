@@ -102,7 +102,7 @@ interface ProjectPropsContextInterface {
   showProjects: boolean;
   setShowProjects: SetState<boolean>;
   searchedProject: MapProject[];
-  setsearchedProjects: SetState<MapProject[]>;
+  setSearchedProjects: SetState<MapProject[]>;
   geoJson: SitesGeoJSON | null;
   setGeoJson: SetState<SitesGeoJSON | null>;
   selectedSite: number;

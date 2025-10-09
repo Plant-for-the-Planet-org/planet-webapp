@@ -26,7 +26,7 @@ interface Props {
   projects: MapProject[];
   showProjects: boolean;
   setShowProjects: SetState<boolean>;
-  setsearchedProjects: SetState<MapProject[]>;
+  setSearchedProjects: SetState<MapProject[]>;
 }
 
 const ProjectSnippet = dynamic(
@@ -39,7 +39,7 @@ const ProjectSnippet = dynamic(
 function ProjectsList({
   projects,
   showProjects,
-  setsearchedProjects,
+  setSearchedProjects,
 }: Props): ReactElement {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -148,10 +148,10 @@ function ProjectsList({
         });
         return found;
       });
-      setsearchedProjects(resultProjects);
+      setSearchedProjects(resultProjects);
       return resultProjects;
     } else {
-      setsearchedProjects(projects);
+      setSearchedProjects(projects);
     }
   }
 

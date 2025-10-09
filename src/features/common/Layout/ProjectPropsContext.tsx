@@ -45,7 +45,7 @@ const ProjectPropsProvider = ({ children }: { children: ReactNode }) => {
   >(null);
   const [showSingleProject, setShowSingleProject] = useState(false);
   const [showProjects, setShowProjects] = useState(true);
-  const [searchedProject, setsearchedProjects] = useState<MapProject[]>([]);
+  const [searchedProject, setSearchedProjects] = useState<MapProject[]>([]);
   const [geoJson, setGeoJson] = useState<SitesGeoJSON | null>(null);
   const [siteExists, setsiteExists] = useState(false);
   const [selectedSite, setSelectedSite] = useState(0);
@@ -200,7 +200,7 @@ const ProjectPropsProvider = ({ children }: { children: ReactNode }) => {
         showProjects,
         setShowProjects,
         searchedProject,
-        setsearchedProjects,
+        setSearchedProjects,
         geoJson,
         setGeoJson,
         selectedSite,

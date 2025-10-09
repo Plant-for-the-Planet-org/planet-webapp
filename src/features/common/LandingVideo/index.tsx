@@ -8,16 +8,16 @@ import { useUserAgent } from 'next-useragent';
 import { ParamsContext } from '../Layout/QueryParamsContext';
 
 interface Props {
-  setshowVideo: Function;
+  setShowVideo: Function;
 }
 
-function VideoContainer({ setshowVideo }: Props): ReactElement {
+function VideoContainer({ setShowVideo }: Props): ReactElement {
   const t = useTranslations('Common');
   const [videoURL, setvideoURL] = useState<null | string>(null);
   const { isContextLoaded, embed, enableIntro } = useContext(ParamsContext);
   const videoRef = useRef<ReactPlayer | null>(null);
   const handleVideoClose = () => {
-    setshowVideo(false);
+    setShowVideo(false);
     if (videoRef?.current) {
       videoRef.current.seekTo(0);
     }
