@@ -139,41 +139,43 @@ export default function ProjectSites({
 
   const uploadProjectSite = async (data: ProjectSitesFormData) => {
     const hasGeo = geoJson !== null && geoJson.features.length !== 0;
-    const hasNameAndStatus = data.name && data.status;
 
-    if (hasGeo && hasNameAndStatus) {
-      setIsUploadingData(true);
-      const newSitePayload: SiteApiPayload = {
-        name: siteDetails.name,
-        geometry: geoJson,
-        status: data.status,
+    if (!hasGeo) {
+      setErrorMessage(t('errors.polygon.required'));
+      return false;
+    }
+
+    setIsUploadingData(true);
+    const newSitePayload: SiteApiPayload = {
+      name: siteDetails.name,
+      geometry: geoJson,
+      status: data.status,
+    };
+    try {
+      const res = await postApiAuthenticated<Site, SiteApiPayload>(
+        `/app/projects/${projectGUID}/sites`,
+        {
+          payload: newSitePayload,
+        }
+      );
+      const temp = siteList ? siteList : [];
+      const _submitData = {
+        id: res.id,
+        name: res.name,
+        geometry: res.geometry,
+        status: res.status,
       };
-      try {
-        const res = await postApiAuthenticated<Site, SiteApiPayload>(
-          `/app/projects/${projectGUID}/sites`,
-          {
-            payload: newSitePayload,
-          }
-        );
-        const temp = siteList ? siteList : [];
-        const _submitData = {
-          id: res.id,
-          name: res.name,
-          geometry: res.geometry,
-          status: res.status,
-        };
-        temp.push(_submitData);
-        setSiteList(temp);
-        setGeoJson(null);
-        setShowForm(false);
-        setErrorMessage(null);
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-      } finally {
-        setIsUploadingData(false);
-      }
-    } else {
-      if (hasNameAndStatus) setErrorMessage(t('errors.polygon.required'));
+      temp.push(_submitData);
+      setSiteList(temp);
+      setGeoJson(null);
+      setShowForm(false);
+      setErrorMessage(null);
+      return true;
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      return false;
+    } finally {
+      setIsUploadingData(false);
     }
   };
 
@@ -191,9 +193,9 @@ export default function ProjectSites({
     }
   };
 
-  const uploadProjectSiteNext = (data: ProjectSitesFormData) => {
-    uploadProjectSite(data);
-    handleNext(ProjectCreationTabs.PROJECT_SPENDING);
+  const uploadProjectSiteNext = async (data: ProjectSitesFormData) => {
+    const success = await uploadProjectSite(data);
+    if (success) handleNext(ProjectCreationTabs.PROJECT_SPENDING);
   };
 
   const status = [
