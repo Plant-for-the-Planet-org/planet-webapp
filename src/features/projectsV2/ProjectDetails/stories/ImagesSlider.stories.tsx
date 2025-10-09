@@ -9,6 +9,7 @@ const meta: Meta<typeof ImagesSlider> = {
 export default meta;
 type Story = StoryObj<typeof ImagesSlider>;
 
+// cspell:disable
 const images = [
   {
     image:
@@ -58,10 +59,11 @@ const images = [
   {
     image:
       'https://cdn.plant-for-the-planet.org/staging/media/cache/project/medium/5ecfc50da5d7d037154361.JPG',
-    description: 'Planting in Americás 7',
+    description: 'Planting in Americas 7',
     id: 'img_Do6oePA5Hd2ZmR6FyberuOe6',
   },
 ];
+// cspell:enable
 
 export const Preview: Story = {
   args: {

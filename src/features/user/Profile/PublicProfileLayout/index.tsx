@@ -50,8 +50,8 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
   const { treesDonated, areaRestored, areaConserved } =
     aggregateProgressData(contributionStats);
   const treeTarget = userInfo?.targets.treesDonated ?? 0;
-  const restoreTarget = userInfo?.targets.areaRestored ?? 0;
-  const conservTarget = userInfo?.targets.areaConserved ?? 0;
+  const restorationTarget = userInfo?.targets.areaRestored ?? 0;
+  const conservationTarget = userInfo?.targets.areaConserved ?? 0;
 
   const canShowLeaderboard = profile?.exposeCommunity ?? false;
 
@@ -61,16 +61,16 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
       areaRestored === 0 &&
       areaConserved === 0 &&
       treeTarget === 0 &&
-      restoreTarget === 0 &&
-      conservTarget === 0
+      restorationTarget === 0 &&
+      conservationTarget === 0
     );
   }, [
     treesDonated,
     areaRestored,
     areaConserved,
     treeTarget,
-    restoreTarget,
-    conservTarget,
+    restorationTarget,
+    conservationTarget,
   ]);
 
   const isContributionsDataLoaded =

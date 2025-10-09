@@ -27,6 +27,7 @@ const meta: Meta<typeof ProjectListControls> = {
 export default meta;
 type Story = StoryObj<typeof ProjectListControls>;
 
+// cspell:disable
 export const Default: Story = {
   args: {
     projectCount: 20,
@@ -55,7 +56,7 @@ export const Default: Story = {
           isFeatured: false,
           isPublished: true,
           isTopProject: false,
-          location: 'Kilifi County, Kenya',
+          location: 'Kil County, Kenya',
           minTreeCount: 1,
           name: 'Community Mangrove Restoration, Kenya',
           paymentDefaults: {
@@ -71,7 +72,7 @@ export const Default: Story = {
             address: {
               zipCode: '29464',
               country: 'US',
-              address: '1007 Johnnie Dodds Blvd, Suite 134',
+              address: '1007 Johnnie Blvd, Suite 134',
               city: 'Mount Pleasant',
             },
             name: 'Climate Impact Partners',

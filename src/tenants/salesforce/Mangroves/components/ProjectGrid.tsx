@@ -12,6 +12,7 @@ import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 
+// cspell:disable
 const MANGROVE_PROJECTS = [
   'proj_4urzfQ47Xwv5SlNOurnXn2hU',
   'proj_7gmlF7Q8aL65V7j7AG9NW8Yy',
@@ -26,6 +27,7 @@ const MANGROVE_PROJECTS = [
   'proj_axHvqnvWNSxalmdbvnplyOYo',
   'proj_2Kf7wHIJ9HFti7bB9lwOC6cd',
 ];
+// cspell:enable
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = useContext(ErrorHandlingContext);

@@ -28,7 +28,7 @@ export default function DeleteProfileForm() {
 
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); //true when subscriptions are present
-  const [canDeleteAccount, setcanDeleteAccount] = useState(false);
+  const [canDeleteAccount, setCanDeleteAccount] = useState(false);
 
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
@@ -63,7 +63,7 @@ export default function DeleteProfileForm() {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setcanDeleteAccount(false);
+    setCanDeleteAccount(false);
   };
 
   return !isModalOpen ? (
@@ -86,9 +86,9 @@ export default function DeleteProfileForm() {
           onPaste={handleChange}
           onChange={(e) => {
             if (e.target.value === 'Delete') {
-              setcanDeleteAccount(true);
+              setCanDeleteAccount(true);
             } else {
-              setcanDeleteAccount(false);
+              setCanDeleteAccount(false);
             }
           }}
         ></TextField>

@@ -108,7 +108,7 @@ interface ProjectPropsContextInterface {
   selectedSite: number;
   setSelectedSite: SetState<number>;
   siteExists: boolean;
-  setsiteExists: SetState<boolean>;
+  setSiteExists: SetState<boolean>;
   isMobile: boolean;
   // Evaluate - possible to remove infoRef
   infoRef: RefObject<HTMLDivElement>;

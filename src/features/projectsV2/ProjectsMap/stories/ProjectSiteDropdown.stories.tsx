@@ -14,6 +14,7 @@ const meta: Meta<typeof ProjectSiteDropdown> = {
 export default meta;
 type Story = StoryObj<typeof ProjectSiteDropdown>;
 
+// cspell:disable
 const options: Feature<Polygon, SiteProperties>[] = [
   {
     geometry: {
@@ -125,6 +126,7 @@ const options: Feature<Polygon, SiteProperties>[] = [
     },
   },
 ];
+// cspell:enable
 
 export const Preview: Story = {
   render: () => {

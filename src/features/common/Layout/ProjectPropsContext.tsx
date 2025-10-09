@@ -47,7 +47,7 @@ const ProjectPropsProvider = ({ children }: { children: ReactNode }) => {
   const [showProjects, setShowProjects] = useState(true);
   const [searchedProject, setSearchedProjects] = useState<MapProject[]>([]);
   const [geoJson, setGeoJson] = useState<SitesGeoJSON | null>(null);
-  const [siteExists, setsiteExists] = useState(false);
+  const [siteExists, setSiteExists] = useState(false);
   const [selectedSite, setSelectedSite] = useState(0);
 
   const [interventions, setInterventions] = useState<Intervention[] | null>(
@@ -148,13 +148,13 @@ const ProjectPropsProvider = ({ children }: { children: ReactNode }) => {
       project.sites.length > 0 &&
       project.sites[0].geometry
     ) {
-      setsiteExists(true);
+      setSiteExists(true);
       setGeoJson({
         type: 'FeatureCollection',
         features: project.sites,
       });
     } else {
-      setsiteExists(false);
+      setSiteExists(false);
       setGeoJson(null);
       setSiteViewPort(null);
     }
@@ -206,7 +206,7 @@ const ProjectPropsProvider = ({ children }: { children: ReactNode }) => {
         selectedSite,
         setSelectedSite,
         siteExists,
-        setsiteExists,
+        setSiteExists,
         isMobile,
         infoRef,
         exploreContainerRef,

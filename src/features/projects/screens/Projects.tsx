@@ -56,7 +56,7 @@ function ProjectsList({
   const [selectedTab, setSelectedTab] = useState<'all' | 'top'>('all');
   const [searchMode, setSearchMode] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [trottledSearchValue, setTrottledSearchValue] = useState('');
+  const [throttledSearchValue, setThrottledSearchValue] = useState('');
   const [searchProjectResults, setSearchProjectResults] = useState<
     MapProject[] | undefined
   >();
@@ -68,7 +68,7 @@ function ProjectsList({
 
   useDebouncedEffect(
     () => {
-      setTrottledSearchValue(searchValue);
+      setThrottledSearchValue(searchValue);
     },
     1000,
     [searchValue]
@@ -168,10 +168,10 @@ function ProjectsList({
   useEffect(() => {
     const _searchProjectResults = getSearchProjects(
       projects,
-      trottledSearchValue
+      throttledSearchValue
     );
     setSearchProjectResults(_searchProjectResults);
-  }, [trottledSearchValue, projects]);
+  }, [throttledSearchValue, projects]);
 
   useEffect(() => {
     async function setListOrder() {
@@ -270,7 +270,7 @@ function ProjectsList({
               </div>
               {/* till here is header */}
               <div className={'projectsContainer'}>
-                {trottledSearchValue !== '' ? (
+                {throttledSearchValue !== '' ? (
                   searchProjectResults && searchProjectResults.length > 0 ? (
                     searchProjectResults.map((project) => (
                       <ProjectSnippet

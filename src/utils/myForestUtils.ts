@@ -139,7 +139,7 @@ export const extractAndClassifyProjectData = (
 };
 
 /**
- * helper function to calculate gift and recieved percentage for progress bar
+ * helper function to calculate gift and received percentage for progress bar
  * @param target - specific target for the item
  * @param gift - contributions from gifts received
  * @param personal - contributions from donations made (including gifts given)
@@ -211,8 +211,8 @@ export const aggregateProgressData = (
  * @param areaRestored
  * @param areaConserved
  * @param treeTarget
- * @param restoreTarget
- * @param conservTarget
+ * @param restorationTarget
+ * @param conservationTarget
  * @returns boolean indicating whether the progress bars should be shown
  */
 export const checkProgressEnabled = (
@@ -220,15 +220,15 @@ export const checkProgressEnabled = (
   areaRestored: number,
   areaConserved: number,
   treeTarget: number,
-  restoreTarget: number,
-  conservTarget: number
+  restorationTarget: number,
+  conservationTarget: number
 ) => {
   return !(
     treesDonated === 0 &&
     treeTarget === 0 &&
     areaRestored === 0 &&
-    restoreTarget === 0 &&
-    conservTarget === 0 &&
+    restorationTarget === 0 &&
+    conservationTarget === 0 &&
     areaConserved === 0
   );
 };
