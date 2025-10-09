@@ -28,7 +28,7 @@ import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
-import { browserNotCompatible } from '../src/utils/browsercheck';
+import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import ProjectPropsProvider from '../src/features/common/Layout/ProjectPropsContext';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
@@ -203,7 +203,7 @@ const PlanetWeb = ({
     isMobile,
   };
 
-  const [showVideo, setshowVideo] = useState(true);
+  const [showVideo, setShowVideo] = useState(true);
 
   // if localShowVideo is undefined
   // set localShowVideo is true and show the video
@@ -232,7 +232,7 @@ const PlanetWeb = ({
   }, []);
 
   useEffect(() => {
-    setshowVideo(localShowVideo);
+    setShowVideo(localShowVideo);
   }, [localShowVideo]);
 
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -263,7 +263,7 @@ const PlanetWeb = ({
                         : { display: 'none' }
                     }
                   >
-                    <VideoContainer setshowVideo={setshowVideo} />
+                    <VideoContainer setShowVideo={setShowVideo} />
                   </div>
 
                   <div
@@ -306,7 +306,7 @@ const PlanetWeb = ({
                                           <DonationReceiptProvider>
                                             {isMap ? (
                                               <MapHolder
-                                                setshowVideo={setshowVideo}
+                                                setShowVideo={setShowVideo}
                                               />
                                             ) : null}
                                             {pageContent}

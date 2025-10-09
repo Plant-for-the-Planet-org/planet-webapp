@@ -44,6 +44,7 @@ const moments = [
     date: 'March 2021',
     image: '/tenants/salesforce/images/march-21.png',
     title: '10M Trees Milestone',
+    // cspell:ignore TREEmendous
     copy: 'With our TREEmendous partners and generous supporters, we’ve funded over 10 million trees in just over 12 months!',
     learnMore:
       'https://www.salesforce.com/news/stories/10-million-trees-milestone-update/',

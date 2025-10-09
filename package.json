@@ -24,7 +24,8 @@
     "chromatic": "npx chromatic --exit-zero-on-changes",
     "prepare": "node ./husky-prepare.js",
     "analyze-css": "node scripts/css-static-analyzer.js",
-    "analyze-css:ci": "node scripts/css-static-analyzer.js && echo 'CSS analysis passed'"
+    "analyze-css:ci": "node scripts/css-static-analyzer.js && echo 'CSS analysis passed'",
+    "find-typos": "cspell --words-only --unique . | sort --ignore-case >> project-words.txt"
   },
   "validate-branch-name": {
     "pattern": "^(main|develop){1}$|^(feature|hotfix)/[a-z0-9-_]+$",

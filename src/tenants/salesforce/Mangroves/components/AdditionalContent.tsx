@@ -29,7 +29,7 @@ export default function AdditionalInfo() {
           >
             <img
               src="/tenants/salesforce/images/mangroves/tanzania.jpg"
-              alt="SOA Photo - Tanzania Magrove Planting"
+              alt="SOA Photo - Tanzania Mangrove Planting"
             ></img>
           </div>
         </div>

@@ -9,6 +9,7 @@ const meta: Meta<typeof ContactDetails> = {
 export default meta;
 type Story = StoryObj<typeof ContactDetails>;
 
+// cspell:disable
 export const Preview: Story = {
   args: {
     websiteURL: 'https://www.facebook.com/bulindichimpanzees/',

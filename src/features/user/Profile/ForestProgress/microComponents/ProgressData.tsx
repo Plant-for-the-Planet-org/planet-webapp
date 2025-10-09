@@ -39,13 +39,13 @@ const ProgressData = ({
   target,
 }: ProgressDataProps) => {
   const tProfile = useTranslations('Profile.progressBar');
-  const totalAchievment = gift + personal;
+  const totalAchievement = gift + personal;
 
   const graphLabel = useMemo(() => {
     const isTargetSet = target > 0;
-    const targetAchievedUnit = Number.isInteger(totalAchievment)
-      ? totalAchievment
-      : totalAchievment.toFixed(1);
+    const targetAchievedUnit = Number.isInteger(totalAchievement)
+      ? totalAchievement
+      : totalAchievement.toFixed(1);
 
     switch (dataType) {
       case 'treesPlanted':
@@ -81,7 +81,7 @@ const ProgressData = ({
       default:
         return '';
     }
-  }, [dataType, target, totalAchievment, tProfile]);
+  }, [dataType, target, totalAchievement, tProfile]);
 
   const graphProps = {
     personalSegmentPercentage,

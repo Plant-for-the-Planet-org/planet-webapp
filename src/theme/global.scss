@@ -84,7 +84,7 @@ a {
   text-decoration: none;
 }
 
-// Reseting User agent styles to maintain cross browser interferences
+// Resetting User agent styles to maintain cross browser interferences
 html,
 body,
 div,
@@ -223,7 +223,7 @@ video {
   font-style: normal;
 }
 .unDecadeFill {
-  fill: $undecadeFill;
+  fill: $unDecadeFill;
 }
 
 .iconFillNone {
@@ -435,6 +435,8 @@ button {
 .vizzuality__legend-item-container {
   background-color: $backgroundColor;
 }
+
+// cspell:ignore vizzuality__c-timestep
 .vizzuality__c-timestep .vizzuality__player-btn > svg {
   fill: $primaryFontColor;
 }

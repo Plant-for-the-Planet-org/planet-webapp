@@ -146,6 +146,7 @@ export default function MapComponent({
             />
           </>
         )}
+        {/* cspell:ignore uncombine */}
         <DrawControl
           ref={drawControlRef}
           onDrawCreate={onDrawCreate}

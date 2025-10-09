@@ -61,7 +61,7 @@ export default function ProjectsMap(): ReactElement {
 
   // Use Effects
   useEffect(() => {
-    //loads the default mapstyle
+    //loads the default map style
     async function loadMapStyle() {
       const result = await getMapStyle('default');
       if (result) {
@@ -159,7 +159,7 @@ export default function ProjectsMap(): ReactElement {
   return (
     <div
       className={
-        embed === 'true' ? styles.onlymapContainer : styles.mapContainer
+        embed === 'true' ? styles.onlyMapContainer : styles.mapContainer
       }
     >
       <MapGL

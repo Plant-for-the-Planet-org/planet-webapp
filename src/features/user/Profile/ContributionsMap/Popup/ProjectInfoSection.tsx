@@ -46,7 +46,7 @@ const ProjectInfoSection = ({
       <p className={styles.trees}>{totalContributedUnits}</p>
       <div className={styles.countryAndTpo}>
         <span>{tCountry(_country)}</span>
-        <span className={styles.seperator}>•</span>
+        <span className={styles.separator}>•</span>
         <span>
           {tProfile('myForestMap.tpoName', {
             tpo: tpoName,

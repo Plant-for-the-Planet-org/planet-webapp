@@ -6,7 +6,7 @@ const InfoAndCta = () => {
   return (
     <div className={styles.infoAndCtaContainer}>
       <PublicProfileActions />
-      {/* treegame embedd */}
+      {/* TreeGame embed */}
       <SDGCardList />
     </div>
   );

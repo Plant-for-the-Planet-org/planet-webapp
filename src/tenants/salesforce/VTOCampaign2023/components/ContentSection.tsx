@@ -1,6 +1,8 @@
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
 
+/* cspell:ignore treesapr23 */
+
 export default function ContentSection() {
   return (
     <div className={`${styles.contentSectionContainer}`}>

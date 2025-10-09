@@ -11,7 +11,7 @@ const HomeTreeCounter = ({ planted, target }: HomeTreeCounterProps) => {
   const locale = useLocale();
   return (
     <>
-      <div className={treeCounterStyles.tenateTreePlanted}>
+      <div className={treeCounterStyles.tenantTreePlanted}>
         <div>{localizedAbbreviatedNumber(locale, Number(planted), 1)}</div>
         <div className={treeCounterStyles.label}>Trees Planted</div>
         <div>{localizedAbbreviatedNumber(locale, Number(target), 1)}</div>

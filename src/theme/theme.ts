@@ -161,7 +161,7 @@ const getGlobalStyles = async () => {
       --dark: ${light.dark};
       --danger-color: ${light.dangerColor};
       --safe-color: ${light.safeColor};
-      --undecade-fill: ${light.unDecadeFill};
+      --un-decade-fill: ${light.unDecadeFill};
       --mapbox-icon: ${light.mapboxIcon};
       --background-base: ${light.backgroundBase};
       --disabled-font-color: ${light.disabledFontColor};
@@ -182,7 +182,7 @@ const getGlobalStyles = async () => {
       --dark: ${dark.dark};
       --danger-color: ${dark.dangerColor};
       --safe-color: ${dark.safeColor};
-      --undecade-fill: ${dark.unDecadeFill};
+      --un-decade-fill: ${dark.unDecadeFill};
       --mapbox-icon: ${dark.mapboxIcon};
       --background-base: ${dark.backgroundBase};
       --disabled-font-color: ${dark.disabledFontColor};

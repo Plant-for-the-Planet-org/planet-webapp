@@ -371,7 +371,7 @@ export const ProjectsProvider = ({
 
     if (requestedIntervention && selectedIntervention === null) {
       if (hasNoSites) {
-        //Case when a direct link requests a specific intervention but no sites exist for a project(e.g projectSlug: mothersforest).
+        //Case when a direct link requests a specific intervention but no sites exist for a project.
         updateSiteAndUrl(locale, singleProject.slug, undefined);
       } else {
         // Handle the case where a direct link requests a specific intervention (via URL query).

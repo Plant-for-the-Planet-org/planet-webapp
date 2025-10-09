@@ -7,10 +7,10 @@ import MapLayout from '../ProjectsMap';
 import { useRouter } from 'next/router';
 
 interface Props {
-  setshowVideo: SetState<boolean>;
+  setShowVideo: SetState<boolean>;
 }
 
-const MapHolder = ({ setshowVideo }: Props) => {
+const MapHolder = ({ setShowVideo }: Props) => {
   const { project, projects } = useProjectProps();
   const { tenantConfig } = useTenant();
   const router = useRouter();
@@ -30,7 +30,7 @@ const MapHolder = ({ setshowVideo }: Props) => {
             : { display: 'none' }
         }
       >
-        <PlayButton setshowVideo={setshowVideo} />
+        <PlayButton setShowVideo={setShowVideo} />
       </div>
     </>
   );

@@ -154,7 +154,7 @@ export const SpeciesPlanted = () => {
     },
   });
 
-  const getPlotingData = (speciesData: ISpeciesPlanted[]) => {
+  const getPlottingData = (speciesData: ISpeciesPlanted[]) => {
     const speciesPlanted: number[] = [];
     const categories: string[] = [];
 
@@ -193,7 +193,7 @@ export const SpeciesPlanted = () => {
         });
       }
 
-      const { speciesPlanted, categories } = getPlotingData(speciesData);
+      const { speciesPlanted, categories } = getPlottingData(speciesData);
 
       setSeries([
         {

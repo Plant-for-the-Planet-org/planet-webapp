@@ -10,6 +10,7 @@ export default meta;
 
 type Story = StoryObj<typeof ProjectSelectAutocomplete>;
 
+// cspell:disable
 export const Default: Story = {
   args: {
     projectList: [
@@ -69,3 +70,4 @@ export const ReadOnly: Story = {
     active: false,
   },
 };
+// cspell:enable

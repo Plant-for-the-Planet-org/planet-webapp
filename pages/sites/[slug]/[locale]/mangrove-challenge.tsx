@@ -56,11 +56,11 @@ export default function MangroveChallenge({
       }
 
       try {
-        const tenantscoreRes = await fetch(
+        const tenantScoreRes = await fetch(
           `${process.env.WEBHOOK_URL}/oceanforce-2023`
         );
-        if (tenantscoreRes.ok && tenantscoreRes.status === 200) {
-          const tenantScoreArr = await tenantscoreRes.json();
+        if (tenantScoreRes.ok && tenantScoreRes.status === 200) {
+          const tenantScoreArr = await tenantScoreRes.json();
           setTenantScore(tenantScoreArr[0]);
           setIsLoaded(true);
         }

@@ -31,6 +31,7 @@ const SpeciesPlanted = ({
   const getSpeciesName = (species: PlantedSpecies) => {
     // TODO: Remove special case for Volcano Valley once data is consistent.
     // Currently: use `scientificName`, falling back to `otherSpecies` only for this project.
+    // cspell:disable-next-line
     if (plantProject === 'proj_eKBbIt7Bzavu9o7xzCAqjS2t') {
       return species.scientificName || species.otherSpecies;
     }

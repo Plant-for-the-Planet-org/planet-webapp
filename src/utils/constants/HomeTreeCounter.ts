@@ -1,5 +1,5 @@
 /**
- * The array of tenants has a home treecounter with styling that differs from the profile treecounter.
+ * The array of tenants has a home tree counter with styling that differs from the profile tree counter.
  */
 export const _tenants = [
   'nitrosb',

@@ -2,8 +2,9 @@ import defaultStyle from '../../../public/data/styles/root.json';
 import openStreetMap from '../../../public/data/styles/OpenStreetMap.json';
 import myForestMapStyle from '../../../public/data/styles/MyForestMapStyles.json';
 
+// cspell:ignore tilejson
 function format(style: any, metadata: any, metadataUrl: string) {
-  // ArcGIS Pro published vector services dont prepend tile or tileMap urls with a /
+  // ArcGIS Pro published vector services don't prepend tile or tileMap urls with a /
   style.sources.esri = {
     type: 'vector',
     scheme: 'xyz',

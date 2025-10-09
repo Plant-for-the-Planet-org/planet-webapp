@@ -12,6 +12,7 @@ const meta: Meta<typeof ProfileCard> = {
 export default meta;
 type Story = StoryObj<typeof ProfileCard>;
 
+// cspell:disable
 const dummyPrivateProfile: User = {
   slug: 'plant-for-the-planet',
   type: 'tpo',
@@ -126,6 +127,7 @@ const dummyPublicProfile: UserPublicProfile = {
   hasLogoLicense: false,
   exposeCommunity: true,
 };
+// cspell:enable
 
 export const PrivateProfileCard: Story = {
   args: {

@@ -59,7 +59,7 @@ export default function CountrySelect({
     }
   }, []);
 
-  // Set country everytime value changes
+  // Set country when value changes
   useEffect(() => {
     if (selectedCountry) {
       onChange(selectedCountry.code);
@@ -127,7 +127,7 @@ export default function CountrySelect({
           {...params}
           label={label}
           color="primary"
-          name={'countrydropdown'}
+          name="countryDropdown"
         />
       )}
     />

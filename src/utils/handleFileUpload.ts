@@ -1,7 +1,7 @@
 import { read, utils } from 'xlsx';
 
 /**
- * Accepts xlsx and csv files, converts to csv (if reqd) and calls onFileUploaded for processing
+ * Accepts xlsx and csv files, converts to csv (if required) and calls onFileUploaded for processing
  * @param acceptedFile - file uploaded by the user
  * @param handleError - function to handle an error
  * @param onFileUploaded - function that performs further actions on the csv string

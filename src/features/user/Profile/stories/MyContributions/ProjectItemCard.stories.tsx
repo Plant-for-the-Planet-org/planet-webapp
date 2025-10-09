@@ -13,6 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof ProjectItemCard>;
 
+// cspell:disable
 const sampleProject: MyForestProject = {
   guid: 'proj_WZkyugryh35sMmZMmXCwq7YY',
   name: 'Yucatán Restoration',
@@ -129,3 +130,4 @@ export const SingleNonGift: Story = {
     },
   },
 };
+// cspell:enable

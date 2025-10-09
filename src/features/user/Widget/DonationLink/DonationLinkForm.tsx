@@ -39,7 +39,7 @@ const DonationLinkForm = ({
   const { user } = useUserProps();
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('auto');
   const { tenantConfig } = useTenant();
-  const [Languages, setLanguage] = useState<LanguageType>({
+  const [language, setLanguage] = useState<LanguageType>({
     langCode: 'auto',
     languageName: 'Automatic Selection',
   });
@@ -71,8 +71,8 @@ const DonationLinkForm = ({
       : process.env.NEXT_PUBLIC_DONATION_URL;
 
     const selectedLanguage =
-      Languages && Languages.langCode != 'auto'
-        ? `locale=${Languages.langCode}&`
+      language && language.langCode != 'auto'
+        ? `locale=${language.langCode}&`
         : '';
 
     const selectedCountry = country !== 'auto' ? `country=${country}&` : '';
@@ -91,7 +91,7 @@ const DonationLinkForm = ({
 
   useEffect(() => {
     handleUrlChange();
-  }, [country, Languages, localProject, isSupport, isTesting]);
+  }, [country, language, localProject, isSupport, isTesting]);
 
   useEffect(() => {
     const autoLanguage = {
@@ -152,11 +152,11 @@ const DonationLinkForm = ({
                   (option as LanguageType).langCode ===
                   (value as LanguageType).langCode
                 }
-                value={Languages}
+                value={language}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    name="languagedropdown"
+                    name="languageDropdown"
                     label={tDonationLink('labelLanguages')}
                     placeholder={tDonationLink('languages')}
                   />

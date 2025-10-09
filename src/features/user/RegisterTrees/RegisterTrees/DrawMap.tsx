@@ -113,6 +113,7 @@ export default function MapComponent({
         >
           {/* NOTE: this functionality does not seem to work locally using React 18. 
 						To test, a temporary fix is to set `reactStrictMode=false` in next.config.js */}
+          {/* cspell: ignore uncombine */}
           <DrawControl
             ref={drawControlRef}
             onDrawCreate={onDrawCreate}

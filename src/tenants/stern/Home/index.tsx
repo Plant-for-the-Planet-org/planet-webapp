@@ -35,7 +35,7 @@ export default function Home({ leaderboard, tenantScore }: Props) {
             hideTarget
           />
         )}
-
+        {/* cspell:disable */}
         <p
           className={styles.publicUserDescription}
           style={{ fontWeight: 'bold', marginBottom: '0px' }}
@@ -66,6 +66,7 @@ export default function Home({ leaderboard, tenantScore }: Props) {
           CO2 und schenkt uns Menschen wertvolle Zeit. Diese Zeit werden wir
           nutzen, um unsere CO2-Emissionen massiv zu reduzieren. Versprochen!
         </p>
+        {/* cspell:enable */}
       </LandingSection>
       <LeaderBoard leaderboard={leaderboard} />
       <Footer />

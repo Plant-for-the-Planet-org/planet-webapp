@@ -154,6 +154,7 @@ export default function ContentSection() {
                 target="_blank"
                 rel="noreferrer noopener"
               >
+                {/* cspell:ignore Fundación Mexicana Océano */}
                 Fundación Mexicana para el Océano A.C.
               </a>
               ,{' '}

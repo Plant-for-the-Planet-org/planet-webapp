@@ -15,7 +15,7 @@ import ptBRLocale from 'date-fns/locale/pt-BR';
  *
  * @returns {String} language name
  */
-// @ankit please check this function always
+// please check this function always
 // eslint-disable-next-line consistent-return
 export default function getLanguageName(code: string) {
   // Finds required language name from the code

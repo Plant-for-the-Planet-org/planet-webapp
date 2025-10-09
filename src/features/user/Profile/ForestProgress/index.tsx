@@ -17,8 +17,8 @@ type ForestProgressProp = {
 interface ProgressBarsProps {
   handleEditTargets: () => void;
   treeTarget: number;
-  restoreTarget: number;
-  conservTarget: number;
+  restorationTarget: number;
+  conservationTarget: number;
   profilePageType: ProfilePageType;
   treesDonated: number;
   areaRestored: number;
@@ -31,8 +31,8 @@ const ProgressBars = ({
   areaRestored,
   areaConserved,
   treeTarget,
-  restoreTarget,
-  conservTarget,
+  restorationTarget,
+  conservationTarget,
   profilePageType,
 }: ProgressBarsProps) => {
   const { contributionStats } = useMyForest();
@@ -55,21 +55,21 @@ const ProgressBars = ({
           profilePageType={profilePageType}
         />
       )}
-      {shouldShowBar(restoreTarget, areaRestored) && (
+      {shouldShowBar(restorationTarget, areaRestored) && (
         <ForestProgressItem
           handleEditTargets={handleEditTargets}
           dataType={'areaRestored'}
-          target={restoreTarget}
+          target={restorationTarget}
           gift={contributionStats?.areaRestoredInM2.received ?? 0}
           personal={contributionStats?.areaRestoredInM2.personal ?? 0}
           profilePageType={profilePageType}
         />
       )}
-      {shouldShowBar(conservTarget, areaConserved) && (
+      {shouldShowBar(conservationTarget, areaConserved) && (
         <ForestProgressItem
           handleEditTargets={handleEditTargets}
           dataType={'areaConserved'}
-          target={conservTarget}
+          target={conservationTarget}
           gift={contributionStats?.areaConservedInM2.received ?? 0}
           personal={contributionStats?.areaConservedInM2.personal ?? 0}
           profilePageType={profilePageType}
@@ -88,8 +88,8 @@ const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
   const { treesDonated, areaRestored, areaConserved } =
     aggregateProgressData(contributionStats);
   const treeTarget = userInfo?.targets.treesDonated ?? 0;
-  const restoreTarget = userInfo?.targets.areaRestored ?? 0;
-  const conservTarget = userInfo?.targets.areaConserved ?? 0;
+  const restorationTarget = userInfo?.targets.areaRestored ?? 0;
+  const conservationTarget = userInfo?.targets.areaConserved ?? 0;
 
   const [isProgressEnabled, setIsProgressEnabled] = useState(
     checkProgressEnabled(
@@ -97,8 +97,8 @@ const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
       areaRestored,
       areaConserved,
       treeTarget,
-      restoreTarget,
-      conservTarget
+      restorationTarget,
+      conservationTarget
     )
   );
 
@@ -109,14 +109,14 @@ const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
         areaRestored,
         areaConserved,
         treeTarget,
-        restoreTarget,
-        conservTarget
+        restorationTarget,
+        conservationTarget
       )
     );
   }, [
     treeTarget,
-    restoreTarget,
-    conservTarget,
+    restorationTarget,
+    conservationTarget,
     treesDonated,
     areaRestored,
     areaConserved,
@@ -128,15 +128,15 @@ const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
     areaRestored,
     areaConserved,
     treeTarget,
-    restoreTarget,
-    conservTarget,
+    restorationTarget,
+    conservationTarget,
     profilePageType,
   };
 
   const targets = {
     treeTarget,
-    restoreTarget,
-    conservTarget,
+    restorationTarget,
+    conservationTarget,
   };
   return (
     <div className={styles.progressSection}>

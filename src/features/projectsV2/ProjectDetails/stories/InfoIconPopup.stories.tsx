@@ -17,8 +17,10 @@ export const TabsView: Story = {
     color: themeProperties.designSystem.colors.mediumGrey,
     children: (
       <>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio,
-        repellendus!
+        This tooltip provides additional information about the item it is
+        associated with. It can be used to explain complex concepts, provide
+        context, or offer guidance to users. Tooltips are typically displayed
+        when a user hovers over or clicks on an icon or text element.
       </>
     ),
   },

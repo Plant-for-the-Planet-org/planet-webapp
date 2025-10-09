@@ -37,30 +37,17 @@ export default function SpeciesSelect<
   label,
   name,
   width,
-  // mySpecies,
   control,
   error,
   helperText,
 }: Props<TFieldValues, TName>) {
-  const [speciesSuggestion, setspeciesSuggestion] = useState<
+  const [speciesSuggestion, setSpeciesSuggestion] = useState<
     SpeciesSuggestionType[]
   >([]);
   const [query, setQuery] = useState('');
   const { postApi } = useApi();
   const t = useTranslations('Treemapper');
   const { setErrors } = useContext(ErrorHandlingContext);
-
-  // Code below can be removed if no longer needed, along with the `mySpecies` prop
-  /* useEffect(() => {
-    if (mySpecies && mySpecies.length > 0) {
-      const species = mySpecies.map((item: any) => ({
-        id: item.id,
-        name: item.name,
-        scientificName: item.scientificName,
-      }));
-      setspeciesSuggestion(species);
-    }
-  }, [mySpecies]); */
 
   const suggestSpecies = async (value: string) => {
     // Todo: debouncing
@@ -81,7 +68,7 @@ export default function SpeciesSelect<
             name: item.name,
             scientificName: item.scientificName,
           }));
-          setspeciesSuggestion(species);
+          setSpeciesSuggestion(species);
         }
       } catch (err) {
         setErrors(handleError(err as APIError));

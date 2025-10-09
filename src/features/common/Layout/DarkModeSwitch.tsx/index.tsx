@@ -15,13 +15,13 @@ function DarkModeSwitch() {
         }
         defaultChecked={theme === 'theme-dark' ? true : false}
         type="checkbox"
-        className={styles.darkmodeCheckbox}
+        className={styles.darkModeCheckbox}
         id="chk"
       />
-      <label className={styles.darkmodeLabel} htmlFor="chk">
+      <label className={styles.darkModeLabel} htmlFor="chk">
         <MoonIcon />
         <SunIcon />
-        <div className={styles.darkmodeBall}></div>
+        <div className={styles.darkModeBall}></div>
       </label>
     </button>
   );

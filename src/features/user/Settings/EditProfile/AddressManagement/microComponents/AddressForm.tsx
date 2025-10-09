@@ -257,7 +257,7 @@ const AddressForm = ({
           />
         )}
       {isLoading ? (
-        <div className={styles.addressMgmtSpinner}>
+        <div className={styles.loadingSpinner}>
           <CircularProgress color="success" />
         </div>
       ) : (

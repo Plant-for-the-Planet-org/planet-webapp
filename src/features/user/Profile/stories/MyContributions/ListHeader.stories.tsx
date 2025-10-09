@@ -19,6 +19,6 @@ export const PrivateProfileHeader: Story = {
 export const PublicProfileHeader: Story = {
   args: {
     profilePageType: 'public',
-    displayName: 'Mohit',
+    displayName: 'Sam',
   },
 };

@@ -18,8 +18,8 @@ interface TargetsModalProps {
   open: boolean;
   setOpen: SetState<boolean>;
   treeTarget: number;
-  restoreTarget: number;
-  conservTarget: number;
+  restorationTarget: number;
+  conservationTarget: number;
 }
 
 type ForestProgressTargetApiPayload = {
@@ -34,8 +34,8 @@ const TargetsModal = ({
   open,
   setOpen,
   treeTarget,
-  restoreTarget,
-  conservTarget,
+  restorationTarget,
+  conservationTarget,
 }: TargetsModalProps) => {
   const { setUserInfo } = useMyForest();
   const { contextLoaded, token, setRefetchUserData } = useUserProps();
@@ -51,10 +51,10 @@ const TargetsModal = ({
     treeTarget > 0
   );
   const [isRestoredAreaTargetActive, setIsRestoredAreaTargetActive] = useState(
-    restoreTarget > 0
+    restorationTarget > 0
   );
   const [isConservedAreaTargetActive, setIsConservedAreaTargetActive] =
-    useState(conservTarget > 0);
+    useState(conservationTarget > 0);
 
   const handleClose = () => {
     setOpen(false);
@@ -62,11 +62,11 @@ const TargetsModal = ({
 
   useEffect(() => {
     setIsTreesPlantedTargetActive(treeTarget > 0);
-    setIsRestoredAreaTargetActive(restoreTarget > 0);
-    setIsConservedAreaTargetActive(conservTarget > 0);
+    setIsRestoredAreaTargetActive(restorationTarget > 0);
+    setIsConservedAreaTargetActive(conservationTarget > 0);
     setTreesPlantedTargetLocal(treeTarget);
-    setAreaRestoredTargetLocal(restoreTarget);
-    setAreaConservedTargetLocal(conservTarget);
+    setAreaRestoredTargetLocal(restorationTarget);
+    setAreaConservedTargetLocal(conservationTarget);
   }, [open]);
 
   const handleTargets = async () => {

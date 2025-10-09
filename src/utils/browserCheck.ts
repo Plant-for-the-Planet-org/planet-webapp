@@ -43,6 +43,7 @@ function safari(range: string, userAgent: string) {
 
 // check for samsung version
 function samsung(range: string, userAgent: string) {
+  // cspell:ignore samsungbrowser
   const match = userAgent.match(/samsungbrowser\/(\d+)/);
   return match !== null && compareVersion(match[1], range);
 }

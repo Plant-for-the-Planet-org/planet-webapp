@@ -65,7 +65,7 @@ const UpdateAddressType = ({
           />
         </div>
       ) : (
-        <div className={styles.addressMgmtSpinner}>
+        <div className={styles.loadingSpinner}>
           <CircularProgress color="success" />
         </div>
       )}

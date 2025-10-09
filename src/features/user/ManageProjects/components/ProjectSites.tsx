@@ -68,7 +68,7 @@ function EditSite({
   geoJsonProp,
   projectGUID,
   setSiteList,
-  seteditMode,
+  setEditMode,
   siteGUID,
   siteList,
 }: EditSiteProps) {
@@ -127,7 +127,7 @@ function EditSite({
         setSiteList(temp);
         setGeoJson(null);
         setIsUploadingData(false);
-        seteditMode(false);
+        setEditMode(false);
         setErrorMessage('');
       } catch (err) {
         setIsUploadingData(false);
@@ -273,8 +273,8 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<boolean>(true);
-  const [editMode, seteditMode] = useState<boolean>(false);
-  const [geoLocation, setgeoLocation] = useState<GeoLocation | undefined>(
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
     undefined
   );
   const [geoJson, setGeoJson] = useState<GeoJson | null>(null);
@@ -318,7 +318,7 @@ export default function ProjectSites({
   };
 
   const handleModalClose = () => {
-    seteditMode(false);
+    setEditMode(false);
     setOpenModal(false);
   };
 
@@ -344,7 +344,7 @@ export default function ProjectSites({
           geoLatitude: result.geoLatitude,
           geoLongitude: result.geoLongitude,
         };
-        setgeoLocation(geoLocation);
+        setGeoLocation(geoLocation);
 
         if (result?.sites.length > 0) {
           setShowForm(false);
@@ -470,7 +470,7 @@ export default function ProjectSites({
     setGeoJson(collection);
     setSiteDetails(defaultSiteDetails);
     setSiteGUID(site.id);
-    seteditMode(true);
+    setEditMode(true);
     setOpenModal(true);
   };
 
@@ -484,7 +484,7 @@ export default function ProjectSites({
     geoJsonProp: geoJson,
     projectGUID,
     setSiteList,
-    seteditMode,
+    setEditMode,
     siteGUID,
     siteList,
   };
@@ -664,7 +664,7 @@ export default function ProjectSites({
               setGeoJson(null);
               setSiteDetails(defaultSiteDetails);
               setSiteGUID(null);
-              seteditMode(false);
+              setEditMode(false);
               setOpenModal(false);
             }}
             className={styles.formFieldLarge}
