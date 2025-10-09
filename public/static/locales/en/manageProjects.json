@@ -262,7 +262,7 @@
     "errors": {
       "polygon": {
         "minimumPoints": "A polygon requires at least 3 points",
-        "required": "Polygon is required"
+        "required": "The outline of your site needs to be a closed polygon. To close the outline, please double click on the starting point."
       },
       "file": {
         "invalidKml": "Invalid KML",
