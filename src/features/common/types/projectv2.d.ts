@@ -8,8 +8,6 @@ import type {
   TreeProjectConcise,
   ConservationProjectConcise,
 } from '@planet-sdk/common/build/types/project/map';
-import type { MutableRefObject } from 'react';
-import type { Map } from 'maplibre-gl';
 import type { Feature, MultiPolygon, Polygon } from 'geojson';
 
 export type MapProjectProperties =
@@ -19,11 +17,6 @@ export type MapProjectProperties =
 export type ExtendedProject = TreeProjectExtended | ConservationProjectExtended;
 
 export type MapProject = ProjectMapInfo<MapProjectProperties>;
-
-export type MapRef = MutableRefObject<ExtendedMapLibreMap | null>;
-export interface ExtendedMapLibreMap extends Map {
-  getMap: () => Map;
-}
 
 export type DropdownType = 'site' | 'intervention' | null;
 

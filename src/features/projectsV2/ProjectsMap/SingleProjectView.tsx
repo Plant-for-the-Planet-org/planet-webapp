@@ -1,6 +1,8 @@
-import type { MapRef } from '../../common/types/projectv2';
 import type { SelectedTab } from './ProjectMapTabs';
-import type { SitesGeoJSON } from '../../common/types/ProjectPropsContextInterface';
+import type {
+  MapLibreRef,
+  ProjectSiteFeatureCollection,
+} from '../../common/types/map';
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
@@ -19,9 +21,9 @@ import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
 
 interface Props {
-  mapRef: MapRef;
+  mapRef: MapLibreRef;
   selectedTab: SelectedTab | null;
-  sitesGeoJson: SitesGeoJSON;
+  sitesGeoJson: ProjectSiteFeatureCollection;
 }
 
 const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {

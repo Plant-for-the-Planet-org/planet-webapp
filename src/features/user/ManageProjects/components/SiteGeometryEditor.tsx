@@ -1,14 +1,14 @@
 import type { ReactElement } from 'react';
-import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
+import type {
+  MapLibreRef,
+  ProjectSiteFeatureCollection,
+  ExtendedMapLibreMap,
+} from '../../../common/types/map';
 import type {
   MapMouseEvent,
   ViewState,
   ViewStateChangeEvent,
 } from 'react-map-gl-v7/maplibre';
-import type {
-  ExtendedMapLibreMap,
-  MapRef,
-} from '../../../common/types/projectv2';
 import type { SetState } from '../../../common/types/common';
 import type {
   Feature,
@@ -38,8 +38,8 @@ import {
 } from '../../../../utils/mapsV2/mapDefaults';
 
 interface Props {
-  geoJson: SitesGeoJSON | null;
-  setGeoJson: SetState<SitesGeoJSON | null>;
+  geoJson: ProjectSiteFeatureCollection | null;
+  setGeoJson: SetState<ProjectSiteFeatureCollection | null>;
   setErrorMessage: SetState<string | null>;
 }
 
@@ -52,7 +52,7 @@ export default function SiteGeometryEditor({
 }: Props): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const reader = new FileReader();
-  const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
+  const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
   const [viewport, setViewPort] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [isSatelliteMode, setIsSatelliteMode] = useState(false);
@@ -87,7 +87,7 @@ export default function SiteGeometryEditor({
       },
     };
 
-    setGeoJson((prev: SitesGeoJSON | null) => {
+    setGeoJson((prev: ProjectSiteFeatureCollection | null) => {
       if (!prev) {
         return {
           type: 'FeatureCollection',
