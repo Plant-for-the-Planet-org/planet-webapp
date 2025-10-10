@@ -55,7 +55,7 @@ function EditSite({
     if (geoJson && geoJson.features && geoJson.features.length !== 0) {
       setIsUploadingData(true);
       const updatedSitePayload: SiteApiPayload = {
-        name: siteDetails.name,
+        name: data.name,
         geometry: geoJson,
         status: data.status,
       };

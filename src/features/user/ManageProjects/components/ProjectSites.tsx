@@ -148,7 +148,7 @@ export default function ProjectSites({
 
     setIsUploadingData(true);
     const newSitePayload: SiteApiPayload = {
-      name: siteDetails.name,
+      name: data.name,
       geometry: geoJson,
       status: data.status,
     };
