@@ -26,7 +26,6 @@ function EditSite({
   setSiteList,
   setEditMode,
   siteGUID,
-  siteList,
 }: EditSiteProps) {
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();

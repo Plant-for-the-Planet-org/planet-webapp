@@ -271,7 +271,6 @@ export default function ProjectSites({
     setSiteList,
     setEditMode,
     siteGUID,
-    siteList,
   };
 
   return (
