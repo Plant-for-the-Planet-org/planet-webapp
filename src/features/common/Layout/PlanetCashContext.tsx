@@ -1,7 +1,13 @@
 import type { ReactNode } from 'react';
 import type { PlanetCashAccount } from '../types/planetcash';
 
-import { createContext, useState, useContext, useEffect } from 'react';
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+} from 'react';
 import { useUserProps } from './UserPropsContext';
 
 interface PlanetCashContextInterface {
@@ -9,6 +15,7 @@ interface PlanetCashContextInterface {
   setAccounts: (accounts: PlanetCashAccount[] | null) => void;
   isPlanetCashActive: boolean;
   setIsPlanetCashActive: (isPlanetCashActive: boolean) => void;
+  updateAccount: (updatedAccount: PlanetCashAccount) => void;
 }
 
 export const PlanetCashContext =
@@ -18,6 +25,15 @@ export const PlanetCashProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUserProps();
   const [accounts, setAccounts] = useState<PlanetCashAccount[] | null>(null);
   const [isPlanetCashActive, setIsPlanetCashActive] = useState<boolean>(false);
+
+  const updateAccount = useCallback((updatedAccount: PlanetCashAccount) => {
+    setAccounts((prevAccounts) => {
+      if (!prevAccounts) return prevAccounts;
+      return prevAccounts.map((account) =>
+        account.id === updatedAccount.id ? updatedAccount : account
+      );
+    });
+  }, []);
 
   useEffect(() => {
     setAccounts(null);
@@ -31,6 +47,7 @@ export const PlanetCashProvider = ({ children }: { children: ReactNode }) => {
         isPlanetCashActive,
         setAccounts,
         setIsPlanetCashActive,
+        updateAccount,
       }}
     >
       {children}
