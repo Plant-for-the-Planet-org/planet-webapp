@@ -58,6 +58,7 @@ export default function SiteGeometryEditor({
   const [isSatelliteMode, setIsSatelliteMode] = useState(false);
   const [coordinates, setCoordinates] = useState<number[][]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [isMapReady, setIsMapReady] = useState(false);
 
   // Handle click to add point
   const handleClick = useCallback(
@@ -136,10 +137,10 @@ export default function SiteGeometryEditor({
     }
   };
 
-  // UseEffect: Run zoom logic whenever geoJson or mapRef changes
+  // UseEffect: Run zoom logic whenever geoJson  changes
   useEffect(() => {
     handleZoomToProjectSite();
-  }, [geoJson, mapRef.current]);
+  }, [geoJson, isMapReady]);
 
   const onMove = useCallback(
     (evt: ViewStateChangeEvent) => {
@@ -167,6 +168,7 @@ export default function SiteGeometryEditor({
         onClick={handleClick}
         onDblClick={handleDoubleClick}
         cursor={isDrawing ? 'crosshair' : 'grab'}
+        onLoad={() => setIsMapReady(true)}
       >
         {isSatelliteMode && <SatelliteLayer />}
         {geoJson !== null && (
