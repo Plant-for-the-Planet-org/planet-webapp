@@ -5,12 +5,7 @@ import type { UserPublicProfile } from '@planet-sdk/common';
 import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import type { FlyToInterpolator } from 'react-map-gl';
 import type { SetState } from './common';
-import type {
-  FeatureCollection,
-  GeoJsonProperties,
-  MultiPolygon,
-  Polygon,
-} from 'geojson';
+import type { FeatureCollection, MultiPolygon, Polygon } from 'geojson';
 import type { Map } from 'maplibre-gl';
 
 export interface ClusterMarker {
