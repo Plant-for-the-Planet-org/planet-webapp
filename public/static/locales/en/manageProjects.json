@@ -245,6 +245,7 @@
     "PlantingReport": "Project Progress Report",
     "siteCount": "Site {siteId} of {totalCount}",
     "delete": "Delete",
+    "deleteSite": "Delete Site",
     "cancel": "Cancel",
     "siteDeleteConfirmation": "Are you sure you want to delete {siteName} ?",
     "mapView": {
@@ -274,7 +275,6 @@
         "longitudeRange": "Longitude must be between -180 and 180."
       }
     },
-    "editSite": "Edit site",
-    "deleteSite": "Delete site"
+    "editSite": "Edit site"
   }
 }

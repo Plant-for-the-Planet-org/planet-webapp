@@ -4,7 +4,6 @@ import type {
   SiteDetails,
   ProjectSitesProps,
   GeoLocation,
-  EditSiteProps,
   Site,
   SitesScopeProjects,
 } from '../../../common/types/project';
@@ -18,8 +17,7 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import dynamic from 'next/dynamic';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
-import { Fade, Modal, MenuItem, Button, TextField } from '@mui/material';
-import { ThemeContext } from '../../../../theme/themeContext';
+import { MenuItem, Button, TextField } from '@mui/material';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
@@ -27,9 +25,10 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
-import SiteDeleteConfirmationModal from './microComponent/SiteDeleteConfirmationModal';
 import SitePreviewMap from './microComponent/SitePreviewMap';
 import themeProperties from '../../../../theme/themeProperties';
+import CustomModal from '../../../common/Layout/CustomModal';
+import EditSite from './microComponent/EditSite';
 
 const defaultSiteDetails = {
   name: '',
@@ -41,12 +40,12 @@ const SiteGeometryEditor = dynamic(() => import('./SiteGeometryEditor'), {
   loading: () => <p></p>,
 });
 
-type ProjectSitesFormData = {
+export type ProjectSitesFormData = {
   name: string;
   status: string;
 };
 
-type SiteApiPayload = {
+export type SiteApiPayload = {
   name: string;
   geometry: SitesGeoJSON;
   status: string;
@@ -55,193 +54,6 @@ type SiteApiPayload = {
 export interface SiteInfo {
   siteId: string | null;
   siteName: string | null;
-}
-
-function EditSite({
-  openModal,
-  handleModalClose,
-  changeSiteDetails,
-  siteDetails,
-  status,
-  geoJsonProp,
-  projectGUID,
-  setSiteList,
-  setEditMode,
-  siteGUID,
-  siteList,
-}: EditSiteProps) {
-  const { theme } = useContext(ThemeContext);
-  const { putApiAuthenticated } = useApi();
-  const t = useTranslations('ManageProjects');
-  const {
-    handleSubmit,
-    formState: { errors },
-    control,
-  } = useForm<ProjectSitesFormData>();
-  const [geoJson, setGeoJson] = useState<GeoJson | null>(geoJsonProp);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
-  const { setErrors } = useContext(ErrorHandlingContext);
-
-  const MapProps = {
-    geoJson,
-    setGeoJson,
-    setErrorMessage,
-    geoLocation: {
-      geoLatitude: 36.96,
-      geoLongitude: -28.5,
-    },
-  };
-
-  const editProjectSite = async (data: ProjectSitesFormData) => {
-    if (geoJson && geoJson.features && geoJson.features.length !== 0) {
-      setIsUploadingData(true);
-      const updatedSitePayload: SiteApiPayload = {
-        name: siteDetails.name,
-        geometry: geoJson,
-        status: data.status,
-      };
-
-      try {
-        const res = await putApiAuthenticated<Site, SiteApiPayload>(
-          `/app/projects/${projectGUID}/sites/${siteGUID}`,
-          {
-            payload: updatedSitePayload,
-          }
-        );
-        const temp = siteList;
-        let siteIndex = 0;
-        temp.find((site: Site, index: number) => {
-          if (site.id === res.id) {
-            siteIndex = index;
-            return true;
-          }
-        });
-        if (siteIndex !== null) {
-          temp[siteIndex] = res;
-        }
-        setSiteList(temp);
-        setGeoJson(null);
-        setIsUploadingData(false);
-        setEditMode(false);
-        setErrorMessage(null);
-      } catch (err) {
-        setIsUploadingData(false);
-        setErrors(handleError(err as APIError));
-      }
-    } else {
-      setErrorMessage(t('errors.polygon.required'));
-    }
-  };
-
-  return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      className={'modalContainer' + ' ' + theme}
-      open={openModal}
-      onClose={handleModalClose}
-      closeAfterTransition
-      BackdropProps={{
-        timeout: 500,
-      }}
-    >
-      <Fade in={openModal}>
-        <form className={styles.editSiteForm}>
-          <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-            <div className={styles.formField}>
-              <div className={styles.formFieldHalf}>
-                <Controller
-                  name="name"
-                  control={control}
-                  rules={{ required: t('siteNameValidation') }}
-                  defaultValue={siteDetails.name}
-                  render={({ field: { onChange, value, onBlur, name } }) => (
-                    <TextField
-                      label={t('siteName')}
-                      variant="outlined"
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        changeSiteDetails(e);
-                        onChange(e.target.value);
-                      }}
-                      value={value}
-                      onBlur={onBlur}
-                      name={name}
-                      error={errors.name !== undefined}
-                      helperText={
-                        errors.name !== undefined && errors.name.message
-                      }
-                    />
-                  )}
-                />
-              </div>
-              <div className={styles.formFieldHalf}>
-                <Controller
-                  name="status"
-                  rules={{ required: t('selectProjectStatus') }}
-                  control={control}
-                  defaultValue={siteDetails.status ? siteDetails.status : ''}
-                  render={({ field: { onChange, onBlur, name, value } }) => (
-                    <TextField
-                      label={t('siteStatus')}
-                      variant="outlined"
-                      name={name}
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        changeSiteDetails(e);
-                        onChange(e.target.value);
-                      }}
-                      onBlur={onBlur}
-                      select
-                      value={value}
-                      error={errors.status !== undefined}
-                      helperText={
-                        errors.status !== undefined && errors.status.message
-                      }
-                    >
-                      {status.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  )}
-                />
-              </div>
-            </div>
-
-            <SiteGeometryEditor {...MapProps} />
-          </div>
-
-          {errorMessage && errorMessage !== '' ? (
-            <div className={styles.formFieldLarge}>
-              <h4 className={styles.errorMessage}>{errorMessage}</h4>
-            </div>
-          ) : null}
-
-          <div className={styles.buttonsForProjectCreationForm}>
-            <Button
-              onClick={() => handleModalClose()}
-              className={styles.backButton}
-            >
-              <BackArrow />
-              <p>{t('backToSites')}</p>
-            </Button>
-
-            <Button
-              onClick={handleSubmit(editProjectSite)}
-              className={styles.saveAndContinueButton}
-            >
-              {isUploadingData ? (
-                <div className={styles.spinner}></div>
-              ) : (
-                t('saveSite')
-              )}
-            </Button>
-          </div>
-        </form>
-      </Fade>
-    </Modal>
-  );
 }
 
 export default function ProjectSites({
@@ -327,52 +139,49 @@ export default function ProjectSites({
   }, [projectGUID]);
 
   const uploadProjectSite = async (data: ProjectSitesFormData) => {
-    if (geoJson && geoJson.features.length !== 0) {
-      if (!data.name) return;
+    const hasGeo = geoJson !== null && geoJson.features.length !== 0;
 
-      setIsUploadingData(true);
-      const newSitePayload: SiteApiPayload = {
-        name: siteDetails.name,
-        geometry: geoJson,
-        status: data.status,
-      };
-
-      try {
-        const res = await postApiAuthenticated<Site, SiteApiPayload>(
-          `/app/projects/${projectGUID}/sites`,
-          {
-            payload: newSitePayload,
-          }
-        );
-        const temp = siteList ? siteList : [];
-        const _submitData = {
-          id: res.id,
-          name: res.name,
-          geometry: res.geometry,
-          status: res.status,
-        };
-        temp.push(_submitData);
-        setSiteList(temp);
-        reset({
-          name: '',
-          status: '',
-        });
-        setGeoJson(null);
-        setIsUploadingData(false);
-        setShowForm(false);
-        setErrorMessage(null);
-      } catch (err) {
-        setIsUploadingData(false);
-        setErrors(handleError(err as APIError));
-      }
-    } else {
+    if (!hasGeo) {
       setErrorMessage(t('errors.polygon.required'));
+      return false;
     }
-  };
 
-  const uploadProjectSiteNext = (data: ProjectSitesFormData) => {
-    uploadProjectSite(data);
-    handleNext(ProjectCreationTabs.PROJECT_SPENDING);
+    setIsUploadingData(true);
+    const newSitePayload: SiteApiPayload = {
+      name: data.name,
+      geometry: geoJson,
+      status: data.status,
+    };
+    try {
+      const res = await postApiAuthenticated<Site, SiteApiPayload>(
+        `/app/projects/${projectGUID}/sites`,
+        {
+          payload: newSitePayload,
+        }
+      );
+      const temp = siteList ? siteList : [];
+      const _submitData = {
+        id: res.id,
+        name: res.name,
+        geometry: res.geometry,
+        status: res.status,
+      };
+      temp.push(_submitData);
+      setSiteList(temp);
+      reset({
+        name: '',
+        status: '',
+      });
+      setGeoJson(null);
+      setShowForm(false);
+      setErrorMessage(null);
+      return true;
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      return false;
+    } finally {
+      setIsUploadingData(false);
+    }
   };
 
   const deleteProjectSite = async (id: string) => {
@@ -387,6 +196,11 @@ export default function ProjectSites({
       setIsUploadingData(false);
       setIsModalOpen(false);
     }
+  };
+
+  const uploadProjectSiteNext = async (data: ProjectSitesFormData) => {
+    const success = await uploadProjectSite(data);
+    if (success) handleNext(ProjectCreationTabs.PROJECT_SPENDING);
   };
 
   const status = [
@@ -604,11 +418,11 @@ export default function ProjectSites({
           </Button>
         )}
 
-        {errorMessage && errorMessage !== '' ? (
+        {errorMessage !== null && (
           <div className={styles.formFieldLarge}>
             <h4 className={styles.errorMessage}>{errorMessage}</h4>
           </div>
-        ) : null}
+        )}
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
             onClick={() => handleBack(ProjectCreationTabs.DETAILED_ANALYSIS)}
@@ -639,12 +453,20 @@ export default function ProjectSites({
             {t('skip')}
           </Button>
         </div>
-        <SiteDeleteConfirmationModal
-          selectedSiteInfo={selectedSiteInfo}
-          deleteProjectSite={deleteProjectSite}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          isUploadingData={isUploadingData}
+        <CustomModal
+          isOpen={isModalOpen}
+          handleContinue={() => {
+            if (selectedSiteInfo.siteId !== null) {
+              deleteProjectSite(selectedSiteInfo.siteId);
+            }
+          }}
+          handleCancel={() => setIsModalOpen(false)}
+          modalTitle={t('deleteSite')}
+          modalSubtitle={t('siteDeleteConfirmation', {
+            siteName: selectedSiteInfo.siteName ?? '',
+          })}
+          continueButtonText={t('delete')}
+          cancelButtonText={t('cancel')}
         />
       </StyledForm>
     </CenteredContainer>
