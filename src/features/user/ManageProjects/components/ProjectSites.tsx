@@ -265,6 +265,7 @@ export default function ProjectSites({
     handleSubmit,
     formState: { errors },
     control,
+    reset,
   } = useForm<ProjectSitesFormData>();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
@@ -359,6 +360,10 @@ export default function ProjectSites({
         };
         temp.push(_submitData);
         setSiteList(temp);
+        reset({
+          name: '',
+          status: '',
+        });
         setGeoJson(null);
         setIsUploadingData(false);
         setShowForm(false);
