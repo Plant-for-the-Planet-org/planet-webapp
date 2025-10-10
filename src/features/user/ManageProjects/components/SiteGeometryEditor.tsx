@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import type {
   MapLibreRef,
+  ProjectSiteFeature,
   ProjectSiteFeatureCollection,
   ExtendedMapLibreMap,
 } from '../../../common/types/map';
@@ -10,12 +11,6 @@ import type {
   ViewStateChangeEvent,
 } from 'react-map-gl-v7/maplibre';
 import type { SetState } from '../../../common/types/common';
-import type {
-  Feature,
-  GeoJsonProperties,
-  MultiPolygon,
-  Polygon,
-} from 'geojson';
 import type { MapState } from '../../../../utils/mapsV2/mapDefaults';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -79,7 +74,7 @@ export default function SiteGeometryEditor({
       return;
     }
     const closed = [...coordinates, coordinates[0]];
-    const newFeature: Feature<Polygon | MultiPolygon, GeoJsonProperties> = {
+    const newFeature: ProjectSiteFeature = {
       type: 'Feature',
       properties: {},
       geometry: {

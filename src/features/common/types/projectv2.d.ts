@@ -1,6 +1,5 @@
 import type {
   ConservationProjectExtended,
-  ProjectSite,
   TreeProjectExtended,
 } from '@planet-sdk/common';
 import type {
@@ -8,7 +7,6 @@ import type {
   TreeProjectConcise,
   ConservationProjectConcise,
 } from '@planet-sdk/common/build/types/project/map';
-import type { Feature, MultiPolygon, Polygon } from 'geojson';
 
 export type MapProjectProperties =
   | TreeProjectConcise
@@ -19,5 +17,3 @@ export type ExtendedProject = TreeProjectExtended | ConservationProjectExtended;
 export type MapProject = ProjectMapInfo<MapProjectProperties>;
 
 export type DropdownType = 'site' | 'intervention' | null;
-
-export type ProjectSiteFeature = Feature<Polygon | MultiPolygon, ProjectSite>;

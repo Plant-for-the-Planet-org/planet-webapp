@@ -1,23 +1,22 @@
 import type {
   Intervention,
   OtherInterventions,
-  ProjectSite,
   SampleTreeRegistration,
   SingleTreeRegistration,
   TreeProjectClassification,
 } from '@planet-sdk/common';
 import type { MapGeoJSONFeature, PointLike } from 'react-map-gl-v7/maplibre';
-import type { Feature, MultiPolygon, Polygon, Position } from 'geojson';
+import type { Position } from 'geojson';
 import type { ParsedUrlQuery } from 'querystring';
 import type {
   MapProjectProperties,
   ExtendedProject,
   MapProject,
-  ProjectSiteFeature,
 } from '../features/common/types/projectv2';
 import type {
   MapLibreRef,
   ProjectSiteFeatureCollection,
+  ProjectSiteFeature,
 } from '../features/common/types/map';
 
 import centroid from '@turf/centroid';
@@ -214,7 +213,7 @@ export function getFeaturesAtPoint(
  */
 
 export const getSiteIndex = (
-  sites: Feature<Polygon | MultiPolygon, ProjectSite>[],
+  sites: ProjectSiteFeature[],
   features: MapGeoJSONFeature[]
 ) => {
   const siteFeature = features.find(
