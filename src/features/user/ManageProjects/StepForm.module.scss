@@ -351,6 +351,7 @@
     left: 5%;
     font-weight: bold;
   }
+
   .uploadedMapStatus {
     background-color: $dsBaseGrey;
     padding: 6px 18px;
@@ -366,46 +367,33 @@
     min-width: 100px;
     color: $dsCoreText;
   }
-  .uploadedMapDeleteButton {
-    background-color: $dsBaseGrey;
-    padding: 6px;
-    border-radius: 18px;
-    height: 24px;
-    width: 24px;
+
+  .siteActions {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
     position: absolute;
+    right: 16px;
     top: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     z-index: 999;
-    right: 5%;
-    > svg {
-      height: 12px;
+
+    .controlButton {
+      background-color: $dsBaseGrey;
+      padding: 6px;
+      border-radius: 18px;
+      height: 24px;
+      width: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
       &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-  .uploadedMapEditButton {
-    background-color: $dsBaseGrey;
-    padding: 6px;
-    border-radius: 18px;
-    height: 24px;
-    width: 24px;
-    position: absolute;
-    top: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    right: 5%;
-    > svg {
-      path {
-        fill: $dsCoreText;
-      }
-      height: 12px;
-      &:hover {
-        cursor: pointer;
+        background-color: $dsDarkGrey;
+        svg path {
+          fill: $dsWhite;
+        }
       }
     }
   }

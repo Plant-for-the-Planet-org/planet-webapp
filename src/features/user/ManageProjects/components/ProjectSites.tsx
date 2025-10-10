@@ -17,7 +17,7 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import dynamic from 'next/dynamic';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
-import { MenuItem, Button, TextField, IconButton } from '@mui/material';
+import { MenuItem, Button, TextField } from '@mui/material';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
@@ -70,6 +70,7 @@ export default function ProjectSites({
     handleSubmit,
     formState: { errors },
     control,
+    reset,
   } = useForm<ProjectSitesFormData>();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
@@ -167,6 +168,10 @@ export default function ProjectSites({
       };
       temp.push(_submitData);
       setSiteList(temp);
+      reset({
+        name: '',
+        status: '',
+      });
       setGeoJson(null);
       setShowForm(false);
       setErrorMessage(null);
@@ -289,29 +294,31 @@ export default function ProjectSites({
                         .find((e) => site.status == e.value)
                         ?.label.toUpperCase()}
                     </div>
-                    <IconButton
-                      id={'trashIconProjS'}
-                      onClick={() => {
-                        setSelectedSiteInfo({
-                          siteId: site.id,
-                          siteName: site.name,
-                        });
-                        setIsModalOpen(true);
-                      }}
-                      size="small"
-                      className={styles.uploadedMapDeleteButton}
-                    >
-                      <TrashIcon />
-                    </IconButton>
-                    <IconButton
-                      id={'edit'}
-                      onClick={() => {
-                        editSite(site);
-                      }}
-                      className={styles.uploadedMapEditButton}
-                    >
-                      <EditIcon color={colors.coreText} />
-                    </IconButton>
+                    <div className={styles.siteActions}>
+                      <button
+                        type="button"
+                        aria-label={t('deleteSite')}
+                        onClick={() => {
+                          setSelectedSiteInfo({
+                            siteId: site.id,
+                            siteName: site.name,
+                          });
+                          setIsModalOpen(true);
+                        }}
+                        className={styles.controlButton}
+                      >
+                        <TrashIcon />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label={t('editSite')}
+                        onClick={() => editSite(site)}
+                        className={styles.controlButton}
+                      >
+                        <EditIcon color={colors.coreText} />
+                      </button>
+                    </div>
+
                     <SitePreviewMap
                       siteId={site.id}
                       siteGeometry={site.geometry}

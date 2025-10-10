@@ -58,6 +58,7 @@ export default function SiteGeometryEditor({
   const [isSatelliteMode, setIsSatelliteMode] = useState(false);
   const [coordinates, setCoordinates] = useState<number[][]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [isMapReady, setIsMapReady] = useState(false);
 
   // Handle click to add point
   const handleClick = useCallback(
@@ -124,22 +125,23 @@ export default function SiteGeometryEditor({
   );
 
   // Handle zooming to the project site
-  const handleZoomToProjectSite = () => {
+  const handleZoomToProjectSite = useCallback(() => {
     if (geoJson) {
       if (!mapRef.current) return;
       zoomInToProjectSite(mapRef, geoJson, 0, handleViewStateChange, 2600);
     } else {
-      setViewPort({
-        ...viewport,
+      setViewPort((prev) => ({
+        ...prev,
         zoom: defaultZoom,
-      });
+      }));
     }
-  };
+  }, [geoJson, handleViewStateChange]);
 
-  // UseEffect: Run zoom logic whenever geoJson or mapRef changes
+  // Zoom to the project site whenever geoJson changes or the map finishes loading
+  // isMapReady ensures we only run zoom logic after the map has fully loaded
   useEffect(() => {
     handleZoomToProjectSite();
-  }, [geoJson, mapRef.current]);
+  }, [geoJson, isMapReady, handleZoomToProjectSite]);
 
   const onMove = useCallback(
     (evt: ViewStateChangeEvent) => {
@@ -167,6 +169,7 @@ export default function SiteGeometryEditor({
         onClick={handleClick}
         onDblClick={handleDoubleClick}
         cursor={isDrawing ? 'crosshair' : 'grab'}
+        onLoad={() => setIsMapReady(true)}
       >
         {isSatelliteMode && <SatelliteLayer />}
         {geoJson !== null && (

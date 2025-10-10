@@ -263,7 +263,7 @@
     "errors": {
       "polygon": {
         "minimumPoints": "A polygon requires at least 3 points",
-        "required": "Polygon is required"
+        "required": "The outline of your site needs to be a closed polygon. To close the outline, please double click on the starting point."
       },
       "file": {
         "invalidKml": "Invalid KML",
@@ -274,6 +274,8 @@
         "latitudeRange": "Latitude must be between -90 and 90.",
         "longitudeRange": "Longitude must be between -180 and 180."
       }
-    }
+    },
+    "editSite": "Edit site",
+    "deleteSite": "Delete site"
   }
 }
