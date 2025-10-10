@@ -67,18 +67,15 @@ function EditSite({
             payload: updatedSitePayload,
           }
         );
-        const temp = siteList;
-        let siteIndex = 0;
-        temp.find((site: Site, index: number) => {
-          if (site.id === res.id) {
-            siteIndex = index;
-            return true;
+        setSiteList((prevSites) => {
+          const nextSites = [...prevSites];
+          const index = nextSites.findIndex((site) => site.id === res.id);
+          if (index === -1) {
+            return prevSites; // Early exit if not found
           }
+          nextSites[index] = res;
+          return nextSites;
         });
-        if (siteIndex !== null) {
-          temp[siteIndex] = res;
-        }
-        setSiteList(temp);
         setGeoJson(null);
         setIsUploadingData(false);
         setEditMode(false);
