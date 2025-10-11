@@ -1,22 +1,23 @@
 import type {
   Intervention,
   OtherInterventions,
-  ProjectSite,
   SampleTreeRegistration,
   SingleTreeRegistration,
   TreeProjectClassification,
 } from '@planet-sdk/common';
 import type { MapGeoJSONFeature, PointLike } from 'react-map-gl-v7/maplibre';
-import type { Feature, MultiPolygon, Polygon, Position } from 'geojson';
+import type { Position } from 'geojson';
 import type { ParsedUrlQuery } from 'querystring';
 import type {
-  MapRef,
   MapProjectProperties,
   ExtendedProject,
   MapProject,
-  ProjectSiteFeature,
 } from '../features/common/types/projectv2';
-import type { SitesGeoJSON } from '../features/common/types/ProjectPropsContextInterface';
+import type {
+  MapLibreRef,
+  ProjectSiteFeatureCollection,
+  ProjectSiteFeature,
+} from '../features/common/types/map';
 
 import centroid from '@turf/centroid';
 
@@ -172,7 +173,7 @@ export const isValidClassification = (
  */
 
 export function getFeaturesAtPoint(
-  mapRef: MapRef,
+  mapRef: MapLibreRef,
   point: PointLike
 ): MapGeoJSONFeature[] | undefined {
   if (!mapRef.current) return;
@@ -212,7 +213,7 @@ export function getFeaturesAtPoint(
  */
 
 export const getSiteIndex = (
-  sites: Feature<Polygon | MultiPolygon, ProjectSite>[],
+  sites: ProjectSiteFeature[],
   features: MapGeoJSONFeature[]
 ) => {
   const siteFeature = features.find(
@@ -310,7 +311,7 @@ export const calculateCentroid = (features: MapProject[]) => {
  * @returns
  */
 export const centerMapOnCoordinates = (
-  mapRef: MapRef,
+  mapRef: MapLibreRef,
   [longitude, latitude]: Position
 ) => {
   if (!mapRef.current) return;
@@ -381,7 +382,9 @@ export function isFirealertFiresEnabled() {
  * @param sites - Array of project site features with geometry.
  * @returns GeoJSON FeatureCollection with valid features only.
  */
-export function getSitesGeoJson(sites: ProjectSiteFeature[]): SitesGeoJSON {
+export function getSitesGeoJson(
+  sites: ProjectSiteFeature[]
+): ProjectSiteFeatureCollection {
   return {
     type: 'FeatureCollection',
     features: sites.filter((site) => !!site.geometry),

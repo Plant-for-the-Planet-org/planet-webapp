@@ -2,6 +2,7 @@ import type { EditSiteProps, Site } from '../../../../common/types/project';
 import type { APIError } from '@planet-sdk/common';
 import type { ProjectSitesFormData, SiteApiPayload } from '../ProjectSites';
 import type { ChangeEvent } from 'react';
+import type { ProjectSiteFeatureCollection } from '../../../../common/types/map';
 
 import styles from '../../StepForm.module.scss';
 import { useTranslations } from 'next-intl';
@@ -35,7 +36,9 @@ function EditSite({
     formState: { errors },
     control,
   } = useForm<ProjectSitesFormData>();
-  const [geoJson, setGeoJson] = useState<GeoJson | null>(geoJsonProp);
+  const [geoJson, setGeoJson] = useState<ProjectSiteFeatureCollection | null>(
+    geoJsonProp
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const { setErrors } = useContext(ErrorHandlingContext);

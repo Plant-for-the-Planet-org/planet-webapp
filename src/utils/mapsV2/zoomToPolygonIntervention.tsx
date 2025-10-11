@@ -1,13 +1,13 @@
 import type { Position } from 'geojson';
 import type { ViewState } from 'react-map-gl-v7/maplibre';
-import type { MapRef } from '../../features/common/types/projectv2';
+import type { MapLibreRef } from '../../features/common/types/map';
 
 import { polygon } from '@turf/helpers';
 import bbox from '@turf/bbox';
 
 export function zoomToPolygonIntervention(
   coordinates: Position[],
-  mapRef: MapRef,
+  mapRef: MapLibreRef,
   handleViewStateChange: (viewState: Partial<ViewState>) => void,
   duration = 3000
 ) {

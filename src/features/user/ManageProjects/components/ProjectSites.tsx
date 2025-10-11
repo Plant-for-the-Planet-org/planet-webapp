@@ -7,7 +7,7 @@ import type {
   Site,
   SitesScopeProjects,
 } from '../../../common/types/project';
-import type { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
+import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
 import { useEffect, useState, useContext } from 'react';
 import styles from './../StepForm.module.scss';
@@ -47,7 +47,7 @@ export type ProjectSitesFormData = {
 
 export type SiteApiPayload = {
   name: string;
-  geometry: SitesGeoJSON;
+  geometry: ProjectSiteFeatureCollection;
   status: string;
 };
 
@@ -81,7 +81,9 @@ export default function ProjectSites({
   const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
     undefined
   );
-  const [geoJson, setGeoJson] = useState<SitesGeoJSON | null>(null);
+  const [geoJson, setGeoJson] = useState<ProjectSiteFeatureCollection | null>(
+    null
+  );
   const [siteDetails, setSiteDetails] =
     useState<SiteDetails>(defaultSiteDetails);
   const [siteList, setSiteList] = useState<Site[]>([]);
@@ -241,7 +243,7 @@ export default function ProjectSites({
       geometry: {},
     };
 
-    const collection: SitesGeoJSON = {
+    const collection: ProjectSiteFeatureCollection = {
       type: 'FeatureCollection',
       features: [
         {
