@@ -1,13 +1,13 @@
 import Modal from '@mui/material/Modal';
 
-import { useTranslations } from 'next-intl';
 import styles from './CustomModal.module.scss';
 
 interface Props {
   isOpen: boolean;
-  handleContinue: () => void;
+  handleContinue: () => void | Promise<void>;
   handleCancel: () => void;
-  buttonTitle: string;
+  continueButtonText: string;
+  cancelButtonText: string;
   modalTitle: string;
   modalSubtitle: string;
 }
@@ -16,11 +16,11 @@ export default function CustomModal({
   isOpen,
   handleContinue,
   handleCancel,
-  buttonTitle,
+  continueButtonText,
+  cancelButtonText,
   modalTitle,
   modalSubtitle,
 }: Props) {
-  const t = useTranslations('EditProfile');
   return (
     <Modal open={isOpen} hideBackdrop className={'modalContainer'}>
       <div className={styles.modal}>
@@ -40,14 +40,14 @@ export default function CustomModal({
             className={styles.continueButton}
             onClick={handleContinue}
           >
-            {buttonTitle}
+            {continueButtonText}
           </button>
           <button
             id={'Cancel'}
             className={styles.cancelButton}
             onClick={handleCancel}
           >
-            {t('cancel')}
+            {cancelButtonText}
           </button>
         </div>
       </div>

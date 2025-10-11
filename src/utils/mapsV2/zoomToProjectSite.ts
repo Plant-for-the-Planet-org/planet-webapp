@@ -1,11 +1,13 @@
-import type { SitesGeoJSON } from '../../features/common/types/ProjectPropsContextInterface';
-import type { ViewState } from 'react-map-gl-v7';
+import type {
+  MapLibreRef,
+  ProjectSiteFeatureCollection,
+} from '../../features/common/types/map';
+import type { ViewState } from 'react-map-gl-v7/maplibre';
 import type { Map } from 'maplibre-gl';
-import type { MapRef } from '../../features/common/types/projectv2';
 
 import bbox from '@turf/bbox';
-import { DEFAULT_VIEW_STATE } from '../../features/projectsV2/ProjectsMapContext';
 import { MAIN_MAP_ANIMATION_DURATIONS } from '../projectV2';
+import { DEFAULT_VIEW_STATE } from './mapDefaults';
 
 export function zoomOutMap(map: Map, callback: () => void) {
   map.flyTo({
@@ -17,8 +19,8 @@ export function zoomOutMap(map: Map, callback: () => void) {
   map.once('moveend', () => callback());
 }
 export function zoomInToProjectSite(
-  mapRef: MapRef,
-  geoJson: SitesGeoJSON | null,
+  mapRef: MapLibreRef,
+  geoJson: ProjectSiteFeatureCollection | null,
   selectedSite: number,
   handleViewStateChange: (viewState: Partial<ViewState>) => void,
   duration = 1200

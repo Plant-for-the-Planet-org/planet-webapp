@@ -5,8 +5,7 @@ import type {
   ProjectTimeTravelConfig,
   SingleYearTimeTravelData,
 } from '../../../../utils/mapsV2/timeTravel';
-import type { FeatureCollection, MultiPolygon, Polygon } from 'geojson';
-import type { ProjectSite } from '@planet-sdk/common/build/types/project';
+import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
 import {
   useCallback,
@@ -45,7 +44,7 @@ const MAP_ERROR_CODES = {
 type MapErrorCode = (typeof MAP_ERROR_CODES)[keyof typeof MAP_ERROR_CODES];
 
 interface Props {
-  sitesGeoJson: FeatureCollection<Polygon | MultiPolygon, ProjectSite>;
+  sitesGeoJson: ProjectSiteFeatureCollection;
   isVisible: boolean;
 }
 
@@ -302,7 +301,7 @@ export default function TimeTravel({
     prefix: 'before' | 'after',
     selectedYear: string,
     yearData: SingleYearTimeTravelData,
-    sitesGeoJson: FeatureCollection<Polygon | MultiPolygon, ProjectSite>
+    sitesGeoJson: ProjectSiteFeatureCollection
   ) => {
     const { sourceId, layerId, polygonSourceId, polygonLayerId } =
       getEsriLayerIds(prefix, yearData.year);
@@ -357,7 +356,7 @@ export default function TimeTravel({
     timeTravelConfig: ProjectTimeTravelConfig & {
       sources: ProjectTimeTravelSources;
     },
-    sitesGeoJson: FeatureCollection<Polygon | MultiPolygon, ProjectSite>
+    sitesGeoJson: ProjectSiteFeatureCollection
   ) => {
     const sourceData = timeTravelConfig.sources[source];
     if (!sourceData) return;
