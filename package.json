@@ -66,7 +66,7 @@
     "@sentry/integrations": "^6.19.2",
     "@sentry/node": "^6.19.2",
     "@sentry/webpack-plugin": "^1.20.1",
-    "@tanstack/react-query": "^5.83.0",
+    "@tanstack/react-query": "^5.89.0",
     "@trpc/client": "^11.4.3",
     "@trpc/next": "^11.4.3",
     "@trpc/react-query": "^11.4.3",
