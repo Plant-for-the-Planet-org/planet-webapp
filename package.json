@@ -129,7 +129,7 @@
     "react-player": "^2.8.2",
     "react-slick": "^0.30.2",
     "read-more-react": "^1.0.10",
-    "sass": "^1.85.1",
+    "sass": "^1.93.0",
     "serverless-postgres": "^2.1.1",
     "slick-carousel": "^1.8.1",
     "styled-jsx": "^5.0.0",
