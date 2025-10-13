@@ -23,7 +23,6 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
   const {
     userInfo,
     setUserInfo,
-    contributionStats,
     isContributionsLoaded,
     isProjectsListLoaded,
     isLeaderboardLoaded,
@@ -36,22 +35,19 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
       const _userInfo = {
         profileId: profile.id,
         slug: profile.slug,
-        targets: {
-          treesDonated: profile.scores.treesDonated.target ?? 0,
-          areaRestored: profile.scores.areaRestored.target ?? 0,
-          areaConserved: profile.scores.areaConserved.target ?? 0,
-        },
+        scores: profile.scores,
       };
 
       setUserInfo(_userInfo);
     }
   }, [profile]);
 
-  const { treesDonated, areaRestored, areaConserved } =
-    aggregateProgressData(contributionStats);
-  const treeTarget = userInfo?.targets.treesDonated ?? 0;
-  const restoreTarget = userInfo?.targets.areaRestored ?? 0;
-  const conservTarget = userInfo?.targets.areaConserved ?? 0;
+  const { treesDonated, areaRestored, areaConserved } = aggregateProgressData(
+    userInfo?.scores
+  );
+  const treeTarget = userInfo?.scores.treesDonated.target ?? 0;
+  const restoreTarget = userInfo?.scores.areaRestored.target ?? 0;
+  const conservTarget = userInfo?.scores.areaConserved.target ?? 0;
 
   const canShowLeaderboard = profile?.exposeCommunity ?? false;
 
