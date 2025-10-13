@@ -1,0 +1,38 @@
+@import '../../../../theme/theme';
+
+.dashboardPromoBanner {
+  position: relative;
+  top: 80px;
+  width: 100%;
+  background-color: $dsSoftYellow;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 40px 16px;
+}
+
+.bannerIconContainer {
+  color: $dsSunriseOrange;
+}
+
+.bannerContent {
+  flex: 1;
+  h3 {
+    font-size: $fontSmall;
+    font-weight: 600;
+  }
+  p {
+    font-size: $fontXSmall;
+  }
+}
+
+.bannerAction {
+  background-color: $dsSunriseOrange;
+  border: none;
+  &:hover {
+    background-color: $dsSunriseOrange;
+    border: none;
+    opacity: 0.8;
+  }
+}

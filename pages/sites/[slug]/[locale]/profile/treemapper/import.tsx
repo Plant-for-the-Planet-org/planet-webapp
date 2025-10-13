@@ -8,7 +8,7 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import Head from 'next/head';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import { useTranslations } from 'next-intl';
@@ -23,6 +23,8 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import FeatureMigrated from '../../../../../../src/features/user/TreeMapper/FeatureMigrated';
+import DashboardPromoBanner from '../../../../../../src/features/user/TreeMapper/DashboardPromoBanner';
 
 interface Props {
   pageProps: PageProps;
@@ -42,12 +44,47 @@ export default function Import({
     }
   }, [router.isReady]);
 
+  const pageContent = useMemo(() => {
+    if (!user) return null;
+
+    if (user.type !== 'tpo') {
+      return <AccessDeniedLoader />;
+    }
+
+    const { treemapperMigrationState } = user;
+
+    const isBlockedByMigration =
+      treemapperMigrationState === 'in-progress' ||
+      treemapperMigrationState === 'completed';
+
+    if (isBlockedByMigration) {
+      return (
+        <FeatureMigrated
+          status={treemapperMigrationState}
+          featureKey="import"
+        />
+      );
+    }
+
+    const showPromoBanner =
+      user.type === 'tpo' &&
+      !isBlockedByMigration &&
+      process.env.NEXT_PUBLIC_SHOW_DASHBOARD_PROMO === 'true';
+
+    return (
+      <>
+        {showPromoBanner && <DashboardPromoBanner />}
+        <ImportData />
+      </>
+    );
+  }, [user]);
+
   return tenantConfig ? (
     <UserLayout>
       <Head>
         <title>{t('importData')}</title>
       </Head>
-      {user?.type === 'tpo' ? <ImportData /> : <AccessDeniedLoader />}
+      {pageContent}
     </UserLayout>
   ) : (
     <></>
