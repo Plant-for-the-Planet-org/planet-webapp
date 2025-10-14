@@ -81,7 +81,6 @@ export default function CompleteSignup(): ReactElement | null {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [type, setAccountType] = useState<UserType>('individual');
-  const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
   const [submit, setSubmit] = useState(false);
   //  snack bars (for warnings, success messages, errors)
@@ -137,15 +136,16 @@ export default function CompleteSignup(): ReactElement | null {
   };
 
   const sendRequest = async (bodyToSend: CreateUserRequest) => {
-    setRequestSent(true);
     setIsProcessing(true);
     try {
       const res = await postApi<User>('/app/profile', {
         payload: bodyToSend as unknown as Record<string, unknown>,
       });
-      setRequestSent(false);
       // successful signup -> go to me page
-      setUser(res);
+      if (res) {
+        setUser(res);
+        setIsProcessing(false);
+      }
       handleSnackbarOpen();
     } catch (err) {
       setIsProcessing(false);
@@ -255,380 +255,378 @@ export default function CompleteSignup(): ReactElement | null {
   if (contextLoaded && token && user === null) {
     return (
       <div
-        className={styles.signupPage}
+        className={styles.completeSignup}
         style={{
           backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
         }}
       >
-        <div className={styles.signupContainer}>
-          <div
-            className={requestSent ? styles.signupRequestSent : styles.signup}
-            style={{
-              backgroundColor:
-                theme === 'theme-light'
-                  ? themeProperties.designSystem.colors.white
-                  : themeProperties.dark.backgroundColor,
-              color:
-                theme === 'theme-light'
-                  ? themeProperties.designSystem.colors.coreText
-                  : themeProperties.dark.primaryFontColor,
-            }}
-          >
-            {/* header */}
-            <div className={styles.header}>
-              <div
-                onClick={() => logoutUser(`${window.location.origin}/`)}
-                className={styles.headerBackIcon}
-              >
-                <CancelIcon
-                  color={themeProperties.designSystem.colors.coreText}
-                />
-              </div>
-              <div className={styles.headerTitle}>{t('signUpText')}</div>
-            </div>
-
-            {/* type of account buttons */}
-            <MuiTextField
-              label={t('fieldLabels.profileType')}
-              select
-              defaultValue={profileTypes[0].value}
+        <div
+          className={
+            isProcessing ? styles.signupFormOverlay : styles.signupFormBase
+          }
+          style={{
+            backgroundColor:
+              theme === 'theme-light'
+                ? themeProperties.designSystem.colors.white
+                : themeProperties.dark.backgroundColor,
+            color:
+              theme === 'theme-light'
+                ? themeProperties.designSystem.colors.coreText
+                : themeProperties.dark.primaryFontColor,
+          }}
+        >
+          {/* header */}
+          <div className={styles.header}>
+            <div
+              onClick={() => logoutUser(`${window.location.origin}/`)}
+              className={styles.headerBackIcon}
             >
-              {profileTypes.map((option) => (
-                <MenuItem
-                  key={option.value}
-                  value={option.value}
-                  onClick={() => setAccountType(option.value)}
-                >
-                  {option.title}
-                </MenuItem>
-              ))}
-            </MuiTextField>
-
-            <InlineFormDisplayGroup>
-              <Controller
-                name="firstname"
-                control={control}
-                rules={{
-                  required: t('validationErrors.firstNameRequired'),
-                  maxLength: {
-                    value: 50,
-                    message: t('validationErrors.maxChars', { max: 50 }),
-                  },
-                  pattern: {
-                    value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
-                    message: t('validationErrors.firstNameInvalid'),
-                  },
-                }}
-                defaultValue={auth0User?.given_name || ''}
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <MuiTextField
-                    label={t('fieldLabels.firstName')}
-                    error={errors.firstname !== undefined}
-                    helperText={
-                      errors.firstname !== undefined && errors.firstname.message
-                    }
-                    onChange={onChange}
-                    value={value}
-                    onBlur={onBlur}
-                  />
-                )}
+              <CancelIcon
+                color={themeProperties.designSystem.colors.coreText}
               />
-              <Controller
-                name="lastname"
-                control={control}
-                rules={{
-                  required: t('validationErrors.lastNameRequired'),
-                  maxLength: {
-                    value: 50,
-                    message: t('validationErrors.maxChars', { max: 50 }),
-                  },
-                  pattern: {
-                    value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
-                    message: t('validationErrors.lastNameInvalid'),
-                  },
-                }}
-                defaultValue={auth0User?.family_name || ''}
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <MuiTextField
-                    label={t('fieldLabels.lastName')}
-                    error={errors.lastname !== undefined}
-                    helperText={
-                      errors.lastname !== undefined && errors.lastname.message
-                    }
-                    onChange={onChange}
-                    value={value}
-                    onBlur={onBlur}
-                  />
-                )}
-              />
-            </InlineFormDisplayGroup>
+            </div>
+            <div className={styles.headerTitle}>{t('signUpText')}</div>
+          </div>
 
-            {type !== 'individual' ? (
-              <Controller
-                name="name"
-                control={control}
-                rules={{
-                  required: t('validationErrors.nameRequired'),
-                  pattern: {
-                    value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
-                    message: t('validationErrors.nameInvalid'),
-                  },
-                }}
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <MuiTextField
-                    label={t('fieldLabels.name', {
-                      type: selectUserType(type, t),
-                    })}
-                    error={errors.name !== undefined}
-                    helperText={
-                      errors.name !== undefined && errors.name.message
-                    }
-                    onChange={onChange}
-                    value={value}
-                    onBlur={onBlur}
-                  />
-                )}
-              />
-            ) : null}
+          {/* type of account buttons */}
+          <MuiTextField
+            label={t('fieldLabels.profileType')}
+            select
+            defaultValue={profileTypes[0].value}
+          >
+            {profileTypes.map((option) => (
+              <MenuItem
+                key={option.value}
+                value={option.value}
+                onClick={() => setAccountType(option.value)}
+              >
+                {option.title}
+              </MenuItem>
+            ))}
+          </MuiTextField>
 
-            <MuiTextField
-              defaultValue={auth0User?.email}
-              label={t('fieldLabels.email')}
-              disabled
+          <InlineFormDisplayGroup>
+            <Controller
+              name="firstname"
+              control={control}
+              rules={{
+                required: t('validationErrors.firstNameRequired'),
+                maxLength: {
+                  value: 50,
+                  message: t('validationErrors.maxChars', { max: 50 }),
+                },
+                pattern: {
+                  value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
+                  message: t('validationErrors.firstNameInvalid'),
+                },
+              }}
+              defaultValue={auth0User?.given_name || ''}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <MuiTextField
+                  label={t('fieldLabels.firstName')}
+                  error={errors.firstname !== undefined}
+                  helperText={
+                    errors.firstname !== undefined && errors.firstname.message
+                  }
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                />
+              )}
             />
+            <Controller
+              name="lastname"
+              control={control}
+              rules={{
+                required: t('validationErrors.lastNameRequired'),
+                maxLength: {
+                  value: 50,
+                  message: t('validationErrors.maxChars', { max: 50 }),
+                },
+                pattern: {
+                  value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
+                  message: t('validationErrors.lastNameInvalid'),
+                },
+              }}
+              defaultValue={auth0User?.family_name || ''}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <MuiTextField
+                  label={t('fieldLabels.lastName')}
+                  error={errors.lastname !== undefined}
+                  helperText={
+                    errors.lastname !== undefined && errors.lastname.message
+                  }
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+          </InlineFormDisplayGroup>
 
-            {type === 'tpo' ? (
-              <>
+          {type !== 'individual' ? (
+            <Controller
+              name="name"
+              control={control}
+              rules={{
+                required: t('validationErrors.nameRequired'),
+                pattern: {
+                  value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
+                  message: t('validationErrors.nameInvalid'),
+                },
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <MuiTextField
+                  label={t('fieldLabels.name', {
+                    type: selectUserType(type, t),
+                  })}
+                  error={errors.name !== undefined}
+                  helperText={errors.name !== undefined && errors.name.message}
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+          ) : null}
+
+          <MuiTextField
+            defaultValue={auth0User?.email}
+            label={t('fieldLabels.email')}
+            disabled
+          />
+
+          {type === 'tpo' ? (
+            <>
+              <Controller
+                name="address"
+                control={control}
+                rules={{
+                  required: t('validationErrors.addressRequired'),
+                  pattern: {
+                    value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
+                    message: t('validationErrors.addressInvalid'),
+                  },
+                }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MuiTextField
+                    label={t('fieldLabels.address')}
+                    error={errors.address !== undefined}
+                    helperText={
+                      errors.address !== undefined && errors.address.message
+                    }
+                    onChange={(event) => {
+                      setAddressInput(event.target.value);
+                      onChange(event.target.value);
+                    }}
+                    onBlur={() => {
+                      setAddressSuggestions([]);
+                      onBlur();
+                    }}
+                    value={value}
+                  />
+                )}
+              />
+              {addressSuggestions
+                ? addressSuggestions.length > 0 && (
+                    <div className="suggestions-container">
+                      {addressSuggestions.map((suggestion, index) => {
+                        return (
+                          <div
+                            key={index}
+                            onMouseDown={() => {
+                              handleAddressSelection(suggestion.text);
+                            }}
+                            className="suggestion"
+                          >
+                            {suggestion.text}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )
+                : null}
+              <InlineFormDisplayGroup>
                 <Controller
-                  name="address"
+                  name="city"
                   control={control}
                   rules={{
-                    required: t('validationErrors.addressRequired'),
+                    required: t('validationErrors.cityRequired'),
                     pattern: {
-                      value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
-                      message: t('validationErrors.addressInvalid'),
+                      value: /^[\p{L}\sß.,()-]+$/u,
+                      message: t('validationErrors.cityInvalid'),
                     },
                   }}
+                  defaultValue={
+                    getStoredConfig('loc').city === 'T1' ||
+                    getStoredConfig('loc').city === 'XX' ||
+                    getStoredConfig('loc').city === ''
+                      ? ''
+                      : getStoredConfig('loc').city
+                  }
                   render={({ field: { onChange, value, onBlur } }) => (
                     <MuiTextField
-                      label={t('fieldLabels.address')}
-                      error={errors.address !== undefined}
+                      label={t('fieldLabels.city')}
+                      error={errors.city !== undefined}
                       helperText={
-                        errors.address !== undefined && errors.address.message
+                        errors.city !== undefined && errors.city.message
                       }
-                      onChange={(event) => {
-                        setAddressInput(event.target.value);
-                        onChange(event.target.value);
-                      }}
-                      onBlur={() => {
-                        setAddressSuggestions([]);
-                        onBlur();
-                      }}
+                      onChange={onChange}
                       value={value}
+                      onBlur={onBlur}
                     />
                   )}
                 />
-                {addressSuggestions
-                  ? addressSuggestions.length > 0 && (
-                      <div className="suggestions-container">
-                        {addressSuggestions.map((suggestion, index) => {
-                          return (
-                            <div
-                              key={index}
-                              onMouseDown={() => {
-                                handleAddressSelection(suggestion.text);
-                              }}
-                              className="suggestion"
-                            >
-                              {suggestion.text}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )
-                  : null}
-                <InlineFormDisplayGroup>
-                  <Controller
-                    name="city"
-                    control={control}
-                    rules={{
-                      required: t('validationErrors.cityRequired'),
-                      pattern: {
-                        value: /^[\p{L}\sß.,()-]+$/u,
-                        message: t('validationErrors.cityInvalid'),
-                      },
-                    }}
-                    defaultValue={
-                      getStoredConfig('loc').city === 'T1' ||
-                      getStoredConfig('loc').city === 'XX' ||
-                      getStoredConfig('loc').city === ''
-                        ? ''
-                        : getStoredConfig('loc').city
-                    }
-                    render={({ field: { onChange, value, onBlur } }) => (
-                      <MuiTextField
-                        label={t('fieldLabels.city')}
-                        error={errors.city !== undefined}
-                        helperText={
-                          errors.city !== undefined && errors.city.message
-                        }
-                        onChange={onChange}
-                        value={value}
-                        onBlur={onBlur}
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="zipCode"
-                    control={control}
-                    rules={{
-                      required: t('validationErrors.zipCodeRequired'),
-                      pattern: {
-                        value: postalRegex as RegExp,
-                        message: t('validationErrors.zipCodeInvalid'),
-                      },
-                      maxLength: {
-                        value: 15,
-                        message: t('validationErrors.zipCodeInvalid'),
-                      },
-                    }}
-                    defaultValue={
-                      getStoredConfig('loc').postalCode === 'T1' ||
-                      getStoredConfig('loc').postalCode === 'XX' ||
-                      getStoredConfig('loc').postalCode === ''
-                        ? ''
-                        : getStoredConfig('loc').postalCode
-                    }
-                    render={({ field: { onChange, value, onBlur } }) => (
-                      <MuiTextField
-                        label={t('fieldLabels.zipCode')}
-                        error={errors.zipCode !== undefined}
-                        helperText={
-                          errors.zipCode !== undefined && errors.zipCode.message
-                        }
-                        onChange={onChange}
-                        value={value}
-                        onBlur={onBlur}
-                      />
-                    )}
-                  />
-                </InlineFormDisplayGroup>
-              </>
-            ) : null}
-            <AutoCompleteCountry
-              label={t('fieldLabels.country')}
-              name="country"
-              onChange={setCountry}
-              defaultValue={
-                getStoredConfig('loc').countryCode === 'T1' ||
-                getStoredConfig('loc').countryCode === 'XX' ||
-                getStoredConfig('loc').countryCode === ''
-                  ? ''
-                  : getStoredConfig('loc').countryCode
-              }
+                <Controller
+                  name="zipCode"
+                  control={control}
+                  rules={{
+                    required: t('validationErrors.zipCodeRequired'),
+                    pattern: {
+                      value: postalRegex as RegExp,
+                      message: t('validationErrors.zipCodeInvalid'),
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: t('validationErrors.zipCodeInvalid'),
+                    },
+                  }}
+                  defaultValue={
+                    getStoredConfig('loc').postalCode === 'T1' ||
+                    getStoredConfig('loc').postalCode === 'XX' ||
+                    getStoredConfig('loc').postalCode === ''
+                      ? ''
+                      : getStoredConfig('loc').postalCode
+                  }
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MuiTextField
+                      label={t('fieldLabels.zipCode')}
+                      error={errors.zipCode !== undefined}
+                      helperText={
+                        errors.zipCode !== undefined && errors.zipCode.message
+                      }
+                      onChange={onChange}
+                      value={value}
+                      onBlur={onBlur}
+                    />
+                  )}
+                />
+              </InlineFormDisplayGroup>
+            </>
+          ) : null}
+          <AutoCompleteCountry
+            label={t('fieldLabels.country')}
+            name="country"
+            onChange={setCountry}
+            defaultValue={
+              getStoredConfig('loc').countryCode === 'T1' ||
+              getStoredConfig('loc').countryCode === 'XX' ||
+              getStoredConfig('loc').countryCode === ''
+                ? ''
+                : getStoredConfig('loc').countryCode
+            }
+          />
+          <div className={styles.inlineToggleGroup}>
+            <div>
+              <label
+                htmlFor="is-public"
+                className={styles.mainText}
+                style={{ cursor: 'pointer' }}
+              >
+                {t('fieldLabels.isPublic')}
+              </label>{' '}
+              <br />
+              {isPublic && (
+                <label className={styles.isPrivateAccountText}>
+                  {t('publicProfileExplanation')}
+                </label>
+              )}
+            </div>
+            <Controller
+              name="isPublic"
+              control={control}
+              defaultValue={false}
+              render={({ field: { onChange, value } }) => (
+                <NewToggleSwitch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  id="is-public"
+                />
+              )}
             />
-            <div className={styles.inlineToggleGroup}>
-              <div>
-                <label
-                  htmlFor="is-public"
-                  className={styles.mainText}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {t('fieldLabels.isPublic')}
-                </label>{' '}
-                <br />
-                {isPublic && (
-                  <label className={styles.isPrivateAccountText}>
-                    {t('publicProfileExplanation')}
-                  </label>
-                )}
-              </div>
-              <Controller
-                name="isPublic"
-                control={control}
-                defaultValue={false}
-                render={({ field: { onChange, value } }) => (
+          </div>
+
+          <div className={styles.inlineToggleGroup}>
+            <div className={styles.mainText}>
+              <label htmlFor="get-news" style={{ cursor: 'pointer' }}>
+                {t('fieldLabels.subscribe')}
+              </label>
+            </div>
+            <Controller
+              name="getNews"
+              control={control}
+              defaultValue={true}
+              render={({ field: { onChange, value } }) => {
+                return (
                   <NewToggleSwitch
                     checked={value}
-                    onChange={onChange}
+                    onChange={(e) => onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    id="is-public"
+                    id="get-news"
                   />
-                )}
-              />
-            </div>
+                );
+              }}
+            />
+          </div>
 
+          <div>
             <div className={styles.inlineToggleGroup}>
               <div className={styles.mainText}>
-                <label htmlFor="get-news" style={{ cursor: 'pointer' }}>
-                  {t('fieldLabels.subscribe')}
+                <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
+                  {t.rich('termAndCondition', {
+                    termsLink: (chunks) => (
+                      <a
+                        className="planet-links"
+                        rel="noopener noreferrer"
+                        href={`https://pp.eco/legal/${locale}/terms`}
+                        target={'_blank'}
+                      >
+                        {chunks}
+                      </a>
+                    ),
+                  })}
                 </label>
               </div>
-              <Controller
-                name="getNews"
-                control={control}
-                defaultValue={true}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <NewToggleSwitch
-                      checked={value}
-                      onChange={(e) => onChange(e.target.checked)}
-                      inputProps={{ 'aria-label': 'secondary checkbox' }}
-                      id="get-news"
-                    />
-                  );
+              <NewToggleSwitch
+                checked={acceptTerms || false}
+                onChange={(e) => {
+                  handleTermsAndCondition(e.target.checked);
                 }}
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                id="terms"
               />
             </div>
-
-            <div>
-              <div className={styles.inlineToggleGroup}>
-                <div className={styles.mainText}>
-                  <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
-                    {t.rich('termAndCondition', {
-                      termsLink: (chunks) => (
-                        <a
-                          className="planet-links"
-                          rel="noopener noreferrer"
-                          href={`https://pp.eco/legal/${locale}/terms`}
-                          target={'_blank'}
-                        >
-                          {chunks}
-                        </a>
-                      ),
-                    })}
-                  </label>
-                </div>
-                <NewToggleSwitch
-                  checked={acceptTerms || false}
-                  onChange={(e) => {
-                    handleTermsAndCondition(e.target.checked);
-                  }}
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="terms"
-                />
+            {!acceptTerms && typeof acceptTerms !== 'object' && (
+              <div className={styles.termsError}>
+                {t('termAndConditionError')}
               </div>
-              {!acceptTerms && typeof acceptTerms !== 'object' && (
-                <div className={styles.termsError}>
-                  {t('termAndConditionError')}
-                </div>
-              )}
-            </div>
-            <div className={styles.horizontalLine} />
-
-            <button
-              id={'signupCreate'}
-              className={styles.saveButton}
-              onClick={handleSubmit(createButtonClicked)}
-              disabled={isProcessing}
-            >
-              {submit ? (
-                <div className={styles.spinner}></div>
-              ) : (
-                t('createAccount')
-              )}
-            </button>
+            )}
           </div>
+          <div className={styles.horizontalLine} />
+
+          <button
+            id={'signupCreate'}
+            className={styles.saveButton}
+            onClick={handleSubmit(createButtonClicked)}
+            disabled={isProcessing}
+          >
+            {submit ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              t('createAccount')
+            )}
+          </button>
         </div>
         {/* snackbar */}
         <Snackbar
