@@ -161,15 +161,13 @@ export default function ProjectSites({
           payload: newSitePayload,
         }
       );
-      const temp = siteList ? siteList : [];
       const _submitData = {
         id: res.id,
         name: res.name,
         geometry: res.geometry,
         status: res.status,
       };
-      temp.push(_submitData);
-      setSiteList(temp);
+      setSiteList((prevSites) => [...prevSites, _submitData]);
       reset({
         name: '',
         status: '',

@@ -81,7 +81,7 @@ function EditSite({
         setGeoJson(null);
         setIsUploadingData(false);
         setEditMode(false);
-        setErrorMessage('');
+        setErrorMessage(null);
       } catch (err) {
         setIsUploadingData(false);
         setErrors(handleError(err as APIError));

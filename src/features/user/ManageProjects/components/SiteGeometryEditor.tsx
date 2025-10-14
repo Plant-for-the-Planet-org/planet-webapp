@@ -215,28 +215,36 @@ export default function SiteGeometryEditor({
               reader.onerror = () => console.log('file reading has failed');
               reader.onload = (event) => {
                 if (typeof event.target?.result === 'string') {
-                  const geo = JSON.parse(event.target.result);
-                  const isFC =
-                    geo &&
-                    geo.type === 'FeatureCollection' &&
-                    Array.isArray(geo.features);
-                  if (
-                    gjv.isGeoJSONObject(geo) &&
-                    isFC &&
-                    geo.features.length > 0
-                  ) {
-                    setErrorMessage(null);
-                    setGeoJson(geo);
-                  } else {
+                  try {
+                    const geo = JSON.parse(event.target.result);
+                    const isFC =
+                      geo &&
+                      geo.type === 'FeatureCollection' &&
+                      Array.isArray(geo.features);
+                    if (
+                      gjv.isGeoJSONObject(geo) &&
+                      isFC &&
+                      geo.features.length > 0
+                    ) {
+                      setErrorMessage(null);
+                      setGeoJson(geo);
+                    } else {
+                      setErrorMessage(
+                        tManageProjects('errors.file.invalidGeojson')
+                      );
+                      console.log('invalid geojson');
+                    }
+                  } catch (error) {
                     setErrorMessage(
                       tManageProjects('errors.file.invalidGeojson')
                     );
-                    console.log('invalid geojson');
+                    console.error('JSON parse error:', error);
+                    return;
+
+                    // Upload the base 64 to API and use the response to show preview to the user
                   }
                 }
               };
-
-              // Upload the base 64 to API and use the response to show preview to the user
             }
           });
         }}
