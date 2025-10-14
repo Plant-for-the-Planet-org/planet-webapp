@@ -11,7 +11,7 @@ import type {
   MultiPolygon,
   Polygon,
 } from 'geojson';
-import type { Map } from 'maplibre-gl';
+import type { Map as MapLibreMap } from 'maplibre-gl';
 
 export interface ClusterMarker {
   geometry: {
@@ -287,7 +287,7 @@ export type ProjectSiteFeature = Feature<
 >;
 
 // Map
-export interface ExtendedMapLibreMap extends Map {
-  getMap: () => Map;
+export interface ExtendedMapLibreMap extends MapLibreMap {
+  getMap: () => MapLibreMap;
 }
 export type MapLibreRef = MutableRefObject<ExtendedMapLibreMap | null>;
