@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { Feature, Polygon } from 'geojson';
-import type { SiteProperties } from '../ProjectSiteDropDown';
 import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
+import type { ProjectSiteFeature } from '../../../common/types/map';
 
 import { useState } from 'react';
 import ProjectSiteDropdown from '../ProjectSiteDropDown';
@@ -14,7 +13,7 @@ const meta: Meta<typeof ProjectSiteDropdown> = {
 export default meta;
 type Story = StoryObj<typeof ProjectSiteDropdown>;
 
-const options: Feature<Polygon, SiteProperties>[] = [
+const options: ProjectSiteFeature[] = [
   {
     geometry: {
       coordinates: [
