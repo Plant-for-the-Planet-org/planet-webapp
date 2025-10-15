@@ -131,7 +131,7 @@ export default function CompleteSignup(): ReactElement | null {
     }
   }, [contextLoaded, user, token]);
 
-  const sendRequest = async (bodyToSend: CreateUserRequest) => {
+  const createUserProfile = async (bodyToSend: CreateUserRequest) => {
     setIsProcessing(true);
     try {
       const res = await postApi<User>('/app/profile', {
@@ -160,7 +160,7 @@ export default function CompleteSignup(): ReactElement | null {
     setSnackbarOpen(false);
   };
 
-  const createButtonClicked = async (data: FormData) => {
+  const handleCreateAccount = async (data: FormData) => {
     setFormSubmitted(true);
     if (!agreedToTerms) return;
 
@@ -174,7 +174,7 @@ export default function CompleteSignup(): ReactElement | null {
           type,
           oAuthAccessToken: token,
         };
-        sendRequest(submitData);
+        createUserProfile(submitData);
       }
     }
   };
@@ -608,7 +608,7 @@ export default function CompleteSignup(): ReactElement | null {
           <button
             id={'signupCreate'}
             className={styles.saveButton}
-            onClick={handleSubmit(createButtonClicked)}
+            onClick={handleSubmit(handleCreateAccount)}
             disabled={isProcessing}
           >
             {isProcessing ? (
