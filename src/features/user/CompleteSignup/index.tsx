@@ -18,18 +18,14 @@ import {
   useRef,
 } from 'react';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
-import NewToggleSwitch from '../../common/InputTypes/NewToggleSwitch';
 import { Snackbar, Alert, MenuItem, styled, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import { useForm, Controller } from 'react-hook-form';
-import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
-import themeProperties from '../../../theme/themeProperties';
-import { ThemeContext } from '../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
@@ -41,6 +37,9 @@ import {
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import { getPostalRegex } from '../../../utils/addressManagement';
 import { useRouter } from 'next/router';
+import SignupToggles from './microComponents/SignupToggles';
+import SignupHeader from './microComponents/SignupHeader';
+import CompleteSignupLayout from './microComponents/CompleteSignupLayout';
 
 const MuiTextField = styled(TextField)(() => {
   return {
@@ -48,7 +47,7 @@ const MuiTextField = styled(TextField)(() => {
   };
 });
 
-type FormData = Omit<
+export type SignupFormData = Omit<
   CreateUserRequest,
   'type' | 'country' | 'oAuthAccessToken'
 > & {
@@ -63,16 +62,13 @@ export default function CompleteSignup(): ReactElement | null {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<FormData>({ mode: 'onBlur' });
+  } = useForm<SignupFormData>({ mode: 'onBlur' });
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('EditProfile');
-  const locale = useLocale();
   const { postApi } = useApi();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
-  const { theme } = useContext(ThemeContext);
-  const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
-    useUserProps();
+  const { user, setUser, auth0User, contextLoaded, token } = useUserProps();
 
   // states
   const [addressSuggestions, setAddressSuggestions] = useState<
@@ -160,7 +156,7 @@ export default function CompleteSignup(): ReactElement | null {
     setSnackbarOpen(false);
   };
 
-  const handleCreateAccount = async (data: FormData) => {
+  const handleCreateAccount = async (data: SignupFormData) => {
     setFormSubmitted(true);
     if (!agreedToTerms) return;
 
@@ -244,381 +240,267 @@ export default function CompleteSignup(): ReactElement | null {
 
   if (contextLoaded && token && user === null) {
     return (
-      <div
-        className={styles.completeSignup}
-        style={{
-          backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
-        }}
-      >
-        <div
-          className={
-            isProcessing ? styles.signupFormOverlay : styles.signupFormBase
-          }
-          style={{
-            backgroundColor:
-              theme === 'theme-light'
-                ? themeProperties.designSystem.colors.white
-                : themeProperties.dark.backgroundColor,
-            color:
-              theme === 'theme-light'
-                ? themeProperties.designSystem.colors.coreText
-                : themeProperties.dark.primaryFontColor,
-          }}
+      <CompleteSignupLayout isProcessing={isProcessing}>
+        <SignupHeader />
+
+        {/* type of account buttons */}
+        <MuiTextField
+          label={t('fieldLabels.profileType')}
+          select
+          defaultValue={profileTypes[0].value}
         >
-          {/* header */}
-          <div className={styles.header}>
-            <div
-              onClick={() => logoutUser(`${window.location.origin}/`)}
-              className={styles.headerBackIcon}
+          {profileTypes.map((option) => (
+            <MenuItem
+              key={option.value}
+              value={option.value}
+              onClick={() => setAccountType(option.value)}
             >
-              <CancelIcon
-                color={themeProperties.designSystem.colors.coreText}
+              {option.title}
+            </MenuItem>
+          ))}
+        </MuiTextField>
+
+        <InlineFormDisplayGroup>
+          <Controller
+            name="firstname"
+            control={control}
+            rules={{
+              required: t('validationErrors.firstNameRequired'),
+              maxLength: {
+                value: 50,
+                message: t('validationErrors.maxChars', { max: 50 }),
+              },
+              pattern: {
+                value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
+                message: t('validationErrors.firstNameInvalid'),
+              },
+            }}
+            defaultValue={auth0User?.given_name || ''}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <MuiTextField
+                label={t('fieldLabels.firstName')}
+                error={errors.firstname !== undefined}
+                helperText={
+                  errors.firstname !== undefined && errors.firstname.message
+                }
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
               />
-            </div>
-            <div className={styles.headerTitle}>{t('signUpText')}</div>
-          </div>
-
-          {/* type of account buttons */}
-          <MuiTextField
-            label={t('fieldLabels.profileType')}
-            select
-            defaultValue={profileTypes[0].value}
-          >
-            {profileTypes.map((option) => (
-              <MenuItem
-                key={option.value}
-                value={option.value}
-                onClick={() => setAccountType(option.value)}
-              >
-                {option.title}
-              </MenuItem>
-            ))}
-          </MuiTextField>
-
-          <InlineFormDisplayGroup>
-            <Controller
-              name="firstname"
-              control={control}
-              rules={{
-                required: t('validationErrors.firstNameRequired'),
-                maxLength: {
-                  value: 50,
-                  message: t('validationErrors.maxChars', { max: 50 }),
-                },
-                pattern: {
-                  value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
-                  message: t('validationErrors.firstNameInvalid'),
-                },
-              }}
-              defaultValue={auth0User?.given_name || ''}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <MuiTextField
-                  label={t('fieldLabels.firstName')}
-                  error={errors.firstname !== undefined}
-                  helperText={
-                    errors.firstname !== undefined && errors.firstname.message
-                  }
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                />
-              )}
-            />
-            <Controller
-              name="lastname"
-              control={control}
-              rules={{
-                required: t('validationErrors.lastNameRequired'),
-                maxLength: {
-                  value: 50,
-                  message: t('validationErrors.maxChars', { max: 50 }),
-                },
-                pattern: {
-                  value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
-                  message: t('validationErrors.lastNameInvalid'),
-                },
-              }}
-              defaultValue={auth0User?.family_name || ''}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <MuiTextField
-                  label={t('fieldLabels.lastName')}
-                  error={errors.lastname !== undefined}
-                  helperText={
-                    errors.lastname !== undefined && errors.lastname.message
-                  }
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                />
-              )}
-            />
-          </InlineFormDisplayGroup>
-
-          {type !== 'individual' ? (
-            <Controller
-              name="name"
-              control={control}
-              rules={{
-                required: t('validationErrors.nameRequired'),
-                pattern: {
-                  value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
-                  message: t('validationErrors.nameInvalid'),
-                },
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <MuiTextField
-                  label={t('fieldLabels.name', {
-                    type: selectUserType(type, t),
-                  })}
-                  error={errors.name !== undefined}
-                  helperText={errors.name !== undefined && errors.name.message}
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                />
-              )}
-            />
-          ) : null}
-
-          <MuiTextField
-            defaultValue={auth0User?.email}
-            label={t('fieldLabels.email')}
-            disabled
+            )}
           />
+          <Controller
+            name="lastname"
+            control={control}
+            rules={{
+              required: t('validationErrors.lastNameRequired'),
+              maxLength: {
+                value: 50,
+                message: t('validationErrors.maxChars', { max: 50 }),
+              },
+              pattern: {
+                value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
+                message: t('validationErrors.lastNameInvalid'),
+              },
+            }}
+            defaultValue={auth0User?.family_name || ''}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <MuiTextField
+                label={t('fieldLabels.lastName')}
+                error={errors.lastname !== undefined}
+                helperText={
+                  errors.lastname !== undefined && errors.lastname.message
+                }
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+              />
+            )}
+          />
+        </InlineFormDisplayGroup>
 
-          {type === 'tpo' ? (
-            <>
+        {type !== 'individual' ? (
+          <Controller
+            name="name"
+            control={control}
+            rules={{
+              required: t('validationErrors.nameRequired'),
+              pattern: {
+                value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
+                message: t('validationErrors.nameInvalid'),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <MuiTextField
+                label={t('fieldLabels.name', {
+                  type: selectUserType(type, t),
+                })}
+                error={errors.name !== undefined}
+                helperText={errors.name !== undefined && errors.name.message}
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+              />
+            )}
+          />
+        ) : null}
+
+        <MuiTextField
+          defaultValue={auth0User?.email}
+          label={t('fieldLabels.email')}
+          disabled
+        />
+
+        {type === 'tpo' ? (
+          <>
+            <Controller
+              name="address"
+              control={control}
+              rules={{
+                required: t('validationErrors.addressRequired'),
+                pattern: {
+                  value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
+                  message: t('validationErrors.addressInvalid'),
+                },
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <MuiTextField
+                  label={t('fieldLabels.address')}
+                  error={errors.address !== undefined}
+                  helperText={
+                    errors.address !== undefined && errors.address.message
+                  }
+                  onChange={(event) => {
+                    setAddressInput(event.target.value);
+                    onChange(event.target.value);
+                  }}
+                  onBlur={() => {
+                    setAddressSuggestions([]);
+                    onBlur();
+                  }}
+                  value={value}
+                />
+              )}
+            />
+            {addressSuggestions
+              ? addressSuggestions.length > 0 && (
+                  <div className="suggestions-container">
+                    {addressSuggestions.map((suggestion, index) => {
+                      return (
+                        <div
+                          key={index}
+                          onMouseDown={() => {
+                            handleAddressSelection(suggestion.text);
+                          }}
+                          className="suggestion"
+                        >
+                          {suggestion.text}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              : null}
+            <InlineFormDisplayGroup>
               <Controller
-                name="address"
+                name="city"
                 control={control}
                 rules={{
-                  required: t('validationErrors.addressRequired'),
+                  required: t('validationErrors.cityRequired'),
                   pattern: {
-                    value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
-                    message: t('validationErrors.addressInvalid'),
+                    value: /^[\p{L}\sß.,()-]+$/u,
+                    message: t('validationErrors.cityInvalid'),
                   },
                 }}
+                defaultValue={
+                  getStoredConfig('loc').city === 'T1' ||
+                  getStoredConfig('loc').city === 'XX' ||
+                  getStoredConfig('loc').city === ''
+                    ? ''
+                    : getStoredConfig('loc').city
+                }
                 render={({ field: { onChange, value, onBlur } }) => (
                   <MuiTextField
-                    label={t('fieldLabels.address')}
-                    error={errors.address !== undefined}
+                    label={t('fieldLabels.city')}
+                    error={errors.city !== undefined}
                     helperText={
-                      errors.address !== undefined && errors.address.message
+                      errors.city !== undefined && errors.city.message
                     }
-                    onChange={(event) => {
-                      setAddressInput(event.target.value);
-                      onChange(event.target.value);
-                    }}
-                    onBlur={() => {
-                      setAddressSuggestions([]);
-                      onBlur();
-                    }}
+                    onChange={onChange}
                     value={value}
+                    onBlur={onBlur}
                   />
                 )}
               />
-              {addressSuggestions
-                ? addressSuggestions.length > 0 && (
-                    <div className="suggestions-container">
-                      {addressSuggestions.map((suggestion, index) => {
-                        return (
-                          <div
-                            key={index}
-                            onMouseDown={() => {
-                              handleAddressSelection(suggestion.text);
-                            }}
-                            className="suggestion"
-                          >
-                            {suggestion.text}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )
-                : null}
-              <InlineFormDisplayGroup>
-                <Controller
-                  name="city"
-                  control={control}
-                  rules={{
-                    required: t('validationErrors.cityRequired'),
-                    pattern: {
-                      value: /^[\p{L}\sß.,()-]+$/u,
-                      message: t('validationErrors.cityInvalid'),
-                    },
-                  }}
-                  defaultValue={
-                    getStoredConfig('loc').city === 'T1' ||
-                    getStoredConfig('loc').city === 'XX' ||
-                    getStoredConfig('loc').city === ''
-                      ? ''
-                      : getStoredConfig('loc').city
-                  }
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <MuiTextField
-                      label={t('fieldLabels.city')}
-                      error={errors.city !== undefined}
-                      helperText={
-                        errors.city !== undefined && errors.city.message
-                      }
-                      onChange={onChange}
-                      value={value}
-                      onBlur={onBlur}
-                    />
-                  )}
-                />
-                <Controller
-                  name="zipCode"
-                  control={control}
-                  rules={{
-                    required: t('validationErrors.zipCodeRequired'),
-                    pattern: {
-                      value: postalRegex as RegExp,
-                      message: t('validationErrors.zipCodeInvalid'),
-                    },
-                    maxLength: {
-                      value: 15,
-                      message: t('validationErrors.zipCodeInvalid'),
-                    },
-                  }}
-                  defaultValue={
-                    getStoredConfig('loc').postalCode === 'T1' ||
-                    getStoredConfig('loc').postalCode === 'XX' ||
-                    getStoredConfig('loc').postalCode === ''
-                      ? ''
-                      : getStoredConfig('loc').postalCode
-                  }
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <MuiTextField
-                      label={t('fieldLabels.zipCode')}
-                      error={errors.zipCode !== undefined}
-                      helperText={
-                        errors.zipCode !== undefined && errors.zipCode.message
-                      }
-                      onChange={onChange}
-                      value={value}
-                      onBlur={onBlur}
-                    />
-                  )}
-                />
-              </InlineFormDisplayGroup>
-            </>
-          ) : null}
-          <AutoCompleteCountry
-            label={t('fieldLabels.country')}
-            name="country"
-            onChange={setCountry}
-            defaultValue={
-              getStoredConfig('loc').countryCode === 'T1' ||
-              getStoredConfig('loc').countryCode === 'XX' ||
-              getStoredConfig('loc').countryCode === ''
-                ? ''
-                : getStoredConfig('loc').countryCode
-            }
-          />
-          <div className={styles.inlineToggleGroup}>
-            <div>
-              <label
-                htmlFor="is-public"
-                className={styles.mainText}
-                style={{ cursor: 'pointer' }}
-              >
-                {t('fieldLabels.isPublic')}
-              </label>{' '}
-              <br />
-              {isPublic && (
-                <label className={styles.isPrivateAccountText}>
-                  {t('publicProfileExplanation')}
-                </label>
-              )}
-            </div>
-            <Controller
-              name="isPublic"
-              control={control}
-              defaultValue={false}
-              render={({ field: { onChange, value } }) => (
-                <NewToggleSwitch
-                  checked={value}
-                  onChange={onChange}
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="is-public"
-                />
-              )}
-            />
-          </div>
-
-          <div className={styles.inlineToggleGroup}>
-            <div className={styles.mainText}>
-              <label htmlFor="get-news" style={{ cursor: 'pointer' }}>
-                {t('fieldLabels.subscribe')}
-              </label>
-            </div>
-            <Controller
-              name="getNews"
-              control={control}
-              defaultValue={true}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <NewToggleSwitch
-                    checked={value}
-                    onChange={(e) => onChange(e.target.checked)}
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    id="get-news"
-                  />
-                );
-              }}
-            />
-          </div>
-
-          <div>
-            <div className={styles.inlineToggleGroup}>
-              <div className={styles.mainText}>
-                <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
-                  {t.rich('termAndCondition', {
-                    termsLink: (chunks) => (
-                      <a
-                        className="planet-links"
-                        rel="noopener noreferrer"
-                        href={`https://pp.eco/legal/${locale}/terms`}
-                        target={'_blank'}
-                      >
-                        {chunks}
-                      </a>
-                    ),
-                  })}
-                </label>
-              </div>
-              <NewToggleSwitch
-                checked={agreedToTerms || false}
-                onChange={(e) => {
-                  setAgreedToTerms(e.target.checked);
+              <Controller
+                name="zipCode"
+                control={control}
+                rules={{
+                  required: t('validationErrors.zipCodeRequired'),
+                  pattern: {
+                    value: postalRegex as RegExp,
+                    message: t('validationErrors.zipCodeInvalid'),
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: t('validationErrors.zipCodeInvalid'),
+                  },
                 }}
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                id="terms"
+                defaultValue={
+                  getStoredConfig('loc').postalCode === 'T1' ||
+                  getStoredConfig('loc').postalCode === 'XX' ||
+                  getStoredConfig('loc').postalCode === ''
+                    ? ''
+                    : getStoredConfig('loc').postalCode
+                }
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MuiTextField
+                    label={t('fieldLabels.zipCode')}
+                    error={errors.zipCode !== undefined}
+                    helperText={
+                      errors.zipCode !== undefined && errors.zipCode.message
+                    }
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
-            </div>
-            {!agreedToTerms && formSubmitted && (
-              <div className={styles.termsError}>
-                {t('termAndConditionError')}
-              </div>
-            )}
-          </div>
-          <div className={styles.horizontalLine} />
-
-          <button
-            id={'signupCreate'}
-            className={styles.saveButton}
-            onClick={handleSubmit(handleCreateAccount)}
-            disabled={isProcessing}
-          >
-            {isProcessing ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              t('createAccount')
-            )}
-          </button>
-        </div>
-        {/* snackbar */}
+            </InlineFormDisplayGroup>
+          </>
+        ) : null}
+        <AutoCompleteCountry
+          label={t('fieldLabels.country')}
+          name="country"
+          onChange={setCountry}
+          defaultValue={
+            getStoredConfig('loc').countryCode === 'T1' ||
+            getStoredConfig('loc').countryCode === 'XX' ||
+            getStoredConfig('loc').countryCode === ''
+              ? ''
+              : getStoredConfig('loc').countryCode
+          }
+        />
+        <SignupToggles
+          control={control}
+          isPublic={isPublic}
+          agreedToTerms={agreedToTerms}
+          setAgreedToTerms={setAgreedToTerms}
+          formSubmitted={formSubmitted}
+        />
+        <div className={styles.horizontalLine} />
+        <button
+          id={'signupCreate'}
+          className={styles.saveButton}
+          onClick={handleSubmit(handleCreateAccount)}
+          disabled={isProcessing}
+        >
+          {isProcessing ? (
+            <div className={styles.spinner}></div>
+          ) : (
+            t('createAccount')
+          )}
+        </button>
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={2000}
@@ -635,8 +517,9 @@ export default function CompleteSignup(): ReactElement | null {
             </Alert>
           </div>
         </Snackbar>
-      </div>
+      </CompleteSignupLayout>
     );
   }
+
   return null;
 }
