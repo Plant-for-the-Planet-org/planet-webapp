@@ -78,11 +78,11 @@ export default function CompleteSignup(): ReactElement | null {
   const [addressSuggestions, setAddressSuggestions] = useState<
     AddressSuggestionsType[]
   >([]);
-  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [type, setAccountType] = useState<UserType>('individual');
-  const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
-  const [submit, setSubmit] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   //  snack bars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [addressInput, setAddressInput] = useState('');
@@ -131,26 +131,25 @@ export default function CompleteSignup(): ReactElement | null {
     }
   }, [contextLoaded, user, token]);
 
-  const handleSnackbarOpen = () => {
-    setSnackbarOpen(true);
-  };
-
   const sendRequest = async (bodyToSend: CreateUserRequest) => {
     setIsProcessing(true);
     try {
       const res = await postApi<User>('/app/profile', {
         payload: bodyToSend as unknown as Record<string, unknown>,
       });
-      // successful signup -> go to me page
+      // successful signup -> go to profile page
       if (res) {
-        setUser(res);
-        setIsProcessing(false);
+        setSnackbarOpen(true);
+        // Delay redirect to show snackbar
+        setTimeout(() => {
+          setUser(res);
+        }, 2000);
       }
-      handleSnackbarOpen();
     } catch (err) {
-      setIsProcessing(false);
       setErrors(handleError(err as APIError));
       redirect('/login');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -161,19 +160,10 @@ export default function CompleteSignup(): ReactElement | null {
     setSnackbarOpen(false);
   };
 
-  const handleTermsAndCondition = (value: boolean) => {
-    setAcceptTerms(value);
-    if (!value) {
-      setSubmit(false);
-    }
-  };
-
   const createButtonClicked = async (data: FormData) => {
-    if (!acceptTerms) {
-      handleTermsAndCondition(false);
-      return;
-    }
-    setSubmit(true);
+    setFormSubmitted(true);
+    if (!acceptTerms) return;
+
     if (country !== '') {
       if (contextLoaded && token) {
         const { isPublic, ...otherData } = data;
@@ -601,13 +591,13 @@ export default function CompleteSignup(): ReactElement | null {
               <NewToggleSwitch
                 checked={acceptTerms || false}
                 onChange={(e) => {
-                  handleTermsAndCondition(e.target.checked);
+                  setAcceptTerms(e.target.checked);
                 }}
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                 id="terms"
               />
             </div>
-            {!acceptTerms && typeof acceptTerms !== 'object' && (
+            {!acceptTerms && formSubmitted && (
               <div className={styles.termsError}>
                 {t('termAndConditionError')}
               </div>
@@ -621,7 +611,7 @@ export default function CompleteSignup(): ReactElement | null {
             onClick={handleSubmit(createButtonClicked)}
             disabled={isProcessing}
           >
-            {submit ? (
+            {isProcessing ? (
               <div className={styles.spinner}></div>
             ) : (
               t('createAccount')
