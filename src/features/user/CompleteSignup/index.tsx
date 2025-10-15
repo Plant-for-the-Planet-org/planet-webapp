@@ -81,7 +81,7 @@ export default function CompleteSignup(): ReactElement | null {
   const [isProcessing, setIsProcessing] = useState(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [type, setAccountType] = useState<UserType>('individual');
-  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   //  snack bars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -162,7 +162,7 @@ export default function CompleteSignup(): ReactElement | null {
 
   const createButtonClicked = async (data: FormData) => {
     setFormSubmitted(true);
-    if (!acceptTerms) return;
+    if (!agreedToTerms) return;
 
     if (country !== '') {
       if (contextLoaded && token) {
@@ -589,15 +589,15 @@ export default function CompleteSignup(): ReactElement | null {
                 </label>
               </div>
               <NewToggleSwitch
-                checked={acceptTerms || false}
+                checked={agreedToTerms || false}
                 onChange={(e) => {
-                  setAcceptTerms(e.target.checked);
+                  setAgreedToTerms(e.target.checked);
                 }}
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                 id="terms"
               />
             </div>
-            {!acceptTerms && formSubmitted && (
+            {!agreedToTerms && formSubmitted && (
               <div className={styles.termsError}>
                 {t('termAndConditionError')}
               </div>
