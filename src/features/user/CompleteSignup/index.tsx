@@ -78,19 +78,15 @@ export default function CompleteSignup(): ReactElement | null {
   }, [type, reset]);
 
   useEffect(() => {
-    async function loadFunction() {
-      if (token) {
-        if (user && user.slug) {
-          if (typeof window !== 'undefined') {
-            router.push(localizedPath('/profile'));
-          }
-        }
-      } else {
-        router.push(localizedPath('/'));
-      }
+    if (!contextLoaded) return;
+
+    if (token === null) {
+      router.push(localizedPath('/'));
+      return;
     }
-    if (contextLoaded) {
-      loadFunction();
+
+    if (user?.slug) {
+      router.push(localizedPath('/profile'));
     }
   }, [contextLoaded, user, token]);
 
@@ -127,21 +123,17 @@ export default function CompleteSignup(): ReactElement | null {
   };
   const handleCreateAccount = async (data: SignupFormData) => {
     setFormSubmitted(true);
-    if (!agreedToTerms) return;
+    if (!agreedToTerms || !country || !contextLoaded || !token) return;
 
-    if (country !== '') {
-      if (contextLoaded && token) {
-        const { isPublic, ...otherData } = data;
-        const submitData = {
-          ...otherData,
-          country: country as CountryCode,
-          isPrivate: !isPublic,
-          type,
-          oAuthAccessToken: token,
-        };
-        createUserProfile(submitData);
-      }
-    }
+    const { isPublic, ...otherData } = data;
+    const submitData = {
+      ...otherData,
+      country: country as CountryCode,
+      isPrivate: !isPublic,
+      type,
+      oAuthAccessToken: token,
+    };
+    await createUserProfile(submitData);
   };
   const handleSnackbarClose = (event?: SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
