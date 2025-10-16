@@ -32,6 +32,8 @@ type Article = SingleLinkArticle | MultipleLinkArticle;
 function isSingleLinkArticle(article: Article): article is SingleLinkArticle {
   return 'link' in article;
 }
+
+// cspell:ignore SEMEA
 const articles: Article[] = [
   {
     id: 1,

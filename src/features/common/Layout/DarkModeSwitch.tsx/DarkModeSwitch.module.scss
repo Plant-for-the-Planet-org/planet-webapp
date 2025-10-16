@@ -1,6 +1,6 @@
 @import '../../../../theme/theme';
 
-.darkmodeLabel {
+.darkModeLabel {
   background-color: rgba($color: #b2b2b2, $alpha: 0.4);
   border-radius: 50px;
   cursor: pointer;
@@ -19,7 +19,7 @@
     height: 7px;
   }
 }
-.darkmodeBall {
+.darkModeBall {
   background-color: $backgroundColorDark;
   border-radius: 50%;
   position: absolute;
@@ -29,11 +29,11 @@
   transform: translateX(5px);
   transition: transform 0.2s linear;
 }
-.darkmodeCheckbox {
+.darkModeCheckbox {
   opacity: 0;
   position: absolute;
 }
 
-.darkmodeCheckbox:checked + .darkmodeLabel .darkmodeBall {
+.darkModeCheckbox:checked + .darkModeLabel .darkModeBall {
   transform: translateX(16px);
 }
