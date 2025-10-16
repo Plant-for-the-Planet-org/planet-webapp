@@ -1,10 +1,17 @@
 import type Supercluster from 'supercluster';
-import type { User } from '@planet-sdk/common';
+import type { ProjectSite, User } from '@planet-sdk/common';
 import type { MutableRefObject } from 'react';
 import type { UserPublicProfile } from '@planet-sdk/common';
 import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import type { FlyToInterpolator } from 'react-map-gl';
 import type { SetState } from './common';
+import type {
+  Feature,
+  FeatureCollection,
+  MultiPolygon,
+  Polygon,
+} from 'geojson';
+import type { Map as MapLibreMap } from 'maplibre-gl';
 
 export interface ClusterMarker {
   geometry: {
@@ -267,3 +274,20 @@ export interface SpatialReference {
   wkid: number;
   latestWkid?: number;
 }
+
+// Project site
+export type ProjectSiteFeatureCollection = FeatureCollection<
+  Polygon | MultiPolygon,
+  ProjectSite | Record<string, never>
+>;
+
+export type ProjectSiteFeature = Feature<
+  Polygon | MultiPolygon,
+  ProjectSite | Record<string, never>
+>;
+
+// Map
+export interface ExtendedMapLibreMap extends MapLibreMap {
+  getMap: () => MapLibreMap;
+}
+export type MapLibreRef = MutableRefObject<ExtendedMapLibreMap | null>;
