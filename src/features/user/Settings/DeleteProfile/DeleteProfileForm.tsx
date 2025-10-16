@@ -122,7 +122,8 @@ export default function DeleteProfileForm() {
       isOpen={isModalOpen}
       handleContinue={handleSubscriptions}
       handleCancel={closeModal}
-      buttonTitle={tCommon('showSubscriptions')}
+      continueButtonText={tCommon('showSubscriptions')}
+      cancelButtonText={tCommon('cancel')}
       modalTitle={tCommon('modalTitle')}
       modalSubtitle={tCommon('modalSubtitle')}
     />
