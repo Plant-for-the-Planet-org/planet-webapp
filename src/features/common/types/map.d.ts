@@ -17,7 +17,6 @@ import type {
   Polygon,
 } from 'geojson';
 import type { Map as MapLibreMap } from 'maplibre-gl';
-import type { InterventionProperties } from '../../projectsV2/ProjectsMap/microComponents/InterventionLayers';
 
 export interface ClusterMarker {
   geometry: {
