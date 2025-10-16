@@ -8,16 +8,16 @@ import { useUserAgent } from 'next-useragent';
 import { ParamsContext } from '../Layout/QueryParamsContext';
 
 interface Props {
-  setshowVideo: Function;
+  setShowVideo: Function;
 }
 
-function VideoContainer({ setshowVideo }: Props): ReactElement {
+function VideoContainer({ setShowVideo }: Props): ReactElement {
   const t = useTranslations('Common');
-  const [videoURL, setvideoURL] = useState<null | string>(null);
+  const [videoURL, setVideoURL] = useState<null | string>(null);
   const { isContextLoaded, embed, enableIntro } = useContext(ParamsContext);
   const videoRef = useRef<ReactPlayer | null>(null);
   const handleVideoClose = () => {
-    setshowVideo(false);
+    setShowVideo(false);
     if (videoRef?.current) {
       videoRef.current.seekTo(0);
     }
@@ -48,34 +48,34 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     if (screenWidth < 768) {
       switch (localStorage.getItem('language')) {
         case 'de':
-          setvideoURL(
+          setVideoURL(
             `https://www.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
           );
           break;
         case 'en':
-          setvideoURL(
+          setVideoURL(
             `https://www.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
           );
           break;
         default:
-          setvideoURL(
+          setVideoURL(
             `https://www.plant-for-the-planet.org/wp-content/videos/en-intro-mobile-planet.mp4`
           );
       }
     } else {
       switch (localStorage.getItem('language')) {
         case 'de':
-          setvideoURL(
+          setVideoURL(
             `https://www.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
           );
           break;
         case 'en':
-          setvideoURL(
+          setVideoURL(
             `https://www.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
           );
           break;
         default:
-          setvideoURL(
+          setVideoURL(
             `https://www.plant-for-the-planet.org/wp-content/videos/en-intro-web-planet.mp4`
           );
       }

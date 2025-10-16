@@ -34,7 +34,7 @@ export default function Credits({
 
   useEffect(() => {
     if (typeof Storage !== 'undefined') {
-      //fetching currencycode from browser's localstorage
+      //fetching currency code from browser's localstorage
       if (localStorage.getItem('currencyCode')) {
         const currencyCode = localStorage.getItem('currencyCode');
         if (currencyCode) setSelectedCurrency(currencyCode);

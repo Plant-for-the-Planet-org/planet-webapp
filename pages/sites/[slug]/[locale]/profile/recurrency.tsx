@@ -44,7 +44,7 @@ function RecurrentDonations({
 
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
-  const [recurrencies, setrecurrencies] = useState<Subscription[]>();
+  const [recurrencies, setRecurrencies] = useState<Subscription[]>();
 
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
 
@@ -75,7 +75,7 @@ function RecurrentDonations({
             obj.status != 'active' &&
             obj.status != 'trialing'
         );
-        setrecurrencies([
+        setRecurrencies([
           ...activeRecurrencies,
           ...pauseRecurrencies,
           ...otherRecurrencies,
