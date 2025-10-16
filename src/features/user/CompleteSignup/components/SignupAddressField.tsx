@@ -5,8 +5,7 @@ import type { SignupFormData } from '..';
 
 import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';
-import { getStoredConfig } from '../../../../utils/storeConfig';
-import { getValidLocationValue, MuiTextField } from '..';
+import { MuiTextField } from '..';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { getPostalRegex } from '../../../../utils/addressManagement';
@@ -21,6 +20,8 @@ interface SignupAddressFieldProps {
   country: '' | ExtendedCountryCode;
   errors: FieldErrors<SignupFormData>;
   setValue: UseFormSetValue<SignupFormData>;
+  defaultCity: string;
+  defaultPostalCode: string;
 }
 
 const SignupAddressField = ({
@@ -28,6 +29,8 @@ const SignupAddressField = ({
   country,
   errors,
   setValue,
+  defaultCity,
+  defaultPostalCode,
 }: SignupAddressFieldProps) => {
   const tSignup = useTranslations('EditProfile');
   const postalRegex = useMemo(() => getPostalRegex(country), [country]);
@@ -153,7 +156,7 @@ const SignupAddressField = ({
               message: tSignup('validationErrors.cityInvalid'),
             },
           }}
-          defaultValue={getValidLocationValue(getStoredConfig('loc').city)}
+          defaultValue={defaultCity}
           render={({ field: { onChange, value, onBlur } }) => (
             <MuiTextField
               label={tSignup('fieldLabels.city')}
@@ -179,9 +182,7 @@ const SignupAddressField = ({
               message: tSignup('validationErrors.zipCodeInvalid'),
             },
           }}
-          defaultValue={getValidLocationValue(
-            getStoredConfig('loc').postalCode
-          )}
+          defaultValue={defaultPostalCode}
           render={({ field: { onChange, value, onBlur } }) => (
             <MuiTextField
               label={tSignup('fieldLabels.zipCode')}

@@ -8,7 +8,7 @@ import type {
   CountryCode,
 } from '@planet-sdk/common';
 
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useMemo } from 'react';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
 import { Snackbar, Alert, styled, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
@@ -42,12 +42,9 @@ export type SignupFormData = Omit<
   isPublic: boolean;
 };
 
-export function getValidLocationValue(value: string): string {
-  if (value === 'T1' || value === 'XX' || value === '') {
-    return '';
-  }
-  return value;
-}
+const getDefaultLocationValue = (value: string): string => {
+  return value === 'T1' || value === 'XX' || value === '' ? '' : value;
+};
 
 export default function CompleteSignup(): ReactElement | null {
   const {
@@ -97,6 +94,16 @@ export default function CompleteSignup(): ReactElement | null {
     }
   }, [contextLoaded, user, token]);
 
+  const storedLocation = useMemo(() => getStoredConfig('loc'), []);
+  const defaultLocationValues = useMemo(
+    () => ({
+      city: getDefaultLocationValue(storedLocation.city),
+      postalCode: getDefaultLocationValue(storedLocation.postalCode),
+      countryCode: getDefaultLocationValue(storedLocation.countryCode),
+    }),
+    [storedLocation]
+  );
+
   const createUserProfile = async (bodyToSend: CreateUserRequest) => {
     setIsProcessing(true);
     try {
@@ -143,164 +150,155 @@ export default function CompleteSignup(): ReactElement | null {
     setSnackbarOpen(false);
   };
 
-  if (
-    !contextLoaded ||
-    (contextLoaded && token && user) ||
-    (contextLoaded && !token)
-  ) {
-    return null;
-  }
+  // Only show signup form when authenticated but profile doesn't exist
+  if (!contextLoaded || !token || user !== null) return null;
 
-  if (contextLoaded && token && user === null) {
-    return (
-      <CompleteSignupLayout isProcessing={isProcessing}>
-        <SignupHeader />
-        <ProfileTypeSelector setAccountType={setAccountType} />
-        <InlineFormDisplayGroup>
-          <Controller
-            name="firstname"
-            control={control}
-            rules={{
-              required: t('validationErrors.firstNameRequired'),
-              maxLength: {
-                value: 50,
-                message: t('validationErrors.maxChars', { max: 50 }),
-              },
-              pattern: {
-                value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
-                message: t('validationErrors.firstNameInvalid'),
-              },
-            }}
-            defaultValue={auth0User?.given_name || ''}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <MuiTextField
-                label={t('fieldLabels.firstName')}
-                error={errors.firstname !== undefined}
-                helperText={
-                  errors.firstname !== undefined && errors.firstname.message
-                }
-                onChange={onChange}
-                value={value}
-                onBlur={onBlur}
-              />
-            )}
-          />
-          <Controller
-            name="lastname"
-            control={control}
-            rules={{
-              required: t('validationErrors.lastNameRequired'),
-              maxLength: {
-                value: 50,
-                message: t('validationErrors.maxChars', { max: 50 }),
-              },
-              pattern: {
-                value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
-                message: t('validationErrors.lastNameInvalid'),
-              },
-            }}
-            defaultValue={auth0User?.family_name || ''}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <MuiTextField
-                label={t('fieldLabels.lastName')}
-                error={errors.lastname !== undefined}
-                helperText={
-                  errors.lastname !== undefined && errors.lastname.message
-                }
-                onChange={onChange}
-                value={value}
-                onBlur={onBlur}
-              />
-            )}
-          />
-        </InlineFormDisplayGroup>
-
-        {type !== 'individual' ? (
-          <Controller
-            name="name"
-            control={control}
-            rules={{
-              required: t('validationErrors.nameRequired'),
-              pattern: {
-                value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
-                message: t('validationErrors.nameInvalid'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <MuiTextField
-                label={t('fieldLabels.name', {
-                  type: selectUserType(type, t),
-                })}
-                error={errors.name !== undefined}
-                helperText={errors.name !== undefined && errors.name.message}
-                onChange={onChange}
-                value={value}
-                onBlur={onBlur}
-              />
-            )}
-          />
-        ) : null}
-
-        <MuiTextField
-          defaultValue={auth0User?.email}
-          label={t('fieldLabels.email')}
-          disabled
-        />
-        <AutoCompleteCountry
-          label={t('fieldLabels.country')}
-          name="country"
-          onChange={setCountry}
-          defaultValue={getValidLocationValue(
-            getStoredConfig('loc').countryCode
-          )}
-        />
-        {type === 'tpo' && (
-          <SignupAddressField
-            control={control}
-            country={country}
-            setValue={setValue}
-            errors={errors}
-          />
-        )}
-        <SignupToggles
+  return (
+    <CompleteSignupLayout isProcessing={isProcessing}>
+      <SignupHeader />
+      <ProfileTypeSelector setAccountType={setAccountType} />
+      <InlineFormDisplayGroup>
+        <Controller
+          name="firstname"
           control={control}
-          isPublic={isPublic}
-          agreedToTerms={agreedToTerms}
-          setAgreedToTerms={setAgreedToTerms}
-          formSubmitted={formSubmitted}
-        />
-        <div className={styles.horizontalLine} />
-        <button
-          id={'signupCreate'}
-          className={styles.saveButton}
-          onClick={handleSubmit(handleCreateAccount)}
-          disabled={isProcessing}
-        >
-          {isProcessing ? (
-            <div className={styles.spinner}></div>
-          ) : (
-            t('createAccount')
+          rules={{
+            required: t('validationErrors.firstNameRequired'),
+            maxLength: {
+              value: 50,
+              message: t('validationErrors.maxChars', { max: 50 }),
+            },
+            pattern: {
+              value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
+              message: t('validationErrors.firstNameInvalid'),
+            },
+          }}
+          defaultValue={auth0User?.given_name || ''}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <MuiTextField
+              label={t('fieldLabels.firstName')}
+              error={errors.firstname !== undefined}
+              helperText={
+                errors.firstname !== undefined && errors.firstname.message
+              }
+              onChange={onChange}
+              value={value}
+              onBlur={onBlur}
+            />
           )}
-        </button>
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={2000}
-          onClose={() => handleSnackbarClose}
-        >
-          <div>
-            <Alert
-              elevation={6}
-              variant="filled"
-              onClose={handleSnackbarClose}
-              severity="success"
-            >
-              {t('profileCreated')}
-            </Alert>
-          </div>
-        </Snackbar>
-      </CompleteSignupLayout>
-    );
-  }
+        />
+        <Controller
+          name="lastname"
+          control={control}
+          rules={{
+            required: t('validationErrors.lastNameRequired'),
+            maxLength: {
+              value: 50,
+              message: t('validationErrors.maxChars', { max: 50 }),
+            },
+            pattern: {
+              value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
+              message: t('validationErrors.lastNameInvalid'),
+            },
+          }}
+          defaultValue={auth0User?.family_name || ''}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <MuiTextField
+              label={t('fieldLabels.lastName')}
+              error={errors.lastname !== undefined}
+              helperText={
+                errors.lastname !== undefined && errors.lastname.message
+              }
+              onChange={onChange}
+              value={value}
+              onBlur={onBlur}
+            />
+          )}
+        />
+      </InlineFormDisplayGroup>
 
-  return null;
+      {type !== 'individual' ? (
+        <Controller
+          name="name"
+          control={control}
+          rules={{
+            required: t('validationErrors.nameRequired'),
+            pattern: {
+              value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
+              message: t('validationErrors.nameInvalid'),
+            },
+          }}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <MuiTextField
+              label={t('fieldLabels.name', {
+                type: selectUserType(type, t),
+              })}
+              error={errors.name !== undefined}
+              helperText={errors.name !== undefined && errors.name.message}
+              onChange={onChange}
+              value={value}
+              onBlur={onBlur}
+            />
+          )}
+        />
+      ) : null}
+
+      <MuiTextField
+        defaultValue={auth0User?.email}
+        label={t('fieldLabels.email')}
+        disabled
+      />
+      <AutoCompleteCountry
+        label={t('fieldLabels.country')}
+        name="country"
+        onChange={setCountry}
+        defaultValue={defaultLocationValues.countryCode}
+      />
+      {type === 'tpo' && (
+        <SignupAddressField
+          control={control}
+          country={country}
+          setValue={setValue}
+          errors={errors}
+          defaultCity={defaultLocationValues.city}
+          defaultPostalCode={defaultLocationValues.postalCode}
+        />
+      )}
+      <SignupToggles
+        control={control}
+        isPublic={isPublic}
+        agreedToTerms={agreedToTerms}
+        setAgreedToTerms={setAgreedToTerms}
+        formSubmitted={formSubmitted}
+      />
+      <div className={styles.horizontalLine} />
+      <button
+        id={'signupCreate'}
+        className={styles.saveButton}
+        onClick={handleSubmit(handleCreateAccount)}
+        disabled={isProcessing}
+      >
+        {isProcessing ? (
+          <div className={styles.spinner}></div>
+        ) : (
+          t('createAccount')
+        )}
+      </button>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={2000}
+        onClose={() => handleSnackbarClose}
+      >
+        <div>
+          <Alert
+            elevation={6}
+            variant="filled"
+            onClose={handleSnackbarClose}
+            severity="success"
+          >
+            {t('profileCreated')}
+          </Alert>
+        </div>
+      </Snackbar>
+    </CompleteSignupLayout>
+  );
 }
