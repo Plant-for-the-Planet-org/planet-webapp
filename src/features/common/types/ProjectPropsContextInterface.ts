@@ -107,13 +107,13 @@ interface ProjectPropsContextInterface {
   showProjects: boolean;
   setShowProjects: SetState<boolean>;
   searchedProject: MapProject[];
-  setsearchedProjects: SetState<MapProject[]>;
+  setSearchedProjects: SetState<MapProject[]>;
   geoJson: SitesGeoJSON | null;
   setGeoJson: SetState<SitesGeoJSON | null>;
   selectedSite: number;
   setSelectedSite: SetState<number>;
   siteExists: boolean;
-  setsiteExists: SetState<boolean>;
+  setSiteExists: SetState<boolean>;
   isMobile: boolean;
   // Evaluate - possible to remove infoRef
   infoRef: RefObject<HTMLDivElement>;

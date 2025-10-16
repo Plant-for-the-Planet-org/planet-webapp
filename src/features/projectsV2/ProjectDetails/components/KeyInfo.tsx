@@ -6,7 +6,10 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import SingleProjectInfoItem from './microComponents/SingleProjectInfoItem';
 import InfoIconPopup from './microComponents/InfoIconPopup';
 import InterventionSeason from './microComponents/InterventionSeason';
-import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
+import {
+  getFormattedNumber,
+  getFormattedRoundedNumber,
+} from '../../../../utils/getFormattedNumber';
 import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
@@ -19,6 +22,7 @@ interface Props {
   maxPlantingDensity: number | null;
   employees: number | null;
   degradationYear: number | null;
+  projectAreaInHectares: number | null;
 }
 
 const KeyInfo = ({
@@ -31,6 +35,7 @@ const KeyInfo = ({
   maxPlantingDensity,
   employees,
   degradationYear,
+  projectAreaInHectares,
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -47,6 +52,8 @@ const KeyInfo = ({
   const showPlantingSeasons =
     plantingSeasons !== null && plantingSeasons.length > 0;
   const restorationDate = firstTreePlanted ? formatDate(firstTreePlanted) : '';
+  const showProjectArea =
+    projectAreaInHectares !== null && projectAreaInHectares > 0;
 
   return (
     <div className={styles.keyInfoContainer}>
@@ -91,7 +98,7 @@ const KeyInfo = ({
         </div>
       )}
 
-      {(showPlantingDensity || showEmployees) && (
+      {(showPlantingDensity || showProjectArea) && (
         <div className={styles.keyInfoSubContainer}>
           {showPlantingDensity && (
             <SingleProjectInfoItem title={tProjectDetails('plantingDensity')}>
@@ -106,19 +113,34 @@ const KeyInfo = ({
               </>
             </SingleProjectInfoItem>
           )}
-          {showEmployees && (
-            <SingleProjectInfoItem title={tProjectDetails('employees')}>
-              <p>{employees}</p>
+          {showProjectArea && (
+            <SingleProjectInfoItem title={tProjectDetails('projectArea')}>
+              <p>
+                {tProjectDetails('projectAreaUnit', {
+                  formattedArea: getFormattedRoundedNumber(
+                    locale,
+                    projectAreaInHectares,
+                    0
+                  ),
+                })}
+              </p>
             </SingleProjectInfoItem>
           )}
         </div>
       )}
 
-      {showDegradationYear && (
+      {(showDegradationYear || showEmployees) && (
         <div className={styles.keyInfoSubContainer}>
-          <SingleProjectInfoItem title={tProjectDetails('degradationYear')}>
-            <p>{degradationYear}</p>
-          </SingleProjectInfoItem>
+          {showEmployees && (
+            <SingleProjectInfoItem title={tProjectDetails('employees')}>
+              <p>{employees}</p>
+            </SingleProjectInfoItem>
+          )}
+          {showDegradationYear && (
+            <SingleProjectInfoItem title={tProjectDetails('degradationYear')}>
+              <p>{degradationYear}</p>
+            </SingleProjectInfoItem>
+          )}
         </div>
       )}
 

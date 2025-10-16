@@ -124,6 +124,7 @@ const options: ProjectSiteFeature[] = [
     },
   },
 ];
+// cspell:enable
 
 export const Preview: Story = {
   render: () => {

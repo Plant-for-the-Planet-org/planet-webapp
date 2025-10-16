@@ -54,6 +54,10 @@ const ProjectSiteDropdown = ({
       };
     });
   }, [projectSites]);
+  const hasMultipleSites = useMemo(
+    () => siteList.length > 1,
+    [siteList.length]
+  );
 
   const getId = useCallback(
     (selectedSiteId: number) => {
@@ -73,6 +77,7 @@ const ProjectSiteDropdown = ({
   }, [activeDropdown]);
 
   const toggleSiteMenu = () => {
+    if (!hasMultipleSites) return;
     if (activeDropdown !== 'site') {
       setActiveDropdown('site');
       setIsMenuOpen(true);
@@ -80,9 +85,15 @@ const ProjectSiteDropdown = ({
       setIsMenuOpen((prev) => !prev);
     }
   };
+
   return (
-    <>
-      <div className={styles.dropdownButton} onClick={toggleSiteMenu}>
+    <div className={styles.dropdownWrapper}>
+      <div
+        className={`${
+          hasMultipleSites ? styles.dropdownButton : styles.dropdownDetails
+        }`}
+        onClick={hasMultipleSites ? toggleSiteMenu : undefined}
+      >
         <div className={styles.siteIconAndTextContainer}>
           <SiteIcon
             width={27}
@@ -119,15 +130,17 @@ const ProjectSiteDropdown = ({
             </>
           )}
         </div>
-        <div className={styles.menuArrow}>
-          {isMenuOpen ? (
-            <DropdownUpArrow width={10} />
-          ) : (
-            <DropdownDownArrow width={10} />
-          )}
-        </div>
+        {hasMultipleSites && (
+          <div className={styles.menuArrow}>
+            {isMenuOpen ? (
+              <DropdownUpArrow width={10} />
+            ) : (
+              <DropdownDownArrow width={10} />
+            )}
+          </div>
+        )}
       </div>
-      {isMenuOpen && (
+      {isMenuOpen && hasMultipleSites && (
         <ProjectSiteList
           siteList={siteList}
           setSelectedSite={setSelectedSite}
@@ -137,7 +150,7 @@ const ProjectSiteDropdown = ({
           setSelectedSampleTree={setSelectedSampleTree}
         />
       )}
-    </>
+    </div>
   );
 };
 

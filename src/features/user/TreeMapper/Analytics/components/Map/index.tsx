@@ -104,7 +104,7 @@ export const MapContainer = () => {
   });
 
   useEffect(() => {
-    //loads the default mapstyle
+    //loads the default map style
     async function loadMapStyle() {
       const result = await getMapStyle('default');
       if (result) {
@@ -220,12 +220,12 @@ export const MapContainer = () => {
     setSelectedLayer(null);
   }, [project]);
 
-  // Progamatically navigate to another location on the map
+  // Programmatically navigate to another location on the map
   const _setViewport = (feature: Feature | InterventionFeature, zoom = 16) => {
-    let centeroid;
+    let centroid;
 
     if (feature.geometry === null) {
-      centeroid = {
+      centroid = {
         type: 'Feature',
         properties: {},
         geometry: {
@@ -235,11 +235,11 @@ export const MapContainer = () => {
       };
       zoom = 0;
     } else {
-      centeroid = center(feature);
+      centroid = center(feature);
     }
 
-    if (centeroid?.geometry) {
-      const [longitude, latitude] = centeroid.geometry.coordinates;
+    if (centroid?.geometry) {
+      const [longitude, latitude] = centroid.geometry.coordinates;
       setViewport({
         latitude,
         longitude,
@@ -408,7 +408,7 @@ export const MapContainer = () => {
 
   // Handle viewport change
   // This will be used to update the viewport state
-  // If not presnet then it will casue a weird behavior of map where will not
+  // If not present then it will cause a weird behavior of map where will not
   // move to the updated selected location --(happens when data changes based on filter)--
   const _handleViewport = (newViewport: ViewportProps) =>
     setViewport({ ...viewport, ...newViewport });

@@ -21,7 +21,7 @@ import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidV4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
@@ -147,7 +147,7 @@ const IssueCodesForm = (): ReactElement | null => {
         const res = await postApiAuthenticated<Donation>('/app/donations', {
           payload: cleanedData as unknown as Record<string, unknown>,
           additionalHeaders: {
-            'IDEMPOTENCY-KEY': uuidv4(),
+            'IDEMPOTENCY-KEY': uuidV4(),
             'X-Locale': locale,
           },
         });

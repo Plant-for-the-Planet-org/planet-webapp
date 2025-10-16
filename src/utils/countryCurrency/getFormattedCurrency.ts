@@ -1,4 +1,4 @@
-export default function getFormatedCurrency(
+export default function getFormattedCurrency(
   langCode: string,
   currency: string,
   number: number,

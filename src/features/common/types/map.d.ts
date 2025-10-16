@@ -156,7 +156,7 @@ export interface RegisterTreesFormProps {
 }
 
 // Map styling
-
+// cspell:disable
 export interface MapStyle {
   version: number;
   sprite: string;
@@ -279,6 +279,7 @@ export interface SpatialReference {
   wkid: number;
   latestWkid?: number;
 }
+// cspell:enable
 
 // Project site
 export type ProjectSiteFeatureCollection = FeatureCollection<

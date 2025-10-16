@@ -74,7 +74,7 @@ const MapControls = ({
 
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
-    singleProject?.sites?.length > 1;
+    singleProject?.sites?.length > 0;
   const canShowSatelliteToggle =
     !(
       isMobile &&
@@ -150,8 +150,8 @@ const MapControls = ({
   const projectListControlsContainerStyles = `${
     styles.projectListControlsContainer
   } ${embed === 'true' ? styles.embedModeMobile : ''}`;
-  const projectDetailsControlsContainerStyles = `${
-    styles.projectDetailsControlsContainer
+  const siteInterventionDropdownsMobileStyles = `${
+    styles.siteInterventionDropdownsMobile
   } ${embed === 'true' ? styles.embedModeMobile : ''}`;
 
   return (
@@ -164,7 +164,7 @@ const MapControls = ({
       {isProjectDetailsPage && (
         <>
           {isMobile ? (
-            <div className={projectDetailsControlsContainerStyles}>
+            <div className={siteInterventionDropdownsMobileStyles}>
               {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
@@ -184,14 +184,14 @@ const MapControls = ({
               )}
             </div>
           ) : (
-            <>
+            <div className={styles.siteInterventionDropdowns}>
               {hasProjectSites && (
                 <ProjectSiteDropdown {...siteDropdownProps} />
               )}
               {canShowInterventionDropdown && (
                 <InterventionDropDown {...interventionDropDownProps} />
               )}
-            </>
+            </div>
           )}
           {canShowSatelliteToggle && (
             <button

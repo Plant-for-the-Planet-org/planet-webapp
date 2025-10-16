@@ -50,13 +50,10 @@ export default function Donate({
     setShowSingleProject,
     showProjects,
     setShowProjects,
-    setsearchedProjects,
+    setSearchedProjects,
     setZoomLevel,
     filteredProjects,
   } = useProjectProps();
-
-  // Set tenent
-  // set local storage
 
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const locale = useLocale();
@@ -77,9 +74,9 @@ export default function Donate({
   }, [router.isReady]);
 
   useEffect(() => {
-    const getdirectGift = localStorage.getItem('directGift');
-    if (getdirectGift) {
-      setDirectGift(JSON.parse(getdirectGift));
+    const getDirectGift = localStorage.getItem('directGift');
+    if (getDirectGift) {
+      setDirectGift(JSON.parse(getDirectGift));
     }
   }, []);
 
@@ -97,7 +94,7 @@ export default function Donate({
       const safePath = encodeURIComponent(router.query.p);
       router.push(localizedPath(encodeURI(`/projects-archive/${safePath}`)));
     }
-  }, [router]);
+  }, [router.query.p]);
 
   useEffect(() => {
     setShowSingleProject(false);
@@ -141,7 +138,7 @@ export default function Donate({
   const OtherProjectListProps = {
     showProjects,
     setShowProjects,
-    setsearchedProjects,
+    setSearchedProjects,
     currencyCode,
     setCurrencyCode,
   };

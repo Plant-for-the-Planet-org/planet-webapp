@@ -1,3 +1,5 @@
+// cspell:ignore costa-rica
+
 import Link from 'next/link';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/SeaOfTrees.module.scss';

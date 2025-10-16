@@ -9,6 +9,7 @@ const meta: Meta<typeof ShareModal> = {
 export default meta;
 type Story = StoryObj<typeof ShareModal>;
 
+// cspell:disable
 const dummyUserProfile = {
   slug: 'plant-for-the-planet',
   type: 'tpo',
@@ -54,6 +55,7 @@ const dummyUserProfile = {
     giftFunds: [],
   },
 };
+// cspell:enable
 
 export const Preview: Story = {
   args: {

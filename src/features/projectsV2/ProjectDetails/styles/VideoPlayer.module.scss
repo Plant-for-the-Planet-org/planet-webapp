@@ -1,6 +1,7 @@
 @import '../../../../theme/theme';
 
-.videoContainer {
+.videoContainer,
+.videoConsentContainer {
   width: 100%;
   position: relative;
 }
@@ -23,4 +24,48 @@
   svg {
     margin-left: 3px;
   }
+}
+
+// Consent UI styles
+.consentBackground {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  background: $dsMediumGreyTransparent50;
+  border-radius: 13px;
+  padding: 20px;
+  gap: 12px;
+  text-align: center;
+}
+
+.consentContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 20px;
+}
+
+.consentButton {
+  background-color: $dsDarkGrey;
+  color: $dsWhite;
+  border-color: $dsDarkGrey;
+
+  &:hover {
+    opacity: 0.8;
+    background: $dsDarkGrey;
+    border-color: $dsDarkGrey;
+  }
+}
+
+.consentText {
+  font-size: $fontXSmall;
+  font-weight: 500;
 }

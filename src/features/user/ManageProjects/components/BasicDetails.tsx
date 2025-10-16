@@ -132,7 +132,7 @@ export default function BasicDetails({
   const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
 
   useEffect(() => {
-    //loads the default mapstyle
+    //loads the default map style
     async function loadMapStyle() {
       const result = await getMapStyle('openStreetMap');
       if (result) {
@@ -261,7 +261,7 @@ export default function BasicDetails({
     if (projectDetails?.id) {
       setIsSkipButtonVisible(true);
     }
-  }, [router]);
+  }, [projectDetails?.id]);
 
   useEffect(() => {
     if (projectDetails) {
