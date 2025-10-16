@@ -1,6 +1,6 @@
 import type {
   DistinctSpecies,
-  InterventionFeature,
+  DataExplorerInterventionFeature,
   InterventionDetailsApiResponse,
   InterventionFeatureCollection,
   Feature,
@@ -136,7 +136,7 @@ export const MapContainer = () => {
     InterventionDetailsApiResponse['res'] | null
   >(null);
   const [selectedLayer, setSelectedLayer] = useState<
-    InterventionFeature['properties'] | null
+    DataExplorerInterventionFeature['properties'] | null
   >(null);
   const [search, setSearch] = useState<string>('');
   const [queryType, setQueryType] = useState<QueryType | null>(null);
@@ -221,7 +221,10 @@ export const MapContainer = () => {
   }, [project]);
 
   // Programmatically navigate to another location on the map
-  const _setViewport = (feature: Feature | InterventionFeature, zoom = 16) => {
+  const _setViewport = (
+    feature: Feature | DataExplorerInterventionFeature,
+    zoom = 16
+  ) => {
     let centroid;
 
     if (feature.geometry === null) {
@@ -260,8 +263,8 @@ export const MapContainer = () => {
         setInterventionDetails(null);
       }
 
-      const interventionFeatures: InterventionFeature[] = res.data.map(
-        (intervention) => {
+      const interventionFeatures: DataExplorerInterventionFeature[] =
+        res.data.map((intervention) => {
           // Calculate the area based on the feature's coordinates using Turf.js
           const polygonAreaSqMeters = area(intervention.geometry);
           const treeCount = intervention.properties.treeCount;
@@ -278,8 +281,7 @@ export const MapContainer = () => {
               opacity: getPolygonOpacity(density),
             },
           };
-        }
-      );
+        });
 
       const _featureCollection = {
         type: 'FeatureCollection',
