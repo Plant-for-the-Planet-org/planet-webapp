@@ -1,5 +1,4 @@
 import type { ReactElement, SyntheticEvent } from 'react';
-import type { AddressSuggestionsType } from '../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../common/types/country';
 import type {
   APIError,
@@ -9,16 +8,9 @@ import type {
   CountryCode,
 } from '@planet-sdk/common';
 
-import {
-  useCallback,
-  useState,
-  useContext,
-  useMemo,
-  useEffect,
-  useRef,
-} from 'react';
+import { useState, useContext, useEffect } from 'react';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
-import { Snackbar, Alert, MenuItem, styled, TextField } from '@mui/material';
+import { Snackbar, Alert, styled, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import { useForm, Controller } from 'react-hook-form';
 import { selectUserType } from '../../../utils/selectUserType';
@@ -30,18 +22,14 @@ import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayG
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import {
-  getAddressDetailsFromText,
-  getAddressSuggestions,
-} from '../../../utils/geocoder';
-import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
-import { getPostalRegex } from '../../../utils/addressManagement';
 import { useRouter } from 'next/router';
-import SignupToggles from './microComponents/SignupToggles';
-import SignupHeader from './microComponents/SignupHeader';
-import CompleteSignupLayout from './microComponents/CompleteSignupLayout';
+import SignupToggles from './components/SignupToggles';
+import SignupHeader from './components/SignupHeader';
+import SignupAddressField from './components/SignupAddressField';
+import CompleteSignupLayout from './components/CompleteSignupLayout';
+import ProfileTypeSelector from './components/ProfileTypeSelector';
 
-const MuiTextField = styled(TextField)(() => {
+export const MuiTextField = styled(TextField)(() => {
   return {
     width: '100%',
   };
@@ -53,6 +41,13 @@ export type SignupFormData = Omit<
 > & {
   isPublic: boolean;
 };
+
+export function getValidLocationValue(value: string): string {
+  if (value === 'T1' || value === 'XX' || value === '') {
+    return '';
+  }
+  return value;
+}
 
 export default function CompleteSignup(): ReactElement | null {
   const {
@@ -71,9 +66,6 @@ export default function CompleteSignup(): ReactElement | null {
   const { user, setUser, auth0User, contextLoaded, token } = useUserProps();
 
   // states
-  const [addressSuggestions, setAddressSuggestions] = useState<
-    AddressSuggestionsType[]
-  >([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [type, setAccountType] = useState<UserType>('individual');
@@ -81,28 +73,6 @@ export default function CompleteSignup(): ReactElement | null {
   const [formSubmitted, setFormSubmitted] = useState(false);
   //  snack bars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [addressInput, setAddressInput] = useState('');
-  const latestRequestIdRef = useRef(0);
-
-  const postalRegex = useMemo(() => getPostalRegex(country), [country]);
-  const profileTypes = [
-    {
-      id: 1,
-      title: t('individual'),
-      value: 'individual',
-    },
-    {
-      id: 2,
-      title: t('organization'),
-      value: 'organization',
-    },
-    { id: 3, title: t('tpo'), value: 'tpo' },
-    {
-      id: 4,
-      title: t('education'),
-      value: 'education',
-    },
-  ] as const;
   const isPublic = watch('isPublic');
 
   useEffect(() => {
@@ -148,14 +118,6 @@ export default function CompleteSignup(): ReactElement | null {
       setIsProcessing(false);
     }
   };
-
-  const handleSnackbarClose = (event?: SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
-
   const handleCreateAccount = async (data: SignupFormData) => {
     setFormSubmitted(true);
     if (!agreedToTerms) return;
@@ -174,61 +136,12 @@ export default function CompleteSignup(): ReactElement | null {
       }
     }
   };
-  const handleSuggestAddress = useCallback(
-    async (value: string) => {
-      // Bump request ID to track the latest API call
-      latestRequestIdRef.current++;
-      const currentRequestId = latestRequestIdRef.current;
-      try {
-        const suggestions = await getAddressSuggestions(value, country);
-        // Only update if this is still the latest request
-        if (currentRequestId === latestRequestIdRef.current) {
-          setAddressSuggestions(suggestions);
-        }
-      } catch (error) {
-        console.error('Failed to fetch address suggestions:', error);
-        // Prevent outdated error responses from affecting UI
-        if (currentRequestId === latestRequestIdRef.current) {
-          setAddressSuggestions([]);
-        }
-      }
-    },
-    [country]
-  );
-
-  const handleAddressSelection = useCallback(
-    async (value: string) => {
-      try {
-        const details = await getAddressDetailsFromText(value);
-        if (details) {
-          setValue('address', details.address, { shouldValidate: true });
-          setValue('city', details.city, { shouldValidate: true });
-          setValue('zipCode', details.zipCode, { shouldValidate: true });
-        }
-        setAddressSuggestions([]);
-      } catch (error) {
-        console.error('Failed to fetch address details:', error);
-      }
-    },
-    [setValue]
-  );
-
-  useDebouncedEffect(
-    () => {
-      const trimmedInput = addressInput.trim();
-
-      // Clear suggestions if input is empty or just whitespace
-      if (trimmedInput === '') {
-        setAddressSuggestions([]);
-        return;
-      }
-
-      // Fetch suggestions only if input is meaningful (e.g., length > 3)
-      handleSuggestAddress(trimmedInput);
-    },
-    700,
-    [addressInput]
-  );
+  const handleSnackbarClose = (event?: SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   if (
     !contextLoaded ||
@@ -242,24 +155,7 @@ export default function CompleteSignup(): ReactElement | null {
     return (
       <CompleteSignupLayout isProcessing={isProcessing}>
         <SignupHeader />
-
-        {/* type of account buttons */}
-        <MuiTextField
-          label={t('fieldLabels.profileType')}
-          select
-          defaultValue={profileTypes[0].value}
-        >
-          {profileTypes.map((option) => (
-            <MenuItem
-              key={option.value}
-              value={option.value}
-              onClick={() => setAccountType(option.value)}
-            >
-              {option.title}
-            </MenuItem>
-          ))}
-        </MuiTextField>
-
+        <ProfileTypeSelector setAccountType={setAccountType} />
         <InlineFormDisplayGroup>
           <Controller
             name="firstname"
@@ -350,137 +246,22 @@ export default function CompleteSignup(): ReactElement | null {
           label={t('fieldLabels.email')}
           disabled
         />
-
-        {type === 'tpo' ? (
-          <>
-            <Controller
-              name="address"
-              control={control}
-              rules={{
-                required: t('validationErrors.addressRequired'),
-                pattern: {
-                  value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
-                  message: t('validationErrors.addressInvalid'),
-                },
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <MuiTextField
-                  label={t('fieldLabels.address')}
-                  error={errors.address !== undefined}
-                  helperText={
-                    errors.address !== undefined && errors.address.message
-                  }
-                  onChange={(event) => {
-                    setAddressInput(event.target.value);
-                    onChange(event.target.value);
-                  }}
-                  onBlur={() => {
-                    setAddressSuggestions([]);
-                    onBlur();
-                  }}
-                  value={value}
-                />
-              )}
-            />
-            {addressSuggestions
-              ? addressSuggestions.length > 0 && (
-                  <div className="suggestions-container">
-                    {addressSuggestions.map((suggestion, index) => {
-                      return (
-                        <div
-                          key={index}
-                          onMouseDown={() => {
-                            handleAddressSelection(suggestion.text);
-                          }}
-                          className="suggestion"
-                        >
-                          {suggestion.text}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )
-              : null}
-            <InlineFormDisplayGroup>
-              <Controller
-                name="city"
-                control={control}
-                rules={{
-                  required: t('validationErrors.cityRequired'),
-                  pattern: {
-                    value: /^[\p{L}\sß.,()-]+$/u,
-                    message: t('validationErrors.cityInvalid'),
-                  },
-                }}
-                defaultValue={
-                  getStoredConfig('loc').city === 'T1' ||
-                  getStoredConfig('loc').city === 'XX' ||
-                  getStoredConfig('loc').city === ''
-                    ? ''
-                    : getStoredConfig('loc').city
-                }
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <MuiTextField
-                    label={t('fieldLabels.city')}
-                    error={errors.city !== undefined}
-                    helperText={
-                      errors.city !== undefined && errors.city.message
-                    }
-                    onChange={onChange}
-                    value={value}
-                    onBlur={onBlur}
-                  />
-                )}
-              />
-              <Controller
-                name="zipCode"
-                control={control}
-                rules={{
-                  required: t('validationErrors.zipCodeRequired'),
-                  pattern: {
-                    value: postalRegex as RegExp,
-                    message: t('validationErrors.zipCodeInvalid'),
-                  },
-                  maxLength: {
-                    value: 15,
-                    message: t('validationErrors.zipCodeInvalid'),
-                  },
-                }}
-                defaultValue={
-                  getStoredConfig('loc').postalCode === 'T1' ||
-                  getStoredConfig('loc').postalCode === 'XX' ||
-                  getStoredConfig('loc').postalCode === ''
-                    ? ''
-                    : getStoredConfig('loc').postalCode
-                }
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <MuiTextField
-                    label={t('fieldLabels.zipCode')}
-                    error={errors.zipCode !== undefined}
-                    helperText={
-                      errors.zipCode !== undefined && errors.zipCode.message
-                    }
-                    onChange={onChange}
-                    value={value}
-                    onBlur={onBlur}
-                  />
-                )}
-              />
-            </InlineFormDisplayGroup>
-          </>
-        ) : null}
         <AutoCompleteCountry
           label={t('fieldLabels.country')}
           name="country"
           onChange={setCountry}
-          defaultValue={
-            getStoredConfig('loc').countryCode === 'T1' ||
-            getStoredConfig('loc').countryCode === 'XX' ||
-            getStoredConfig('loc').countryCode === ''
-              ? ''
-              : getStoredConfig('loc').countryCode
-          }
+          defaultValue={getValidLocationValue(
+            getStoredConfig('loc').countryCode
+          )}
         />
+        {type === 'tpo' && (
+          <SignupAddressField
+            control={control}
+            country={country}
+            setValue={setValue}
+            errors={errors}
+          />
+        )}
         <SignupToggles
           control={control}
           isPublic={isPublic}
