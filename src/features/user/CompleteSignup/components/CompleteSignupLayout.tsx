@@ -7,12 +7,12 @@ import styles from '../CompleteSignup.module.scss';
 
 interface CompleteSignupLayoutProps {
   children: ReactNode;
-  isProcessing: boolean;
+  isSubmitting: boolean;
 }
 
 const CompleteSignupLayout = ({
   children,
-  isProcessing,
+  isSubmitting,
 }: CompleteSignupLayoutProps) => {
   const { theme } = useContext(ThemeContext);
   return (
@@ -24,7 +24,7 @@ const CompleteSignupLayout = ({
     >
       <div
         className={
-          isProcessing ? styles.signupFormOverlay : styles.signupFormBase
+          isSubmitting ? styles.signupFormOverlay : styles.signupFormBase
         }
         style={{
           backgroundColor:

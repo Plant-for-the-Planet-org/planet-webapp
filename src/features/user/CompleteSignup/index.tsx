@@ -7,6 +7,7 @@ import type {
   CreateUserRequest,
   CountryCode,
 } from '@planet-sdk/common';
+import type { SnackbarCloseReason } from '@mui/material';
 
 import { useState, useContext, useEffect, useMemo } from 'react';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
@@ -84,11 +85,7 @@ export default function CompleteSignup(): ReactElement | null {
       router.push(localizedPath('/'));
       return;
     }
-
-    if (user?.slug) {
-      router.push(localizedPath('/profile'));
-    }
-  }, [contextLoaded, user, token]);
+  }, [contextLoaded, token]);
 
   const storedLocation = useMemo(() => getStoredConfig('loc'), []);
   const defaultLocationValues = useMemo(
@@ -111,13 +108,14 @@ export default function CompleteSignup(): ReactElement | null {
         setSnackbarOpen(true);
         // Delay redirect to show snackbar
         setTimeout(() => {
+          router.push(localizedPath('/profile'));
           setUser(res);
-        }, 2000);
+          setIsProcessing(false);
+        }, 1000);
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
       redirect('/login');
-    } finally {
       setIsProcessing(false);
     }
   };
@@ -135,7 +133,10 @@ export default function CompleteSignup(): ReactElement | null {
     };
     await createUserProfile(submitData);
   };
-  const handleSnackbarClose = (event?: SyntheticEvent, reason?: string) => {
+  const handleSnackbarClose = (
+    event?: Event | SyntheticEvent,
+    reason?: SnackbarCloseReason
+  ) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -143,10 +144,11 @@ export default function CompleteSignup(): ReactElement | null {
   };
 
   // Only show signup form when authenticated but profile doesn't exist
-  if (!contextLoaded || !token || user !== null) return null;
+  if (!contextLoaded || !token) return null;
+  const isSubmitting = isProcessing || user !== null;
 
   return (
-    <CompleteSignupLayout isProcessing={isProcessing}>
+    <CompleteSignupLayout isSubmitting={isSubmitting}>
       <SignupHeader />
       <ProfileTypeSelector setAccountType={setAccountType} />
       <InlineFormDisplayGroup>
@@ -267,29 +269,23 @@ export default function CompleteSignup(): ReactElement | null {
         id={'signupCreate'}
         className={styles.saveButton}
         onClick={handleSubmit(handleCreateAccount)}
-        disabled={isProcessing}
+        disabled={isSubmitting}
       >
-        {isProcessing ? (
-          <div className={styles.spinner}></div>
-        ) : (
-          t('createAccount')
-        )}
+        {isSubmitting ? <div className={styles.spinner} /> : t('createAccount')}
       </button>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={2000}
-        onClose={() => handleSnackbarClose}
+        onClose={handleSnackbarClose}
       >
-        <div>
-          <Alert
-            elevation={6}
-            variant="filled"
-            onClose={handleSnackbarClose}
-            severity="success"
-          >
-            {t('profileCreated')}
-          </Alert>
-        </div>
+        <Alert
+          elevation={6}
+          variant="filled"
+          onClose={handleSnackbarClose}
+          severity="success"
+        >
+          {t('profileCreated')}
+        </Alert>
       </Snackbar>
     </CompleteSignupLayout>
   );
