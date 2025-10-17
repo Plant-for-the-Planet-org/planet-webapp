@@ -261,9 +261,9 @@ export default function CompleteSignup(): ReactElement | null {
         }}
       >
         <div
-          className={
-            isProcessing ? styles.signupFormOverlay : styles.signupFormBase
-          }
+          className={`${styles.signupFormContainer} ${
+            isProcessing ? styles.processing : ''
+          }`}
           style={{
             backgroundColor:
               theme === 'theme-light'
