@@ -115,7 +115,12 @@ export default function CompleteSignup(): ReactElement | null {
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/login');
+      const apiError = err as APIError;
+      // Only redirect to login for authentication/authorization errors
+      // For other errors (400, 500, etc.), stay on the page so user can fix and retry
+      if (apiError.statusCode === 401 || apiError.statusCode === 403) {
+        redirect('/login');
+      }
       setIsProcessing(false);
     }
   };
