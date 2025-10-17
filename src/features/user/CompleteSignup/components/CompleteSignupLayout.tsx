@@ -23,9 +23,9 @@ const CompleteSignupLayout = ({
       }}
     >
       <div
-        className={
-          isSubmitting ? styles.signupFormOverlay : styles.signupFormBase
-        }
+        className={`${styles.signupFormContainer} ${
+          isSubmitting ? styles.submitting : ''
+        }`}
         style={{
           backgroundColor:
             theme === 'theme-light'
