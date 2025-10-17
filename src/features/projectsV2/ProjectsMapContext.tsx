@@ -1,43 +1,16 @@
 import type { ReactNode } from 'react';
-import type { ViewState } from 'react-map-gl-v7';
-import type { MapStyle } from 'react-map-gl-v7/maplibre';
+import type { ViewState } from 'react-map-gl-v7/maplibre';
 import type { SetState } from '../common/types/common';
 import type { MapLayerOptionsType } from '../../utils/mapsV2/mapSettings.config';
 import type { ProjectTimeTravelConfig } from '../../utils/mapsV2/timeTravel';
+import type { MapState } from '../../utils/mapsV2/mapDefaults';
 
 import { useContext, useMemo, createContext, useState, useEffect } from 'react';
 import getMapStyle from '../../utils/maps/getMapStyle';
-
-interface MapState {
-  mapStyle: MapStyle;
-  dragPan: boolean;
-  scrollZoom: boolean;
-  minZoom: number;
-  maxZoom: number;
-}
-
-const EMPTY_STYLE = {
-  version: 8,
-  sources: {},
-  layers: [] as MapStyle['layers'],
-} as const;
-
-export const DEFAULT_VIEW_STATE: ViewState = {
-  longitude: 0,
-  latitude: 0,
-  zoom: 2,
-  bearing: 0,
-  pitch: 0,
-  padding: { top: 0, bottom: 0, left: 0, right: 0 },
-};
-
-const DEFAULT_MAP_STATE: MapState = {
-  mapStyle: EMPTY_STYLE,
-  dragPan: true,
-  scrollZoom: true,
-  minZoom: 1,
-  maxZoom: 20,
-};
+import {
+  DEFAULT_MAP_STATE,
+  DEFAULT_VIEW_STATE,
+} from '../../utils/mapsV2/mapDefaults';
 
 /**
  * Contains current state of map settings (set using MapFeatureExplorer)

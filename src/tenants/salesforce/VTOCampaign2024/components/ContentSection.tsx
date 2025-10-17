@@ -1,6 +1,8 @@
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
 
+// cspell:ignore vto-fitness-movetowards5miltrees-april24
+
 export default function ContentSection() {
   return (
     <div className={`${styles.contentSectionContainer}`}>

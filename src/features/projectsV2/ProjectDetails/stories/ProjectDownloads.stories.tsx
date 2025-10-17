@@ -9,6 +9,7 @@ const meta: Meta<typeof ProjectDownloads> = {
 export default meta;
 type Story = StoryObj<typeof ProjectDownloads>;
 
+//cspell:disable
 const expenses = [
   {
     amount: 356681,
@@ -29,6 +30,7 @@ const expenses = [
     id: 'pexp_V7Wh82moUE5P',
   },
 ];
+//cspell:enable
 
 export const Preview: Story = {
   args: {

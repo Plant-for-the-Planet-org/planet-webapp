@@ -1,6 +1,6 @@
 import type {
   InterventionDetailsApiResponse,
-  InterventionFeature,
+  DataExplorerInterventionFeature,
   InterventionProperties,
 } from '../../../../../../../common/types/dataExplorer';
 
@@ -12,7 +12,7 @@ import TreeMapperIcon from '../../../../../../../../../public/assets/images/icon
 
 interface Props {
   interventionDetails: InterventionDetailsApiResponse['res'] | null;
-  selectedLayer: InterventionFeature['properties'];
+  selectedLayer: DataExplorerInterventionFeature['properties'];
   loading: boolean;
 }
 
