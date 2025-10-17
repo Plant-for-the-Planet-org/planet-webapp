@@ -429,7 +429,10 @@ export default function CompleteSignup(): ReactElement | null {
               />
               {addressSuggestions
                 ? addressSuggestions.length > 0 && (
-                    <div className="suggestions-container">
+                    <div
+                      role="listbox"
+                      aria-label={t('addressManagement.addressSuggestions')}
+                    >
                       {addressSuggestions.map((suggestion, index) => {
                         return (
                           <div
@@ -437,7 +440,8 @@ export default function CompleteSignup(): ReactElement | null {
                             onMouseDown={() => {
                               handleAddressSelection(suggestion.text);
                             }}
-                            className="suggestion"
+                            role="option"
+                            aria-selected={false}
                           >
                             {suggestion.text}
                           </div>
