@@ -1,11 +1,15 @@
 import type { ReactElement } from 'react';
-import type { Feature, Point, Polygon } from 'geojson';
 import type {
   Intervention,
   MultiTreeRegistration,
   SampleTreeRegistration,
   SingleTreeRegistration,
 } from '@planet-sdk/common';
+import type {
+  InterventionFeature,
+  InterventionGeometryType,
+  InterventionProperties,
+} from '../../../common/types/map';
 
 import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
@@ -117,10 +121,10 @@ export default function Interventions(): ReactElement {
   };
 
   const makeInterventionGeoJson = (
-    geometry: Point | Polygon,
+    geometry: InterventionGeometryType,
     id: string,
-    extra?: Record<string, string | number | boolean | null>
-  ): Feature<Point | Polygon> => {
+    extra?: Partial<Omit<InterventionProperties, 'id'>>
+  ): InterventionFeature => {
     const properties = {
       id,
       ...extra,
@@ -138,13 +142,13 @@ export default function Interventions(): ReactElement {
   }
 
   const features = interventions.map((el) => {
-    const isSelected = selectedPl && selectedPl.id === el.id;
-    const isHovered = hoveredPl && hoveredPl.id === el.id;
+    const isSelected = selectedPl !== null && selectedPl.id === el.id;
+    const isHovered = hoveredPl !== null && hoveredPl.id === el.id;
     const GeoJSON = makeInterventionGeoJson(el.geometry, el.id, {
       highlightLine: isSelected || isHovered,
       opacity:
         el.type === 'multi-tree-registration' ? getPolygonColor(el) : 0.5,
-      dateDiff: getDateDiff(el),
+      dateDiff: getDateDiff(el) ?? '',
     });
     return GeoJSON;
   });

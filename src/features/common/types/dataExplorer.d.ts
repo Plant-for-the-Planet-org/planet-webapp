@@ -81,7 +81,7 @@ export interface UncleanDistinctSpecies {
 
 export type DistinctSpecies = string[];
 
-export interface InterventionFeature {
+export interface DataExplorerInterventionFeature {
   geometry: Point | Polygon;
   properties: {
     guid: string;
@@ -94,7 +94,7 @@ export interface InterventionFeature {
 
 export interface InterventionFeatureCollection {
   type: 'FeatureCollection';
-  features: InterventionFeature[];
+  features: DataExplorerInterventionFeature[];
 }
 
 // --- /api/data-explorer/map/intervention/[interventionGuid]
