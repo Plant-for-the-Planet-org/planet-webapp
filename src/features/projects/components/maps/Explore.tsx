@@ -157,10 +157,6 @@ export default function Explore(): ReactElement {
       };
       setViewPort(newViewport);
     } else {
-      // const newMapState = {
-      //   ...mapState,
-      //   mapStyle: 'mapbox://styles/sagararl/ckdfyrsw80y3a1il9eqpecoc7',
-      // };
       const newViewport = {
         ...viewport,
         latitude: defaultMapCenter[0],
@@ -325,7 +321,7 @@ export default function Explore(): ReactElement {
                   </div>
                 </div>
                 {exploreDeforestation ? (
-                  <div className={styles.deforestionSlider}>
+                  <div className={styles.deforestationSlider}>
                     <Icons />
                     <Legend collapsable={false} sortable={false}>
                       {layerLegend.map((layerGroup, i) => {

@@ -56,14 +56,6 @@
   justify-content: space-evenly;
 }
 
-.editTragetContainer {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 12px;
-}
-
 .backgroundCircle {
   border: 5px solid $light;
 }
@@ -125,7 +117,7 @@
   }
 }
 
-.tenateTreePlanted {
+.tenantTreePlanted {
   display: flex;
   flex-direction: column;
   justify-content: center;

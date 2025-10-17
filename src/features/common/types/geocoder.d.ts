@@ -1,3 +1,4 @@
+// cspell:disable
 //suggestAddress Type
 export interface AddressSuggestionsType {
   isCollection: boolean;

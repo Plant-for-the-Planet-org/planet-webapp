@@ -392,8 +392,8 @@ export default function Footer(): ReactElement | null {
 
           {tenantConfig.config.showUNDecadeLogo && (
             <button
-              id={'undecadeLogoIcon'}
-              className={styles.undecade_logo_container}
+              id={'unDecadeLogoIcon'}
+              className={styles.unDecade_logo_container}
             >
               <a
                 href="https://www.decadeonrestoration.org/"

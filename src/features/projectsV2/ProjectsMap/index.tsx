@@ -1,9 +1,9 @@
 import type { ViewStateChangeEvent } from 'react-map-gl-v7/maplibre';
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { SetState } from '../../common/types/common';
-import type { ExtendedMapLibreMap, MapRef } from '../../common/types/projectv2';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { SingleTreeRegistration } from '@planet-sdk/common';
+import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -58,7 +58,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   // Fetch layers data
   useFetchLayers();
 
-  const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
+  const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
   const {
     viewState,
     handleViewStateChange,

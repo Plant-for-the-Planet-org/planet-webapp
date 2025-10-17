@@ -1,5 +1,5 @@
 import type { ViewState } from 'react-map-gl-v7/maplibre';
-import type { MapRef } from '../../features/common/types/projectv2';
+import type { MapLibreRef } from '../../features/common/types/map';
 
 export default function zoomToLocation(
   handleViewStateChange: (viewState: Partial<ViewState>) => void,
@@ -7,7 +7,7 @@ export default function zoomToLocation(
   latitude: number,
   zoom = 10,
   duration = 1200,
-  mapRef: MapRef
+  mapRef: MapLibreRef
 ) {
   if (!mapRef.current) {
     return;

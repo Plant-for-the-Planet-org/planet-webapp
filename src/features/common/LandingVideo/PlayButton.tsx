@@ -9,11 +9,11 @@ import { useUserProps } from '../Layout/UserPropsContext';
 import { ParamsContext } from '../Layout/QueryParamsContext';
 
 interface Props {
-  setshowVideo: Function;
+  setShowVideo: Function;
 }
 
 export default function PlayButton({
-  setshowVideo,
+  setShowVideo,
 }: Props): ReactElement | null {
   const { isImpersonationModeOn } = useUserProps();
   const { embed, enableIntro, isContextLoaded } = useContext(ParamsContext);
@@ -34,7 +34,7 @@ export default function PlayButton({
   return isContextLoaded && canShowPlayButton ? (
     <div
       title={t('howDoesThisWork')}
-      onClick={() => setshowVideo(true)}
+      onClick={() => setShowVideo(true)}
       className={playButtonClasses}
       style={{ marginTop: isImpersonationModeOn ? '45px' : '' }}
     >

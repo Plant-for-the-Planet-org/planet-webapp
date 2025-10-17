@@ -1,7 +1,7 @@
 @import '../../../theme/theme';
 
 .mapContainer,
-.onlymapContainer {
+.onlyMapContainer {
   position: fixed;
   top: 0px;
   bottom: 0px;
@@ -11,7 +11,7 @@
 }
 
 .mapContainer > div:first-child,
-.onlymapContainer > div:first-child {
+.onlyMapContainer > div:first-child {
   height: 100% !important;
   width: 100% !important;
 }
@@ -257,27 +257,27 @@
   fill: $primaryFontColor;
 }
 
-.deforestionSlider > div {
+.deforestationSlider > div {
   border: none;
 }
 
-.deforestionSlider > div > div > ul > li > div > div > header {
+.deforestationSlider > div > div > ul > li > div > div > header {
   display: none !important;
 }
 
-.deforestionSlider > div > div {
+.deforestationSlider > div > div {
   width: 100%;
 }
 
-.deforestionSlider > div > div > ul > li {
+.deforestationSlider > div > div > ul > li {
   width: 100%;
 }
 
-.deforestionSlider > div > div > ul > li > div {
+.deforestationSlider > div > div > ul > li > div {
   padding: 0px 4px 10px !important;
 }
 
-.deforestionSlider > div > div > ul > li > div > div > div > div > button {
+.deforestationSlider > div > div > ul > li > div > div > div > div > button {
   background-color: transparent;
 }
 
