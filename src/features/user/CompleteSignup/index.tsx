@@ -13,13 +13,11 @@ import { useState, useContext, useEffect, useMemo } from 'react';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
 import { Snackbar, Alert, styled, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
-import { useForm, Controller } from 'react-hook-form';
-import { selectUserType } from '../../../utils/selectUserType';
+import { useForm } from 'react-hook-form';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
-import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
@@ -29,6 +27,8 @@ import SignupHeader from './components/SignupHeader';
 import SignupAddressField from './components/SignupAddressField';
 import CompleteSignupLayout from './components/CompleteSignupLayout';
 import ProfileTypeSelector from './components/ProfileTypeSelector';
+import FullNameInput from './components/FullNameInput';
+import OrganizationNameInput from './components/OrganizationNameInput';
 
 export const MuiTextField = styled(TextField)(() => {
   return {
@@ -151,91 +151,14 @@ export default function CompleteSignup(): ReactElement | null {
     <CompleteSignupLayout isSubmitting={isSubmitting}>
       <SignupHeader />
       <ProfileTypeSelector setAccountType={setAccountType} />
-      <InlineFormDisplayGroup>
-        <Controller
-          name="firstname"
+      <FullNameInput control={control} errors={errors} />
+      {type !== 'individual' && (
+        <OrganizationNameInput
+          accountType={type}
           control={control}
-          rules={{
-            required: t('validationErrors.firstNameRequired'),
-            maxLength: {
-              value: 50,
-              message: t('validationErrors.maxChars', { max: 50 }),
-            },
-            pattern: {
-              value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
-              message: t('validationErrors.firstNameInvalid'),
-            },
-          }}
-          defaultValue={auth0User?.given_name || ''}
-          render={({ field: { onChange, value, onBlur } }) => (
-            <MuiTextField
-              label={t('fieldLabels.firstName')}
-              error={errors.firstname !== undefined}
-              helperText={
-                errors.firstname !== undefined && errors.firstname.message
-              }
-              onChange={onChange}
-              value={value}
-              onBlur={onBlur}
-            />
-          )}
+          errors={errors}
         />
-        <Controller
-          name="lastname"
-          control={control}
-          rules={{
-            required: t('validationErrors.lastNameRequired'),
-            maxLength: {
-              value: 50,
-              message: t('validationErrors.maxChars', { max: 50 }),
-            },
-            pattern: {
-              value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
-              message: t('validationErrors.lastNameInvalid'),
-            },
-          }}
-          defaultValue={auth0User?.family_name || ''}
-          render={({ field: { onChange, value, onBlur } }) => (
-            <MuiTextField
-              label={t('fieldLabels.lastName')}
-              error={errors.lastname !== undefined}
-              helperText={
-                errors.lastname !== undefined && errors.lastname.message
-              }
-              onChange={onChange}
-              value={value}
-              onBlur={onBlur}
-            />
-          )}
-        />
-      </InlineFormDisplayGroup>
-
-      {type !== 'individual' ? (
-        <Controller
-          name="name"
-          control={control}
-          rules={{
-            required: t('validationErrors.nameRequired'),
-            pattern: {
-              value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
-              message: t('validationErrors.nameInvalid'),
-            },
-          }}
-          render={({ field: { onChange, value, onBlur } }) => (
-            <MuiTextField
-              label={t('fieldLabels.name', {
-                type: selectUserType(type, t),
-              })}
-              error={errors.name !== undefined}
-              helperText={errors.name !== undefined && errors.name.message}
-              onChange={onChange}
-              value={value}
-              onBlur={onBlur}
-            />
-          )}
-        />
-      ) : null}
-
+      )}
       <MuiTextField
         defaultValue={auth0User?.email}
         label={t('fieldLabels.email')}
