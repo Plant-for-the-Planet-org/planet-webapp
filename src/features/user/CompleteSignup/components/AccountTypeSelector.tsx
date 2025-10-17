@@ -5,12 +5,12 @@ import { MenuItem } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { MuiTextField } from '..';
 
-interface ProfileTypeSelectorProps {
+interface AccountTypeSelectorProps {
   setAccountType: SetState<UserType>;
 }
-const ProfileTypeSelector = ({ setAccountType }: ProfileTypeSelectorProps) => {
+const AccountTypeSelector = ({ setAccountType }: AccountTypeSelectorProps) => {
   const tSignup = useTranslations('EditProfile');
-  const profileTypes = [
+  const accountCategories = [
     {
       id: 1,
       title: tSignup('individual'),
@@ -32,9 +32,9 @@ const ProfileTypeSelector = ({ setAccountType }: ProfileTypeSelectorProps) => {
     <MuiTextField
       label={tSignup('fieldLabels.profileType')}
       select
-      defaultValue={profileTypes[0].value}
+      defaultValue={accountCategories[0].value}
     >
-      {profileTypes.map((option) => (
+      {accountCategories.map((option) => (
         <MenuItem
           key={option.value}
           value={option.value}
@@ -47,4 +47,4 @@ const ProfileTypeSelector = ({ setAccountType }: ProfileTypeSelectorProps) => {
   );
 };
 
-export default ProfileTypeSelector;
+export default AccountTypeSelector;

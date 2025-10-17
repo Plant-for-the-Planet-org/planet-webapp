@@ -26,9 +26,9 @@ import SignupToggles from './components/SignupToggles';
 import SignupHeader from './components/SignupHeader';
 import SignupAddressField from './components/SignupAddressField';
 import CompleteSignupLayout from './components/CompleteSignupLayout';
-import ProfileTypeSelector from './components/ProfileTypeSelector';
 import FullNameInput from './components/FullNameInput';
 import OrganizationNameInput from './components/OrganizationNameInput';
+import AccountTypeSelector from './components/AccountTypeSelector';
 
 export const MuiTextField = styled(TextField)(() => {
   return {
@@ -66,7 +66,7 @@ export default function CompleteSignup(): ReactElement | null {
   // states
   const [isProcessing, setIsProcessing] = useState(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
-  const [type, setAccountType] = useState<UserType>('individual');
+  const [accountType, setAccountType] = useState<UserType>('individual');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   //  snack bars (for warnings, success messages, errors)
@@ -76,7 +76,7 @@ export default function CompleteSignup(): ReactElement | null {
   useEffect(() => {
     // This will remove field values which do not exist for the new type
     reset();
-  }, [type, reset]);
+  }, [accountType, reset]);
 
   useEffect(() => {
     if (!contextLoaded) return;
@@ -97,7 +97,7 @@ export default function CompleteSignup(): ReactElement | null {
     [storedLocation]
   );
 
-  const createUserProfile = async (bodyToSend: CreateUserRequest) => {
+  const createUserAccount = async (bodyToSend: CreateUserRequest) => {
     setIsProcessing(true);
     try {
       const res = await postApi<User>('/app/profile', {
@@ -128,10 +128,10 @@ export default function CompleteSignup(): ReactElement | null {
       ...otherData,
       country: country as CountryCode,
       isPrivate: !isPublic,
-      type,
+      type: accountType,
       oAuthAccessToken: token,
     };
-    await createUserProfile(submitData);
+    await createUserAccount(submitData);
   };
   const handleSnackbarClose = (
     event?: Event | SyntheticEvent,
@@ -150,11 +150,11 @@ export default function CompleteSignup(): ReactElement | null {
   return (
     <CompleteSignupLayout isSubmitting={isSubmitting}>
       <SignupHeader />
-      <ProfileTypeSelector setAccountType={setAccountType} />
+      <AccountTypeSelector setAccountType={setAccountType} />
       <FullNameInput control={control} errors={errors} />
-      {type !== 'individual' && (
+      {accountType !== 'individual' && (
         <OrganizationNameInput
-          accountType={type}
+          accountType={accountType}
           control={control}
           errors={errors}
         />
@@ -170,7 +170,7 @@ export default function CompleteSignup(): ReactElement | null {
         onChange={setCountry}
         defaultValue={defaultLocationValues.countryCode}
       />
-      {type === 'tpo' && (
+      {accountType === 'tpo' && (
         <SignupAddressField
           control={control}
           country={country}
