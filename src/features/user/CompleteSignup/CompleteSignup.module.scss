@@ -10,7 +10,7 @@
   overflow-y: auto;
 }
 
-.signupFormBase {
+.signupFormContainer {
   min-width: 320px;
   max-width: 420px;
   display: flex;
@@ -23,11 +23,11 @@
   padding: 20px;
   margin-top: 100px;
   border: 0;
-}
 
-.signupFormOverlay {
-  @extend .signupFormBase;
-  opacity: 0.8;
+  &.submitting {
+    opacity: 0.8;
+    pointer-events: none;
+  }
 }
 
 .header {
