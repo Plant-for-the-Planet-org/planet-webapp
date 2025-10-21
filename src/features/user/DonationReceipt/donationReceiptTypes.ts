@@ -89,6 +89,7 @@ export interface ReceiptData {
 export interface DonationReceiptsStatus {
   issued: IssuedReceiptDataApi[];
   unissued: UnissuedReceiptDataAPI[];
+  lastConsolidatedYear: number;
 }
 
 export interface UnissuedReceiptDataAPI {
@@ -138,4 +139,63 @@ export interface DonationView {
   amount: number;
   currency: string;
   paymentDate: string;
+}
+
+// Yearly grouping interfaces
+
+/**
+ * Interface for yearly grouped receipts structure
+ * Groups receipts by year with separate arrays for issued and unissued receipts
+ */
+export interface YearlyGroupedReceipts {
+  [year: string]: {
+    issued: IssuedReceiptDataApi[];
+    unissued: UnissuedReceiptDataAPI[];
+  };
+}
+
+/**
+ * Interface for overview receipt eligibility
+ * Determines if a year is eligible for overview receipt download
+ */
+export interface OverviewEligibility {
+  year: string;
+  isEligible: boolean;
+  verifiedCount: number;
+  totalCount: number;
+  isConsolidated: boolean;
+}
+
+// Component prop interfaces
+
+/**
+ * Props for YearlyReceiptGroup component
+ */
+export interface YearlyReceiptGroupProps {
+  year: string;
+  receipts: {
+    issued: IssuedReceiptDataApi[];
+    unissued: UnissuedReceiptDataAPI[];
+  };
+  onReceiptClick: (type: 'issued' | 'unissued', receipt: IssuedReceiptDataApi | UnissuedReceiptDataAPI) => void;
+  processReceiptId: string | null;
+  onOverviewDownload?: () => void;
+  isOverviewLoading?: boolean;
+}
+
+/**
+ * Props for YearHeader component
+ */
+export interface YearHeaderProps {
+  year: string;
+  showOverviewLink: boolean;
+  onOverviewDownload?: () => void;
+  isLoading?: boolean;
+}
+
+/**
+ * API response for overview receipt download
+ */
+export interface OverviewReceiptDownloadResponse {
+  downloadUrl: string;
 }
