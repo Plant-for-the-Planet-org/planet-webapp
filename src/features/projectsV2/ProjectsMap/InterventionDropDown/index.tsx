@@ -79,15 +79,8 @@ const InterventionDropdown = ({
   const interventionData = showVisibleOption();
 
   return (
-    <>
-      <div
-        className={`${styles.dropdownButton} ${
-          hasProjectSites
-            ? styles.dropdownButtonAlignmentAbove
-            : styles.dropdownButtonAlignmentBelow
-        }`}
-        onClick={toggleMenu}
-      >
+    <div className={styles.dropdownWrapper}>
+      <div className={styles.dropdownButton} onClick={toggleMenu}>
         <div className={styles.interventionIconAndTextContainer}>
           <InterventionIcon />
           <>
@@ -127,7 +120,7 @@ const InterventionDropdown = ({
           availableInterventionTypes={availableInterventionTypes}
         />
       )}
-    </>
+    </div>
   );
 };
 

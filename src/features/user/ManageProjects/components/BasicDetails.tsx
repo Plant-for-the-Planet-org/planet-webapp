@@ -132,7 +132,7 @@ export default function BasicDetails({
   const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
 
   useEffect(() => {
-    //loads the default mapstyle
+    //loads the default map style
     async function loadMapStyle() {
       const result = await getMapStyle('openStreetMap');
       if (result) {
@@ -403,10 +403,10 @@ export default function BasicDetails({
           clearErrors(['latitude', 'longitude']);
         } else {
           setError('latitude', {
-            message: t('coordinateError.seaCoordinates'),
+            message: t('errors.coordinates.seaCoordinates'),
           });
           setError('longitude', {
-            message: t('coordinateError.seaCoordinates'),
+            message: t('errors.coordinates.seaCoordinates'),
           });
         }
       } catch (error) {
@@ -771,7 +771,7 @@ export default function BasicDetails({
                     validate: (value) => {
                       const num = parseFloat(value);
                       if (num < -90 || num > 90)
-                        return t('coordinateError.latitudeRange');
+                        return t('errors.coordinates.latitudeRange');
                       return true;
                     },
                   }}
@@ -806,7 +806,7 @@ export default function BasicDetails({
                     validate: (value) => {
                       const num = parseFloat(value);
                       if (num < -180 || num > 180)
-                        return t('coordinateError.longitudeRange');
+                        return t('errors.coordinates.longitudeRange');
                       return true;
                     },
                   }}

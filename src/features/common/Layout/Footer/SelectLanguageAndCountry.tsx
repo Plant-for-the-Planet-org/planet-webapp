@@ -166,7 +166,7 @@ export default function TransitionsModal({
       setSelectedCurrency(currencyCode);
       if (setCurrencyCode) setCurrencyCode(currencyCode);
     }
-    // TODOO - loader while changing the locale
+    // TODO - loader while changing the locale
     if (modalLanguage !== locale) {
       const { asPath, pathname } = router;
       if (pathname === '/sites/[slug]/[locale]' || pathname === `/${locale}`) {

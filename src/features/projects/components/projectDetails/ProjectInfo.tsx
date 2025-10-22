@@ -8,7 +8,7 @@ import { useEffect, useState, Fragment } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getPDFFile } from '../../../../utils/getImageURL';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
 
@@ -479,7 +479,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                   ></div>
 
                   <span style={{ flexGrow: 1, textAlign: 'center', zIndex: 2 }}>
-                    {getFormatedCurrency(locale, 'EUR', expense.amount)}
+                    {getFormattedCurrency(locale, 'EUR', expense.amount)}
                   </span>
 
                   <a

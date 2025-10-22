@@ -22,12 +22,15 @@ const GiftLabel = ({ giftDetails }: Props) => {
       : t('myContributions.giftReceivedInfo', {
           name: giftDetails.giverName || t('myContributions.anonymousUser'),
         });
+
   return (
     <div className={styles.giftLabel} title={giftLabelText}>
-      <div className={styles.giftIconContainer}>
-        <GiftIcon />
+      <div className={styles.giftLabelInner}>
+        <div className={styles.giftIconContainer}>
+          <GiftIcon />
+        </div>
+        <span className={styles.giftLabelText}>{giftLabelText}</span>
       </div>
-      <span className={styles.giftLabelText}>{giftLabelText}</span>
     </div>
   );
 };

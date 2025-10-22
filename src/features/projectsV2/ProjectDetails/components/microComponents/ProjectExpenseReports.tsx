@@ -1,7 +1,7 @@
 import type { ProjectExpense } from '@planet-sdk/common';
 
 import styles from '../../styles/ProjectInfo.module.scss';
-import getFormatedCurrency from '../../../../../utils/countryCurrency/getFormattedCurrency';
+import getFormattedCurrency from '../../../../../utils/countryCurrency/getFormattedCurrency';
 import { useLocale } from 'next-intl';
 import DownloadsButton from './DownloadButton';
 import DownloadsLabel from './DownloadsLabel';
@@ -20,7 +20,7 @@ const ProjectExpenseReports = ({ expenses }: Props) => {
     <div className={styles.expenseContainer}>
       {expenses?.map((expense) => {
         const pdfUrl = getPDFFile('projectExpense', expense.pdf);
-        const formattedAmount = getFormatedCurrency(
+        const formattedAmount = getFormattedCurrency(
           locale,
           'EUR',
           Math.floor(expense.amount)

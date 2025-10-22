@@ -22,6 +22,7 @@ const InterventionArray: InterventionTypes[] = [
   'control-remove-livestock',
 ];
 
+// cspell:disable
 export const Preview: Story = {
   args: {
     mainChallenge:
@@ -32,7 +33,7 @@ export const Preview: Story = {
     whyThisSite:
       'Mida Creek is a stopover of many migratory birds and a foraging heaven for green turtles. Mida Creek is a UNESCO Biosphere Reserve that promote conservation of biodiversity hence that need to increase the forest cover through restoration of the degraded sites.',
     longTermPlan:
-      'We anticipate that through the donations from here, the group shall be able to start more ecotourism ventures at different spots around Mida Creek to eleviate poverty and reduce the pressure on mangrove resources as we move along to meet our 2 million tree target.',
+      'We anticipate that through the donations from here, the group shall be able to start more ecotourism ventures at different spots around Mida Creek to alleviate poverty and reduce the pressure on mangrove resources as we move along to meet our 2 million tree target.',
     siteOwnershipType: ownershipArray,
     acquiredSince: 2015,
     mainInterventions: InterventionArray,
