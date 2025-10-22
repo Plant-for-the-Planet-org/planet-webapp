@@ -61,7 +61,7 @@ export default function ProjectMedia({
   projectGUID,
 }: ProjectMediaProps): ReactElement {
   const t = useTranslations('ManageProjects');
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const {
     getApiAuthenticated,
     deleteApiAuthenticated,
@@ -93,7 +93,6 @@ export default function ProjectMedia({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
     }
   };
 
