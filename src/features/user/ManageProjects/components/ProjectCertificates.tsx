@@ -37,7 +37,7 @@ function ProjectCertificates({
   userLang,
 }: ProjectCertificatesProps): ReactElement {
   const t = useTranslations('ManageProjects');
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated, getApiAuthenticated, deleteApiAuthenticated } =
     useApi();
   const {
