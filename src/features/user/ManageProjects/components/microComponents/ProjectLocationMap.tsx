@@ -4,10 +4,6 @@ import type {
   ViewStateChangeEvent,
 } from 'react-map-gl-v7/maplibre';
 import type {
-  ExtendedMapLibreMap,
-  MapRef,
-} from '../../../../common/types/projectv2';
-import type {
   UseFormClearErrors,
   UseFormSetError,
   UseFormSetValue,
@@ -18,20 +14,24 @@ import type {
   TreeFormData,
 } from '../BasicDetails';
 import type { SetState } from '../../../../common/types/common';
+import type {
+  ExtendedMapLibreMap,
+  MapLibreRef,
+} from '../../../../common/types/map';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import MapGL, { NavigationControl, Marker } from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import {
-  DEFAULT_MAP_STATE,
-  DEFAULT_VIEW_STATE,
-} from '../../../../projectsV2/ProjectsMapContext';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import { getAddressFromCoordinates } from '../../../../../utils/geocoder';
 import { ProjectLocationIcon } from '../../../../../../public/assets/images/icons/projectV2/ProjectLocationIcon';
 import themeProperties from '../../../../../theme/themeProperties';
 import { useTranslations } from 'next-intl';
 import { centerMapOnCoordinates } from '../../../../../utils/projectV2';
+import {
+  DEFAULT_MAP_STATE,
+  DEFAULT_VIEW_STATE,
+} from '../../../../../utils/mapsV2/mapDefaults';
 
 interface ProjectLocationMapProps {
   clearErrors: UseFormClearErrors<BaseFormData | TreeFormData>;
@@ -49,7 +49,7 @@ const ProjectLocationMap = ({
   setProjectCoords,
 }: ProjectLocationMapProps) => {
   const t = useTranslations('ManageProjects');
-  const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
+  const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
   const [viewState, setViewState] = useState(DEFAULT_VIEW_STATE);
   const [mapState, setMapState] = useState(DEFAULT_MAP_STATE);
   const [mapLoaded, setMapLoaded] = useState<boolean>(false);
@@ -78,7 +78,7 @@ const ProjectLocationMap = ({
           clearErrors(['latitude', 'longitude']);
         } else {
           (['latitude', 'longitude'] as const).forEach((field) =>
-            setError(field, { message: t('coordinateError.seaCoordinates') })
+            setError(field, { message: t('errors.coordinates.seaCoordinates') })
           );
         }
       } catch (error) {
