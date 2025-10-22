@@ -1,5 +1,9 @@
 import type Supercluster from 'supercluster';
-import type { ProjectSite, User } from '@planet-sdk/common';
+import type {
+  NonPlantingInterventionTypes,
+  ProjectSite,
+  User,
+} from '@planet-sdk/common';
 import type { MutableRefObject } from 'react';
 import type { UserPublicProfile } from '@planet-sdk/common';
 import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
@@ -9,6 +13,7 @@ import type {
   Feature,
   FeatureCollection,
   MultiPolygon,
+  Point,
   Polygon,
 } from 'geojson';
 import type { Map as MapLibreMap } from 'maplibre-gl';
@@ -285,6 +290,26 @@ export type ProjectSiteFeatureCollection = FeatureCollection<
 export type ProjectSiteFeature = Feature<
   Polygon | MultiPolygon,
   ProjectSite | Record<string, never>
+>;
+
+// intervention
+
+export interface InterventionProperties {
+  id: string;
+  highlightLine?: boolean;
+  opacity?: number;
+  dateDiff?: string;
+  type?:
+    | 'single-tree-registration'
+    | 'multi-tree-registration'
+    | NonPlantingInterventionTypes;
+}
+
+export type InterventionGeometryType = Point | Polygon;
+
+export type InterventionFeature = Feature<
+  InterventionGeometryType,
+  InterventionProperties
 >;
 
 // Map

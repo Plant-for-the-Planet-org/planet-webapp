@@ -5,7 +5,11 @@ import type {
   SampleTreeRegistration,
   SingleTreeRegistration,
 } from '@planet-sdk/common';
-import type { Feature, Point, Polygon } from 'geojson';
+import type {
+  InterventionFeature,
+  InterventionGeometryType,
+  InterventionProperties,
+} from '../../../common/types/map';
 
 import { useLocale, useTranslations } from 'next-intl';
 import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
@@ -157,10 +161,10 @@ export default function InterventionLayers(): ReactElement {
   };
 
   const makeInterventionGeoJson = (
-    geometry: Point | Polygon,
+    geometry: InterventionGeometryType,
     id: string,
-    extra?: Record<string, string | number | boolean | null>
-  ): Feature<Point | Polygon> => {
+    extra?: Partial<Omit<InterventionProperties, 'id'>>
+  ): InterventionFeature => {
     const properties = {
       id,
       ...extra,
@@ -187,9 +191,11 @@ export default function InterventionLayers(): ReactElement {
     )
     .map((intervention) => {
       const isSelected =
-        selectedIntervention && selectedIntervention.id === intervention.id;
+        selectedIntervention !== null &&
+        selectedIntervention.id === intervention.id;
       const isHovered =
-        hoveredIntervention && hoveredIntervention.id === intervention.id;
+        hoveredIntervention !== null &&
+        hoveredIntervention.id === intervention.id;
       const GeoJSON = makeInterventionGeoJson(
         intervention.geometry,
         intervention.id,
