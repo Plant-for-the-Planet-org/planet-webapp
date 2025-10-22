@@ -33,7 +33,7 @@ const IssuedReceiptCard = ({
 
   // get the last donation reference number
   const reference = donations[donations.length - 1].reference;
-  const isReceiptVerified = Boolean(verificationDate !== null && downloadUrl);
+  const isReceiptVerified = Boolean(verificationDate !== null && verificationDate !== undefined && downloadUrl);
 
   return (
     <div className={styles.donationReceiptCard}>
