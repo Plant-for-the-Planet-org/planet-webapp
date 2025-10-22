@@ -157,7 +157,6 @@ export default function ProjectSpending({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
     }
   };
 

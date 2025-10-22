@@ -87,7 +87,7 @@ export default function BulkCodeIssueCodesPage({
             }
           } catch (err) {
             setErrors(handleError(err as APIError));
-            redirect('/');
+            redirect('/profile');
           }
         } else {
           router.push(localizedPath('/profile/bulk-codes'));

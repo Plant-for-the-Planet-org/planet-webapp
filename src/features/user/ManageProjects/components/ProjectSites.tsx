@@ -133,7 +133,6 @@ export default function ProjectSites({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
     }
   };
   useEffect(() => {

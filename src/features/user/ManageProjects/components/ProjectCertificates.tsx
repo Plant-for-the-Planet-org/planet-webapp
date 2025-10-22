@@ -121,7 +121,6 @@ function ProjectCertificates({
         setUploadedFiles(result.certificates);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/profile');
         setShowToggle(true);
         setIsCertified(false);
         setShowForm(true);

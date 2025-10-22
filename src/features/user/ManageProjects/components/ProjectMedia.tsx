@@ -93,7 +93,6 @@ export default function ProjectMedia({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
     }
   };
 
