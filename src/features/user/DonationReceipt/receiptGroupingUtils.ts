@@ -4,6 +4,7 @@ import type {
   UnissuedReceiptDataAPI,
   YearlyGroupedReceipts,
   OverviewEligibility,
+  OverviewButtonState,
 } from './donationReceiptTypes';
 
 /**
@@ -118,7 +119,7 @@ export const getSortedYears = (groupedReceipts: YearlyGroupedReceipts): string[]
  * @returns True if receipt is verified
  */
 export const isReceiptVerified = (receipt: IssuedReceiptDataApi): boolean => {
-  return receipt.verificationDate !== null;
+  return receipt.verificationDate !== null && receipt.verificationDate !== undefined && Boolean(receipt.downloadUrl);
 };
 
 /**
@@ -126,16 +127,19 @@ export const isReceiptVerified = (receipt: IssuedReceiptDataApi): boolean => {
  * @param year - The year to check eligibility for
  * @param receipts - The receipts for that year
  * @param lastConsolidatedYear - The last year that has been consolidated
+ * @param currentYear - Optional current year override (defaults to actual current year)
  * @returns Overview eligibility information
  */
 export const determineOverviewEligibility = (
   year: string,
   receipts: { issued: IssuedReceiptDataApi[]; unissued: UnissuedReceiptDataAPI[] },
-  lastConsolidatedYear: number
+  lastConsolidatedYear: number,
+  currentYear?: number
 ): OverviewEligibility => {
   const issuedReceipts = receipts.issued;
   const totalIssuedCount = issuedReceipts.length;
   const yearNumber = parseInt(year);
+  const effectiveCurrentYear = currentYear ?? new Date().getFullYear();
   
   // Only consider issued receipts for overview eligibility
   const verifiedReceipts = issuedReceipts.filter(isReceiptVerified);
@@ -144,14 +148,40 @@ export const determineOverviewEligibility = (
   // Check if the year is consolidated (year <= lastConsolidatedYear)
   const isConsolidated = yearNumber <= lastConsolidatedYear;
   
-  // Overview is eligible if:
-  // 1. There are more than 1 issued receipts for the year
-  // 2. All issued receipts for the year are verified
-  // 3. The year is consolidated (year <= lastConsolidatedYear)
-  const isEligible = totalIssuedCount > 1 && 
-                     verifiedCount === totalIssuedCount && 
-                     verifiedCount > 0 && 
-                     isConsolidated;
+  // Determine button state and hover message
+  let buttonState: OverviewButtonState = 'hidden';
+  let hoverMessage: string | undefined;
+  
+  // Rule: render only if:
+  // 1. year <= effectiveCurrentYear (not future year)  
+  // 2. totalIssuedCount > 1 (more than 1 receipt)
+  const shouldRender = yearNumber <= effectiveCurrentYear && totalIssuedCount > 1;
+  
+  if (shouldRender) {
+    if (yearNumber === effectiveCurrentYear) {
+      // Current year - show inactive with message (regardless of consolidation)
+      buttonState = 'inactive-future';
+      hoverMessage = 'The overview receipt will be available soon.';
+    } else if (yearNumber < effectiveCurrentYear) {
+      // Past year - check if consolidated and verification status
+      if (yearNumber <= lastConsolidatedYear) {
+        // Year is consolidated - check verification status
+        if (verifiedCount === totalIssuedCount && verifiedCount > 0) {
+          // All receipts verified - show active
+          buttonState = 'active';
+        } else {
+          // Some receipts not verified - show inactive with message
+          buttonState = 'inactive-unverified';
+          hoverMessage = 'Please verify all your receipts to download an overview receipt.';
+        }
+      }
+      // If year > lastConsolidatedYear, button stays hidden (not consolidated yet)
+    }
+    // Note: yearNumber > effectiveCurrentYear is already excluded by shouldRender condition
+  }
+  
+  // Overview is eligible for download if button is active
+  const isEligible = buttonState === 'active';
   
   return {
     year,
@@ -159,6 +189,8 @@ export const determineOverviewEligibility = (
     verifiedCount,
     totalCount: totalIssuedCount,
     isConsolidated,
+    buttonState,
+    hoverMessage,
   };
 };
 
@@ -166,16 +198,18 @@ export const determineOverviewEligibility = (
  * Gets overview eligibility for all years
  * @param groupedReceipts - Receipts grouped by year
  * @param lastConsolidatedYear - The last year that has been consolidated
+ * @param currentYear - Optional current year override (defaults to actual current year)
  * @returns Map of year to overview eligibility
  */
 export const getOverviewEligibilityForAllYears = (
   groupedReceipts: YearlyGroupedReceipts,
-  lastConsolidatedYear: number
+  lastConsolidatedYear: number,
+  currentYear?: number
 ): Record<string, OverviewEligibility> => {
   const eligibilityMap: Record<string, OverviewEligibility> = {};
   
   Object.entries(groupedReceipts).forEach(([year, receipts]) => {
-    eligibilityMap[year] = determineOverviewEligibility(year, receipts, lastConsolidatedYear);
+    eligibilityMap[year] = determineOverviewEligibility(year, receipts, lastConsolidatedYear, currentYear);
   });
   
   return eligibilityMap;

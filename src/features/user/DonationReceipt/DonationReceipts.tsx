@@ -164,21 +164,26 @@ const DonationReceipts = () => {
         {tReceipt('donationReceipt')}
       </h1>
       <section className={styles.donationReceipts}>
-        {sortedYears.map((year) => (
-          <YearlyReceiptGroup
-            key={year}
-            year={year}
-            receipts={groupedReceipts[year]}
-            onReceiptClick={handleReceiptClick}
-            processReceiptId={processReceiptId}
-            onOverviewDownload={
-              overviewEligibility[year]?.isEligible
-                ? () => handleOverviewDownload(year)
-                : undefined
-            }
-            isOverviewLoading={overviewLoadingYear === year}
-          />
-        ))}
+        {sortedYears.map((year) => {
+          const eligibility = overviewEligibility[year];
+          return (
+            <YearlyReceiptGroup
+              key={year}
+              year={year}
+              receipts={groupedReceipts[year]}
+              onReceiptClick={handleReceiptClick}
+              processReceiptId={processReceiptId}
+              overviewButtonState={eligibility?.buttonState || 'hidden'}
+              onOverviewDownload={
+                eligibility?.isEligible
+                  ? () => handleOverviewDownload(year)
+                  : undefined
+              }
+              isOverviewLoading={overviewLoadingYear === year}
+              hoverMessage={eligibility?.hoverMessage}
+            />
+          );
+        })}
       </section>
       <footer className={styles.receiptListFooter}>
         <SupportAssistanceInfo />

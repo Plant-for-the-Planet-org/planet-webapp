@@ -5,27 +5,34 @@ import styles from '../DonationReceipt.module.scss';
 
 const YearHeader: React.FC<YearHeaderProps> = ({
   year,
-  showOverviewLink,
+  overviewButtonState,
   onOverviewDownload,
   isLoading = false,
+  hoverMessage,
 }) => {
   const tReceipt = useTranslations('DonationReceipt');
 
   const handleOverviewClick = () => {
-    if (onOverviewDownload && !isLoading) {
+    if (onOverviewDownload && !isLoading && overviewButtonState === 'active') {
       onOverviewDownload();
     }
   };
 
+  const isButtonDisabled = isLoading || overviewButtonState !== 'active';
+  const showButton = overviewButtonState !== 'hidden';
+
   return (
     <div className={styles.yearHeader}>
       <h2 className={styles.yearTitle}>{year}</h2>
-      {showOverviewLink && (
+      {showButton && (
         <button
-          className={styles.overviewLink}
+          className={`${styles.overviewLink} ${
+            overviewButtonState === 'active' ? styles.overviewLinkActive : styles.overviewLinkInactive
+          }`}
           onClick={handleOverviewClick}
-          disabled={isLoading}
+          disabled={isButtonDisabled}
           type="button"
+          title={hoverMessage}
         >
           {isLoading ? (
             <span className={styles.overviewLinkContent}>

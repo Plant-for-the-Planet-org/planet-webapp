@@ -14,23 +14,19 @@ const YearlyReceiptGroup: React.FC<YearlyReceiptGroupProps> = ({
   receipts,
   onReceiptClick,
   processReceiptId,
+  overviewButtonState,
   onOverviewDownload,
   isOverviewLoading = false,
+  hoverMessage,
 }) => {
-  // Show overview link based on parent component's eligibility decision
-  // The parent component handles all eligibility logic including:
-  // - More than 1 issued receipt
-  // - All issued receipts are verified
-  // - Year is consolidated (year <= lastConsolidatedYear)
-  const showOverviewLink = onOverviewDownload !== undefined;
-
   return (
     <div className={styles.yearlyReceiptGroup}>
       <YearHeader
         year={year}
-        showOverviewLink={showOverviewLink}
+        overviewButtonState={overviewButtonState}
         onOverviewDownload={onOverviewDownload}
         isLoading={isOverviewLoading}
+        hoverMessage={hoverMessage}
       />
       
       <div className={styles.yearReceiptCards}>

@@ -155,6 +155,11 @@ export interface YearlyGroupedReceipts {
 }
 
 /**
+ * Overview button states
+ */
+export type OverviewButtonState = 'hidden' | 'active' | 'inactive-unverified' | 'inactive-future';
+
+/**
  * Interface for overview receipt eligibility
  * Determines if a year is eligible for overview receipt download
  */
@@ -164,6 +169,8 @@ export interface OverviewEligibility {
   verifiedCount: number;
   totalCount: number;
   isConsolidated: boolean;
+  buttonState: OverviewButtonState;
+  hoverMessage?: string;
 }
 
 // Component prop interfaces
@@ -179,8 +186,10 @@ export interface YearlyReceiptGroupProps {
   };
   onReceiptClick: (type: 'issued' | 'unissued', receipt: IssuedReceiptDataApi | UnissuedReceiptDataAPI) => void;
   processReceiptId: string | null;
+  overviewButtonState: OverviewButtonState;
   onOverviewDownload?: () => void;
   isOverviewLoading?: boolean;
+  hoverMessage?: string;
 }
 
 /**
@@ -188,9 +197,10 @@ export interface YearlyReceiptGroupProps {
  */
 export interface YearHeaderProps {
   year: string;
-  showOverviewLink: boolean;
+  overviewButtonState: OverviewButtonState;
   onOverviewDownload?: () => void;
   isLoading?: boolean;
+  hoverMessage?: string;
 }
 
 /**

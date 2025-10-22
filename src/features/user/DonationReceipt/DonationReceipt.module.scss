@@ -589,6 +589,13 @@
   border: 2px solid transparent;
   position: relative;
   
+  @include xsPhoneView {
+    padding: 10px 14px;
+    align-self: flex-start;
+  }
+}
+
+.overviewLinkActive {
   &:hover:not(:disabled) {
     background-color: $dsFireRedTransparent10;
     border-color: $dsFireRed;
@@ -607,17 +614,21 @@
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
+}
+
+.overviewLinkInactive {
+  cursor: not-allowed;
+  opacity: 0.6;
   
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
+  &:hover {
     transform: none;
     box-shadow: none;
+    background-color: transparent;
+    border-color: transparent;
   }
   
-  @include xsPhoneView {
-    padding: 10px 14px;
-    align-self: flex-start;
+  .overviewLinkContent {
+    color: $dsMediumGrey;
   }
 }
 
