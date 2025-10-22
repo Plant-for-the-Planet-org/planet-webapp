@@ -24,7 +24,8 @@
     "chromatic": "npx chromatic --exit-zero-on-changes",
     "prepare": "node ./husky-prepare.js",
     "analyze-css": "node scripts/css-static-analyzer.js",
-    "analyze-css:ci": "node scripts/css-static-analyzer.js && echo 'CSS analysis passed'"
+    "analyze-css:ci": "node scripts/css-static-analyzer.js && echo 'CSS analysis passed'",
+    "find-typos": "cspell --words-only --unique . | sort --ignore-case >> project-words.txt"
   },
   "validate-branch-name": {
     "pattern": "^(main|develop){1}$|^(feature|hotfix)/[a-z0-9-_]+$",
@@ -66,7 +67,7 @@
     "@sentry/integrations": "^6.19.2",
     "@sentry/node": "^6.19.2",
     "@sentry/webpack-plugin": "^1.20.1",
-    "@tanstack/react-query": "^5.83.0",
+    "@tanstack/react-query": "^5.89.0",
     "@trpc/client": "^11.4.3",
     "@trpc/next": "^11.4.3",
     "@trpc/react-query": "^11.4.3",
@@ -117,7 +118,7 @@
     "react-dom": "^18.3.1",
     "react-dropzone": "^11.4.0",
     "react-gtm-module": "^2.0.11",
-    "react-hook-form": "^7.60.0",
+    "react-hook-form": "^7.63.0",
     "react-insta-stories": "^2.8.0",
     "react-json-editor-ajrm": "^2.5.13",
     "react-lazyload": "^3.2.0",
@@ -129,7 +130,7 @@
     "react-player": "^2.8.2",
     "react-slick": "^0.30.2",
     "read-more-react": "^1.0.10",
-    "sass": "^1.85.1",
+    "sass": "^1.93.0",
     "serverless-postgres": "^2.1.1",
     "slick-carousel": "^1.8.1",
     "styled-jsx": "^5.0.0",

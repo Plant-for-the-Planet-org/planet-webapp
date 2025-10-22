@@ -1,10 +1,14 @@
 import { useLocale } from 'next-intl';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
+import { useCallback } from 'react';
 
 function useLocalizedPath() {
   const currentLocale = useLocale();
 
-  const localizedPath = (path: string) => getLocalizedPath(path, currentLocale);
+  const localizedPath = useCallback(
+    (path: string) => getLocalizedPath(path, currentLocale),
+    [currentLocale]
+  );
 
   return {
     localizedPath,

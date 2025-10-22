@@ -15,17 +15,22 @@ import ProjectDownloads from './ProjectDownloads';
 import ContactDetails from './ContactDetails';
 import MapPreview from './MapPreview';
 import ImageSlider from './ImageSlider';
+import area from '@turf/area';
 
 interface ProjectInfoProps {
   project: ExtendedProject;
   isMobile: boolean;
   setSelectedMode: SetState<ViewMode> | undefined;
+  hasVideoConsent: boolean;
+  onVideoConsentChange: (consent: boolean) => void;
 }
 
 const ProjectInfo = ({
   project,
   isMobile,
   setSelectedMode,
+  hasVideoConsent,
+  onVideoConsentChange,
 }: ProjectInfoProps) => {
   const tCountry = useTranslations('Country');
   const {
@@ -39,6 +44,7 @@ const ProjectInfo = ({
     purpose,
     expenses,
     certificates,
+    sites,
   } = project;
   const isTreeProject = purpose === 'trees';
   const isConservationProject = purpose === 'conservation';
@@ -46,7 +52,10 @@ const ProjectInfo = ({
   const shouldRenderKeyInfo = useMemo(() => {
     if (!isTreeProject && !isConservationProject) return false;
     // General conditions that apply to all projects (e.g employee count)
-    const generalConditions = [metadata.employeesCount];
+    const generalConditions = [
+      metadata.employeesCount,
+      sites && sites.length > 0,
+    ];
 
     // Specific conditions for tree projects
     const treeProjectConditions = isTreeProject
@@ -72,7 +81,7 @@ const ProjectInfo = ({
       (isConservationProject && conservationProjectConditions.some(Boolean)) ||
       generalConditions.some(Boolean)
     );
-  }, [metadata, isTreeProject, isConservationProject]);
+  }, [metadata, isTreeProject, isConservationProject, sites]);
 
   const shouldRenderAdditionalInfo = useMemo(() => {
     const {
@@ -137,13 +146,35 @@ const ProjectInfo = ({
   const shouldRenderProjectDownloads = useMemo(() => {
     return certificates?.length > 0 || expenses?.length > 0;
   }, [certificates, expenses]);
+
+  const projectAreaInHectares = useMemo(() => {
+    try {
+      if (sites && sites.length > 0) {
+        const totalAreaSqM = sites.reduce((total, site) => {
+          return total + (area(site.geometry) || 0);
+        }, 0);
+        return totalAreaSqM / 10000; // convert sqm → hectares
+      }
+    } catch (error) {
+      console.error('Error calculating project area in hectares:', error);
+      return null;
+    }
+    return null;
+  }, [sites]);
+
   const handleMap = () => setSelectedMode?.('map');
 
   return (
     <section className={styles.projectInfoSection}>
       {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
       {description && <AboutProject description={description} />}
-      {videoUrl && <VideoPlayer videoUrl={videoUrl} />}
+      {videoUrl && (
+        <VideoPlayer
+          videoUrl={videoUrl}
+          hasConsent={hasVideoConsent}
+          onConsentChange={onVideoConsentChange}
+        />
+      )}
       {images?.length > 0 && (
         <ImageSlider
           images={images}
@@ -170,6 +201,7 @@ const ProjectInfo = ({
           }
           employees={metadata.employeesCount}
           degradationYear={isTreeProject ? metadata.degradationYear : null}
+          projectAreaInHectares={projectAreaInHectares}
         />
       )}
       {shouldRenderAdditionalInfo && (

@@ -76,6 +76,7 @@
   max-width: 320px;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 
 .reviewButtons {
@@ -140,7 +141,7 @@
   gap: 5px;
 }
 
-.layerSwitcher {
+.layerToggle {
   display: flex;
   flex-direction: row;
   position: absolute;
@@ -149,6 +150,7 @@
   border-radius: 8px !important;
   overflow: hidden;
   box-shadow: 0px 3px 6px #00000029;
+  z-index: 999;
 }
 
 .layerOption {
@@ -231,7 +233,7 @@
   cursor: pointer;
   font-weight: bold;
 }
-.projSiteSaveandAdd {
+.projSiteSaveAndAdd {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -331,6 +333,7 @@
     left: 5%;
     font-weight: bold;
   }
+
   .uploadedMapStatus {
     background-color: $dsBaseGrey;
     padding: 6px 18px;
@@ -346,52 +349,62 @@
     min-width: 100px;
     color: $dsCoreText;
   }
-  .uploadedMapDeleteButton {
-    background-color: $dsBaseGrey;
-    padding: 6px;
-    border-radius: 18px;
-    height: 24px;
-    width: 24px;
+
+  .siteActions {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
     position: absolute;
+    right: 16px;
     top: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     z-index: 999;
-    right: 5%;
-    > svg {
-      height: 12px;
+
+    .controlButton {
+      background-color: $dsBaseGrey;
+      padding: 6px;
+      border-radius: 18px;
+      height: 24px;
+      width: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
       &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-  .uploadedMapEditButton {
-    background-color: $dsBaseGrey;
-    padding: 6px;
-    border-radius: 18px;
-    height: 24px;
-    width: 24px;
-    position: absolute;
-    top: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    right: 5%;
-    > svg {
-      path {
-        fill: $dsCoreText;
-      }
-      height: 12px;
-      &:hover {
-        cursor: pointer;
+        background-color: $dsDarkGrey;
+        svg path {
+          fill: $dsWhite;
+        }
       }
     }
   }
 }
 
-.mapboxContainer2 {
+.drawingControls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: absolute;
+  z-index: 999;
+  top: 6px;
+  left: 6px;
+
+  button {
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: $dsWhite;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .activePolygonButton {
+    border: 2px solid $dsDarkGrey;
+  }
+}
+
+.siteGeometryEditor {
   position: relative;
   > div > div > div {
     border-top-left-radius: 10px;
@@ -523,16 +536,6 @@
 
 /*  error */
 .errorMessage {
-  font-family: $primaryFontFamily;
-  font-size: $fontSmall;
-  color: $dsFireRed;
-  text-align: center;
-  font-weight: 600;
-  margin-top: 20px;
-  width: 100%;
-}
-
-.geoJsonError {
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
   color: $dsFireRed;
@@ -771,4 +774,38 @@
 
 .toggleText {
   margin-left: 8px;
+}
+
+.siteDeleteConfirmationModal {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 16px;
+  background: $dsWhite;
+
+  .siteDeleteConfirmationText {
+    font-size: $fontSmall;
+  }
+
+  .buttonsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+
+    button {
+      flex: 1;
+    }
+  }
+
+  .spinnerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

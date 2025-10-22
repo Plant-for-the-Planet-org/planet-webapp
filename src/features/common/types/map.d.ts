@@ -1,10 +1,22 @@
 import type Supercluster from 'supercluster';
-import type { User } from '@planet-sdk/common';
+import type {
+  NonPlantingInterventionTypes,
+  ProjectSite,
+  User,
+} from '@planet-sdk/common';
 import type { MutableRefObject } from 'react';
 import type { UserPublicProfile } from '@planet-sdk/common';
 import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import type { FlyToInterpolator } from 'react-map-gl';
 import type { SetState } from './common';
+import type {
+  Feature,
+  FeatureCollection,
+  MultiPolygon,
+  Point,
+  Polygon,
+} from 'geojson';
+import type { Map as MapLibreMap } from 'maplibre-gl';
 
 export interface ClusterMarker {
   geometry: {
@@ -144,7 +156,7 @@ export interface RegisterTreesFormProps {
 }
 
 // Map styling
-
+// cspell:disable
 export interface MapStyle {
   version: number;
   sprite: string;
@@ -267,3 +279,41 @@ export interface SpatialReference {
   wkid: number;
   latestWkid?: number;
 }
+// cspell:enable
+
+// Project site
+export type ProjectSiteFeatureCollection = FeatureCollection<
+  Polygon | MultiPolygon,
+  ProjectSite | Record<string, never>
+>;
+
+export type ProjectSiteFeature = Feature<
+  Polygon | MultiPolygon,
+  ProjectSite | Record<string, never>
+>;
+
+// intervention
+
+export interface InterventionProperties {
+  id: string;
+  highlightLine?: boolean;
+  opacity?: number;
+  dateDiff?: string;
+  type?:
+    | 'single-tree-registration'
+    | 'multi-tree-registration'
+    | NonPlantingInterventionTypes;
+}
+
+export type InterventionGeometryType = Point | Polygon;
+
+export type InterventionFeature = Feature<
+  InterventionGeometryType,
+  InterventionProperties
+>;
+
+// Map
+export interface ExtendedMapLibreMap extends MapLibreMap {
+  getMap: () => MapLibreMap;
+}
+export type MapLibreRef = MutableRefObject<ExtendedMapLibreMap | null>;

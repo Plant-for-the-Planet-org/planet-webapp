@@ -17,6 +17,7 @@ const unsupportedDonationSample = {
 
 const supportedDonationSample = {
   type: 'supported',
+  // cspell:disable-next-line
   supportedTreecounter: 'mohit-bajaj',
   buttonText: 'Donate',
 } as const;

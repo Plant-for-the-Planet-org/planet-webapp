@@ -239,7 +239,7 @@ export default function BasicDetails({
     if (projectDetails?.id) {
       setIsSkipButtonVisible(true);
     }
-  }, [router]);
+  }, [projectDetails?.id]);
 
   useEffect(() => {
     if (projectDetails) {
@@ -691,7 +691,7 @@ export default function BasicDetails({
                     validate: (value) => {
                       const num = parseFloat(value);
                       if (num < -90 || num > 90)
-                        return t('coordinateError.latitudeRange');
+                        return t('errors.coordinates.latitudeRange');
                       return true;
                     },
                   }}
@@ -726,7 +726,7 @@ export default function BasicDetails({
                     validate: (value) => {
                       const num = parseFloat(value);
                       if (num < -180 || num > 180)
-                        return t('coordinateError.longitudeRange');
+                        return t('errors.coordinates.longitudeRange');
                       return true;
                     },
                   }}

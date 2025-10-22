@@ -1,5 +1,5 @@
 import type { SetState } from '../../../common/types/common';
-import type { Feature, MultiPolygon, Polygon } from 'geojson';
+import type { ProjectSiteFeature } from '../../../common/types/map';
 import type { DropdownType } from '../../../common/types/projectv2';
 import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
@@ -16,25 +16,8 @@ import { truncateString } from '../../../../utils/getTruncatedString';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import themeProperties from '../../../../theme/themeProperties';
 
-export interface SiteProperties {
-  lastUpdated: {
-    date: string;
-    timezone: string;
-    timezone_type: number;
-  };
-  name: string;
-  description: string | null;
-  id: string;
-  status: string | null;
-}
-
-export type ProjectSite =
-  | Feature<Polygon | MultiPolygon, SiteProperties>[]
-  | undefined
-  | null;
-
 interface Props {
-  projectSites: ProjectSite;
+  projectSites: ProjectSiteFeature[] | undefined | null;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
   selectedIntervention: Intervention | null;
@@ -71,6 +54,10 @@ const ProjectSiteDropdown = ({
       };
     });
   }, [projectSites]);
+  const hasMultipleSites = useMemo(
+    () => siteList.length > 1,
+    [siteList.length]
+  );
 
   const getId = useCallback(
     (selectedSiteId: number) => {
@@ -90,6 +77,7 @@ const ProjectSiteDropdown = ({
   }, [activeDropdown]);
 
   const toggleSiteMenu = () => {
+    if (!hasMultipleSites) return;
     if (activeDropdown !== 'site') {
       setActiveDropdown('site');
       setIsMenuOpen(true);
@@ -97,9 +85,15 @@ const ProjectSiteDropdown = ({
       setIsMenuOpen((prev) => !prev);
     }
   };
+
   return (
-    <>
-      <div className={styles.dropdownButton} onClick={toggleSiteMenu}>
+    <div className={styles.dropdownWrapper}>
+      <div
+        className={`${
+          hasMultipleSites ? styles.dropdownButton : styles.dropdownDetails
+        }`}
+        onClick={hasMultipleSites ? toggleSiteMenu : undefined}
+      >
         <div className={styles.siteIconAndTextContainer}>
           <SiteIcon
             width={27}
@@ -136,15 +130,17 @@ const ProjectSiteDropdown = ({
             </>
           )}
         </div>
-        <div className={styles.menuArrow}>
-          {isMenuOpen ? (
-            <DropdownUpArrow width={10} />
-          ) : (
-            <DropdownDownArrow width={10} />
-          )}
-        </div>
+        {hasMultipleSites && (
+          <div className={styles.menuArrow}>
+            {isMenuOpen ? (
+              <DropdownUpArrow width={10} />
+            ) : (
+              <DropdownDownArrow width={10} />
+            )}
+          </div>
+        )}
       </div>
-      {isMenuOpen && (
+      {isMenuOpen && hasMultipleSites && (
         <ProjectSiteList
           siteList={siteList}
           setSelectedSite={setSelectedSite}
@@ -154,7 +150,7 @@ const ProjectSiteDropdown = ({
           setSelectedSampleTree={setSelectedSampleTree}
         />
       )}
-    </>
+    </div>
   );
 };
 

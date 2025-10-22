@@ -70,7 +70,7 @@ export default function DirectGift({
     if (router.isReady && router.query.id) {
       loadPublicUserData();
     }
-  }, [router]);
+  }, [router.isReady, router.query.id]);
 
   return tenantConfig ? <div></div> : <></>;
 }

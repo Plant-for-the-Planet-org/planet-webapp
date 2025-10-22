@@ -33,6 +33,8 @@
     "plantingDate": "Planting Date",
     "plantingDensity": "Planting Density",
     "plantingDensityUnit": "{formattedCount} trees per ha",
+    "projectArea": "Project Area",
+    "projectAreaUnit": "{formattedArea} ha",
     "speciesCount": "Species Planted ({count})",
     "sampleTrees": "Sample Trees ({count})",
     "sampleTree": "Sample Tree",
@@ -68,7 +70,7 @@
     "projectSpending": "Project Spending",
     "abandonment": "Abandonment",
     "yearAbandonedInfo": "When was the last significant human intervention in the site? Incl. logging, agriculture, cattle grazing, human induced burning.",
-    "treePerHa": "trees per ha",
+    "treePerHa": "trees / ha",
     "employees": "Employees",
     "degradationYear": "Degradation Year",
     "intervention": {
@@ -98,6 +100,10 @@
       "timeTravelOptionsLabel": "Time Travel Options"
     },
     "previousImage": "Previous Image",
-    "nextImage": "Next Image"
+    "nextImage": "Next Image",
+    "videoPlayer": {
+      "loadVideo": "Load Video (connects to YouTube)",
+      "consentText": "Clicking Load Video means you consent to YouTube's <googlePrivacyLink>Privacy Policy</googlePrivacyLink> and cookies."
+    }
   }
 }

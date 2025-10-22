@@ -299,7 +299,7 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         router.push(localizedPath('/login'));
       }
     }
-  }, [contextLoaded, user, router]);
+  }, [contextLoaded, user]);
 
   return user ? (
     <div className={styles.profilePageContainer}>

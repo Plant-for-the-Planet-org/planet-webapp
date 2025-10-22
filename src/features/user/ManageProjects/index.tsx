@@ -78,7 +78,7 @@ export default function ManageProjects({
         path = `/profile/projects/${projectGUID}?type=project-sites`;
         break;
       case 5:
-        path = `/profile/projects/${projectGUID}?type=project-spendings`;
+        path = `/profile/projects/${projectGUID}?type=project-spending`;
         break;
       case 6:
         path = `/profile/projects/${projectGUID}?type=review`;
@@ -185,7 +185,7 @@ export default function ManageProjects({
       case 'project-sites':
         setTabSelected(4);
         break;
-      case 'project-spendings':
+      case 'project-spending':
         setTabSelected(5);
         break;
       case 'review':
@@ -221,7 +221,7 @@ export default function ManageProjects({
         },
         {
           label: t('projectSpending'),
-          link: `/profile/projects/${projectGUID}?type=project-spendings`,
+          link: `/profile/projects/${projectGUID}?type=project-spending`,
           step: ProjectCreationTabs.PROJECT_SPENDING,
         },
         {

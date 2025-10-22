@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/VideoPlayer.module.scss';
 import PlayButtonIcon from '../../../../../public/assets/images/icons/projectV2/PlayButtonIcon';
 import ReactPlayer from 'react-player/lazy';
+import { useTranslations } from 'next-intl';
+import WebappButton from '../../../common/WebappButton';
+import { isYouTubeDomain } from '../../../../utils/youTubeValidation';
 
 const PlayButton = () => {
   return (
@@ -13,14 +16,24 @@ const PlayButton = () => {
 
 interface Props {
   videoUrl: string;
+  hasConsent: boolean;
+  onConsentChange: (hasConsent: boolean) => void;
 }
 
-const VideoPlayer = ({ videoUrl }: Props) => {
+const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
+  const tVideoPlayer = useTranslations('ProjectDetails.videoPlayer');
   const [playerDimensions, setPlayerDimensions] = useState({
     width: 0,
     height: 0,
   });
+  const [isYouTubeVideo, setIsYouTubeVideo] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Check if it's from YouTube domain
+    const fromYouTube = isYouTubeDomain(videoUrl);
+    setIsYouTubeVideo(fromYouTube);
+  }, [videoUrl]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,31 +46,72 @@ const VideoPlayer = ({ videoUrl }: Props) => {
       }
     };
 
-    // Initial setup
     handleResize();
-
-    // Add event listener
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const handleLoadVideo = () => {
+    onConsentChange(true);
+  };
+
   const { height, width } = playerDimensions;
-  return ReactPlayer.canPlay(videoUrl) ? (
+
+  // For YouTube URLs (any YouTube content), show consent placeholder if no consent given
+  if (isYouTubeVideo && !hasConsent) {
+    return (
+      <div className={styles.videoConsentContainer}>
+        <div className={styles.consentBackground}>
+          <div className={styles.consentContent}>
+            <WebappButton
+              elementType="button"
+              onClick={handleLoadVideo}
+              text={tVideoPlayer('loadVideo')}
+              variant="primary"
+              buttonClasses={styles.consentButton}
+            />
+            <small className={styles.consentText}>
+              {tVideoPlayer.rich('consentText', {
+                googlePrivacyLink: (chunks) => (
+                  <a
+                    target="_blank"
+                    href="https://policies.google.com/privacy"
+                    rel="noopener noreferrer"
+                    className="planet-links"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {chunks}
+                  </a>
+                ),
+              })}
+            </small>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!ReactPlayer.canPlay(videoUrl)) {
+    return null;
+  }
+
+  // Show the actual video player (for non-YouTube videos or after consent)
+  return (
     <div ref={containerRef} className={styles.videoContainer}>
       <ReactPlayer
         className={styles.video}
         height={height}
         width={width}
         loop={true}
-        light={true}
+        light={!isYouTubeVideo}
         controls={true}
         playIcon={<PlayButton />}
         config={{
           youtube: {
-            playerVars: { autoPlay: 1 },
+            playerVars: { autoplay: 1, rel: 0 },
           },
         }}
         url={videoUrl}
@@ -72,7 +126,7 @@ const VideoPlayer = ({ videoUrl }: Props) => {
         }}
       />
     </div>
-  ) : null;
+  );
 };
 
 export default VideoPlayer;
