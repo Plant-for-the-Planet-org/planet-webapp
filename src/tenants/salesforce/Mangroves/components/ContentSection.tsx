@@ -43,15 +43,14 @@ export default function ContentSection() {
                 alt=""
               />
             </div>
-            <Link href={localizedPath('/?filter=mangroves')}>
-              <button className={styles.projectMapButton}>
-                <MangroveMapIcon /> View Project Map
-              </button>
+            <Link
+              href={localizedPath('/?filter=mangroves')}
+              className={styles.projectMapButton}
+            >
+              <MangroveMapIcon /> View Project Map
             </Link>
-            <Link href={'#project-grid'}>
-              <button className={styles.projectListButton}>
-                <ViewIcon /> View Project List
-              </button>
+            <Link href={'#project-grid'} className={styles.projectListButton}>
+              <ViewIcon /> View Project List
             </Link>
           </div>
           <div
