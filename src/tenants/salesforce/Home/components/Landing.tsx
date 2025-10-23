@@ -21,8 +21,8 @@ export default function Landing(tenantScore: Props) {
             Salesforce is helping to fund the conservation, restoration & growth
             of 100,000,000 trees by 2030.
           </p>
-          <Link href={localizedPath('/')}>
-            <button>Help us get there</button>
+          <Link href={localizedPath('/')} className={styles.landingButton}>
+            Help us get there
           </Link>
           <p className={styles.footnote}>
             This estimate is based on the amount of funding we provide, and

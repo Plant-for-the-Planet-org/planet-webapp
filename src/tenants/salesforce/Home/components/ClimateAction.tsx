@@ -72,8 +72,11 @@ export default function ClimateAction() {
                 Select your favorite tree project and lend your support.
               </small>
             </p>
-            <Link href={localizedPath('/')}>
-              <button>Donate For Trees Today</button>
+            <Link
+              href={localizedPath('/')}
+              className={styles.donateForTreesButton}
+            >
+              Donate For Trees Today
             </Link>
           </div>
         </div>
