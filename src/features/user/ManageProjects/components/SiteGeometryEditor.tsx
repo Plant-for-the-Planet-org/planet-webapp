@@ -51,7 +51,12 @@ const isValidGeoJSON = (geo: ProjectSiteFeatureCollection): boolean => {
     gjv.isGeoJSONObject(geo) &&
     geo.type === 'FeatureCollection' &&
     Array.isArray(geo.features) &&
-    geo.features.length > 0
+    geo.features.length > 0 &&
+    geo.features.every(
+      (feature) =>
+        feature.geometry.type === 'Polygon' ||
+        feature.geometry.type === 'MultiPolygon'
+    )
   );
 };
 
