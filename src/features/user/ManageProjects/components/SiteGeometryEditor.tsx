@@ -40,13 +40,27 @@ interface Props {
 
 const defaultZoom = 1.4;
 
+// Helper: Extract file extension
+const getFileExtension = (filename: string): string => {
+  return filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
+};
+
+// Helper: Validate GeoJSON structure
+const isValidGeoJSON = (geo: ProjectSiteFeatureCollection): boolean => {
+  return (
+    gjv.isGeoJSONObject(geo) &&
+    geo.type === 'FeatureCollection' &&
+    Array.isArray(geo.features) &&
+    geo.features.length > 0
+  );
+};
+
 export default function SiteGeometryEditor({
   geoJson,
   setGeoJson,
   setErrorMessage,
 }: Props): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
-  const reader = new FileReader();
   const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
   const [viewport, setViewPort] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
@@ -54,6 +68,63 @@ export default function SiteGeometryEditor({
   const [coordinates, setCoordinates] = useState<number[][]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isMapReady, setIsMapReady] = useState(false);
+
+  // Process uploaded files
+  const processFile = useCallback(
+    (file: File) => {
+      const fileType = getFileExtension(file.name);
+      const reader = new FileReader();
+
+      reader.onabort = () => {
+        setErrorMessage(tManageProjects('errors.file.readAborted'));
+      };
+
+      reader.onerror = () => {
+        setErrorMessage(tManageProjects('errors.file.readFailed'));
+      };
+
+      reader.onload = (event) => {
+        if (typeof event.target?.result !== 'string') return;
+
+        try {
+          let geo;
+
+          if (fileType === 'kml') {
+            const dom = new DOMParser().parseFromString(
+              event.target.result,
+              'text/xml'
+            );
+            geo = tj.kml(dom);
+          } else if (fileType === 'geojson') {
+            geo = JSON.parse(event.target.result);
+          }
+
+          // Validate the parsed GeoJSON
+          if (isValidGeoJSON(geo)) {
+            setErrorMessage(null);
+            setGeoJson(geo);
+          } else {
+            const errorKey =
+              fileType === 'kml'
+                ? 'errors.file.invalidKml'
+                : 'errors.file.invalidGeojson';
+            setErrorMessage(tManageProjects(errorKey));
+          }
+        } catch (error) {
+          const errorKey =
+            fileType === 'kml'
+              ? 'errors.file.invalidKml'
+              : 'errors.file.invalidGeojson';
+          setErrorMessage(tManageProjects(errorKey));
+          console.error('JSON parse error:', error);
+          return;
+        }
+      };
+
+      reader.readAsText(file);
+    },
+    [tManageProjects, setErrorMessage, setGeoJson]
+  );
 
   // Handle click to add point
   const handleClick = useCallback(
@@ -185,68 +256,7 @@ export default function SiteGeometryEditor({
         accept={['.geojson', '.kml']}
         multiple={false}
         onDrop={(acceptedFiles) => {
-          acceptedFiles.forEach((file: File) => {
-            const fileType =
-              file.name.substring(
-                file.name.lastIndexOf('.') + 1,
-                file.name.length
-              ) || file.name;
-            if (fileType === 'kml') {
-              reader.readAsText(file);
-              reader.onabort = () => console.log('file reading was aborted');
-              reader.onerror = () => console.log('file reading has failed');
-              reader.onload = (event) => {
-                if (typeof event.target?.result !== 'string') return null;
-                const dom = new DOMParser().parseFromString(
-                  event.target.result,
-                  'text/xml'
-                );
-                const geo = tj.kml(dom);
-                if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
-                  setErrorMessage(null);
-                  setGeoJson(geo);
-                } else {
-                  setErrorMessage(tManageProjects('errors.file.invalidKml'));
-                }
-              };
-            } else if (fileType === 'geojson') {
-              reader.readAsText(file);
-              reader.onabort = () => console.log('file reading was aborted');
-              reader.onerror = () => console.log('file reading has failed');
-              reader.onload = (event) => {
-                if (typeof event.target?.result === 'string') {
-                  try {
-                    const geo = JSON.parse(event.target.result);
-                    const isFC =
-                      geo &&
-                      geo.type === 'FeatureCollection' &&
-                      Array.isArray(geo.features);
-                    if (
-                      gjv.isGeoJSONObject(geo) &&
-                      isFC &&
-                      geo.features.length > 0
-                    ) {
-                      setErrorMessage(null);
-                      setGeoJson(geo);
-                    } else {
-                      setErrorMessage(
-                        tManageProjects('errors.file.invalidGeojson')
-                      );
-                      console.log('invalid geojson');
-                    }
-                  } catch (error) {
-                    setErrorMessage(
-                      tManageProjects('errors.file.invalidGeojson')
-                    );
-                    console.error('JSON parse error:', error);
-                    return;
-
-                    // Upload the base 64 to API and use the response to show preview to the user
-                  }
-                }
-              };
-            }
-          });
+          acceptedFiles.forEach(processFile);
         }}
       >
         {({ getRootProps, getInputProps }) => (
