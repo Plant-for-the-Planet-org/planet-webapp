@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import styles from '../../styles/Slider.module.scss';
 
 interface Props {
@@ -18,9 +19,7 @@ export const SingleCarouselImage = ({
   currentImage,
 }: Props) => {
   const isImageModalOpenOnMobile = isModalOpen && isMobile;
-  const carouselImageClass = `single-carousel-image ${
-    styles.singleCarouselImage
-  }${isImageModalOpenOnMobile ? ` ${styles.mobileModal}` : ''}`;
+
   const carouselBackgroundStyle = {
     background: `linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(${imageURL})`,
   };
@@ -28,12 +27,17 @@ export const SingleCarouselImage = ({
   const shouldShowCounter = isModalOpen;
 
   return (
-    <div className={carouselImageClass} style={carouselBackgroundStyle}>
+    <div
+      className={clsx('single-carousel-image', styles.singleCarouselImage, {
+        [styles.mobileModal]: isImageModalOpenOnMobile,
+      })}
+      style={carouselBackgroundStyle}
+    >
       {shouldShowDescription && (
         <div
-          className={`image-description ${styles.imageDescription} ${
-            isModalOpen ? styles.modalOpen : ''
-          }`}
+          className={clsx('image-description', styles.imageDescription, {
+            [styles.modalOpen]: isModalOpen,
+          })}
         >
           {imageDescription}
         </div>
