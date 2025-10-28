@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import styles from '../../styles/Slider.module.scss';
 
 interface Props {
