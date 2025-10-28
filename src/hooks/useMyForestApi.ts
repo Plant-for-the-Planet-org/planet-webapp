@@ -4,6 +4,7 @@ import type {
   ProjectListResponse,
   ContributionsResponse,
   Leaderboard,
+  ContributionStats,
 } from '../features/common/types/myForest';
 
 interface MyForestApiResponse {
@@ -125,17 +126,34 @@ export const useMyForestApi = ({
     }
 
     // Transform the combined response into the expected format
+    const stats = response.stats || {
+      giftsReceivedCount: 0,
+      contributionsMadeCount: 0,
+      contributedProjects: new Set(),
+      contributedCountries: new Set(),
+      treesRegistered: 0,
+      treesDonated: { personal: 0, received: 0 },
+      areaRestoredInM2: { personal: 0, received: 0 },
+      areaConservedInM2: { personal: 0, received: 0 },
+    };
+
+    // Convert arrays to Sets for contributedProjects and contributedCountries
+    const transformedStats: ContributionStats = {
+      ...stats,
+      contributedProjects: Array.isArray(stats.contributedProjects) 
+        ? new Set(stats.contributedProjects) 
+        : stats.contributedProjects instanceof Set 
+          ? stats.contributedProjects 
+          : new Set(),
+      contributedCountries: Array.isArray(stats.contributedCountries) 
+        ? new Set(stats.contributedCountries) 
+        : stats.contributedCountries instanceof Set 
+          ? stats.contributedCountries 
+          : new Set(),
+    };
+
     const contributionsResult: ContributionsResponse = {
-      stats: response.stats || {
-        giftsReceivedCount: 0,
-        contributionsMadeCount: 0,
-        contributedProjects: new Set(),
-        contributedCountries: new Set(),
-        treesRegistered: 0,
-        treesDonated: { personal: 0, received: 0 },
-        areaRestoredInM2: { personal: 0, received: 0 },
-        areaConservedInM2: { personal: 0, received: 0 },
-      },
+      stats: transformedStats,
       myContributionsMap,
       registrationLocationsMap,
       projectLocationsMap,
