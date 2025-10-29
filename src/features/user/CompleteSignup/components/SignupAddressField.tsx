@@ -128,7 +128,10 @@ const SignupAddressField = ({
       />
       {addressSuggestions
         ? addressSuggestions.length > 0 && (
-            <div className="suggestions-container">
+            <div
+              role="listbox"
+              aria-label={tSignup('addressManagement.addressSuggestions')}
+            >
               {addressSuggestions.map((suggestion, index) => {
                 return (
                   <div
@@ -136,7 +139,8 @@ const SignupAddressField = ({
                     onMouseDown={() => {
                       handleAddressSelection(suggestion.text);
                     }}
-                    className="suggestion"
+                    role="option"
+                    aria-selected={false}
                   >
                     {suggestion.text}
                   </div>
