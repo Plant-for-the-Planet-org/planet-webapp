@@ -104,7 +104,7 @@ export default function SiteGeometryEditor({
         if (typeof event.target?.result !== 'string') return;
 
         try {
-          const parsedGeoJson = parseGeoFile(event.target.result, 'text/xml');
+          const parsedGeoJson = parseGeoFile(event.target.result, fileType);
 
           // Validate the parsed GeoJSON
           if (isValidGeoJSON(parsedGeoJson)) {
