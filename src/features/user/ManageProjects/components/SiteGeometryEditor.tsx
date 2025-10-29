@@ -46,17 +46,30 @@ const getFileExtension = (filename: string): string => {
 };
 
 // Helper: Validate GeoJSON structure
-const isValidGeoJSON = (geo: ProjectSiteFeatureCollection): boolean => {
+const isValidGeoJSON = (geo: unknown): geo is ProjectSiteFeatureCollection => {
+  if (!gjv.isGeoJSONObject(geo)) return false;
+
+  const geoJson = geo as ProjectSiteFeatureCollection;
+
   return (
-    gjv.isGeoJSONObject(geo) &&
-    geo.type === 'FeatureCollection' &&
-    Array.isArray(geo.features) &&
-    geo.features.length > 0 &&
-    geo.features.every((feature) => {
-      const geometryType = feature.geometry?.type;
-      return geometryType === 'Polygon' || geometryType === 'MultiPolygon';
-    })
+    geoJson.type === 'FeatureCollection' &&
+    Array.isArray(geoJson.features) &&
+    geoJson.features.length > 0 &&
+    geoJson.features.every(
+      (feature) =>
+        feature.geometry?.type === 'Polygon' ||
+        feature.geometry?.type === 'MultiPolygon'
+    )
   );
+};
+
+// Helper: Parse uploaded file content into GeoJSON
+const parseGeoFile = (content: string, fileType: string) => {
+  if (fileType === 'kml') {
+    const dom = new DOMParser().parseFromString(content, 'text/xml');
+    return tj.kml(dom);
+  }
+  return JSON.parse(content);
 };
 
 export default function SiteGeometryEditor({
@@ -91,22 +104,12 @@ export default function SiteGeometryEditor({
         if (typeof event.target?.result !== 'string') return;
 
         try {
-          let geo;
-
-          if (fileType === 'kml') {
-            const dom = new DOMParser().parseFromString(
-              event.target.result,
-              'text/xml'
-            );
-            geo = tj.kml(dom);
-          } else if (fileType === 'geojson') {
-            geo = JSON.parse(event.target.result);
-          }
+          const parsedGeoJson = parseGeoFile(event.target.result, 'text/xml');
 
           // Validate the parsed GeoJSON
-          if (isValidGeoJSON(geo)) {
+          if (isValidGeoJSON(parsedGeoJson)) {
             setErrorMessage(null);
-            setGeoJson(geo);
+            setGeoJson(parsedGeoJson);
           } else {
             const errorKey =
               fileType === 'kml'
