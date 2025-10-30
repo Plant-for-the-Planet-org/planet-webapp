@@ -177,10 +177,14 @@ const SignupAddressField = ({
           control={control}
           rules={{
             required: tSignup('validationErrors.zipCodeRequired'),
-            pattern: {
-              value: postalRegex as RegExp,
-              message: tSignup('validationErrors.zipCodeInvalid'),
-            },
+            ...(postalRegex
+              ? {
+                  pattern: {
+                    value: postalRegex,
+                    message: tSignup('validationErrors.zipCodeInvalid'),
+                  },
+                }
+              : {}),
             maxLength: {
               value: 15,
               message: tSignup('validationErrors.zipCodeInvalid'),
