@@ -6,6 +6,7 @@ import { Controller } from 'react-hook-form';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from '../CompleteSignup.module.scss';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
+import { useState } from 'react';
 
 interface SignupTogglesProps {
   control: Control<SignupFormData>;
@@ -24,6 +25,14 @@ const SignupToggles = ({
 }: SignupTogglesProps) => {
   const tSignup = useTranslations('EditProfile');
   const locale = useLocale();
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  const onTermsChange = (checked: boolean) => {
+    setHasInteracted(true);
+    setAgreedToTerms(checked);
+  };
+
+  const showTermError = !agreedToTerms && (hasInteracted || formSubmitted);
   return (
     <>
       <div className={styles.inlineToggleGroup}>
@@ -100,14 +109,12 @@ const SignupToggles = ({
           </div>
           <NewToggleSwitch
             checked={agreedToTerms || false}
-            onChange={(e) => {
-              setAgreedToTerms(e.target.checked);
-            }}
+            onChange={(e) => onTermsChange(e.target.checked)}
             inputProps={{ 'aria-label': 'secondary checkbox' }}
             id="terms"
           />
         </div>
-        {!agreedToTerms && formSubmitted && (
+        {showTermError && (
           <div className={styles.termsError}>
             {tSignup('termAndConditionError')}
           </div>
