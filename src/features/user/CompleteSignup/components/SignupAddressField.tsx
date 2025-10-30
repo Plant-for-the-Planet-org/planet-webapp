@@ -16,7 +16,7 @@ import {
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
 
 interface SignupAddressFieldProps {
-  control: Control<SignupFormData, any, SignupFormData>;
+  control: Control<SignupFormData>;
   country: '' | ExtendedCountryCode;
   errors: FieldErrors<SignupFormData>;
   setValue: UseFormSetValue<SignupFormData>;

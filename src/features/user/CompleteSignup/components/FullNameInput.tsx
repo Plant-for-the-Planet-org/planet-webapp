@@ -26,7 +26,7 @@ const getNameRules = (
 };
 
 export interface FullNameInputProps {
-  control: Control<SignupFormData, any, SignupFormData>;
+  control: Control<SignupFormData>;
   errors: FieldErrors<SignupFormData>;
 }
 

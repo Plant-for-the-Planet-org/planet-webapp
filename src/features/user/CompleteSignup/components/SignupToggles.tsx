@@ -8,7 +8,7 @@ import styles from '../CompleteSignup.module.scss';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 
 interface SignupTogglesProps {
-  control: Control<SignupFormData, any, SignupFormData>;
+  control: Control<SignupFormData>;
   isPublic: boolean;
   agreedToTerms: boolean;
   setAgreedToTerms: SetState<boolean>;
