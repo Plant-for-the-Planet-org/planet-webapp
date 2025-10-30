@@ -63,7 +63,6 @@ export default function CompleteSignup(): ReactElement | null {
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { user, setUser, auth0User, contextLoaded, token } = useUserProps();
 
-  // states
   const [isProcessing, setIsProcessing] = useState(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [accountType, setAccountType] = useState<UserType>('individual');
@@ -81,11 +80,18 @@ export default function CompleteSignup(): ReactElement | null {
   useEffect(() => {
     if (!contextLoaded) return;
 
+    // Already has profile → go to /profile
+    if (user) {
+      router.push(localizedPath('/profile'));
+      return;
+    }
+
+    // Not authenticated → go home
     if (token === null) {
       router.push(localizedPath('/'));
       return;
     }
-  }, [contextLoaded, token]);
+  }, [contextLoaded, token, user]);
 
   const storedLocation = useMemo(() => getStoredConfig('loc'), []);
   const defaultLocationValues = useMemo(
@@ -149,7 +155,7 @@ export default function CompleteSignup(): ReactElement | null {
   };
 
   // Only show signup form when authenticated but profile doesn't exist
-  if (!contextLoaded || !token) return null;
+  if (!contextLoaded || user || !token) return null;
   const isSubmitting = isProcessing || user !== null;
 
   return (
