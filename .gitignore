@@ -61,7 +61,3 @@ src/stories
 # TypeScript incremental compilation file
 tsconfig.tsbuildinfo
 
-# 🧾 Ignore auto-generated dynamic classname scan reports
-# These reports are generated locally using the find-class-patterns.js script
-# and should not be committed to avoid unnecessary diffs or repo clutter.
-dynamic-classnames-report.md
