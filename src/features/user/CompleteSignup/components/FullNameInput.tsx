@@ -8,10 +8,10 @@ import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 const getNameRules = (
+  tSignup: ReturnType<typeof useTranslations>,
   validationErrorMessage: string,
   patternErrorMessage: string
 ) => {
-  const tSignup = useTranslations('EditProfile');
   return {
     required: validationErrorMessage,
     maxLength: {
@@ -39,6 +39,7 @@ const FullNameInput = ({ control, errors }: FullNameInputProps) => {
         name="firstname"
         control={control}
         rules={getNameRules(
+          tSignup,
           tSignup('validationErrors.firstNameRequired'),
           tSignup('validationErrors.firstNameInvalid')
         )}
@@ -60,6 +61,7 @@ const FullNameInput = ({ control, errors }: FullNameInputProps) => {
         name="lastname"
         control={control}
         rules={getNameRules(
+          tSignup,
           tSignup('validationErrors.lastNameRequired'),
           tSignup('validationErrors.lastNameInvalid')
         )}
