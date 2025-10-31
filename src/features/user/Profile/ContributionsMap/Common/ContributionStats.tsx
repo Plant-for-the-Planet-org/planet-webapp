@@ -26,8 +26,8 @@ const StatItem = ({ icon, label }: StatItemProps) => {
 const ContributionStats = () => {
   const tProfile = useTranslations('Profile.mapStats');
   const { contributionsResult } = useMyForest();
-  const countries = contributionsResult?.stats.contributedCountries.size;
-  const projects = contributionsResult?.stats.contributedProjects.size;
+  const countries = contributionsResult?.stats.contributedCountries?.size ?? 0;
+  const projects = contributionsResult?.stats.contributedProjects?.size ?? 0;
 
   return (
     <div className={styles.contributionStatsContainer}>

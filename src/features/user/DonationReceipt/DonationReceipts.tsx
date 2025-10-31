@@ -3,6 +3,7 @@ import type {
   DonationReceiptsStatus,
   IssuedReceiptDataApi,
   UnissuedReceiptDataAPI,
+  OverviewReceiptDownloadResponse,
 } from './donationReceiptTypes';
 
 import { handleError } from '@planet-sdk/common';
@@ -13,6 +14,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import IssuedReceiptCard from './microComponents/IssuedReceiptCard';
 import UnissuedReceiptCard from './microComponents/UnissuedReceiptCard';
+import YearlyReceiptGroup from './microComponents/YearlyReceiptGroup';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import {
   transformProfileToDonorView,
@@ -26,6 +28,11 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import {
+  groupReceiptsByYear,
+  getSortedYears,
+  getOverviewEligibilityForAllYears,
+} from './receiptGroupingUtils';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useApi();
@@ -36,6 +43,7 @@ const DonationReceipts = () => {
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
   const [processReceiptId, setProcessReceiptId] = useState<string | null>(null);
+  const [overviewLoadingYear, setOverviewLoadingYear] = useState<string | null>(null);
   const { initForIssuance, initForVerification } = useDonationReceiptContext();
   const { redirect } = useContext(ErrorHandlingContext);
 
@@ -94,6 +102,35 @@ const DonationReceipts = () => {
 
     router.push(localizedPath('/profile/donation-receipt/verify'));
   };
+
+  const handleOverviewDownload = async (year: string) => {
+    if (!user || overviewLoadingYear) return;
+    
+    setOverviewLoadingYear(year);
+    
+    try {
+      // Make API call to download overview receipt for the specific year
+      const response = await getApiAuthenticated<OverviewReceiptDownloadResponse>(
+        `/app/overviewReceipt/${year}`
+      );
+      
+      if (response?.downloadUrl) {
+        // Create a temporary link to trigger download
+        const link = document.createElement('a');
+        link.href = response.downloadUrl;
+        link.download = `donation-receipt-overview-${year}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (error) {
+      console.error('Failed to download overview receipt:', error);
+      handleError(error as APIError);
+    } finally {
+      setOverviewLoadingYear(null);
+    }
+  };
+
   const hasNoReceipts =
     !donationReceipts?.issued.length && !donationReceipts?.unissued.length;
 
@@ -116,28 +153,37 @@ const DonationReceipts = () => {
       </section>
     );
 
+  // Group receipts by year and get sorted years
+  const groupedReceipts = groupReceiptsByYear(donationReceipts);
+  const sortedYears = getSortedYears(groupedReceipts);
+  const overviewEligibility = getOverviewEligibilityForAllYears(groupedReceipts, donationReceipts.lastConsolidatedYear);
+
   return (
     <section className={styles.donorContactManagementLayout}>
       <h1 className={styles.receiptListHeader}>
         {tReceipt('donationReceipt')}
       </h1>
       <section className={styles.donationReceipts}>
-        {donationReceipts?.unissued.map((receipt) => (
-          <UnissuedReceiptCard
-            key={`unissued-${receipt.donations[0].uid}`}
-            unissuedReceipt={receipt}
-            onReceiptClick={() => handleReceiptClick('unissued', receipt)}
-            isProcessing={processReceiptId === receipt.donations[0].uid}
-          />
-        ))}
-        {donationReceipts?.issued.map((receipt) => (
-          <IssuedReceiptCard
-            key={`issued-${receipt.donations[0].reference}`}
-            issuedReceipt={receipt}
-            onReceiptClick={() => handleReceiptClick('issued', receipt)}
-            isProcessing={processReceiptId === receipt.donations[0].reference}
-          />
-        ))}
+        {sortedYears.map((year) => {
+          const eligibility = overviewEligibility[year];
+          return (
+            <YearlyReceiptGroup
+              key={year}
+              year={year}
+              receipts={groupedReceipts[year]}
+              onReceiptClick={handleReceiptClick}
+              processReceiptId={processReceiptId}
+              overviewButtonState={eligibility?.buttonState || 'hidden'}
+              onOverviewDownload={
+                eligibility?.isEligible
+                  ? () => handleOverviewDownload(year)
+                  : undefined
+              }
+              isOverviewLoading={overviewLoadingYear === year}
+              hoverMessage={eligibility?.hoverMessage}
+            />
+          );
+        })}
       </section>
       <footer className={styles.receiptListFooter}>
         <SupportAssistanceInfo />

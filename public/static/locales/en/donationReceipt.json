@@ -58,6 +58,8 @@
     "itemsReferenceDateSingleDonation": "Reference {reference} · {date}",
     "itemsReferenceDateSingleEndowment": "Reference {reference} · Endowment · {date}",
     "pendingReceipt": "Pending Receipt(s)",
-    "noReceiptFound": "Oops! No receipt found"
+    "noReceiptFound": "Oops! No receipt found",
+    "downloadOverview": "Download Overview",
+    "downloadingOverview": "Downloading..."
   }
 }

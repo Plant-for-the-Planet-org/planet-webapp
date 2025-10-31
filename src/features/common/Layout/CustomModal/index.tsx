@@ -1,5 +1,4 @@
 import Modal from '@mui/material/Modal';
-
 import styles from './CustomModal.module.scss';
 
 interface Props {
