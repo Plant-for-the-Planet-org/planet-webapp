@@ -57,6 +57,8 @@
     "itemsReferenceDateSingleDonation": "Referenz {reference} · {date}",
     "itemsReferenceDateSingleEndowment": "Referenz {reference} · Zustiftung · {date}",
     "pendingReceipt": "Ausstehende Bescheinigung(en)",
-    "noReceiptFound": "Huch! Keine Bescheinigung gefunden"
+    "noReceiptFound": "Huch! Keine Bescheinigung gefunden",
+    "downloadOverview": "Übersicht herunterladen",
+    "downloadingOverview": "Wird heruntergeladen..."
   }
 }
