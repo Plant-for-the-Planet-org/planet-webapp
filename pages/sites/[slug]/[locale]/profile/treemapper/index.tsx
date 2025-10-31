@@ -8,7 +8,7 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import Head from 'next/head';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import TreeMapper from '../../../../../../src/features/user/TreeMapper';
@@ -21,6 +21,9 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
+import FeatureMigrated from '../../../../../../src/features/user/TreeMapper/FeatureMigrated';
+import DashboardPromoBanner from '../../../../../../src/features/user/TreeMapper/DashboardPromoBanner';
 
 interface Props {
   pageProps: PageProps;
@@ -30,6 +33,7 @@ function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  const { user } = useUserProps();
 
   useEffect(() => {
     if (router.isReady) {
@@ -37,12 +41,43 @@ function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
     }
   }, [router.isReady]);
 
+  const pageContent = useMemo(() => {
+    if (!user) return null;
+
+    const { treemapperMigrationState } = user;
+
+    const isBlockedByMigration =
+      treemapperMigrationState === 'completed' ||
+      treemapperMigrationState === 'in-progress';
+
+    if (isBlockedByMigration) {
+      return (
+        <FeatureMigrated
+          status={treemapperMigrationState}
+          featureKey="data-explorer"
+        />
+      );
+    }
+
+    const showPromoBanner =
+      user.type === 'tpo' &&
+      !isBlockedByMigration &&
+      process.env.NEXT_PUBLIC_SHOW_DASHBOARD_PROMO === 'true';
+
+    return (
+      <>
+        {showPromoBanner && <DashboardPromoBanner />}
+        <TreeMapper />
+      </>
+    );
+  }, [user]);
+
   return tenantConfig ? (
     <UserLayout>
       <Head>
         <title>{t('treemapper')}</title>
       </Head>
-      <TreeMapper />
+      {pageContent}
     </UserLayout>
   ) : (
     <></>
