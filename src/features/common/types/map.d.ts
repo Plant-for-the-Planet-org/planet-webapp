@@ -143,11 +143,7 @@ export interface ViewportProps {
   transitionEasing?: (normalizedTime: number) => number;
 }
 
-export interface RegisteredTreesGeometry {
-  features?: [];
-  coordinates: [number, number] | number[][];
-  type: 'Polygon' | 'Point';
-}
+export type RegisteredTreesGeometry = Point | Polygon;
 
 export interface RegisterTreesFormProps {
   setContributionGUID: SetState<string>;
