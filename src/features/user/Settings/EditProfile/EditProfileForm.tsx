@@ -557,7 +557,7 @@ export default function EditProfileForm() {
           {/* <div className={styles.horizontalLine} />
           <InlineFormDisplayGroup type="other">
             <label
-              htmlFor="show-treegame"
+              htmlFor="show-tree-game"
               className={styles.profileConsentSettingLabel}
               style={{ cursor: 'pointer' }}
             >
@@ -572,7 +572,7 @@ export default function EditProfileForm() {
                   checked={value}
                   onChange={onChange}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="show-treegame"
+                  id="show-tree-game"
                   disabled={true}
                 />
               )}

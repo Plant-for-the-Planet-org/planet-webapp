@@ -3,7 +3,7 @@ import styles from './CustomModal.module.scss';
 
 interface Props {
   isOpen: boolean;
-  handleContinue: () => void;
+  handleContinue: () => void | Promise<void>;
   handleCancel: () => void;
   continueButtonText: string;
   cancelButtonText: string;

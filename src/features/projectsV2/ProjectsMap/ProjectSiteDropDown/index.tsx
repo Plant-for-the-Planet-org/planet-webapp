@@ -1,5 +1,5 @@
 import type { SetState } from '../../../common/types/common';
-import type { Feature, MultiPolygon, Polygon } from 'geojson';
+import type { ProjectSiteFeature } from '../../../common/types/map';
 import type { DropdownType } from '../../../common/types/projectv2';
 import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
@@ -16,25 +16,8 @@ import { truncateString } from '../../../../utils/getTruncatedString';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import themeProperties from '../../../../theme/themeProperties';
 
-export interface SiteProperties {
-  lastUpdated: {
-    date: string;
-    timezone: string;
-    timezone_type: number;
-  };
-  name: string;
-  description: string | null;
-  id: string;
-  status: string | null;
-}
-
-export type ProjectSite =
-  | Feature<Polygon | MultiPolygon, SiteProperties>[]
-  | undefined
-  | null;
-
 interface Props {
-  projectSites: ProjectSite;
+  projectSites: ProjectSiteFeature[] | undefined | null;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
   selectedIntervention: Intervention | null;
@@ -104,7 +87,7 @@ const ProjectSiteDropdown = ({
   };
 
   return (
-    <>
+    <div className={styles.dropdownWrapper}>
       <div
         className={`${
           hasMultipleSites ? styles.dropdownButton : styles.dropdownDetails
@@ -167,7 +150,7 @@ const ProjectSiteDropdown = ({
           setSelectedSampleTree={setSelectedSampleTree}
         />
       )}
-    </>
+    </div>
   );
 };
 

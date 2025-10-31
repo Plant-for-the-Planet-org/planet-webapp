@@ -103,7 +103,8 @@
         "editAddress": "Edit Address",
         "saveChanges": "Save Changes",
         "address2": "Address 2 (optional)"
-      }
+      },
+      "addressSuggestions": "Address Suggestions"
     }
   }
 }

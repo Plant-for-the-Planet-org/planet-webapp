@@ -4,15 +4,10 @@ import type {
   SiteDetails,
   ProjectSitesProps,
   GeoLocation,
-  EditSiteProps,
   Site,
   SitesScopeProjects,
 } from '../../../common/types/project';
-import type {
-  FeatureCollection as GeoJson,
-  GeoJsonProperties,
-  Geometry,
-} from 'geojson';
+import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
 import { useEffect, useState, useContext } from 'react';
 import styles from './../StepForm.module.scss';
@@ -20,20 +15,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import { WebMercatorViewport } from 'react-map-gl';
-import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
-import bbox from '@turf/bbox';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
-import {
-  Fade,
-  Modal,
-  MenuItem,
-  Button,
-  TextField,
-  IconButton,
-} from '@mui/material';
-import { ThemeContext } from '../../../../theme/themeContext';
+import { MenuItem, Button, TextField } from '@mui/material';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
@@ -41,217 +25,36 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
+import SitePreviewMap from './microComponent/SitePreviewMap';
 import themeProperties from '../../../../theme/themeProperties';
+import CustomModal from '../../../common/Layout/CustomModal';
+import EditSite from './microComponent/EditSite';
 
-const MapStatic = ReactMapboxGl({
-  interactive: false,
-  accessToken: '',
-});
-
-const Map = dynamic(() => import('./MapComponent'), {
+const defaultSiteDetails = {
+  name: '',
+  status: '',
+  geometry: {},
+};
+const SiteGeometryEditor = dynamic(() => import('./SiteGeometryEditor'), {
   ssr: false,
   loading: () => <p></p>,
 });
 
-type SiteApiPayload = {
+export type ProjectSitesFormData = {
   name: string;
-  geometry: GeoJson<Geometry, GeoJsonProperties>;
   status: string;
 };
 
-function EditSite({
-  openModal,
-  handleModalClose,
-  changeSiteDetails,
-  siteDetails,
-  status,
-  geoJsonProp,
-  projectGUID,
-  setSiteList,
-  seteditMode,
-  siteGUID,
-  siteList,
-}: EditSiteProps) {
-  const { theme } = useContext(ThemeContext);
-  const { putApiAuthenticated } = useApi();
-  const t = useTranslations('ManageProjects');
-  const {
-    handleSubmit,
-    formState: { errors },
-    control,
-  } = useForm<ProjectSitesFormData>();
-  const [geoJson, setGeoJson] = useState<GeoJson | null>(geoJsonProp);
-  const [geoJsonError, setGeoJsonError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
-  const { setErrors } = useContext(ErrorHandlingContext);
+export type SiteApiPayload = {
+  name: string;
+  geometry: ProjectSiteFeatureCollection;
+  status: string;
+};
 
-  const MapProps = {
-    geoJson,
-    setGeoJson,
-    geoJsonError,
-    setGeoJsonError,
-    geoLocation: {
-      geoLatitude: 36.96,
-      geoLongitude: -28.5,
-    },
-  };
-
-  const editProjectSite = async (data: ProjectSitesFormData) => {
-    if (geoJson && geoJson.features && geoJson.features.length !== 0) {
-      setIsUploadingData(true);
-      const updatedSitePayload: SiteApiPayload = {
-        name: siteDetails.name,
-        geometry: geoJson,
-        status: data.status,
-      };
-
-      try {
-        const res = await putApiAuthenticated<Site, SiteApiPayload>(
-          `/app/projects/${projectGUID}/sites/${siteGUID}`,
-          {
-            payload: updatedSitePayload,
-          }
-        );
-        const temp = siteList;
-        let siteIndex = 0;
-        temp.find((site: Site, index: number) => {
-          if (site.id === res.id) {
-            siteIndex = index;
-            return true;
-          }
-        });
-        if (siteIndex !== null) {
-          temp[siteIndex] = res;
-        }
-        setSiteList(temp);
-        setGeoJson(null);
-        setIsUploadingData(false);
-        seteditMode(false);
-        setErrorMessage('');
-      } catch (err) {
-        setIsUploadingData(false);
-        setErrors(handleError(err as APIError));
-      }
-    } else {
-      setErrorMessage(t('polygonRequired'));
-    }
-  };
-
-  return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      className={'modalContainer' + ' ' + theme}
-      open={openModal}
-      onClose={handleModalClose}
-      closeAfterTransition
-      BackdropProps={{
-        timeout: 500,
-      }}
-    >
-      <Fade in={openModal}>
-        <form className={styles.editSiteForm}>
-          <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-            <div className={styles.formField}>
-              <div className={styles.formFieldHalf}>
-                <Controller
-                  name="name"
-                  control={control}
-                  rules={{ required: t('siteNameValidation') }}
-                  defaultValue={siteDetails.name}
-                  render={({ field: { onChange, value, onBlur, name } }) => (
-                    <TextField
-                      label={t('siteName')}
-                      variant="outlined"
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        changeSiteDetails(e);
-                        onChange(e.target.value);
-                      }}
-                      value={value}
-                      onBlur={onBlur}
-                      name={name}
-                      error={errors.name !== undefined}
-                      helperText={
-                        errors.name !== undefined && errors.name.message
-                      }
-                    />
-                  )}
-                />
-              </div>
-              <div className={styles.formFieldHalf}>
-                <Controller
-                  name="status"
-                  rules={{ required: t('selectProjectStatus') }}
-                  control={control}
-                  defaultValue={siteDetails.status ? siteDetails.status : ''}
-                  render={({ field: { onChange, onBlur, name, value } }) => (
-                    <TextField
-                      label={t('siteStatus')}
-                      variant="outlined"
-                      name={name}
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        changeSiteDetails(e);
-                        onChange(e.target.value);
-                      }}
-                      onBlur={onBlur}
-                      select
-                      value={value}
-                      error={errors.status !== undefined}
-                      helperText={
-                        errors.status !== undefined && errors.status.message
-                      }
-                    >
-                      {status.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  )}
-                />
-              </div>
-            </div>
-
-            <Map {...MapProps} />
-          </div>
-
-          {errorMessage && errorMessage !== '' ? (
-            <div className={styles.formFieldLarge}>
-              <h4 className={styles.errorMessage}>{errorMessage}</h4>
-            </div>
-          ) : null}
-
-          <div className={styles.buttonsForProjectCreationForm}>
-            <Button
-              onClick={() => handleModalClose()}
-              className={styles.backButton}
-            >
-              <BackArrow />
-              <p>{t('backToSites')}</p>
-            </Button>
-
-            <Button
-              onClick={handleSubmit(editProjectSite)}
-              className={styles.saveAndContinueButton}
-            >
-              {isUploadingData ? (
-                <div className={styles.spinner}></div>
-              ) : (
-                t('saveSite')
-              )}
-            </Button>
-          </div>
-        </form>
-      </Fade>
-    </Modal>
-  );
+export interface SiteInfo {
+  siteId: string | null;
+  siteName: string | null;
 }
-
-type ProjectSitesFormData = {
-  name: string;
-  status: string;
-};
 
 export default function ProjectSites({
   handleBack,
@@ -267,67 +70,44 @@ export default function ProjectSites({
     handleSubmit,
     formState: { errors },
     control,
+    reset,
   } = useForm<ProjectSitesFormData>();
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
-  const [geoJsonError, setGeoJsonError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<boolean>(true);
-  const [editMode, seteditMode] = useState<boolean>(false);
-  const [geoLocation, setgeoLocation] = useState<GeoLocation | undefined>(
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
     undefined
   );
-  const [geoJson, setGeoJson] = useState<GeoJson | null>(null);
-  const defaultMapCenter = [36.96, -28.5];
-  const defaultZoom = 1.4;
-  const viewport = {
-    height: 320,
-    width: 200,
-    center: defaultMapCenter,
-    zoom: defaultZoom,
-  };
-  const style = {
-    version: 8,
-    sources: {},
-    layers: [],
-  };
-  const defaultSiteDetails = {
-    name: '',
-    status: '',
-    geometry: {},
-  };
-
+  const [geoJson, setGeoJson] = useState<ProjectSiteFeatureCollection | null>(
+    null
+  );
   const [siteDetails, setSiteDetails] =
     useState<SiteDetails>(defaultSiteDetails);
   const [siteList, setSiteList] = useState<Site[]>([]);
   const [siteGUID, setSiteGUID] = useState<string | null>(null);
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSiteInfo, setSelectedSiteInfo] = useState<SiteInfo>({
+    siteId: null,
+    siteName: null,
+  });
 
   // Assigning defaultSiteDetails as default
-
   const changeSiteDetails = (e: ChangeEvent<HTMLInputElement>): void => {
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
   };
 
-  const RASTER_SOURCE_OPTIONS = {
-    type: 'raster',
-    tiles: [
-      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    ],
-    tileSize: 128,
-  };
-
   const handleModalClose = () => {
-    seteditMode(false);
+    setEditMode(false);
     setOpenModal(false);
   };
 
   const MapProps = {
     geoJson,
     setGeoJson,
-    geoJsonError,
-    setGeoJsonError,
-    geoLocation,
+    setErrorMessage,
   };
 
   const fetchProjSites = async () => {
@@ -344,7 +124,7 @@ export default function ProjectSites({
           geoLatitude: result.geoLatitude,
           geoLongitude: result.geoLongitude,
         };
-        setgeoLocation(geoLocation);
+        setGeoLocation(geoLocation);
 
         if (result?.sites.length > 0) {
           setShowForm(false);
@@ -361,48 +141,47 @@ export default function ProjectSites({
   }, [projectGUID]);
 
   const uploadProjectSite = async (data: ProjectSitesFormData) => {
-    if (geoJson && geoJson.features.length !== 0) {
-      if (!data.name) return;
+    const hasGeo = geoJson !== null && geoJson.features.length !== 0;
 
-      setIsUploadingData(true);
-      const newSitePayload: SiteApiPayload = {
-        name: siteDetails.name,
-        geometry: geoJson,
-        status: data.status,
-      };
-
-      try {
-        const res = await postApiAuthenticated<Site, SiteApiPayload>(
-          `/app/projects/${projectGUID}/sites`,
-          {
-            payload: newSitePayload,
-          }
-        );
-        const temp = siteList ? siteList : [];
-        const _submitData = {
-          id: res.id,
-          name: res.name,
-          geometry: res.geometry,
-          status: res.status,
-        };
-        temp.push(_submitData);
-        setSiteList(temp);
-        setGeoJson(null);
-        setIsUploadingData(false);
-        setShowForm(false);
-        setErrorMessage('');
-      } catch (err) {
-        setIsUploadingData(false);
-        setErrors(handleError(err as APIError));
-      }
-    } else {
-      setErrorMessage(t('polygonRequired'));
+    if (!hasGeo) {
+      setErrorMessage(t('errors.polygon.required'));
+      return false;
     }
-  };
 
-  const uploadProjectSiteNext = (data: ProjectSitesFormData) => {
-    uploadProjectSite(data);
-    handleNext(ProjectCreationTabs.PROJECT_SPENDING);
+    setIsUploadingData(true);
+    const newSitePayload: SiteApiPayload = {
+      name: data.name,
+      geometry: geoJson,
+      status: data.status,
+    };
+    try {
+      const res = await postApiAuthenticated<Site, SiteApiPayload>(
+        `/app/projects/${projectGUID}/sites`,
+        {
+          payload: newSitePayload,
+        }
+      );
+      const _submitData = {
+        id: res.id,
+        name: res.name,
+        geometry: res.geometry,
+        status: res.status,
+      };
+      setSiteList((prevSites) => [...prevSites, _submitData]);
+      reset({
+        name: '',
+        status: '',
+      });
+      setGeoJson(null);
+      setShowForm(false);
+      setErrorMessage(null);
+      return true;
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      return false;
+    } finally {
+      setIsUploadingData(false);
+    }
   };
 
   const deleteProjectSite = async (id: string) => {
@@ -411,11 +190,17 @@ export default function ProjectSites({
       await deleteApiAuthenticated(`/app/projects/${projectGUID}/sites/${id}`);
       const siteListTemp = siteList.filter((item) => item.id !== id);
       setSiteList(siteListTemp);
-      setIsUploadingData(false);
     } catch (err) {
-      setIsUploadingData(false);
       setErrors(handleError(err as APIError));
+    } finally {
+      setIsUploadingData(false);
+      setIsModalOpen(false);
     }
+  };
+
+  const uploadProjectSiteNext = async (data: ProjectSitesFormData) => {
+    const success = await uploadProjectSite(data);
+    if (success) handleNext(ProjectCreationTabs.PROJECT_SPENDING);
   };
 
   const status = [
@@ -456,7 +241,7 @@ export default function ProjectSites({
       geometry: {},
     };
 
-    const collection: GeoJson = {
+    const collection: ProjectSiteFeatureCollection = {
       type: 'FeatureCollection',
       features: [
         {
@@ -470,7 +255,7 @@ export default function ProjectSites({
     setGeoJson(collection);
     setSiteDetails(defaultSiteDetails);
     setSiteGUID(site.id);
-    seteditMode(true);
+    setEditMode(true);
     setOpenModal(true);
   };
 
@@ -484,9 +269,8 @@ export default function ProjectSites({
     geoJsonProp: geoJson,
     projectGUID,
     setSiteList,
-    seteditMode,
+    setEditMode,
     siteGUID,
-    siteList,
   };
 
   return (
@@ -500,24 +284,6 @@ export default function ProjectSites({
               return site.geometry !== null;
             })
             .map((site) => {
-              const bounds = bbox(site.geometry);
-              const { longitude, latitude, zoom } = new WebMercatorViewport(
-                viewport
-              ).fitBounds(
-                [
-                  [bounds[0], bounds[1]],
-                  [bounds[2], bounds[3]],
-                ],
-                {
-                  padding: {
-                    top: 50,
-                    bottom: 50,
-                    left: 50,
-                    right: 50,
-                  },
-                }
-              );
-
               return (
                 <div key={site.id}>
                   <div className={styles.mapboxContainer}>
@@ -527,62 +293,40 @@ export default function ProjectSites({
                         .find((e) => site.status == e.value)
                         ?.label.toUpperCase()}
                     </div>
-                    <IconButton
-                      id={'trashIconProjS'}
-                      onClick={() => {
-                        deleteProjectSite(site.id);
-                      }}
-                      size="small"
-                      className={styles.uploadedMapDeleteButton}
-                    >
-                      <TrashIcon />
-                    </IconButton>
-                    <IconButton
-                      id={'edit'}
-                      onClick={() => {
-                        editSite(site);
-                      }}
-                      className={styles.uploadedMapEditButton}
-                    >
-                      <EditIcon color={colors.coreText} />
-                    </IconButton>
-                    <MapStatic
-                      {...viewport}
-                      center={[longitude, latitude]}
-                      zoom={[zoom]}
-                      style={style} // eslint-disable-line
-                      containerStyle={{
-                        height: 200,
-                        width: 320,
-                      }}
-                    >
-                      <Source
-                        id="satellite_source"
-                        tileJsonSource={RASTER_SOURCE_OPTIONS}
-                      />
-                      <Layer
-                        type="raster"
-                        id="satellite_layer"
-                        sourceId="satellite_source"
-                      />
-                      <GeoJSONLayer
-                        data={site.geometry}
-                        fillPaint={{
-                          'fill-color': colors.white,
-                          'fill-opacity': 0.2,
+                    <div className={styles.siteActions}>
+                      <button
+                        type="button"
+                        aria-label={t('deleteSite')}
+                        onClick={() => {
+                          setSelectedSiteInfo({
+                            siteId: site.id,
+                            siteName: site.name,
+                          });
+                          setIsModalOpen(true);
                         }}
-                        linePaint={{
-                          'line-color': colors.warmGreen,
-                          'line-width': 2,
-                        }}
-                      />
-                    </MapStatic>
+                        className={styles.controlButton}
+                      >
+                        <TrashIcon />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label={t('editSite')}
+                        onClick={() => editSite(site)}
+                        className={styles.controlButton}
+                      >
+                        <EditIcon color={colors.coreText} />
+                      </button>
+                    </div>
+
+                    <SitePreviewMap
+                      siteId={site.id}
+                      siteGeometry={site.geometry}
+                    />
                   </div>
                 </div>
               );
             })}
         </InlineFormDisplayGroup>
-
         {showForm ? (
           <div
             className={`${isUploadingData ? styles.shallowOpacity : ''}`}
@@ -646,12 +390,12 @@ export default function ProjectSites({
               />
             </InlineFormDisplayGroup>
 
-            {geoLocation && <Map {...MapProps} />}
+            {geoLocation && <SiteGeometryEditor {...MapProps} />}
 
             <Button
-              id="projSiteSaveandAdd"
+              id="projSiteSaveAndAdd"
               onClick={handleSubmit(uploadProjectSite)}
-              className={styles.projSiteSaveandAdd}
+              className={styles.projSiteSaveAndAdd}
             >
               <p className={styles.inlineLinkButton}>{t('saveAndAddSite')}</p>
             </Button>
@@ -664,7 +408,7 @@ export default function ProjectSites({
               setGeoJson(null);
               setSiteDetails(defaultSiteDetails);
               setSiteGUID(null);
-              seteditMode(false);
+              setEditMode(false);
               setOpenModal(false);
             }}
             className={styles.formFieldLarge}
@@ -673,12 +417,11 @@ export default function ProjectSites({
           </Button>
         )}
 
-        {errorMessage && errorMessage !== '' ? (
+        {errorMessage !== null && (
           <div className={styles.formFieldLarge}>
             <h4 className={styles.errorMessage}>{errorMessage}</h4>
           </div>
-        ) : null}
-
+        )}
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
             onClick={() => handleBack(ProjectCreationTabs.DETAILED_ANALYSIS)}
@@ -709,6 +452,21 @@ export default function ProjectSites({
             {t('skip')}
           </Button>
         </div>
+        <CustomModal
+          isOpen={isModalOpen}
+          handleContinue={() => {
+            if (selectedSiteInfo.siteId !== null) {
+              deleteProjectSite(selectedSiteInfo.siteId);
+            }
+          }}
+          handleCancel={() => setIsModalOpen(false)}
+          modalTitle={t('deleteSite')}
+          modalSubtitle={t('siteDeleteConfirmation', {
+            siteName: selectedSiteInfo.siteName ?? '',
+          })}
+          continueButtonText={t('delete')}
+          cancelButtonText={t('cancel')}
+        />
       </StyledForm>
     </CenteredContainer>
   );

@@ -209,7 +209,7 @@ export const TreePlanted = () => {
     },
   });
 
-  // To prevent unnecessary re-render of the Treeplanted component due to the change in timeFrame,
+  // To prevent unnecessary re-render of the TreePlanted component due to the change in timeFrame,
   // track previously rendered value of timeframes
   const previousTimeFrames = useRef({ timeFrames });
 
@@ -286,6 +286,8 @@ export const TreePlanted = () => {
   }
 
   function addMissingMonths(data: IMonthlyFrame[]) {
+    if (!data || data.length === 0) return [];
+
     const months = [
       'Jan',
       'Feb',
@@ -304,6 +306,11 @@ export const TreePlanted = () => {
     // Extract the first and last month and year from the data
     const firstData = data[0];
     const lastData = data[data.length - 1];
+
+    if (!firstData || !lastData || !firstData.month || !lastData.month) {
+      console.warn('Invalid monthly data structure received');
+      return [];
+    }
     const firstMonthIndex = months.indexOf(firstData.month);
     const lastMonthIndex = months.indexOf(lastData.month);
     const firstYear = firstData.year;
@@ -340,7 +347,7 @@ export const TreePlanted = () => {
     return data;
   }
 
-  const getPlotingData = (
+  const getPlottingData = (
     tf: TIME_FRAME,
     data: IDailyFrame[] | IWeeklyFrame[] | IMonthlyFrame[] | IYearlyFrame[]
   ) => {
@@ -489,7 +496,7 @@ export const TreePlanted = () => {
       const { data } = await res;
 
       if (timeFrame) {
-        const { treesPlanted, categories } = getPlotingData(
+        const { treesPlanted, categories } = getPlottingData(
           timeFrame,
           data as
             | IDailyFrame[]
@@ -535,8 +542,8 @@ export const TreePlanted = () => {
     // This will result in 2 API calls (eg: one where data is grouped by days and other where data is grouped by weeks)
     // Grouping the data by days takes more time than grouping it by weeks at the backend,
     // due to asynchronous behaviour of JS,
-    // client will recieve data grouped by weeks before days which is incorrect.
-    // a CHECK of timeFrame inclusion within the range avoides unnecessary call (i.e data grouped by days in this example)
+    // client will receive data grouped by weeks before days which is incorrect.
+    // a CHECK of timeFrame inclusion within the range avoids unnecessary call (i.e data grouped by days in this example)
 
     const isValidTimeFrame =
       timeFrame && getTimeFrames(toDate, fromDate).includes(timeFrame);

@@ -16,7 +16,7 @@ export const Unselected: Story = {
   args: {
     method: BulkCodeMethods.GENERIC,
     title: 'Create Generic Codes',
-    subtitle: 'Use this method if the following criterias match your usecase:',
+    subtitle: 'Use this method if the following criteria match your use case:',
     details: [
       'All codes will have the same value',
       'I want to generate a number of code for arbitrary recipients',
@@ -31,7 +31,7 @@ export const Selected: Story = {
     method: BulkCodeMethods.IMPORT,
     title: 'Import Codes',
     subtitle:
-      'Use this method if one of the following criterias match your usecase:',
+      'Use this method if one of the following criteria match your use case:',
     details: [
       "I want to provide the Recipient's name or Email for each code",
       'I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional)',

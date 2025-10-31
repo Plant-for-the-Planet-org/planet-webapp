@@ -130,27 +130,26 @@
   font-size: $fontXXSmall;
   font-weight: 700;
   color: $dsPrimaryColor;
+  background: $dsSoftGreen;
+}
+
+.giftLabelInner {
   background: linear-gradient(
       0deg,
       $dsWarmGreenTransparent10,
       $dsWarmGreenTransparent10
     ),
     linear-gradient(0deg, $dsWhite, $dsWhite);
-
   padding: 7px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 3px;
+  border-radius: 9px 9px 0 0;
 
   @include smTabletView {
     padding: 4px;
-  }
-
-  .giftLabelText {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    border-radius: 0 0 6px 6px;
   }
 }
 
@@ -159,6 +158,12 @@
   width: 10px;
   display: flex;
   align-items: center;
+}
+
+.giftLabelText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .itemImageContainer {
@@ -175,7 +180,12 @@
     background-image: url('/assets/images/project-contribution-default-portrait.png');
     width: 130px;
     height: 130px;
-    border-radius: 8px;
+    border-radius: 6px 6px 0 0;
+    overflow: hidden;
+
+    &.roundedCorners {
+      border-radius: 6px;
+    }
   }
 }
 
@@ -328,6 +338,10 @@
   min-width: 0; // Allow shrinking below 450px
   max-width: 100%; // Ensure it doesn't exceed container width
 
+  &.trees {
+    border-color: $dsPrimaryColorTransparent10;
+  }
+
   &.conservation {
     border-color: $dsWarmBlueTransparent10;
   }
@@ -373,10 +387,6 @@
   }
 
   .sectionOneLandscape {
-    @include xsPhoneView {
-      display: none;
-    }
-
     display: flex;
     gap: 16px;
 
@@ -394,6 +404,10 @@
       justify-content: space-between;
       align-items: center;
     }
+
+    @include xsPhoneView {
+      display: none;
+    }
   }
 
   .sectionTwo {
@@ -402,6 +416,11 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 6px;
+
+    &.trees {
+      background-color: $dsSoftGreen;
+    }
+
     &.conservation {
       background: $dsSoftBlue;
     }

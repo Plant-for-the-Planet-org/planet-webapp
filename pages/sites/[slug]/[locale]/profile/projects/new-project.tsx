@@ -47,8 +47,8 @@ export default function AddProjectType({
 
   useEffect(() => {
     async function loadUserData() {
-      const usertype = user?.type;
-      if (usertype === 'tpo') {
+      const userType = user?.type;
+      if (userType === 'tpo') {
         setAccessDenied(false);
         setSetupAccess(true);
       } else {

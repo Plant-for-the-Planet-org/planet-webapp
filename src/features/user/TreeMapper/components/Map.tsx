@@ -1,9 +1,11 @@
 import type { ReactElement } from 'react';
-import type { RequiredMapStyle } from '../../../common/types/map';
+import type {
+  InterventionFeature,
+  RequiredMapStyle,
+} from '../../../common/types/map';
 import type { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
 import type { MapEvent } from 'react-map-gl';
 import type { SetState } from '../../../common/types/common';
-import type { Feature, Point, Polygon } from 'geojson';
 import type { AllGeoJSON } from '@turf/turf';
 import type {
   Intervention,
@@ -244,7 +246,7 @@ export default function MyTreesMap({
       {satellite && plIds && <SatelliteLayer beforeId={plIds[0]} />}
       {interventions &&
         interventions.map((intervention: Intervention) => {
-          const newPl: Feature<Point | Polygon> = {
+          const newPl: InterventionFeature = {
             type: 'Feature',
             geometry: intervention.geometry,
             properties: { id: intervention.id },
