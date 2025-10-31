@@ -3,6 +3,7 @@ import type { SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useTranslations } from 'next-intl';
 import styles from '../../styles/InterventionInfo.module.scss';
+import { clsx } from 'clsx';
 
 interface Props {
   sampleTrees: SampleTreeRegistration[];
@@ -13,13 +14,19 @@ const SampleTreeList = ({ sampleTrees, setSelectedSampleTree }: Props) => {
 
   return (
     <div
-      className={`sample-tree-list-container ${styles.sampleTreeListContainer}`}
+      className={clsx(
+        'sample-tree-list-container',
+        styles.sampleTreeListContainer
+      )}
     >
       {sampleTrees.map((sampleTree, index) => {
         return (
           <div
             key={sampleTree.id}
-            className={`sample-tree-container ${styles.sampleTreeContainer}`}
+            className={clsx(
+              'sample-tree-container',
+              styles.sampleTreeContainer
+            )}
           >
             <button
               className={styles.scientificNameContainer}
@@ -46,7 +53,9 @@ const SampleTreeList = ({ sampleTrees, setSelectedSampleTree }: Props) => {
 const SampleTreesInfo = ({ sampleTrees, setSelectedSampleTree }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   return (
-    <div className={`sample-trees-container ${styles.sampleTreesContainer}`}>
+    <div
+      className={clsx('sample-trees-container', styles.sampleTreesContainer)}
+    >
       <h2 className={styles.mainLabel}>
         {tProjectDetails('sampleTrees', {
           count: sampleTrees.length,

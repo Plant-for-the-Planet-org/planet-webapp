@@ -4,6 +4,7 @@ import styles from '../../styles/InterventionInfo.module.scss';
 import { formatHid } from '../../../../../utils/projectV2';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useTranslations } from 'next-intl';
+import { clsx } from 'clsx';
 
 interface Props {
   hid: string | undefined;
@@ -22,14 +23,19 @@ const OtherInterventionInfoHeader = ({
   return (
     <>
       <div
-        className={`intervention-header-container ${styles.interventionHeaderContainer}`}
+        className={clsx(
+          'intervention-header-container',
+          styles.interventionHeaderContainer
+        )}
       >
-        <div className={`${styles.interventionTitle}`}>
+        <div className={styles.interventionTitle}>
           {tIntervention(interventionType)}
         </div>
-        <div className={`hid ${styles.hid}`}>{formatHid(hid)}</div>
+        <div className={clsx('hid', styles.hid)}>{formatHid(hid)}</div>
       </div>
-      <div className={`planting-details-item ${styles.plantingDetailsItem}`}>
+      <div
+        className={clsx('planting-details-item', styles.plantingDetailsItem)}
+      >
         <h2 className={styles.label}>
           {tProjectDetails('intervention.interventionDate')}
         </h2>
