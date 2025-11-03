@@ -59,7 +59,7 @@ const ContributionSummary = ({ contribution, purpose }: Props) => {
     const { dataType, giftDetails } = contribution;
     if (dataType === 'receivedGift')
       return t('myContributions.giftReceivedInfo', {
-        name: giftDetails.giverName || t('myContributions.anonymousUser'),
+        name: giftDetails?.giverName || t('myContributions.anonymousUser'),
       });
     if (dataType === 'donation' && giftDetails !== null)
       return t('myContributions.giftGivenInfo', {
