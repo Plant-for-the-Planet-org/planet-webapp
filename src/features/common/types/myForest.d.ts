@@ -66,7 +66,7 @@ export type SingleGiftReceived = {
   plantDate: DateString;
   unitType: 'tree';
   isGift: true;
-  giftDetails: GiftReceivedDetails;
+  giftDetails: GiftReceivedDetails | null;
 };
 
 export type GiftReceivedDetails = {
