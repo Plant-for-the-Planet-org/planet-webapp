@@ -4,7 +4,6 @@ import type {
   ProjectListResponse,
   ContributionsResponse,
   Leaderboard,
-  ContributionStats,
 } from '../features/common/types/myForest';
 
 interface MyForestApiResponse {
@@ -50,11 +49,13 @@ export const useMyForestApi = ({
     isLeaderboardLoaded: false,
   });
   const [error, setError] = useState<string | null>(null);
-  
+
   // Track if we've already made a request for this combination to prevent duplicates
   const lastRequestRef = useRef<string>('');
 
-  const transformResponse = (response: MyForestApiResponse): UseMyForestApiResult['data'] => {
+  const transformResponse = (
+    response: MyForestApiResponse
+  ): UseMyForestApiResult['data'] => {
     // Ensure response exists and has required properties
     if (!response) {
       return {
@@ -63,8 +64,6 @@ export const useMyForestApi = ({
           stats: {
             giftsReceivedCount: 0,
             contributionsMadeCount: 0,
-            contributedProjects: new Set(),
-            contributedCountries: new Set(),
             treesRegistered: 0,
             treesDonated: { personal: 0, received: 0 },
             areaRestoredInM2: { personal: 0, received: 0 },
@@ -103,14 +102,17 @@ export const useMyForestApi = ({
     }
 
     // Convert location maps if they come as arrays from API
-    let registrationLocationsMap = response.registrationLocationsMap || new Map();
+    let registrationLocationsMap =
+      response.registrationLocationsMap || new Map();
     if (Array.isArray(response.registrationLocationsMap)) {
       const registrationMap = new Map();
-      response.registrationLocationsMap.forEach(([key, value]: [string, any]) => {
-        if (key && value) {
-          registrationMap.set(key, value);
+      response.registrationLocationsMap.forEach(
+        ([key, value]: [string, any]) => {
+          if (key && value) {
+            registrationMap.set(key, value);
+          }
         }
-      });
+      );
       registrationLocationsMap = registrationMap;
     }
 
@@ -126,34 +128,26 @@ export const useMyForestApi = ({
     }
 
     // Transform the combined response into the expected format
-    const stats = response.stats || {
-      giftsReceivedCount: 0,
-      contributionsMadeCount: 0,
-      contributedProjects: new Set(),
-      contributedCountries: new Set(),
-      treesRegistered: 0,
-      treesDonated: { personal: 0, received: 0 },
-      areaRestoredInM2: { personal: 0, received: 0 },
-      areaConservedInM2: { personal: 0, received: 0 },
-    };
-
-    // Convert arrays to Sets for contributedProjects and contributedCountries
-    const transformedStats: ContributionStats = {
-      ...stats,
-      contributedProjects: Array.isArray(stats.contributedProjects) 
-        ? new Set(stats.contributedProjects) 
-        : stats.contributedProjects instanceof Set 
-          ? stats.contributedProjects 
-          : new Set(),
-      contributedCountries: Array.isArray(stats.contributedCountries) 
-        ? new Set(stats.contributedCountries) 
-        : stats.contributedCountries instanceof Set 
-          ? stats.contributedCountries 
-          : new Set(),
+    const stats = {
+      giftsReceivedCount: response.stats?.giftsReceivedCount || 0,
+      contributionsMadeCount: response.stats?.contributionsMadeCount || 0,
+      treesRegistered: response.stats?.treesRegistered || 0,
+      treesDonated: response.stats?.treesDonated || {
+        personal: 0,
+        received: 0,
+      },
+      areaRestoredInM2: response.stats?.areaRestoredInM2 || {
+        personal: 0,
+        received: 0,
+      },
+      areaConservedInM2: response.stats?.areaConservedInM2 || {
+        personal: 0,
+        received: 0,
+      },
     };
 
     const contributionsResult: ContributionsResponse = {
-      stats: transformedStats,
+      stats,
       myContributionsMap,
       registrationLocationsMap,
       projectLocationsMap,
@@ -162,7 +156,10 @@ export const useMyForestApi = ({
     return {
       projectListResult: projects,
       contributionsResult,
-      leaderboardResult: response.leaderboard || { mostRecent: [], mostTrees: [] },
+      leaderboardResult: response.leaderboard || {
+        mostRecent: [],
+        mostTrees: [],
+      },
     };
   };
 
@@ -179,7 +176,7 @@ export const useMyForestApi = ({
       });
 
       let apiResponse: any;
-      
+
       if (isPublicProfile && profileGuidOrSlug) {
         apiResponse = await getApi<any>(`/app/myForest/${profileGuidOrSlug}`);
       } else {
@@ -199,26 +196,34 @@ export const useMyForestApi = ({
     } catch (err) {
       console.error('MyForest API error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
-      
+
       // Set empty data on error to prevent undefined issues
       const emptyData = transformResponse(null as any);
       setData(emptyData);
-      
+
       setLoading({
         isProjectsListLoaded: false,
         isContributionsLoaded: false,
         isLeaderboardLoaded: false,
       });
     }
-  }, [enabled, isPublicProfile, profileGuidOrSlug, getApiAuthenticated, getApi]);
+  }, [
+    enabled,
+    isPublicProfile,
+    profileGuidOrSlug,
+    getApiAuthenticated,
+    getApi,
+  ]);
 
   // Only fetch when the request parameters actually change
   useEffect(() => {
     if (!enabled) return;
 
     // Create a unique key for this request
-    const requestKey = `${enabled}-${isPublicProfile}-${profileGuidOrSlug || 'private'}`;
-    
+    const requestKey = `${enabled}-${isPublicProfile}-${
+      profileGuidOrSlug || 'private'
+    }`;
+
     // Only make the request if it's different from the last one
     if (lastRequestRef.current !== requestKey) {
       lastRequestRef.current = requestKey;

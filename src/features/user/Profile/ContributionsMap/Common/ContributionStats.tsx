@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 
+import { useMemo } from 'react';
 import {
   ProjectStatIcon,
   CountryStatIcon,
@@ -17,7 +18,6 @@ const StatItem = ({ icon, label }: StatItemProps) => {
   return (
     <div className={styles.contributionStatsSubContainer}>
       <div className={styles.statsIconContainer}>{icon}</div>
-
       <div className={styles.stats}>{label}</div>
     </div>
   );
@@ -25,9 +25,41 @@ const StatItem = ({ icon, label }: StatItemProps) => {
 
 const ContributionStats = () => {
   const tProfile = useTranslations('Profile.mapStats');
-  const { contributionsResult } = useMyForest();
-  const countries = contributionsResult?.stats.contributedCountries?.size ?? 0;
-  const projects = contributionsResult?.stats.contributedProjects?.size ?? 0;
+  const { contributionsResult, projectListResult } = useMyForest();
+
+  const { countries, projects } = useMemo(
+    function calculationContributionStats() {
+      const myContributionsMap = contributionsResult?.myContributionsMap;
+      const projectList = projectListResult;
+
+      if (!myContributionsMap || !projectList) {
+        return { countries: 0, projects: 0 };
+      }
+
+      const contributedProjects = new Set<string>();
+      const contributedCountries = new Set<string>();
+
+      // Iterate through contributions Map
+      for (const [projectId, contributionData] of myContributionsMap) {
+        // Count all project contributions while identifying unique countries and projects
+        if (contributionData.type === 'project') {
+          contributedProjects.add(projectId);
+
+          // Get country from projectListResult
+          const project = projectList[projectId];
+          if (project?.country) {
+            contributedCountries.add(project.country);
+          }
+        }
+      }
+
+      return {
+        countries: contributedCountries.size,
+        projects: contributedProjects.size,
+      };
+    },
+    [contributionsResult?.myContributionsMap, projectListResult]
+  );
 
   return (
     <div className={styles.contributionStatsContainer}>
