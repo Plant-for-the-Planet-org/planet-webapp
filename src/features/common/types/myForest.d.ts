@@ -10,8 +10,6 @@ import type { ClusterProperties } from 'supercluster';
 export type ContributionStats = {
   giftsReceivedCount: number;
   contributionsMadeCount: number;
-  contributedProjects: Set<string>;
-  contributedCountries: Set<string>;
   treesRegistered: number;
   treesDonated: {
     personal: number;
