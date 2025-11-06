@@ -29,7 +29,7 @@ import SitePreviewMap from './microComponent/SitePreviewMap';
 import themeProperties from '../../../../theme/themeProperties';
 import CustomModal from '../../../common/Layout/CustomModal';
 import EditSite from './microComponent/EditSite';
-import SitesSyncActions from './microComponent/SiteSyncControls';
+import SitesSyncActions from './microComponent/SitesSyncActions';
 
 const defaultSiteDetails = {
   name: '',
