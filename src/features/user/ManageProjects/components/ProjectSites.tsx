@@ -79,7 +79,7 @@ export default function ProjectSites({
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [isSyncingSites, setIsSyncingSites] = useState(false);
   const [isSiteSyncModalOpen, setIsSiteSyncModalOpen] = useState(false);
-  const [isSyncedWithRestoreEco, setIsSyncedWithRestoreEco] = useState(false);
+  const [isSiteSyncSuccessful, setIsSiteSyncSuccessful] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -285,7 +285,7 @@ export default function ProjectSites({
         throw new Error(`Webhook call failed with status ${response.status}`);
       }
 
-      setIsSyncedWithRestoreEco(true);
+      setIsSiteSyncSuccessful(true);
       setSnackbarOpen(true);
       setErrorMessage(null);
     } catch (err) {
@@ -458,7 +458,7 @@ export default function ProjectSites({
               isSyncingSites={isSyncingSites}
               isSiteSyncModalOpen={isSiteSyncModalOpen}
               setIsSiteSyncModalOpen={setIsSiteSyncModalOpen}
-              isSyncedWithRestoreEco={isSyncedWithRestoreEco}
+              isSiteSyncSuccessful={isSiteSyncSuccessful}
               snackbarOpen={snackbarOpen}
               setSnackbarOpen={setSnackbarOpen}
               handleSyncSites={handleSyncSites}

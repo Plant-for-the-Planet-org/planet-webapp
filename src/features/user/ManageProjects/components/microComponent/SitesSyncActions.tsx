@@ -8,7 +8,7 @@ import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 interface SitesSyncActionsProps {
   isSyncingSites: boolean;
-  isSyncedWithRestoreEco: boolean;
+  isSiteSyncSuccessful: boolean;
   snackbarOpen: boolean;
   setSnackbarOpen: SetState<boolean>;
   isSiteSyncModalOpen: boolean;
@@ -18,7 +18,7 @@ interface SitesSyncActionsProps {
 
 const SitesSyncActions = ({
   isSyncingSites,
-  isSyncedWithRestoreEco,
+  isSiteSyncSuccessful,
   isSiteSyncModalOpen,
   setIsSiteSyncModalOpen,
   snackbarOpen,
@@ -28,7 +28,7 @@ const SitesSyncActions = ({
   const tSyncSites = useTranslations('ManageProjects.syncSites');
   return (
     <>
-      {!isSyncedWithRestoreEco && (
+      {!isSiteSyncSuccessful && (
         <button
           className={styles.inlineLinkButton}
           type="button"
@@ -80,7 +80,7 @@ const SitesSyncActions = ({
         cancelButtonText={tSyncSites('cancel')}
         isOpen={isSiteSyncModalOpen}
         isLoading={isSyncingSites}
-        loadingText={tSyncSites('loading')}
+        loadingText={tSyncSites('syncing')}
         handleCancel={() => setIsSiteSyncModalOpen(false)}
         handleContinue={handleSyncSites}
       />
