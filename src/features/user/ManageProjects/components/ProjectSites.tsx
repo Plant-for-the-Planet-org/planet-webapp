@@ -9,7 +9,7 @@ import type {
 } from '../../../common/types/project';
 import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -263,7 +263,7 @@ export default function ProjectSites({
     setOpenModal(true);
   };
 
-  const handleSyncSites = async () => {
+  const handleSyncSites = useCallback(async () => {
     // prevent multiple parallel syncs
     if (isSyncing) return;
 
@@ -293,7 +293,7 @@ export default function ProjectSites({
       setIsSyncing(false);
       setIsSyncModalOpen(false);
     }
-  };
+  }, [isSyncing, projectGUID, t]);
 
   const EditProps = {
     openModal,
