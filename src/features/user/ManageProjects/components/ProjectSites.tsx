@@ -78,7 +78,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [isSyncingSites, setIsSyncingSites] = useState(false);
-  const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
+  const [isSiteSyncModalOpen, setIsSiteSyncModalOpen] = useState(false);
   const [isSyncedWithRestoreEco, setIsSyncedWithRestoreEco] = useState(false);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -291,7 +291,7 @@ export default function ProjectSites({
       setErrorMessage(t('syncSites.error'));
     } finally {
       setIsSyncingSites(false);
-      setIsSyncModalOpen(false);
+      setIsSiteSyncModalOpen(false);
     }
   }, [isSyncingSites, projectGUID, t]);
 
@@ -453,8 +453,8 @@ export default function ProjectSites({
               {t('addSite')}
             </button>
             <SitesSyncActions
-              isSyncModalOpen={isSyncModalOpen}
-              setIsSyncModalOpen={setIsSyncModalOpen}
+              isSiteSyncModalOpen={isSiteSyncModalOpen}
+              setIsSiteSyncModalOpen={setIsSiteSyncModalOpen}
               isSyncedWithRestoreEco={isSyncedWithRestoreEco}
               setIsSyncedWithRestoreEco={setIsSyncedWithRestoreEco}
               handleSyncSites={handleSyncSites}
