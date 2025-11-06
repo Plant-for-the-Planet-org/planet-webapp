@@ -4,6 +4,7 @@ import { Alert, Snackbar } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import CustomModal from '../../../../common/Layout/CustomModal';
 import styles from '../../StepForm.module.scss';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 interface SitesSyncActionsProps {
   isSyncedWithRestoreEco: boolean;
@@ -29,6 +30,7 @@ const SitesSyncActions = ({
           type="button"
           onClick={() => setIsSyncModalOpen(true)}
         >
+          <AutorenewIcon />
           {tSyncSites('syncSitesToRestorEco')}
         </button>
       )}
