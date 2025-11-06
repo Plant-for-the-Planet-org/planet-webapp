@@ -275,7 +275,7 @@ export default function ProjectSites({
     setIsSyncing(true);
 
     try {
-      const webhookUrl = `${webhookBase}/?project=${projectGUID}`;
+      const webhookUrl = `${webhookBase}/33878023-ee47-44e1-8a62-34eb2d2b3246/?project=${projectGUID}`;
       const response = await fetch(webhookUrl, {
         method: 'GET',
       });
