@@ -77,7 +77,7 @@ export default function ProjectSites({
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [isSyncing, setIsSyncing] = useState(false);
+  const [isSyncingSites, setIsSyncingSites] = useState(false);
   const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
   const [isSyncedWithRestoreEco, setIsSyncedWithRestoreEco] = useState(false);
   const [showForm, setShowForm] = useState<boolean>(true);
@@ -265,14 +265,14 @@ export default function ProjectSites({
 
   const handleSyncSites = useCallback(async () => {
     // prevent multiple parallel syncs
-    if (isSyncing) return;
+    if (isSyncingSites) return;
 
     const webhookBase = process.env.WEBHOOK_URL;
     if (!webhookBase) {
       console.warn('WEBHOOK_URL is not defined');
       return;
     }
-    setIsSyncing(true);
+    setIsSyncingSites(true);
 
     try {
       const webhookUrl = `${webhookBase}/33878023-ee47-44e1-8a62-34eb2d2b3246/?project=${projectGUID}`;
@@ -290,10 +290,10 @@ export default function ProjectSites({
       console.error('Sync error:', err);
       setErrorMessage(t('syncSites.error'));
     } finally {
-      setIsSyncing(false);
+      setIsSyncingSites(false);
       setIsSyncModalOpen(false);
     }
-  }, [isSyncing, projectGUID, t]);
+  }, [isSyncingSites, projectGUID, t]);
 
   const EditProps = {
     openModal,
