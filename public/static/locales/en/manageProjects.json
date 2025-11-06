@@ -277,6 +277,17 @@
         "longitudeRange": "Longitude must be between -180 and 180."
       }
     },
-    "editSite": "Edit site"
+    "editSite": "Edit site",
+    "syncSites": {
+      "modal": {
+        "title": "Send Site Data to Restor.eco",
+        "subtitle": "By clicking send, data will be submitted to Restor.eco. Their Privacy Policy applies. Plant-for-the-Planet may not be able to delete the data submitted to Restor.eco."
+      },
+      "send": "Send",
+      "cancel": "Cancel",
+      "syncSitesToRestorEco": "Sync Sites to Restor.eco",
+      "success": "Your sites have been synced successfully with Restor.eco!",
+      "error": "Failed to sync site data. Please try again later."
+    }
   }
 }

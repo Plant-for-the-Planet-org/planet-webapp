@@ -29,6 +29,7 @@ import SitePreviewMap from './microComponent/SitePreviewMap';
 import themeProperties from '../../../../theme/themeProperties';
 import CustomModal from '../../../common/Layout/CustomModal';
 import EditSite from './microComponent/EditSite';
+import SitesSyncActions from './microComponent/SiteSyncControls';
 
 const defaultSiteDetails = {
   name: '',
@@ -76,6 +77,9 @@ export default function ProjectSites({
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
+  const [isSyncedWithRestoreEco, setIsSyncedWithRestoreEco] = useState(false);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
@@ -259,6 +263,38 @@ export default function ProjectSites({
     setOpenModal(true);
   };
 
+  const handleSyncSites = async () => {
+    // prevent multiple parallel syncs
+    if (isSyncing) return;
+
+    const webhookBase = process.env.WEBHOOK_URL;
+    if (!webhookBase) {
+      console.warn('WEBHOOK_URL is not defined');
+      return;
+    }
+    setIsSyncing(true);
+
+    try {
+      const webhookUrl = `${webhookBase}/?project=${projectGUID}`;
+      const response = await fetch(webhookUrl, {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Webhook call failed with status ${response.status}`);
+      }
+
+      setIsSyncedWithRestoreEco(true);
+      setErrorMessage(null);
+    } catch (err) {
+      console.error('Sync error:', err);
+      setErrorMessage(t('syncSites.error'));
+    } finally {
+      setIsSyncing(false);
+      setIsSyncModalOpen(false);
+    }
+  };
+
   const EditProps = {
     openModal,
     handleModalClose,
@@ -401,20 +437,29 @@ export default function ProjectSites({
             </Button>
           </div>
         ) : (
-          <Button
-            id={'manageProjAddSite'}
-            onClick={() => {
-              setShowForm(true);
-              setGeoJson(null);
-              setSiteDetails(defaultSiteDetails);
-              setSiteGUID(null);
-              setEditMode(false);
-              setOpenModal(false);
-            }}
-            className={styles.formFieldLarge}
-          >
-            <p className={styles.inlineLinkButton}>{t('addSite')}</p>
-          </Button>
+          <div className={styles.syncAndAddSitesButtons}>
+            <button
+              className={styles.inlineLinkButton}
+              type="button"
+              onClick={() => {
+                setShowForm(true);
+                setGeoJson(null);
+                setSiteDetails(defaultSiteDetails);
+                setSiteGUID(null);
+                setEditMode(false);
+                setOpenModal(false);
+              }}
+            >
+              {t('addSite')}
+            </button>
+            <SitesSyncActions
+              isSyncModalOpen={isSyncModalOpen}
+              setIsSyncModalOpen={setIsSyncModalOpen}
+              isSyncedWithRestoreEco={isSyncedWithRestoreEco}
+              setIsSyncedWithRestoreEco={setIsSyncedWithRestoreEco}
+              handleSyncSites={handleSyncSites}
+            />
+          </div>
         )}
 
         {errorMessage !== null && (
