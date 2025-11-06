@@ -50,7 +50,28 @@ const SitesSyncActions = ({
       </Snackbar>
       <CustomModal
         modalTitle={tSyncSites('modal.title')}
-        modalSubtitle={tSyncSites('modal.subtitle')}
+        modalSubtitle={tSyncSites.rich('modal.subtitle', {
+          restorLink: (chunks) => (
+            <a
+              href="https://restor.eco"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.restorLink}
+            >
+              {chunks}
+            </a>
+          ),
+          privacyPolicyLink: (chunks) => (
+            <a
+              href="https://restor.eco/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.restorLink}
+            >
+              {chunks}
+            </a>
+          ),
+        })}
         continueButtonText={tSyncSites('send')}
         cancelButtonText={tSyncSites('cancel')}
         isOpen={isSiteSyncModalOpen}

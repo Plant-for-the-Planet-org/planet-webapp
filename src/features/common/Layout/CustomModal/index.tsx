@@ -1,5 +1,6 @@
-import Modal from '@mui/material/Modal';
+import type { ReactNode } from 'react';
 
+import Modal from '@mui/material/Modal';
 import styles from './CustomModal.module.scss';
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
   continueButtonText: string;
   cancelButtonText: string;
   modalTitle: string;
-  modalSubtitle: string;
+  modalSubtitle: ReactNode;
 }
 
 export default function CustomModal({

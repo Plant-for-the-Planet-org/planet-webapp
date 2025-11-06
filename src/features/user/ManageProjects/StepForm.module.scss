@@ -403,6 +403,10 @@
   width: 100%;
 }
 
+.restorLink {
+  color: $dsPrimaryColor;
+}
+
 .drawingControls {
   display: flex;
   flex-direction: column;

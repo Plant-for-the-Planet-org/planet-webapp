@@ -281,7 +281,7 @@
     "syncSites": {
       "modal": {
         "title": "Send Site Data to Restor.eco",
-        "subtitle": "By clicking send, data will be submitted to Restor.eco. Their Privacy Policy applies. Plant-for-the-Planet may not be able to delete the data submitted to Restor.eco."
+        "subtitle": "By clicking send, data will be submitted to <restorLink>Restor.eco</restorLink>. Their <privacyPolicyLink>Privacy Policy</privacyPolicyLink> applies. Plant-for-the-Planet may not be able to delete the data submitted to Restor.eco."
       },
       "send": "Send",
       "cancel": "Cancel",
