@@ -8,7 +8,8 @@ import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 interface SitesSyncActionsProps {
   isSyncedWithRestoreEco: boolean;
-  setIsSyncedWithRestoreEco: SetState<boolean>;
+  snackbarOpen: boolean;
+  setSnackbarOpen: SetState<boolean>;
   isSiteSyncModalOpen: boolean;
   setIsSiteSyncModalOpen: SetState<boolean>;
   handleSyncSites: () => Promise<void>;
@@ -16,9 +17,10 @@ interface SitesSyncActionsProps {
 
 const SitesSyncActions = ({
   isSyncedWithRestoreEco,
-  setIsSyncedWithRestoreEco,
   isSiteSyncModalOpen,
   setIsSiteSyncModalOpen,
+  snackbarOpen,
+  setSnackbarOpen,
   handleSyncSites,
 }: SitesSyncActionsProps) => {
   const tSyncSites = useTranslations('ManageProjects.syncSites');
@@ -35,15 +37,15 @@ const SitesSyncActions = ({
         </button>
       )}
       <Snackbar
-        open={isSyncedWithRestoreEco}
+        open={snackbarOpen}
         autoHideDuration={4000}
-        onClose={() => setIsSyncedWithRestoreEco(false)}
+        onClose={() => setSnackbarOpen(false)}
       >
         <Alert
           elevation={6}
           variant="filled"
-          onClose={() => setIsSyncedWithRestoreEco(false)}
           severity="success"
+          onClose={() => setSnackbarOpen(false)}
         >
           {tSyncSites('success')}
         </Alert>

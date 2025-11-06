@@ -80,6 +80,7 @@ export default function ProjectSites({
   const [isSyncingSites, setIsSyncingSites] = useState(false);
   const [isSiteSyncModalOpen, setIsSiteSyncModalOpen] = useState(false);
   const [isSyncedWithRestoreEco, setIsSyncedWithRestoreEco] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
@@ -285,6 +286,7 @@ export default function ProjectSites({
       }
 
       setIsSyncedWithRestoreEco(true);
+      setSnackbarOpen(true);
       setErrorMessage(null);
     } catch (err) {
       console.error('Sync error:', err);
@@ -456,7 +458,8 @@ export default function ProjectSites({
               isSiteSyncModalOpen={isSiteSyncModalOpen}
               setIsSiteSyncModalOpen={setIsSiteSyncModalOpen}
               isSyncedWithRestoreEco={isSyncedWithRestoreEco}
-              setIsSyncedWithRestoreEco={setIsSyncedWithRestoreEco}
+              snackbarOpen={snackbarOpen}
+              setSnackbarOpen={setSnackbarOpen}
               handleSyncSites={handleSyncSites}
             />
           </div>
