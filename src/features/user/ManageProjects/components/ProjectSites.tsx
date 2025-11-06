@@ -455,6 +455,7 @@ export default function ProjectSites({
               {t('addSite')}
             </button>
             <SitesSyncActions
+              isSyncingSites={isSyncingSites}
               isSiteSyncModalOpen={isSiteSyncModalOpen}
               setIsSiteSyncModalOpen={setIsSiteSyncModalOpen}
               isSyncedWithRestoreEco={isSyncedWithRestoreEco}

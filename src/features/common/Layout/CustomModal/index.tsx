@@ -11,10 +11,14 @@ interface Props {
   cancelButtonText: string;
   modalTitle: string;
   modalSubtitle: ReactNode;
+  isLoading?: boolean;
+  loadingText?: string;
 }
 
 export default function CustomModal({
   isOpen,
+  isLoading = false,
+  loadingText = 'Loading...',
   handleContinue,
   handleCancel,
   continueButtonText,
@@ -40,8 +44,9 @@ export default function CustomModal({
             id={'Continue'}
             className={styles.continueButton}
             onClick={handleContinue}
+            disabled={isLoading}
           >
-            {continueButtonText}
+            {isLoading ? loadingText : continueButtonText}
           </button>
           <button
             id={'Cancel'}

@@ -7,6 +7,7 @@ import styles from '../../StepForm.module.scss';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 interface SitesSyncActionsProps {
+  isSyncingSites: boolean;
   isSyncedWithRestoreEco: boolean;
   snackbarOpen: boolean;
   setSnackbarOpen: SetState<boolean>;
@@ -16,6 +17,7 @@ interface SitesSyncActionsProps {
 }
 
 const SitesSyncActions = ({
+  isSyncingSites,
   isSyncedWithRestoreEco,
   isSiteSyncModalOpen,
   setIsSiteSyncModalOpen,
@@ -77,6 +79,8 @@ const SitesSyncActions = ({
         continueButtonText={tSyncSites('send')}
         cancelButtonText={tSyncSites('cancel')}
         isOpen={isSiteSyncModalOpen}
+        isLoading={isSyncingSites}
+        loadingText={tSyncSites('loading')}
         handleCancel={() => setIsSiteSyncModalOpen(false)}
         handleContinue={handleSyncSites}
       />

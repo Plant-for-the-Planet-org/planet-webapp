@@ -285,6 +285,7 @@
       },
       "send": "Send",
       "cancel": "Cancel",
+      "loading": "Syncing...",
       "syncSitesToRestorEco": "Sync Sites to Restor.eco",
       "success": "Your sites have been synced successfully with Restor.eco!",
       "error": "Failed to sync site data. Please try again later."
