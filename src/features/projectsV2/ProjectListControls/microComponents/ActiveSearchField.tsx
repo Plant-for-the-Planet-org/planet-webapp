@@ -9,6 +9,7 @@ import styles from '../styles/ProjectListControls.module.scss';
 import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { clsx } from 'clsx';
 
 interface ActiveSearchFieldProps {
   setIsSearching: SetState<boolean>;
@@ -43,9 +44,10 @@ const ActiveSearchField = ({
   };
   return (
     <div
-      className={`${styles.activeSearchFieldContainer} ${
-        onlyMapModeAllowed ? styles.onlyMapMode : ''
-      }`}
+      className={clsx(
+        styles.activeSearchFieldContainer,
+        onlyMapModeAllowed && styles.onlyMapMode
+      )}
     >
       <button className={styles.activeSearchIcon}>
         <SearchIcon />
