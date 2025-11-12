@@ -116,13 +116,7 @@ const DonationReceipts = () => {
         );
 
       if (response?.downloadUrl) {
-        // Create a temporary link to trigger download
-        const link = document.createElement('a');
-        link.href = response.downloadUrl;
-        link.download = `donation-receipt-overview-${year}.pdf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        window.open(response.downloadUrl, '_blank', 'noopener,noreferrer');
       }
     } catch (error) {
       console.error('Failed to download overview receipt:', error);
