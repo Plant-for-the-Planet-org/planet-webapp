@@ -184,7 +184,6 @@ const DonationReceipts = () => {
                   : undefined
               }
               isOverviewLoading={overviewLoadingYear === year}
-              hoverMessage={eligibility?.hoverMessage}
             />
           );
         })}

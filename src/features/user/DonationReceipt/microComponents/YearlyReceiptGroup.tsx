@@ -14,7 +14,6 @@ const YearlyReceiptGroup: React.FC<YearlyReceiptGroupProps> = ({
   overviewButtonState,
   onOverviewDownload,
   isOverviewLoading = false,
-  hoverMessage,
 }) => {
   return (
     <div className={styles.yearlyReceiptGroup}>
@@ -23,11 +22,10 @@ const YearlyReceiptGroup: React.FC<YearlyReceiptGroupProps> = ({
         overviewButtonState={overviewButtonState}
         onOverviewDownload={onOverviewDownload}
         isLoading={isOverviewLoading}
-        hoverMessage={hoverMessage}
       />
 
       <div className={styles.yearReceiptCards}>
-        {/* Render unissued receipts first (as in original component) */}
+        {/* Render unissued receipts first */}
         {receipts.unissued.map((receipt) => (
           <UnissuedReceiptCard
             key={`unissued-${receipt.donations[0].uid}`}
