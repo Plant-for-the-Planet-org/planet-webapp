@@ -40,29 +40,12 @@ export const extractYear = (date: string | number): string => {
  * @param receipt - Issued receipt data
  * @returns Year as string
  */
-export const extractYearFromIssuedReceipt = (
-  receipt: IssuedReceiptDataApi
+export const extractYearFromReceipt = (
+  receipt: IssuedReceiptDataApi | UnissuedReceiptDataAPI
 ): string => {
   // Prefer the year field if available
   if (receipt.year) {
-    return receipt.year;
-  }
-
-  // Fall back to extracting from paymentDate
-  return extractYear(receipt.paymentDate);
-};
-
-/**
- * Extracts year from unissued receipt
- * @param receipt - Unissued receipt data
- * @returns Year as string
- */
-export const extractYearFromUnissuedReceipt = (
-  receipt: UnissuedReceiptDataAPI
-): string => {
-  // Prefer the year field if available
-  if (receipt.year) {
-    return receipt.year.toString();
+    return String(receipt.year);
   }
 
   // Fall back to extracting from paymentDate
@@ -81,7 +64,7 @@ export const groupReceiptsByYear = (
 
   // Group issued receipts by year
   receiptsStatus.issued.forEach((receipt) => {
-    const year = extractYearFromIssuedReceipt(receipt);
+    const year = extractYearFromReceipt(receipt);
 
     if (!groupedReceipts[year]) {
       groupedReceipts[year] = {
@@ -95,7 +78,7 @@ export const groupReceiptsByYear = (
 
   // Group unissued receipts by year
   receiptsStatus.unissued.forEach((receipt) => {
-    const year = extractYearFromUnissuedReceipt(receipt);
+    const year = extractYearFromReceipt(receipt);
 
     if (!groupedReceipts[year]) {
       groupedReceipts[year] = {
