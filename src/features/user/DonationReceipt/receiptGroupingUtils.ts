@@ -16,21 +16,21 @@ export const extractYear = (date: string | number): string => {
   if (typeof date === 'number') {
     return date.toString();
   }
-  
+
   if (typeof date === 'string') {
     // Handle ISO date strings (e.g., "2023-12-15T10:30:00Z")
     const parsedDate = new Date(date);
     if (!isNaN(parsedDate.getTime())) {
       return parsedDate.getFullYear().toString();
     }
-    
+
     // Fallback: try to extract year from string directly
     const yearMatch = date.match(/(\d{4})/);
     if (yearMatch) {
       return yearMatch[1];
     }
   }
-  
+
   // Fallback to current year if parsing fails
   return new Date().getFullYear().toString();
 };
@@ -40,12 +40,14 @@ export const extractYear = (date: string | number): string => {
  * @param receipt - Issued receipt data
  * @returns Year as string
  */
-export const extractYearFromIssuedReceipt = (receipt: IssuedReceiptDataApi): string => {
+export const extractYearFromIssuedReceipt = (
+  receipt: IssuedReceiptDataApi
+): string => {
   // Prefer the year field if available
   if (receipt.year) {
     return receipt.year;
   }
-  
+
   // Fall back to extracting from paymentDate
   return extractYear(receipt.paymentDate);
 };
@@ -55,12 +57,14 @@ export const extractYearFromIssuedReceipt = (receipt: IssuedReceiptDataApi): str
  * @param receipt - Unissued receipt data
  * @returns Year as string
  */
-export const extractYearFromUnissuedReceipt = (receipt: UnissuedReceiptDataAPI): string => {
+export const extractYearFromUnissuedReceipt = (
+  receipt: UnissuedReceiptDataAPI
+): string => {
   // Prefer the year field if available
   if (receipt.year) {
     return receipt.year.toString();
   }
-  
+
   // Fall back to extracting from paymentDate
   return extractYear(receipt.paymentDate);
 };
@@ -70,37 +74,39 @@ export const extractYearFromUnissuedReceipt = (receipt: UnissuedReceiptDataAPI):
  * @param receiptsStatus - The donation receipts status containing issued and unissued receipts
  * @returns Receipts grouped by year in descending order
  */
-export const groupReceiptsByYear = (receiptsStatus: DonationReceiptsStatus): YearlyGroupedReceipts => {
+export const groupReceiptsByYear = (
+  receiptsStatus: DonationReceiptsStatus
+): YearlyGroupedReceipts => {
   const groupedReceipts: YearlyGroupedReceipts = {};
-  
+
   // Group issued receipts by year
   receiptsStatus.issued.forEach((receipt) => {
     const year = extractYearFromIssuedReceipt(receipt);
-    
+
     if (!groupedReceipts[year]) {
       groupedReceipts[year] = {
         issued: [],
         unissued: [],
       };
     }
-    
+
     groupedReceipts[year].issued.push(receipt);
   });
-  
+
   // Group unissued receipts by year
   receiptsStatus.unissued.forEach((receipt) => {
     const year = extractYearFromUnissuedReceipt(receipt);
-    
+
     if (!groupedReceipts[year]) {
       groupedReceipts[year] = {
         issued: [],
         unissued: [],
       };
     }
-    
+
     groupedReceipts[year].unissued.push(receipt);
   });
-  
+
   return groupedReceipts;
 };
 
@@ -109,7 +115,9 @@ export const groupReceiptsByYear = (receiptsStatus: DonationReceiptsStatus): Yea
  * @param groupedReceipts - Receipts grouped by year
  * @returns Array of years sorted in descending order
  */
-export const getSortedYears = (groupedReceipts: YearlyGroupedReceipts): string[] => {
+export const getSortedYears = (
+  groupedReceipts: YearlyGroupedReceipts
+): string[] => {
   return Object.keys(groupedReceipts).sort((a, b) => parseInt(b) - parseInt(a));
 };
 
@@ -119,7 +127,23 @@ export const getSortedYears = (groupedReceipts: YearlyGroupedReceipts): string[]
  * @returns True if receipt is verified
  */
 export const isReceiptVerified = (receipt: IssuedReceiptDataApi): boolean => {
-  return receipt.verificationDate !== null && receipt.verificationDate !== undefined && Boolean(receipt.downloadUrl);
+  return (
+    receipt.verificationDate !== null &&
+    receipt.verificationDate !== undefined &&
+    Boolean(receipt.downloadUrl)
+  );
+};
+
+const determineButtonState = (
+  canRender: boolean,
+  isCurrentYear: boolean,
+  isConsolidated: boolean,
+  allReceiptsVerified: boolean
+): OverviewButtonState => {
+  if (!canRender) return 'hidden';
+  if (isCurrentYear) return 'inactive-future';
+  if (!isConsolidated) return 'hidden';
+  return allReceiptsVerified ? 'active' : 'inactive-unverified';
 };
 
 /**
@@ -132,65 +156,47 @@ export const isReceiptVerified = (receipt: IssuedReceiptDataApi): boolean => {
  */
 export const determineOverviewEligibility = (
   year: string,
-  receipts: { issued: IssuedReceiptDataApi[]; unissued: UnissuedReceiptDataAPI[] },
+  receipts: {
+    issued: IssuedReceiptDataApi[];
+    unissued: UnissuedReceiptDataAPI[];
+  },
   lastConsolidatedYear: number,
-  currentYear?: number
+  currentYear = new Date().getFullYear()
 ): OverviewEligibility => {
   const issuedReceipts = receipts.issued;
   const totalIssuedCount = issuedReceipts.length;
   const yearNumber = parseInt(year);
-  const effectiveCurrentYear = currentYear ?? new Date().getFullYear();
-  
+
   // Only consider issued receipts for overview eligibility
   const verifiedReceipts = issuedReceipts.filter(isReceiptVerified);
   const verifiedCount = verifiedReceipts.length;
-  
+  const allReceiptsVerified =
+    verifiedCount === totalIssuedCount && totalIssuedCount > 0;
+
   // Check if the year is consolidated (year <= lastConsolidatedYear)
   const isConsolidated = yearNumber <= lastConsolidatedYear;
-  
-  // Determine button state and hover message
-  let buttonState: OverviewButtonState = 'hidden';
-  let hoverMessage: string | undefined;
-  
+  const isCurrentYear = yearNumber === currentYear;
+
   // Rule: render only if:
-  // 1. year <= effectiveCurrentYear (not future year)  
+  // 1. year <= currentYear (not future year)
   // 2. totalIssuedCount > 1 (more than 1 receipt)
-  const shouldRender = yearNumber <= effectiveCurrentYear && totalIssuedCount > 1;
-  
-  if (shouldRender) {
-    if (yearNumber === effectiveCurrentYear) {
-      // Current year - show inactive with message (regardless of consolidation)
-      buttonState = 'inactive-future';
-      hoverMessage = 'The overview receipt will be available soon.';
-    } else if (yearNumber < effectiveCurrentYear) {
-      // Past year - check if consolidated and verification status
-      if (yearNumber <= lastConsolidatedYear) {
-        // Year is consolidated - check verification status
-        if (verifiedCount === totalIssuedCount && verifiedCount > 0) {
-          // All receipts verified - show active
-          buttonState = 'active';
-        } else {
-          // Some receipts not verified - show inactive with message
-          buttonState = 'inactive-unverified';
-          hoverMessage = 'Please verify all your receipts to download an overview receipt.';
-        }
-      }
-      // If year > lastConsolidatedYear, button stays hidden (not consolidated yet)
-    }
-    // Note: yearNumber > effectiveCurrentYear is already excluded by shouldRender condition
-  }
-  
-  // Overview is eligible for download if button is active
-  const isEligible = buttonState === 'active';
-  
+  const canRender = yearNumber <= currentYear && totalIssuedCount > 1;
+
+  // Determine button state
+  const buttonState = determineButtonState(
+    canRender,
+    isCurrentYear,
+    isConsolidated,
+    allReceiptsVerified
+  );
+
   return {
     year,
-    isEligible,
+    isEligible: buttonState === 'active',
     verifiedCount,
     totalCount: totalIssuedCount,
     isConsolidated,
     buttonState,
-    hoverMessage,
   };
 };
 
@@ -207,10 +213,15 @@ export const getOverviewEligibilityForAllYears = (
   currentYear?: number
 ): Record<string, OverviewEligibility> => {
   const eligibilityMap: Record<string, OverviewEligibility> = {};
-  
+
   Object.entries(groupedReceipts).forEach(([year, receipts]) => {
-    eligibilityMap[year] = determineOverviewEligibility(year, receipts, lastConsolidatedYear, currentYear);
+    eligibilityMap[year] = determineOverviewEligibility(
+      year,
+      receipts,
+      lastConsolidatedYear,
+      currentYear
+    );
   });
-  
+
   return eligibilityMap;
 };
