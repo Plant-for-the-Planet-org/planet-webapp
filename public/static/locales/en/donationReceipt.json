@@ -59,7 +59,17 @@
     "itemsReferenceDateSingleEndowment": "Reference {reference} · Endowment · {date}",
     "pendingReceipt": "Pending Receipt(s)",
     "noReceiptFound": "Oops! No receipt found",
-    "downloadOverview": "Download Overview",
-    "downloadingOverview": "Downloading..."
+    "overviewReceipt": {
+      "download": "Download Overview",
+      "downloading": "Downloading...",
+      "available": "Overview available",
+      "notAvailable": "Overview not available yet",
+      "downloadOverviewFor": "Download overview for {year}",
+      "statusInfo": {
+        "verifyBeforeDownload": "Please verify all your receipts before downloading the overview receipt.",
+        "availableSoon": "The overview receipt will be available soon.",
+        "download": "Download your consolidated overview receipt for this year."
+      }
+    }
   }
 }
