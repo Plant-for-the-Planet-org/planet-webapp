@@ -12,8 +12,6 @@ import styles from './DonationReceipt.module.scss';
 import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import IssuedReceiptCard from './microComponents/IssuedReceiptCard';
-import UnissuedReceiptCard from './microComponents/UnissuedReceiptCard';
 import YearlyReceiptGroup from './microComponents/YearlyReceiptGroup';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import {
@@ -43,7 +41,9 @@ const DonationReceipts = () => {
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
   const [processReceiptId, setProcessReceiptId] = useState<string | null>(null);
-  const [overviewLoadingYear, setOverviewLoadingYear] = useState<string | null>(null);
+  const [overviewLoadingYear, setOverviewLoadingYear] = useState<string | null>(
+    null
+  );
   const { initForIssuance, initForVerification } = useDonationReceiptContext();
   const { redirect } = useContext(ErrorHandlingContext);
 
@@ -105,15 +105,16 @@ const DonationReceipts = () => {
 
   const handleOverviewDownload = async (year: string) => {
     if (!user || overviewLoadingYear) return;
-    
+
     setOverviewLoadingYear(year);
-    
+
     try {
       // Make API call to download overview receipt for the specific year
-      const response = await getApiAuthenticated<OverviewReceiptDownloadResponse>(
-        `/app/overviewReceipt/${year}`
-      );
-      
+      const response =
+        await getApiAuthenticated<OverviewReceiptDownloadResponse>(
+          `/app/overviewReceipt/${year}`
+        );
+
       if (response?.downloadUrl) {
         // Create a temporary link to trigger download
         const link = document.createElement('a');
@@ -156,7 +157,10 @@ const DonationReceipts = () => {
   // Group receipts by year and get sorted years
   const groupedReceipts = groupReceiptsByYear(donationReceipts);
   const sortedYears = getSortedYears(groupedReceipts);
-  const overviewEligibility = getOverviewEligibilityForAllYears(groupedReceipts, donationReceipts.lastConsolidatedYear);
+  const overviewEligibility = getOverviewEligibilityForAllYears(
+    groupedReceipts,
+    donationReceipts.lastConsolidatedYear
+  );
 
   return (
     <section className={styles.donorContactManagementLayout}>
