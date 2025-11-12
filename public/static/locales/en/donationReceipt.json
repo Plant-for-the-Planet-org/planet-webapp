@@ -61,7 +61,6 @@
     "noReceiptFound": "Oops! No receipt found",
     "overviewReceipt": {
       "download": "Download Overview",
-      "downloading": "Downloading...",
       "available": "Overview available",
       "notAvailable": "Overview not available yet",
       "downloadOverviewFor": "Download overview for {year}",

@@ -65,11 +65,11 @@ const YearHeader: React.FC<YearHeaderProps> = ({
                 {getOverviewReceiptStatusInfo(overviewButtonState)}
               </p>
             </CustomTooltip>
-            <p>
+            <span className={styles.label}>
               {overviewButtonState === 'active'
                 ? tReceipt('available')
                 : tReceipt('notAvailable')}
-            </p>
+            </span>
           </div>
         )}
       </div>
@@ -82,18 +82,15 @@ const YearHeader: React.FC<YearHeaderProps> = ({
           type="button"
         >
           {isLoading ? (
-            <span className={styles.overviewLinkContent}>
-              <span className={styles.spinner} />
-              {tReceipt('downloading')}
-            </span>
+            <span className={styles.spinner} />
           ) : (
-            <span className={styles.overviewLinkContent}>
+            <>
               <DownloadIcon
                 width={13}
                 color={themeProperties.designSystem.colors.primaryColor}
               />
-              {tReceipt('download')}
-            </span>
+              <span>{tReceipt('download')}</span>
+            </>
           )}
         </button>
       )}

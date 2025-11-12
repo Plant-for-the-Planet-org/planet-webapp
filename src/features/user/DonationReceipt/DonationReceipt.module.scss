@@ -494,12 +494,11 @@
   font-weight: 700;
   font-size: $fontXSmall;
 }
-
 // Spinner Styles
 .spinner {
   border: 2px solid $dsBaseGrey;
   border-radius: 50%;
-  border-top: 2px solid $dsFireRed;
+  border-top: 2px solid $dsPrimaryColor;
   width: 16px;
   height: 16px;
   -webkit-animation: spin 1s linear infinite; /* Safari */
@@ -524,7 +523,6 @@
     transform: rotate(360deg);
   }
 }
-
 .loginAlert {
   font-size: $fontXSmall;
   margin-top: 14px;
@@ -571,7 +569,11 @@
 
 .overviewStatusLabel {
   display: flex;
-  gap: 8px;
+  gap: 6px;
+
+  .label {
+    line-height: 18px;
+  }
 }
 
 .tooltipContent {
@@ -579,29 +581,26 @@
 }
 
 .overviewDownloadButton {
-  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   padding: 12px 16px;
   border-radius: 12px;
   transition: all 0.2s ease;
   border: 2px solid transparent;
-  position: relative;
   background-color: $dsPrimaryColorTransparent10;
-
-  &:hover {
-    border: 2px solid $dsPrimaryColor;
-  }
-}
-
-.overviewLinkContent {
-  display: flex;
-  align-items: center;
+  min-width: 187px;
   gap: 10px;
   font-size: $fontSmall;
   font-weight: 700;
   color: $dsPrimaryColor;
   line-height: 1.4;
   white-space: nowrap;
+
+  &:hover {
+    border: 1px solid $dsPrimaryColor;
+  }
 }
 
 .yearlyReceiptGroup {
