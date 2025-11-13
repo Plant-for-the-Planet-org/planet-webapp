@@ -18,7 +18,7 @@ const YearHeader: React.FC<YearHeaderProps> = ({
   isLoading = false,
 }) => {
   const tReceipt = useTranslations('DonationReceipt.overviewReceipt');
-
+  const { primaryColor, darkGrey } = themeProperties.designSystem.colors;
   const handleOverviewClick = () => {
     if (onOverviewDownload && !isLoading && overviewButtonState === 'active') {
       onOverviewDownload();
@@ -45,6 +45,7 @@ const YearHeader: React.FC<YearHeaderProps> = ({
 
   const isButtonDisabled = isLoading || overviewButtonState !== 'active';
   const isOverviewButtonVisible = overviewButtonState !== 'hidden';
+  const isOverviewButtonClickable = overviewButtonState === 'active';
 
   return (
     <div className={styles.yearHeader}>
@@ -66,7 +67,7 @@ const YearHeader: React.FC<YearHeaderProps> = ({
               </p>
             </CustomTooltip>
             <span className={styles.label}>
-              {overviewButtonState === 'active'
+              {isOverviewButtonClickable
                 ? tReceipt('available')
                 : tReceipt('notAvailable')}
             </span>
@@ -87,7 +88,7 @@ const YearHeader: React.FC<YearHeaderProps> = ({
             <>
               <DownloadIcon
                 width={13}
-                color={themeProperties.designSystem.colors.primaryColor}
+                color={isOverviewButtonClickable ? primaryColor : darkGrey}
               />
               <span>{tReceipt('download')}</span>
             </>
