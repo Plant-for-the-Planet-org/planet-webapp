@@ -10,7 +10,7 @@ import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './DonationReceipt.module.scss';
 import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import YearlyReceiptGroup from './microComponents/YearlyReceiptGroup';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
@@ -126,6 +126,27 @@ const DonationReceipts = () => {
     }
   };
 
+  // Group receipts by year and get sorted years
+  const groupedReceipts = useMemo(() => {
+    return donationReceipts ? groupReceiptsByYear(donationReceipts) : {};
+  }, [donationReceipts]);
+
+  const sortedYears = useMemo(() => {
+    return getSortedYears(groupedReceipts);
+  }, [groupedReceipts]);
+
+  const overviewEligibility = useMemo(() => {
+    const lastConsolidatedYear = donationReceipts?.lastConsolidatedYear;
+    if (!lastConsolidatedYear) return {};
+
+    return (
+      getOverviewEligibilityForAllYears(
+        groupedReceipts,
+        lastConsolidatedYear
+      ) || {}
+    );
+  }, [groupedReceipts, donationReceipts?.lastConsolidatedYear]);
+
   const hasNoReceipts =
     !donationReceipts?.issued.length && !donationReceipts?.unissued.length;
 
@@ -147,14 +168,6 @@ const DonationReceipts = () => {
         </section>
       </section>
     );
-
-  // Group receipts by year and get sorted years
-  const groupedReceipts = groupReceiptsByYear(donationReceipts);
-  const sortedYears = getSortedYears(groupedReceipts);
-  const overviewEligibility = getOverviewEligibilityForAllYears(
-    groupedReceipts,
-    donationReceipts.lastConsolidatedYear
-  );
 
   return (
     <section className={styles.donorContactManagementLayout}>
