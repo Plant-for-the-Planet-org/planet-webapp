@@ -42,28 +42,36 @@ export type MyContributionsSingleProject = {
   latestDonations?: SingleDonation[];
 };
 
-export type MySingleContribution = SingleDonation | SingleGiftReceived;
+export type MySingleContribution =
+  | SingleDonation
+  | SingleGiftGiven
+  | SingleGiftReceived;
 
-export type SingleDonation = {
-  dataType: 'donation';
+export type SingleContributionBase = {
   quantity: number;
   plantDate: DateString;
   unitType: 'tree' | 'm2';
-  isGifted: boolean;
+};
+
+export type SingleDonation = SingleContributionBase & {
+  dataType: 'donation';
+  isGifted: false;
+  giftDetails: null;
+};
+
+export type SingleGiftGiven = SingleContributionBase & {
+  dataType: 'issuedGift';
+  isGifted: true;
   giftDetails: GiftGivenDetails | null;
 };
 
 export type GiftGivenDetails = {
-  recipient: string | null;
-  type: string | null;
+  recipientName: string | null;
 };
 
-export type SingleGiftReceived = {
+export type SingleGiftReceived = SingleContributionBase & {
   dataType: 'receivedGift';
-  quantity: number;
-  plantDate: DateString;
-  unitType: 'tree';
-  isGift: true;
+  isGifted: true;
   giftDetails: GiftReceivedDetails | null;
 };
 
