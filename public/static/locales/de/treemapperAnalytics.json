@@ -40,7 +40,7 @@
       "created": "Zeitpunkt der Erstellung"
     },
     "readme": "READ ME",
-    "interventionData": "Interventionsdaten",
+    "interventionData": "Maßnahmendaten",
     "monitoringPlotsData": "Monitoring Plot Daten",
     "dataIntervals": "Datenintervalle",
     "errors": {
@@ -49,7 +49,7 @@
     "timeFrame": "Zeitrahmen",
     "scientificName": "Wissenschaftlicher Name",
     "type": "Typ",
-    "interventions": "Interventionen",
+    "interventions": "Maßnahmen",
     "monitoringPlots": "Monitoring Plots (Demnächst)",
     "trillion": "Bill.",
     "billion": "Mrd.",
@@ -67,7 +67,7 @@
     "searchDateError": "Das Suchdatum liegt nicht innerhalb des ausgewählten Intervalls.",
     "noProjectsText": "Keine Projekte verfügbar.",
     "addProjectsButton": "Projekt hinzufügen",
-    "plantLocationType": {
+    "interventionType": {
       "single-tree-registration": "Einzelner Baum",
       "multi-tree-registration": "Mehrere Bäume"
     }
