@@ -15,9 +15,9 @@ const GiftLabel = ({ giftDetails }: Props) => {
   const t = useTranslations('Profile');
 
   const giftLabelText =
-    'recipient' in giftDetails
+    'recipientName' in giftDetails
       ? t('myContributions.giftGivenInfo', {
-          name: giftDetails.recipient || t('myContributions.anonymousUser'),
+          name: giftDetails.recipientName || t('myContributions.anonymousUser'),
         })
       : t('myContributions.giftReceivedInfo', {
           name: giftDetails.giverName || t('myContributions.anonymousUser'),
