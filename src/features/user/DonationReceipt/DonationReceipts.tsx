@@ -10,10 +10,8 @@ import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './DonationReceipt.module.scss';
 import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import IssuedReceiptCard from './microComponents/IssuedReceiptCard';
-import UnissuedReceiptCard from './microComponents/UnissuedReceiptCard';
 import YearlyReceiptGroup from './microComponents/YearlyReceiptGroup';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import {
@@ -43,7 +41,9 @@ const DonationReceipts = () => {
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
   const [processReceiptId, setProcessReceiptId] = useState<string | null>(null);
-  const [overviewLoadingYear, setOverviewLoadingYear] = useState<string | null>(null);
+  const [overviewLoadingYear, setOverviewLoadingYear] = useState<string | null>(
+    null
+  );
   const { initForIssuance, initForVerification } = useDonationReceiptContext();
   const { redirect } = useContext(ErrorHandlingContext);
 
@@ -105,23 +105,18 @@ const DonationReceipts = () => {
 
   const handleOverviewDownload = async (year: string) => {
     if (!user || overviewLoadingYear) return;
-    
+
     setOverviewLoadingYear(year);
-    
+
     try {
       // Make API call to download overview receipt for the specific year
-      const response = await getApiAuthenticated<OverviewReceiptDownloadResponse>(
-        `/app/overviewReceipt/${year}`
-      );
-      
+      const response =
+        await getApiAuthenticated<OverviewReceiptDownloadResponse>(
+          `/app/overviewReceipt/${year}`
+        );
+
       if (response?.downloadUrl) {
-        // Create a temporary link to trigger download
-        const link = document.createElement('a');
-        link.href = response.downloadUrl;
-        link.download = `donation-receipt-overview-${year}.pdf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        window.open(response.downloadUrl, '_blank', 'noopener,noreferrer');
       }
     } catch (error) {
       console.error('Failed to download overview receipt:', error);
@@ -130,6 +125,27 @@ const DonationReceipts = () => {
       setOverviewLoadingYear(null);
     }
   };
+
+  // Group receipts by year and get sorted years
+  const groupedReceipts = useMemo(() => {
+    return donationReceipts ? groupReceiptsByYear(donationReceipts) : {};
+  }, [donationReceipts]);
+
+  const sortedYears = useMemo(() => {
+    return getSortedYears(groupedReceipts);
+  }, [groupedReceipts]);
+
+  const overviewEligibility = useMemo(() => {
+    const lastConsolidatedYear = donationReceipts?.lastConsolidatedYear;
+    if (!lastConsolidatedYear) return {};
+
+    return (
+      getOverviewEligibilityForAllYears(
+        groupedReceipts,
+        lastConsolidatedYear
+      ) || {}
+    );
+  }, [groupedReceipts, donationReceipts?.lastConsolidatedYear]);
 
   const hasNoReceipts =
     !donationReceipts?.issued.length && !donationReceipts?.unissued.length;
@@ -153,11 +169,6 @@ const DonationReceipts = () => {
       </section>
     );
 
-  // Group receipts by year and get sorted years
-  const groupedReceipts = groupReceiptsByYear(donationReceipts);
-  const sortedYears = getSortedYears(groupedReceipts);
-  const overviewEligibility = getOverviewEligibilityForAllYears(groupedReceipts, donationReceipts.lastConsolidatedYear);
-
   return (
     <section className={styles.donorContactManagementLayout}>
       <h1 className={styles.receiptListHeader}>
@@ -180,7 +191,6 @@ const DonationReceipts = () => {
                   : undefined
               }
               isOverviewLoading={overviewLoadingYear === year}
-              hoverMessage={eligibility?.hoverMessage}
             />
           );
         })}

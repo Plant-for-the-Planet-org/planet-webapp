@@ -400,11 +400,11 @@
   &::-webkit-scrollbar {
     display: none; /* Hides scrollbar in Chrome and Safari */
   }
-  
+
   // When containing yearly groups, adjust padding and spacing
   &:has(.yearlyReceiptGroup) {
     padding: 8px 0;
-    
+
     @include xsPhoneView {
       padding: 4px 0;
     }
@@ -494,28 +494,16 @@
   font-weight: 700;
   font-size: $fontXSmall;
 }
-
 // Spinner Styles
 .spinner {
   border: 2px solid $dsBaseGrey;
   border-radius: 50%;
-  border-top: 2px solid $dsFireRed;
+  border-top: 2px solid $dsPrimaryColor;
   width: 16px;
   height: 16px;
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
   flex-shrink: 0;
-  
-  // When used in overview link context, match the icon size
-  .overviewLinkContent & {
-    width: 18px;
-    height: 18px;
-    
-    @include xsPhoneView {
-      width: 16px;
-      height: 16px;
-    }
-  }
 }
 
 @-webkit-keyframes spin {
@@ -535,7 +523,6 @@
     transform: rotate(360deg);
   }
 }
-
 .loginAlert {
   font-size: $fontXSmall;
   margin-top: 14px;
@@ -549,7 +536,7 @@
   align-items: center;
   margin-bottom: 24px;
   padding: 0 4px;
-  
+
   @include xsPhoneView {
     flex-direction: column;
     align-items: flex-start;
@@ -565,176 +552,72 @@
   letter-spacing: -0.02em;
   line-height: 1.2;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  
+
   @include mdTabletView {
     font-size: $fontXXXLarge;
   }
-  
+
   @include smTabletView {
     font-size: $fontXLarge;
   }
-  
+
   @include xsPhoneView {
     font-size: $fontLarge;
     font-weight: 600;
   }
 }
 
-.overviewLink {
-  background: none;
+.overviewStatusLabel {
+  display: flex;
+  gap: 6px;
+
+  .label {
+    line-height: 18px;
+  }
+}
+
+.tooltipContent {
+  padding: 8px;
+}
+
+.overviewDownloadButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   padding: 12px 16px;
   border-radius: 12px;
   transition: all 0.2s ease;
-  border: 2px solid transparent;
-  position: relative;
-  
-  @include xsPhoneView {
-    padding: 10px 14px;
-    align-self: flex-start;
-  }
-}
-
-.overviewLinkActive {
-  &:hover:not(:disabled) {
-    background-color: $dsFireRedTransparent10;
-    border-color: $dsFireRed;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  &:focus:not(:disabled) {
-    outline: none;
-    background-color: $dsFireRedTransparent10;
-    border-color: $dsFireRed;
-    box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.2);
-  }
-  
-  &:active:not(:disabled) {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.overviewLinkInactive {
-  cursor: not-allowed;
-  opacity: 0.6;
-  
-  &:hover {
-    transform: none;
-    box-shadow: none;
-    background-color: transparent;
-    border-color: transparent;
-  }
-  
-  .overviewLinkContent {
-    color: $dsMediumGrey;
-  }
-}
-
-.overviewLinkContent {
-  display: flex;
-  align-items: center;
+  background-color: $dsPrimaryColorTransparent10;
+  min-width: 187px;
   gap: 10px;
   font-size: $fontSmall;
-  font-weight: 600;
-  color: $dsFireRed;
+  font-weight: 700;
+  color: $dsPrimaryColor;
   line-height: 1.4;
   white-space: nowrap;
-  
-  // Ensure text doesn't wrap on smaller screens
-  @include smTabletView {
-    font-size: $fontXSmall;
+
+  &:hover:not(:disabled) {
+    border: 1px solid $dsPrimaryColor;
   }
-  
-  @include xsPhoneView {
-    font-size: $fontXSmall;
-    gap: 8px;
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: $dsMediumGreyTransparent50;
+    color: $dsDarkGrey;
+    border: none;
   }
 }
 
-.downloadIcon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  
-  @include xsPhoneView {
-    width: 16px;
-    height: 16px;
-  }
-}
-
-// Yearly Receipt Group Styles
 .yearlyReceiptGroup {
   display: flex;
   flex-direction: column;
   margin-bottom: 48px;
   padding: 0 4px;
-  animation: fadeInUp 0.3s ease-out;
-  
-  &:last-child {
-    margin-bottom: 24px;
-  }
-  
-  // Add visual separation between year groups
-  &:not(:first-child) {
-    border-top: 2px solid $dsBaseGrey;
-    padding-top: 32px;
-    position: relative;
-    
-    // Add a subtle gradient fade effect at the border
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, $dsMediumGrey, transparent);
-    }
-  }
-  
-  @include smTabletView {
-    padding: 0 8px;
-  }
-  
-  @include xsPhoneView {
-    margin-bottom: 36px;
-    padding: 0 2px;
-    
-    &:not(:first-child) {
-      padding-top: 24px;
-    }
-    
-    &:last-child {
-      margin-bottom: 16px;
-    }
-  }
 }
 
 .yearReceiptCards {
   display: flex;
   flex-direction: column;
   gap: 21px;
-  
-  @include smTabletView {
-    gap: 18px;
-  }
-  
-  @include xsPhoneView {
-    gap: 16px;
-  }
-}
-
-// Animation for year groups
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

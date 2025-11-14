@@ -1,9 +1,6 @@
+import type { YearlyReceiptGroupProps } from '../donationReceiptTypes';
+
 import React from 'react';
-import type { 
-  IssuedReceiptDataApi, 
-  UnissuedReceiptDataAPI,
-  YearlyReceiptGroupProps 
-} from '../donationReceiptTypes';
 import YearHeader from './YearHeader';
 import IssuedReceiptCard from './IssuedReceiptCard';
 import UnissuedReceiptCard from './UnissuedReceiptCard';
@@ -17,7 +14,6 @@ const YearlyReceiptGroup: React.FC<YearlyReceiptGroupProps> = ({
   overviewButtonState,
   onOverviewDownload,
   isOverviewLoading = false,
-  hoverMessage,
 }) => {
   return (
     <div className={styles.yearlyReceiptGroup}>
@@ -26,11 +22,10 @@ const YearlyReceiptGroup: React.FC<YearlyReceiptGroupProps> = ({
         overviewButtonState={overviewButtonState}
         onOverviewDownload={onOverviewDownload}
         isLoading={isOverviewLoading}
-        hoverMessage={hoverMessage}
       />
-      
+
       <div className={styles.yearReceiptCards}>
-        {/* Render unissued receipts first (as in original component) */}
+        {/* Render unissued receipts first */}
         {receipts.unissued.map((receipt) => (
           <UnissuedReceiptCard
             key={`unissued-${receipt.donations[0].uid}`}
@@ -39,7 +34,7 @@ const YearlyReceiptGroup: React.FC<YearlyReceiptGroupProps> = ({
             isProcessing={processReceiptId === receipt.donations[0].uid}
           />
         ))}
-        
+
         {/* Render issued receipts */}
         {receipts.issued.map((receipt) => (
           <IssuedReceiptCard

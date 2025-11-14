@@ -1,61 +1,97 @@
+import type {
+  OverviewButtonState,
+  YearHeaderProps,
+} from '../donationReceiptTypes';
+
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import type { YearHeaderProps } from '../donationReceiptTypes';
 import styles from '../DonationReceipt.module.scss';
+import CustomTooltip from '../../../common/Layout/CustomTooltip';
+import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
+import themeProperties from '../../../../theme/themeProperties';
+import DownloadIcon from '../../../../../public/assets/images/icons/projectV2/DownloadIcon';
 
 const YearHeader: React.FC<YearHeaderProps> = ({
   year,
   overviewButtonState,
   onOverviewDownload,
   isLoading = false,
-  hoverMessage,
 }) => {
-  const tReceipt = useTranslations('DonationReceipt');
-
+  const tReceipt = useTranslations('DonationReceipt.overviewReceipt');
+  const { primaryColor, darkGrey } = themeProperties.designSystem.colors;
   const handleOverviewClick = () => {
     if (onOverviewDownload && !isLoading && overviewButtonState === 'active') {
       onOverviewDownload();
     }
   };
 
+  const getOverviewReceiptStatusInfo = (
+    status: OverviewButtonState
+  ): string | undefined => {
+    switch (status) {
+      case 'active':
+        return tReceipt('statusInfo.download');
+
+      case 'inactive-unverified':
+        return tReceipt('statusInfo.verifyBeforeDownload');
+
+      case 'inactive-future':
+        return tReceipt('statusInfo.availableSoon');
+
+      default:
+        return undefined;
+    }
+  };
+
   const isButtonDisabled = isLoading || overviewButtonState !== 'active';
-  const showButton = overviewButtonState !== 'hidden';
+  const isOverviewButtonVisible = overviewButtonState !== 'hidden';
+  const isOverviewButtonClickable = overviewButtonState === 'active';
 
   return (
     <div className={styles.yearHeader}>
-      <h2 className={styles.yearTitle}>{year}</h2>
-      {showButton && (
+      <div>
+        <h2 className={styles.yearTitle}>{year}</h2>
+        {isOverviewButtonVisible && (
+          <div className={styles.overviewStatusLabel}>
+            <CustomTooltip
+              triggerElement={
+                <NewInfoIcon
+                  width={12}
+                  color={themeProperties.designSystem.colors.softText2}
+                />
+              }
+              showTooltipPopups={true}
+            >
+              <p className={styles.tooltipContent}>
+                {getOverviewReceiptStatusInfo(overviewButtonState)}
+              </p>
+            </CustomTooltip>
+            <span className={styles.label}>
+              {isOverviewButtonClickable
+                ? tReceipt('available')
+                : tReceipt('notAvailable')}
+            </span>
+          </div>
+        )}
+      </div>
+      {isOverviewButtonVisible && (
         <button
-          className={`${styles.overviewLink} ${
-            overviewButtonState === 'active' ? styles.overviewLinkActive : styles.overviewLinkInactive
-          }`}
+          aria-label={tReceipt('downloadOverviewFor', { year })}
+          className={styles.overviewDownloadButton}
           onClick={handleOverviewClick}
           disabled={isButtonDisabled}
           type="button"
-          title={hoverMessage}
         >
           {isLoading ? (
-            <span className={styles.overviewLinkContent}>
-              <span className={styles.spinner} />
-              {tReceipt('downloadingOverview')}
-            </span>
+            <span className={styles.spinner} />
           ) : (
-            <span className={styles.overviewLinkContent}>
-              <svg
-                className={styles.downloadIcon}
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.979 19.804 4.587 19.412C4.195 19.02 3.99934 18.5493 4 18V15H6V18H18V15H20V18C20 18.55 19.804 19.021 19.412 19.413C19.02 19.805 18.5493 20.0007 18 20H6Z"
-                  fill="currentColor"
-                />
-              </svg>
-              {tReceipt('downloadOverview')}
-            </span>
+            <>
+              <DownloadIcon
+                width={13}
+                color={isOverviewButtonClickable ? primaryColor : darkGrey}
+              />
+              <span>{tReceipt('download')}</span>
+            </>
           )}
         </button>
       )}
