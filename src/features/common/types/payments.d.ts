@@ -93,7 +93,14 @@ export interface FirstDonation {
   reference: string;
 }
 
-export type DonationPurpose = ProjectPurpose | 'composite';
+export type DonationPurpose =
+  | ProjectPurpose
+  | 'composite'
+  | 'academy'
+  | 'endowment'
+  | 'forest-protection'
+  | 'sponsorship'
+  | 'membership';
 
 export interface PaymentHistoryRecord {
   quantity: number;
