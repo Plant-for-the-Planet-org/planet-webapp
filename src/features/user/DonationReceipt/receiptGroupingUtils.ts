@@ -117,6 +117,24 @@ export const isReceiptVerified = (receipt: IssuedReceiptDataApi): boolean => {
   );
 };
 
+/**
+ * Determines the UI state of the overview download button based on
+ * eligibility conditions for the given year.
+ *
+ * Button state rules:
+ * - If the button cannot be rendered → 'hidden'
+ * - If it is the current year → 'inactive-future' (future overview not yet available)
+ * - If the year is not consolidated → 'hidden'
+ * - If consolidated and all receipts are verified → 'active'
+ * - Otherwise → 'inactive-unverified' (some receipts still unverified)
+ *
+ * @param canRender - Whether the button should be rendered at all
+ * @param isCurrentYear - Whether the year is the ongoing calendar year
+ * @param isConsolidated - Whether the year is within the consolidated limit
+ * @param allReceiptsVerified - Whether every issued receipt is verified
+ * @returns The corresponding overview button state
+ */
+
 const determineButtonState = (
   canRender: boolean,
   isCurrentYear: boolean,
@@ -130,13 +148,20 @@ const determineButtonState = (
 };
 
 /**
- * Determines overview receipt eligibility for a specific year
- * @param year - The year to check eligibility for
- * @param receipts - The receipts for that year
- * @param lastConsolidatedYear - The last year that has been consolidated
- * @param currentYear - Optional current year override (defaults to actual current year)
- * @returns Overview eligibility information
+ * Calculates whether an overview receipt can be generated for a specific year,
+ * and determines the corresponding button state and receipt verification details.
+ *
+ * Overview rendering eligibility:
+ * - Year must not be in the future (year ≤ current year)
+ * - Must have more than 1 issued receipt for that year
+ *
+ * @param year - Year to evaluate overview eligibility for
+ * @param receipts - Issued and unissued receipts for the selected year
+ * @param lastConsolidatedYear - The most recent year that has been consolidated
+ * @param currentYear - Optional override for the current calendar year
+ * @returns Overview eligibility including counts, consolidated flag and button state
  */
+
 export const determineOverviewEligibility = (
   year: string,
   receipts: {
