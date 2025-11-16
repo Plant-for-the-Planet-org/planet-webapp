@@ -41,7 +41,6 @@ import materialTheme from '../src/theme/themeStyles';
 import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
-import { trpc } from '../src/utils/trpc';
 // NOTE - needs to be removed when old projects code is removed
 import MapHolder from '../src/features/projects/components/maps/MapHolder';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
@@ -357,4 +356,4 @@ PlanetWeb.getInitialProps = async (
   };
 };
 
-export default trpc.withTRPC(PlanetWeb);
+export default PlanetWeb;

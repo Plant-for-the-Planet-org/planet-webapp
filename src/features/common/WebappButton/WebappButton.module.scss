@@ -28,6 +28,12 @@
     background: $dsForestGreenTransparent20;
     border: none;
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
 
 .webappButtonIcon {
@@ -44,13 +50,39 @@
   }
 }
 
+.webappButtonLabelContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+}
+
 .webappButtonLabel {
   font-size: $fontSmall;
   font-weight: 700;
   color: $dsCoreText;
-  cursor: pointer;
   line-height: 16px;
   text-wrap: wrap;
+}
+
+.spinner {
+  border: 2px solid $dsBaseGrey;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px;
+  height: 16px;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+.spinner--secondary-button {
+  border: 2px solid $dsWarmGreen;
+  border-top: 2px solid transparent;
+}
+
+.visuallyHidden {
+  opacity: 0;
+  position: absolute;
 }
 
 .primaryWebappButton {
@@ -86,5 +118,23 @@
   }
   &:hover {
     background: $dsLeafGreen;
+  }
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

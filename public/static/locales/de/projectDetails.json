@@ -26,7 +26,6 @@
       "other": "Anderer"
     },
     "sinceYear": "Seit {acquisitionYear}",
-    "ownershipTypeDetails": "{translatedOwnershipType} - seit {acquisitionYear}",
     "progressReports": "Fortschrittsberichte",
     "readMore": "Mehr",
     "readLess": "Weniger",
@@ -58,7 +57,7 @@
     "socialBenefits": "Soziale Benefits",
     "ecologicalBenefits": "Ökologische Vorteile",
     "coBenefits": "Co-Benefits",
-    "labelMainInterventions": "Haupt-Interventionen",
+    "labelMainInterventions": "Hauptmaßnahmen",
     "siteOwnership": "Eigentümer der Fläche",
     "ownerShipTenure": "Eigentum Besitzdauer",
     "causeOfDegradation": "Ursache des Verfalls",
@@ -71,13 +70,40 @@
     "projectSpending": "Projekt Ausgaben",
     "abandonment": "Verlassen seit",
     "yearAbandonedInfo": "Wann war der letzte signifikante menschliche Eingriff in das Gebiet? Einschließlich Abholzung, Landwirtschaft, Viehweide, vom Menschen verursachte Brände.",
-    "treePerHa": "Bäume / ha",
+    "treePerHa": "Bäume pro ha",
     "employees": "Beschäftigte",
+    "degradationYear": "Degradierungsjahr",
+    "intervention": {
+      "interventionDate": "Maßnahmen-Datum",
+      "all": "Alle Maßnahmen",
+      "default": "Einzel-/Gruppen-Baumpflanzungen",
+      "single-tree-registration": "Einzel-Baumpflanzungen",
+      "multi-tree-registration": "Gruppen-Baumpflanzungen",
+      "fire-patrol": "Feuerpatrouille",
+      "fire-suppression": "Brandbekämpfungs-Team",
+      "firebreaks": "Brandschneisen einrichten",
+      "fencing": "Einzäunung",
+      "removal-invasive-species": "Beseitigung invasiver Arten",
+      "direct-seeding": "Direktsaat",
+      "grass-suppression": "Grasunterdrückung",
+      "marking-regenerant": "Verjüngungspflanzen kennzeichnen",
+      "enrichment-planting": "Anreicherungspflanzungen",
+      "liberating-regenerant": "Freistellung von Verjüngungspflanzen",
+      "soil-improvement": "Bodenverbesserung",
+      "assisting-seed-rain": "Unterstützte Samenverbreitung",
+      "stop-tree-harvesting": "Baumfällungen stoppen",
+      "maintenance": "Pflege",
+      "other-intervention": "Andere Maßnahmen"
+    },
+    "timeTravel": {
+      "sourceAttributionLabel": "<highlight>{year}</highlight> via {source}",
+      "timeTravelOptionsLabel": "Time Travel Optionen"
+    },
     "previousImage": "Vorheriges Bild",
     "nextImage": "Nächstes Bild",
     "videoPlayer": {
-      "loadVideo": "Video laden (Verbindung zu YouTube)",
-      "consentText": "Durch Klick auf Video laden stimmen Sie YouTube's <googlePrivacyLink>Privacy Policy</googlePrivacyLink> und Cookies zu."
+      "loadVideo": "Video laden (stellt eine Verbindung zu YouTube her)",
+      "consentText": "Wenn Sie auf Video laden klicken, erklären sie sich mit den Datenschutzbestimmungen von YouTube <googlePrivacyLink></googlePrivacyLink> und Cookies einverstanden."
     }
   }
 }
