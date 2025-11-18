@@ -53,6 +53,11 @@ export function RecordHeader({
         break;
       case 'bouquet':
       case 'funds':
+      case 'academy':
+      case 'endowment':
+      case 'forest-protection':
+      case 'sponsorship':
+      case 'membership':
         title = record.details.project;
         break;
       case 'planet-cash':

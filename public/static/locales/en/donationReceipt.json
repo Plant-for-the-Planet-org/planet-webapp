@@ -58,6 +58,17 @@
     "itemsReferenceDateSingleDonation": "Reference {reference} · {date}",
     "itemsReferenceDateSingleEndowment": "Reference {reference} · Endowment · {date}",
     "pendingReceipt": "Pending Receipt(s)",
-    "noReceiptFound": "Oops! No receipt found"
+    "noReceiptFound": "Oops! No receipt found",
+    "overviewReceipt": {
+      "download": "Download Overview",
+      "available": "Overview available",
+      "notAvailable": "Overview not available yet",
+      "downloadOverviewFor": "Download overview for {year}",
+      "statusInfo": {
+        "verifyBeforeDownload": "Please verify all your receipts before downloading the overview receipt.",
+        "availableSoon": "The overview receipt will be available soon.",
+        "download": "Download your consolidated overview receipt for this year."
+      }
+    }
   }
 }

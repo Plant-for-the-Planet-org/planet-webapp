@@ -95,7 +95,8 @@
     }
   }
 
-  button {
+  .landingButton {
+    display: inline-block;
     background: $sfBrandBlue;
     border-radius: 4px;
     font-family: $primaryFontFamily;

@@ -1,0 +1,154 @@
+{
+  "stats": {
+    "giftsReceivedCount": 45,
+    "contributionsMadeCount": 20,
+    "contributedProjects": [
+      "proj_WZkyugryh35sMmZMmXCwq7YY",
+      "proj_08KPr5UC3XliXwWgDqNgiIHs"
+    ],
+    "contributedCountries": [
+      "DE"
+    ],
+    "treesRegistered": 3,
+    "treesDonated": {
+      "personal": 434617,
+      "received": 810200
+    },
+    "areaRestoredInM2": {
+      "personal": 0,
+      "received": 0
+    },
+    "areaConservedInM2": {
+      "personal": 0,
+      "received": 0
+    }
+  },
+  "myContributionsMap": [
+    [
+      "proj_WZkyugryh35sMmZMmXCwq7YY",
+      {
+        "type": "project",
+        "contributionCount": 19,
+        "contributionUnitType": "tree",
+        "totalContributionUnits": 434614,
+        "latestContributions": [
+          {
+            "dataType": "donation",
+            "plantDate": "2025-10-16T14:12:53.000Z",
+            "quantity": 22,
+            "unitType": "tree",
+            "isGifted": false,
+            "giftDetails": null
+          }
+        ]
+      }
+    ],
+    [
+      "pla_Nls3JoZHmWs0pjBe8TwA5nHs",
+      {
+        "type": "registration",
+        "registeredCount": 1,
+        "registeredUnitType": "tree",
+        "totalRegisteredUnits": 2,
+        "country": null,
+        "projectGuid": null,
+        "registrations": [
+          {
+            "dataType": "treeRegistration",
+            "quantity": 2,
+            "plantDate": "2025-10-03T00:00:00.000Z",
+            "unitType": "tree"
+          }
+        ]
+      }
+    ]
+  ],
+  "registrationLocationsMap": [
+    [
+      "pla_Nls3JoZHmWs0pjBe8TwA5nHs",
+      {
+        "geometry": {
+          "type": "Point",
+          "coordinates": [12.372672799784036, 52.17009359651618]
+        }
+      }
+    ]
+  ],
+  "projectLocationsMap": [
+    [
+      "proj_WZkyugryh35sMmZMmXCwq7YY",
+      {
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-90.134383, 18.785798]
+        }
+      }
+    ]
+  ],
+  "projects": {
+    "proj_08KPr5UC3XliXwWgDqNgiIHs": {
+      "guid": "proj_08KPr5UC3XliXwWgDqNgiIHs",
+      "name": "Eden Reforestation Projects - Kenya",
+      "slug": "eden-reforestation-projects-kenya",
+      "classification": "mangroves",
+      "ecosystem": "mangroves",
+      "purpose": "trees",
+      "unitType": "tree",
+      "country": "KE",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [40.739686581322, -2.3175484195775]
+      },
+      "image": "631bb1e028d86881019932.jpg",
+      "allowDonations": false,
+      "tpoName": "Eden People-Planet (formerly Eden Reforestation Projects)"
+    },
+    "proj_WZkyugryh35sMmZMmXCwq7YY": {
+      "guid": "proj_WZkyugryh35sMmZMmXCwq7YY",
+      "name": "Yucatán Restoration",
+      "slug": "yucatan",
+      "classification": "large-scale-planting",
+      "ecosystem": null,
+      "purpose": "trees",
+      "unitType": "tree",
+      "country": "MX",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-90.134383, 18.785798]
+      },
+      "image": "67b5a5bd8e743773056073.jpg",
+      "allowDonations": true,
+      "tpoName": "Plant-for-the-Planet"
+    }
+  },
+  "leaderboard": {
+    "mostRecent": [
+      {
+        "name": "PJM Investment Akademie GmbH",
+        "units": 600,
+        "unitType": "tree",
+        "purpose": "trees"
+      },
+      {
+        "name": "Maresa Bachmann",
+        "units": 3000,
+        "unitType": "tree",
+        "purpose": "trees"
+      }
+    ],
+    "mostTrees": [
+      {
+        "name": "Anonymous",
+        "units": 800800,
+        "unitType": "tree",
+        "purpose": "trees"
+      },
+      {
+        "name": "Maresa Bachmann",
+        "units": 3700,
+        "unitType": "tree",
+        "purpose": "trees"
+      }
+    ]
+  }
+}

@@ -51,8 +51,11 @@ export default function SeaOfTrees() {
                 forests globally. Learn more about Salesforce’s mangrove journey
                 and discover opportunities to join the movement here.
               </p>
-              <Link href={localizedPath('/mangroves')}>
-                <button>Learn More</button>
+              <Link
+                href={localizedPath('/mangroves')}
+                className={styles.learnMoreButton}
+              >
+                Learn More
               </Link>
             </div>
           </div>

@@ -59,16 +59,15 @@ const ContributionSummary = ({ contribution, purpose }: Props) => {
     const { dataType, giftDetails } = contribution;
     if (dataType === 'receivedGift')
       return t('myContributions.giftReceivedInfo', {
-        name: giftDetails.giverName || t('myContributions.anonymousUser'),
+        name: giftDetails?.giverName || t('myContributions.anonymousUser'),
       });
-    if (dataType === 'donation' && giftDetails !== null)
+    if (dataType === 'issuedGift')
       return t('myContributions.giftGivenInfo', {
-        name: giftDetails.recipient || t('myContributions.anonymousUser'),
+        name: giftDetails?.recipientName || t('myContributions.anonymousUser'),
       });
   }, [contribution, t]);
 
-  const shouldWrapInTooltip =
-    contribution.dataType === 'receivedGift' || contribution.isGifted;
+  const shouldWrapInTooltip = contribution.isGifted;
   const tooltipContent = !shouldWrapInTooltip ? undefined : giftInfo;
 
   return shouldWrapInTooltip && giftInfo ? (

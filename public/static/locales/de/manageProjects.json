@@ -19,7 +19,7 @@
     "conservationImpacts": "Naturschutz-Auswirkungen",
     "website": "Website",
     "websiteValidationRequired": "Bitte URL der Website eingeben",
-    "websiteValidationInvalid": "Ungültige Website-URL",
+    "websiteValidationInvalid": "Ungültige Website-URL. Sie sollte mit http:// oder https:// beginnen",
     "aboutProject": "Über das Projekt",
     "aboutProjectValidation": "Bitte das Projekt beschreiben",
     "receiveDonations": "Spenden empfangen",
@@ -72,25 +72,25 @@
     "treePerHa": "Bäume pro ha",
     "employeesCountInfo": "Entspricht einer 40-Stunden-Woche. D.h. zwei Halbzeitbeschäftigte zählen als einer.",
     "labelRestorationSeasons": "Renaturierungszeiten",
-    "labelMainInterventions": "Hauptinterventionen",
+    "labelMainInterventions": "Hauptmaßnahmen",
     "interventionTypes": {
-      "assisting-seed-rain": "Assisting Seed Rain",
+      "assisting-seed-rain": "Unterstützte Samenverbreitung",
       "control-remove-livestock": "Control/Remove Livestock",
       "cut-suppressing-grass": "Cut/Suppressing Grass",
       "direct-seeding": "Direct Seeding",
-      "enrichment-planting": "Enrichment Planting",
+      "enrichment-planting": "Anreicherungspflanzungen",
       "establish-firebreaks": "Establish Firebreaks",
       "fire-patrols": "Establish Firebreaks",
       "fire-suppression-team": "Fire Suppression Team",
-      "liberating-regenerants": "Liberating Regenerants",
+      "liberating-regenerants": "Freistellung von Verjüngungspflanzen",
       "maintenance": "Maintenance",
-      "marking-regenerants": "Marking Regenerants",
-      "other-interventions": "Other Interventions",
+      "marking-regenerants": "Verjüngungspflanzen kennzeichnen",
+      "other-interventions": "Andere Maßnahmen",
       "planting-trees": "Planting Trees",
       "removal-contaminated-soil": "Removal of Contaminated Soil",
       "removal-invasive-species": "Removal of Invasive Species",
       "soil-improvement": "Soil Improvement",
-      "stop-tree-harvesting": "Stop Tree Harvesting"
+      "stop-tree-harvesting": "Baumfällungen stoppen"
     },
     "missingInterventionsError": "Bitte wählen Sie mindestens eine Maßnahme aus",
     "timePeriod": "Zeitraum",
@@ -136,7 +136,7 @@
     "longTermProtection": "Langfristiger Schutz",
     "ownerShipTenure": "Eigentum Besitzdauer",
     "externalCertifications": "Externe Zertifizierungen",
-    "projectSpendingFinancial": "Jährliche Projektausgaben",
+    "projectSpendingFinancial": "Projektausgaben",
     "issueDate": "Ausstellungsdatum",
     "acquisitionYear": "Jahr des Erwerbs",
     "largeScalePlanting": "Großflächige Pflanzungen",
@@ -147,7 +147,6 @@
     "otherPlanting": "Andere Pflanzung",
     "projectType": "Projekttyp",
     "protectionSeasons": "Schutzzeiten",
-    "polygonRequired": "Polygon ist erforderlich",
     "fileSizeLimit": "Datei ist größer als 10 MB",
     "fileImageOnly": "Dateityp muss Bild sein",
     "filePDFOnly": "Dateityp muss PDF sein",
@@ -224,11 +223,9 @@
     "addProjectDescription": "Du bist nur wenige Schritte davon entfernt, deine Arbeit auf der Plattform Plant-for-the-Planet zu präsentieren. ",
     "createProjectsEnglishOnly": "<noteLabel>Wichtig: </noteLabel>Bitte erstellen Sie Projekte nur mit englischer Spracheinstellung.",
     "contactSupportEmail": "Wenn Sie Hilfe benötigen, kontaktieren Sie uns unter <supportLink>support@plant-for-the-planet.org</supportLink> ",
-    "wrongCoordinates": "Falsche Koordinaten",
     "actionInfo": "Die Maßnahmen, die deine Organisation zur Erhaltung des Ökosystems ergreift.",
     "mainChallengeInfo": "Die größte Herausforderung bei diesem Projekt.",
     "motivationInfo": "Die Motivation für den Schutz dieses speziellen Ökosystems.",
-    "hectar": "hektar",
     "validation": "{fieldName} ist ungültig",
     "date": "Datum",
     "plantingDensityValidation": "Bitte gibt die Dichte der Pflanzung ein",
@@ -246,6 +243,40 @@
     "annualReport": "Letzter Jahresbericht",
     "financialReport": "Letzter geprüfter Finanzbericht",
     "PlantingReport": "Projekt Fortschritt Bericht",
-    "siteCount": "Fläche {siteId} von {totalCount}"
+    "siteCount": "Fläche {siteId} von {totalCount}",
+    "delete": "Löschen",
+    "deleteSite": "Site löschen",
+    "cancel": "Abbrechen",
+    "siteDeleteConfirmation": "Sind Sie sicher, dass Sie {siteName} löschen möchten?",
+    "mapView": {
+      "map": "Karte",
+      "satellite": "Satellit"
+    },
+    "drawing": {
+      "polygon": {
+        "start": "Anfangen Polygon zu zeichnen (Wählen Sie mindestens 3 Punkte aus)",
+        "stop": "Polygon-Zeichnung stoppen",
+        "active": "Zeichnungsmodus aktiv (zum Anhalten anklicken)",
+        "delete": "Polygon löschen"
+      }
+    },
+    "errors": {
+      "polygon": {
+        "minimumPoints": "Ein Polygon benötigt mindestens 3 Punkte",
+        "required": "Der Umriss Ihrer Site muss ein geschlossenes Polygon sein. Um den Umriss zu schließen, doppelklicken Sie bitte auf den Startpunkt."
+      },
+      "file": {
+        "invalidKml": "Ungültige KML-Datei. Bitte überprüfen Sie das Dateiformat.",
+        "invalidGeojson": "Ungültige GeoJSON-Datei. Bitte überprüfen Sie das Dateiformat.",
+        "readAborted": "Datei-Upload abgebrochen. Bitte versuchen Sie es erneut.",
+        "readFailed": "Die Datei konnte nicht gelesen werden. Bitte versuchen Sie es erneut."
+      },
+      "coordinates": {
+        "seaCoordinates": "Der ausgewählte Ort scheint im Meer zu liegen. Bitte wählen Sie einen nahe gelegenen Punkt an Land.",
+        "latitudeRange": "Der Breitengrad muss zwischen -90 und 90 liegen.",
+        "longitudeRange": "Der Längengrad muss zwischen -180 und 180 liegen."
+      }
+    },
+    "editSite": "Seite bearbeiten"
   }
 }
