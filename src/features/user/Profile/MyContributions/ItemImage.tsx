@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import type {
   GiftGivenDetails,
   GiftReceivedDetails,
@@ -14,9 +15,10 @@ interface Props {
 const ItemImage = ({ imageUrl, giftDetails }: Props) => {
   return (
     <div
-      className={`${styles.itemImageContainer} ${
-        !giftDetails ? styles.roundedCorners : ''
-      }`}
+      className={clsx(
+        styles.itemImageContainer,
+        !giftDetails && styles.roundedCorners
+      )}
       style={
         imageUrl
           ? {

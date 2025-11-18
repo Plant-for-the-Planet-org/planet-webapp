@@ -7,6 +7,7 @@ import styles from './MyContributions.module.scss';
 import ProjectTypeIcon from '../../../common/ProjectTypeIcon';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { clsx } from 'clsx';
 
 type ConservationProps = {
   projectPurpose: 'conservation';
@@ -58,7 +59,7 @@ const ProjectHeader = ({ color = 'dark', ...otherProps }: Props) => {
   }, [tProject, projectType, otherProps]);
 
   return (
-    <header className={`${styles.projectHeader} ${styles[color]}`}>
+    <header className={clsx(styles.projectHeader, styles[color])}>
       {projectType !== null && projectCategory !== null && (
         <div className={styles.projectType}>
           <div className={styles.projectTypeIcon}>
