@@ -2,6 +2,7 @@ import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNum
 import styles from '../../styles/InterventionInfo.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { formatHid } from '../../../../../utils/projectV2';
+import { clsx } from 'clsx';
 
 interface Props {
   hid: string | undefined;
@@ -18,9 +19,12 @@ const MultiTreeInfoHeader = ({
   const locale = useLocale();
   return (
     <div
-      className={`intervention-header-container ${styles.interventionHeaderContainer}`}
+      className={clsx(
+        'intervention-header-container',
+        styles.interventionHeaderContainer
+      )}
     >
-      <div className={`tree-count ${styles.treeCount}`}>
+      <div className={clsx('tree-count', styles.treeCount)}>
         {tProjectDetails.rich('totalPlantedTrees', {
           count: totalTreesCount,
           formattedCount: localizedAbbreviatedNumber(
@@ -32,7 +36,7 @@ const MultiTreeInfoHeader = ({
           areaContainer: (chunks) => <span>{chunks}</span>,
         })}
       </div>
-      <div className={`hid ${styles.hid}`}>{formatHid(hid)}</div>
+      <div className={clsx('hid', styles.hid)}>{formatHid(hid)}</div>
     </div>
   );
 };

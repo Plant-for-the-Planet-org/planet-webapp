@@ -2,6 +2,7 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../../styles/InterventionInfo.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNumber';
+import { clsx } from 'clsx';
 
 interface Props {
   plantingDensity: number | null;
@@ -28,13 +29,18 @@ const PlantingDetails = ({ plantingDensity, plantDate }: Props) => {
     },
   ];
   return (
-    <div className={`planting-details-group ${styles.plantingDetailsGroup}`}>
+    <div
+      className={clsx('planting-details-group', styles.plantingDetailsGroup)}
+    >
       {plantingDetails.map((item, key) => {
         if (!item.shouldRender) return;
         return (
           <div
             key={key}
-            className={`planting-details-item ${styles.plantingDetailsItem}`}
+            className={clsx(
+              'planting-details-item',
+              styles.plantingDetailsItem
+            )}
           >
             <h2 className={styles.label}>{item.label}</h2>
             <p className={styles.data}>{item.data}</p>
