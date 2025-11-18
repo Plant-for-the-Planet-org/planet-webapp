@@ -21,6 +21,7 @@ import { useProjectsMap } from '../../ProjectsMapContext';
 import { FillColor } from '../../../../utils/constants/intervention';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
+import { clsx } from 'clsx';
 
 interface SampleTreeMarkerProps {
   sampleTree: SampleTreeRegistration;
@@ -46,9 +47,10 @@ const SampleTreeMarker = ({
   >
     <div
       key={`${sampleTree.id}-marker`}
-      className={`${styles.single} ${
-        sampleTree.hid === selectedSampleTree?.hid ? styles.singleSelected : ''
-      }`}
+      className={clsx(
+        styles.single,
+        sampleTree.hid === selectedSampleTree?.hid && styles.singleSelected
+      )}
       role="button"
       tabIndex={0}
       onClick={(e) => toggleSampleTree(e, sampleTree)}

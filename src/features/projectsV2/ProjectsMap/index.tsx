@@ -36,6 +36,7 @@ import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
+import { clsx } from 'clsx';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -305,10 +306,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedSampleTree,
   };
 
-  const mapContainerClass = `${styles.mapContainer} ${
-    styles[mobileOS !== undefined ? mobileOS : '']
-  }`;
-
   const shouldShowOtherIntervention =
     props.isMobile &&
     selectedIntervention !== null &&
@@ -318,7 +315,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     <>
       <MapControls {...mapControlProps} />
 
-      <div className={mapContainerClass}>
+      <div className={clsx(styles.mapContainer, mobileOS && styles[mobileOS])}>
         {shouldShowMapTabs && (
           <MapTabs
             selectedTab={selectedTab}
