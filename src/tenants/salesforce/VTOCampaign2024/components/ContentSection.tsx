@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
 
@@ -5,12 +6,16 @@ import styles from './../styles/ContentSection.module.scss';
 
 export default function ContentSection() {
   return (
-    <div className={`${styles.contentSectionContainer}`}>
-      <div className={`${gridStyles.fluidContainer} ${styles.contentSection}`}>
+    <div className={styles.contentSectionContainer}>
+      <div className={clsx(gridStyles.fluidContainer, styles.contentSection)}>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
             <h2>For Salesforce Employees</h2>
             <h2>
               VTO Fitness-for-a-Cause Challenge, Sponsored by Earthforce and
@@ -30,10 +35,18 @@ export default function ContentSection() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg3,
+              gridStyles.col12
+            )}
           >
             <img
               src="/tenants/salesforce/images/illustration-1.png"
@@ -42,7 +55,12 @@ export default function ContentSection() {
             />
           </div>
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg6,
+              gridStyles.col12,
+              styles.justifyContentCenter
+            )}
           >
             <h3>How you can participate</h3>
             <p>

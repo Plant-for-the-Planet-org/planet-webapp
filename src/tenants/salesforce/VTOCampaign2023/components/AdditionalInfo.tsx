@@ -1,5 +1,6 @@
 import styles from './../styles/AdditionalInfo.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
+import clsx from 'clsx';
 
 export default function AdditionalInfo() {
   return (
@@ -11,9 +12,9 @@ export default function AdditionalInfo() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
+          className={clsx(gridStyles.gridRow, gridStyles.justifyContentCenter)}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
             <p>
               In January 2020, as a founding partner of 1t.org, Salesforce
               announced our own goal to support and mobilize the conservation,
@@ -40,9 +41,9 @@ export default function AdditionalInfo() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
+          className={clsx(gridStyles.gridRow, gridStyles.justifyContentCenter)}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
             <div className={styles.videoContainer}>
               <iframe
                 src="https://customer-3h4q1m4a9rqr5i6y.cloudflarestream.com/d20fa8f183f67d5fbe9efb5b4aedb102/iframe?preload=true&poster=https%3A%2F%2Fcustomer-3h4q1m4a9rqr5i6y.cloudflarestream.com%2Fd20fa8f183f67d5fbe9efb5b4aedb102%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D0h1m5s%26height%3D600"
@@ -55,15 +56,16 @@ export default function AdditionalInfo() {
             </div>
           </div>
         </div>
+
         <div className={gridStyles.gridRow}>
           <div className={gridStyles.col12}>
             <h3>More About Fitness-For-A-Cause Challenges</h3>
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
+          className={clsx(gridStyles.gridRow, gridStyles.justifyContentCenter)}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
             <p>
               The primary goal of Fitness-for-a-Cause is to raise funds for
               various charitable organizations while encouraging consistent
@@ -77,15 +79,30 @@ export default function AdditionalInfo() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.alignItemsCenter} ${styles.logoContainer}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.alignItemsCenter,
+            styles.logoContainer
+          )}
         >
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.justifyContentCenter} ${gridStyles.alignItemsCenter} ${styles.logoContainer}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.justifyContentCenter,
+              gridStyles.alignItemsCenter,
+              styles.logoContainer
+            )}
           >
             <img src="/tenants/salesforce/images/earthforce-pp.png" alt="" />
           </div>
+
           <div
-            className={`${gridStyles.colMd3} ${gridStyles.justifyContentCenter} ${gridStyles.alignItemsCenter}`}
+            className={clsx(
+              gridStyles.colMd3,
+              gridStyles.justifyContentCenter,
+              gridStyles.alignItemsCenter
+            )}
           >
             <img src="/tenants/salesforce/images/1t.png" alt="" />
           </div>

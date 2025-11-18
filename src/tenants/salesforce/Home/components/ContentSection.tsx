@@ -1,14 +1,19 @@
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
+import clsx from 'clsx';
 
 export default function ContentSection() {
   return (
-    <div className={`${styles.contentSectionContainer}`}>
-      <div className={`${gridStyles.fluidContainer} ${styles.contentSection}`}>
+    <div className={styles.contentSectionContainer}>
+      <div className={clsx(gridStyles.fluidContainer, styles.contentSection)}>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
             <h2>This beautiful planet is the only home we have.</h2>
             <p className={styles.contentSectionSubhead}>
               From the Andes to the Outback, from mangroves to Giant redwood
@@ -20,11 +25,20 @@ export default function ContentSection() {
             </p>
           </div>
         </div>
+
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg3,
+              gridStyles.col12
+            )}
           >
             <img
               src="/tenants/salesforce/images/illustration-1.png"
@@ -33,7 +47,12 @@ export default function ContentSection() {
             />
           </div>
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg6,
+              gridStyles.col12,
+              styles.justifyContentCenter
+            )}
           >
             <h3>We save trees, trees save us.</h3>
             <p>
@@ -47,11 +66,22 @@ export default function ContentSection() {
             </p>
           </div>
         </div>
+
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
           <div
-            className={`${gridStyles.colMd7} ${gridStyles.col12} ${gridStyles.orderSm1} ${gridStyles.orderMd0} ${styles.justifyContentCenter}`}
+            className={clsx(
+              gridStyles.colMd7,
+              gridStyles.col12,
+              gridStyles.orderSm1,
+              gridStyles.orderMd0,
+              styles.justifyContentCenter
+            )}
           >
             <h3>Business is a platform for change.</h3>
             <p>
@@ -91,8 +121,14 @@ export default function ContentSection() {
               and ecological benefits.
             </p>
           </div>
+
           <div
-            className={`${gridStyles.colMd3} ${gridStyles.col12} ${gridStyles.orderSm0} ${gridStyles.orderMd1}`}
+            className={clsx(
+              gridStyles.colMd3,
+              gridStyles.col12,
+              gridStyles.orderSm0,
+              gridStyles.orderMd1
+            )}
           >
             <img
               src="/tenants/salesforce/images/illustration-2.png"

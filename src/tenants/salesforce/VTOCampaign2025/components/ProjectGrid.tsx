@@ -11,6 +11,7 @@ import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
+import { clsx } from 'clsx';
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
@@ -62,12 +63,12 @@ export default function ProjectGrid() {
   };
 
   return (
-    <section className={`${styles.projectGridContainer}`} id="projects">
-      <div className={`${gridStyles.fluidContainer} ${styles.projectGrid}`}>
+    <section className={clsx(styles.projectGridContainer)} id="projects">
+      <div className={clsx(gridStyles.fluidContainer, styles.projectGrid)}>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
+          className={clsx(gridStyles.gridRow, gridStyles.justifyContentCenter)}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
             <h3>Projects</h3>
             <p className={styles.contentSectionSubhead}>
               You can donate to these projects.
@@ -75,7 +76,11 @@ export default function ProjectGrid() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${styles.projectList}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            styles.projectList
+          )}
         >
           {projects ? renderAllowedProjects(projects) : <></>}
         </div>

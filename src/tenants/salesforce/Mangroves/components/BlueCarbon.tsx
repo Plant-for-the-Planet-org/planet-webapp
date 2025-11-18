@@ -1,18 +1,28 @@
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/BlueCarbon.module.scss';
+import { clsx } from 'clsx';
 
 export default function BlueCarbon() {
   return (
     <div>
-      <div className={`${styles.blueCarbonContainer}`}>
-        <div className={`${gridStyles.fluidContainer} ${styles.blueCarbon}`}>
+      <div className={styles.blueCarbonContainer}>
+        <div className={clsx(gridStyles.fluidContainer, styles.blueCarbon)}>
           <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100} ${styles.calloutContainer}`}
+            className={clsx(
+              gridStyles.gridRow,
+              gridStyles.justifyContentCenter,
+              gridStyles.mb65100,
+              styles.calloutContainer
+            )}
           >
             <div
-              className={`${gridStyles.col12} ${gridStyles.colMd8} ${styles.helpOutCallout}`}
+              className={clsx(
+                gridStyles.col12,
+                gridStyles.colMd8,
+                styles.helpOutCallout
+              )}
             >
-              <div className={`${styles.calloutContentContainer}`}>
+              <div className={styles.calloutContentContainer}>
                 <div className={styles.calloutContentOverlay}></div>
                 <div className={styles.calloutContent}>
                   <h3>Join us</h3>
@@ -53,12 +63,20 @@ export default function BlueCarbon() {
             </div>
           </div>
           <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+            className={clsx(
+              gridStyles.gridRow,
+              gridStyles.justifyContentCenter,
+              gridStyles.mb65100
+            )}
           >
             <div
-              className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
+              className={clsx(
+                gridStyles.colMd6,
+                gridStyles.colLg3,
+                gridStyles.col12
+              )}
             >
-              <div className={`${gridStyles.circularContainer}`}>
+              <div className={gridStyles.circularContainer}>
                 <img
                   src="/tenants/salesforce/images/mangroves/bahamas-mangroves.jpg"
                   alt="mangroves in the bahamas"
@@ -66,7 +84,11 @@ export default function BlueCarbon() {
               </div>
             </div>
             <div
-              className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12}`}
+              className={clsx(
+                gridStyles.colMd6,
+                gridStyles.colLg6,
+                gridStyles.col12
+              )}
             >
               <h3>Blue Carbon</h3>
 

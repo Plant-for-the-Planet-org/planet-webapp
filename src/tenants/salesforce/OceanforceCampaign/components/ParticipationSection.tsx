@@ -1,17 +1,27 @@
+import { clsx } from 'clsx';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ParticipationSection.module.scss';
 
 export default function ParticipationSection() {
   return (
-    <div className={`${styles.participationSectionContainer}`}>
+    <div className={clsx(styles.participationSectionContainer)}>
       <div
-        className={`${gridStyles.fluidContainer} ${styles.participationSection}`}
+        className={clsx(gridStyles.fluidContainer, styles.participationSection)}
       >
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
           <div
-            className={`${gridStyles.colMd8} ${gridStyles.col12} ${styles.justifyContentCenter} ${styles.participationInfo}`}
+            className={clsx(
+              gridStyles.colMd8,
+              gridStyles.col12,
+              styles.justifyContentCenter,
+              styles.participationInfo
+            )}
           >
             <h4>For Salesforce Employees:</h4>
             <ul>
