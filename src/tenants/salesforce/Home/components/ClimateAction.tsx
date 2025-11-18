@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import styles from './../styles/ClimateAction.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
@@ -47,7 +48,11 @@ export default function ClimateAction() {
             return (
               <div
                 key={`climate-action-${article.id}`}
-                className={`${gridStyles.col12} ${gridStyles.colMd4} ${styles.climateActionContent}`}
+                className={clsx(
+                  gridStyles.col12,
+                  gridStyles.colMd4,
+                  styles.climateActionContent
+                )}
               >
                 <a
                   href={article.link}
@@ -63,9 +68,13 @@ export default function ClimateAction() {
           })}
         </div>
         <div
-          className={`${gridStyles.gridRow} ${styles.climateActionDonate} ${gridStyles.justifyContentCenter}`}
+          className={clsx(
+            gridStyles.gridRow,
+            styles.climateActionDonate,
+            gridStyles.justifyContentCenter
+          )}
         >
-          <div className={`${gridStyles.col8} ${gridStyles.colMd12}`}>
+          <div className={clsx(gridStyles.col8, gridStyles.colMd12)}>
             <h3>Becoming a tree champion is easy.</h3>
             <p>
               <small>
