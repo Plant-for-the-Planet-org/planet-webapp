@@ -2,6 +2,7 @@ import type { SetState } from '../../../common/types/common';
 import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
 import FilterIcon from '../../../../../public/assets/images/icons/projectV2/FilterIcon';
 import styles from '../styles/ProjectListControls.module.scss';
+import { clsx } from 'clsx';
 
 interface ProjectSearchAndFilterProps {
   isFilterOpen: boolean;
@@ -23,12 +24,13 @@ export const SearchAndFilter = ({
   isMobile,
   selectedMode,
 }: ProjectSearchAndFilterProps) => {
-  const searchAndFilterContainerClasses = `${
-    isMobile ? styles.iconsContainerMobile : styles.iconsContainer
-  } ${selectedMode === 'map' && isMobile ? styles.mapModeButtons : ''}`;
-
   return (
-    <div className={searchAndFilterContainerClasses}>
+    <div
+      className={clsx(
+        isMobile ? styles.iconsContainerMobile : styles.iconsContainer,
+        isMobile && selectedMode === 'map' && styles.mapModeButtons
+      )}
+    >
       <button onClick={() => setIsSearching(!isSearching)}>
         <SearchIcon />
       </button>

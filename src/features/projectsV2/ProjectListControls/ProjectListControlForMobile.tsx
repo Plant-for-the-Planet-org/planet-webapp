@@ -16,6 +16,7 @@ import ActiveSearchField from './microComponents/ActiveSearchField';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { clsx } from 'clsx';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
@@ -74,14 +75,17 @@ const ProjectListControlForMobile = ({
     embed === 'true' && page === 'project-list' && showProjectList === 'false';
   const shouldDisplayMapFeatureExplorer =
     selectedMode === 'map' && process.env.ENABLE_EXPLORE === 'true';
-  const projectListControlsMobileClasses = `${
-    styles.projectListControlsMobile
-  } ${selectedMode === 'map' ? styles.mapModeControls : ''} ${
-    isImpersonationModeOn ? styles['impersonationMode'] : ''
-  }`;
-  const tabContainerClasses = `${styles.tabsContainer} ${
-    isImpersonationModeOn ? styles['impersonationMode'] : ''
-  }`;
+
+  const projectListControlsMobileClasses = clsx(
+    styles.projectListControlsMobile,
+    selectedMode === 'map' && styles.mapModeControls,
+    isImpersonationModeOn && styles.impersonationMode
+  );
+
+  const tabContainerClasses = clsx(
+    styles.tabsContainer,
+    isImpersonationModeOn && styles.impersonationMode
+  );
 
   const activeSearchFieldProps = {
     setIsFilterOpen,
