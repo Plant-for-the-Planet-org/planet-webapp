@@ -3,6 +3,7 @@ import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import styles from './MyContributions.module.scss';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { clsx } from 'clsx';
 
 type SupportedDonationButton = {
   type: 'supported';
@@ -35,13 +36,12 @@ const DonateButton = (props: DonateButtonProps) => {
   const { token } = useUserProps();
 
   // Add custom styles depending on project purpose and unit type
-  const buttonClasses = `${styles.donationButton} ${
-    projectPurpose === 'conservation'
-      ? styles.conservation
-      : contributionUnitType === 'm2'
-      ? styles.restoration
-      : ''
-  } ${customButtonClasses || ''}`;
+  const buttonClasses = clsx(
+    styles.donationButton,
+    projectPurpose === 'conservation' && styles.conservation,
+    contributionUnitType === 'm2' && styles.restoration,
+    customButtonClasses
+  );
 
   // Construct donate link
   const donateLink = getDonationUrl(
