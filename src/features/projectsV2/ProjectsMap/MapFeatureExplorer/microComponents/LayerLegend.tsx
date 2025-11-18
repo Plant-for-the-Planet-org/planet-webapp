@@ -6,6 +6,7 @@ import type {
 
 import { useTranslations } from 'next-intl';
 import styles from '../MapFeatureExplorer.module.scss';
+import { clsx } from 'clsx';
 
 interface RangeLegendProps {
   legend: RangeLegendData;
@@ -46,7 +47,7 @@ const CategoryLegend = ({ legend }: CategoryLegendProps) => {
 
   return (
     <div className={styles.layerLegend}>
-      <div className={`${styles.legendBar} ${styles.legendBarCategory}`}>
+      <div className={clsx(styles.legendBar, styles.legendBarCategory)}>
         {legend.categories.map((category) => {
           return (
             <div

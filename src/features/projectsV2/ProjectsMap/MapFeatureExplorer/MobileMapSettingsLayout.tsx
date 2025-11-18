@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from 'react';
 import { ExploreIcon } from '../../../../../public/assets/images/icons/projectV2/ExploreIcon';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from './MobileMapSettingsLayout.module.scss';
+import { clsx } from 'clsx';
 
 interface Props {
   setIsOpen: SetState<boolean>;
@@ -59,9 +60,10 @@ const MobileMapSettingsLayout = ({ setIsOpen, children }: Props) => {
       </div>
       <div
         ref={scrollRef}
-        className={`${styles.scrollableContent} ${
-          isAtBottom ? styles.atBottom : ''
-        }`}
+        className={clsx(
+          styles.scrollableContent,
+          isAtBottom && styles.atBottom
+        )}
       >
         {children}
       </div>

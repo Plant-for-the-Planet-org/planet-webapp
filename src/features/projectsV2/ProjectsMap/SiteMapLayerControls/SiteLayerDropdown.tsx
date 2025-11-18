@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import DropdownDownArrow from '../../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
 import SiteLayerOptions, { availableLayerOptions } from './SiteLayerOptions';
 import styles from './SiteMapLayerControls.module.scss';
+import { clsx } from 'clsx';
 
 interface SiteLayerDropdownProps {
   selectedLayer: LayerOption;
@@ -54,14 +55,14 @@ const SiteLayerDropdown = ({
           </span>
         </p>
         <div
-          className={`${styles.dropdownButtonArrow} ${
-            isOpen ? styles.arrowRotated : ''
-          }`}
+          className={clsx(
+            styles.dropdownButtonArrow,
+            isOpen && styles.arrowRotated
+          )}
         >
           <DropdownDownArrow width={10} />
         </div>
       </div>
-
       {isOpen && (
         <div className={styles.optionsWrapper}>
           <SiteLayerOptions

@@ -140,7 +140,7 @@ export default function FirePopup({ isOpen, feature }: Props) {
         })}
       >
         {popperPlacement === 'top' ? (
-          <div className={`${styles.arrowTop}`} ref={setArrowRef} />
+          <div className={styles.arrowTop} ref={setArrowRef} />
         ) : (
           <div className={styles.arrowBottomContainer} ref={setArrowRef}>
             <div className={styles.arrowBottomWhite} />
