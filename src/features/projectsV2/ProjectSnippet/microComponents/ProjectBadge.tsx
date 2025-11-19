@@ -9,6 +9,7 @@ import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/New
 import styles from '../styles/Badge.module.scss';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import { clsx } from 'clsx';
 
 interface Props {
   isApproved: boolean;
@@ -35,9 +36,10 @@ interface BadgeLabelProps {
 const BadgeLabel = ({ icon, title, isInteractive }: BadgeLabelProps) => {
   return (
     <div
-      className={`${styles.projectBadge} ${
-        !isInteractive ? styles.nonInteractive : ''
-      }`}
+      className={clsx(
+        styles.projectBadge,
+        !isInteractive && styles.nonInteractive
+      )}
       onClick={(e) => e.preventDefault()}
     >
       <div className={styles.badgeIcon}>{icon}</div>
