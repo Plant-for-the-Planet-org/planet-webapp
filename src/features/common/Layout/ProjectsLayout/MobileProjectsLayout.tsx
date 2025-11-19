@@ -9,6 +9,7 @@ import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import { ParamsContext } from '../QueryParamsContext';
 import { useUserProps } from '../UserPropsContext';
+import { clsx } from 'clsx';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
@@ -43,11 +44,12 @@ const MobileProjectsLayout = ({
     }
   }, [page, isEmbedded, isContextLoaded, showProjectDetails, showProjectList]);
 
-  const mobileLayoutClass = `${styles.mobileProjectsLayout} ${
-    selectedMode === 'map' ? styles.mapMode : ''
-  } ${isEmbedded ? styles.embedModeMobile : ''} ${
-    isImpersonationModeOn ? styles.impersonationMobile : ''
-  }`;
+  const mobileLayoutClass = clsx(
+    styles.mobileProjectsLayout,
+    selectedMode === 'map' && styles.mapMode,
+    isEmbedded && styles.embedModeMobile,
+    isImpersonationModeOn && styles.impersonationMobile
+  );
   return (
     <ProjectsProvider
       page={page}

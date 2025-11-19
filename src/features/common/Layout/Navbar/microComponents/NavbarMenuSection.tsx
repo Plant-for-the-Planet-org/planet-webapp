@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import styles from '../Navbar.module.scss';
 import NavbarMenuItem from './NavbarMenuItem';
 import { GreenRightChevron } from '../../../../../../public/assets/images/icons/NavbarMenuIcons';
+import { clsx } from 'clsx';
 
 type SectionHeaderDescription = 'organizationDescription';
 interface NavbarMenuSectionProps {
@@ -71,9 +72,10 @@ const NavbarMenuSection = ({
       )}
 
       <div
-        className={`${styles.menuStyles} ${
-          isOnlyIconSection ? styles.onlyIcon : ''
-        }`}
+        className={clsx(
+          styles.menuStyles,
+          isOnlyIconSection && styles.onlyIcon
+        )}
       >
         {items.map((item) => {
           return (

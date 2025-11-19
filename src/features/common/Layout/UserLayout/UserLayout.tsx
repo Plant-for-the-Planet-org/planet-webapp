@@ -25,6 +25,7 @@ import IconContainer from './IconContainer';
 import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 const UserLayout = ({ children }: { children: ReactNode }) => {
   const t = useTranslations('Me');
@@ -305,24 +306,23 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
     <div className={styles.profilePageContainer}>
       <div
         key={'hamburgerIcon'}
-        className={`${styles.hamburgerIcon}`}
+        className={styles.hamburgerIcon}
         onClick={() => setIsMobileMenuOpen(true)}
         style={{ marginTop: isImpersonationModeOn ? '47px' : '' }}
       >
         <MenuIcon />
       </div>
       <div
-        className={`${
-          isImpersonationModeOn
-            ? `${styles.sidebarModified}`
-            : `${styles.sidebar}`
-        } ${!isMobileMenuOpen ? styles.menuClosed : ''}`}
+        className={clsx(
+          isImpersonationModeOn ? styles.sidebarModified : styles.sidebar,
+          !isMobileMenuOpen && styles.menuClosed
+        )}
       >
         <div className={styles.navLinksContainer}>
           <>
-            <div key={'closeMenu'} className={`${styles.closeMenu}`}>
+            <div key={'closeMenu'} className={styles.closeMenu}>
               <div
-                className={`${styles.navLink}`}
+                className={styles.navLink}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <BackArrow />

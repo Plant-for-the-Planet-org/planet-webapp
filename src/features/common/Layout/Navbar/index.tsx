@@ -4,6 +4,7 @@ import { useTenant } from '../TenantContext';
 import NavbarBrandLogos from './microComponents/NavbarBrandLogos';
 import NavbarItems from './microComponents/NavbarItems';
 import styles from './Navbar.module.scss';
+import { clsx } from 'clsx';
 
 const ImpersonationBanner = () => {
   const { isImpersonationModeOn } = useUserProps();
@@ -18,9 +19,10 @@ const ImpersonationBanner = () => {
 const MainNavigationHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
 
-  const headerStyles = `${styles.mainNavigationHeader} ${
-    isImpersonationModeOn ? `${styles.impersonationMode}` : ''
-  }`;
+  const headerStyles = clsx(
+    styles.mainNavigationHeader,
+    isImpersonationModeOn && styles.impersonationMode
+  );
   return (
     <header className={headerStyles}>
       <NavbarBrandLogos />
