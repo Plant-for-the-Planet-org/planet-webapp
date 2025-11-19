@@ -8,6 +8,7 @@ import IconContainer from './IconContainer';
 import styles from './UserLayout.module.scss';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { clsx } from 'clsx';
 
 export interface SubMenuItemType {
   key: string;
@@ -129,9 +130,11 @@ function NavLink({
   return (
     <div className={styles.navLinkMenu}>
       <div
-        className={`${styles.navLink} ${
-          isCurrentMainMenu ? styles.navLinkActive : ''
-        } ${isSubMenuOpen ? styles.navLinkOpen : ''}`}
+        className={clsx(
+          styles.navLink,
+          isCurrentMainMenu && styles.navLinkActive,
+          isSubMenuOpen && styles.navLinkOpen
+        )}
         onClick={handleMainMenuClick}
       >
         <IconContainer>{link.icon}</IconContainer>

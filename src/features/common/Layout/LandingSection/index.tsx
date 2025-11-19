@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import styles from './LandingSection.module.scss';
+import { clsx } from 'clsx';
 
 interface Props {
   fixedBg?: boolean;
@@ -11,10 +12,10 @@ interface Props {
 export default function LandingSection(props: Props) {
   return (
     <div
-      className={`${styles.landingSection} ${
-        props.fixedBg ? styles.landingSectionFixedBG : styles.landingSection
-      }
-      `}
+      className={clsx(
+        styles.landingSection,
+        props.fixedBg && styles.landingSectionFixedBG
+      )}
       style={{
         background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)), url(${
           props.imageSrc
