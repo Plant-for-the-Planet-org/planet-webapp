@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import Grid from '@mui/material/Grid';
 import MembershipCta from './components/MembershipCta';
+import { clsx } from 'clsx';
 interface Props {
   filter: string | null;
   setFilter: (filter: string) => void;
@@ -71,9 +72,10 @@ export default function History({
               return (
                 <div
                   key={item[0]}
-                  className={`${styles.filterButton} ${
-                    filter === item[0] ? styles.selected : ''
-                  }`}
+                  className={clsx(
+                    styles.filterButton,
+                    filter === item[0] && styles.selected
+                  )}
                   onClick={() => handleSetFilter(item[0])}
                 >
                   {t(item[0])}
@@ -140,9 +142,10 @@ export default function History({
                     return (
                       <div
                         key={item[0]}
-                        className={`${styles.filterButton} ${
-                          filter === item[0] ? styles.selected : ''
-                        }`}
+                        className={clsx(
+                          styles.filterButton,
+                          filter === item[0] && styles.selected
+                        )}
                         onClick={() => handleSetFilter(item[0])}
                       >
                         {t(item[0])}
