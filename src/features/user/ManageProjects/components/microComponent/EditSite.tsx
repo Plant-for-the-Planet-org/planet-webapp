@@ -15,6 +15,7 @@ import { handleError } from '@planet-sdk/common';
 import { Button, Fade, MenuItem, Modal, TextField } from '@mui/material';
 import SiteGeometryEditor from '../SiteGeometryEditor';
 import BackArrow from '../../../../../../public/assets/images/icons/headerIcons/BackArrow';
+import { clsx } from 'clsx';
 
 function EditSite({
   openModal,
@@ -102,7 +103,7 @@ function EditSite({
     >
       <Fade in={openModal}>
         <form className={styles.editSiteForm}>
-          <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
+          <div className={clsx(isUploadingData && styles.shallowOpacity)}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
                 <Controller

@@ -2,6 +2,7 @@ import type { SetState } from '../../../../common/types/common';
 
 import { useTranslations } from 'next-intl';
 import styles from '../../StepForm.module.scss';
+import { clsx } from 'clsx';
 
 interface LayerToggleProps {
   isSatelliteMode: boolean;
@@ -18,9 +19,7 @@ const LayerToggle = ({
       <button
         type="button"
         onClick={() => setIsSatelliteMode(false)}
-        className={`${styles.layerOption} ${
-          isSatelliteMode ? '' : styles.active
-        }`}
+        className={clsx(styles.layerOption, !isSatelliteMode && styles.active)}
         aria-pressed={!isSatelliteMode}
       >
         {tManageProjects('mapView.map')}
@@ -28,9 +27,7 @@ const LayerToggle = ({
       <button
         type="button"
         onClick={() => setIsSatelliteMode(true)}
-        className={`${styles.layerOption} ${
-          isSatelliteMode ? styles.active : ''
-        }`}
+        className={clsx(styles.layerOption, isSatelliteMode && styles.active)}
         aria-pressed={isSatelliteMode}
       >
         {tManageProjects('mapView.satellite')}
