@@ -23,6 +23,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import { clsx } from 'clsx';
 
 interface EditModalProps {
   editModalOpen: boolean;
@@ -132,7 +133,7 @@ export const EditModal = ({
     >
       <Fade in={editModalOpen}>
         <div
-          className={`${styles.manageDonationModal} ${styles.editDonationModal}`}
+          className={clsx(styles.manageDonationModal, styles.editDonationModal)}
         >
           <div className={styles.modalTexts}>
             <div

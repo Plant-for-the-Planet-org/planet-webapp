@@ -15,6 +15,7 @@ import styles from '../styles/ProjectSnippet.module.scss';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 const MAX_NAME_LENGTH = 32;
 
@@ -83,10 +84,10 @@ const ImageSection = (props: ImageSectionProps) => {
   };
 
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
-  const imageContainerClasses = `${styles.projectImage} ${
-    page === 'project-details' ? styles.projectImageSecondary : ''
-  }`;
-
+  const imageContainerClasses = clsx(
+    styles.projectImage,
+    page === 'project-details' && styles.projectImageSecondary
+  );
   const isNameTruncated = projectName.length >= MAX_NAME_LENGTH;
   const truncatedProjectName = truncateString(projectName, MAX_NAME_LENGTH);
   const isTouchDevice =
@@ -144,9 +145,10 @@ const ImageSection = (props: ImageSectionProps) => {
         <img
           alt={'projectImage'}
           src={imageSource}
-          className={`${styles.projectImageFile} ${
-            isImageLoading ? styles.hidden : ''
-          }`}
+          className={clsx(
+            styles.projectImageFile,
+            isImageLoading && styles.hidden
+          )}
           onLoad={handleImageLoad}
           onError={handleImageError}
         />

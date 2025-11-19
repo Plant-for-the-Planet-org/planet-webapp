@@ -8,6 +8,7 @@ import styles from '../AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import { clsx } from 'clsx';
 
 interface DownloadCodesProps {
   codesUrl: string;
@@ -81,7 +82,7 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
         {t('downloadCodes')}
         {isDownloading && (
           <span
-            className={`${styles.spinner} ${styles['spinner--primary']}`}
+            className={clsx(styles.spinner, styles['spinner--primary'])}
           ></span>
         )}
       </button>

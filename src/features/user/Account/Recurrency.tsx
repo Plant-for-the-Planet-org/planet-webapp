@@ -10,6 +10,7 @@ import { PauseModal } from './PauseModal';
 import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
 import { EditModal } from './EditModal';
+import { clsx } from 'clsx';
 
 interface Props {
   isDataLoading: boolean;
@@ -65,7 +66,7 @@ export default function Recurrency({
 
   return (
     <div className={styles.pageContainer}>
-      <div className={`${styles.section} ${styles.recurrencySection}`}>
+      <div className={clsx(styles.section, styles.recurrencySection)}>
         <div className={styles.recurrency}>
           <div className={styles.recurrencyList}>
             {!recurrencies && isDataLoading ? (
