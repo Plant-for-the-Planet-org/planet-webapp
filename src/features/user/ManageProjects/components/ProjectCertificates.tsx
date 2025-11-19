@@ -195,7 +195,7 @@ function ProjectCertificates({
         <div className={styles.formField}>
           {uploadedFiles.map((report) => {
             return (
-              <div key={report.id} className={` ${styles.reportPDFContainer}`}>
+              <div key={report.id} className={styles.reportPDFContainer}>
                 <a
                   target="_blank"
                   rel="noopener noreferrer"

@@ -4,6 +4,7 @@ import DeleteIcon from '../../../../../../public/assets/images/icons/DeleteIcon'
 import PolygonDrawIcon from '../../../../../../public/assets/images/icons/manageProjects/PolygonDrawIcon';
 import styles from '../../StepForm.module.scss';
 import { useTranslations } from 'next-intl';
+import { clsx } from 'clsx';
 
 interface DrawingControlsProp {
   isDrawing: boolean;
@@ -38,7 +39,7 @@ const DrawingControls = ({
             ? tManageProjects('drawing.polygon.stop')
             : tManageProjects('drawing.polygon.start')
         }
-        className={isDrawing ? styles.activePolygonButton : ''}
+        className={clsx(isDrawing && styles.activePolygonButton)}
       >
         <PolygonDrawIcon />
       </button>

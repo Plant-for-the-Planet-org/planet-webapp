@@ -38,6 +38,7 @@ import { useApi } from '../../../../hooks/useApi';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { getAddressFromCoordinates } from '../../../../utils/geocoder';
+import { clsx } from 'clsx';
 
 type BaseFormData = {
   name: string;
@@ -723,7 +724,7 @@ export default function BasicDetails({
             )}
           </InlineFormDisplayGroup>
           <div
-            className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}
+            className={clsx(styles.formFieldLarge, styles.mapboxContainer)}
             style={{ width: '100%' }}
           >
             <p
@@ -760,7 +761,7 @@ export default function BasicDetails({
             </MapGL>
             <div className={styles.basicDetailsCoordinatesContainer}>
               <div
-                className={`${styles.formFieldHalf} ${styles.latLongField}`}
+                className={clsx(styles.formFieldHalf, styles.latLongField)}
                 data-test-id="latitude"
               >
                 <Controller
@@ -795,7 +796,7 @@ export default function BasicDetails({
                 />
               </div>
               <div
-                className={`${styles.formFieldHalf} ${styles.latLongField}`}
+                className={clsx(styles.formFieldHalf, styles.latLongField)}
                 data-test-id="longitude"
               >
                 <Controller
