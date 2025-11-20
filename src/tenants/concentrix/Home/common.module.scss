@@ -4,8 +4,9 @@
   background-color: #25e2cc;
   border: 1px solid #25e2cc;
   border-radius: 25px;
-
-  div {
+  color: #003d5b;
+  div,
+  span {
     color: #003d5b !important;
     font-size: 15px;
   }
@@ -15,4 +16,9 @@
     border: 1px solid #25e2cc;
     opacity: 0.9;
   }
+}
+
+.heading3 {
+  font-size: 30px;
+  font-weight: 700;
 }
