@@ -1,0 +1,18 @@
+.buttonStyles {
+  font-size: 15px;
+  padding: 14px 32px;
+  background-color: #25e2cc;
+  border: 1px solid #25e2cc;
+  border-radius: 25px;
+
+  div {
+    color: #003d5b !important;
+    font-size: 15px;
+  }
+
+  &:hover {
+    background-color: #25e2cc;
+    border: 1px solid #25e2cc;
+    opacity: 0.9;
+  }
+}
