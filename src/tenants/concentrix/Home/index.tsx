@@ -1,15 +1,15 @@
 import Banner from './sections/Banner';
-import Footer from '../../../features/common/Layout/Footer';
-
-import styles from './Home.module.scss';
 import CountryLeaderboard from './sections/CountryLeaderboard';
+import ResponsibilityStatement from './sections/ResponsibilityStatement';
+import Footer from '../../../features/common/Layout/Footer';
+import styles from './Home.module.scss';
 
 const Home = () => {
   return (
     <main className={styles.home}>
       <Banner />
       <CountryLeaderboard />
-      <div>Temp Section 3</div>
+      <ResponsibilityStatement />
       <div>Temp Partnership Section</div>
       <div>Sustainability and Impact</div>
       <Footer />
