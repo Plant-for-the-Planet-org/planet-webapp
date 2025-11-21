@@ -5,10 +5,12 @@ const SecondaryLogo = ({ isMobile }: { isMobile: boolean }) => {
   const { tenantConfig } = useTenant();
 
   const shouldNotRenderLogo = isMobile && tenantConfig.config.slug === 'ttc';
+  const hasWideLogo = tenantConfig.config.slug === 'concentrix';
 
   if (shouldNotRenderLogo) {
     return null;
   }
+
   return (
     <>
       {tenantConfig.config.header?.isSecondaryTenant && (
@@ -16,7 +18,9 @@ const SecondaryLogo = ({ isMobile }: { isMobile: boolean }) => {
           <a href={tenantConfig.config?.header?.tenantLogoLink}>
             <img
               src={tenantConfig.config?.header?.tenantLogoURL}
-              className={styles.tenantLogo}
+              className={`${styles.tenantLogo} ${
+                hasWideLogo ? styles.wideLogo : ''
+              }`}
             />
           </a>
           {!isMobile && <div className={styles.logoDivider} />}

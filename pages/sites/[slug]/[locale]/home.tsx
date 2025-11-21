@@ -18,6 +18,7 @@ import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
 import SalesforceHome from '../../../../src/tenants/salesforce/Home';
 import SternHome from '../../../../src/tenants/stern/Home';
 import BasicHome from '../../../../src/tenants/common/Home';
+import ConcentrixHome from '../../../../src/tenants/concentrix/Home';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { useApi } from '../../../../src/hooks/useApi';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
@@ -97,6 +98,9 @@ export default function Home({ pageProps }: Props) {
       case 'stern':
         HomePage = SternHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+      case 'concentrix':
+        HomePage = ConcentrixHome;
+        return <HomePage />;
       case 'nitrosb':
       case 'energizer':
       case 'senatDerWirtschaft':
@@ -159,7 +163,15 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'leaderboard', 'planet', 'tenants'],
+    filenames: [
+      'common',
+      'me',
+      'country',
+      'leaderboard',
+      'planet',
+      'tenants',
+      'projectDetails',
+    ],
   });
 
   return {

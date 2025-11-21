@@ -1,0 +1,146 @@
+@import '../../../../../theme/theme';
+
+.countryLeaderboard {
+  background: linear-gradient(180deg, #003d5b 0%, #003d5b 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.earthBackground {
+  position: absolute;
+  left: 0;
+  z-index: 10;
+}
+
+.contentContainer {
+  position: relative;
+  margin-top: 60px;
+  z-index: 20;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: center;
+  text-align: center;
+}
+
+.title {
+  text-align: center;
+  color: #fff;
+}
+
+.leaderboardTable {
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  width: 100%;
+  max-width: 700px;
+}
+
+.tableHeader {
+  background: #fff;
+  border-radius: 30px;
+  border: 2px solid #25e2cc;
+  display: grid;
+  grid-template-columns: 80px 1fr 120px;
+  gap: 20px;
+  padding: 20px 30px;
+  font-weight: 700;
+  font-size: 15px;
+  position: relative;
+  z-index: 30;
+}
+
+.rankHeader,
+.countryHeader,
+.amountHeader {
+  color: #003d5b;
+}
+
+.countryHeader {
+  text-align: left;
+}
+
+.amountHeader {
+  text-align: right;
+  margin-right: 15px;
+}
+
+.tableBody {
+  display: flex;
+  flex-direction: column;
+  background: #003d5c80;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  margin-top: -10px;
+  padding-top: 10px;
+  position: relative;
+  z-index: 20;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px;
+  gap: 20px;
+  padding: 10px 0;
+  margin: 0 30px;
+  font-size: 15px;
+  color: #fff;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.rankCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rankNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.countryCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.flag {
+  font-size: 22px;
+  width: 26px;
+  text-align: center;
+}
+
+.countryName {
+  font-weight: 500;
+}
+
+.treeCountCell {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.treeCount {
+  font-weight: 700;
+}
+
+.pagination {
+  margin: 35px 30px 65px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
