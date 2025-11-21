@@ -1,6 +1,7 @@
 import Banner from './sections/Banner';
 import CountryLeaderboard from './sections/CountryLeaderboard';
 import ResponsibilityStatement from './sections/ResponsibilityStatement';
+import Sustainability from './sections/Sustainability';
 import Footer from '../../../features/common/Layout/Footer';
 import styles from './Home.module.scss';
 
@@ -11,7 +12,7 @@ const Home = () => {
       <CountryLeaderboard />
       <ResponsibilityStatement />
       <div>Temp Partnership Section</div>
-      <div>Sustainability and Impact</div>
+      <Sustainability />
       <Footer />
     </main>
   );
