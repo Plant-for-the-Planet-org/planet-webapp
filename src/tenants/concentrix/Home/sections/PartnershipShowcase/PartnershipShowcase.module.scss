@@ -1,0 +1,27 @@
+@import '../../../../../theme/theme';
+
+.partnershipShowcase {
+  padding: 60px 20px;
+  background: linear-gradient(180deg, #003d5b 0%, #007380 100%);
+}
+
+.contentWrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.videoContainer {
+  min-width: 75%;
+  max-width: 600px;
+  background-color: $dsMediumGrey;
+  color: $dsDarkGrey;
+  border-radius: 13px;
+}
+
+.content {
+  font-size: 18px;
+}
