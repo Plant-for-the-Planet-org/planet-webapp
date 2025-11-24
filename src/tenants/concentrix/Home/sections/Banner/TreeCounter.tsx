@@ -1,8 +1,11 @@
 import styles from './Banner.module.scss';
 
-const TreeCounter = () => {
+interface Props {
+  addedTreeCount: number;
+}
+
+const TreeCounter = ({ addedTreeCount }: Props) => {
   const startingTreeCount = 1056078;
-  const addedTreeCount = 0;
   const treeCount = startingTreeCount + addedTreeCount;
 
   // Format number with commas

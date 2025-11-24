@@ -1,89 +1,147 @@
+import type { CountryCode } from '@planet-sdk/common';
+
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { countryToFlag } from '../../../../../utils/countryCurrency/countryToFlag';
+import WebappButton from '../../../../../features/common/WebappButton';
 import styles from './CountryLeaderboard.module.scss';
 import commonStyles from '../../common.module.scss';
-import WebappButton from '../../../../../features/common/WebappButton';
+
+export type CountryTreeDataItem = {
+  country: CountryCode;
+  treeCount: number;
+};
 
 interface CountryData {
   rank: number;
-  country: string;
+  countryName: string;
   flag: string;
-  treeCount: number;
+  treeCountFormatted: string;
 }
 
-const CountryLeaderboard = () => {
-  // TODO - fetch real data from APIs once ready
-  // TODO - paginate results. API may provide all data at once, show 10 at a time with pagination controls
-  const countryData: CountryData[] = [
-    { rank: 1, country: 'India', flag: '🇮🇳', treeCount: 1044968 },
-    { rank: 2, country: 'Indonesia', flag: '🇮🇩', treeCount: 76688 },
-    { rank: 3, country: 'United States', flag: '🇺🇸', treeCount: 70564 },
-    { rank: 4, country: 'Germany', flag: '🇩🇪', treeCount: 68846 },
-    { rank: 5, country: 'Brazil', flag: '🇧🇷', treeCount: 67486 },
-    { rank: 6, country: 'Malaysia', flag: '🇲🇾', treeCount: 65068 },
-    { rank: 7, country: 'Singapore', flag: '🇸🇬', treeCount: 61862 },
-    { rank: 8, country: 'Philippines', flag: '🇵🇭', treeCount: 60540 },
-    { rank: 9, country: 'Australia', flag: '🇦🇺', treeCount: 57854 },
-    { rank: 10, country: 'South Africa', flag: '🇿🇦', treeCount: 56250 },
-  ];
+interface Props {
+  countryWiseTrees: CountryTreeDataItem[];
+  isDataLoaded: boolean;
+}
 
-  const formatTreeCount = (treeCount: number): string => {
-    return treeCount.toLocaleString();
+const ITEMS_PER_PAGE = 10;
+
+const CountryLeaderboard = ({ countryWiseTrees, isDataLoaded }: Props) => {
+  const tCountry = useTranslations('Country');
+  const [currentPage, setCurrentPage] = useState(0);
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [countryWiseTrees]);
+
+  const formattedCountryData: CountryData[] = useMemo(
+    () =>
+      countryWiseTrees.map((item, index) => ({
+        rank: index + 1,
+        countryName: tCountry(
+          item.country.toLowerCase() as Lowercase<CountryCode>
+        ),
+        flag: countryToFlag(item.country),
+        treeCountFormatted: item.treeCount.toLocaleString(),
+      })),
+    [countryWiseTrees, tCountry]
+  );
+
+  const totalItems = formattedCountryData.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const startIndex = currentPage * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentPageData = formattedCountryData.slice(startIndex, endIndex);
+
+  const hasPrevious = currentPage > 0;
+  const hasNext = currentPage < totalPages - 1;
+
+  // Logic to calculate the displayed result range
+  const displayStart = startIndex + 1;
+  const displayEnd = Math.min(endIndex, totalItems);
+  const rangeText =
+    displayStart === displayEnd
+      ? `${displayStart} of ${totalItems}`
+      : `${displayStart}-${displayEnd} of ${totalItems}`;
+
+  const showPreviousPage = () => {
+    if (hasPrevious) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const showNextPage = () => {
+    if (hasNext) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   return (
     <section className={styles.countryLeaderboard}>
-      <div className={styles.earthBackground}>
-        <img src="/tenants/concentrix/images/half-earth-background.png" />
-      </div>
-
       <div className={styles.contentContainer}>
         <h2 className={`${commonStyles.heading3} ${styles.title}`}>
           2026 contributions by countries
         </h2>
-
-        <div className={styles.leaderboardTable}>
-          <div className={styles.tableHeader}>
-            <span className={styles.rankHeader}>Rank</span>
-            <span className={styles.countryHeader}>Countries</span>
-            <span className={styles.amountHeader}>Trees</span>
+        {!isDataLoaded ? (
+          <div key="loading" className={styles.loading}>
+            Loading...
           </div>
+        ) : (
+          <div className={styles.leaderboardTable}>
+            <div className={styles.tableHeader}>
+              <span className={styles.rankHeader}>Rank</span>
+              <span className={styles.countryHeader}>Countries</span>
+              <span className={styles.amountHeader}>Trees</span>
+            </div>
 
-          <div className={styles.tableBody}>
-            {countryData.map((country) => (
-              <div key={country.rank} className={styles.tableRow}>
-                <div className={styles.rankCell}>
-                  <span className={styles.rankNumber}>{country.rank}</span>
-                </div>
-                <div className={styles.countryCell}>
-                  <span className={styles.flag}>{country.flag}</span>
-                  <span className={styles.countryName}>{country.country}</span>
-                </div>
-                <div className={styles.treeCountCell}>
-                  <span className={styles.treeCount}>
-                    {formatTreeCount(country.treeCount)}
-                  </span>
+            {formattedCountryData.length === 0 ? (
+              <div key="empty" className={styles.emptyData}>
+                No data available
+              </div>
+            ) : (
+              <div key="stats" className={styles.tableBody}>
+                {currentPageData.map((item) => (
+                  <div key={item.rank} className={styles.tableRow}>
+                    <div className={styles.rankCell}>
+                      <span className={styles.rankNumber}>{item.rank}</span>
+                    </div>
+                    <div className={styles.countryCell}>
+                      <span className={styles.flag}>{item.flag}</span>
+                      <span className={styles.countryName}>
+                        {item.countryName}
+                      </span>
+                    </div>
+                    <div className={styles.treeCountCell}>
+                      <span className={styles.treeCount}>
+                        {item.treeCountFormatted}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+
+                <div className={styles.pagination}>
+                  <WebappButton
+                    elementType="button"
+                    variant="primary"
+                    text="< Previous 10"
+                    buttonClasses={`${commonStyles.buttonStyles}`}
+                    onClick={showPreviousPage}
+                    disabled={!hasPrevious}
+                  />
+                  <span className={styles.pageIndicator}>{rangeText}</span>
+                  <WebappButton
+                    elementType="button"
+                    variant="primary"
+                    text="Next 10 >"
+                    buttonClasses={`${commonStyles.buttonStyles}`}
+                    onClick={showNextPage}
+                    disabled={!hasNext}
+                  />
                 </div>
               </div>
-            ))}
-
-            {/* Pagination controls to be implemented */}
-            <div className={styles.pagination}>
-              <WebappButton
-                elementType="button"
-                variant="primary"
-                text="Previous 10"
-                buttonClasses={`${commonStyles.buttonStyles}`}
-                onClick={() => window.alert('Pagination to be implemented')}
-              />
-              <WebappButton
-                elementType="button"
-                variant="primary"
-                text="Next 10"
-                buttonClasses={`${commonStyles.buttonStyles}`}
-                onClick={() => window.alert('Pagination to be implemented')}
-              />
-            </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

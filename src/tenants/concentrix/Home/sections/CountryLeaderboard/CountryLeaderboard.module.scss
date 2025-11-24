@@ -1,24 +1,21 @@
 @import '../../../../../theme/theme';
 
 .countryLeaderboard {
-  background: linear-gradient(180deg, #003d5b 0%, #003d5b 100%);
+  background-image: url('/tenants/concentrix/images/half-earth-background.png'),
+    linear-gradient(180deg, #003d5b 0%, #003d5b 100%);
+  background-position: left center;
+  background-repeat: no-repeat;
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 0 20px;
-}
-
-.earthBackground {
-  position: absolute;
-  left: 0;
-  z-index: 10;
+  overflow: hidden;
 }
 
 .contentContainer {
   position: relative;
   margin-top: 60px;
-  z-index: 20;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -33,7 +30,6 @@
 }
 
 .leaderboardTable {
-  backdrop-filter: blur(10px);
   overflow: hidden;
   width: 100%;
   max-width: 700px;
@@ -69,6 +65,7 @@
 }
 
 .tableBody {
+  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   background: #003d5c80;
@@ -138,9 +135,24 @@
   font-weight: 700;
 }
 
+.loading {
+  color: #fff;
+  font-size: 15px;
+  margin-bottom: 60px;
+}
+
+.emptyData {
+  padding: 60px 0;
+}
+
 .pagination {
   margin: 35px 30px 65px;
   display: flex;
+  align-items: center;
   justify-content: center;
   gap: 20px;
+}
+
+.pageIndicator {
+  font-size: 15px;
 }

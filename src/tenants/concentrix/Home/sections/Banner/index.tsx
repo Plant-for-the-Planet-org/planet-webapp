@@ -3,7 +3,12 @@ import WebappButton from '../../../../../features/common/WebappButton';
 import styles from './Banner.module.scss';
 import commonStyles from '../../common.module.scss';
 
-const Banner = () => {
+interface Props {
+  totalTrees: number;
+  isDataLoaded: boolean;
+}
+
+const Banner = ({ totalTrees, isDataLoaded }: Props) => {
   return (
     <section className={styles.banner}>
       <div className={styles.bannerVideoContainer}>
@@ -17,14 +22,18 @@ const Banner = () => {
         ></iframe>
       </div>
       <div className={styles.bannerContent}>
-        <TreeCounter />
-        <WebappButton
-          elementType="link"
-          href="/"
-          variant="primary"
-          text="Help us get there"
-          buttonClasses={`${commonStyles.buttonStyles}`}
-        />
+        {isDataLoaded && (
+          <>
+            <TreeCounter addedTreeCount={totalTrees} />
+            <WebappButton
+              elementType="link"
+              href="/"
+              variant="primary"
+              text="Help us get there"
+              buttonClasses={`${commonStyles.buttonStyles}`}
+            />
+          </>
+        )}
       </div>
     </section>
   );
