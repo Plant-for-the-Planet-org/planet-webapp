@@ -15,7 +15,7 @@
 }
 
 .videoContainer {
-  min-width: 75%;
+  width: 100%;
   max-width: 600px;
   background-color: $dsMediumGrey;
   color: $dsDarkGrey;
@@ -24,4 +24,132 @@
 
 .content {
   font-size: 18px;
+}
+
+.donationBreakdown {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+
+  @include smTabletView {
+    flex-direction: row;
+  }
+}
+
+.mainProjectInfo,
+.supportProjectInfo {
+  border-radius: 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 30px;
+
+  .percentage {
+    font-size: 70px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .explanation {
+    font-size: 15px;
+  }
+
+  @include smTabletView {
+    height: 300px;
+    padding: 70px 20px 20px;
+  }
+
+  @include lgLaptopView {
+    height: 400px;
+    padding: 100px 40px 20px;
+  }
+}
+
+.mainProjectInfo {
+  background: linear-gradient(rgba(0, 0, 0, 0) 4.8%, rgba(0, 0, 0, 0.8) 90.94%),
+    url('/tenants/concentrix/images/Klimaneutralität.jpg'), #003d5c;
+}
+
+.supportProjectInfo {
+  background: linear-gradient(rgba(0, 0, 0, 0) 4.8%, rgba(0, 0, 0, 0.8) 90.94%),
+    url('/tenants/concentrix/images/kiko_possenhofen_2018.jpg'), #003d5c;
+}
+
+.imageBentoGrid {
+  width: 100%;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+
+  @include smTabletView {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 250px);
+  }
+
+  @include lgLaptopView {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 360px;
+    align-items: center;
+  }
+}
+
+.bentoImage {
+  width: 100%;
+  height: 250px;
+  border-radius: 13px;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @include smTabletView {
+    height: 100%;
+  }
+
+  @include lgLaptopView {
+    height: 300px;
+  }
+}
+
+.bentoImageCenter {
+  @include lgLaptopView {
+    height: 360px;
+  }
+}
+
+.bentoImageLeft {
+  @include smTabletView {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  @include lgLaptopView {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+}
+
+.bentoImageCenter {
+  @include smTabletView {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+  }
+}
+
+.bentoImageRight {
+  @include smTabletView {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  @include lgLaptopView {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+  }
 }

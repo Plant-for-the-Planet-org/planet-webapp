@@ -20,7 +20,7 @@ const PartnershipShowcase = () => {
         </p>
         <div className={styles.videoContainer}>
           <VideoPlayer
-            videoUrl="https://www.youtube.com/embed/YG1558vDIns?si=olhZJJbE0DfcUzOc"
+            videoUrl="https://www.youtube.com/embed/qpf73RBlLFg"
             hasConsent={hasVideoConsent}
             onConsentChange={setHasVideoConsent}
           />
@@ -36,7 +36,26 @@ const PartnershipShowcase = () => {
           the planting of trees but also help to drive the social mechanisms
           that effective and ever evolving best practice rely upon.
         </p>
-        {/* Image section */}
+        <div className={styles.imageBentoGrid}>
+          <div className={`${styles.bentoImage} ${styles.bentoImageLeft}`}>
+            <img
+              src="/tenants/concentrix/images/20200128_ac_flaviai_156.jpg"
+              alt="Children planting trees"
+            />
+          </div>
+          <div className={`${styles.bentoImage} ${styles.bentoImageCenter}`}>
+            <img
+              src="/tenants/concentrix/images/20170513_de_Gersthofen_pflanzaktion_01.jpg"
+              alt="Girls planting a tree"
+            />
+          </div>
+          <div className={`${styles.bentoImage} ${styles.bentoImageRight}`}>
+            <img
+              src="/tenants/concentrix/images/54882972563_b6d580f721_o.jpg"
+              alt="Children learning about trees"
+            />
+          </div>
+        </div>
         <WebappButton
           elementType="link"
           href="/en"
@@ -45,7 +64,21 @@ const PartnershipShowcase = () => {
           buttonClasses={`${commonStyles.buttonStyles}`}
         />
         <h3 className={commonStyles.heading3}>Where does your donation go?</h3>
-        {/* 75% - 25% image section */}
+        <div className={styles.donationBreakdown}>
+          <div className={styles.mainProjectInfo}>
+            <div className={styles.percentage}>75%</div>
+            <div className={styles.explanation}>
+              go directly to to planting project you choose on the world map for
+              the planting of your trees.
+            </div>
+          </div>
+          <div className={styles.supportProjectInfo}>
+            <div className={styles.percentage}>25%</div>
+            <div className={styles.explanation}>
+              go into research, IT development and education.
+            </div>
+          </div>
+        </div>
         <WebappButton
           elementType="link"
           href="https://www.plant-for-the-planet.org"
