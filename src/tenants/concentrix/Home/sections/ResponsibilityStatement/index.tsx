@@ -5,7 +5,7 @@ const ResponsibilityStatement = () => {
   return (
     <section className={styles.responsibilityStatement}>
       <h2 className={`${commonStyles.heading2} ${styles.heading}`}>
-        Responsibility Statement
+        Taking responsibility
       </h2>
       <p className={styles.content}>
         We recognise our scale and reach as a company and how we have the
