@@ -1,19 +1,14 @@
 @import '../../../../../theme/theme';
 
 .banner {
-  height: 50vh;
-  padding-top: 80px;
+  height: 100vh;
+  padding-top: 30vh; // Consistent padding for all screen sizes
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   position: relative;
   overflow: hidden;
-
-  @include smTabletView {
-    height: 65vh;
-    padding-top: 100px;
-  }
 }
 
 .bannerVideoContainer {
@@ -33,28 +28,15 @@
     transform: translate(-50%, -50%);
     border: none;
 
-    // Mobile phones (portrait) - video is 16:9 (3840x2160)
-    // Base on height, calculate width to maintain aspect ratio
-    @include xsPhoneView {
-      width: 177.78vh; // 16:9 aspect ratio (100vh * 16/9)
-      height: 100vh;
-      min-width: 100%;
-    }
-
-    // Tablets - balanced approach
-    @include smTabletView {
-      width: 250%;
-      height: 250%;
-    }
-
-    // Laptops and desktops (landscape)
-    // Base on width, calculate height to maintain aspect ratio
-    @include lgLaptopView {
-      width: 100vw;
-      height: 56.25vw; // 16:9 aspect ratio (100vw * 9/16)
-      min-height: 100%;
-      min-width: 100%;
-    }
+    // Universal sizing that works for all screen sizes
+    width: max(
+      100vw,
+      177.78vh
+    ); // Takes larger of viewport width or calculated 16:9 width
+    height: max(
+      100vh,
+      56.25vw
+    ); // Takes larger of viewport height or calculated 16:9 height
   }
 }
 
@@ -74,11 +56,10 @@
     font-size: 48px;
     font-weight: 700;
     line-height: 1;
-    margin-bottom: 4px;
+    margin-bottom: 12px;
 
     @include smTabletView {
       font-size: 80px;
-      margin-bottom: 12px;
     }
 
     @include lgLaptopView {
@@ -92,7 +73,7 @@
   }
 
   .counterText {
-    font-size: 15px;
+    font-size: 18px;
     padding: 0 20px;
     font-weight: 500;
     line-height: 1;
