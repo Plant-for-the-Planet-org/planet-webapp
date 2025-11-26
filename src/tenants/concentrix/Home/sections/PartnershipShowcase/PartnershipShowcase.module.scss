@@ -114,12 +114,6 @@
   }
 }
 
-.bentoImageCenter {
-  @include lgLaptopView {
-    height: 360px;
-  }
-}
-
 .bentoImageLeft {
   @include smTabletView {
     grid-column: 1 / 2;
@@ -133,6 +127,10 @@
 }
 
 .bentoImageCenter {
+  @include lgLaptopView {
+    height: 360px;
+  }
+
   @include smTabletView {
     grid-column: 2 / 3;
     grid-row: 1 / 3;
