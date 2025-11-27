@@ -28,7 +28,7 @@ const TreeCounter = ({ totalTrees }: Props) => {
     <div className={styles.treeCounter}>
       <div className={styles.counterNumber}>{formatNumber(totalTrees)}</div>
       <div className={styles.counterText}>
-        of 2 Million trees until 2030 planted
+        trees planted of our 2 Million by 2030 Goal
       </div>
     </div>
   );
