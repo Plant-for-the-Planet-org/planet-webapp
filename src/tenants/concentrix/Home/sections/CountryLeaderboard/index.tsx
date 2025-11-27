@@ -124,7 +124,7 @@ const CountryLeaderboard = ({ countryWiseTrees, isDataLoaded }: Props) => {
                     elementType="button"
                     variant="primary"
                     text="< Previous 10"
-                    buttonClasses={`${commonStyles.buttonStyles}`}
+                    buttonClasses={`${commonStyles.buttonStyles} ${styles.buttonStyles}`}
                     onClick={showPreviousPage}
                     disabled={!hasPrevious}
                   />
@@ -133,7 +133,7 @@ const CountryLeaderboard = ({ countryWiseTrees, isDataLoaded }: Props) => {
                     elementType="button"
                     variant="primary"
                     text="Next 10 >"
-                    buttonClasses={`${commonStyles.buttonStyles}`}
+                    buttonClasses={`${commonStyles.buttonStyles} ${styles.buttonStyles}`}
                     onClick={showNextPage}
                     disabled={!hasNext}
                   />
