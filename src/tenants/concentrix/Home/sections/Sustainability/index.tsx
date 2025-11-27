@@ -39,7 +39,10 @@ const Sustainability = () => {
             />
           </div>
           <div className={styles.sdgCardItem}>
-            <img src="/assets/images/sdgCards/Goal-17.png" />
+            <img
+              src="/assets/images/sdgCards/Goal-17.png"
+              alt="SDG 17 - Partnerships for the Goals"
+            />
           </div>
         </div>
         <div className={styles.aboutSustainableActions}>

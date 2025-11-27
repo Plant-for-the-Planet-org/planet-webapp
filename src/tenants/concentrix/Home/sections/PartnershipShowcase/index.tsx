@@ -73,7 +73,7 @@ const PartnershipShowcase = () => {
           <div className={styles.mainProjectInfo}>
             <div className={styles.percentage}>75%</div>
             <div className={styles.explanation}>
-              go directly to to planting project you choose on the world map for
+              go directly to a planting project you choose on the world map for
               the planting of your trees.
             </div>
           </div>

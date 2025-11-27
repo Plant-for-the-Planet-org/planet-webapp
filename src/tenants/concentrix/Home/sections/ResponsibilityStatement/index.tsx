@@ -12,7 +12,7 @@ const ResponsibilityStatement = () => {
         opportunity to play a big role in global restoration efforts and
         protecting biodiversity in our regions. Our biodiversity framework
         reflects our evolution and aligns with the Global Biodiversity Framework
-        and Kumning-Montreal targets recognising the need for sustainable
+        and Kunming-Montreal targets recognising the need for sustainable
         solutions to landscape restoration.
       </p>
       <p className={styles.content}>

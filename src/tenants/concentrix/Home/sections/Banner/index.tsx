@@ -19,6 +19,8 @@ const Banner = ({ totalTrees, isDataLoaded }: Props) => {
             'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;'
           }
           allowFullScreen={true}
+          title="Background video for background"
+          aria-hidden="true"
         ></iframe>
       </div>
       <div className={styles.bannerContent}>
