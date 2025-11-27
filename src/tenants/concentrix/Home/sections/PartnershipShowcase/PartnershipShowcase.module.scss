@@ -64,13 +64,17 @@
 }
 
 .mainProjectInfo {
-  background: linear-gradient(rgba(0, 0, 0, 0) 4.8%, rgba(0, 0, 0, 0.8) 90.94%),
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url('/tenants/concentrix/images/Klimaneutralität.jpg'), #003d5c;
+  background-size: cover;
+  background-position: center;
 }
 
 .supportProjectInfo {
-  background: linear-gradient(rgba(0, 0, 0, 0) 4.8%, rgba(0, 0, 0, 0.8) 90.94%),
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url('/tenants/concentrix/images/kiko_possenhofen_2018.jpg'), #003d5c;
+  background-size: cover;
+  background-position: center;
 }
 
 .imageBentoGrid {

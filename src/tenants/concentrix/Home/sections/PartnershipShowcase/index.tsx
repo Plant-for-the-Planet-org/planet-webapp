@@ -11,7 +11,9 @@ const PartnershipShowcase = () => {
     <section className={styles.partnershipShowcase}>
       <div className={styles.contentWrapper}>
         <h2 className={commonStyles.heading2}>
-          Partnership with Plant-for-the-Planet
+          Partnership with
+          <br />
+          Plant-for-the-Planet
         </h2>
         <p className={styles.content}>
           The Plant-for-the-Planet partnership allows us to support impactful

@@ -80,7 +80,7 @@ const CountryLeaderboard = ({ countryWiseTrees, isDataLoaded }: Props) => {
     <section className={styles.countryLeaderboard}>
       <div className={styles.contentContainer}>
         <h2 className={`${commonStyles.heading3} ${styles.title}`}>
-          2026 contributions by countries
+          Contribution by Country
         </h2>
         {!isDataLoaded ? (
           <div key="loading" className={styles.loading}>
