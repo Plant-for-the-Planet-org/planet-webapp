@@ -17,7 +17,7 @@ const Sustainability = () => {
           target="_blank"
           variant="primary"
           text="Concentrix ESG report"
-          buttonClasses={`${commonStyles.buttonStyles}`}
+          buttonClasses={commonStyles.buttonStyles}
         />
         <div className={styles.sdgCardList}>
           <div className={styles.sdgCardItem}>
@@ -57,22 +57,3 @@ const Sustainability = () => {
   );
 };
 export default Sustainability;
-
-/* const sdgCardImageLinks = [
-  {
-    key: t('infoAndCtaContainer.sdgCardAlternativeText.qualityEducation'),
-    link: '/assets/images/sdgCards/Goal-04.png',
-  },
-  {
-    key: t('infoAndCtaContainer.sdgCardAlternativeText.climateAction'),
-    link: '/assets/images/sdgCards/Goal-13.png',
-  },
-  {
-    key: t('infoAndCtaContainer.sdgCardAlternativeText.lifeOnLand'),
-    link: '/assets/images/sdgCards/Goal-15.png',
-  },
-  {
-    key: t('infoAndCtaContainer.sdgCardAlternativeText.partnership'),
-    link: '/assets/images/sdgCards/Goal-17.png',
-  },
-]; */
