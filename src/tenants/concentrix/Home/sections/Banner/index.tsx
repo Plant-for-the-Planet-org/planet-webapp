@@ -24,7 +24,7 @@ const Banner = ({ totalTrees, isDataLoaded }: Props) => {
       <div className={styles.bannerContent}>
         {isDataLoaded && (
           <>
-            <TreeCounter addedTreeCount={totalTrees} />
+            <TreeCounter totalTrees={totalTrees} />
             <WebappButton
               elementType="link"
               href="/"

@@ -1,13 +1,10 @@
 import styles from './Banner.module.scss';
 
 interface Props {
-  addedTreeCount: number;
+  totalTrees: number;
 }
 
-const TreeCounter = ({ addedTreeCount }: Props) => {
-  const startingTreeCount = 1056078;
-  const treeCount = startingTreeCount + addedTreeCount;
-
+const TreeCounter = ({ totalTrees }: Props) => {
   // Format number with commas
   const formatNumber = (num: number) => {
     const numStr = num.toLocaleString('en-US');
@@ -29,7 +26,7 @@ const TreeCounter = ({ addedTreeCount }: Props) => {
 
   return (
     <div className={styles.treeCounter}>
-      <div className={styles.counterNumber}>{formatNumber(treeCount)}</div>
+      <div className={styles.counterNumber}>{formatNumber(totalTrees)}</div>
       <div className={styles.counterText}>
         of 2 Million trees until 2030 planted
       </div>
