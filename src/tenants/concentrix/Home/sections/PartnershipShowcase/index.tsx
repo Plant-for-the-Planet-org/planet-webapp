@@ -27,7 +27,7 @@ const PartnershipShowcase = () => {
             videoUrl="https://www.youtube.com/embed/qpf73RBlLFg"
             hasConsent={hasVideoConsent}
             onConsentChange={setHasVideoConsent}
-            backgroundImage="/tenants/concentrix/images/video-player-background.png"
+            backgroundImage="/tenants/concentrix/images/video-player-background.jpg"
           />
         </div>
 
