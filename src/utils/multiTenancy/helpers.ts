@@ -2,7 +2,6 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import redisClient from '../../redis-client';
 import { cacheKeyPrefix } from '../constants/cacheKeyPrefix';
-import { v4 as uuidv4 } from 'uuid';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const FIVE_HOURS = ONE_HOUR_IN_SEC * 5;
@@ -14,8 +13,7 @@ const TENANT_LIST_CACHE_KEY = `${cacheKeyPrefix}_TENANT_CONFIG_LIST`;
 /**
  * This is the default slug that will be used if no tenant is found.
  */
-// TODO: revert this back to 'planet' before release
-export const DEFAULT_TENANT = 'concentrix';
+export const DEFAULT_TENANT = 'planet';
 
 // In-memory cache with timestamp for the full tenant list
 let tenantListCache: {
@@ -62,11 +60,8 @@ export const getTenantConfigList = async (): Promise<Tenant[]> => {
 
     // Fetch from API if not in any cache
     console.log('Fetching tenant list from API');
-    // TODO: remove `extra` param before release
     const response = await fetch(
-      `${
-        process.env.API_ENDPOINT
-      }/app/tenants?_scope=deployment&extra=${uuidv4()}`
+      `${process.env.API_ENDPOINT}/app/tenants?_scope=deployment`
     );
     // error handling for non-2xx status
     if (!response.ok) {
