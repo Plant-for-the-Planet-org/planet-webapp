@@ -50,42 +50,42 @@
 
 .treeCounter {
   text-align: center;
-  color: #003d5b;
+  color: $cnxBrandBlueDark;
 
   .counterNumber {
-    font-size: 48px;
+    font-size: $cnxFontDisplay1;
     font-weight: 700;
     line-height: 1;
     margin-bottom: 12px;
 
     @include smTabletView {
-      font-size: 80px;
+      font-size: $cnxFontDisplay3;
     }
 
     @include lgLaptopView {
-      font-size: 100px;
+      font-size: $cnxFontDisplay4;
       letter-spacing: -1px;
     }
 
     .comma {
-      color: #25e2cc;
+      color: $cnxBrandTeal;
     }
   }
 
   .counterText {
-    font-size: 18px;
+    font-size: $cnxFontMedium;
     padding: 0 20px;
     font-weight: 500;
     line-height: 1;
     margin: 0;
-    color: #003d5b;
+    color: $cnxBrandBlueDark;
 
     @include smTabletView {
-      font-size: 20px;
+      font-size: $cnxFontLarge;
     }
 
     @include lgLaptopView {
-      font-size: 25px;
+      font-size: $cnxFontXL;
     }
   }
 }

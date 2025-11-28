@@ -2,10 +2,10 @@
 
 .countryLeaderboard {
   background-image: url('/tenants/concentrix/images/half-earth-background.png'),
-    linear-gradient(180deg, #003d5b 0%, #003d5b 100%);
+    linear-gradient(180deg, $cnxBrandBlueDark 0%, $cnxBrandBlueDark 100%);
   background-position: left center;
   background-repeat: no-repeat;
-  color: #fff;
+  color: $cnxWhite;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,7 +26,7 @@
 
 .title {
   text-align: center;
-  color: #fff;
+  color: $cnxWhite;
 }
 
 .leaderboardTable {
@@ -36,15 +36,15 @@
 }
 
 .tableHeader {
-  background: #fff;
+  background: $cnxWhite;
   border-radius: 30px;
-  border: 2px solid #25e2cc;
+  border: 2px solid $cnxBrandTeal;
   display: grid;
   grid-template-columns: 40px 1fr 50px;
   gap: 16px;
   padding: 20px;
   font-weight: 700;
-  font-size: 15px;
+  font-size: $cnxFontBase;
   position: relative;
   z-index: 30;
 
@@ -58,7 +58,7 @@
 .rankHeader,
 .countryHeader,
 .amountHeader {
-  color: #003d5b;
+  color: $cnxBrandBlueDark;
 }
 
 .countryHeader {
@@ -78,7 +78,7 @@
   backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
-  background: #003d5c80;
+  background: $cnxBrandBlueDarkTransparent50;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   margin-top: -10px;
@@ -93,8 +93,8 @@
   gap: 16px;
   padding: 10px 0;
   margin: 0 20px;
-  font-size: 15px;
-  color: #fff;
+  font-size: $cnxFontBase;
+  color: $cnxWhite;
   align-items: center;
   transition: background-color 0.2s ease;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
@@ -137,7 +137,7 @@
 
 .flag {
   font-family: 'Twemoji Country Flags';
-  font-size: 20px;
+  font-size: $cnxFontLarge;
   flex-shrink: 0; // Prevent flag from shrinking
 
   @include smTabletView {
@@ -169,8 +169,8 @@
 }
 
 .loading {
-  color: #fff;
-  font-size: 15px;
+  color: $cnxWhite;
+  font-size: $cnxFontBase;
   margin-bottom: 60px;
 }
 
@@ -195,17 +195,17 @@
     .buttonStyles {
       padding: 10px;
       span {
-        font-size: 12px;
+        font-size: $cnxFontXS;
       }
     }
   }
 }
 
 .pageIndicator {
-  font-size: 14px;
+  font-size: $cnxFontSmall;
   white-space: nowrap;
 
   @include smTabletView {
-    font-size: 15px;
+    font-size: $cnxFontBase;
   }
 }

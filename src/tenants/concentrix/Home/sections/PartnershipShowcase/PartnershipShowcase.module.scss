@@ -2,7 +2,11 @@
 
 .partnershipShowcase {
   padding: 60px 20px;
-  background: linear-gradient(180deg, #003d5b 0%, #007380 100%);
+  background: linear-gradient(
+    180deg,
+    $cnxBrandBlueDark 0%,
+    $cnxBrandBlueGreen 100%
+  );
 }
 
 .contentWrapper {
@@ -20,7 +24,7 @@
 }
 
 .content {
-  font-size: 18px;
+  font-size: $cnxFontMedium;
 }
 
 .donationBreakdown {
@@ -43,13 +47,13 @@
   padding: 30px;
 
   .percentage {
-    font-size: 70px;
+    font-size: $cnxFontDisplay2;
     font-weight: 700;
     line-height: 1;
   }
 
   .explanation {
-    font-size: 15px;
+    font-size: $cnxFontBase;
   }
 
   @include smTabletView {
@@ -65,14 +69,15 @@
 
 .mainProjectInfo {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url('/tenants/concentrix/images/Klimaneutralität.jpg'), #003d5c;
+    url('/tenants/concentrix/images/Klimaneutralität.jpg'), $cnxBrandBlueDark;
   background-size: cover;
   background-position: center;
 }
 
 .supportProjectInfo {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url('/tenants/concentrix/images/kiko_possenhofen_2018.jpg'), #003d5c;
+    url('/tenants/concentrix/images/kiko_possenhofen_2018.jpg'),
+    $cnxBrandBlueDark;
   background-size: cover;
   background-position: center;
 }

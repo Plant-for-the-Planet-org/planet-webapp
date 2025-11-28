@@ -1,5 +1,7 @@
+@import '../../../../../theme/theme';
+
 .sustainability {
-  background-color: #003d5b;
+  background-color: $cnxBrandBlueDark;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +17,7 @@
 }
 
 .quote {
-  font-size: 30px;
+  font-size: $cnxFontHeading3;
   font-weight: 700;
 }
 
@@ -36,11 +38,11 @@
 
   img {
     width: 100%;
-    border: 1px solid #ffffff;
+    border: 1px solid $cnxWhite;
     border-radius: 10px;
   }
 }
 
 .aboutSustainableActions {
-  font-size: 15px;
+  font-size: $cnxFontBase;
 }
