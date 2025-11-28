@@ -30,6 +30,9 @@ const Home = () => {
   useEffect(() => {
     async function loadStats() {
       try {
+        if (process.env.WEBHOOK_URL === undefined) {
+          throw new Error('WEBHOOK_URL is not defined');
+        }
         // Initialize with base values
         const countryTreeMap: Map<CountryCode, number> = new Map();
 

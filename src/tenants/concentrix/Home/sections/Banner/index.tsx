@@ -32,7 +32,7 @@ const Banner = ({ totalTrees, isDataLoaded }: Props) => {
               href="/"
               variant="primary"
               text="Help us get there"
-              buttonClasses={`${commonStyles.buttonStyles}`}
+              buttonClasses={commonStyles.buttonStyles}
             />
           </>
         )}

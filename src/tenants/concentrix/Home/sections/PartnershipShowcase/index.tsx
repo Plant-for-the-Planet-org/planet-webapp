@@ -66,7 +66,7 @@ const PartnershipShowcase = () => {
           href="/en"
           variant="primary"
           text="Donate"
-          buttonClasses={`${commonStyles.buttonStyles}`}
+          buttonClasses={commonStyles.buttonStyles}
         />
         <h3 className={commonStyles.heading3}>Where does your donation go?</h3>
         <div className={styles.donationBreakdown}>
@@ -90,7 +90,7 @@ const PartnershipShowcase = () => {
           target="_blank"
           variant="primary"
           text="Learn more"
-          buttonClasses={`${commonStyles.buttonStyles}`}
+          buttonClasses={commonStyles.buttonStyles}
         />
       </div>
     </section>
