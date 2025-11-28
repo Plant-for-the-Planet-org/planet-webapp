@@ -1,0 +1,48 @@
+@import '../../../../../theme/theme';
+
+.sustainability {
+  background-color: $cnxBrandBlueDark;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentContainer {
+  padding: 60px 20px;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.quote {
+  font-size: $cnxFontHeading3;
+  font-weight: 700;
+}
+
+.sdgCardList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.sdgCardItem {
+  width: 130px;
+  height: 130px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 100%;
+    border: 1px solid $cnxWhite;
+    border-radius: 10px;
+  }
+}
+
+.aboutSustainableActions {
+  font-size: $cnxFontBase;
+}

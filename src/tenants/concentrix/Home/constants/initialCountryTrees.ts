@@ -1,0 +1,63 @@
+import type { CountryCode } from '@planet-sdk/common';
+
+export type InitialCountryData = {
+  name: string;
+  trees: number;
+};
+
+export const INITIAL_COUNTRY_TREES: Partial<
+  Record<CountryCode, InitialCountryData>
+> = {
+  PH: { name: 'Philippines', trees: 521410 },
+  IN: { name: 'India', trees: 319282 },
+  US: { name: 'United States', trees: 105085 },
+  CA: { name: 'Canada', trees: 44797 },
+  TR: { name: 'Turkey', trees: 24794 },
+  CN: { name: 'China', trees: 17228 },
+  MY: { name: 'Malaysia', trees: 17096 },
+  CO: { name: 'Colombia', trees: 14781 },
+  EG: { name: 'Egypt', trees: 13124 },
+  TH: { name: 'Thailand', trees: 11135 },
+  JP: { name: 'Japan', trees: 7793 },
+  GB: { name: 'United Kingdom', trees: 7640 },
+  ID: { name: 'Indonesia', trees: 6353 },
+  VN: { name: 'Vietnam', trees: 6160 },
+  ES: { name: 'Spain', trees: 5879 },
+  BR: { name: 'Brazil', trees: 5641 },
+  NI: { name: 'Nicaragua', trees: 4665 },
+  DE: { name: 'Germany', trees: 4520 },
+  MX: { name: 'Mexico', trees: 3415 },
+  CR: { name: 'Costa Rica', trees: 3338 },
+  AU: { name: 'Australia', trees: 2701 },
+  SV: { name: 'El Salvador', trees: 2591 },
+  NZ: { name: 'New Zealand', trees: 2117 },
+  JM: { name: 'Jamaica', trees: 1751 },
+  KR: { name: 'South Korea', trees: 1670 },
+  PT: { name: 'Portugal', trees: 1619 },
+  FR: { name: 'France', trees: 1564 },
+  HN: { name: 'Honduras', trees: 1542 },
+  IT: { name: 'Italy', trees: 1325 },
+  IE: { name: 'Ireland', trees: 1246 },
+  DO: { name: 'Dominican Republic', trees: 1120 },
+  BG: { name: 'Bulgaria', trees: 821 },
+  NL: { name: 'Netherlands', trees: 627 },
+  MU: { name: 'Mauritius', trees: 469 },
+  PL: { name: 'Poland', trees: 417 },
+  NO: { name: 'Norway', trees: 351 },
+  TN: { name: 'Tunisia', trees: 340 },
+  GE: { name: 'Georgia', trees: 336 },
+  SE: { name: 'Sweden', trees: 293 },
+  JO: { name: 'Jordan', trees: 251 },
+  BJ: { name: 'Benin', trees: 147 },
+  GR: { name: 'Greece', trees: 120 },
+  MA: { name: 'Morocco', trees: 63 },
+  AE: { name: 'United Arab Emirates', trees: 62 },
+  HU: { name: 'Hungary', trees: 42 },
+  CI: { name: 'Ivory Coast', trees: 40 },
+  RO: { name: 'Romania', trees: 32 },
+  SG: { name: 'Singapore', trees: 30 },
+  RS: { name: 'Serbia', trees: 15 },
+  AR: { name: 'Argentina', trees: 7 },
+  SK: { name: 'Slovakia', trees: 2 },
+  ZA: { name: 'South Africa', trees: 2 },
+};
