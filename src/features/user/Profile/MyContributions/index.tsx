@@ -4,7 +4,7 @@ import type { RegistrationItemCardProps } from './RegistrationItemCard';
 import type { ProfileV2Props } from '../../../common/types/profile';
 
 import { useEffect, useState } from 'react';
-import { useMyForest } from '../../../common/Layout/MyForestContext';
+import { useMyForestStore } from '../../../../stores/myForestStore';
 import ListHeader from './ListHeader';
 import styles from './MyContributions.module.scss';
 import ProjectItemCard from './ProjectItemCard';
@@ -12,7 +12,10 @@ import RegistrationItemCard from './RegistrationItemCard';
 import NoContributions from '../CommunityContributions/NoContributions';
 
 const MyContributions = ({ profilePageType, userProfile }: ProfileV2Props) => {
-  const { contributionsMap, projectListResult } = useMyForest();
+  const contributionsMap = useMyForestStore((state) => state.contributionsMap);
+  const projectListResult = useMyForestStore(
+    (state) => state.projectListResult
+  );
   const [contributionListItems, setContributionsListItems] = useState<
     (
       | ReactElement<RegistrationItemCardProps>

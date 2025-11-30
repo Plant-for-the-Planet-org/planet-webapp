@@ -7,11 +7,11 @@ import NoContributions from './NoContributions';
 import ContributionListItem from './ContributionListItem';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { useTranslations } from 'next-intl';
-import { useMyForest } from '../../../common/Layout/MyForestContext';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
 import themeProperties from '../../../../theme/themeProperties';
 
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
+import { useMyForestStore } from '../../../../stores/myForestStore';
 
 type TabOptions = 'most-recent' | 'most-trees';
 interface HeaderTabsProps {
@@ -72,7 +72,9 @@ const CommunityContributions = ({
   userProfile,
 }: ProfileV2Props) => {
   const [tabSelected, setTabSelected] = useState<TabOptions>('most-recent');
-  const { leaderboardResult } = useMyForest();
+  const leaderboardResult = useMyForestStore(
+    (state) => state.leaderboardResult
+  );
   //stores list for tabSelected
   const [contributionList, setContributionList] = useState<LeaderboardItem[]>(
     []

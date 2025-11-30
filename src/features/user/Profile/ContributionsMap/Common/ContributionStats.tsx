@@ -7,7 +7,7 @@ import {
 } from '../../../../../../public/assets/images/icons/myForestMapIcons';
 import styles from './common.module.scss';
 import { useTranslations } from 'next-intl';
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
+import { useMyForestStore } from '../../../../../stores/myForestStore';
 
 interface StatItemProps {
   icon: ReactElement;
@@ -25,8 +25,12 @@ const StatItem = ({ icon, label }: StatItemProps) => {
 
 const ContributionStats = () => {
   const tProfile = useTranslations('Profile.mapStats');
-  const { contributionsResult, projectListResult } = useMyForest();
-
+  const contributionsResult = useMyForestStore(
+    (state) => state.contributionsResult
+  );
+  const projectListResult = useMyForestStore(
+    (state) => state.projectListResult
+  );
   const { countries, projects } = useMemo(
     function calculationContributionStats() {
       const myContributionsMap = contributionsResult?.myContributionsMap;

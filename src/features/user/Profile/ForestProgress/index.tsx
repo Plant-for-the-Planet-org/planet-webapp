@@ -3,7 +3,7 @@ import type { ProfilePageType } from '../../../common/types/myForest';
 import { useState, useEffect } from 'react';
 import styles from './ForestProgress.module.scss';
 import TargetsModal from './TargetsModal';
-import { useMyForest } from '../../../common/Layout/MyForestContext';
+import { useMyForestStore } from '../../../../stores/myForestStore';
 import EmptyProgress from './EmptyProgress';
 import ForestProgressItem from './ForestProgressItem';
 import {
@@ -35,8 +35,9 @@ const ProgressBars = ({
   conservationTarget,
   profilePageType,
 }: ProgressBarsProps) => {
-  const { contributionStats } = useMyForest();
-
+  const contributionStats = useMyForestStore(
+    (state) => state.contributionStats
+  );
   const shouldShowBar = (target: number, contributedUnits: number): boolean =>
     contributedUnits > 0 || target > 0;
 
@@ -82,9 +83,10 @@ const ProgressBars = ({
 const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
   const [isEditingTargets, setIsEditingTargets] = useState(false);
   const handleEditTargets = () => setIsEditingTargets(true);
-
-  const { userInfo, contributionStats } = useMyForest();
-
+  const userInfo = useMyForestStore((state) => state.userInfo);
+  const contributionStats = useMyForestStore(
+    (state) => state.contributionStats
+  );
   const { treesDonated, areaRestored, areaConserved } =
     aggregateProgressData(contributionStats);
   const treeTarget = userInfo?.targets.treesDonated ?? 0;

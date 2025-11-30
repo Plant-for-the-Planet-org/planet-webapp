@@ -9,20 +9,30 @@ import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import CommunityContributions from '../CommunityContributions';
-import { useMyForest } from '../../../common/Layout/MyForestContext';
+import { useMyForestStore } from '../../../../stores/myForestStore';
 import MyContributions from '../MyContributions';
+import { useApi } from '../../../../hooks/useApi';
+import { useShallow } from 'zustand/react/shallow';
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 
 const ProfileLayout = () => {
   const { user, contextLoaded } = useUserProps();
+  const { getApi, getApiAuthenticated } = useApi();
   const [profile, setProfile] = useState<null | User>(null);
-  const {
-    setUserInfo,
-    isContributionsLoaded,
-    isProjectsListLoaded,
-    isLeaderboardLoaded,
-  } = useMyForest();
+  //states
+  const { isContributionsLoaded, isProjectsListLoaded, isLeaderboardLoaded } =
+    useMyForestStore(
+      useShallow((state) => ({
+        isContributionsLoaded: state.isContributionsLoaded,
+        isProjectsListLoaded: state.isProjectsListLoaded,
+        isLeaderboardLoaded: state.isLeaderboardLoaded,
+      }))
+    );
+  const userInfo = useMyForestStore((state) => state.userInfo);
+  // Actions
+  const setUserInfo = useMyForestStore((state) => state.setUserInfo);
+  const fetchMyForest = useMyForestStore((state) => state.fetchMyForest);
 
   useEffect(() => {
     if (contextLoaded) {
@@ -41,6 +51,10 @@ const ProfileLayout = () => {
       }
     }
   }, [contextLoaded, user]);
+
+  useEffect(() => {
+    if (userInfo) fetchMyForest(getApi, getApiAuthenticated);
+  }, [userInfo, fetchMyForest]);
 
   const isProfileLoaded = profile !== null && profile !== undefined;
   const isContributionsDataLoaded =

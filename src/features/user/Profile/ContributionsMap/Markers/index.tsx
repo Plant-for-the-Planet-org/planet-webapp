@@ -15,8 +15,8 @@ import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import DonationClusterMarker from './DonationClusterMarker';
 import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import center from '@turf/center';
+import { useMyForestStore } from '../../../../../stores/myForestStore';
 
 interface MarkersProps {
   mapRef: MutableRefObject<null>;
@@ -43,7 +43,10 @@ const Markers = ({
   profilePageType,
   supportedTreecounter,
 }: MarkersProps) => {
-  const { registrationGeojson, donationGeojson } = useMyForest();
+  const registrationGeojson = useMyForestStore(
+    (state) => state.registrationGeojson
+  );
+  const donationGeojson = useMyForestStore((state) => state.donationGeojson);
   const [donationSuperclusterResponse, setDonationSuperclusterResponse] =
     useState<PointFeature<DonationSuperclusterProperties>[]>([]);
   const [
