@@ -13,7 +13,6 @@ import { aggregateProgressData } from '../../../../utils/myForestUtils';
 import InfoAndCta from '../InfoAndCTA';
 import TpoProjects from '../TpoProjects';
 import { useApi } from '../../../../hooks/useApi';
-import { useShallow } from 'zustand/react/shallow';
 
 interface Props {
   profile: UserPublicProfile | null;
@@ -24,14 +23,9 @@ interface Props {
 const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
   const { getApi, getApiAuthenticated } = useApi();
   //States
-  const { isContributionsLoaded, isProjectsListLoaded, isLeaderboardLoaded } =
-    useMyForestStore(
-      useShallow((state) => ({
-        isContributionsLoaded: state.isContributionsLoaded,
-        isProjectsListLoaded: state.isProjectsListLoaded,
-        isLeaderboardLoaded: state.isLeaderboardLoaded,
-      }))
-    );
+  const isMyForestLoading = useMyForestStore(
+    (state) => state.isMyForestLoading
+  );
   const userInfo = useMyForestStore((state) => state.userInfo);
   const contributionStats = useMyForestStore(
     (state) => state.contributionsResult?.stats
@@ -91,12 +85,10 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
     conservationTarget,
   ]);
 
-  const isContributionsDataLoaded =
-    isContributionsLoaded && isProjectsListLoaded;
-  const isProgressDataLoaded =
-    isContributionsLoaded && profile !== null && profile !== undefined;
-  const isTpoProfile =
-    profile !== null && profile !== undefined && profile.type === 'tpo';
+  const isContributionsDataLoaded = !isMyForestLoading;
+  const isLeaderboardLoaded = !isMyForestLoading;
+  const isProgressDataLoaded = !isMyForestLoading && isProfileLoaded;
+  const isTpoProfile = isProfileLoaded && profile?.type === 'tpo';
 
   return (
     <article

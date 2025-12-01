@@ -42,9 +42,7 @@ interface MyForestStore {
   registrationGeojson: PointFeature<MyContributionsSingleRegistration>[];
   donationGeojson: PointFeature<DonationProperties>[];
   isPublicProfile: boolean;
-  isContributionsLoaded: boolean;
-  isLeaderboardLoaded: boolean;
-  isProjectsListLoaded: boolean;
+  isMyForestLoading: boolean;
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
   leaderboardResult: Leaderboard | undefined;
@@ -68,9 +66,7 @@ export const useMyForestStore = create<MyForestStore>((set, get) => ({
   isPublicProfile: false,
   registrationGeojson: [],
   donationGeojson: [],
-  isContributionsLoaded: false,
-  isLeaderboardLoaded: false,
-  isProjectsListLoaded: false,
+  isMyForestLoading: false,
   projectListResult: undefined,
   contributionsResult: undefined,
   leaderboardResult: undefined,
@@ -87,11 +83,7 @@ export const useMyForestStore = create<MyForestStore>((set, get) => ({
     const { userInfo, isPublicProfile } = get();
     if (!userInfo) return;
 
-    set({
-      isProjectsListLoaded: false,
-      isContributionsLoaded: false,
-      isLeaderboardLoaded: false,
-    });
+    set({ isMyForestLoading: true });
 
     try {
       const apiResponse =
@@ -100,8 +92,7 @@ export const useMyForestStore = create<MyForestStore>((set, get) => ({
           : await getApiAuthenticated<MyForestApiResponse>(`/app/myForest`);
 
       const transformedData = transformResponse(apiResponse);
-      const { contributionsResult, projectListResult, leaderboardResult } =
-        transformedData;
+      const { contributionsResult, projectListResult } = transformedData;
 
       const geojson =
         contributionsResult && projectListResult
@@ -109,22 +100,13 @@ export const useMyForestStore = create<MyForestStore>((set, get) => ({
           : { registrationGeojson: [], donationGeojson: [] };
 
       set({
-        contributionsResult,
-        projectListResult,
-        leaderboardResult,
-        registrationGeojson: geojson.registrationGeojson,
-        donationGeojson: geojson.donationGeojson,
-        isProjectsListLoaded: true,
-        isContributionsLoaded: true,
-        isLeaderboardLoaded: true,
+        ...transformedData,
+        ...geojson,
+        isMyForestLoading: false,
       });
     } catch (error) {
       console.error('MyForest API error:', error);
-      set({
-        isProjectsListLoaded: false,
-        isContributionsLoaded: false,
-        isLeaderboardLoaded: false,
-      });
+      set({ isMyForestLoading: false });
     }
   },
 }));

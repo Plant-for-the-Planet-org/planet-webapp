@@ -77,7 +77,7 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
           <ProjectsProvider>
             <PublicProfileLayout
               profile={profile}
-              isProfileLoaded={profile !== null}
+              isProfileLoaded={profile !== null && profile !== undefined}
             />
           </ProjectsProvider>
         </PublicProfileOuterContainer>
