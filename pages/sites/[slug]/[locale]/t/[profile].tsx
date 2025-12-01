@@ -20,7 +20,6 @@ import PublicProfileLayout from '../../../../../src/features/user/Profile/Public
 import { v4 } from 'uuid';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { useRouter } from 'next/router';
-import { MyForestProvider } from '../../../../../src/features/common/Layout/MyForestContext';
 import { useContext, useEffect, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
@@ -72,16 +71,14 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
   return tenantConfig ? (
     <>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <MyForestProvider>
-        <PublicProfileOuterContainer>
-          <ProjectsProvider>
-            <PublicProfileLayout
-              profile={profile}
-              isProfileLoaded={profile !== null && profile !== undefined}
-            />
-          </ProjectsProvider>
-        </PublicProfileOuterContainer>
-      </MyForestProvider>
+      <PublicProfileOuterContainer>
+        <ProjectsProvider>
+          <PublicProfileLayout
+            profile={profile}
+            isProfileLoaded={profile !== null && profile !== undefined}
+          />
+        </ProjectsProvider>
+      </PublicProfileOuterContainer>
     </>
   ) : (
     <></>
