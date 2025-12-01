@@ -265,6 +265,31 @@ export const checkProgressEnabled = (
   );
 };
 
+/**
+ * Convert array format to Map format
+ * Handles both array of tuples and Map instances
+ */
+const convertToMap = <K, V>(
+  data: Array<[K, V]> | Map<K, V> | undefined
+): Map<K, V> => {
+  if (!data) return new Map();
+  if (data instanceof Map) return data;
+
+  const map = new Map<K, V>();
+  if (Array.isArray(data)) {
+    data.forEach(([key, value]) => {
+      if (key && value) {
+        map.set(key, value);
+      }
+    });
+  }
+  return map;
+};
+/**
+ * Safely transforms API response into UI-friendly structure.
+ * Ensures consistent defaults and converts Maps/Arrays properly.
+ */
+
 export const transformResponse = (
   response: MyForestApiResponse
 ): UseMyForestApiResult['data'] => {
@@ -301,41 +326,6 @@ export const transformResponse = (
     projects = projectsMap;
   }
 
-  // Convert myContributionsMap array to Map if it comes as array from API
-  let myContributionsMap = response.myContributionsMap || new Map();
-  if (Array.isArray(response.myContributionsMap)) {
-    const contributionsMap = new Map();
-    response.myContributionsMap.forEach(([key, value]: [string, any]) => {
-      if (key && value) {
-        contributionsMap.set(key, value);
-      }
-    });
-    myContributionsMap = contributionsMap;
-  }
-
-  // Convert location maps if they come as arrays from API
-  let registrationLocationsMap = response.registrationLocationsMap || new Map();
-  if (Array.isArray(response.registrationLocationsMap)) {
-    const registrationMap = new Map();
-    response.registrationLocationsMap.forEach(([key, value]: [string, any]) => {
-      if (key && value) {
-        registrationMap.set(key, value);
-      }
-    });
-    registrationLocationsMap = registrationMap;
-  }
-
-  let projectLocationsMap = response.projectLocationsMap || new Map();
-  if (Array.isArray(response.projectLocationsMap)) {
-    const projectMap = new Map();
-    response.projectLocationsMap.forEach(([key, value]: [string, any]) => {
-      if (key && value) {
-        projectMap.set(key, value);
-      }
-    });
-    projectLocationsMap = projectMap;
-  }
-
   // Transform the combined response into the expected format
   const stats = {
     giftsReceivedCount: response.stats?.giftsReceivedCount || 0,
@@ -357,9 +347,9 @@ export const transformResponse = (
 
   const contributionsResult: ContributionsResponse = {
     stats,
-    myContributionsMap,
-    registrationLocationsMap,
-    projectLocationsMap,
+    myContributionsMap: convertToMap(response.myContributionsMap),
+    registrationLocationsMap: convertToMap(response.registrationLocationsMap),
+    projectLocationsMap: convertToMap(response.projectLocationsMap),
   };
 
   return {
@@ -372,6 +362,10 @@ export const transformResponse = (
   };
 };
 
+/**
+ * Creates a GeoJSON point feature for donation entries
+ * Links project geometry with contribution info
+ */
 const generateDonationGeojson = (
   project: MyForestProject,
   contributionsForProject: MyContributionsSingleProject
@@ -386,6 +380,10 @@ const generateDonationGeojson = (
   } as PointFeature<DonationProperties>;
 };
 
+/**
+ * Creates a GeoJSON point feature for registration entries
+ * Links registration location geometry with relevant stats
+ */
 const generateRegistrationGeojson = (
   registrationLocation: MapLocation,
   registration: MyContributionsSingleRegistration
@@ -397,6 +395,10 @@ const generateRegistrationGeojson = (
   } as PointFeature<MyContributionsSingleRegistration>;
 };
 
+/**
+ * Generates GeoJSON dataset for the map based on contributions
+ * Splits into donation vs registration features for different layers
+ */
 export const generateContributionsGeojson = (
   contributionsResult: ContributionsResponse,
   projectListResult: ProjectListResponse
