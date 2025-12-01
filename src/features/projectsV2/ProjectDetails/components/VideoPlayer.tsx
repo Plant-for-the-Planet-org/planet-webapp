@@ -18,9 +18,15 @@ interface Props {
   videoUrl: string;
   hasConsent: boolean;
   onConsentChange: (hasConsent: boolean) => void;
+  backgroundImage?: string;
 }
 
-const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
+const VideoPlayer = ({
+  videoUrl,
+  hasConsent,
+  onConsentChange,
+  backgroundImage,
+}: Props) => {
   const tVideoPlayer = useTranslations('ProjectDetails.videoPlayer');
   const [playerDimensions, setPlayerDimensions] = useState({
     width: 0,
@@ -64,7 +70,16 @@ const VideoPlayer = ({ videoUrl, hasConsent, onConsentChange }: Props) => {
   if (isYouTubeVideo && !hasConsent) {
     return (
       <div className={styles.videoConsentContainer}>
-        <div className={styles.consentBackground}>
+        <div
+          className={`${styles.consentBackground} ${
+            backgroundImage ? styles.hasBackgroundImage : ''
+          }`}
+          style={
+            backgroundImage
+              ? { backgroundImage: `url(${backgroundImage})` }
+              : undefined
+          }
+        >
           <div className={styles.consentContent}>
             <WebappButton
               elementType="button"
