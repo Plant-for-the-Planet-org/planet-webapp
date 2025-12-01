@@ -1,10 +1,8 @@
 import type { PointFeature } from 'supercluster';
 import type {
   ContributionsResponse,
-  ContributionStats,
   DonationProperties,
   Leaderboard,
-  MyContributionsMapItem,
   MyContributionsSingleRegistration,
   ProjectListResponse,
 } from '../features/common/types/myForest';
@@ -41,8 +39,6 @@ interface MyForestApiResponse {
 interface MyForestStore {
   // State
   userInfo: UserInfo | null;
-  contributionsMap: Map<string, MyContributionsMapItem> | undefined;
-  contributionStats: ContributionStats | undefined;
   registrationGeojson: PointFeature<MyContributionsSingleRegistration>[];
   donationGeojson: PointFeature<DonationProperties>[];
   isPublicProfile: boolean;
@@ -56,10 +52,6 @@ interface MyForestStore {
   // Actions
   setUserInfo: (userInfo: UserInfo | null) => void;
   setIsPublicProfile: (isPublic: boolean) => void;
-  setContributionsMap: (
-    map: Map<string, MyContributionsMapItem> | undefined
-  ) => void;
-  setContributionStats: (stats: ContributionStats | undefined) => void;
   setRegistrationGeojson: (
     geojson: PointFeature<MyContributionsSingleRegistration>[]
   ) => void;
@@ -74,8 +66,6 @@ export const useMyForestStore = create<MyForestStore>((set, get) => ({
   //state
   userInfo: null,
   isPublicProfile: false,
-  contributionsMap: undefined,
-  contributionStats: undefined,
   registrationGeojson: [],
   donationGeojson: [],
   isContributionsLoaded: false,
@@ -88,8 +78,6 @@ export const useMyForestStore = create<MyForestStore>((set, get) => ({
   //Actions
   setUserInfo: (userInfo) => set({ userInfo }),
   setIsPublicProfile: (isPublicProfile) => set({ isPublicProfile }),
-  setContributionsMap: (contributionsMap) => set({ contributionsMap }),
-  setContributionStats: (contributionStats) => set({ contributionStats }),
   setRegistrationGeojson: (registrationGeojson) => set({ registrationGeojson }),
   setDonationGeojson: (donationGeojson) => set({ donationGeojson }),
   fetchMyForest: async (
@@ -126,8 +114,6 @@ export const useMyForestStore = create<MyForestStore>((set, get) => ({
         leaderboardResult,
         registrationGeojson: geojson.registrationGeojson,
         donationGeojson: geojson.donationGeojson,
-        contributionsMap: contributionsResult?.myContributionsMap,
-        contributionStats: contributionsResult?.stats,
         isProjectsListLoaded: true,
         isContributionsLoaded: true,
         isLeaderboardLoaded: true,

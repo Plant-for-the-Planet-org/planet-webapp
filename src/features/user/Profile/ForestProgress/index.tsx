@@ -36,7 +36,7 @@ const ProgressBars = ({
   profilePageType,
 }: ProgressBarsProps) => {
   const contributionStats = useMyForestStore(
-    (state) => state.contributionStats
+    (state) => state.contributionsResult?.stats
   );
   const shouldShowBar = (target: number, contributedUnits: number): boolean =>
     contributedUnits > 0 || target > 0;
@@ -83,15 +83,15 @@ const ProgressBars = ({
 const ForestProgress = ({ profilePageType }: ForestProgressProp) => {
   const [isEditingTargets, setIsEditingTargets] = useState(false);
   const handleEditTargets = () => setIsEditingTargets(true);
-  const userInfo = useMyForestStore((state) => state.userInfo);
+  const userTargets = useMyForestStore((state) => state.userInfo?.targets);
   const contributionStats = useMyForestStore(
-    (state) => state.contributionStats
+    (state) => state.contributionsResult?.stats
   );
   const { treesDonated, areaRestored, areaConserved } =
     aggregateProgressData(contributionStats);
-  const treeTarget = userInfo?.targets.treesDonated ?? 0;
-  const restorationTarget = userInfo?.targets.areaRestored ?? 0;
-  const conservationTarget = userInfo?.targets.areaConserved ?? 0;
+  const treeTarget = userTargets?.treesDonated ?? 0;
+  const restorationTarget = userTargets?.areaRestored ?? 0;
+  const conservationTarget = userTargets?.areaConserved ?? 0;
 
   const [isProgressEnabled, setIsProgressEnabled] = useState(
     checkProgressEnabled(

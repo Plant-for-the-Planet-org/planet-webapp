@@ -29,7 +29,8 @@ const ProfileLayout = () => {
         isLeaderboardLoaded: state.isLeaderboardLoaded,
       }))
     );
-  const userInfo = useMyForestStore((state) => state.userInfo);
+  const userSlug = useMyForestStore((state) => state.userInfo?.slug);
+
   // Actions
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
   const fetchMyForest = useMyForestStore((state) => state.fetchMyForest);
@@ -53,8 +54,8 @@ const ProfileLayout = () => {
   }, [contextLoaded, user]);
 
   useEffect(() => {
-    if (userInfo) fetchMyForest(getApi, getApiAuthenticated);
-  }, [userInfo, fetchMyForest]);
+    if (userSlug) fetchMyForest(getApi, getApiAuthenticated);
+  }, [userSlug, fetchMyForest]);
 
   const isProfileLoaded = profile !== null && profile !== undefined;
   const isContributionsDataLoaded =

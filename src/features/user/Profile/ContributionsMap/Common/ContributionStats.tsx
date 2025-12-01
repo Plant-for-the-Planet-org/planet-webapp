@@ -25,15 +25,14 @@ const StatItem = ({ icon, label }: StatItemProps) => {
 
 const ContributionStats = () => {
   const tProfile = useTranslations('Profile.mapStats');
-  const contributionsResult = useMyForestStore(
-    (state) => state.contributionsResult
+  const myContributionsMap = useMyForestStore(
+    (state) => state.contributionsResult?.myContributionsMap
   );
   const projectListResult = useMyForestStore(
     (state) => state.projectListResult
   );
   const { countries, projects } = useMemo(
     function calculationContributionStats() {
-      const myContributionsMap = contributionsResult?.myContributionsMap;
       const projectList = projectListResult;
 
       if (!myContributionsMap || !projectList) {
@@ -62,7 +61,7 @@ const ContributionStats = () => {
         projects: contributedProjects.size,
       };
     },
-    [contributionsResult?.myContributionsMap, projectListResult]
+    [myContributionsMap, projectListResult]
   );
 
   return (

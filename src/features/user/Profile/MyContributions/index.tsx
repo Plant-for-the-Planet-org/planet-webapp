@@ -12,7 +12,9 @@ import RegistrationItemCard from './RegistrationItemCard';
 import NoContributions from '../CommunityContributions/NoContributions';
 
 const MyContributions = ({ profilePageType, userProfile }: ProfileV2Props) => {
-  const contributionsMap = useMyForestStore((state) => state.contributionsMap);
+  const contributionsMap = useMyForestStore(
+    (state) => state.contributionsResult?.myContributionsMap
+  );
   const projectListResult = useMyForestStore(
     (state) => state.projectListResult
   );

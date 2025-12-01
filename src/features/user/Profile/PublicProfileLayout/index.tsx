@@ -34,7 +34,7 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
     );
   const userInfo = useMyForestStore((state) => state.userInfo);
   const contributionStats = useMyForestStore(
-    (state) => state.contributionStats
+    (state) => state.contributionsResult?.stats
   );
 
   //Actions
