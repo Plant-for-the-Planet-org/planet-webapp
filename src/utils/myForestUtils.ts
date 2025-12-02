@@ -318,7 +318,7 @@ export const transformResponse = (
   let projects = response.projects || {};
   if (Array.isArray(response.projects)) {
     const projectsMap: ProjectListResponse = {};
-    response.projects.forEach((project: any) => {
+    response.projects.forEach((project: MyForestProject) => {
       if (project && project.guid) {
         projectsMap[project.guid] = project;
       }
