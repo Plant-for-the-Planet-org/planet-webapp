@@ -55,7 +55,7 @@ const ProfileLayout = () => {
 
   //TODO: Remove once error handling is fully migrated from useContext to Zustand
   useEffect(() => {
-    if (errorMessage) setErrors([{ message: errorMessage }]);
+    setErrors(errorMessage ? [{ message: errorMessage }] : null);
   }, [errorMessage]);
 
   const isProfileLoaded = profile !== null && profile !== undefined;

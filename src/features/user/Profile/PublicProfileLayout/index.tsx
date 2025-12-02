@@ -64,7 +64,7 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
 
   //TODO: Remove once error handling is fully migrated from useContext to Zustand
   useEffect(() => {
-    if (errorMessage) setErrors([{ message: errorMessage }]);
+    setErrors(errorMessage ? [{ message: errorMessage }] : null);
   }, [errorMessage]);
 
   const { treesDonated, areaRestored, areaConserved } =
