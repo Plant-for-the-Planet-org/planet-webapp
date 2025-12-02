@@ -14,6 +14,7 @@ import {
   generateContributionsGeojson,
   transformResponse,
 } from '../utils/myForestUtils';
+import { APIError } from '@planet-sdk/common';
 
 interface UserInfo {
   profileId: string;
@@ -44,6 +45,8 @@ interface MyForestStore {
   donationGeojson: PointFeature<DonationProperties>[];
   isPublicProfile: boolean;
   isMyForestLoading: boolean;
+  //TODO: Remove once error handling is fully migrated from useContext to Zustand
+  errorMessage: string | null;
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
   leaderboardResult: Leaderboard | undefined;
@@ -70,6 +73,7 @@ export const useMyForestStore = create<MyForestStore>()(
       registrationGeojson: [],
       donationGeojson: [],
       isMyForestLoading: false,
+      errorMessage: null,
       projectListResult: undefined,
       contributionsResult: undefined,
       leaderboardResult: undefined,
@@ -116,13 +120,23 @@ export const useMyForestStore = create<MyForestStore>()(
               ...transformedData,
               ...geojson,
               isMyForestLoading: false,
+              errorMessage: null,
             },
             undefined,
             'fetchMyForest_success'
           );
         } catch (error) {
+          const errorMessage =
+            error instanceof APIError ? error.message : 'Something went wrong';
           console.error('MyForest API error:', error);
-          set({ isMyForestLoading: false }, undefined, 'fetchMyForest_error');
+          set(
+            {
+              isMyForestLoading: false,
+              errorMessage,
+            },
+            undefined,
+            'fetchMyForest_error'
+          );
         }
       },
     }),

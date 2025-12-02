@@ -6,13 +6,14 @@ import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import ContributionsMap from '../ContributionsMap';
 import CommunityContributions from '../CommunityContributions';
-import { useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useMyForestStore } from '../../../../stores/myForestStore';
 import MyContributions from '../MyContributions';
 import { aggregateProgressData } from '../../../../utils/myForestUtils';
 import InfoAndCta from '../InfoAndCTA';
 import TpoProjects from '../TpoProjects';
 import { useApi } from '../../../../hooks/useApi';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 interface Props {
   profile: UserPublicProfile | null;
@@ -22,6 +23,7 @@ interface Props {
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
   const { getApi, getApiAuthenticated } = useApi();
+  const { setErrors } = useContext(ErrorHandlingContext);
   //States
   const isMyForestLoading = useMyForestStore(
     (state) => state.isMyForestLoading
@@ -30,6 +32,7 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
   const contributionStats = useMyForestStore(
     (state) => state.contributionsResult?.stats
   );
+  const errorMessage = useMyForestStore((state) => state.errorMessage);
 
   //Actions
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
@@ -58,6 +61,11 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
   useEffect(() => {
     if (userInfo) fetchMyForest(getApi, getApiAuthenticated);
   }, [userInfo, fetchMyForest]);
+
+  //TODO: Remove once error handling is fully migrated from useContext to Zustand
+  useEffect(() => {
+    if (errorMessage) setErrors([{ message: errorMessage }]);
+  }, [errorMessage]);
 
   const { treesDonated, areaRestored, areaConserved } =
     aggregateProgressData(contributionStats);
