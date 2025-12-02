@@ -15,8 +15,9 @@ import {
   SuccessfullyRedeemed,
   EnterRedeemCode,
 } from '../../../../common/RedeemCode';
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
+import { useMyForestStore } from '../../../../../stores/myForestStore';
 import { useApi } from '../../../../../hooks/useApi';
+
 interface RedeemModal {
   redeemModalOpen: boolean;
   handleRedeemModalClose: () => void;
@@ -30,10 +31,10 @@ export default function RedeemModal({
   handleRedeemModalClose,
 }: RedeemModal): ReactElement | null {
   const t = useTranslations('Redeem');
-  const { postApiAuthenticated } = useApi();
+  const { postApiAuthenticated, getApi, getApiAuthenticated } = useApi();
   const { user, contextLoaded, setUser, setRefetchUserData } = useUserProps();
   const { setErrors, errors: apiErrors } = useContext(ErrorHandlingContext);
-  const { refetchContributions, refetchLeaderboard } = useMyForest();
+  const refetchMyForest = useMyForestStore((state) => state.fetchMyForest);
   const [inputCode, setInputCode] = useState<string | undefined>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
@@ -59,8 +60,7 @@ export default function RedeemModal({
           const cloneUser = { ...user };
           cloneUser.score.received = cloneUser.score.received + res.units;
           setUser(cloneUser);
-          refetchContributions();
-          refetchLeaderboard();
+          refetchMyForest(getApi, getApiAuthenticated);
         }
       } catch (err) {
         const serializedErrors = handleError(err as APIError);

@@ -1,6 +1,6 @@
 import type { User } from '@planet-sdk/common';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import ContributionsMap from '../ContributionsMap';
 import styles from './ProfileLayout.module.scss';
 import { useEffect } from 'react';
@@ -9,20 +9,27 @@ import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import CommunityContributions from '../CommunityContributions';
-import { useMyForest } from '../../../common/Layout/MyForestContext';
+import { useMyForestStore } from '../../../../stores/myForestStore';
 import MyContributions from '../MyContributions';
+import { useApi } from '../../../../hooks/useApi';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 
 const ProfileLayout = () => {
   const { user, contextLoaded } = useUserProps();
+  const { getApi, getApiAuthenticated } = useApi();
+  const { setErrors } = useContext(ErrorHandlingContext);
   const [profile, setProfile] = useState<null | User>(null);
-  const {
-    setUserInfo,
-    isContributionsLoaded,
-    isProjectsListLoaded,
-    isLeaderboardLoaded,
-  } = useMyForest();
+
+  const isMyForestLoading = useMyForestStore(
+    (state) => state.isMyForestLoading
+  );
+  const userSlug = useMyForestStore((state) => state.userInfo?.slug);
+  const errorMessage = useMyForestStore((state) => state.errorMessage);
+  // Actions
+  const setUserInfo = useMyForestStore((state) => state.setUserInfo);
+  const fetchMyForest = useMyForestStore((state) => state.fetchMyForest);
 
   useEffect(() => {
     if (contextLoaded) {
@@ -42,11 +49,19 @@ const ProfileLayout = () => {
     }
   }, [contextLoaded, user]);
 
+  useEffect(() => {
+    if (userSlug) fetchMyForest(getApi, getApiAuthenticated);
+  }, [userSlug, fetchMyForest]);
+
+  //TODO: Remove once error handling is fully migrated from useContext to Zustand
+  useEffect(() => {
+    if (errorMessage) setErrors([{ message: errorMessage }]);
+  }, [errorMessage]);
+
   const isProfileLoaded = profile !== null && profile !== undefined;
-  const isContributionsDataLoaded =
-    isContributionsLoaded && isProjectsListLoaded;
-  const isProgressDataLoaded =
-    isContributionsLoaded && profile !== null && profile !== undefined;
+  const isContributionsDataLoaded = !isMyForestLoading;
+  const isLeaderboardLoaded = !isMyForestLoading;
+  const isProgressDataLoaded = !isMyForestLoading && isProfileLoaded;
 
   return (
     <article className={styles.profileLayout}>

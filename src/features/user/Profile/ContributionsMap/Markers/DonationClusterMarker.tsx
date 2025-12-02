@@ -11,13 +11,13 @@ import type { TreeProjectClassification, UnitTypes } from '@planet-sdk/common';
 import { Marker } from 'react-map-gl-v7/maplibre';
 import { useEffect, useState } from 'react';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import ClusterIcon from './ClusterIcon';
 import {
   getDonationClusterMarkerColors,
   extractAndClassifyProjectData,
 } from '../../../../../utils/myForestUtils';
 import styles from '../Common/common.module.scss';
+import { useMyForestStore } from '../../../../../stores/myForestStore';
 
 export interface DonationClusterMarkerProps {
   superclusterResponse: PointFeature<DonationSuperclusterProperties>;
@@ -37,10 +37,10 @@ const DonationClusterMarker = ({
   viewState,
   mapRef,
 }: DonationClusterMarkerProps) => {
+  const donationGeojson = useMyForestStore((state) => state.donationGeojson);
   const [clusterChildren, setClusterChildren] = useState<
     PointFeature<DonationProperties>[]
   >([]);
-  const { donationGeojson } = useMyForest();
   const [colors, setColors] = useState({
     tertiaryProjectColor: '',
     secondaryProjectColor: '',
