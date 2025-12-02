@@ -54,10 +54,6 @@ interface MyForestStore {
   // Actions
   setUserInfo: (userInfo: UserInfo | null) => void;
   setIsPublicProfile: (isPublic: boolean) => void;
-  setRegistrationGeojson: (
-    geojson: PointFeature<MyContributionsSingleRegistration>[]
-  ) => void;
-  setDonationGeojson: (geojson: PointFeature<DonationProperties>[]) => void;
   fetchMyForest: (
     getApi: ApiRequestFn,
     getApiAuthenticated: ApiRequestFn
@@ -83,12 +79,6 @@ export const useMyForestStore = create<MyForestStore>()(
 
       setIsPublicProfile: (isPublicProfile) =>
         set({ isPublicProfile }, undefined, 'setIsPublicProfile'),
-
-      setRegistrationGeojson: (registrationGeojson) =>
-        set({ registrationGeojson }, undefined, 'setRegistrationGeojson'),
-
-      setDonationGeojson: (donationGeojson) =>
-        set({ donationGeojson }, undefined, 'setDonationGeojson'),
 
       fetchMyForest: async (getApi, getApiAuthenticated) => {
         const { userInfo, isPublicProfile } = get();
