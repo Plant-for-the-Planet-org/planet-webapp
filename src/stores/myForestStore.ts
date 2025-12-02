@@ -9,6 +9,7 @@ import type {
 import type { ApiConfigBase } from '../hooks/useApi';
 
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 import {
   generateContributionsGeojson,
   transformResponse,
@@ -60,53 +61,75 @@ interface MyForestStore {
   ) => Promise<void>;
 }
 
-export const useMyForestStore = create<MyForestStore>((set, get) => ({
-  //state
-  userInfo: null,
-  isPublicProfile: false,
-  registrationGeojson: [],
-  donationGeojson: [],
-  isMyForestLoading: false,
-  projectListResult: undefined,
-  contributionsResult: undefined,
-  leaderboardResult: undefined,
+export const useMyForestStore = create<MyForestStore>()(
+  devtools(
+    (set, get) => ({
+      //state
+      userInfo: null,
+      isPublicProfile: false,
+      registrationGeojson: [],
+      donationGeojson: [],
+      isMyForestLoading: false,
+      projectListResult: undefined,
+      contributionsResult: undefined,
+      leaderboardResult: undefined,
 
-  //Actions
-  setUserInfo: (userInfo) => set({ userInfo }),
-  setIsPublicProfile: (isPublicProfile) => set({ isPublicProfile }),
-  setRegistrationGeojson: (registrationGeojson) => set({ registrationGeojson }),
-  setDonationGeojson: (donationGeojson) => set({ donationGeojson }),
-  fetchMyForest: async (
-    getApi: ApiRequestFn,
-    getApiAuthenticated: ApiRequestFn
-  ) => {
-    const { userInfo, isPublicProfile } = get();
-    if (!userInfo) return;
+      //Actions
+      setUserInfo: (userInfo) => set({ userInfo }, undefined, 'setUserInfo'),
 
-    set({ isMyForestLoading: true });
+      setIsPublicProfile: (isPublicProfile) =>
+        set({ isPublicProfile }, undefined, 'setIsPublicProfile'),
 
-    try {
-      const apiResponse =
-        isPublicProfile && userInfo.slug
-          ? await getApi<MyForestApiResponse>(`/app/myForest/${userInfo.slug}`)
-          : await getApiAuthenticated<MyForestApiResponse>(`/app/myForest`);
+      setRegistrationGeojson: (registrationGeojson) =>
+        set({ registrationGeojson }, undefined, 'setRegistrationGeojson'),
 
-      const transformedData = transformResponse(apiResponse);
-      const { contributionsResult, projectListResult } = transformedData;
+      setDonationGeojson: (donationGeojson) =>
+        set({ donationGeojson }, undefined, 'setDonationGeojson'),
 
-      const geojson =
-        contributionsResult && projectListResult
-          ? generateContributionsGeojson(contributionsResult, projectListResult)
-          : { registrationGeojson: [], donationGeojson: [] };
+      fetchMyForest: async (getApi, getApiAuthenticated) => {
+        const { userInfo, isPublicProfile } = get();
+        if (!userInfo) return;
 
-      set({
-        ...transformedData,
-        ...geojson,
-        isMyForestLoading: false,
-      });
-    } catch (error) {
-      console.error('MyForest API error:', error);
-      set({ isMyForestLoading: false });
+        set({ isMyForestLoading: true }, undefined, 'fetchMyForest_start');
+
+        try {
+          const apiResponse =
+            isPublicProfile && userInfo.slug
+              ? await getApi<MyForestApiResponse>(
+                  `/app/myForest/${userInfo.slug}`
+                )
+              : await getApiAuthenticated<MyForestApiResponse>(`/app/myForest`);
+
+          const transformedData = transformResponse(apiResponse);
+          const { contributionsResult, projectListResult } = transformedData;
+
+          const geojson =
+            contributionsResult && projectListResult
+              ? generateContributionsGeojson(
+                  contributionsResult,
+                  projectListResult
+                )
+              : { registrationGeojson: [], donationGeojson: [] };
+
+          set(
+            {
+              ...transformedData,
+              ...geojson,
+              isMyForestLoading: false,
+            },
+            undefined,
+            'fetchMyForest_success'
+          );
+        } catch (error) {
+          console.error('MyForest API error:', error);
+          set({ isMyForestLoading: false }, undefined, 'fetchMyForest_error');
+        }
+      },
+    }),
+    {
+      name: 'MyForestStore',
+      enabled: process.env.NODE_ENV === 'development',
+      serialize: { options: true },
     }
-  },
-}));
+  )
+);
