@@ -73,7 +73,8 @@ const ProjectDetails = ({
     } catch (err) {
       setErrors(handleError(err as APIError | ClientError));
       setIsError(true);
-      redirect('/');
+      // Redirect to the landing page only if the project has no associated sites and no interventions, ensuring the project has something to render
+      if (singleProject?.sites?.length === 0) redirect('/');
     } finally {
       setIsLoading(false);
     }
