@@ -59,9 +59,6 @@ const ProfileLayout = () => {
   }, [errorMessage]);
 
   const isProfileLoaded = profile !== null && profile !== undefined;
-  const isContributionsDataLoaded = !isMyForestLoading;
-  const isLeaderboardLoaded = !isMyForestLoading;
-  const isProgressDataLoaded = !isMyForestLoading && isProfileLoaded;
 
   return (
     <article className={styles.profileLayout}>
@@ -75,10 +72,10 @@ const ProfileLayout = () => {
       <section
         id="map-container"
         className={`${styles.mapContainer} ${
-          !isContributionsDataLoaded ? styles.loading : ''
+          isMyForestLoading ? styles.loading : ''
         }`}
       >
-        {isContributionsDataLoaded ? (
+        {!isMyForestLoading && isProfileLoaded ? (
           <ContributionsMap profilePageType="private" />
         ) : (
           <ProfileLoader height={450} />
@@ -87,10 +84,10 @@ const ProfileLayout = () => {
       <section
         id="progress-container"
         className={`${styles.progressContainer} ${
-          !isProgressDataLoaded ? styles.loading : ''
+          isMyForestLoading ? styles.loading : ''
         }`}
       >
-        {isProgressDataLoaded ? (
+        {!isMyForestLoading && isProfileLoaded ? (
           <ForestProgress profilePageType="private" />
         ) : (
           <ProfileLoader height={116} />
@@ -99,10 +96,10 @@ const ProfileLayout = () => {
       <section
         id="my-contributions-container"
         className={`${styles.myContributionsContainer} ${
-          !isContributionsDataLoaded ? styles.loading : ''
+          isMyForestLoading ? styles.loading : ''
         }`}
       >
-        {isContributionsDataLoaded && profile ? (
+        {!isMyForestLoading && isProfileLoaded ? (
           <MyContributions profilePageType="private" userProfile={profile} />
         ) : (
           <ProfileLoader height={350} />
@@ -112,10 +109,10 @@ const ProfileLayout = () => {
         id="community-contributions-container"
         className={`
 					${styles.communityContributionsContainer} ${
-          !isLeaderboardLoaded ? styles.loading : ''
+          isMyForestLoading ? styles.loading : ''
         }`}
       >
-        {isLeaderboardLoaded && profile ? (
+        {!isMyForestLoading && isProfileLoaded ? (
           <CommunityContributions
             userProfile={profile}
             profilePageType="private"

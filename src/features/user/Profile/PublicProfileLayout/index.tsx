@@ -93,9 +93,6 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
     conservationTarget,
   ]);
 
-  const isContributionsDataLoaded = !isMyForestLoading;
-  const isLeaderboardLoaded = !isMyForestLoading;
-  const isProgressDataLoaded = !isMyForestLoading && isProfileLoaded;
   const isTpoProfile = isProfileLoaded && profile?.type === 'tpo';
 
   return (
@@ -119,10 +116,10 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
           <section
             id="map-container"
             className={`${styles.mapContainer} ${
-              !isContributionsDataLoaded ? styles.loading : ''
+              isMyForestLoading ? styles.loading : ''
             }`}
           >
-            {isContributionsDataLoaded ? (
+            {!isMyForestLoading && isProfileLoaded ? (
               <ContributionsMap
                 profilePageType="public"
                 supportedTreecounter={userInfo?.slug ?? ''}
@@ -135,10 +132,10 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
             <section
               id="progress-container"
               className={`${styles.progressContainer} ${
-                !isProgressDataLoaded ? styles.loading : ''
+                isMyForestLoading ? styles.loading : ''
               }`}
             >
-              {isProgressDataLoaded ? (
+              {!isMyForestLoading && isProfileLoaded ? (
                 <ForestProgress profilePageType="public" />
               ) : (
                 <ProfileLoader height={116} />
@@ -148,10 +145,10 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
           <section
             id="my-contributions-container"
             className={`${styles.myContributionsContainer} ${
-              !isContributionsDataLoaded ? styles.loading : ''
+              isMyForestLoading ? styles.loading : ''
             }`}
           >
-            {isContributionsDataLoaded && profile ? (
+            {!isMyForestLoading && profile ? (
               <MyContributions profilePageType="public" userProfile={profile} />
             ) : (
               <ProfileLoader height={350} />
@@ -161,10 +158,10 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
             <section
               id="community-contributions-container"
               className={`${styles.communityContributionsContainer} ${
-                !isLeaderboardLoaded ? styles.loading : ''
+                isMyForestLoading ? styles.loading : ''
               }`}
             >
-              {isLeaderboardLoaded && profile ? (
+              {!isMyForestLoading && profile ? (
                 <CommunityContributions
                   userProfile={profile}
                   profilePageType="public"

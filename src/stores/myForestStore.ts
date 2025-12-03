@@ -68,7 +68,7 @@ export const useMyForestStore = create<MyForestStore>()(
       isPublicProfile: false,
       registrationGeojson: [],
       donationGeojson: [],
-      isMyForestLoading: false,
+      isMyForestLoading: true,
       errorMessage: null,
       projectListResult: undefined,
       contributionsResult: undefined,
