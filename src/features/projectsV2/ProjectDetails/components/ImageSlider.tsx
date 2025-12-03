@@ -6,6 +6,7 @@ import styles from '../styles/Slider.module.scss';
 import { useState, useMemo } from 'react';
 import ImageSliderModal from './microComponents/ImageSliderModal';
 import themeProperties from '../../../../theme/themeProperties';
+import { clsx } from 'clsx';
 
 interface ImageSliderProps {
   images: SliderImage[];
@@ -39,7 +40,10 @@ const ImageSlider = ({
     <>
       {!isModalOpen && (
         <div
-          className={`image-slider-container ${styles.imageSliderContainer}`}
+          className={clsx(
+            'image-slider-container',
+            styles.imageSliderContainer
+          )}
         >
           {allowFullView && (
             <button onClick={() => setIsModalOpen(true)}>
