@@ -35,6 +35,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { useApi } from '../../../../../hooks/useApi';
+import { clsx } from 'clsx';
 
 // import { DevTool } from '@hookform/devtools';
 
@@ -121,7 +122,7 @@ function PlantedSpecies({
       {index > 0 ? (
         <div
           onClick={() => remove(index)}
-          className={`${styles.speciesDeleteField} ${styles.deleteActive}`}
+          className={clsx(styles.speciesDeleteField, styles.deleteActive)}
         >
           <DeleteIcon />
         </div>
@@ -464,7 +465,7 @@ export default function PlantingLocation({
             <Button
               key={index}
               onClick={() => setActiveMethod(method)}
-              className={`${styles.importTab}`}
+              className={styles.importTab}
               variant="contained"
               color={activeMethod === method ? 'primary' : 'inherit'}
             >
@@ -504,7 +505,7 @@ export default function PlantingLocation({
         {tTreemapper('addAnotherSpecies')}
       </div>
 
-      <div className={`${styles.formFieldLarge}`}>
+      <div className={styles.formFieldLarge}>
         <Button
           id={'basicDetailsCont'}
           onClick={handleSubmit(onSubmit)}

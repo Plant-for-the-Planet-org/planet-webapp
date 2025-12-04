@@ -128,7 +128,7 @@ export default function ReviewSubmit({
               ) : (
                 []
               )}
-              <div className={`${styles.formField}`}>
+              <div className={styles.formField}>
                 <div className={styles.formFieldHalf}>
                   <Button
                     onClick={handleBack}

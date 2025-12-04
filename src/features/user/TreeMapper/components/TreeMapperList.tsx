@@ -8,6 +8,7 @@ import TransactionsNotFound from '../../../../../public/assets/images/icons/Tran
 import styles from '../TreeMapper.module.scss';
 import { useTranslations } from 'next-intl';
 import TreemapperIntervention from './TreemapperIntervention';
+import { clsx } from 'clsx';
 
 interface Props {
   selectedIntervention: Intervention | SampleTreeRegistration | null;
@@ -32,9 +33,10 @@ export default function TreeMapperList({
 
   return (
     <div
-      className={`${selectedIntervention ? styles.hideOnMobile : ''} ${
-        styles.locationList
-      }`}
+      className={clsx(
+        styles.locationList,
+        selectedIntervention && styles.hideOnMobile
+      )}
     >
       {!interventions && isDataLoading ? (
         <>
