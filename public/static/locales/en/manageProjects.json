@@ -215,6 +215,7 @@
       "tree": "tree",
       "m2": "m²"
     },
+    "unitTypeInfo": "Select the unit for donations before submitting for review. Changes require contacting support.",
     "tenure": "Tenure",
     "rent": "Rent",
     "ownershipType": "Ownership Type",

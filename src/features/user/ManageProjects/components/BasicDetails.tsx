@@ -131,6 +131,8 @@ export default function BasicDetails({
   });
   const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
 
+  const isEditMode = Boolean(projectDetails?.unitType);
+
   useEffect(() => {
     //loads the default map style
     async function loadMapStyle() {
@@ -531,11 +533,21 @@ export default function BasicDetails({
                     error={
                       'unitType' in errors && errors.unitType !== undefined
                     }
+                    disabled={isEditMode}
                     helperText={
                       'unitType' in errors &&
                       errors.unitType !== undefined &&
                       errors.unitType.message
                     }
+                    SelectProps={{
+                      endAdornment: (
+                        <Tooltip title={t('unitTypeInfo')} arrow>
+                          <span style={{ marginRight: '20px' }}>
+                            <InfoIcon />
+                          </span>
+                        </Tooltip>
+                      ),
+                    }}
                   >
                     {unitTypeOptions.map((unitType) => (
                       <MenuItem key={unitType} value={unitType}>
