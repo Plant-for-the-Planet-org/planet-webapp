@@ -539,7 +539,7 @@ export default function BasicDetails({
                       errors.unitType !== undefined &&
                       errors.unitType.message
                     }
-                    SelectProps={{
+                    InputProps={{
                       endAdornment: (
                         <Tooltip title={t('unitTypeInfo')} arrow>
                           <span style={{ marginRight: '20px' }}>
