@@ -36,12 +36,10 @@ const DonateButton = (props: DonateButtonProps) => {
   const { token } = useUserProps();
 
   // Add custom styles depending on project purpose and unit type
-  const buttonClasses = clsx(
-    styles.donationButton,
-    projectPurpose === 'conservation' && styles.conservation,
-    contributionUnitType === 'm2' && styles.restoration,
-    customButtonClasses
-  );
+  const buttonClasses = clsx(styles.donationButton, customButtonClasses, {
+    [styles.conservation]: projectPurpose === 'conservation',
+    [styles.restoration]: contributionUnitType === 'm2',
+  });
 
   // Construct donate link
   const donateLink = getDonationUrl(

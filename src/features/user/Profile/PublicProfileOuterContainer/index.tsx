@@ -8,10 +8,9 @@ const PublicProfileOuterContainer = ({ children }: { children: ReactNode }) => {
   const { isImpersonationModeOn } = useUserProps();
   return (
     <main
-      className={clsx(
-        styles.mainContainer,
-        isImpersonationModeOn && styles.impersonationMode
-      )}
+      className={clsx(styles.mainContainer, {
+        [styles.impersonationMode]: isImpersonationModeOn,
+      })}
     >
       {children}
     </main>

@@ -60,10 +60,9 @@ const ProfileLayout = () => {
       </section>
       <section
         id="map-container"
-        className={clsx(
-          styles.mapContainer,
-          !isContributionsDataLoaded && styles.loading
-        )}
+        className={clsx(styles.mapContainer, {
+          [styles.loading]: !isContributionsDataLoaded,
+        })}
       >
         {isContributionsDataLoaded ? (
           <ContributionsMap profilePageType="private" />
@@ -73,10 +72,9 @@ const ProfileLayout = () => {
       </section>
       <section
         id="progress-container"
-        className={clsx(
-          styles.progressContainer,
-          !isProgressDataLoaded && styles.loading
-        )}
+        className={clsx(styles.progressContainer, {
+          [styles.loading]: !isProgressDataLoaded,
+        })}
       >
         {isProgressDataLoaded ? (
           <ForestProgress profilePageType="private" />
@@ -86,10 +84,9 @@ const ProfileLayout = () => {
       </section>
       <section
         id="my-contributions-container"
-        className={clsx(
-          styles.myContributionsContainer,
-          !isContributionsDataLoaded && styles.loading
-        )}
+        className={clsx(styles.myContributionsContainer, {
+          [styles.loading]: !isContributionsDataLoaded,
+        })}
       >
         {isContributionsDataLoaded && profile ? (
           <MyContributions profilePageType="private" userProfile={profile} />
@@ -99,10 +96,9 @@ const ProfileLayout = () => {
       </section>
       <section
         id="community-contributions-container"
-        className={clsx(
-          styles.communityContributionsContainer,
-          !isLeaderboardLoaded && styles.loading
-        )}
+        className={clsx(styles.communityContributionsContainer, {
+          [styles.loading]: !isLeaderboardLoaded,
+        })}
       >
         {isLeaderboardLoaded && profile ? (
           <CommunityContributions

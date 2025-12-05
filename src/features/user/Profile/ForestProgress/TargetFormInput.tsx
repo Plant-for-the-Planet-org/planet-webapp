@@ -55,10 +55,9 @@ const TargetFormInput = ({
 
   return (
     <div
-      className={clsx(
-        targetContainerClass,
-        isLocalTargetSet && isChecked && styles[dataType]
-      )}
+      className={clsx(targetContainerClass, {
+        [styles[dataType]]: isLocalTargetSet && isChecked,
+      })}
     >
       <div className={styles.switchContainer}>
         <TargetFormInputLabel dataType={dataType} />
