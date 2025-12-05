@@ -60,10 +60,9 @@ const MobileMapSettingsLayout = ({ setIsOpen, children }: Props) => {
       </div>
       <div
         ref={scrollRef}
-        className={clsx(
-          styles.scrollableContent,
-          isAtBottom && styles.atBottom
-        )}
+        className={clsx(styles.scrollableContent, {
+          [styles.atBottom]: isAtBottom,
+        })}
       >
         {children}
       </div>

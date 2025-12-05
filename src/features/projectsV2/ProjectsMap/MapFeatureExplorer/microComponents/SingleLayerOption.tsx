@@ -57,19 +57,17 @@ const SingleLayerOption = ({
     }
   }, []);
 
-  const singleLayerOptionStyles = clsx(
-    styles.singleLayerOption,
-    isLegendVisible && styles.legendVisible
-  );
+  const singleLayerOptionStyles = clsx(styles.singleLayerOption, {
+    [styles.legendVisible]: isLegendVisible,
+  });
 
   return (
     <div className={singleLayerOptionStyles}>
       <div className={styles.layerControls}>
         <div
-          className={clsx(
-            styles.layerLabel,
-            hasInfoPopover && styles.additionalInfo
-          )}
+          className={clsx(styles.layerLabel, {
+            [styles.additionalInfo]: hasInfoPopover,
+          })}
         >
           <p
             onMouseEnter={hasInfoPopover ? handleMouseEnter : undefined}

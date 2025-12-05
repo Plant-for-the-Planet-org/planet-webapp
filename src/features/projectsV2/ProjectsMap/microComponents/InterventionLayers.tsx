@@ -47,10 +47,9 @@ const SampleTreeMarker = ({
   >
     <div
       key={`${sampleTree.id}-marker`}
-      className={clsx(
-        styles.single,
-        sampleTree.hid === selectedSampleTree?.hid && styles.singleSelected
-      )}
+      className={clsx(styles.single, {
+        [styles.singleSelected]: sampleTree.hid === selectedSampleTree?.hid,
+      })}
       role="button"
       tabIndex={0}
       onClick={(e) => toggleSampleTree(e, sampleTree)}

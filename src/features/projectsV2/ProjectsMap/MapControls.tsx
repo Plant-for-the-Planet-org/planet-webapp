@@ -150,11 +150,11 @@ const MapControls = ({
 
   const projectListControlsContainerStyles = clsx(
     styles.projectListControlsContainer,
-    isEmbedMode && styles.embedModeMobile
+    { [styles.embedModeMobile]: isEmbedMode }
   );
   const siteInterventionDropdownsMobileStyles = clsx(
     styles.siteInterventionDropdownsMobile,
-    isEmbedMode && styles.embedModeMobile
+    { [styles.embedModeMobile]: isEmbedMode }
   );
 
   return (

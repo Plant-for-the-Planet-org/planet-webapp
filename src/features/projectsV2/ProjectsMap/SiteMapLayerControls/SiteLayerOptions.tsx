@@ -72,7 +72,9 @@ const SingleLayerOption = ({
 }: SingleOptionProps) => {
   return (
     <div
-      className={clsx(styles.singleLayerOption, isSelected && styles.selected)}
+      className={clsx(styles.singleLayerOption, {
+        [styles.selected]: isSelected,
+      })}
       onClick={() => handleLayerSelection(option)}
       role="button"
     >

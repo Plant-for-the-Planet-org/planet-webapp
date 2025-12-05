@@ -18,7 +18,9 @@ const SingleTab = ({
 }: SingleTabProps) => {
   return (
     <button
-      className={clsx(styles.singleTabOption, isSelected && styles.selected)}
+      className={clsx(styles.singleTabOption, {
+        [styles.selected]: isSelected,
+      })}
       onClick={onClickHandler}
     >
       {icon}

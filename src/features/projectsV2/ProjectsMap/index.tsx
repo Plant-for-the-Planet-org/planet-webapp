@@ -315,7 +315,11 @@ function ProjectsMap(props: ProjectsMapProps) {
     <>
       <MapControls {...mapControlProps} />
 
-      <div className={clsx(styles.mapContainer, mobileOS && styles[mobileOS])}>
+      <div
+        className={clsx(styles.mapContainer, {
+          ...(mobileOS && { [styles[mobileOS]]: true }),
+        })}
+      >
         {shouldShowMapTabs && (
           <MapTabs
             selectedTab={selectedTab}

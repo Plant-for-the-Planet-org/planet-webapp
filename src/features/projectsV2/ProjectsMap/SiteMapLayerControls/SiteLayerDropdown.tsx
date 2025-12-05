@@ -55,10 +55,9 @@ const SiteLayerDropdown = ({
           </span>
         </p>
         <div
-          className={clsx(
-            styles.dropdownButtonArrow,
-            isOpen && styles.arrowRotated
-          )}
+          className={clsx(styles.dropdownButtonArrow, {
+            [styles.arrowRotated]: isOpen,
+          })}
         >
           <DropdownDownArrow width={10} />
         </div>
