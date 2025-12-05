@@ -131,8 +131,10 @@ export default function BasicDetails({
   });
   const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
 
-  const isEditMode = Boolean(projectDetails?.unitType);
-
+  const canChangeUnitType =
+    !projectDetails ||
+    (projectDetails.verificationStatus === 'incomplete' &&
+      projectDetails.reviewRequested === false);
   useEffect(() => {
     //loads the default map style
     async function loadMapStyle() {
@@ -533,7 +535,7 @@ export default function BasicDetails({
                     error={
                       'unitType' in errors && errors.unitType !== undefined
                     }
-                    disabled={isEditMode}
+                    disabled={!canChangeUnitType}
                     helperText={
                       'unitType' in errors &&
                       errors.unitType !== undefined &&
