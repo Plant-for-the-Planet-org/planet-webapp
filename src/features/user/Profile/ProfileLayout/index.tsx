@@ -11,6 +11,7 @@ import ForestProgress from '../ForestProgress';
 import CommunityContributions from '../CommunityContributions';
 import { useMyForest } from '../../../common/Layout/MyForestContext';
 import MyContributions from '../MyContributions';
+import { clsx } from 'clsx';
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 
@@ -59,9 +60,9 @@ const ProfileLayout = () => {
       </section>
       <section
         id="map-container"
-        className={`${styles.mapContainer} ${
-          !isContributionsDataLoaded ? styles.loading : ''
-        }`}
+        className={clsx(styles.mapContainer, {
+          [styles.loading]: !isContributionsDataLoaded,
+        })}
       >
         {isContributionsDataLoaded ? (
           <ContributionsMap profilePageType="private" />
@@ -71,9 +72,9 @@ const ProfileLayout = () => {
       </section>
       <section
         id="progress-container"
-        className={`${styles.progressContainer} ${
-          !isProgressDataLoaded ? styles.loading : ''
-        }`}
+        className={clsx(styles.progressContainer, {
+          [styles.loading]: !isProgressDataLoaded,
+        })}
       >
         {isProgressDataLoaded ? (
           <ForestProgress profilePageType="private" />
@@ -83,9 +84,9 @@ const ProfileLayout = () => {
       </section>
       <section
         id="my-contributions-container"
-        className={`${styles.myContributionsContainer} ${
-          !isContributionsDataLoaded ? styles.loading : ''
-        }`}
+        className={clsx(styles.myContributionsContainer, {
+          [styles.loading]: !isContributionsDataLoaded,
+        })}
       >
         {isContributionsDataLoaded && profile ? (
           <MyContributions profilePageType="private" userProfile={profile} />
@@ -95,10 +96,9 @@ const ProfileLayout = () => {
       </section>
       <section
         id="community-contributions-container"
-        className={`
-					${styles.communityContributionsContainer} ${
-          !isLeaderboardLoaded ? styles.loading : ''
-        }`}
+        className={clsx(styles.communityContributionsContainer, {
+          [styles.loading]: !isLeaderboardLoaded,
+        })}
       >
         {isLeaderboardLoaded && profile ? (
           <CommunityContributions

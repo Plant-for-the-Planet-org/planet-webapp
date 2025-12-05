@@ -5,6 +5,7 @@ import { calculateGraphSegmentLengths } from '../../../../utils/myForestUtils';
 import { useMemo } from 'react';
 import EditButton from './microComponents/EditButton';
 import ProgressData from './microComponents/ProgressData';
+import { clsx } from 'clsx';
 
 export type ProgressDataType =
   | 'treesPlanted'
@@ -34,7 +35,7 @@ const ForestProgressItem = ({
   );
 
   return (
-    <div className={`${styles.progressMainContainer} ${styles[dataType]}`}>
+    <div className={clsx(styles.progressMainContainer, styles[dataType])}>
       {profilePageType === 'private' && (
         <EditButton
           handleEditTargets={handleEditTargets}

@@ -3,6 +3,7 @@ import type {
   GiftReceivedDetails,
 } from '../../../common/types/myForest';
 
+import { clsx } from 'clsx';
 import GiftLabel from './GiftLabel';
 import styles from './MyContributions.module.scss';
 
@@ -14,9 +15,9 @@ interface Props {
 const ItemImage = ({ imageUrl, giftDetails }: Props) => {
   return (
     <div
-      className={`${styles.itemImageContainer} ${
-        !giftDetails ? styles.roundedCorners : ''
-      }`}
+      className={clsx(styles.itemImageContainer, {
+        [styles.roundedCorners]: !giftDetails,
+      })}
       style={
         imageUrl
           ? {
