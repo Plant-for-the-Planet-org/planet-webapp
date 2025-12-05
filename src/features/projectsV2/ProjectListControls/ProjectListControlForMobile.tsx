@@ -78,14 +78,15 @@ const ProjectListControlForMobile = ({
 
   const projectListControlsMobileClasses = clsx(
     styles.projectListControlsMobile,
-    selectedMode === 'map' && styles.mapModeControls,
-    isImpersonationModeOn && styles.impersonationMode
+    {
+      [styles.mapModeControls]: selectedMode === 'map',
+      [styles.impersonationMode]: isImpersonationModeOn,
+    }
   );
 
-  const tabContainerClasses = clsx(
-    styles.tabsContainer,
-    isImpersonationModeOn && styles.impersonationMode
-  );
+  const tabContainerClasses = clsx(styles.tabsContainer, {
+    [styles.impersonationMode]: isImpersonationModeOn,
+  });
 
   const activeSearchFieldProps = {
     setIsFilterOpen,

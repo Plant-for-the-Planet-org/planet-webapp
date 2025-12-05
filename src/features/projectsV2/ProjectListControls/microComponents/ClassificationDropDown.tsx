@@ -87,10 +87,9 @@ export const ClassificationDropDown = ({
 
   return (
     <div
-      className={clsx(
-        styles.classificationListContainer,
-        selectedMode === 'list' && styles.listMode
-      )}
+      className={clsx(styles.classificationListContainer, {
+        [styles.listMode]: selectedMode === 'list',
+      })}
     >
       <button
         className={styles.filterButton}

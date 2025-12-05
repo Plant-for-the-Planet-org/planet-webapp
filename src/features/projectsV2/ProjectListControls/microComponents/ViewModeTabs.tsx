@@ -56,10 +56,11 @@ const ViewModeTabs = ({
 
   return selectedMode ? (
     <div
-      className={clsx(
-        isSearching ? styles.tabContainerSecondary : styles.tabContainer,
-        selectedMode === 'map' && styles.mapModeTabs
-      )}
+      className={clsx({
+        [styles.tabContainerSecondary]: isSearching,
+        [styles.tabContainer]: !isSearching,
+        [styles.mapModeTabs]: selectedMode === 'map',
+      })}
     >
       <TabItem
         selectedTab="list"

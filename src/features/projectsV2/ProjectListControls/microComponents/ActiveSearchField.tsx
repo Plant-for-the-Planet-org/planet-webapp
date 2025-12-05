@@ -44,10 +44,9 @@ const ActiveSearchField = ({
   };
   return (
     <div
-      className={clsx(
-        styles.activeSearchFieldContainer,
-        onlyMapModeAllowed && styles.onlyMapMode
-      )}
+      className={clsx(styles.activeSearchFieldContainer, {
+        [styles.onlyMapMode]: onlyMapModeAllowed,
+      })}
     >
       <button className={styles.activeSearchIcon}>
         <SearchIcon />

@@ -26,10 +26,11 @@ export const SearchAndFilter = ({
 }: ProjectSearchAndFilterProps) => {
   return (
     <div
-      className={clsx(
-        isMobile ? styles.iconsContainerMobile : styles.iconsContainer,
-        isMobile && selectedMode === 'map' && styles.mapModeButtons
-      )}
+      className={clsx({
+        [styles.iconsContainerMobile]: isMobile,
+        [styles.iconsContainer]: !isMobile,
+        [styles.mapModeButtons]: isMobile && selectedMode === 'map',
+      })}
     >
       <button onClick={() => setIsSearching(!isSearching)}>
         <SearchIcon />
