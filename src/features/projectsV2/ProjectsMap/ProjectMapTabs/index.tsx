@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import FieldDataIcon from '../../../../../public/assets/images/icons/FieldDataIcon';
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
 import themeProperties from '../../../../theme/themeProperties';
+// import { clsx } from 'clsx';
 
 export type SelectedTab = 'field' | 'timeTravel';
 
@@ -48,11 +49,7 @@ const MapTabs = ({
       {/* <SingleTab
         icon={
           <SatelliteAnalysisIcon
-            color={
-              selectedTab === 'satellite'
-                ? colors.white
-								: colors.coreText
-            }
+            color={selectedTab === 'satellite' ? colors.white : colors.coreText}
           />
         }
         title={tProjectDetails('satelliteAnalysis')}
@@ -60,11 +57,10 @@ const MapTabs = ({
         onClickHandler={() => setSelectedTab('satellite')}
       />
       <div
-        className={
-          setSeparatorVisibility(selectedTab, 0)
-            ? styles.showSeparator1
-            : styles.hideSeparator
-        }
+        className={clsx({
+          [styles.showSeparator1]: setSeparatorVisibility(selectedTab, 0),
+          [styles.hideSeparator]: !setSeparatorVisibility(selectedTab, 0),
+        })}
       ></div> */}
       <SingleTab
         icon={
@@ -78,11 +74,10 @@ const MapTabs = ({
       />
       {/* Code below will be used in the future, don't remove it */}
       {/* <div
-        className={
-          setSeparatorVisibility(selectedTab, 1)
-            ? styles.showSeparator2
-            : styles.hideSeparator
-        }
+        className={clsx({
+          [styles.showSeparator2]: setSeparatorVisibility(selectedTab, 1),
+          [styles.hideSeparator]: !setSeparatorVisibility(selectedTab, 1),
+        })}
       ></div> */}
       {isTimeTravelEnabled && (
         <SingleTab

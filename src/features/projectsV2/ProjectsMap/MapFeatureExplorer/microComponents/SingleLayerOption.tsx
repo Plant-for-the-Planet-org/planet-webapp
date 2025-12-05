@@ -13,6 +13,7 @@ import LayerInfoPopupContent from './LayerInfoPopupContent';
 import { StyledSwitch } from '../CustomSwitch';
 import styles from '../MapFeatureExplorer.module.scss';
 import LayerLegend from './LayerLegend';
+import { clsx } from 'clsx';
 
 interface Props {
   layerConfig: LayerConfig;
@@ -56,17 +57,17 @@ const SingleLayerOption = ({
     }
   }, []);
 
-  const singleLayerOptionStyles = `${styles.singleLayerOption} ${
-    isLegendVisible ? styles.legendVisible : ''
-  }`;
+  const singleLayerOptionStyles = clsx(styles.singleLayerOption, {
+    [styles.legendVisible]: isLegendVisible,
+  });
 
   return (
     <div className={singleLayerOptionStyles}>
       <div className={styles.layerControls}>
         <div
-          className={`${styles.layerLabel} ${
-            hasInfoPopover ? styles.additionalInfo : ''
-          }`}
+          className={clsx(styles.layerLabel, {
+            [styles.additionalInfo]: hasInfoPopover,
+          })}
         >
           <p
             onMouseEnter={hasInfoPopover ? handleMouseEnter : undefined}

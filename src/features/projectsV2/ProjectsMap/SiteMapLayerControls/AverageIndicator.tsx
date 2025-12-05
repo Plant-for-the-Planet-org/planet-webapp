@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import AverageMarkerIcon from '../../../../../public/assets/images/icons/projectV2/AverageMarkerIcon';
 import styles from './SiteMapLayerControls.module.scss';
 
@@ -34,11 +35,12 @@ const AverageIndicator = ({
   const isNearLeftEdge = averagePosition < leftThreshold;
   const isNearRightEdge = averagePosition > rightThreshold;
 
-  const averageIndicatorStyles = `${styles.averageIndicator} ${
-    average > 0 ? styles.positive : styles.negative
-  } ${isNearLeftEdge ? styles.leftAligned : ''} ${
-    isNearRightEdge ? styles.rightAligned : ''
-  }`;
+  const averageIndicatorStyles = clsx(styles.averageIndicator, {
+    [styles.positive]: average > 0,
+    [styles.negative]: average <= 0,
+    [styles.leftAligned]: isNearLeftEdge,
+    [styles.rightAligned]: isNearRightEdge,
+  });
 
   return (
     <div

@@ -17,6 +17,7 @@ import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIco
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
 import { AllInterventions } from '../../../utils/constants/intervention';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { clsx } from 'clsx';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -75,6 +76,7 @@ const MapControls = ({
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 0;
+  const isEmbedMode = embed === 'true';
   const canShowSatelliteToggle =
     !(
       isMobile &&
@@ -140,19 +142,20 @@ const MapControls = ({
     setSelectedMode && setSelectedMode('list');
   };
 
-  const layerToggleClass = `${styles.layerToggle} ${
-    isMobile
-      ? mobileOS === 'android'
-        ? styles.layerToggleAndroid
-        : styles.layerToggleIos
-      : styles.layerToggleDesktop
-  }`;
-  const projectListControlsContainerStyles = `${
-    styles.projectListControlsContainer
-  } ${embed === 'true' ? styles.embedModeMobile : ''}`;
-  const siteInterventionDropdownsMobileStyles = `${
-    styles.siteInterventionDropdownsMobile
-  } ${embed === 'true' ? styles.embedModeMobile : ''}`;
+  const layerToggleClass = clsx(styles.layerToggle, {
+    [styles.layerToggleAndroid]: isMobile && mobileOS === 'android',
+    [styles.layerToggleIos]: isMobile && mobileOS === 'ios',
+    [styles.layerToggleDesktop]: !isMobile,
+  });
+
+  const projectListControlsContainerStyles = clsx(
+    styles.projectListControlsContainer,
+    { [styles.embedModeMobile]: isEmbedMode }
+  );
+  const siteInterventionDropdownsMobileStyles = clsx(
+    styles.siteInterventionDropdownsMobile,
+    { [styles.embedModeMobile]: isEmbedMode }
+  );
 
   return (
     <>

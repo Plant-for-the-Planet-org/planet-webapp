@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import styles from './ProjectMapTabs.module.scss';
+import { clsx } from 'clsx';
 
 interface SingleTabProps {
   icon: ReactNode;
@@ -17,9 +18,9 @@ const SingleTab = ({
 }: SingleTabProps) => {
   return (
     <button
-      className={`${styles.singleTabOption} ${
-        isSelected ? styles.selected : ''
-      }`}
+      className={clsx(styles.singleTabOption, {
+        [styles.selected]: isSelected,
+      })}
       onClick={onClickHandler}
     >
       {icon}
