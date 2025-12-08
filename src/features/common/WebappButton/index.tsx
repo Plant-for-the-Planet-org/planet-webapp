@@ -123,10 +123,9 @@ function WebappButton({
       )}
       <div className={styles.webappButtonLabelContainer}>
         <span
-          className={clsx(
-            styles.webappButtonLabel,
-            otherProps.loading && styles.visuallyHidden
-          )}
+          className={clsx(styles.webappButtonLabel, {
+            [styles.visuallyHidden]: otherProps.loading,
+          })}
         >
           {otherProps.text}
         </span>

@@ -19,10 +19,9 @@ const ImpersonationBanner = () => {
 const MainNavigationHeader = () => {
   const { isImpersonationModeOn } = useUserProps();
 
-  const headerStyles = clsx(
-    styles.mainNavigationHeader,
-    isImpersonationModeOn && styles.impersonationMode
-  );
+  const headerStyles = clsx(styles.mainNavigationHeader, {
+    [styles.impersonationMode]: isImpersonationModeOn,
+  });
   return (
     <header className={headerStyles}>
       <NavbarBrandLogos />

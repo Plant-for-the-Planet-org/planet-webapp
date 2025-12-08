@@ -12,10 +12,9 @@ interface Props {
 export default function LandingSection(props: Props) {
   return (
     <div
-      className={clsx(
-        styles.landingSection,
-        props.fixedBg && styles.landingSectionFixedBG
-      )}
+      className={clsx(styles.landingSection, {
+        [styles.landingSectionFixedBG]: props.fixedBg,
+      })}
       style={{
         background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.4), rgba(0,0,0,0), rgba(0,0,0,0)), url(${
           props.imageSrc

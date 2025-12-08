@@ -44,12 +44,12 @@ const MobileProjectsLayout = ({
     }
   }, [page, isEmbedded, isContextLoaded, showProjectDetails, showProjectList]);
 
-  const mobileLayoutClass = clsx(
-    styles.mobileProjectsLayout,
-    selectedMode === 'map' && styles.mapMode,
-    isEmbedded && styles.embedModeMobile,
-    isImpersonationModeOn && styles.impersonationMobile
-  );
+  const mobileLayoutClass = clsx(styles.mobileProjectsLayout, {
+    [styles.mapMode]: selectedMode === 'map',
+    [styles.embedModeMobile]: isEmbedded,
+    [styles.impersonationMobile]: isImpersonationModeOn,
+  });
+
   return (
     <ProjectsProvider
       page={page}

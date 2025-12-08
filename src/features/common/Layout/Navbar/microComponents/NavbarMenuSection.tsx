@@ -72,10 +72,9 @@ const NavbarMenuSection = ({
       )}
 
       <div
-        className={clsx(
-          styles.menuStyles,
-          isOnlyIconSection && styles.onlyIcon
-        )}
+        className={clsx(styles.menuStyles, {
+          [styles.onlyIcon]: isOnlyIconSection,
+        })}
       >
         {items.map((item) => {
           return (

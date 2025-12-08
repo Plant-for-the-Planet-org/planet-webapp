@@ -313,10 +313,11 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         <MenuIcon />
       </div>
       <div
-        className={clsx(
-          isImpersonationModeOn ? styles.sidebarModified : styles.sidebar,
-          !isMobileMenuOpen && styles.menuClosed
-        )}
+        className={clsx({
+          [styles.sidebarModified]: isImpersonationModeOn,
+          [styles.sidebar]: !isImpersonationModeOn,
+          [styles.menuClosed]: !isMobileMenuOpen,
+        })}
       >
         <div className={styles.navLinksContainer}>
           <>

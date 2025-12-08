@@ -130,11 +130,10 @@ function NavLink({
   return (
     <div className={styles.navLinkMenu}>
       <div
-        className={clsx(
-          styles.navLink,
-          isCurrentMainMenu && styles.navLinkActive,
-          isSubMenuOpen && styles.navLinkOpen
-        )}
+        className={clsx(styles.navLink, {
+          [styles.navLinkActive]: isCurrentMainMenu,
+          [styles.navLinkOpen]: isSubMenuOpen,
+        })}
         onClick={handleMainMenuClick}
       >
         <IconContainer>{link.icon}</IconContainer>
