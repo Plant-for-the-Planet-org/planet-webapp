@@ -26,6 +26,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
+import { clsx } from 'clsx';
 
 type ExpenseFormData = {
   year: Date;
@@ -174,10 +175,7 @@ export default function ProjectSpending({
           <InlineFormDisplayGroup>
             {uploadedFiles.map((report) => {
               return (
-                <div
-                  key={report.id}
-                  className={` ${styles.reportPDFContainer}`}
-                >
+                <div key={report.id} className={styles.reportPDFContainer}>
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
@@ -203,9 +201,9 @@ export default function ProjectSpending({
         ) : null}
         {showForm ? (
           <div
-            className={`${styles.expenseContainer} ${
-              isUploadingData ? styles.shallowOpacity : ''
-            }`}
+            className={clsx(styles.expenseContainer, {
+              [styles.shallowOpacity]: isUploadingData,
+            })}
             style={{ width: 'inherit' }}
           >
             <InlineFormDisplayGroup>
