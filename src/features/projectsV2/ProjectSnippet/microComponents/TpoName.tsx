@@ -47,7 +47,7 @@ const TpoName = ({
   const tpoNameContainerClasses = clsx(
     styles.projectTpoName,
     tpoNameBackgroundClass,
-    page === 'project-details' && styles.projectTpoNameSecondary
+    { [styles.projectTpoNameSecondary]: page === 'project-details' }
   );
   return (
     <div className={tpoNameContainerClasses} onClick={handleClick}>

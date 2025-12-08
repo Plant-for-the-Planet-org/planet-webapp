@@ -349,10 +349,11 @@ export default function RecurrencyRecord({
   setCancelDonation,
   setReactivateDonation,
 }: Props): ReactElement {
-  const outerDivClasses = clsx(
-    isModal ? styles.recordModal : styles.record,
-    !isModal && selectedRecord === index && styles.selected
-  );
+  const outerDivClasses = clsx({
+    [styles.recordModal]: isModal,
+    [styles.record]: !isModal,
+    [styles.selected]: !isModal && selectedRecord === index,
+  });
 
   return (
     <div className={outerDivClasses}>

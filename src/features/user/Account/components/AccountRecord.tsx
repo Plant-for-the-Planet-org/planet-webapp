@@ -435,10 +435,11 @@ export default function AccountRecord({
 }: Props): ReactElement {
   const t = useTranslations('Me');
 
-  const outerDivClasses = clsx(
-    isModal ? styles.recordModal : styles.record,
-    !isModal && selectedRecord === index && styles.selected
-  );
+  const outerDivClasses = clsx({
+    [styles.recordModal]: isModal,
+    [styles.record]: !isModal,
+    [styles.selected]: !isModal && selectedRecord === index,
+  });
 
   const showDownloads = useMemo(() => {
     if (

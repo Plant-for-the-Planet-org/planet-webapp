@@ -24,10 +24,9 @@ const CompleteSignupLayout = ({
       }}
     >
       <div
-        className={clsx(
-          styles.signupFormContainer,
-          isSubmitting && styles.submitting
-        )}
+        className={clsx(styles.signupFormContainer, {
+          [styles.submitting]: isSubmitting,
+        })}
         style={{
           backgroundColor:
             theme === 'theme-light'

@@ -36,10 +36,9 @@ interface BadgeLabelProps {
 const BadgeLabel = ({ icon, title, isInteractive }: BadgeLabelProps) => {
   return (
     <div
-      className={clsx(
-        styles.projectBadge,
-        !isInteractive && styles.nonInteractive
-      )}
+      className={clsx(styles.projectBadge, {
+        [styles.nonInteractive]: !isInteractive,
+      })}
       onClick={(e) => e.preventDefault()}
     >
       <div className={styles.badgeIcon}>{icon}</div>

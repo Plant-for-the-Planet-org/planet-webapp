@@ -161,10 +161,10 @@ export default function ProjectSnippet({
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
 
-  const projectSnippetContainerClasses = clsx(
-    styles.singleProject,
-    page === 'project-details' && isMobile && styles.projectDetailsSnippetMobile
-  );
+  const projectSnippetContainerClasses = clsx(styles.singleProject, {
+    [styles.projectDetailsSnippetMobile]:
+      page === 'project-details' && isMobile,
+  });
   const ProjectSnippetContentProps = {
     showTooltipPopups,
     page,

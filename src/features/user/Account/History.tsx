@@ -72,10 +72,9 @@ export default function History({
               return (
                 <div
                   key={item[0]}
-                  className={clsx(
-                    styles.filterButton,
-                    filter === item[0] && styles.selected
-                  )}
+                  className={clsx(styles.filterButton, {
+                    [styles.selected]: filter === item[0],
+                  })}
                   onClick={() => handleSetFilter(item[0])}
                 >
                   {t(item[0])}
@@ -142,10 +141,9 @@ export default function History({
                     return (
                       <div
                         key={item[0]}
-                        className={clsx(
-                          styles.filterButton,
-                          filter === item[0] && styles.selected
-                        )}
+                        className={clsx(styles.filterButton, {
+                          [styles.selected]: filter === item[0],
+                        })}
                         onClick={() => handleSetFilter(item[0])}
                       >
                         {t(item[0])}

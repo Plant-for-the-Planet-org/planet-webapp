@@ -14,11 +14,10 @@ const MembershipCta = ({ placement }: Props) => {
 
   return (
     <a
-      className={clsx(
-        styles.membershipCta,
-        placement === 'top' && styles.membershipCtaTop,
-        placement === 'right' && styles.membershipCtaRight
-      )}
+      className={clsx(styles.membershipCta, {
+        [styles.membershipCtaTop]: placement === 'top',
+        [styles.membershipCtaRight]: placement === 'right',
+      })}
       href={
         locale === 'de'
           ? 'https://www.plant-for-the-planet.org/de/foerdermitgliedschaft/'
