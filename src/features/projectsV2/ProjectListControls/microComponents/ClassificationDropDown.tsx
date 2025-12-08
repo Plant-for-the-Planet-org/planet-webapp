@@ -16,6 +16,7 @@ import {
   Mangroves,
 } from '../../../../../public/assets/images/icons/projectV2/PointMarkerIconsSymbol';
 import DollarIcon from '../../../../../public/assets/images/icons/projectV2/DollarIcon';
+import { clsx } from 'clsx';
 
 interface ClassificationDropDownProps {
   selectedClassification: TreeProjectClassification[];
@@ -58,37 +59,38 @@ export const ClassificationDropDown = ({
   const isFilterApplied =
     selectedClassification.length > 0 || showDonatableProjects;
 
-  const filterListContainerClass = `${styles.classificationListContainer} ${
-    selectedMode === 'list' ? styles.listMode : ''
-  }`;
-
   const classificationFilters = useMemo(() => {
-    return availableFilters.map((filterItem, index) => (
-      <button
-        key={filterItem}
-        className={styles.filterButton}
-        onClick={() => handleFilterSelection(filterItem)}
-      >
-        <div
-          className={`${
-            selectedClassification?.includes(filterItem)
-              ? styles.selected
-              : styles.unselected
-          } 
-          ${styles.classificationItem}`}
+    return availableFilters.map((filterItem, index) => {
+      const isSelected = selectedClassification.includes(filterItem);
+      return (
+        <button
+          key={filterItem}
+          className={styles.filterButton}
+          onClick={() => handleFilterSelection(filterItem)}
         >
-          {classificationItemIcons[filterItem]}
-          {tAllProjects(`classificationTypes.${filterItem}`)}
-        </div>
-        {index !== availableFilters.length - 1 && (
-          <hr className={styles.hrLine} />
-        )}
-      </button>
-    ));
+          <div
+            className={clsx(styles.classificationItem, {
+              [styles.selected]: isSelected,
+              [styles.unselected]: !isSelected,
+            })}
+          >
+            {classificationItemIcons[filterItem]}
+            {tAllProjects(`classificationTypes.${filterItem}`)}
+          </div>
+          {index !== availableFilters.length - 1 && (
+            <hr className={styles.hrLine} />
+          )}
+        </button>
+      );
+    });
   }, [availableFilters, selectedClassification, handleFilterSelection]);
 
   return (
-    <div className={filterListContainerClass}>
+    <div
+      className={clsx(styles.classificationListContainer, {
+        [styles.listMode]: selectedMode === 'list',
+      })}
+    >
       <button
         className={styles.filterButton}
         onClick={() => {
@@ -97,7 +99,12 @@ export const ClassificationDropDown = ({
         }}
         type="button"
       >
-        <div className={isFilterApplied ? styles.unselected : styles.selected}>
+        <div
+          className={clsx({
+            [styles.unselected]: isFilterApplied,
+            [styles.selected]: !isFilterApplied,
+          })}
+        >
           {isFilterApplied
             ? tAllProjects('clearFilter')
             : tAllProjects('noFilterApplied')}
@@ -112,9 +119,10 @@ export const ClassificationDropDown = ({
         <div className={styles.donationFilterLabel}>
           <DollarIcon />
           <span
-            className={
-              showDonatableProjects ? styles.selected : styles.unselected
-            }
+            className={clsx({
+              [styles.selected]: showDonatableProjects,
+              [styles.unselected]: !showDonatableProjects,
+            })}
           >
             {tAllProjects('acceptingDonations')}
           </span>

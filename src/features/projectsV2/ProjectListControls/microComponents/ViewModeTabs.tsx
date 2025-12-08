@@ -7,6 +7,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import styles from '../styles/ProjectListControls.module.scss';
 import ListIcon from '../../../../../public/assets/images/icons/projectV2/ListIcon';
 import LocationIconOutline from '../../../../../public/assets/images/icons/projectV2/LocationIconOutline';
+import { clsx } from 'clsx';
 
 interface ViewModeTabsProps {
   setIsFilterOpen: SetState<boolean> | undefined;
@@ -53,12 +54,14 @@ const ViewModeTabs = ({
     );
   };
 
-  const tabContainerClass = `${
-    isSearching ? styles.tabContainerSecondary : styles.tabContainer
-  } ${selectedMode === 'map' ? styles.mapModeTabs : ''}`;
-
   return selectedMode ? (
-    <div className={tabContainerClass}>
+    <div
+      className={clsx({
+        [styles.tabContainerSecondary]: isSearching,
+        [styles.tabContainer]: !isSearching,
+        [styles.mapModeTabs]: selectedMode === 'map',
+      })}
+    >
       <TabItem
         selectedTab="list"
         icon={
