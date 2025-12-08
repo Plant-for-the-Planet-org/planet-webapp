@@ -19,7 +19,9 @@ const LayerToggle = ({
       <button
         type="button"
         onClick={() => setIsSatelliteMode(false)}
-        className={clsx(styles.layerOption, !isSatelliteMode && styles.active)}
+        className={clsx(styles.layerOption, {
+          [styles.active]: !isSatelliteMode,
+        })}
         aria-pressed={!isSatelliteMode}
       >
         {tManageProjects('mapView.map')}
@@ -27,7 +29,9 @@ const LayerToggle = ({
       <button
         type="button"
         onClick={() => setIsSatelliteMode(true)}
-        className={clsx(styles.layerOption, isSatelliteMode && styles.active)}
+        className={clsx(styles.layerOption, {
+          [styles.active]: isSatelliteMode,
+        })}
         aria-pressed={isSatelliteMode}
       >
         {tManageProjects('mapView.satellite')}

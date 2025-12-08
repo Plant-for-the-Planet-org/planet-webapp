@@ -39,7 +39,7 @@ const DrawingControls = ({
             ? tManageProjects('drawing.polygon.stop')
             : tManageProjects('drawing.polygon.start')
         }
-        className={clsx(isDrawing && styles.activePolygonButton)}
+        className={clsx({ [styles.activePolygonButton]: isDrawing })}
       >
         <PolygonDrawIcon />
       </button>

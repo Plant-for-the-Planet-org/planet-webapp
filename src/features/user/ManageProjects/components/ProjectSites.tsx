@@ -330,7 +330,7 @@ export default function ProjectSites({
         </InlineFormDisplayGroup>
         {showForm ? (
           <div
-            className={clsx(isUploadingData && styles.shallowOpacity)}
+            className={clsx({ [styles.shallowOpacity]: isUploadingData })}
             style={{ width: 'inherit' }}
           >
             <InlineFormDisplayGroup>

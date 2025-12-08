@@ -103,7 +103,7 @@ function EditSite({
     >
       <Fade in={openModal}>
         <form className={styles.editSiteForm}>
-          <div className={clsx(isUploadingData && styles.shallowOpacity)}>
+          <div className={clsx({ [styles.shallowOpacity]: isUploadingData })}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
                 <Controller

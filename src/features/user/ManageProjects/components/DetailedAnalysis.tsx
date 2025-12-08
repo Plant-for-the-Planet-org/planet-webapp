@@ -781,10 +781,9 @@ export default function DetailedAnalysis({
                     onClick={() => updateMainInterventions(intervention)}
                   >
                     <div
-                      className={clsx(
-                        styles.multiSelectInputCheck,
-                        isSet && styles.multiSelectInputCheckTrue
-                      )}
+                      className={clsx(styles.multiSelectInputCheck, {
+                        [styles.multiSelectInputCheckTrue]: isSet,
+                      })}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -830,10 +829,9 @@ export default function DetailedAnalysis({
                   }}
                 >
                   <div
-                    className={clsx(
-                      styles.multiSelectInputCheck,
-                      month.isSet && styles.multiSelectInputCheckTrue
-                    )}
+                    className={clsx(styles.multiSelectInputCheck, {
+                      [styles.multiSelectInputCheckTrue]: month.isSet,
+                    })}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -1175,10 +1173,9 @@ export default function DetailedAnalysis({
                   onClick={() => handleSetSiteOwner(owner.id)}
                 >
                   <div
-                    className={clsx(
-                      styles.multiSelectInputCheck,
-                      owner.isSet && styles.multiSelectInputCheckTrue
-                    )}
+                    className={clsx(styles.multiSelectInputCheck, {
+                      [styles.multiSelectInputCheckTrue]: owner.isSet,
+                    })}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

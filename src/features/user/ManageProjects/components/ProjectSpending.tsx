@@ -201,10 +201,9 @@ export default function ProjectSpending({
         ) : null}
         {showForm ? (
           <div
-            className={clsx(
-              styles.expenseContainer,
-              isUploadingData && styles.shallowOpacity
-            )}
+            className={clsx(styles.expenseContainer, {
+              [styles.shallowOpacity]: isUploadingData,
+            })}
             style={{ width: 'inherit' }}
           >
             <InlineFormDisplayGroup>

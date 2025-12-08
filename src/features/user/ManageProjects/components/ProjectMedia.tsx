@@ -258,10 +258,9 @@ export default function ProjectMedia({
     <CenteredContainer>
       <StyledForm>
         <div
-          className={clsx(
-            'inputContainer',
-            isUploadingData && styles.shallowOpacity
-          )}
+          className={clsx('inputContainer', {
+            [styles.shallowOpacity]: isUploadingData,
+          })}
           style={{
             width: 'inherit',
           }}
@@ -324,7 +323,9 @@ export default function ProjectMedia({
                               ? colors.goldenYellow
                               : colors.coreText
                           }
-                          className={clsx(image.isDefault && 'selected')}
+                          className={clsx({
+                            selected: image.isDefault,
+                          })}
                         />
                       </IconButton>
                     </div>
