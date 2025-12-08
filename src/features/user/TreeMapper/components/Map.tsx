@@ -305,11 +305,10 @@ export default function MyTreesMap({
                         {viewport.zoom > 14 && (
                           <div
                             key={`${str.id}-marker`}
-                            className={clsx(
-                              styles.single,
-                              str.id === selectedIntervention?.id &&
-                                styles.singleSelected
-                            )}
+                            className={clsx(styles.single, {
+                              [styles.singleSelected]:
+                                str.id === selectedIntervention?.id,
+                            })}
                             role="button"
                             tabIndex={0}
                             onClick={() => setSelectedIntervention(str)}
@@ -333,11 +332,10 @@ export default function MyTreesMap({
                     onClick={() => {
                       setSelectedIntervention(intervention);
                     }}
-                    className={clsx(
-                      styles.single,
-                      intervention.id === selectedIntervention?.id &&
-                        styles.singleSelected
-                    )}
+                    className={clsx(styles.single, {
+                      [styles.singleSelected]:
+                        intervention.id === selectedIntervention?.id,
+                    })}
                     role="button"
                     tabIndex={0}
                   />

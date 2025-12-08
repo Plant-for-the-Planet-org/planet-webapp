@@ -33,10 +33,9 @@ export default function TreeMapperList({
 
   return (
     <div
-      className={clsx(
-        styles.locationList,
-        selectedIntervention && styles.hideOnMobile
-      )}
+      className={clsx(styles.locationList, {
+        [styles.hideOnMobile]: selectedIntervention,
+      })}
     >
       {!interventions && isDataLoading ? (
         <>
