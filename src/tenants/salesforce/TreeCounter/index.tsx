@@ -24,11 +24,10 @@ export default function TreeCounter({
     (!shouldShowMillions && planted >= 0);
   return (
     <div
-      className={clsx(
-        treeCounterStyles.treeCounter,
-        isLight && treeCounterStyles.treeCounterLight,
-        isReady && treeCounterStyles.treeCounterReady
-      )}
+      className={clsx(treeCounterStyles.treeCounter, {
+        [treeCounterStyles.treeCounterLight]: isLight,
+        [treeCounterStyles.treeCounterReady]: isReady,
+      })}
     >
       <div className={treeCounterStyles.treeCounterDataField}>
         <div

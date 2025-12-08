@@ -40,22 +40,20 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
               <button
                 id={'leaderBoardSecRecent'}
                 onClick={() => setSelectedTab('recent')}
-                className={clsx(
-                  styles.leaderBoardTableHeaderTitle,
-                  selectedTab === 'recent' &&
-                    styles.leaderBoardTableHeaderTitleSelected
-                )}
+                className={clsx(styles.leaderBoardTableHeaderTitle, {
+                  [styles.leaderBoardTableHeaderTitleSelected]:
+                    selectedTab === 'recent',
+                })}
               >
                 {tLeaderboard('mostRecent')}
               </button>
               <button
                 id={'leaderBoardSecHighest'}
                 onClick={() => setSelectedTab('highest')}
-                className={clsx(
-                  styles.leaderBoardTableHeaderTitle,
-                  selectedTab === 'highest' &&
-                    styles.leaderBoardTableHeaderTitleSelected
-                )}
+                className={clsx(styles.leaderBoardTableHeaderTitle, {
+                  [styles.leaderBoardTableHeaderTitleSelected]:
+                    selectedTab === 'highest',
+                })}
               >
                 {tLeaderboard('mostTrees')}
               </button>
