@@ -12,6 +12,7 @@ import CommunityContributionsIcon from '../../../../../public/assets/images/icon
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { useMyForestStore } from '../../../../stores/myForestStore';
+import { useShallow } from 'zustand/react/shallow';
 
 type TabOptions = 'most-recent' | 'most-trees';
 interface HeaderTabsProps {
@@ -74,12 +75,13 @@ const CommunityContributions = ({
   const t = useTranslations('Profile');
   const [tabSelected, setTabSelected] = useState<TabOptions>('most-recent');
 
-  const mostRecentContributions = useMyForestStore(
-    (state) => state.leaderboardResult?.mostRecent
+  const { mostRecentContributions, mostTreesContributions } = useMyForestStore(
+    useShallow((state) => ({
+      mostRecentContributions: state.leaderboardResult?.mostRecent,
+      mostTreesContributions: state.leaderboardResult?.mostTrees,
+    }))
   );
-  const mostTreesContributions = useMyForestStore(
-    (state) => state.leaderboardResult?.mostTrees
-  );
+
   const contributionList =
     tabSelected === 'most-recent'
       ? mostRecentContributions || []
