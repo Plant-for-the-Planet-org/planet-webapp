@@ -15,6 +15,7 @@ import { handleError } from '@planet-sdk/common';
 import { MuiAutoComplete } from '../../../../features/common/InputTypes/MuiAutoComplete';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 interface Props {
   leaderboard: any;
@@ -71,33 +72,30 @@ export default function LeaderBoardSection(leaderboard: Props) {
             <button
               id={'scoreTabRecent'}
               onClick={() => setSelectedTab('recent')}
-              className={
-                selectedTab === 'recent'
-                  ? styles.leaderBoardTableHeaderTitleSelected
-                  : styles.leaderBoardTableHeaderTitle
-              }
+              className={clsx(styles.leaderBoardTableHeaderTitle, {
+                [styles.leaderBoardTableHeaderTitleSelected]:
+                  selectedTab === 'recent',
+              })}
             >
               {tLeaderboard('mostRecent')}
             </button>
             <button
               id={'scoreHighest'}
               onClick={() => setSelectedTab('highest')}
-              className={
-                selectedTab === 'highest'
-                  ? styles.leaderBoardTableHeaderTitleSelected
-                  : styles.leaderBoardTableHeaderTitle
-              }
+              className={clsx(styles.leaderBoardTableHeaderTitle, {
+                [styles.leaderBoardTableHeaderTitleSelected]:
+                  selectedTab === 'highest',
+              })}
             >
               {tLeaderboard('mostTrees')}
             </button>
             <button
               id={'searchIconScore'}
               onClick={() => setSelectedTab('search')}
-              className={
-                selectedTab === 'search'
-                  ? styles.leaderBoardTableHeaderTitleSelected
-                  : styles.leaderBoardTableHeaderTitle
-              }
+              className={clsx(styles.leaderBoardTableHeaderTitle, {
+                [styles.leaderBoardTableHeaderTitleSelected]:
+                  selectedTab === 'search',
+              })}
             >
               <SearchIcon />
             </button>

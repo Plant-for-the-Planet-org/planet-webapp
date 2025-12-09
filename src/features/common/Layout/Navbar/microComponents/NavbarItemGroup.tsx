@@ -19,6 +19,7 @@ import {
 } from '../../../../../utils/navbarUtils';
 import { useMemo } from 'react';
 import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 type NavbarItemProps = {
   navbarItem: HeaderItem;
@@ -112,7 +113,7 @@ const NavbarItemGroup = ({
       </div>
       {isNavMenuOpen && navbarItem.menu !== undefined && (
         <div
-          className={`${styles.navbarMenu} ${styles[navbarItem.headerKey]}`}
+          className={clsx(styles.navbarMenu, styles[navbarItem.headerKey])}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
