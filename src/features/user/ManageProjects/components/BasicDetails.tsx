@@ -38,6 +38,7 @@ import { useApi } from '../../../../hooks/useApi';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { getAddressFromCoordinates } from '../../../../utils/geocoder';
+import { clsx } from 'clsx';
 
 type BaseFormData = {
   name: string;
@@ -131,6 +132,10 @@ export default function BasicDetails({
   });
   const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
 
+  const canChangeUnitType =
+    !projectDetails ||
+    (projectDetails.verificationStatus === 'incomplete' &&
+      projectDetails.reviewRequested === false);
   useEffect(() => {
     //loads the default map style
     async function loadMapStyle() {
@@ -531,11 +536,21 @@ export default function BasicDetails({
                     error={
                       'unitType' in errors && errors.unitType !== undefined
                     }
+                    disabled={!canChangeUnitType}
                     helperText={
                       'unitType' in errors &&
                       errors.unitType !== undefined &&
                       errors.unitType.message
                     }
+                    InputProps={{
+                      endAdornment: (
+                        <Tooltip title={t('unitTypeInfo')} arrow>
+                          <span style={{ marginRight: '20px' }}>
+                            <InfoIcon />
+                          </span>
+                        </Tooltip>
+                      ),
+                    }}
                   >
                     {unitTypeOptions.map((unitType) => (
                       <MenuItem key={unitType} value={unitType}>
@@ -723,7 +738,7 @@ export default function BasicDetails({
             )}
           </InlineFormDisplayGroup>
           <div
-            className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}
+            className={clsx(styles.formFieldLarge, styles.mapboxContainer)}
             style={{ width: '100%' }}
           >
             <p
@@ -760,7 +775,7 @@ export default function BasicDetails({
             </MapGL>
             <div className={styles.basicDetailsCoordinatesContainer}>
               <div
-                className={`${styles.formFieldHalf} ${styles.latLongField}`}
+                className={clsx(styles.formFieldHalf, styles.latLongField)}
                 data-test-id="latitude"
               >
                 <Controller
@@ -795,7 +810,7 @@ export default function BasicDetails({
                 />
               </div>
               <div
-                className={`${styles.formFieldHalf} ${styles.latLongField}`}
+                className={clsx(styles.formFieldHalf, styles.latLongField)}
                 data-test-id="longitude"
               >
                 <Controller

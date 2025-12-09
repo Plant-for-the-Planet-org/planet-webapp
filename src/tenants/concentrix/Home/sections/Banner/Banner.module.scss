@@ -1,0 +1,91 @@
+@import '../../../../../theme/theme';
+
+.banner {
+  height: 100vh;
+  padding-top: 25vh; // Consistent padding for all screen sizes
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.bannerVideoContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: black; // Fallback background
+  z-index: 10;
+
+  .iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+
+    // Universal sizing that works for all screen sizes
+    width: max(
+      100vw,
+      177.78vh
+    ); // Takes larger of viewport width or calculated 16:9 width
+    height: max(
+      100vh,
+      56.25vw
+    ); // Takes larger of viewport height or calculated 16:9 height
+  }
+}
+
+.bannerContent {
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.treeCounter {
+  text-align: center;
+  color: $cnxBrandBlueDark;
+
+  .counterNumber {
+    font-size: $cnxFontDisplay1;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 12px;
+
+    @include smTabletView {
+      font-size: $cnxFontDisplay3;
+    }
+
+    @include lgLaptopView {
+      font-size: $cnxFontDisplay4;
+      letter-spacing: -1px;
+    }
+
+    .comma {
+      color: $cnxBrandTeal;
+    }
+  }
+
+  .counterText {
+    font-size: $cnxFontMedium;
+    padding: 0 20px;
+    font-weight: 500;
+    line-height: 1;
+    margin: 0;
+    color: $cnxBrandBlueDark;
+
+    @include smTabletView {
+      font-size: $cnxFontLarge;
+    }
+
+    @include lgLaptopView {
+      font-size: $cnxFontXL;
+    }
+  }
+}

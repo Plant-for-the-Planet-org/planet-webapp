@@ -4,6 +4,7 @@ import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 import { useLocale } from 'next-intl';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import styles from '../../ProjectsMap/ProjectSiteDropDown/SiteDropdown.module.scss';
+import { clsx } from 'clsx';
 
 type SiteData = {
   siteName: string;
@@ -40,9 +41,9 @@ const ProjectSiteList = ({
       {siteList.map((site, index) => {
         return (
           <li
-            className={`${styles.listItem} ${
-              site.id === selectedSiteData?.id ? styles.selectedItem : ''
-            }`}
+            className={clsx(styles.listItem, {
+              [styles.selectedItem]: site.id === selectedSiteData?.id,
+            })}
             onClick={() => handleSiteSelection(index)}
             key={index}
           >

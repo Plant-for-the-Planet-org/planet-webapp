@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import styles from '../../styles/InterventionInfo.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
+import { clsx } from 'clsx';
 
 interface Props {
   totalTreesCount: number;
@@ -39,7 +40,7 @@ const SpeciesPlanted = ({
   };
 
   return (
-    <div className={`species-container ${styles.speciesContainer}`}>
+    <div className={clsx('species-container', styles.speciesContainer)}>
       <h2>
         {tProjectDetails('speciesCount', {
           count: plantedSpecies.length,

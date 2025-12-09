@@ -1,6 +1,7 @@
 import styles from './../styles/GrowingImpact.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 import Timeline from './Timeline';
+import { clsx } from 'clsx';
 
 type BaseArticle = {
   id: number;
@@ -116,20 +117,25 @@ export default function GrowingImpact() {
             return (
               <div
                 key={`climate-action-${article.id}`}
-                className={`${gridStyles.col12} ${gridStyles.colLg3} ${gridStyles.colMd6} ${styles.climateActionContent}`}
+                className={clsx(
+                  gridStyles.col12,
+                  gridStyles.colLg3,
+                  gridStyles.colMd6,
+                  styles.climateActionContent
+                )}
               >
                 <img
                   src={article.partnerLogo}
                   alt=""
-                  className={`${styles.partnerLogo}`}
+                  className={styles.partnerLogo}
                 />
                 <div
                   style={{ backgroundImage: `url(${article.image})` }}
-                  className={`${styles.imageContainer}`}
+                  className={styles.imageContainer}
                 ></div>
                 <div
                   style={{ backgroundColor: `${article.bgColor}` }}
-                  className={`${styles.contentContainer}`}
+                  className={styles.contentContainer}
                 >
                   <h5>{article.copy}</h5>
                   {article.subCopy !== undefined && <h5>{article.subCopy}</h5>}
@@ -164,7 +170,7 @@ export default function GrowingImpact() {
                   <img
                     src={article.foliage}
                     alt=""
-                    className={`${styles.foliage}`}
+                    className={styles.foliage}
                   />
                 </div>
               </div>

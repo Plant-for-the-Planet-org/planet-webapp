@@ -57,13 +57,8 @@
 }
 
 .leaderBoardTableHeaderTitleSelected {
-  padding: 8px;
   border-bottom: 2px solid $primaryColor;
-  font-family: $primaryFontFamily;
-  font-style: normal;
   font-weight: bold;
-  font-size: $fontSmall;
-  color: $primaryFontColor;
 }
 
 .leaderBoardTableHeaderTitle:hover {

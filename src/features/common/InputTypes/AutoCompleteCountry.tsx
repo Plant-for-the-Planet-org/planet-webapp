@@ -9,18 +9,7 @@ import { TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { MuiAutoComplete, StyledAutoCompleteOption } from './MuiAutoComplete';
 import { allCountries } from '../../../utils/constants/countries';
-
-// ISO 3166-1 alpha-2
-// ⚠️ No support for IE 11
-function countryToFlag(isoCode: string) {
-  return typeof String.fromCodePoint !== 'undefined'
-    ? isoCode
-        .toUpperCase()
-        .replace(/./g, (char) =>
-          String.fromCodePoint(char.charCodeAt(0) + 127397)
-        )
-    : isoCode;
-}
+import { countryToFlag } from '../../../utils/countryCurrency/countryToFlag';
 
 interface CountrySelectProps {
   label?: ReactNode;
@@ -111,7 +100,9 @@ export default function CountrySelect({
         return (
           <StyledAutoCompleteOption {...props} key={countryCode}>
             {countryCode !== 'auto' && (
-              <span>{countryToFlag(countryCode)}</span>
+              <span style={{ fontFamily: 'Twemoji Country Flags' }}>
+                {countryToFlag(countryCode)}
+              </span>
             )}
             {displayedOption}
           </StyledAutoCompleteOption>

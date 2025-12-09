@@ -13,6 +13,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { useMyForestStore } from '../../../../stores/myForestStore';
 import { useShallow } from 'zustand/react/shallow';
+import { clsx } from 'clsx';
 
 type TabOptions = 'most-recent' | 'most-trees';
 interface HeaderTabsProps {
@@ -26,13 +27,17 @@ const HeaderTabs = ({ tabSelected, setTabSelected }: HeaderTabsProps) => {
     <div className={styles.headerTabs}>
       <button
         onClick={() => setTabSelected('most-recent')}
-        className={`${tabSelected === 'most-recent' ? styles.selected : ''}`}
+        className={clsx({
+          [styles.selected]: tabSelected === 'most-recent',
+        })}
       >
         {t('communityContributions.mostRecentTabLabel')}
       </button>
       <button
         onClick={() => setTabSelected('most-trees')}
-        className={`${tabSelected === 'most-trees' ? styles.selected : ''}`}
+        className={clsx({
+          [styles.selected]: tabSelected === 'most-trees',
+        })}
       >
         {t('communityContributions.mostTreesTabLabel')}
       </button>

@@ -7,6 +7,7 @@ import styles from './styles.module.scss';
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../Layout/UserPropsContext';
 import { ParamsContext } from '../Layout/QueryParamsContext';
+import { clsx } from 'clsx';
 
 interface Props {
   setShowVideo: Function;
@@ -20,14 +21,13 @@ export default function PlayButton({
   const t = useTranslations('Common');
   const router = useRouter();
 
-  const playButtonClasses = `${
-    embed === 'true' ? styles.embed_playButton : styles.playButton
-  } ${
-    router.pathname === '/projects-archive/[p]' ||
-    router.pathname === '/sites/[slug]/[locale]/projects-archive/[p]'
-      ? styles['playButton--reduce-right-offset']
-      : ''
-  }`;
+  const playButtonClasses = clsx({
+    [styles.embed_playButton]: embed === 'true',
+    [styles.playButton]: embed !== 'true',
+    [styles['playButton--reduce-right-offset']]:
+      router.pathname === '/projects-archive/[p]' ||
+      router.pathname === '/sites/[slug]/[locale]/projects-archive/[p]',
+  });
 
   const canShowPlayButton = !(embed === 'true' && enableIntro !== 'true');
 

@@ -14,6 +14,7 @@ import InfoAndCta from '../InfoAndCTA';
 import TpoProjects from '../TpoProjects';
 import { useApi } from '../../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { clsx } from 'clsx';
 
 interface Props {
   profile: UserPublicProfile | null;
@@ -97,11 +98,11 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
 
   return (
     <article
-      className={`${styles.publicProfileLayout} ${
-        !canShowLeaderboard && !isTpoProfile ? styles.noLeaderboard : ''
-      } ${isProgressBarDisabled && !isTpoProfile ? styles.noProgress : ''} ${
-        isTpoProfile ? styles.tpoProfile : ''
-      }`}
+      className={clsx(styles.publicProfileLayout, {
+        [styles.noLeaderboard]: !canShowLeaderboard && !isTpoProfile,
+        [styles.noProgress]: isProgressBarDisabled && !isTpoProfile,
+        [styles.tpoProfile]: isTpoProfile,
+      })}
     >
       <section id="profile-container" className={styles.profileContainer}>
         {isProfileLoaded && profile ? (
@@ -115,9 +116,9 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
         <>
           <section
             id="map-container"
-            className={`${styles.mapContainer} ${
-              isMyForestLoading ? styles.loading : ''
-            }`}
+            className={clsx(styles.mapContainer, {
+              [styles.loading]: isMyForestLoading,
+            })}
           >
             {!isMyForestLoading && isProfileLoaded ? (
               <ContributionsMap
@@ -131,9 +132,9 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
           {!isProgressBarDisabled && (
             <section
               id="progress-container"
-              className={`${styles.progressContainer} ${
-                isMyForestLoading ? styles.loading : ''
-              }`}
+              className={clsx(styles.progressContainer, {
+                [styles.loading]: isMyForestLoading,
+              })}
             >
               {!isMyForestLoading && isProfileLoaded ? (
                 <ForestProgress profilePageType="public" />
@@ -144,9 +145,9 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
           )}
           <section
             id="my-contributions-container"
-            className={`${styles.myContributionsContainer} ${
-              isMyForestLoading ? styles.loading : ''
-            }`}
+            className={clsx(styles.myContributionsContainer, {
+              [styles.loading]: isMyForestLoading,
+            })}
           >
             {!isMyForestLoading && profile ? (
               <MyContributions profilePageType="public" userProfile={profile} />
@@ -157,9 +158,9 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
           {canShowLeaderboard && (
             <section
               id="community-contributions-container"
-              className={`${styles.communityContributionsContainer} ${
-                isMyForestLoading ? styles.loading : ''
-              }`}
+              className={clsx(styles.communityContributionsContainer, {
+                [styles.loading]: isMyForestLoading,
+              })}
             >
               {!isMyForestLoading && profile ? (
                 <CommunityContributions

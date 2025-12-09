@@ -7,6 +7,7 @@ import DropdownUpArrow from '../../../../public/assets/images/icons/projectV2/Dr
 import DropdownDownArrow from '../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
 import themeProperties from '../../../theme/themeProperties';
 import styles from './TimeTravelDropdown.module.scss';
+import { clsx } from 'clsx';
 
 const SOURCE_LABELS: Record<SourceName, string> = {
   esri: 'Esri',
@@ -71,7 +72,7 @@ const TimeTravelDropdown = ({
   return (
     <div
       ref={dropdownRef}
-      className={`${styles.menuContainer} ${customClassName || ''}`}
+      className={clsx(styles.menuContainer, customClassName)}
     >
       <button
         className={styles.menuButton}
@@ -103,37 +104,42 @@ const TimeTravelDropdown = ({
       {isMenuOpen && (
         <div className={styles.menuItems}>
           <ul className={styles.yearMenuContainer}>
-            {availableYears?.map((year) => (
-              <time
-                key={year}
-                dateTime={`${year}`}
-                role="button"
-                aria-selected={isOptionSelected(year, selectedYear)}
-                onClick={() => handleChangeYear(year)}
-                className={`${
-                  isOptionSelected(year, selectedYear)
-                    ? styles.selectedMenuItem
-                    : styles.unselectedMenuItem
-                }`}
-              >
-                {year}
-              </time>
-            ))}
+            {availableYears?.map((year) => {
+              const isSelected = isOptionSelected(year, selectedYear);
+              return (
+                <time
+                  key={year}
+                  dateTime={`${year}`}
+                  role="button"
+                  aria-selected={isSelected}
+                  onClick={() => handleChangeYear(year)}
+                  className={clsx({
+                    [styles.selectedMenuItem]: isSelected,
+                    [styles.unselectedMenuItem]: !isSelected,
+                  })}
+                >
+                  {year}
+                </time>
+              );
+            })}
           </ul>
+
           <ul className={styles.sourceMenuContainer}>
-            {availableSources?.map((source) => (
-              <li
-                key={source}
-                onClick={() => handleChangeSource(source)}
-                className={`${
-                  isOptionSelected(source, selectedSource)
-                    ? styles.selectedMenuItem
-                    : styles.unselectedMenuItem
-                }`}
-              >
-                {SOURCE_LABELS[source]}
-              </li>
-            ))}
+            {availableSources?.map((source) => {
+              const isSelected = isOptionSelected(source, selectedSource);
+              return (
+                <li
+                  key={source}
+                  onClick={() => handleChangeSource(source)}
+                  className={clsx({
+                    [styles.selectedMenuItem]: isSelected,
+                    [styles.unselectedMenuItem]: !isSelected,
+                  })}
+                >
+                  {SOURCE_LABELS[source]}
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
