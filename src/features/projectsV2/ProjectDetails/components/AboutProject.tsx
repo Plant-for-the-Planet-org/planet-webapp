@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import DownArrow from '../../../../../public/assets/images/icons/projectV2/DownArrow';
 import UpArrow from '../../../../../public/assets/images/icons/projectV2/UpArrow';
+import { clsx } from 'clsx';
 
 interface Props {
   description: string;
@@ -26,7 +27,10 @@ const AboutProject = ({ description, wordCount = 60 }: Props) => {
         {startingText} {hasOverflow && !isExpanded && <span>...</span>}
         {hasOverflow && (
           <span
-            className={`${!isExpanded ? styles.hideText : styles.showText}`}
+            className={clsx({
+              [styles.showText]: isExpanded,
+              [styles.hideText]: !isExpanded,
+            })}
           >
             {endText}
           </span>

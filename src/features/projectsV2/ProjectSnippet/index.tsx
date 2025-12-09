@@ -25,6 +25,7 @@ import {
 } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 interface Props {
   project:
@@ -136,7 +137,7 @@ const ProjectSnippetContent = ({
       <ImageSection {...imageProps} />
       <div className={styles.progressBar}>
         <div
-          className={`${styles.progressBarHighlight} ${progressBarClass}`}
+          className={clsx(styles.progressBarHighlight, progressBarClass)}
           style={{ width: `${progressPercentage}%` }}
         />
       </div>
@@ -160,11 +161,10 @@ export default function ProjectSnippet({
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
 
-  const projectSnippetContainerClasses = `${styles.singleProject} ${
-    page === 'project-details' && isMobile
-      ? styles.projectDetailsSnippetMobile
-      : ''
-  }`;
+  const projectSnippetContainerClasses = clsx(styles.singleProject, {
+    [styles.projectDetailsSnippetMobile]:
+      page === 'project-details' && isMobile,
+  });
   const ProjectSnippetContentProps = {
     showTooltipPopups,
     page,

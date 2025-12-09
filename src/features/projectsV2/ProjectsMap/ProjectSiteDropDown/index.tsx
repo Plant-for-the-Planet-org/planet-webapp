@@ -15,6 +15,7 @@ import ProjectSiteList from './ProjectSiteList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import themeProperties from '../../../../theme/themeProperties';
+import { clsx } from 'clsx';
 
 interface Props {
   projectSites: ProjectSiteFeature[] | undefined | null;
@@ -89,9 +90,10 @@ const ProjectSiteDropdown = ({
   return (
     <div className={styles.dropdownWrapper}>
       <div
-        className={`${
-          hasMultipleSites ? styles.dropdownButton : styles.dropdownDetails
-        }`}
+        className={clsx({
+          [styles.dropdownButton]: hasMultipleSites,
+          [styles.dropdownDetails]: !hasMultipleSites,
+        })}
         onClick={hasMultipleSites ? toggleSiteMenu : undefined}
       >
         <div className={styles.siteIconAndTextContainer}>

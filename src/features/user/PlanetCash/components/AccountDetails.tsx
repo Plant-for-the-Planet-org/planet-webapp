@@ -9,6 +9,7 @@ import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import themeProperties from '../../../../theme/themeProperties';
+import { clsx } from 'clsx';
 
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -77,9 +78,9 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
   return (
     <Grid
       container
-      className={`accountDetails ${
-        !account.isActive ? 'accountDetails--inactive' : ''
-      }`}
+      className={clsx('accountDetails', {
+        'accountDetails--inactive': !account.isActive,
+      })}
       component={AccountDetailsGrid}
       direction="column"
     >

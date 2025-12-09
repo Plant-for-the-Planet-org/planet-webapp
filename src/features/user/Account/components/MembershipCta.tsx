@@ -2,6 +2,7 @@ import MuiButton from '../../../common/InputTypes/MuiButton';
 import PlanetLogo from '../../../../../public/assets/images/PlanetLogo';
 import styles from '../AccountHistory.module.scss';
 import { useTranslations, useLocale } from 'next-intl';
+import { clsx } from 'clsx';
 
 interface Props {
   placement: 'top' | 'right';
@@ -13,11 +14,10 @@ const MembershipCta = ({ placement }: Props) => {
 
   return (
     <a
-      className={`${styles.membershipCta} ${
-        placement === 'top'
-          ? styles.membershipCtaTop
-          : styles.membershipCtaRight
-      }`}
+      className={clsx(styles.membershipCta, {
+        [styles.membershipCtaTop]: placement === 'top',
+        [styles.membershipCtaRight]: placement === 'right',
+      })}
       href={
         locale === 'de'
           ? 'https://www.plant-for-the-planet.org/de/foerdermitgliedschaft/'

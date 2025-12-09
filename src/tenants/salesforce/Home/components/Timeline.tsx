@@ -2,6 +2,7 @@ import styles from './../styles/Timeline.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 import { useState } from 'react';
 import Link from 'next/link';
+import { clsx } from 'clsx';
 
 const moments = [
   {
@@ -75,7 +76,7 @@ export default function Timeline() {
           {slides.map((moment) => {
             return (
               <div
-                className={`${styles.timelineContent} ${gridStyles.colMd6}`}
+                className={clsx(styles.timelineContent, gridStyles.colMd6)}
                 key={`desktop-moment-${moment.id}`}
               >
                 <img
@@ -158,13 +159,16 @@ export default function Timeline() {
   return (
     <section className={styles.timelineSection}>
       <div>
-        <div className={`${gridStyles.fluidContainer} ${styles.timelineRow}`}>
+        <div className={clsx(gridStyles.fluidContainer, styles.timelineRow)}>
           <Link
             href={`#desktop-timeline-moment-${desktopCurrent - 1}`}
             scroll={false}
           >
             <button
-              className={`${styles.timelineButtonArrowPrev} ${styles.showDesktop}`}
+              className={clsx(
+                styles.timelineButtonArrowPrev,
+                styles.showDesktop
+              )}
               disabled={desktopCurrent === 0}
               aria-disabled={desktopCurrent === 0}
               onClick={() => setDesktopCurrent(desktopCurrent - 1)}
@@ -181,7 +185,10 @@ export default function Timeline() {
             scroll={false}
           >
             <button
-              className={`${styles.timelineButtonArrowPrev} ${styles.showMobile}`}
+              className={clsx(
+                styles.timelineButtonArrowPrev,
+                styles.showMobile
+              )}
               disabled={mobileCurrent === 0}
               aria-disabled={mobileCurrent === 0}
               onClick={() => setMobileCurrent(mobileCurrent - 1)}
@@ -198,7 +205,10 @@ export default function Timeline() {
             {moments.map((moment, index) => {
               return (
                 <div
-                  className={`${styles.timelineContent} ${styles.timelineMoment}`}
+                  className={clsx(
+                    styles.timelineContent,
+                    styles.timelineMoment
+                  )}
                   key={`mobile-moment-${moment.id}`}
                   id={`mobile-timeline-moment-${index}`}
                 >
@@ -230,7 +240,10 @@ export default function Timeline() {
             scroll={false}
           >
             <button
-              className={`${styles.timelineButtonArrowNext} ${styles.showMobile}`}
+              className={clsx(
+                styles.timelineButtonArrowNext,
+                styles.showMobile
+              )}
               onClick={() => setMobileCurrent(mobileCurrent + 1)}
               disabled={mobileCurrent + 1 === moments.length}
               aria-disabled={mobileCurrent + 1 === moments.length}
@@ -247,7 +260,10 @@ export default function Timeline() {
             scroll={false}
           >
             <button
-              className={`${styles.timelineButtonArrowNext} ${styles.showDesktop}`}
+              className={clsx(
+                styles.timelineButtonArrowNext,
+                styles.showDesktop
+              )}
               onClick={() => setDesktopCurrent(desktopCurrent + 1)}
               disabled={desktopCurrent + 1 === Math.ceil(moments.length / 2)}
               aria-disabled={

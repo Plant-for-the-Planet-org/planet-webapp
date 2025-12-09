@@ -11,6 +11,7 @@ import HomeTreeCounter from './legacy/TreeCounterData';
 import theme from '../../../theme/themeProperties';
 import { _tenants } from '../../../utils/constants/HomeTreeCounter';
 import { useTenant } from '../Layout/TenantContext';
+import { clsx } from 'clsx';
 
 const { primaryColorNew, light } = theme;
 
@@ -141,11 +142,10 @@ export default function TreeCounter(props: TreeCounterInterface) {
       )}
 
       <div
-        className={
-          isHomeTreeCounter
-            ? treeCounterStyles.backgroundCircle
-            : treeCounterStyles.backgroundCircleForTenant
-        }
+        className={clsx({
+          [treeCounterStyles.backgroundCircle]: isHomeTreeCounter,
+          [treeCounterStyles.backgroundCircleForTenant]: !isHomeTreeCounter,
+        })}
       />
 
       {isHomeTreeCounter ? (
