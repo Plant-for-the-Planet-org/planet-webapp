@@ -102,16 +102,9 @@
 }
 
 .leaderBoardTableHeaderTitleSelected {
-  font-family: $primaryFontFamily;
-  font-style: normal;
   font-weight: bold;
-  font-size: $fontSmall;
-  line-height: 42px;
   color: $sfWhite;
   background-color: $sfBrandNavy;
-  text-align: center;
-  border-radius: 90px;
-  width: 50%;
 }
 
 .leaderBoardTableHeaderTitle:hover {

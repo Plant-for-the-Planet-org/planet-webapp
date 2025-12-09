@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';
 import { formatHid } from '../../../../../utils/projectV2';
 import styles from '../../styles/InterventionInfo.module.scss';
+import { clsx } from 'clsx';
 
 type Props = {
   activeSingleTree: SingleTreeRegistration | SampleTreeRegistration;
@@ -20,7 +21,10 @@ function SingleTreeInfoHeader({ activeSingleTree }: Props) {
   return (
     <>
       <div
-        className={`single-tree-info-heading ${styles.singleTreeInfoHeader}`}
+        className={clsx(
+          'single-tree-info-heading',
+          styles.singleTreeInfoHeader
+        )}
       >
         <h1 className="tree-count">
           {isSamplePlant
@@ -32,7 +36,7 @@ function SingleTreeInfoHeader({ activeSingleTree }: Props) {
       {image && (
         <img
           src={getImageUrl('coordinate', 'large', image)}
-          className={`single-tree-image ${styles.singleTreeImage}`}
+          className={clsx('single-tree-image', styles.singleTreeImage)}
           loading="lazy"
         />
       )}

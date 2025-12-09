@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import styles from '../styles/ProjectSnippet.module.scss';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { clsx } from 'clsx';
 
 interface TpoNameProps {
   projectTpoName: string;
@@ -43,11 +44,11 @@ const TpoName = ({
       router.push(localizedPath(url));
     }
   };
-  const tpoNameContainerClasses = `${
-    styles.projectTpoName
-  } ${tpoNameBackgroundClass} ${
-    page === 'project-details' ? styles.projectTpoNameSecondary : ''
-  }`;
+  const tpoNameContainerClasses = clsx(
+    styles.projectTpoName,
+    tpoNameBackgroundClass,
+    { [styles.projectTpoNameSecondary]: page === 'project-details' }
+  );
   return (
     <div className={tpoNameContainerClasses} onClick={handleClick}>
       {tCommon('by', { tpoName: projectTpoName })}

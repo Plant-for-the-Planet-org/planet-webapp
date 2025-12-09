@@ -167,7 +167,7 @@ export function InterventionInfo({
         )}
       {selectedIntervention.type !== 'multi-tree-registration' &&
         selectedIntervention.coordinates?.length > 0 && (
-          <div className={`${styles.projectImageSliderContainer}`}>
+          <div className={styles.projectImageSliderContainer}>
             <ImageSliderSingle
               images={selectedIntervention.coordinates}
               height={233}

@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from '../CompleteSignup.module.scss';
+import { clsx } from 'clsx';
 
 interface CompleteSignupLayoutProps {
   children: ReactNode;
@@ -23,9 +24,9 @@ const CompleteSignupLayout = ({
       }}
     >
       <div
-        className={`${styles.signupFormContainer} ${
-          isSubmitting ? styles.submitting : ''
-        }`}
+        className={clsx(styles.signupFormContainer, {
+          [styles.submitting]: isSubmitting,
+        })}
         style={{
           backgroundColor:
             theme === 'theme-light'

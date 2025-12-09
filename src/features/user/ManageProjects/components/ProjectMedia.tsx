@@ -26,6 +26,7 @@ import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import themeProperties from '../../../../theme/themeProperties';
 import { validateYouTubeUrl } from '../../../../utils/youTubeValidation';
+import { clsx } from 'clsx';
 
 type UploadImageApiPayload = {
   imageFile: string;
@@ -257,9 +258,9 @@ export default function ProjectMedia({
     <CenteredContainer>
       <StyledForm>
         <div
-          className={`inputContainer ${
-            isUploadingData ? styles.shallowOpacity : ''
-          }`}
+          className={clsx('inputContainer', {
+            [styles.shallowOpacity]: isUploadingData,
+          })}
           style={{
             width: 'inherit',
           }}
@@ -322,7 +323,9 @@ export default function ProjectMedia({
                               ? colors.goldenYellow
                               : colors.coreText
                           }
-                          className={image.isDefault ? 'selected' : ''}
+                          className={clsx({
+                            selected: image.isDefault,
+                          })}
                         />
                       </IconButton>
                     </div>
