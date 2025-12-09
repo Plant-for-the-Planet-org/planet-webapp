@@ -336,7 +336,7 @@ function RegisterTreesForm({
               <p>{t('selectLocation')}</p>
             )}
           </div>
-          <div className={`${styles.locationMap}`}>
+          <div className={styles.locationMap}>
             {isMultiple && isStyleReady ? (
               <DrawMap setGeometry={setGeometry} userLocation={userLocation} />
             ) : (

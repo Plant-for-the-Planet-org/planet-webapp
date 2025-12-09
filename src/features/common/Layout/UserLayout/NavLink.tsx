@@ -160,11 +160,10 @@ function NavLink({
           if (!subLink.hideItem) {
             return (
               <div
-                className={`${styles.navLinkSubMenu} ${
-                  currentSubMenuKey === subLink.key
-                    ? styles.navLinkActiveSubMenu
-                    : ''
-                }`}
+                className={clsx(styles.navLinkSubMenu, {
+                  [styles.navLinkActiveSubMenu]:
+                    currentSubMenuKey === subLink.key,
+                })}
                 key={subLink.title}
                 onClick={() => handleSubMenuClick(subLink)}
               >

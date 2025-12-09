@@ -48,7 +48,7 @@ export default function ProjectGrid() {
       .map((allowedProject) => {
         return (
           <div
-            className={`${styles.projectItem}`}
+            className={styles.projectItem}
             key={allowedProject.properties.id}
           >
             <ProjectSnippet

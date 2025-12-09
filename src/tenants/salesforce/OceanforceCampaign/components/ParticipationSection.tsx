@@ -56,7 +56,11 @@ export default function ParticipationSection() {
             </ul>
           </div>
           {/* <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg4} ${gridStyles.col12}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg4,
+              gridStyles.col12
+            )}
           >
             {project !== null && (
               <div className={styles.projectItem}>
