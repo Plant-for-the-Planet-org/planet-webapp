@@ -37,7 +37,7 @@ export const Container = ({
   return (
     <div className={styles.container}>
       <div
-        className={clsx(styles.headerFlex, {
+        className={clsx({
           [styles.headerFlexRow]: flexDirection === 'row',
           [styles.headerFlexColumn]: flexDirection !== 'row',
         })}
