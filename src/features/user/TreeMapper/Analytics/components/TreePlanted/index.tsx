@@ -286,6 +286,8 @@ export const TreePlanted = () => {
   }
 
   function addMissingMonths(data: IMonthlyFrame[]) {
+    if (!data || data.length === 0) return [];
+
     const months = [
       'Jan',
       'Feb',
@@ -304,6 +306,11 @@ export const TreePlanted = () => {
     // Extract the first and last month and year from the data
     const firstData = data[0];
     const lastData = data[data.length - 1];
+
+    if (!firstData || !lastData || !firstData.month || !lastData.month) {
+      console.warn('Invalid monthly data structure received');
+      return [];
+    }
     const firstMonthIndex = months.indexOf(firstData.month);
     const lastMonthIndex = months.indexOf(lastData.month);
     const firstYear = firstData.year;

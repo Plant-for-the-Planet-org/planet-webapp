@@ -23,6 +23,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import TimeTravelDropdown from '../../TimeTravelDropdown';
 import styles from './TimeTravel.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
+import { clsx } from 'clsx';
 
 const EMPTY_STYLE = {
   version: 8 as const,
@@ -474,7 +475,12 @@ export default function TimeTravel({
   };
 
   return (
-    <div className={`${isVisible ? styles.visible : styles.hidden}`}>
+    <div
+      className={clsx({
+        [styles.visible]: isVisible,
+        [styles.hidden]: !isVisible,
+      })}
+    >
       <TimeTravelDropdown
         defaultYear={selectedYearBefore}
         defaultSource={selectedSourceBefore}

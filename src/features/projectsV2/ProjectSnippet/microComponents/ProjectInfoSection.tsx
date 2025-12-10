@@ -49,7 +49,11 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
     if (unitCount === undefined) {
       return;
     }
-    const formattedUnitCount = localizedAbbreviatedNumber(locale, unitCount, 1);
+    const formattedUnitCount =
+      unitCount < 1000000
+        ? localizedAbbreviatedNumber(locale, Math.floor(unitCount), 0)
+        : localizedAbbreviatedNumber(locale, unitCount, 1);
+
     if (unitType === 'tree' && purpose === 'trees') {
       return tAllProjects('treeDonated', {
         count: unitCount,

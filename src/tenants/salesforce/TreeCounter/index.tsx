@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import treeCounterStyles from './TreeCounter.module.scss';
 
 interface Props {
@@ -17,16 +18,16 @@ export default function TreeCounter({
     : planted > 999999
     ? Math.floor(planted).toLocaleString()
     : Math.floor(planted).toString();
+
+  const isReady =
+    (shouldShowMillions && estMillionTreesPlanted >= 0) ||
+    (!shouldShowMillions && planted >= 0);
   return (
     <div
-      className={`${treeCounterStyles.treeCounter} ${
-        isLight ? treeCounterStyles.treeCounterLight : ''
-      } ${
-        (shouldShowMillions && estMillionTreesPlanted >= 0) ||
-        (!shouldShowMillions && planted >= 0)
-          ? treeCounterStyles.treeCounterReady
-          : ''
-      }`}
+      className={clsx(treeCounterStyles.treeCounter, {
+        [treeCounterStyles.treeCounterLight]: isLight,
+        [treeCounterStyles.treeCounterReady]: isReady,
+      })}
     >
       <div className={treeCounterStyles.treeCounterDataField}>
         <div

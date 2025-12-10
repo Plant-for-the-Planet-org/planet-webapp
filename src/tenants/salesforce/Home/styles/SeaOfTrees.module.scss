@@ -16,7 +16,8 @@
   * {
     text-align: center;
   }
-  button {
+  .learnMoreButton {
+    display: inline-block;
     background: $sfBrandBlue;
     border-radius: 4px;
     font-family: $primaryFontFamily;

@@ -4,17 +4,22 @@ import Link from 'next/link';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/SeaOfTrees.module.scss';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 export default function SeaOfTrees() {
   const { localizedPath } = useLocalizedPath();
   return (
     <div>
-      <div className={`${styles.seaOfTreesContainer}`}>
-        <div className={`${gridStyles.fluidContainer} ${styles.seaOfTrees}`}>
+      <div className={styles.seaOfTreesContainer}>
+        <div className={clsx(gridStyles.fluidContainer, styles.seaOfTrees)}>
           <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+            className={clsx(
+              gridStyles.gridRow,
+              gridStyles.justifyContentCenter,
+              gridStyles.mb65100
+            )}
           >
-            <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+            <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
               <h3>Mangrove Forests</h3>
               <p className={styles.contentSectionSubhead}>
                 Where Ocean Sustainability meets Trees.
@@ -51,29 +56,37 @@ export default function SeaOfTrees() {
                 forests globally. Learn more about Salesforce’s mangrove journey
                 and discover opportunities to join the movement here.
               </p>
-              <Link href={localizedPath('/mangroves')}>
-                <button>Learn More</button>
+              <Link
+                href={localizedPath('/mangroves')}
+                className={styles.learnMoreButton}
+              >
+                Learn More
               </Link>
             </div>
           </div>
           <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100} ${styles.seaOfTreesImagesContainer}`}
+            className={clsx(
+              gridStyles.gridRow,
+              gridStyles.justifyContentCenter,
+              gridStyles.mb65100,
+              styles.seaOfTreesImagesContainer
+            )}
           >
-            <div className={`${gridStyles.colMd3} ${gridStyles.col12}`}>
+            <div className={clsx(gridStyles.colMd3, gridStyles.col12)}>
               <img
                 src="/tenants/salesforce/images/madagascar.png"
                 className={gridStyles.illustration1}
                 alt=""
               />
             </div>
-            <div className={`${gridStyles.colMd3} ${gridStyles.col12}`}>
+            <div className={clsx(gridStyles.colMd3, gridStyles.col12)}>
               <img
                 src="/tenants/salesforce/images/costa-rica.png"
                 className={gridStyles.illustration1}
                 alt=""
               />
             </div>
-            <div className={`${gridStyles.colMd3} ${gridStyles.col12}`}>
+            <div className={clsx(gridStyles.colMd3, gridStyles.col12)}>
               <img
                 src="/tenants/salesforce/images/kenya.png"
                 className={gridStyles.illustration1}
@@ -82,16 +95,24 @@ export default function SeaOfTrees() {
             </div>
           </div>
           <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+            className={clsx(
+              gridStyles.gridRow,
+              gridStyles.justifyContentCenter,
+              gridStyles.mb65100
+            )}
           >
-            <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+            <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
               <hr />
             </div>
           </div>
           <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+            className={clsx(
+              gridStyles.gridRow,
+              gridStyles.justifyContentCenter,
+              gridStyles.mb65100
+            )}
           >
-            <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+            <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
               <h3>How can you help?</h3>
               <p>
                 Just <Link href={localizedPath('/')}>click here</Link> to see

@@ -29,6 +29,7 @@ import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import themeProperties from '../../../../theme/themeProperties';
 import ProjectLocationMap from './microComponents/ProjectLocationMap';
+import { clsx } from 'clsx';
 
 export type BaseFormData = {
   name: string;
@@ -111,6 +112,11 @@ export default function BasicDetails({
   const [projectCoords, setProjectCoords] = useState<ProjectCoordinates | null>(
     null
   );
+
+  const canChangeUnitType =
+    !projectDetails ||
+    (projectDetails.verificationStatus === 'incomplete' &&
+      projectDetails.reviewRequested === false);
 
   const changeLat = (e: ChangeEvent<HTMLInputElement>) => {
     const latNumericValue = Number(e.target.value);
@@ -466,11 +472,21 @@ export default function BasicDetails({
                     error={
                       'unitType' in errors && errors.unitType !== undefined
                     }
+                    disabled={!canChangeUnitType}
                     helperText={
                       'unitType' in errors &&
                       errors.unitType !== undefined &&
                       errors.unitType.message
                     }
+                    InputProps={{
+                      endAdornment: (
+                        <Tooltip title={t('unitTypeInfo')} arrow>
+                          <span style={{ marginRight: '20px' }}>
+                            <InfoIcon />
+                          </span>
+                        </Tooltip>
+                      ),
+                    }}
                   >
                     {unitTypeOptions.map((unitType) => (
                       <MenuItem key={unitType} value={unitType}>
@@ -658,7 +674,7 @@ export default function BasicDetails({
             )}
           </InlineFormDisplayGroup>
           <div
-            className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}
+            className={clsx(styles.formFieldLarge, styles.mapboxContainer)}
             style={{ width: '100%' }}
           >
             <p
@@ -680,7 +696,7 @@ export default function BasicDetails({
             />
             <div className={styles.basicDetailsCoordinatesContainer}>
               <div
-                className={`${styles.formFieldHalf} ${styles.latLongField}`}
+                className={clsx(styles.formFieldHalf, styles.latLongField)}
                 data-test-id="latitude"
               >
                 <Controller
@@ -715,7 +731,7 @@ export default function BasicDetails({
                 />
               </div>
               <div
-                className={`${styles.formFieldHalf} ${styles.latLongField}`}
+                className={clsx(styles.formFieldHalf, styles.latLongField)}
                 data-test-id="longitude"
               >
                 <Controller
