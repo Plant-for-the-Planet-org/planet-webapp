@@ -1,0 +1,32 @@
+@import '../../../theme/theme';
+
+.buttonStyles {
+  font-size: $cnxFontBase;
+  padding: 14px 32px;
+  background-color: $cnxBrandTeal;
+  border: 1px solid $cnxBrandTeal;
+  border-radius: 25px;
+  color: $cnxBrandBlueDark;
+  div,
+  span {
+    color: $cnxBrandBlueDark !important;
+    font-size: $cnxFontBase;
+  }
+
+  &:hover {
+    background-color: $cnxBrandTeal;
+    border: 1px solid $cnxBrandTeal;
+    opacity: 0.9;
+  }
+}
+
+.heading2 {
+  font-size: $cnxFontHeading2;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.heading3 {
+  font-size: $cnxFontHeading3;
+  font-weight: 700;
+}

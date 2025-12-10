@@ -3,11 +3,13 @@ import type { PlanetCashAccount } from '../../../common/types/planetcash';
 
 import { styled, Grid, Button, Divider } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
+import TopUpManagement from './TopUpManagement';
 import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import themeProperties from '../../../../theme/themeProperties';
+import { clsx } from 'clsx';
 
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -76,9 +78,9 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
   return (
     <Grid
       container
-      className={`accountDetails ${
-        !account.isActive ? 'accountDetails--inactive' : ''
-      }`}
+      className={clsx('accountDetails', {
+        'accountDetails--inactive': !account.isActive,
+      })}
       component={AccountDetailsGrid}
       direction="column"
     >
@@ -160,6 +162,12 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
           </Grid>
         )}
       </Grid>
+      {account.paymentMethods?.length > 0 && (
+        <>
+          <Grid item component={Divider} />
+          <TopUpManagement account={account} />
+        </>
+      )}
     </Grid>
   );
 };

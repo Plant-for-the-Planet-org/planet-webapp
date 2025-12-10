@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 
 import styles from './index.module.scss';
+import { clsx } from 'clsx';
 
 /**
  * Props interface for the Container component.
@@ -36,11 +37,10 @@ export const Container = ({
   return (
     <div className={styles.container}>
       <div
-        className={
-          flexDirection === 'row'
-            ? styles.headerFlexRow
-            : styles.headerFlexColumn
-        }
+        className={clsx({
+          [styles.headerFlexRow]: flexDirection === 'row',
+          [styles.headerFlexColumn]: flexDirection !== 'row',
+        })}
       >
         <div>{leftElement}</div>
         <div>{rightElement}</div>

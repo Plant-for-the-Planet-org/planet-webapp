@@ -16,6 +16,7 @@ import { useTranslations } from 'next-intl';
 import ItemImage from './ItemImage';
 import ProjectSummary from './ProjectSummary';
 import getImageUrl from '../../../../utils/getImageURL';
+import { clsx } from 'clsx';
 
 interface Props {
   project: MyForestProject;
@@ -62,7 +63,7 @@ const ProjectItemCard = ({
       : 'trees';
 
   return (
-    <article className={`${styles.projectItemCard} ${styles[projectType]}`}>
+    <article className={clsx(styles.projectItemCard, styles[projectType])}>
       <section className={styles.sectionOneLandscape}>
         <ItemImage
           imageUrl={imageSource}
@@ -158,7 +159,7 @@ const ProjectItemCard = ({
         </div>
       </section>
       {contributionCount > 1 && (
-        <section className={`${styles.sectionTwo} ${styles[projectType]}`}>
+        <section className={clsx(styles.sectionTwo, styles[projectType])}>
           {lastTwoContributions.map((contribution, index) => (
             <ContributionSummary
               key={index}

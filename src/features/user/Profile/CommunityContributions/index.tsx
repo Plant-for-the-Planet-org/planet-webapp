@@ -10,8 +10,8 @@ import { useTranslations } from 'next-intl';
 import { useMyForest } from '../../../common/Layout/MyForestContext';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
 import themeProperties from '../../../../theme/themeProperties';
-
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
+import { clsx } from 'clsx';
 
 type TabOptions = 'most-recent' | 'most-trees';
 interface HeaderTabsProps {
@@ -25,13 +25,17 @@ const HeaderTabs = ({ tabSelected, handleTabChange }: HeaderTabsProps) => {
     <div className={styles.headerTabs}>
       <button
         onClick={() => handleTabChange('most-recent')}
-        className={`${tabSelected === 'most-recent' ? styles.selected : ''}`}
+        className={clsx({
+          [styles.selected]: tabSelected === 'most-recent',
+        })}
       >
         {t('communityContributions.mostRecentTabLabel')}
       </button>
       <button
         onClick={() => handleTabChange('most-trees')}
-        className={`${tabSelected === 'most-trees' ? styles.selected : ''}`}
+        className={clsx({
+          [styles.selected]: tabSelected === 'most-trees',
+        })}
       >
         {t('communityContributions.mostTreesTabLabel')}
       </button>

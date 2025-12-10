@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { prefetchManager } from '../../../utils/prefetchManager';
 import styles from './WebappButton.module.scss';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 interface CommonProps {
   icon?: ReactElement;
@@ -24,6 +25,8 @@ interface LinkProps extends CommonProps {
 interface ButtonProps extends CommonProps {
   onClick: () => void;
   elementType: 'button';
+  loading?: boolean;
+  disabled?: boolean;
 }
 
 type WebappButtonProps = LinkProps | ButtonProps;
@@ -33,6 +36,11 @@ function WebappButton({
   ...otherProps
 }: WebappButtonProps): ReactElement {
   const buttonVariantClasses = styles[`${variant}WebappButton`];
+  const buttonClasses = clsx(
+    styles.webappButton,
+    buttonVariantClasses,
+    otherProps.buttonClasses
+  );
   const { localizedPath } = useLocalizedPath();
   const isExternalURL = (url: string) => {
     try {
@@ -71,11 +79,7 @@ function WebappButton({
           }
           onMouseEnter={handleMouseEnter}
         >
-          <button
-            className={`${styles.webappButton} ${buttonVariantClasses} ${
-              otherProps.buttonClasses ? otherProps.buttonClasses : ''
-            }`}
-          >
+          <button className={buttonClasses}>
             {otherProps.icon !== undefined && (
               <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
             )}
@@ -95,11 +99,7 @@ function WebappButton({
           prefetch: otherProps.prefetch,
         })}
       >
-        <button
-          className={`${styles.webappButton} ${buttonVariantClasses} ${
-            otherProps.buttonClasses ? otherProps.buttonClasses : ''
-          }`}
-        >
+        <button className={buttonClasses}>
           {otherProps.icon !== undefined && (
             <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
           )}
@@ -111,18 +111,26 @@ function WebappButton({
 
   return (
     <button
-      className={`${styles.webappButton} ${buttonVariantClasses} ${
-        otherProps.buttonClasses ? otherProps.buttonClasses : ''
-      }`}
+      className={buttonClasses}
       onClick={(e) => {
         e.preventDefault(); //ignores href if provided without elementType='link'
         otherProps.onClick();
       }}
+      disabled={otherProps.loading || otherProps.disabled}
     >
       {otherProps.icon !== undefined && (
         <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
       )}
-      <div className={styles.webappButtonLabel}>{otherProps.text}</div>
+      <div className={styles.webappButtonLabelContainer}>
+        <span
+          className={clsx(styles.webappButtonLabel, {
+            [styles.visuallyHidden]: otherProps.loading,
+          })}
+        >
+          {otherProps.text}
+        </span>
+        {otherProps.loading && <div className="spinner" aria-hidden="true" />}
+      </div>
     </button>
   );
 }

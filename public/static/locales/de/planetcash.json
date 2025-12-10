@@ -29,6 +29,40 @@
       "active_account_exists": "Es existiert bereits ein aktives Konto. Deaktiviere dieses Konto, bevor du ein anderes Konto aktivierst.",
       "duplicate_account": "Du hast bereits ein Konto für {country} erstellt",
       "default": "Beim Erstellen des Kontos ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
+    },
+    "topUpManagement": {
+      "labelToggle": "Automatisches Auffüllen von PlanetCash bei niedrigem Guthaben",
+      "labelThreshold": "Wenn der Saldo unter ({currency}) fällt",
+      "labelRefillAmount": "Betrag zum Auffüllen ({currency})",
+      "labelStatus": "Status",
+      "labelPaymentMethod": "Zahlungsmethode",
+      "statusActive": "Aktiv",
+      "statusInactive": "Inaktiv",
+      "paymentMethodInfo": {
+        "sepa_debit": "IBAN endend mit {last4}",
+        "card": "Die Karte endet mit {last4}",
+        "unknown": "Unbekannte Zahlungsmethode"
+      },
+      "validationErrors": {
+        "thresholdRequired": "Bitte geben Sie einen Schwellenwert ein",
+        "amountRequired": "Bitte geben Sie einen Auffüllbetrag ein",
+        "thresholdMinimum": "Schwellenwert sollte positiv sein",
+        "amountMinimum": "Auffüllbetrag sollte positiv sein"
+      },
+      "apiErrors": {
+        "paymentMethodNotFound": "Es gibt ein Problem mit der gewählten Zahlungsmethode. Bitte wählen Sie eine andere Zahlungsmethode. Sie können sich auch an support@plant-for-the-planet.org wenden, um Unterstützung zu erhalten.",
+        "topUpAmountTooLow": "Der Auffüllbetrag muss mindestens {minAmountWithCurrency} betragen.",
+        "topUpThresholdTooLow": "Der Schwellenwert muss mindestens {minThresholdWithCurrency} betragen.",
+        "default": "Beim Speichern der Aufladeeinstellungen ist ein Fehler aufgetreten. Wenn dieses Problem weiterhin besteht, wenden Sie sich bitte an support@plant-for-the-planet.org."
+      },
+      "saveButton": "Einstellungen für das Aufladen speichern",
+      "disableConfirmationDialog": {
+        "confirmButtonText": "Bestätigen",
+        "cancelButtonText": "Abbrechen",
+        "title": "Automatisches Auffüllen deaktivieren?",
+        "subtitle": "Sind Sie sicher, dass Sie die automatische Auffüllung deaktivieren möchten? Dadurch werden Ihre aktuellen Einstellungen für die automatische Auffüllung entfernt."
+      },
+      "successMessage": "Auto Refill Einstellungen erfolgreich gespeichert"
     }
   }
 }

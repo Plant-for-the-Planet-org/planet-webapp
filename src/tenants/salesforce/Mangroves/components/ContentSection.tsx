@@ -4,17 +4,26 @@ import Link from 'next/link';
 import MangroveMapIcon from '../../../../../public/assets/images/icons/MangroveMapIcon';
 import ViewIcon from '../../../../../public/assets/images/icons/ViewIcon';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 export default function ContentSection() {
   const { localizedPath } = useLocalizedPath();
   return (
-    <div className={`${styles.contentSectionContainer}`}>
-      <div className={`${gridStyles.fluidContainer} ${styles.contentSection}`}>
+    <div className={styles.contentSectionContainer}>
+      <div className={clsx(gridStyles.fluidContainer, styles.contentSection)}>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
           <div
-            className={`${gridStyles.colMd8} ${gridStyles.col12} ${gridStyles.textCenter}`}
+            className={clsx(
+              gridStyles.colMd8,
+              gridStyles.col12,
+              gridStyles.textCenter
+            )}
           >
             <h2>Mangroves</h2>
             <h3 className={styles.contentSectionSubhead}>
@@ -32,30 +41,44 @@ export default function ContentSection() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100} ${styles.mbIntro}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100,
+            styles.mbIntro
+          )}
         >
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12} ${styles.introCTA}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg3,
+              gridStyles.col12,
+              styles.introCTA
+            )}
           >
-            <div className={`${gridStyles.circularContainer}`}>
+            <div className={gridStyles.circularContainer}>
               <img
                 src="/tenants/salesforce/images/mangroves/mangroves-indonesia.jpg"
                 alt=""
               />
             </div>
-            <Link href={localizedPath('/?filter=mangroves')}>
-              <button className={styles.projectMapButton}>
-                <MangroveMapIcon /> View Project Map
-              </button>
+            <Link
+              href={localizedPath('/?filter=mangroves')}
+              className={styles.projectMapButton}
+            >
+              <MangroveMapIcon /> View Project Map
             </Link>
-            <Link href={'#project-grid'}>
-              <button className={styles.projectListButton}>
-                <ViewIcon /> View Project List
-              </button>
+            <Link href={'#project-grid'} className={styles.projectListButton}>
+              <ViewIcon /> View Project List
             </Link>
           </div>
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg6,
+              gridStyles.col12,
+              styles.justifyContentCenter
+            )}
           >
             <h3>Salesforce supports the Mangrove Breakthrough</h3>
             <p>
@@ -198,10 +221,14 @@ export default function ContentSection() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <p className={`${styles.contentSectionQuote} ${styles.bold}`}>
+          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
+            <p className={clsx(styles.contentSectionQuote, styles.bold)}>
               <em>
                 “Mangroves are unparalleled in their role as a powerful climate
                 solution, a bedrock of biodiversity, and a source of livelihood
@@ -212,12 +239,22 @@ export default function ContentSection() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100} ${styles.calloutContainer}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100,
+            styles.calloutContainer
+          )}
         >
           <div
-            className={`${gridStyles.col12} ${gridStyles.colMd8} ${styles.justifyContentCenter} ${styles.mbCallout}`}
+            className={clsx(
+              gridStyles.col12,
+              gridStyles.colMd8,
+              styles.justifyContentCenter,
+              styles.mbCallout
+            )}
           >
-            <div className={`${styles.calloutContentContainer}`}>
+            <div className={styles.calloutContentContainer}>
               <div className={styles.calloutContentOverlay}></div>
               <div className={styles.calloutContent}>
                 <h3>The Mangrove Breakthrough</h3>

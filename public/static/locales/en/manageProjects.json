@@ -215,6 +215,7 @@
       "tree": "tree",
       "m2": "m²"
     },
+    "unitTypeInfo": "Select the unit for donations before submitting for review. Changes require contacting support.",
     "tenure": "Tenure",
     "rent": "Rent",
     "ownershipType": "Ownership Type",
@@ -266,8 +267,10 @@
         "required": "The outline of your site needs to be a closed polygon. To close the outline, please double click on the starting point."
       },
       "file": {
-        "invalidKml": "Invalid KML",
-        "invalidGeojson": "Invalid GeoJSON"
+        "invalidKml": "Invalid KML file. Please check the file format.",
+        "invalidGeojson": "Invalid GeoJSON file. Please check the file format.",
+        "readAborted": "File upload cancelled. Please try again.",
+        "readFailed": "Failed to read the file. Please try again."
       },
       "coordinates": {
         "seaCoordinates": "The selected location appears to be in the sea. Please choose a nearby point on land.",

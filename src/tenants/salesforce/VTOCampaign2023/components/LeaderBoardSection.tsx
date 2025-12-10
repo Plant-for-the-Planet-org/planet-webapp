@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './../styles/LeaderBoardSection.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
+import { clsx } from 'clsx';
 
 interface Props {
   leaderboard: {
@@ -39,22 +40,20 @@ export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
               <button
                 id={'leaderBoardSecRecent'}
                 onClick={() => setSelectedTab('recent')}
-                className={
-                  selectedTab === 'recent'
-                    ? styles.leaderBoardTableHeaderTitleSelected
-                    : styles.leaderBoardTableHeaderTitle
-                }
+                className={clsx(styles.leaderBoardTableHeaderTitle, {
+                  [styles.leaderBoardTableHeaderTitleSelected]:
+                    selectedTab === 'recent',
+                })}
               >
                 {tLeaderboard('mostRecent')}
               </button>
               <button
                 id={'leaderBoardSecHighest'}
                 onClick={() => setSelectedTab('highest')}
-                className={
-                  selectedTab === 'highest'
-                    ? styles.leaderBoardTableHeaderTitleSelected
-                    : styles.leaderBoardTableHeaderTitle
-                }
+                className={clsx(styles.leaderBoardTableHeaderTitle, {
+                  [styles.leaderBoardTableHeaderTitleSelected]:
+                    selectedTab === 'highest',
+                })}
               >
                 {tLeaderboard('mostTrees')}
               </button>

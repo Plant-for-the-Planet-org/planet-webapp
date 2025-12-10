@@ -1,0 +1,28 @@
+@import '../../../../../theme/theme';
+
+.responsibilityStatement {
+  background: linear-gradient(
+      259.87deg,
+      rgba(0, 0, 0, 0) 4.8%,
+      rgba(0, 0, 0, 0.5) 90.94%
+    ),
+    url('/tenants/concentrix/images/exploring-rainforest-layers-background.jpeg'),
+    $cnxBrandBlueDark;
+  background-position: center;
+  background-size: cover;
+  color: $cnxWhite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 160px 20px;
+}
+
+.heading {
+  max-width: 800px;
+}
+
+.content {
+  font-size: $cnxFontMedium;
+  max-width: 800px;
+}
