@@ -3,10 +3,10 @@ import type { FireFeature } from '../../../common/types/fireLocation';
 import type { PopperProps } from '@mui/material';
 import type { Modifier } from '@popperjs/core';
 
-import { useState, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Popper } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import RightArrowIcon from '../../../../../public/assets/images/icons/projectV2/RightArrowIcon';
 import InfoIconPopup from '../../ProjectDetails/components/microComponents/InfoIconPopup';
 import FirePopupIcon from '../../../../../public/assets/images/icons/FirePopupIcon';
@@ -74,6 +74,21 @@ export default function FirePopup({
   const popperRef = useRef<HTMLDivElement>(null);
   const [arrowRef, setArrowRef] = useState<HTMLElement | null>(null);
   const [showPopup, setShowPopup] = useState(isOpen);
+  const clippingBoundary = useMemo(
+    () =>
+      document.querySelector('canvas.maplibregl-canvas') as HTMLElement | null,
+    []
+  );
+
+  const modifiers = useMemo(
+    () =>
+      popperModifiers({
+        arrowRef,
+        clippingBoundary,
+      }),
+    [arrowRef, clippingBoundary]
+  );
+
   const [popperPlacement, setPopperPlacement] =
     useState<PopperProps['placement']>('top');
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -152,10 +167,7 @@ export default function FirePopup({
           onMouseEnter?.();
           setShowPopup(true);
         }}
-        modifiers={popperModifiers({
-          arrowRef,
-          clippingBoundary: document.querySelector('canvas.maplibregl-canvas'),
-        })}
+        modifiers={modifiers}
       >
         {popperPlacement === 'top' ? (
           <div className={styles.arrowTop} ref={setArrowRef} />
