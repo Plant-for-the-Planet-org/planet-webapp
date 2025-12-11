@@ -6,12 +6,14 @@ import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import ContributionsMap from '../ContributionsMap';
 import CommunityContributions from '../CommunityContributions';
-import { useEffect, useMemo } from 'react';
-import { useMyForest } from '../../../common/Layout/MyForestContext';
+import { useContext, useEffect, useMemo } from 'react';
+import { useMyForestStore } from '../../../../stores/myForestStore';
 import MyContributions from '../MyContributions';
 import { aggregateProgressData } from '../../../../utils/myForestUtils';
 import InfoAndCta from '../InfoAndCTA';
 import TpoProjects from '../TpoProjects';
+import { useApi } from '../../../../hooks/useApi';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { clsx } from 'clsx';
 
 interface Props {
@@ -21,15 +23,24 @@ interface Props {
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
-  const {
-    userInfo,
-    setUserInfo,
-    contributionStats,
-    isContributionsLoaded,
-    isProjectsListLoaded,
-    isLeaderboardLoaded,
-    setIsPublicProfile,
-  } = useMyForest();
+  const { getApi, getApiAuthenticated } = useApi();
+  const { setErrors } = useContext(ErrorHandlingContext);
+  //States
+  const isMyForestLoading = useMyForestStore(
+    (state) => state.isMyForestLoading
+  );
+  const userInfo = useMyForestStore((state) => state.userInfo);
+  const contributionStats = useMyForestStore(
+    (state) => state.contributionsResult?.stats
+  );
+  const errorMessage = useMyForestStore((state) => state.errorMessage);
+
+  //Actions
+  const setUserInfo = useMyForestStore((state) => state.setUserInfo);
+  const setIsPublicProfile = useMyForestStore(
+    (state) => state.setIsPublicProfile
+  );
+  const fetchMyForest = useMyForestStore((state) => state.fetchMyForest);
 
   useEffect(() => {
     if (profile) {
@@ -47,6 +58,15 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
       setUserInfo(_userInfo);
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (userInfo) fetchMyForest(getApi, getApiAuthenticated);
+  }, [userInfo, fetchMyForest]);
+
+  //TODO: Remove once error handling is fully migrated from useContext to Zustand
+  useEffect(() => {
+    setErrors(errorMessage ? [{ message: errorMessage }] : null);
+  }, [errorMessage]);
 
   const { treesDonated, areaRestored, areaConserved } =
     aggregateProgressData(contributionStats);
@@ -74,12 +94,7 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
     conservationTarget,
   ]);
 
-  const isContributionsDataLoaded =
-    isContributionsLoaded && isProjectsListLoaded;
-  const isProgressDataLoaded =
-    isContributionsLoaded && profile !== null && profile !== undefined;
-  const isTpoProfile =
-    profile !== null && profile !== undefined && profile.type === 'tpo';
+  const isTpoProfile = isProfileLoaded && profile?.type === 'tpo';
 
   return (
     <article
@@ -102,10 +117,10 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
           <section
             id="map-container"
             className={clsx(styles.mapContainer, {
-              [styles.loading]: !isContributionsDataLoaded,
+              [styles.loading]: isMyForestLoading,
             })}
           >
-            {isContributionsDataLoaded ? (
+            {!isMyForestLoading && isProfileLoaded ? (
               <ContributionsMap
                 profilePageType="public"
                 supportedTreecounter={userInfo?.slug ?? ''}
@@ -118,10 +133,10 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
             <section
               id="progress-container"
               className={clsx(styles.progressContainer, {
-                [styles.loading]: !isProgressDataLoaded,
+                [styles.loading]: isMyForestLoading,
               })}
             >
-              {isProgressDataLoaded ? (
+              {!isMyForestLoading && isProfileLoaded ? (
                 <ForestProgress profilePageType="public" />
               ) : (
                 <ProfileLoader height={116} />
@@ -131,10 +146,10 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
           <section
             id="my-contributions-container"
             className={clsx(styles.myContributionsContainer, {
-              [styles.loading]: !isContributionsDataLoaded,
+              [styles.loading]: isMyForestLoading,
             })}
           >
-            {isContributionsDataLoaded && profile ? (
+            {!isMyForestLoading && profile ? (
               <MyContributions profilePageType="public" userProfile={profile} />
             ) : (
               <ProfileLoader height={350} />
@@ -144,10 +159,10 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
             <section
               id="community-contributions-container"
               className={clsx(styles.communityContributionsContainer, {
-                [styles.loading]: !isLeaderboardLoaded,
+                [styles.loading]: isMyForestLoading,
               })}
             >
-              {isLeaderboardLoaded && profile ? (
+              {!isMyForestLoading && profile ? (
                 <CommunityContributions
                   userProfile={profile}
                   profilePageType="public"

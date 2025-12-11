@@ -1,30 +1,32 @@
 import type { ProfileV2Props } from '../../../common/types/profile';
 import type { LeaderboardItem } from '../../../common/types/myForest';
+import type { SetState } from '../../../common/types/common';
 
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import styles from './communityContributions.module.scss';
 import NoContributions from './NoContributions';
 import ContributionListItem from './ContributionListItem';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { useTranslations } from 'next-intl';
-import { useMyForest } from '../../../common/Layout/MyForestContext';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
+import { useMyForestStore } from '../../../../stores/myForestStore';
+import { useShallow } from 'zustand/react/shallow';
 import { clsx } from 'clsx';
 
 type TabOptions = 'most-recent' | 'most-trees';
 interface HeaderTabsProps {
   tabSelected: TabOptions;
-  handleTabChange: (selectedTab: TabOptions) => void;
+  setTabSelected: SetState<TabOptions>;
 }
 
-const HeaderTabs = ({ tabSelected, handleTabChange }: HeaderTabsProps) => {
+const HeaderTabs = ({ tabSelected, setTabSelected }: HeaderTabsProps) => {
   const t = useTranslations('Profile');
   return (
     <div className={styles.headerTabs}>
       <button
-        onClick={() => handleTabChange('most-recent')}
+        onClick={() => setTabSelected('most-recent')}
         className={clsx({
           [styles.selected]: tabSelected === 'most-recent',
         })}
@@ -32,7 +34,7 @@ const HeaderTabs = ({ tabSelected, handleTabChange }: HeaderTabsProps) => {
         {t('communityContributions.mostRecentTabLabel')}
       </button>
       <button
-        onClick={() => handleTabChange('most-trees')}
+        onClick={() => setTabSelected('most-trees')}
         className={clsx({
           [styles.selected]: tabSelected === 'most-trees',
         })}
@@ -75,26 +77,20 @@ const CommunityContributions = ({
   profilePageType,
   userProfile,
 }: ProfileV2Props) => {
-  const [tabSelected, setTabSelected] = useState<TabOptions>('most-recent');
-  const { leaderboardResult } = useMyForest();
-  //stores list for tabSelected
-  const [contributionList, setContributionList] = useState<LeaderboardItem[]>(
-    []
-  );
   const t = useTranslations('Profile');
+  const [tabSelected, setTabSelected] = useState<TabOptions>('most-recent');
 
-  const handleTabChange = (selectedTab: TabOptions) => {
-    setTabSelected(selectedTab);
-    if (selectedTab === 'most-recent') {
-      setContributionList(leaderboardResult?.mostRecent || []);
-    } else {
-      setContributionList(leaderboardResult?.mostTrees || []);
-    }
-  };
+  const { mostRecentContributions, mostTreesContributions } = useMyForestStore(
+    useShallow((state) => ({
+      mostRecentContributions: state.leaderboardResult?.mostRecent,
+      mostTreesContributions: state.leaderboardResult?.mostTrees,
+    }))
+  );
 
-  useEffect(() => {
-    setContributionList(leaderboardResult?.mostRecent || []);
-  }, [leaderboardResult]);
+  const contributionList =
+    tabSelected === 'most-recent'
+      ? mostRecentContributions || []
+      : mostTreesContributions || [];
 
   return (
     <div className={styles.communityContributions}>
@@ -122,7 +118,7 @@ const CommunityContributions = ({
           </h2>
           <HeaderTabs
             tabSelected={tabSelected}
-            handleTabChange={handleTabChange}
+            setTabSelected={setTabSelected}
           />
         </div>
         <div className={styles.iconContainer}>
@@ -131,10 +127,7 @@ const CommunityContributions = ({
       </div>
       {/* header tabs for mobile screens */}
       <div className={styles.mobileHeaderTabContainer}>
-        <HeaderTabs
-          tabSelected={tabSelected}
-          handleTabChange={handleTabChange}
-        />
+        <HeaderTabs tabSelected={tabSelected} setTabSelected={setTabSelected} />
       </div>
       {contributionList.length > 0 ? (
         <ContributionsList
