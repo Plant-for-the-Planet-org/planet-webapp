@@ -64,7 +64,7 @@ export default function ProjectTabs(): ReactElement {
         >
           <SatelliteIcon color={selectedMode === 'imagery' ? '#fff' : null} />{' '}
           <p>
-            {t('timeTravel')}
+            {t('timeTravelTab')}
             <sup>{t('beta')}</sup>
           </p>
         </div>

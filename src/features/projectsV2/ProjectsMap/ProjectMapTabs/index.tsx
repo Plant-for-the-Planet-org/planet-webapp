@@ -88,7 +88,7 @@ const MapTabs = ({
               }
             />
           }
-          title={tMaps('timeTravel')}
+          title={tMaps('timeTravelTab')}
           isSelected={selectedTab === 'timeTravel'}
           onClickHandler={() => setSelectedTab('timeTravel')}
         />

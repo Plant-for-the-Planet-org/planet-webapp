@@ -23,6 +23,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import TimeTravelDropdown from '../../TimeTravelDropdown';
 import styles from './TimeTravel.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
+import { useTranslations } from 'next-intl';
 import { clsx } from 'clsx';
 
 const EMPTY_STYLE = {
@@ -55,6 +56,7 @@ export default function TimeTravel({
   isVisible,
 }: Props): ReactElement {
   const { viewState: mainMapViewState, timeTravelConfig } = useProjectsMap();
+  const tTimeTravel = useTranslations('Maps.timeTravel');
 
   const { setErrors } = useContext(ErrorHandlingContext);
 
@@ -109,7 +111,7 @@ export default function TimeTravel({
 
   const validateData = useCallback(() => {
     if (!sitesGeoJson || !sitesGeoJson.features) {
-      throw new Error('Invalid or missing GeoJSON data');
+      throw new Error(tTimeTravel('errors.invalidGeoJson'));
     }
 
     if (
@@ -117,7 +119,7 @@ export default function TimeTravel({
       timeTravelConfig.sources === null ||
       Object.keys(timeTravelConfig.sources).length === 0
     ) {
-      throw new Error('Time travel configuration not available');
+      throw new Error(tTimeTravel('errors.configNotAvailable'));
     }
 
     const beforeYearExists = timeTravelConfig.sources[
@@ -125,7 +127,10 @@ export default function TimeTravel({
     ]?.some((item) => item.year === selectedYearBefore);
     if (!beforeYearExists) {
       throw new Error(
-        `Year ${selectedYearBefore} not found in source ${selectedSourceBefore}`
+        tTimeTravel('errors.yearNotFoundInSource', {
+          year: selectedYearBefore,
+          source: selectedSourceBefore,
+        })
       );
     }
 
@@ -134,7 +139,10 @@ export default function TimeTravel({
     );
     if (!afterYearExists) {
       throw new Error(
-        `Year ${selectedYearAfter} not found in source ${selectedSourceAfter}`
+        tTimeTravel('errors.yearNotFoundInSource', {
+          year: selectedYearAfter,
+          source: selectedSourceAfter,
+        })
       );
     }
   }, [
@@ -175,7 +183,7 @@ export default function TimeTravel({
   ): MaplibreMap | null => {
     if (!container) {
       onError(
-        new Error('Map container element not found'),
+        new Error(tTimeTravel('errors.containerNotFound')),
         MAP_ERROR_CODES.INITIALIZATION
       );
       return null;
@@ -195,22 +203,22 @@ export default function TimeTravel({
       // Check if this is a tile loading error
       if (isTileError(e)) {
         const yearMatch = e.sourceId?.match(/esri-(\d{4})/);
-        const year = yearMatch ? yearMatch[1] : 'Historical';
+        const year = yearMatch
+          ? yearMatch[1]
+          : tTimeTravel('genericHistoricalYear');
         const errorKey = `${mapType}-${year}`;
 
         if (!tileErrorsShownRef.current.has(errorKey)) {
           tileErrorsShownRef.current.add(errorKey);
           handleMapError(
-            new Error(
-              `${year} imagery is not available at this zoom level. Please try zooming out.`
-            ),
+            new Error(tTimeTravel('errors.imageryNotAvailable', { year })),
             MAP_ERROR_CODES.TILE_LOADING_ERROR
           );
         }
         return;
       }
       onError(
-        new Error(`Map error: ${e.error.message}`),
+        new Error(tTimeTravel('errors.mapError', { message: e.error.message })),
         MAP_ERROR_CODES.INITIALIZATION
       );
     });
@@ -272,7 +280,9 @@ export default function TimeTravel({
       };
     } catch (err) {
       handleMapError(
-        err instanceof Error ? err : new Error('Failed to initialize maps'),
+        err instanceof Error
+          ? err
+          : new Error(tTimeTravel('errors.mapInitializationFailed')),
         MAP_ERROR_CODES.INITIALIZATION
       );
     }
@@ -317,7 +327,7 @@ export default function TimeTravel({
         handleMapError(
           err instanceof Error
             ? err
-            : new Error('Failed to initialize comparison'),
+            : new Error(tTimeTravel('errors.comparisonInitializationFailed')),
           MAP_ERROR_CODES.INITIALIZATION
         );
       }
@@ -419,7 +429,9 @@ export default function TimeTravel({
     const yearConfig = sourceData.find((year) => year.year === selectedYear);
 
     if (!yearConfig) {
-      throw new Error(`Configuration not found for year ${selectedYear}`);
+      throw new Error(
+        tTimeTravel('errors.configNotFoundForYear', { year: selectedYear })
+      );
     }
 
     // Add new layers based on source type
@@ -429,7 +441,9 @@ export default function TimeTravel({
         break;
       // Add cases for other sources here
       default:
-        throw new Error(`Unsupported source type: ${source}`);
+        throw new Error(
+          tTimeTravel('errors.unsupportedSourceType', { source })
+        );
     }
   };
 
@@ -467,7 +481,9 @@ export default function TimeTravel({
       setIsLoading(false);
     } catch (err) {
       handleMapError(
-        err instanceof Error ? err : new Error('Failed to load map layers'),
+        err instanceof Error
+          ? err
+          : new Error(tTimeTravel('errors.layerLoadFailed')),
         MAP_ERROR_CODES.LAYER_LOAD
       );
     }
@@ -548,7 +564,9 @@ export default function TimeTravel({
         ref={comparisonContainer}
         className={styles.comparisonContainer}
       >
-        {isLoading && <div className={styles.loadingOverlay}>Loading...</div>}
+        {isLoading && (
+          <div className={styles.loadingOverlay}>{tTimeTravel('loading')}</div>
+        )}
         <div
           id="before"
           ref={beforeContainer}
