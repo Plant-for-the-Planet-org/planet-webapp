@@ -12,7 +12,7 @@
     "forestInfo": "3.04 trillion trees currently exist globally. Down from six trillion trees before humans started cutting down forests about 11,000 years ago.",
     "restorationInfo": " Half a billion hectares are suitable for wide-scale restoration of closed forests. Further one and a half billion hectares are best sited for mosaic restoration, which combines forests with other land uses like agroforestry, smallholder agriculture, and settlements.",
     "location": "Location",
-    "timeTravel": "Time Travel",
+    "timeTravelTab": "Time Travel",
     "vegetationChange": "Vegetation Change",
     "beta": "BETA",
     "baseLayer": "Base Layer & Vector Maps",
@@ -243,6 +243,23 @@
           }
         }
       }
+    },
+    "timeTravel": {
+      "errors": {
+        "imageryNotAvailable": "{year} imagery is not available at this zoom level. Please try zooming out.",
+        "invalidGeoJson": "Invalid or missing GeoJSON data",
+        "configNotAvailable": "Time travel configuration not available",
+        "yearNotFoundInSource": "Year {year} not found in source {source}",
+        "configNotFoundForYear": "Configuration not found for year {year}",
+        "containerNotFound": "Map container element not found",
+        "mapInitializationFailed": "Failed to initialize maps",
+        "comparisonInitializationFailed": "Failed to initialize comparison",
+        "mapError": "Map error: {message}",
+        "layerLoadFailed": "Failed to load map layers",
+        "unsupportedSourceType": "Unsupported source type: {source}"
+      },
+      "loading": "Loading...",
+      "genericHistoricalYear": "Historical"
     }
   }
 }
