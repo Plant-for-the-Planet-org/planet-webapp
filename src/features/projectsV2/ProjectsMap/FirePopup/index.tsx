@@ -9,7 +9,6 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import RightArrowIcon from '../../../../../public/assets/images/icons/projectV2/RightArrowIcon';
 import InfoIconPopup from '../../ProjectDetails/components/microComponents/InfoIconPopup';
-import FireIcon from '../../../../../public/assets/images/icons/FireIcon';
 import FirePopupIcon from '../../../../../public/assets/images/icons/FirePopupIcon';
 import styles from './FirePopup.module.scss';
 import { getDeviceType } from '../../../../utils/projectV2';
@@ -18,6 +17,9 @@ import themeProperties from '../../../../theme/themeProperties';
 interface Props {
   isOpen: boolean;
   feature: FireFeature;
+  anchorEl: HTMLElement | null;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 type ConfidencesType =
   | 'highAlertConfidenceText'
@@ -25,10 +27,11 @@ type ConfidencesType =
   | 'lowAlertConfidenceText';
 
 const { colors } = themeProperties.designSystem;
+type PopperModifier = Modifier<string, Record<string, unknown>>;
 function popperModifiers(options: {
   arrowRef: SetStateAction<HTMLElement | null>;
   clippingBoundary: HTMLElement | null;
-}): Partial<Modifier<any, any>>[] | undefined {
+}): Partial<PopperModifier>[] | undefined {
   return [
     {
       name: 'arrow',
@@ -61,14 +64,23 @@ function popperModifiers(options: {
   ];
 }
 
-export default function FirePopup({ isOpen, feature }: Props) {
-  const anchorRef = useRef(null);
+export default function FirePopup({
+  isOpen,
+  feature,
+  anchorEl,
+  onMouseEnter,
+  onMouseLeave,
+}: Props) {
   const popperRef = useRef<HTMLDivElement>(null);
   const [arrowRef, setArrowRef] = useState<HTMLElement | null>(null);
   const [showPopup, setShowPopup] = useState(isOpen);
   const [popperPlacement, setPopperPlacement] =
     useState<PopperProps['placement']>('top');
   const tProjectDetails = useTranslations('ProjectDetails');
+
+  useEffect(() => {
+    setShowPopup(isOpen);
+  }, [isOpen]);
 
   useEffect(() => {
     if (popperRef.current?.getAttribute('data-popper-placement')) {
@@ -129,11 +141,17 @@ export default function FirePopup({ isOpen, feature }: Props) {
         id="fire-popup"
         open={showPopup}
         ref={popperRef}
-        anchorEl={anchorRef.current}
+        anchorEl={anchorEl}
         placement="top"
         disablePortal={false}
-        onMouseLeave={() => setShowPopup(false)}
-        onMouseEnter={() => setShowPopup(true)}
+        onMouseLeave={() => {
+          onMouseLeave?.();
+          setShowPopup(false);
+        }}
+        onMouseEnter={() => {
+          onMouseEnter?.();
+          setShowPopup(true);
+        }}
         modifiers={popperModifiers({
           arrowRef,
           clippingBoundary: document.querySelector('canvas.maplibregl-canvas'),
@@ -190,14 +208,6 @@ export default function FirePopup({ isOpen, feature }: Props) {
           </div>
         </aside>
       </Popper>
-      <div
-        ref={anchorRef}
-        onMouseEnter={() => setShowPopup(true)}
-        onMouseLeave={() => setShowPopup(false)}
-        className={styles.fireIcon}
-      >
-        <FireIcon width={24} />
-      </div>
     </>
   );
 }
