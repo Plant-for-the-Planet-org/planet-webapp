@@ -4,12 +4,13 @@ import type {
   FireFeatureCollection,
 } from '../../../common/types/fireLocation';
 
-import { APIError } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Marker, Source } from 'react-map-gl-v7/maplibre';
-import FirePopup from '../FirePopup';
+import FireIcon from '../../../../../public/assets/images/icons/FireIcon';
 import { useApi } from '../../../../hooks/useApi';
+import FirePopup from '../FirePopup';
+import styles from '../FirePopup/FirePopup.module.scss';
 
 const ALERT_DURATION = '30d';
 
@@ -19,6 +20,9 @@ export default function FireLocationsMarker(): ReactElement {
   const { site } = query;
   const { getApi } = useApi();
   const [fireFeatures, setFireFeatures] = useState<FireFeature[]>([]);
+  const [activePopupFeature, setActivePopupFeature] =
+    useState<FireFeature | null>(null);
+  const markerRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
     if (!site) return;
@@ -39,14 +43,49 @@ export default function FireLocationsMarker(): ReactElement {
         ) {
           setFireFeatures([...fetchedFires.features]);
         }
-      } catch (error) {
-        if (error instanceof APIError) {
-          console.log(error.errors?.message ?? error.message);
-        }
+      } catch (error: unknown) {
+        const apiMessage = (error as { errors?: { message?: string } })?.errors
+          ?.message;
+        const fallbackMessage =
+          error instanceof Error
+            ? error.message
+            : (error as { message?: string }).message;
+        console.log(apiMessage ?? fallbackMessage ?? String(error));
       }
     };
     fetchFires();
   }, [site]);
+
+  const renderFireMarkers = useMemo(
+    () =>
+      fireFeatures?.slice(fireFeatures?.length - 100).map((f) => {
+        const featureId = `${f.properties.id}`;
+        return (
+          <Marker
+            key={`firealert-alert-${featureId}`}
+            latitude={f.geometry.coordinates[1]}
+            longitude={f.geometry.coordinates[0]}
+            anchor="center"
+          >
+            <div
+              ref={(el) => {
+                markerRefs.current[featureId] = el;
+              }}
+              className={styles.fireIcon}
+              onMouseEnter={() => setActivePopupFeature(f)}
+              onMouseLeave={() =>
+                setActivePopupFeature((current) =>
+                  current?.properties.id === f.properties.id ? null : current
+                )
+              }
+            >
+              <FireIcon width={24} />
+            </div>
+          </Marker>
+        );
+      }),
+    [fireFeatures.length]
+  );
 
   return (
     <>
@@ -55,17 +94,18 @@ export default function FireLocationsMarker(): ReactElement {
         type="geojson"
         data={{ type: 'FeatureCollection', features: fireFeatures }}
       >
-        {fireFeatures?.map((f) => (
-          <Marker
-            key={`firealert-alert-${f.properties.id}`}
-            latitude={f.geometry.coordinates[1]}
-            longitude={f.geometry.coordinates[0]}
-            anchor="center"
-          >
-            <FirePopup isOpen={false} feature={f} />
-          </Marker>
-        ))}
+        {renderFireMarkers}
       </Source>
+      {activePopupFeature && (
+        <FirePopup
+          key={`firealert-popup-${activePopupFeature.properties.id}`}
+          isOpen
+          feature={activePopupFeature}
+          anchorEl={markerRefs.current[`${activePopupFeature.properties.id}`]}
+          onMouseEnter={() => setActivePopupFeature(activePopupFeature)}
+          onMouseLeave={() => setActivePopupFeature(null)}
+        />
+      )}
     </>
   );
 }
