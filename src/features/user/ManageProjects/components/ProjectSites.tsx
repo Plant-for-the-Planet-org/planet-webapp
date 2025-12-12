@@ -73,7 +73,7 @@ export default function ProjectSites({
     control,
     reset,
   } = useForm<ProjectSitesFormData>();
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -134,7 +134,6 @@ export default function ProjectSites({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
     }
   };
   useEffect(() => {
