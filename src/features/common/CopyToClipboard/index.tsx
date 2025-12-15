@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useTranslations } from 'next-intl';
+import { clsx } from 'clsx';
 
 interface Props {
   text: string;
@@ -41,9 +42,9 @@ export default function CopyToClipboard({
     <>
       <div
         onClick={handleClick}
-        className={`${styles.copyButtonContainer} ${
-          isButton ? styles.button : ''
-        }`}
+        className={clsx(styles.copyButtonContainer, {
+          [styles.button]: isButton,
+        })}
       >
         {customCopyButton ? customCopyButton : <CopyIcon />}
       </div>

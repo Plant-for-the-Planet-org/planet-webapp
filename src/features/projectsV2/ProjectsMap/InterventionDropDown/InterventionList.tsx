@@ -4,6 +4,7 @@ import type { InterventionTypes } from '@planet-sdk/common';
 
 import styles from '../../ProjectsMap/InterventionDropDown/InterventionList.module.scss';
 import { useTranslations } from 'next-intl';
+import { clsx } from 'clsx';
 
 type InterventionData = {
   label: string;
@@ -47,24 +48,22 @@ const InterventionList = ({
 
   return (
     <ul
-      className={`${styles.interventionListOptions} ${
-        !hasProjectSites
-          ? styles.interventionListOptionsAbove
-          : styles.interventionListOptionsBelow
-      }`}
+      className={clsx(styles.interventionListOptions, {
+        [styles.interventionListOptionsBelow]: hasProjectSites,
+        [styles.interventionListOptionsAbove]: !hasProjectSites,
+      })}
     >
       {interventionList.map((intervention) => {
         if (!shouldRenderIntervention(intervention.value)) {
           return null;
         }
-
+        const isSelected =
+          intervention.value === selectedInterventionData?.value;
         return (
           <li
-            className={`${styles.listItem} ${
-              intervention.value === selectedInterventionData?.value
-                ? styles.selectedItem
-                : ''
-            }`}
+            className={clsx(styles.listItem, {
+              [styles.selectedItem]: isSelected,
+            })}
             onClick={() => handleFilterSelection(intervention.value)}
             key={intervention.value} // Use unique value as key
           >

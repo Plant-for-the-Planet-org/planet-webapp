@@ -67,25 +67,13 @@
 }
 
 .leaderBoardTableHeaderTitleSelected {
-  padding: 8px;
   border-bottom: 2px solid $primaryColor;
-  font-family: $primaryFontFamily;
-  font-style: normal;
   font-weight: bold;
-  font-size: $fontSmall;
-  color: $primaryFontColor;
-  > svg {
-    height: 13px;
-    > path {
-      fill: $primaryColor;
-    }
+  > svg > path {
+    fill: $primaryColor;
   }
 }
 
-.leaderBoardTableHeaderTitleSelected,
-.leaderBoardTableHeaderTitle > svg > path {
-  fill: $primaryFontColor;
-}
 .leaderBoardTableHeaderTitle:hover {
   cursor: pointer;
 }

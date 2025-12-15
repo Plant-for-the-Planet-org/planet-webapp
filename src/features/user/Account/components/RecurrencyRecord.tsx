@@ -13,6 +13,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import TransferDetails from './TransferDetails';
 import themeProperties from '../../../../theme/themeProperties';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import { clsx } from 'clsx';
 
 const getStatusStyle = (status: string) => {
   switch (status) {
@@ -61,7 +62,7 @@ export function RecordHeader({
   return (
     <div
       onClick={handleRecordToggle && (() => handleRecordToggle(index))}
-      className={`${styles.recurrencyRecordHeader}`}
+      className={styles.recurrencyRecordHeader}
       style={{
         cursor: record?.status === 'incomplete' ? 'default' : 'pointer',
       }}
@@ -111,10 +112,10 @@ export function RecordHeader({
         )}
       </div>
       <div className={styles.right}>
-        <p className={`${styles.top} ${styles.amount}`}>
+        <p className={clsx(styles.top, styles.amount)}>
           {getFormattedCurrency(locale, record.currency, record.amount)}
         </p>
-        <p className={`${styles.status} ${statusStyle}`}>
+        <p className={clsx(styles.status, statusStyle)}>
           {record?.status === 'trialing' ? 'active' : t(record?.status)}
         </p>
       </div>
@@ -216,7 +217,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
 
       {record?.destination?.type === 'mixed' && (
-        <div className={`${styles.singleDetail} ${styles.fullWidth}`}>
+        <div className={clsx(styles.singleDetail, styles.fullWidth)}>
           <p className={styles.title}>{t('projects')}</p>
           <MixedSubscriptionProjects destinations={record.destination.items} />
         </div>
@@ -348,9 +349,11 @@ export default function RecurrencyRecord({
   setCancelDonation,
   setReactivateDonation,
 }: Props): ReactElement {
-  const outerDivClasses = isModal
-    ? styles.recordModal
-    : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
+  const outerDivClasses = clsx({
+    [styles.recordModal]: isModal,
+    [styles.record]: !isModal,
+    [styles.selected]: !isModal && selectedRecord === index,
+  });
 
   return (
     <div className={outerDivClasses}>

@@ -31,6 +31,7 @@ import {
   DEFAULT_MAP_STATE,
   DEFAULT_VIEW_STATE,
 } from '../../../../utils/mapsV2/mapDefaults';
+import { clsx } from 'clsx';
 
 interface Props {
   geoJson: ProjectSiteFeatureCollection | null;
@@ -224,7 +225,7 @@ export default function SiteGeometryEditor({
   );
 
   return (
-    <div className={`${styles.formFieldLarge} ${styles.siteGeometryEditor}`}>
+    <div className={clsx(styles.formFieldLarge, styles.siteGeometryEditor)}>
       <MapControls
         isDrawing={isDrawing}
         setIsDrawing={setIsDrawing}

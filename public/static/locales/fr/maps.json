@@ -12,7 +12,7 @@
     "forestInfo": "Il existe actuellement 3.04 mille milliards d'arbres dans le monde. il y en avait mille milliards avant que l'homme ne commence à abattre des forêts, il y a environ 11 000 ans. ",
     "restorationInfo": " Un demi-milliard d'hectares se prêtent à la restauration à grande échelle de forêts fermées. En outre, un milliard et demi d'hectares sont mieux situés pour la restauration de la mosaïque, qui combine les forêts avec d'autres utilisations des terres comme l'agroforesterie, l'agriculture à petite échelle et les colonies.",
     "location": "Lieu",
-    "timeTravel": "Voyage dans le temps",
+    "timeTravelTab": "Voyage dans le temps",
     "vegetationChange": "Changement de végétation",
     "beta": "BETA",
     "baseLayer": "Couche de base et cartes vectorielles",

@@ -4,6 +4,7 @@ import styles from './SiteMapLayerControls.module.scss';
 import BiomassChangeIcon from '../../../../../public/assets/images/icons/projectV2/BiomassChangeIcon';
 import TreeCoverIcon from '../../../../../public/assets/images/icons/projectV2/TreeCoverIcon';
 import themeProperties from '../../../../theme/themeProperties';
+import { clsx } from 'clsx';
 
 export type LayerKey = 'biomass' | 'tree-cover';
 
@@ -71,9 +72,9 @@ const SingleLayerOption = ({
 }: SingleOptionProps) => {
   return (
     <div
-      className={`${styles.singleLayerOption} ${
-        isSelected ? styles.selected : ''
-      }`}
+      className={clsx(styles.singleLayerOption, {
+        [styles.selected]: isSelected,
+      })}
       onClick={() => handleLayerSelection(option)}
       role="button"
     >

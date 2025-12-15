@@ -9,6 +9,7 @@ import { useMemo } from 'react';
 import TargetSwitch from './TargetSwitch';
 import TargetTextField from './TargetTextField';
 import TargetFormInputLabel from './microComponents/TargetFormInputLabel';
+import { clsx } from 'clsx';
 
 type TargetFormInputProps = {
   dataType: ProgressDataType;
@@ -54,9 +55,9 @@ const TargetFormInput = ({
 
   return (
     <div
-      className={`${targetContainerClass} ${
-        isLocalTargetSet && isChecked && styles[dataType]
-      }`}
+      className={clsx(targetContainerClass, {
+        [styles[dataType]]: isLocalTargetSet && isChecked,
+      })}
     >
       <div className={styles.switchContainer}>
         <TargetFormInputLabel dataType={dataType} />

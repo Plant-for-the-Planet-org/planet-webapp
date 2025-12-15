@@ -34,6 +34,7 @@ import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 import themeProperties from '../../../../theme/themeProperties';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 interface Props {
   interventions: Intervention[] | null;
@@ -304,11 +305,10 @@ export default function MyTreesMap({
                         {viewport.zoom > 14 && (
                           <div
                             key={`${str.id}-marker`}
-                            className={`${styles.single} ${
-                              str.id === selectedIntervention?.id
-                                ? styles.singleSelected
-                                : ''
-                            }`}
+                            className={clsx(styles.single, {
+                              [styles.singleSelected]:
+                                str.id === selectedIntervention?.id,
+                            })}
                             role="button"
                             tabIndex={0}
                             onClick={() => setSelectedIntervention(str)}
@@ -332,11 +332,10 @@ export default function MyTreesMap({
                     onClick={() => {
                       setSelectedIntervention(intervention);
                     }}
-                    className={`${styles.single} ${
-                      intervention.id === selectedIntervention?.id
-                        ? styles.singleSelected
-                        : ''
-                    }`}
+                    className={clsx(styles.single, {
+                      [styles.singleSelected]:
+                        intervention.id === selectedIntervention?.id,
+                    })}
                     role="button"
                     tabIndex={0}
                   />
