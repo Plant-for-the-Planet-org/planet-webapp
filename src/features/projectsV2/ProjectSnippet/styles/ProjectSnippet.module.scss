@@ -210,6 +210,16 @@
   }
 }
 
+.regularProject {
+  background-color: $dsLeafGreen;
+  border: none;
+  &:hover {
+    background-color: $dsLeafGreen;
+    opacity: 0.7;
+    border: none;
+  }
+}
+
 .projectEcosystemOrTypeContainer {
   display: flex;
   align-items: center;

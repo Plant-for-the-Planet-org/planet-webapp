@@ -102,6 +102,7 @@ const ProjectSnippetContent = ({
     project.unitsContributed,
     project.unitsTargeted,
   ]);
+
   const progressBarClass = useMemo(() => {
     return `${styles[getProjectCategory(project)]}`;
   }, [
