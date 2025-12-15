@@ -220,6 +220,11 @@
   }
 }
 
+.nonDonatableProject {
+  background-color: transparent;
+  border: none;
+}
+
 .projectEcosystemOrTypeContainer {
   display: flex;
   align-items: center;
