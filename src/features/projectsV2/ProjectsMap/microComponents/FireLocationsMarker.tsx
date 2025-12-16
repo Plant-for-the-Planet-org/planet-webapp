@@ -31,6 +31,9 @@ function selectFiresForDisplay(allFeatures: FireFeature[]): FireFeature[] {
   const now = Date.now();
   const daysSinceEvent = (feature: FireFeature): number => {
     const eventTime = new Date(feature.properties.eventDate).getTime();
+    if (isNaN(eventTime)) {
+      return Infinity;
+    }
     return (now - eventTime) / (1000 * 60 * 60 * 24);
   };
 
