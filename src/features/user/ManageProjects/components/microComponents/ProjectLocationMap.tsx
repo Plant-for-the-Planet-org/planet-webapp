@@ -91,8 +91,20 @@ const ProjectLocationMap = ({
   );
 
   useEffect(() => {
-    if (projectCoords) {
-      centerMapOnCoordinates(mapRef, [projectCoords.lng, projectCoords.lat]);
+    if (projectCoords && mapRef.current) {
+      const currentZoom = mapRef.current.getZoom();
+
+      // Only zoom in if map is at default/low zoom level
+      if (currentZoom < 5) {
+        mapRef.current.flyTo({
+          center: [projectCoords.lng, projectCoords.lat],
+          zoom: 7,
+          duration: 1000,
+        });
+      } else {
+        // Just center at current zoom level
+        centerMapOnCoordinates(mapRef, [projectCoords.lng, projectCoords.lat]);
+      }
     }
   }, [projectCoords]);
 
