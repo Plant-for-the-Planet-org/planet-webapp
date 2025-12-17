@@ -52,7 +52,7 @@ export type TreeFormData = BaseFormData & {
   unitType: 'tree' | 'm2';
 };
 
-type ConservationFormData = BaseFormData;
+export type ConservationFormData = BaseFormData;
 
 type BaseProjectApiPayload = {
   name: string;
@@ -118,7 +118,7 @@ export default function BasicDetails({
     (projectDetails.verificationStatus === 'incomplete' &&
       projectDetails.reviewRequested === false);
 
-  const changeLat = (e: ChangeEvent<HTMLInputElement>) => {
+  const changeLatitude = (e: ChangeEvent<HTMLInputElement>) => {
     const latNumericValue = Number(e.target.value);
 
     if (
@@ -132,7 +132,7 @@ export default function BasicDetails({
       });
     }
   };
-  const changeLon = (e: ChangeEvent<HTMLInputElement>) => {
+  const changeLongitude = (e: ChangeEvent<HTMLInputElement>) => {
     const lonNumericValue = Number(e.target.value);
 
     if (
@@ -724,7 +724,7 @@ export default function BasicDetails({
                           /[^0-9.-]/g,
                           ''
                         );
-                        changeLat(e);
+                        changeLatitude(e);
                         onChange(e);
                       }}
                       value={value}
@@ -759,7 +759,7 @@ export default function BasicDetails({
                           /[^0-9.-]/g,
                           ''
                         );
-                        changeLon(e);
+                        changeLongitude(e);
                         onChange(e);
                       }}
                       value={value}

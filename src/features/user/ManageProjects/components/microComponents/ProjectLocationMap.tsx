@@ -9,7 +9,7 @@ import type {
   UseFormSetValue,
 } from 'react-hook-form';
 import type {
-  BaseFormData,
+  ConservationFormData,
   ProjectCoordinates,
   TreeFormData,
 } from '../BasicDetails';
@@ -34,9 +34,9 @@ import {
 } from '../../../../../utils/mapsV2/mapDefaults';
 
 interface ProjectLocationMapProps {
-  clearErrors: UseFormClearErrors<BaseFormData | TreeFormData>;
-  setError: UseFormSetError<BaseFormData | TreeFormData>;
-  setValue: UseFormSetValue<BaseFormData | TreeFormData>;
+  clearErrors: UseFormClearErrors<ConservationFormData | TreeFormData>;
+  setError: UseFormSetError<ConservationFormData | TreeFormData>;
+  setValue: UseFormSetValue<ConservationFormData | TreeFormData>;
   projectCoords: ProjectCoordinates | null;
   setProjectCoords: SetState<ProjectCoordinates | null>;
 }
