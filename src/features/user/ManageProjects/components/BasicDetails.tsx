@@ -290,7 +290,10 @@ export default function BasicDetails({
                 ecosystem: projectDetails.metadata.ecosystem || '',
               },
             };
-      if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
+      if (
+        projectDetails.geoLongitude != null &&
+        projectDetails.geoLatitude != null
+      ) {
         setProjectCoords({
           lng: projectDetails.geoLongitude,
           lat: projectDetails.geoLatitude,
