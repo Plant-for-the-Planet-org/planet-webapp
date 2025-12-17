@@ -123,8 +123,8 @@ export default function BasicDetails({
 
     if (
       !isNaN(latNumericValue) &&
-      latNumericValue > -90 &&
-      latNumericValue < 90
+      latNumericValue >= -90 &&
+      latNumericValue <= 90
     ) {
       setProjectCoords({
         lat: latNumericValue,
@@ -137,8 +137,8 @@ export default function BasicDetails({
 
     if (
       !isNaN(lonNumericValue) &&
-      lonNumericValue > -180 &&
-      lonNumericValue < 180
+      lonNumericValue >= -180 &&
+      lonNumericValue <= 180
     ) {
       setProjectCoords({
         lat: projectCoords?.lat ?? 0,
