@@ -119,9 +119,10 @@ export default function BasicDetails({
       projectDetails.reviewRequested === false);
 
   const changeLatitude = (e: ChangeEvent<HTMLInputElement>) => {
-    // Don't update coordinates when field is cleared or invalid
+    // Clear coordinates and hide map marker when field is cleared or invalid
     if (e.target.value === '' || e.target.value === '-') {
-      return; // Keep existing projectCoords unchanged
+      setProjectCoords(null);
+      return;
     }
     const latNumericValue = Number(e.target.value);
 
@@ -137,9 +138,10 @@ export default function BasicDetails({
     }
   };
   const changeLongitude = (e: ChangeEvent<HTMLInputElement>) => {
-    // Don't update coordinates when field is cleared or invalid
+    // Clear coordinates and hide map marker when field is cleared or invalid
     if (e.target.value === '' || e.target.value === '-') {
-      return; // Keep existing projectCoords unchanged
+      setProjectCoords(null);
+      return;
     }
     const lngNumericValue = Number(e.target.value);
 
