@@ -119,6 +119,10 @@ export default function BasicDetails({
       projectDetails.reviewRequested === false);
 
   const changeLatitude = (e: ChangeEvent<HTMLInputElement>) => {
+    // Don't update coordinates when field is cleared or invalid
+    if (e.target.value === '' || e.target.value === '-') {
+      return; // Keep existing projectCoords unchanged
+    }
     const latNumericValue = Number(e.target.value);
 
     if (
@@ -133,16 +137,20 @@ export default function BasicDetails({
     }
   };
   const changeLongitude = (e: ChangeEvent<HTMLInputElement>) => {
-    const lonNumericValue = Number(e.target.value);
+    // Don't update coordinates when field is cleared or invalid
+    if (e.target.value === '' || e.target.value === '-') {
+      return; // Keep existing projectCoords unchanged
+    }
+    const lngNumericValue = Number(e.target.value);
 
     if (
-      !isNaN(lonNumericValue) &&
-      lonNumericValue >= -180 &&
-      lonNumericValue <= 180
+      !isNaN(lngNumericValue) &&
+      lngNumericValue >= -180 &&
+      lngNumericValue <= 180
     ) {
       setProjectCoords({
         lat: projectCoords?.lat ?? 0,
-        lng: lonNumericValue,
+        lng: lngNumericValue,
       });
     }
   };
