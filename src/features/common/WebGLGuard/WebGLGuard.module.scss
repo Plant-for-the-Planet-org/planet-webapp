@@ -40,10 +40,11 @@
 .errorContainer {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   align-items: center;
   justify-content: center;
   min-height: 400px;
-  padding: 40px 24px;
+  padding: 24px;
   background: $dsBackgroundBase;
   text-align: center;
   width: 100%;
@@ -52,27 +53,23 @@
 
 .errorIcon {
   color: $dsSunriseOrange;
-  margin-bottom: 20px;
 
   svg {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
   }
 }
 
 .errorTitle {
-  font-size: $fontLarge;
+  font-size: $fontMedium;
   font-weight: 600;
   color: $dsCoreText;
-  margin: 0 0 16px 0;
   font-family: $primaryFontFamily;
 }
 
 .errorMessage {
-  font-size: $fontSixteen;
+  font-size: $fontSmall;
   color: $dsSoftText;
-  line-height: 1.5;
-  margin: 0 0 24px 0;
   max-width: 500px;
 }
 
@@ -80,17 +77,15 @@
   background: $dsWhite;
   border: 1px solid $dsMediumGreyTransparent50;
   border-radius: 8px;
-  padding: 20px;
-  margin: 20px 0;
+  padding: 16px;
   text-align: left;
   width: 100%;
   max-width: 500px;
 
   h4 {
-    font-size: $fontSixteen;
+    font-size: $fontSmall;
     font-weight: 600;
     color: $dsCoreText;
-    margin: 0 0 12px 0;
     font-family: $primaryFontFamily;
   }
 
@@ -99,9 +94,8 @@
     padding-left: 20px;
 
     li {
-      margin: 8px 0;
+      margin: 5px 0;
       color: $dsSoftText;
-      line-height: 1.4;
       font-size: $fontSmall;
 
       strong {
@@ -115,7 +109,6 @@
 .contactInfo {
   font-size: $fontSmall;
   color: $dsSoftText2;
-  margin: 16px 0 0 0;
 
   p {
     margin: 0;
@@ -123,7 +116,6 @@
 }
 
 .technicalDetails {
-  margin-top: 24px;
   width: 100%;
   max-width: 500px;
 
