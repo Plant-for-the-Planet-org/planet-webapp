@@ -31,11 +31,15 @@ const ProfileLayout = () => {
   // Actions
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
   const fetchMyForest = useMyForestStore((state) => state.fetchMyForest);
+  const setIsPublicProfile = useMyForestStore(
+    (state) => state.setIsPublicProfile
+  );
 
   useEffect(() => {
     if (contextLoaded) {
       if (user) {
         setProfile(user);
+        setIsPublicProfile(false);
         const _userInfo = {
           profileId: user.id,
           slug: user.slug,
