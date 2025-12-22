@@ -1,24 +1,24 @@
 import type { ReactElement } from 'react';
 import type { ViewState, ViewStateChangeEvent } from 'react-map-gl-v7/maplibre';
-import type { MapState } from '../../../projectsV2/ProjectsMapContext';
+import type { MapState } from '../../../../utils/mapsV2/mapDefaults';
+import type { Point, Polygon } from 'geojson';
 import type {
   ExtendedMapLibreMap,
-  MapRef,
-} from '../../../common/types/projectv2';
-import type { Point, Polygon } from 'geojson';
+  MapLibreRef,
+} from '../../../common/types/map';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Layer, Map as MapGL, Marker, Source } from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
-import {
-  DEFAULT_MAP_STATE,
-  DEFAULT_VIEW_STATE,
-} from '../../../projectsV2/ProjectsMapContext';
 import zoomToLocation from '../../../../utils/mapsV2/zoomToLocation';
 import { ProjectLocationIcon } from '../../../../../public/assets/images/icons/projectV2/ProjectLocationIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import { zoomToPolygonIntervention } from '../../../../utils/mapsV2/zoomToPolygonIntervention';
+import {
+  DEFAULT_MAP_STATE,
+  DEFAULT_VIEW_STATE,
+} from '../../../../utils/mapsV2/mapDefaults';
 
 interface Props {
   geometry: Point | Polygon | undefined;
@@ -29,7 +29,7 @@ export default function RegisterTreeStaticMap({
 }: Props): ReactElement {
   if (geometry === undefined) return <></>;
 
-  const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
+  const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
   const { colors } = themeProperties.designSystem;
 
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);

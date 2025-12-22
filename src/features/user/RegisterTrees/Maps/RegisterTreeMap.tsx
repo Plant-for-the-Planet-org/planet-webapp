@@ -3,11 +3,11 @@ import type {
   ViewState,
   ViewStateChangeEvent,
 } from 'react-map-gl-v7/maplibre';
-import type { MapState } from '../../../projectsV2/ProjectsMapContext';
+import type { MapState } from '../../../../utils/mapsV2/mapDefaults';
 import type {
   ExtendedMapLibreMap,
-  MapRef,
-} from '../../../common/types/projectv2';
+  MapLibreRef,
+} from '../../../common/types/map';
 import type { Geometry, Point, Polygon } from 'geojson';
 import type { SetState } from '../../../common/types/common';
 import type { RegisteredTreesGeometry } from '../../../common/types/map';
@@ -20,10 +20,6 @@ import {
   Source,
 } from 'react-map-gl-v7/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import {
-  DEFAULT_MAP_STATE,
-  DEFAULT_VIEW_STATE,
-} from '../../../projectsV2/ProjectsMapContext';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import styles from '../RegisterModal.module.scss';
@@ -33,6 +29,10 @@ import themeProperties from '../../../../theme/themeProperties';
 import { centerMapOnCoordinates } from '../../../../utils/projectV2';
 import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';
 import { useTranslations } from 'next-intl';
+import {
+  DEFAULT_MAP_STATE,
+  DEFAULT_VIEW_STATE,
+} from '../../../../utils/mapsV2/mapDefaults';
 
 interface RegisterTreeMapProps {
   isMultiple: boolean;
@@ -93,7 +93,7 @@ const RegisterTreeMap = ({
   userLocation,
   setErrorMessage,
 }: RegisterTreeMapProps) => {
-  const mapRef: MapRef = useRef<ExtendedMapLibreMap | null>(null);
+  const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const t = useTranslations('Me');
   const { colors } = themeProperties.designSystem;
