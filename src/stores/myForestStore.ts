@@ -58,21 +58,26 @@ interface MyForestStore {
     getApi: ApiRequestFn,
     getApiAuthenticated: ApiRequestFn
   ) => Promise<void>;
+  resetMyForestStore: () => void;
 }
+
+const initialState = {
+  userInfo: null,
+  isPublicProfile: false,
+  registrationGeojson: [],
+  donationGeojson: [],
+  isMyForestLoading: true,
+  errorMessage: null,
+  projectListResult: undefined,
+  contributionsResult: undefined,
+  leaderboardResult: undefined,
+};
 
 export const useMyForestStore = create<MyForestStore>()(
   devtools(
     (set, get) => ({
       //state
-      userInfo: null,
-      isPublicProfile: false,
-      registrationGeojson: [],
-      donationGeojson: [],
-      isMyForestLoading: true,
-      errorMessage: null,
-      projectListResult: undefined,
-      contributionsResult: undefined,
-      leaderboardResult: undefined,
+      ...initialState,
 
       //Actions
       setUserInfo: (userInfo) => set({ userInfo }, undefined, 'setUserInfo'),
@@ -129,6 +134,9 @@ export const useMyForestStore = create<MyForestStore>()(
           );
         }
       },
+
+      resetMyForestStore: () =>
+        set(initialState, undefined, 'resetMyForestState'),
     }),
     {
       name: 'MyForestStore',

@@ -34,6 +34,9 @@ const ProfileLayout = () => {
   const setIsPublicProfile = useMyForestStore(
     (state) => state.setIsPublicProfile
   );
+  const resetMyForestStore = useMyForestStore(
+    (state) => state.resetMyForestStore
+  );
 
   useEffect(() => {
     if (contextLoaded) {
@@ -57,6 +60,13 @@ const ProfileLayout = () => {
   useEffect(() => {
     if (userSlug) fetchMyForest(getApi, getApiAuthenticated);
   }, [userSlug, fetchMyForest]);
+
+  // myForest data is always fetched fresh; clear the store on unmount since persisting it provides no caching benefit
+  useEffect(() => {
+    return () => {
+      resetMyForestStore();
+    };
+  }, []);
 
   //TODO: Remove once error handling is fully migrated from useContext to Zustand
   useEffect(() => {
