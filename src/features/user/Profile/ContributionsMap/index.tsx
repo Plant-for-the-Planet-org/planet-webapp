@@ -13,6 +13,7 @@ import Markers from './Markers';
 import { useRef } from 'react';
 import styles from './Common/common.module.scss';
 import ContributionStats from './Common/ContributionStats';
+import WebGLGuard from '../../../common/WebGLGuard';
 
 interface ContributionsMapProps {
   profilePageType: ProfilePageType;
@@ -67,31 +68,33 @@ function ContributionsMap({
 
   return (
     <div className={styles.mapSubContainer}>
-      <Map
-        {...viewState}
-        {...mapState}
-        onMove={(e) => setViewState(e.viewState)}
-        attributionControl={false}
-        ref={mapRef}
-      >
-        <Markers
-          mapRef={mapRef}
-          viewState={viewState}
-          setViewState={setViewState}
-          profilePageType={profilePageType}
-          supportedTreecounter={supportedTreecounter}
-        />
-        <MapCredits />
-        <NavigationControl
-          position="bottom-right"
-          style={{
-            position: 'absolute',
-            bottom: '32px',
-            right: '0px',
-          }}
-          showCompass={false}
-        />
-      </Map>
+      <WebGLGuard>
+        <Map
+          {...viewState}
+          {...mapState}
+          onMove={(e) => setViewState(e.viewState)}
+          attributionControl={false}
+          ref={mapRef}
+        >
+          <Markers
+            mapRef={mapRef}
+            viewState={viewState}
+            setViewState={setViewState}
+            profilePageType={profilePageType}
+            supportedTreecounter={supportedTreecounter}
+          />
+          <MapCredits />
+          <NavigationControl
+            position="bottom-right"
+            style={{
+              position: 'absolute',
+              bottom: '32px',
+              right: '0px',
+            }}
+            showCompass={false}
+          />
+        </Map>
+      </WebGLGuard>
       <ContributionStats />
     </div>
   );
