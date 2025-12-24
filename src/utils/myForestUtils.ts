@@ -1,16 +1,49 @@
 import type { ProjectPurposeTypes, UnitTypes } from '@planet-sdk/common';
 import type { ExtractedProjectData } from '../features/user/Profile/ContributionsMap/Markers/DonationClusterMarker';
 import type { PointFeature } from 'supercluster';
-import type { DonationProperties } from '../features/common/types/myForest';
+import type {
+  ContributionsResponse,
+  DonationProperties,
+  Leaderboard,
+  MapLocation,
+  MyContributionsSingleProject,
+  MyContributionsSingleRegistration,
+  MyForestProject,
+  ProjectListResponse,
+} from '../features/common/types/myForest';
 import type { ProgressDataType } from '../features/user/Profile/ForestProgress/ForestProgressItem';
 import type { ContributionStats } from '../features/common/types/myForest';
 
 import themeProperties from '../theme/themeProperties';
+import getPointCoordinates from './getPointCoordinates';
 export type Accumulator = {
   maxContributionCount: number;
   maxContributingObject: ExtractedProjectData | null;
 };
 
+interface MyForestApiResponse {
+  stats: ContributionsResponse['stats'];
+  myContributionsMap: ContributionsResponse['myContributionsMap'];
+  registrationLocationsMap: ContributionsResponse['registrationLocationsMap'];
+  projectLocationsMap: ContributionsResponse['projectLocationsMap'];
+  leaderboard: Leaderboard;
+  projects: ProjectListResponse;
+}
+
+interface UseMyForestApiResult {
+  data: {
+    projectListResult?: ProjectListResponse;
+    contributionsResult?: ContributionsResponse;
+    leaderboardResult?: Leaderboard;
+  };
+  loading: {
+    isProjectsListLoaded: boolean;
+    isContributionsLoaded: boolean;
+    isLeaderboardLoaded: boolean;
+  };
+  error: string | null;
+  refetch: () => Promise<void>;
+}
 /**
  * The getColor function determines the color associated with a specific project purpose and unit type.
  * @param purpose
@@ -231,4 +264,173 @@ export const checkProgressEnabled = (
     conservationTarget === 0 &&
     areaConserved === 0
   );
+};
+
+/**
+ * Convert array format to Map format
+ * Handles both array of tuples and Map instances
+ */
+const convertToMap = <K, V>(
+  data: Array<[K, V]> | Map<K, V> | undefined
+): Map<K, V> => {
+  if (!data) return new Map();
+  if (data instanceof Map) return data;
+
+  const map = new Map<K, V>();
+  if (Array.isArray(data)) {
+    data.forEach(([key, value]) => {
+      if (key && value) {
+        map.set(key, value);
+      }
+    });
+  }
+  return map;
+};
+/**
+ * Safely transforms API response into UI-friendly structure.
+ * Ensures consistent defaults and converts Maps/Arrays properly.
+ */
+
+export const transformResponse = (
+  response: MyForestApiResponse
+): UseMyForestApiResult['data'] => {
+  // Ensure response exists and has required properties
+  if (!response) {
+    return {
+      projectListResult: {},
+      contributionsResult: {
+        stats: {
+          giftsReceivedCount: 0,
+          contributionsMadeCount: 0,
+          treesRegistered: 0,
+          treesDonated: { personal: 0, received: 0 },
+          areaRestoredInM2: { personal: 0, received: 0 },
+          areaConservedInM2: { personal: 0, received: 0 },
+        },
+        myContributionsMap: new Map(),
+        registrationLocationsMap: new Map(),
+        projectLocationsMap: new Map(),
+      },
+      leaderboardResult: { mostRecent: [], mostTrees: [] },
+    };
+  }
+
+  // Convert projects array to Map if needed (depending on API response format)
+  let projects = response.projects || {};
+  if (Array.isArray(response.projects)) {
+    const projectsMap: ProjectListResponse = {};
+    response.projects.forEach((project: MyForestProject) => {
+      if (project && project.guid) {
+        projectsMap[project.guid] = project;
+      }
+    });
+    projects = projectsMap;
+  }
+
+  // Transform the combined response into the expected format
+  const stats = {
+    giftsReceivedCount: response.stats?.giftsReceivedCount || 0,
+    contributionsMadeCount: response.stats?.contributionsMadeCount || 0,
+    treesRegistered: response.stats?.treesRegistered || 0,
+    treesDonated: response.stats?.treesDonated || {
+      personal: 0,
+      received: 0,
+    },
+    areaRestoredInM2: response.stats?.areaRestoredInM2 || {
+      personal: 0,
+      received: 0,
+    },
+    areaConservedInM2: response.stats?.areaConservedInM2 || {
+      personal: 0,
+      received: 0,
+    },
+  };
+
+  const contributionsResult: ContributionsResponse = {
+    stats,
+    myContributionsMap: convertToMap(response.myContributionsMap),
+    registrationLocationsMap: convertToMap(response.registrationLocationsMap),
+    projectLocationsMap: convertToMap(response.projectLocationsMap),
+  };
+
+  return {
+    projectListResult: projects,
+    contributionsResult,
+    leaderboardResult: response.leaderboard || {
+      mostRecent: [],
+      mostTrees: [],
+    },
+  };
+};
+
+/**
+ * Creates a GeoJSON point feature for donation entries
+ * Links project geometry with contribution info
+ */
+const generateDonationGeojson = (
+  project: MyForestProject,
+  contributionsForProject: MyContributionsSingleProject
+) => {
+  return {
+    type: 'Feature',
+    geometry: project.geometry,
+    properties: {
+      projectInfo: project,
+      contributionInfo: contributionsForProject,
+    },
+  } as PointFeature<DonationProperties>;
+};
+
+/**
+ * Creates a GeoJSON Point feature for registration entries
+ * Normalizes registration location geometry (Point or Polygon)
+ * into a single Point using the geometry’s center of mass,
+ * making it suitable for clustering and point-based map layers.
+ */
+const generateRegistrationGeojson = (
+  registrationLocation: MapLocation,
+  registration: MyContributionsSingleRegistration
+) => {
+  return {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: getPointCoordinates(registrationLocation.geometry),
+    },
+    properties: registration,
+  } as PointFeature<MyContributionsSingleRegistration>;
+};
+
+/**
+ * Generates GeoJSON dataset for the map based on contributions
+ * Splits into donation vs registration features for different layers
+ */
+export const generateContributionsGeojson = (
+  contributionsResult: ContributionsResponse,
+  projectListResult: ProjectListResponse
+) => {
+  const registrationGeojson: PointFeature<MyContributionsSingleRegistration>[] =
+    [];
+  const donationGeojson: PointFeature<DonationProperties>[] = [];
+
+  const { myContributionsMap, registrationLocationsMap } = contributionsResult;
+
+  if (myContributionsMap instanceof Map) {
+    myContributionsMap.forEach((item, key) => {
+      if (item.type === 'project') {
+        if (projectListResult[key]) {
+          const geo = generateDonationGeojson(projectListResult[key], item);
+          donationGeojson.push(geo);
+        }
+      } else {
+        const regLocation = registrationLocationsMap.get(key);
+        if (regLocation) {
+          const geo = generateRegistrationGeojson(regLocation, item);
+          registrationGeojson.push(geo);
+        }
+      }
+    });
+  }
+
+  return { registrationGeojson, donationGeojson };
 };

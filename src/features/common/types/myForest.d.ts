@@ -1,4 +1,4 @@
-import type { Point, Polygon } from 'geojson';
+import type { Point } from 'geojson';
 import type { DateString } from './common';
 import type {
   CountryCode,
@@ -119,54 +119,6 @@ export type MyForestProject = Omit<ProjectQueryResult, 'allowDonations'> & {
   allowDonations: boolean;
 };
 
-export type ProfileGroupQueryResult = {
-  profileId: number;
-};
-
-export type BriefProjectQueryResult = {
-  id: string;
-  guid: string;
-  purpose: 'trees' | 'conservation';
-  country: string;
-  geometry: Point | null;
-};
-
-export type ContributionsQueryResult = {
-  guid: string;
-  units: number;
-  unitType: 'tree' | 'm2';
-  plantDate: DateString;
-  contributionType: 'donation';
-  projectId: string;
-  amount: number;
-  currency: string;
-  geometry: Point | Polygon | null;
-  country: CountryCode | '';
-  giftMethod: string | null;
-  isSelfGift: boolean | null;
-  giftRecipient: string | null;
-  giftType: string | null;
-};
-
-export type RegistrationsQueryResult = {
-  guid: string;
-  units: number;
-  plantDate: DateString;
-  projectId: string;
-  country: CountryCode | '';
-  geometry: Point | Polygon | null;
-};
-
-export type GiftsQueryResult = {
-  quantity: number;
-  giftGiver: string;
-  projectGuid: string;
-  projectName: string;
-  country: string;
-  plantDate: DateString;
-};
-
-// Procedure Response types
 interface ContributionsResponse {
   stats: ContributionStats;
   myContributionsMap: Map<string, MyContributionsMapItem>;
@@ -175,7 +127,6 @@ interface ContributionsResponse {
 }
 
 type ProjectListResponse = Record<string, MyForestProject>;
-
 // TODO: Could probably rename this to something more descriptive, similar to the other types for API response
 export type LeaderboardItem = {
   name: string;
