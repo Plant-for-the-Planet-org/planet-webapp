@@ -221,6 +221,15 @@ const RegisterTreeMap = ({
     loadMapStyle();
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
+        clickTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
   return (
     <section className={styles.registerTreeMapContainer}>
       {!mapLoaded && (
@@ -261,7 +270,7 @@ const RegisterTreeMap = ({
           </Marker>
         )}
 
-        {isPolygonValid && mapLoaded && (
+        {isPolygonComplete && mapLoaded && (
           <Source
             id="polygon-preview"
             type="geojson"
