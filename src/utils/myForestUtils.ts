@@ -15,6 +15,7 @@ import type { ProgressDataType } from '../features/user/Profile/ForestProgress/F
 import type { ContributionStats } from '../features/common/types/myForest';
 
 import themeProperties from '../theme/themeProperties';
+import getPointCoordinates from './getPointCoordinates';
 export type Accumulator = {
   maxContributionCount: number;
   maxContributingObject: ExtractedProjectData | null;
@@ -381,8 +382,10 @@ const generateDonationGeojson = (
 };
 
 /**
- * Creates a GeoJSON point feature for registration entries
- * Links registration location geometry with relevant stats
+ * Creates a GeoJSON Point feature for registration entries
+ * Normalizes registration location geometry (Point or Polygon)
+ * into a single Point using the geometry’s center of mass,
+ * making it suitable for clustering and point-based map layers.
  */
 const generateRegistrationGeojson = (
   registrationLocation: MapLocation,
@@ -390,7 +393,10 @@ const generateRegistrationGeojson = (
 ) => {
   return {
     type: 'Feature',
-    geometry: registrationLocation.geometry,
+    geometry: {
+      type: 'Point',
+      coordinates: getPointCoordinates(registrationLocation.geometry),
+    },
     properties: registration,
   } as PointFeature<MyContributionsSingleRegistration>;
 };
