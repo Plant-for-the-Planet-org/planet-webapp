@@ -31,7 +31,7 @@ import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabl
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { easeCubic } from 'd3-ease';
 import { useRouter } from 'next/router';
-import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
+import SatelliteLayer from '../common/SatelliteLayer';
 import themeProperties from '../../../../theme/themeProperties';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
