@@ -380,27 +380,3 @@ export function putAuthenticatedRequest<T>({
     })();
   });
 }
-
-export function getRasterData<T>(id: string) {
-  return new Promise<T>((resolve, reject) => {
-    (async () => {
-      try {
-        const res = await fetch(
-          `${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`
-        );
-
-        if (!res.ok) {
-          throw new APIError(res.status, await res.json());
-        }
-
-        if (res.status === 204) {
-          resolve(true as T);
-        } else {
-          resolve(await res.json());
-        }
-      } catch (err) {
-        reject(err);
-      }
-    })();
-  });
-}
