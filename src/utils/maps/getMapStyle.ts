@@ -34,6 +34,7 @@ async function fetchTiles(style: any, metadataUrl: string) {
   }
 }
 
+// Used in other places besides old Projects code
 export default async function getMapStyle(
   style: 'default' | 'openStreetMap' | 'myForestMap'
 ) {
