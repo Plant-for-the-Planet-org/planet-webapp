@@ -1,4 +1,3 @@
-// Used for TreeMapper
 import type { ReactElement } from 'react';
 
 import { Layer, Source } from 'react-map-gl';

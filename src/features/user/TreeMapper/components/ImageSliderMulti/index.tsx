@@ -1,10 +1,9 @@
-// used in TreeMapper
 import type { Story } from 'react-insta-stories/dist/interfaces';
 
 import { useState, useEffect } from 'react';
 import Stories from 'react-insta-stories';
-import getImageUrl from '../../../../utils/getImageURL';
-import styles from './../../styles/Intervention.module.scss';
+import getImageUrl from '../../../../../utils/getImageURL';
+import styles from './ImageSliderMulti.module.scss';
 
 export type SliderImage = {
   image?: string;
@@ -18,7 +17,7 @@ interface Props {
   type: string;
 }
 
-export default function ImageSlider({
+export default function ImageSliderMulti({
   images,
   height,
   imageSize,
