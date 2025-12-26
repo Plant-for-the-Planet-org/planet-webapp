@@ -3,8 +3,8 @@ import type { Story } from 'react-insta-stories/dist/interfaces';
 
 import { useState, useEffect } from 'react';
 import Stories from 'react-insta-stories';
-import getImageUrl from '../../../../utils/getImageURL';
-import styles from './../../styles/ProjectDetails.module.scss';
+import getImageUrl from '../../../../../utils/getImageURL';
+import styles from './ImageSliderMulti.module.scss';
 
 export type SliderImage = {
   image?: string;
@@ -18,7 +18,7 @@ interface Props {
   type: string;
 }
 
-export default function ImageSlider({
+export default function ImageSliderMulti({
   images,
   height,
   imageSize,
@@ -40,13 +40,9 @@ export default function ImageSlider({
           content: () => (
             <div
               className={styles.projectImageSliderContent}
-              style={
-                type === 'coordinate'
-                  ? { background: `url(${imageURL})` }
-                  : {
-                      background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
-                    }
-              }
+              style={{
+                background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0)),url(${imageURL})`,
+              }}
             >
               <p className={styles.projectImageSliderContentText}>
                 {sliderImage.description}
