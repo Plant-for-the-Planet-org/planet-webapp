@@ -5,11 +5,17 @@ import type { SelectedTab } from './ProjectMapTabs';
 import type { SingleTreeRegistration } from '@planet-sdk/common';
 import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import dynamic from 'next/dynamic';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
-import { useProjectsMap } from '../ProjectsMapContext';
 import { useFetchLayers } from '../../../utils/mapsV2/useFetchLayers';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
@@ -37,6 +43,9 @@ import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventio
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
 import { clsx } from 'clsx';
+import { useProjectMainMapStore } from '../../../stores/projectMainMapStore';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import getMapStyle from '../../../utils/maps/getMapStyle';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -58,17 +67,27 @@ export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 function ProjectsMap(props: ProjectsMapProps) {
   // Fetch layers data
   useFetchLayers();
-
   const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
-  const {
-    viewState,
-    handleViewStateChange,
-    mapState,
-    mapOptions,
-    timeTravelConfig,
-    setTimeTravelConfig,
-    isExploreMode,
-  } = useProjectsMap();
+  const { isContextLoaded, embed } = useContext(ParamsContext);
+
+  const mapOptions = useProjectMainMapStore((state) => state.mapOptions);
+  const timeTravelConfig = useProjectMainMapStore(
+    (state) => state.timeTravelConfig
+  );
+  const isExploreMode = useProjectMainMapStore((state) => state.isExploreMode);
+  const viewState = useProjectMainMapStore((state) => state.viewState);
+  const mapState = useProjectMainMapStore((state) => state.mapState);
+
+  const setTimeTravelConfig = useProjectMainMapStore(
+    (state) => state.setTimeTravelConfig
+  );
+  const handleViewStateChange = useProjectMainMapStore(
+    (state) => state.handleViewStateChange
+  );
+  const setMapState = useProjectMainMapStore((state) => state.setMapState);
+  const setIsExploreMode = useProjectMainMapStore(
+    (state) => state.setIsExploreMode
+  );
   const {
     interventions,
     setHoveredIntervention,
@@ -84,11 +103,20 @@ function ProjectsMap(props: ProjectsMapProps) {
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [wasTimeTravelMounted, setWasTimeTravelMounted] = useState(false);
-
+  const isQueryParamsLoaded = isContextLoaded;
+  const isEmbedded = embed === 'true';
   const sitesGeoJson = useMemo(
     () => getSitesGeoJson(singleProject?.sites ?? []),
     [singleProject?.sites]
   );
+
+  useEffect(() => {
+    async function loadDefaultMapStyle() {
+      const style = await getMapStyle('default');
+      if (style) setMapState({ mapStyle: style });
+    }
+    loadDefaultMapStyle();
+  }, []);
 
   useEffect(() => {
     if (!mapLoaded) return;
@@ -111,6 +139,21 @@ function ProjectsMap(props: ProjectsMapProps) {
       setWasTimeTravelMounted(true);
     }
   }, [selectedTab]);
+
+  useEffect(() => {
+    // Update mapState when embed status changes, but only after query params are loaded
+    if (isQueryParamsLoaded) {
+      setMapState({ scrollZoom: !isEmbedded });
+    }
+  }, [isQueryParamsLoaded, isEmbedded, setMapState]);
+
+  useEffect(() => {
+    // Set isExploreMode to true if mapOptions has keys other than 'projects' set to true
+    const enabledLayers = Object.entries(mapOptions).filter(
+      ([key, value]) => key !== 'projects' && value === true
+    );
+    setIsExploreMode(enabledLayers.length > 0);
+  }, [mapOptions]);
 
   useDebouncedEffect(
     () => {
