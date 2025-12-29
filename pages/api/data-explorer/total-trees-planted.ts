@@ -51,7 +51,7 @@ handler.post(async (req, response) => {
 				iv.deleted_at IS NULL
 				AND iv.type IN ('single-tree-registration', 'multi-tree-registration')
 				AND pp.guid = $1
-				AND iv.intervention_start_date BETWEEN $2 AND $3`;
+				AND COALESCE(iv.intervention_start_date, iv.intervention_date) BETWEEN $2 AND $3`;
 
     // Ensure endDate includes time
     const endDateTime = new Date(endDate);
