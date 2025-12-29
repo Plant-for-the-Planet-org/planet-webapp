@@ -3,7 +3,7 @@ import type {
   InterventionFeature,
   RequiredMapStyle,
 } from '../../../common/types/map';
-import type { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
+import type { ViewPort } from '../../../common/types/project';
 import type { MapEvent } from 'react-map-gl';
 import type { SetState } from '../../../common/types/common';
 import type { AllGeoJSON } from '@turf/turf';
