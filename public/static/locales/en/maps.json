@@ -41,12 +41,7 @@
     "daysAgo": "{days} days ago",
     "today": "Today",
     "yesterday": "Yesterday",
-    "clickForDetails": "Click for Details",
     "treeMapper": "TreeMapper",
-    "showProjectList": "Show Project List",
-    "showProjectDetails": "Show Project Details",
-    "hideProjectList": "Hide Project List",
-    "hideProjectDetails": "Hide Project Details",
     "countries": "Countries",
     "exploreLayers": {
       "title": "Explore",

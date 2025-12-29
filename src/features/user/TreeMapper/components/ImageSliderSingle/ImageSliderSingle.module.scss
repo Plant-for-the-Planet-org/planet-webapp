@@ -1,0 +1,20 @@
+@import '../../../../../theme/theme';
+
+.projectImageSliderContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: bottom;
+  background-position: center center !important;
+  background-size: cover !important;
+}
+
+.projectImageSliderContentText {
+  bottom: 10;
+  color: $light;
+  font-size: $fontSmall;
+  font-family: $primaryFontFamily;
+  padding: 14px 12px;
+}

@@ -1,0 +1,24 @@
+@import '../../../../../theme/theme';
+
+.projectImageSliderContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: bottom;
+  background-position: center center !important;
+  background-size: cover !important;
+}
+
+.projectImageSliderContentText {
+  margin-bottom: 22px;
+  margin-left: 12px;
+  color: #fff;
+  font-size: $fontSixteen;
+  font-family: $primaryFontFamily;
+  line-height: 1.3;
+  padding: 0px 1px;
+  // background-color: yellow;
+  width: fit-content;
+}
