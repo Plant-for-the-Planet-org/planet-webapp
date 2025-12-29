@@ -25,7 +25,6 @@ import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
-import ProjectPropsProvider from '../src/features/common/Layout/ProjectPropsContext';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
@@ -220,15 +219,13 @@ const PlanetWeb = ({
                           <PlanetCashProvider>
                             <PayoutsProvider>
                               <Layout>
-                                <ProjectPropsProvider>
-                                  <BulkCodeProvider>
-                                    <AnalyticsProvider>
-                                      <DonationReceiptProvider>
-                                        {pageContent}
-                                      </DonationReceiptProvider>
-                                    </AnalyticsProvider>
-                                  </BulkCodeProvider>
-                                </ProjectPropsProvider>
+                                <BulkCodeProvider>
+                                  <AnalyticsProvider>
+                                    <DonationReceiptProvider>
+                                      {pageContent}
+                                    </DonationReceiptProvider>
+                                  </AnalyticsProvider>
+                                </BulkCodeProvider>
                               </Layout>
                             </PayoutsProvider>
                           </PlanetCashProvider>
