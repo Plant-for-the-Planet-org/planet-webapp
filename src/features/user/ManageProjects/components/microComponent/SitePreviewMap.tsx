@@ -24,6 +24,7 @@ const SitePreviewMap = ({ siteId, siteGeometry }: StaticMapProps) => {
     []
   );
   return (
+    // Note: not adding WebGLGuard here as the space available is limited
     <MapGL
       ref={mapRef}
       style={{ height: 200, width: 320 }}
