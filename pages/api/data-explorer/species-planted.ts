@@ -58,7 +58,7 @@ handler.post(async (req, response) => {
         iv.deleted_at IS NULL
         AND iv.type IN ('single-tree-registration', 'multi-tree-registration')
         AND pp.guid = $1 
-        AND iv.intervention_start_date BETWEEN $2 AND $3
+				AND COALESCE(iv.intervention_start_date, iv.intervention_date) BETWEEN $2 AND $3
       GROUP BY 
         ps.other_species,
         COALESCE(iv.scientific_species_id, ps.scientific_species_id), 

@@ -40,7 +40,7 @@ handler.post(async (req, response) => {
     let paramIndex = 2;
 
     if (queryType !== QueryType.DATE) {
-      queryText += ` AND DATE(iv.intervention_start_date) BETWEEN $${paramIndex} AND $${
+      queryText += ` AND DATE(COALESCE(iv.intervention_start_date, iv.intervention_date)) BETWEEN $${paramIndex} AND $${
         paramIndex + 1
       }`;
       values.push(fromDate, toDate);
@@ -50,7 +50,7 @@ handler.post(async (req, response) => {
     if (queryType) {
       if (queryType === QueryType.DATE) {
         // Filter by date
-        queryText += ` AND DATE(iv.intervention_start_date) = $${paramIndex}`;
+        queryText += ` AND DATE(COALESCE(iv.intervention_start_date, iv.intervention_date)) = $${paramIndex}`;
         values.push(searchQuery);
         paramIndex++;
       } else if (queryType === QueryType.HID) {

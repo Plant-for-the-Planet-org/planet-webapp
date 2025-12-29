@@ -19,7 +19,7 @@ handler.post(async (req, response) => {
     const queryText = `
 			SELECT 
 				iv.hid, 
-				iv.intervention_start_date, 
+				COALESCE(iv.intervention_start_date, iv.intervention_date) AS intervention_start_date, 
 				COALESCE(ss.name, ps.other_species, iv.other_species, 'Unknown') AS species, 
 				CASE WHEN iv.type='single-tree-registration' THEN 1 ELSE ps.tree_count END AS tree_count, 
 				-- Convert geometry to a JSON string using to_json() and then to text
@@ -42,7 +42,7 @@ handler.post(async (req, response) => {
 					pp.guid = $1 AND 
 					iv.type IN ('multi-tree-registration','single-tree-registration') AND 
 					iv.deleted_at IS NULL AND 
-					iv.intervention_start_date BETWEEN $2 AND $3
+					COALESCE(iv.intervention_start_date, iv.intervention_date) BETWEEN $2 AND $3
 		`;
 
     // Set the end date to the end of the day
