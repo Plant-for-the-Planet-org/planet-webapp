@@ -1,7 +1,7 @@
 import type {
   ExploreLayersData,
   SingleExploreLayerConfig,
-} from '../../features/projectsV2/ProjectsMapContext';
+} from '../../features/common/types/map';
 
 import { useEffect, useRef } from 'react';
 import { mapSettingsConfig } from './mapSettings.config';

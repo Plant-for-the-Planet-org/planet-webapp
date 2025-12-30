@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import type {
   MapOptions,
   SingleExploreLayerConfig,
-} from '../ProjectsMapContext';
+} from '../../common/types/map';
 import type { MapLayerOptionsType } from '../../../utils/mapsV2/mapSettings.config';
 
 import { Layer, Source } from 'react-map-gl-v7/maplibre';

@@ -3,7 +3,7 @@ import type { SetState } from '../../common/types/common';
 import type { ProjectTabs } from '.';
 import type { MapProject } from '../../common/types/projectv2';
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import type { MapOptions } from '../ProjectsMapContext';
+import type { MapOptions } from '../../common/types/map';
 
 import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';

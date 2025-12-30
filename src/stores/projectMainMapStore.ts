@@ -2,6 +2,10 @@ import type { MapState } from '../utils/mapsV2/mapDefaults';
 import type { ViewState } from 'react-map-gl-v7/maplibre';
 import type { MapLayerOptionsType } from '../utils/mapsV2/mapSettings.config';
 import type { ProjectTimeTravelConfig } from '../utils/mapsV2/timeTravel';
+import type {
+  ExploreLayersData,
+  MapOptions,
+} from '../features/common/types/map';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -9,41 +13,6 @@ import {
   DEFAULT_MAP_STATE,
   DEFAULT_VIEW_STATE,
 } from '../utils/mapsV2/mapDefaults';
-
-export type MapOptions = {
-  [key in MapLayerOptionsType]?: boolean;
-};
-
-type VisParams = {
-  max: number;
-  min: number;
-  palette: string[];
-};
-
-type LayerZoomConfig = {
-  minZoom: number;
-  maxZoom: number;
-};
-
-export type SingleExploreLayerConfig = {
-  uuid: string;
-  name: string;
-  key: MapLayerOptionsType;
-  description: string;
-  earthEngineAssetId: string;
-  visParams: VisParams;
-  zoomConfig: LayerZoomConfig;
-  tileUrl: string;
-  googleEarthUrl: string;
-  metadata: Record<never, never>;
-  enabled: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type ExploreLayersData = {
-  [key in MapLayerOptionsType]?: SingleExploreLayerConfig;
-};
 
 interface ProjectMainMapStore {
   //states
@@ -128,7 +97,7 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
       setIsSatelliteView: (value) => set({ isSatelliteView: value }),
     }),
     {
-      name: 'projectMapStore',
+      name: 'projectMainMapStore',
       enabled: process.env.NODE_ENV === 'development',
       serialize: { options: true },
     }
