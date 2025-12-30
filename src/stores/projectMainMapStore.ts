@@ -51,12 +51,16 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
       //Actions
 
       handleViewStateChange: (newViewState: Partial<ViewState>) => {
-        set((state) => ({
-          viewState: {
-            ...state.viewState,
-            ...newViewState,
-          },
-        }));
+        set(
+          (state) => ({
+            viewState: {
+              ...state.viewState,
+              ...newViewState,
+            },
+          }),
+          undefined,
+          'viewState/change'
+        );
       },
 
       /**
@@ -65,36 +69,48 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
        * @param value boolean value to set the option to
        */
       updateMapOption: (option: keyof MapOptions, value: boolean) => {
-        set((state) => {
-          if (option === 'projects') {
-            return {
-              mapOptions: {
-                ...state.mapOptions,
-                [option]: value,
-              },
-            };
-          } else {
-            return {
-              mapOptions: {
-                projects: Boolean(state.mapOptions.projects),
-                [option]: value,
-              },
-            };
-          }
-        });
+        set(
+          (state) => {
+            if (option === 'projects') {
+              return {
+                mapOptions: {
+                  ...state.mapOptions,
+                  [option]: value,
+                },
+              };
+            } else {
+              return {
+                mapOptions: {
+                  projects: Boolean(state.mapOptions.projects),
+                  [option]: value,
+                },
+              };
+            }
+          },
+          undefined,
+          'mapOptions/update'
+        );
       },
 
-      setTimeTravelConfig: (value) => set({ timeTravelConfig: value }),
+      setTimeTravelConfig: (value) =>
+        set({ timeTravelConfig: value }, undefined, 'timeTravel/setConfig'),
       setMapState: (partial) =>
-        set((state) => ({
-          mapState: {
-            ...state.mapState,
-            ...partial,
-          },
-        })),
-      setIsExploreMode: (value) => set({ isExploreMode: value }),
-      setExploreLayersData: (value) => set({ exploreLayersData: value }),
-      setIsSatelliteView: (value) => set({ isSatelliteView: value }),
+        set(
+          (state) => ({
+            mapState: {
+              ...state.mapState,
+              ...partial,
+            },
+          }),
+          undefined,
+          'mapState/update'
+        ),
+      setIsExploreMode: (value) =>
+        set({ isExploreMode: value }, undefined, 'explore/setMode'),
+      setExploreLayersData: (value) =>
+        set({ exploreLayersData: value }, undefined, 'explore/setLayersData'),
+      setIsSatelliteView: (value) =>
+        set({ isSatelliteView: value }, undefined, 'view/setSatellite'),
     }),
     {
       name: 'projectMainMapStore',
