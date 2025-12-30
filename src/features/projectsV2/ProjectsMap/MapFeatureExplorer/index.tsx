@@ -1,4 +1,4 @@
-import type { MapOptions } from '../../ProjectsMapContext';
+import type { MapOptions } from '../../../common/types/map';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';

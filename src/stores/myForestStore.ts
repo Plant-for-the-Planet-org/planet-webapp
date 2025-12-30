@@ -80,16 +80,16 @@ export const useMyForestStore = create<MyForestStore>()(
       ...initialState,
 
       //Actions
-      setUserInfo: (userInfo) => set({ userInfo }, undefined, 'setUserInfo'),
+      setUserInfo: (userInfo) => set({ userInfo }, undefined, 'user/setInfo'),
 
       setIsPublicProfile: (isPublicProfile) =>
-        set({ isPublicProfile }, undefined, 'setIsPublicProfile'),
+        set({ isPublicProfile }, undefined, 'profile/setIsPublic'),
 
       fetchMyForest: async (getApi, getApiAuthenticated) => {
         const { userInfo, isPublicProfile } = get();
         if (!userInfo) return;
 
-        set({ isMyForestLoading: true }, undefined, 'fetchMyForest_start');
+        set({ isMyForestLoading: true }, undefined, 'myForest/fetch_start');
 
         try {
           const apiResponse =
@@ -118,7 +118,7 @@ export const useMyForestStore = create<MyForestStore>()(
               errorMessage: null,
             },
             undefined,
-            'fetchMyForest_success'
+            'myForest/fetch_success'
           );
         } catch (error) {
           const errorMessage =
@@ -130,13 +130,13 @@ export const useMyForestStore = create<MyForestStore>()(
               errorMessage,
             },
             undefined,
-            'fetchMyForest_error'
+            'myForest/fetch_error'
           );
         }
       },
 
       resetMyForestStore: () =>
-        set(initialState, undefined, 'resetMyForestState'),
+        set(initialState, undefined, 'myForest/resetStore'),
     }),
     {
       name: 'MyForestStore',

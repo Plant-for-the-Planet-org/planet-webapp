@@ -2,11 +2,11 @@ import type { ReactElement } from 'react';
 import type {
   MapOptions,
   SingleExploreLayerConfig,
-} from '../ProjectsMapContext';
+} from '../../common/types/map';
 import type { MapLayerOptionsType } from '../../../utils/mapsV2/mapSettings.config';
 
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
-import { useProjectsMap } from '../ProjectsMapContext';
+import { useProjectMainMapStore } from '../../../stores/projectMainMapStore';
 
 const TILE_SIZE = 128;
 
@@ -24,7 +24,10 @@ type ValidLayer = {
 };
 
 export default function ExploreLayers(): ReactElement | null {
-  const { exploreLayersData, mapOptions } = useProjectsMap();
+  const mapOptions = useProjectMainMapStore((state) => state.mapOptions);
+  const exploreLayersData = useProjectMainMapStore(
+    (state) => state.exploreLayersData
+  );
   if (!exploreLayersData) return null;
 
   const selectedLayers = getSelectedLayerKeys(mapOptions);

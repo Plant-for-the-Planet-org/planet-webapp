@@ -1,5 +1,5 @@
 import type { LayerConfig } from '../../../../../utils/mapsV2/mapSettings.config';
-import type { MapOptions } from '../../../ProjectsMapContext';
+import type { MapOptions } from '../../../../common/types/map';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';

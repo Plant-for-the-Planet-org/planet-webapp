@@ -6,9 +6,9 @@ import { useProjects } from './ProjectsContext';
 import ProjectListControls, { type ProjectTabs } from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import ProjectList from './ProjectList';
-import { useProjectsMap } from './ProjectsMapContext';
 import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
 import { useTenant } from '../common/Layout/TenantContext';
+import { useProjectMainMapStore } from '../../stores/projectMainMapStore';
 
 interface ProjectsSectionProps {
   isMobile: boolean;
@@ -32,7 +32,10 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     showDonatableProjects,
     setShowDonatableProjects,
   } = useProjects();
-  const { mapOptions, updateMapOption } = useProjectsMap();
+  const mapOptions = useProjectMainMapStore((state) => state.mapOptions);
+  const updateMapOption = useProjectMainMapStore(
+    (state) => state.updateMapOption
+  );
   const { tenantConfig } = useTenant();
 
   const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');

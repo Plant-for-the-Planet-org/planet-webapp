@@ -7,7 +7,6 @@ import type {
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useProjects } from '../ProjectsContext';
-import { useProjectsMap } from '../ProjectsMapContext';
 import SatelliteLayer from './microComponents/SatelliteLayer';
 import { zoomInToProjectSite } from '../../../utils/mapsV2/zoomToProjectSite';
 import SiteLayers from './microComponents/SiteLayers';
@@ -19,6 +18,7 @@ import FireLocationsMarker from './microComponents/FireLocationsMarker';
 import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
 import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
+import { useProjectMainMapStore } from '../../../stores/projectMainMapStore';
 
 interface Props {
   mapRef: MapLibreRef;
@@ -31,9 +31,15 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
     useProjects();
   if (singleProject === null) return null;
 
-  const { isSatelliteView, handleViewStateChange, setIsSatelliteView } =
-    useProjectsMap();
-
+  const isSatelliteView = useProjectMainMapStore(
+    (state) => state.isSatelliteView
+  );
+  const setIsSatelliteView = useProjectMainMapStore(
+    (state) => state.setIsSatelliteView
+  );
+  const handleViewStateChange = useProjectMainMapStore(
+    (state) => state.handleViewStateChange
+  );
   const router = useRouter();
   const { ploc: requestedIntervention, site: requestedSite } = router.query;
 

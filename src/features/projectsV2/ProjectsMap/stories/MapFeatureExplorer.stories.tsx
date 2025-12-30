@@ -1,4 +1,4 @@
-import type { MapOptions } from '../../ProjectsMapContext';
+import type { MapOptions } from '../../../common/types/map';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { useState } from 'react';
