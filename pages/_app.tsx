@@ -52,6 +52,7 @@ import {
 } from '../src/utils/multiTenancy/helpers';
 import { NextIntlClientProvider } from 'next-intl';
 import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
+import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -248,6 +249,7 @@ const PlanetWeb = ({
         locale={(router.query?.locale as string) ?? 'en'}
         messages={pageProps.messages}
       >
+        <StoreInitializer />
         <CacheProvider value={emotionCache}>
           <ErrorHandlingProvider>
             <TenantProvider initialTenantConfig={pageProps.tenantConfig}>
