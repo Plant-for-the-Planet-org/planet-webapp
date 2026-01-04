@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { SetState } from '../../types/common';
 
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
@@ -12,7 +12,7 @@ import {
 } from '../../../projectsV2/ProjectsMapContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
 import { useUserProps } from '../UserPropsContext';
-import { ParamsContext } from '../QueryParamsContext';
+import { useQueryParamStore } from '../../../../stores/queryParamStore';
 
 interface ProjectsLayoutProps {
   children: ReactNode;
@@ -26,10 +26,14 @@ const ProjectsLayoutContent = ({
   setCurrencyCode,
   page,
 }: Omit<ProjectsLayoutProps, 'currencyCode'>) => {
+  const embed = useQueryParamStore((state) => state.embed);
+  const showProjectDetails = useQueryParamStore(
+    (state) => state.showProjectDetails
+  );
+  const showProjectList = useQueryParamStore((state) => state.showProjectList);
+
   const { mapOptions, updateMapOption } = useProjectsMap();
   const { isImpersonationModeOn } = useUserProps();
-  const { embed, showProjectDetails, showProjectList } =
-    useContext(ParamsContext);
 
   const showContentContainer = useMemo(() => {
     if (page === 'project-list') {
@@ -85,8 +89,8 @@ const ProjectsLayout = ({
   setCurrencyCode,
   page,
 }: ProjectsLayoutProps) => {
-  const { embed, isContextLoaded } = useContext(ParamsContext);
-  const isEmbedded = embed === 'true';
+  const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
+  const isContextLoaded = useQueryParamStore((state) => state.isContextLoaded);
 
   return (
     <ProjectsProvider

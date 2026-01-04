@@ -5,7 +5,7 @@ import type { SelectedTab } from './ProjectMapTabs';
 import type { DropdownType } from '../../common/types/projectv2';
 import type { InterventionTypes } from '@planet-sdk/common';
 
-import { useContext, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
@@ -16,8 +16,8 @@ import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled'
 import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
 import { AllInterventions } from '../../../utils/constants/intervention';
-import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { clsx } from 'clsx';
+import { useQueryParamStore } from '../../../stores/queryParamStore';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -61,8 +61,12 @@ const MapControls = ({
     showDonatableProjects,
     setShowDonatableProjects,
   } = useProjects();
-  const { embed, showProjectDetails } = useContext(ParamsContext);
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
+
+  const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
+  const showProjectDetails = useQueryParamStore(
+    (state) => state.showProjectDetails
+  );
   const availableInterventionTypes = useMemo(() => {
     if (!interventions) return [];
 
@@ -76,7 +80,6 @@ const MapControls = ({
   const hasProjectSites =
     singleProject?.sites?.length !== undefined &&
     singleProject?.sites?.length > 0;
-  const isEmbedMode = embed === 'true';
   const canShowSatelliteToggle =
     !(
       isMobile &&
@@ -88,7 +91,7 @@ const MapControls = ({
     selectedTab === 'field' &&
     availableInterventionTypes.length > 1;
   const onlyMapModeAllowed =
-    embed === 'true' &&
+    isEmbedMode &&
     isMobile &&
     page === 'project-details' &&
     showProjectDetails === 'false';

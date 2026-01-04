@@ -1,18 +1,11 @@
 import type { MapProject } from '../../../common/types/projectv2';
 
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ProjectPopup from '../ProjectPopup';
 import SingleMarker from './SingleMarker';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useQueryParamStore } from '../../../../stores/queryParamStore';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];
@@ -40,7 +33,9 @@ const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
   const { localizedPath } = useLocalizedPath();
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [popupState, setPopupState] = useState<PopupState>({ show: false });
-  const { embed, callbackUrl } = useContext(ParamsContext);
+
+  const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
+  const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
 
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
@@ -55,7 +50,7 @@ const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
     (projectSlug: string): void => {
       const searchParams = new URLSearchParams();
 
-      if (embed === 'true') {
+      if (isEmbedMode) {
         searchParams.set('embed', 'true');
 
         if (typeof callbackUrl === 'string') {
@@ -67,7 +62,7 @@ const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
       const path = `/${projectSlug}${queryString ? `?${queryString}` : ''}`;
       router.push(localizedPath(path));
     },
-    [localizedPath, embed, callbackUrl]
+    [localizedPath, isEmbedMode, callbackUrl]
   );
 
   const initiatePopupOpen = useCallback(

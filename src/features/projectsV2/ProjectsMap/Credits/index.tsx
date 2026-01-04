@@ -1,11 +1,11 @@
 import type { ReactElement } from 'react';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Credits.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import { useQueryParamStore } from '../../../../stores/queryParamStore';
 
 interface Props {
   setCurrencyCode: Function;
@@ -24,13 +24,11 @@ export default function Credits({
   const [selectedCountry, setSelectedCountry] = useState('DE');
   const [openLanguageModal, setLanguageModalOpen] = useState(false);
 
+  const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
+
   const handleLanguageModalClose = () => {
     setLanguageModalOpen(false);
   };
-
-  const { embed } = useContext(ParamsContext);
-
-  const isEmbed = embed === 'true';
 
   useEffect(() => {
     if (typeof Storage !== 'undefined') {
@@ -47,12 +45,12 @@ export default function Credits({
     }
   }, []);
 
-  const separator = isMobile && !isEmbed ? '|' : null;
+  const separator = isMobile && !isEmbedMode ? '|' : null;
 
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>
-        {isEmbed ? null : (
+        {isEmbedMode ? null : (
           <div
             onClick={() => {
               setLanguageModalOpen(true);
@@ -65,7 +63,7 @@ export default function Credits({
         {separator}
         {(tenantConfig.config.slug === 'ttc' ||
           tenantConfig.config.slug === 'planet') &&
-        !isEmbed ? (
+        !isEmbedMode ? (
           <a
             rel="noopener noreferrer"
             href={`https://www.thegoodshop.org/de/shop/`}
@@ -78,12 +76,12 @@ export default function Credits({
         <a
           rel="noopener noreferrer"
           href={`https://status.pp.eco/`}
-          target={isEmbed ? '_top' : '_blank'}
+          target={isEmbedMode ? '_top' : '_blank'}
         >
           {tCommon('status')}
         </a>
         {isMobile && '|'}
-        {!isEmbed && (
+        {!isEmbedMode && (
           <a
             rel="noopener noreferrer"
             href={`https://pp.eco/legal/${locale}/imprint`}
@@ -93,7 +91,7 @@ export default function Credits({
           </a>
         )}
         {separator}
-        {!isEmbed && (
+        {!isEmbedMode && (
           <a
             rel="noopener noreferrer"
             href={`https://pp.eco/legal/${locale}/privacy`}
@@ -103,7 +101,7 @@ export default function Credits({
           </a>
         )}
         {separator}
-        {!isEmbed && (
+        {!isEmbedMode && (
           <a
             rel="noopener noreferrer"
             href={`https://pp.eco/legal/${locale}/terms`}
@@ -140,7 +138,7 @@ export default function Credits({
           </div>
         </div>
         {isMobile && '|'}
-        {!isEmbed && (
+        {!isEmbedMode && (
           <a
             rel="noopener noreferrer"
             href="mailto:support@plant-for-the-planet.org"
@@ -149,7 +147,7 @@ export default function Credits({
             {tCommon('contact')}
           </a>
         )}
-        {isEmbed && (
+        {isEmbedMode && (
           <span>
             Powered by
             <a href="https://www.plant-for-the-planet.org" target="_top">
