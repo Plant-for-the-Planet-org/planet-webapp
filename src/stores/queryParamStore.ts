@@ -29,7 +29,7 @@ export const useQueryParamStore = create<QueryParamStore>()(
       page: null,
       isContextLoaded: false,
 
-      initializeParams: (params) => set((state) => ({ ...state, ...params })),
+      initializeParams: (params) => set(params),
     }),
     {
       name: 'QueryParamStore',
