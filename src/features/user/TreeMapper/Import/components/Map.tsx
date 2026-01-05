@@ -8,7 +8,7 @@ import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MapGL, { NavigationControl } from 'react-map-gl';
 import LayerIcon from '../../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../../public/assets/images/icons/LayerDisabled';
-import SatelliteLayer from '../../../../projects/components/maps/SatelliteLayer';
+import SatelliteLayer from '../../common/SatelliteLayer';
 
 export default function MyTreesMap(): ReactElement {
   const [satellite, setSatellite] = useState(false);
