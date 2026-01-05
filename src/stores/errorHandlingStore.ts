@@ -15,9 +15,11 @@ export const useErrorHandlingStore = create<ErrorHandlingStore>()(
     (set) => ({
       errors: null,
 
-      setErrors: (errors) => set({ errors }),
+      setErrors: (errors) =>
+        set({ errors }, undefined, 'errorHandlingStore/set_errors'),
 
-      clearErrors: () => set({ errors: null }),
+      clearErrors: () =>
+        set({ errors: null }, undefined, 'errorHandlingStore/clear_errors'),
 
       redirect: useErrorRedirect(),
     }),
