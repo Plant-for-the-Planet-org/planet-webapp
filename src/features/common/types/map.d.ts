@@ -348,13 +348,13 @@ export type SingleExploreLayerConfig = {
   updatedAt: string;
 };
 
-type VisParams = {
+export type VisParams = {
   max: number;
   min: number;
   palette: string[];
 };
 
-type LayerZoomConfig = {
+export type LayerZoomConfig = {
   minZoom: number;
   maxZoom: number;
 };
