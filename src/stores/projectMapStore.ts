@@ -125,7 +125,7 @@ export const useProjectMapStore = create<ProjectMapStore>()(
             },
           }),
           undefined,
-          'projectMapStore/mapState_update'
+          'projectMapStore/map_state_update'
         ),
       setExploreLayersData: (value) =>
         set(
