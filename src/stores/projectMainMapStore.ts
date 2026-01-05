@@ -23,7 +23,6 @@ interface ProjectMainMapStore {
   mapOptions: MapOptions;
   timeTravelConfig: ProjectTimeTravelConfig | null;
   exploreLayersData: ExploreLayersData | null;
-  isExploreMode: boolean;
   isMapStyleLoaded: boolean;
 
   //Actions
@@ -32,7 +31,6 @@ interface ProjectMainMapStore {
   updateMapOption: (option: MapLayerOptionsType, value: boolean) => void;
   setTimeTravelConfig: (value: ProjectTimeTravelConfig | null) => void;
   setMapState: (partial: Partial<MapState>) => void;
-  setIsExploreMode: (value: boolean) => void;
   setIsSatelliteView: (value: boolean) => void;
   setExploreLayersData: (value: ExploreLayersData | null) => void;
 }
@@ -48,7 +46,6 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
       },
       isSatelliteView: false,
       timeTravelConfig: null,
-      isExploreMode: false,
       exploreLayersData: null,
       isMapStyleLoaded: false,
 
@@ -129,12 +126,6 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
           }),
           undefined,
           'mapState/update'
-        ),
-      setIsExploreMode: (value) =>
-        set(
-          { isExploreMode: value },
-          undefined,
-          'ProjectMainMapStore/explore_set_mode'
         ),
       setExploreLayersData: (value) =>
         set(

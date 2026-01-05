@@ -45,7 +45,6 @@ import ExploreLayers from './ExploreLayers';
 import { clsx } from 'clsx';
 import { useProjectMainMapStore } from '../../../stores/projectMainMapStore';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import getMapStyle from '../../../utils/maps/getMapStyle';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -74,7 +73,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const timeTravelConfig = useProjectMainMapStore(
     (state) => state.timeTravelConfig
   );
-  const isExploreMode = useProjectMainMapStore((state) => state.isExploreMode);
+
   const viewState = useProjectMainMapStore((state) => state.viewState);
   const mapState = useProjectMainMapStore((state) => state.mapState);
 
@@ -88,9 +87,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     (state) => state.handleViewStateChange
   );
   const setMapState = useProjectMainMapStore((state) => state.setMapState);
-  const setIsExploreMode = useProjectMainMapStore(
-    (state) => state.setIsExploreMode
-  );
+
   const {
     interventions,
     setHoveredIntervention,
@@ -112,6 +109,12 @@ function ProjectsMap(props: ProjectsMapProps) {
     () => getSitesGeoJson(singleProject?.sites ?? []),
     [singleProject?.sites]
   );
+  const isExploreMode = useMemo(() => {
+    const enabledLayers = Object.entries(mapOptions).filter(
+      ([key, value]) => key !== 'projects' && value === true
+    );
+    return enabledLayers.length > 0;
+  }, [mapOptions]);
 
   useEffect(() => {
     initializeMapStyle();
@@ -145,14 +148,6 @@ function ProjectsMap(props: ProjectsMapProps) {
       setMapState({ scrollZoom: !isEmbedded });
     }
   }, [isQueryParamsLoaded, isEmbedded, setMapState]);
-
-  useEffect(() => {
-    // Set isExploreMode to true if mapOptions has keys other than 'projects' set to true
-    const enabledLayers = Object.entries(mapOptions).filter(
-      ([key, value]) => key !== 'projects' && value === true
-    );
-    setIsExploreMode(enabledLayers.length > 0);
-  }, [mapOptions]);
 
   useDebouncedEffect(
     () => {
