@@ -65,7 +65,7 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
             isMapStyleLoaded: true,
           }),
           undefined,
-          'ProjectMainMapStore/initialize_map_style'
+          'projectMainMapStore/initialize_map_style'
         );
       },
       handleViewStateChange: (newViewState: Partial<ViewState>) => {
@@ -77,7 +77,7 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
             },
           }),
           undefined,
-          'ProjectMainMapStore/view_state_change'
+          'projectMainMapStore/view_state_change'
         );
       },
 
@@ -106,7 +106,7 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
             }
           },
           undefined,
-          'ProjectMainMapStore/map_options_update'
+          'projectMainMapStore/map_options_update'
         );
       },
 
@@ -114,7 +114,7 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
         set(
           { timeTravelConfig: value },
           undefined,
-          'ProjectMainMapStore/time_travel_set_config'
+          'projectMainMapStore/time_travel_set_config'
         ),
       setMapState: (partial) =>
         set(
@@ -125,23 +125,23 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
             },
           }),
           undefined,
-          'mapState/update'
+          'projectMainMapStore/mapState_update'
         ),
       setExploreLayersData: (value) =>
         set(
           { exploreLayersData: value },
           undefined,
-          'ProjectMainMapStore/explore_set_layers_data'
+          'projectMainMapStore/explore_set_layers_data'
         ),
       setIsSatelliteView: (value) =>
         set(
           { isSatelliteView: value },
           undefined,
-          'ProjectMainMapStore/set_satellite_view'
+          'projectMainMapStore/set_satellite_view'
         ),
     }),
     {
-      name: 'projectMainMapStore',
+      name: 'ProjectMainMapStore',
       enabled: process.env.NODE_ENV === 'development',
       serialize: { options: true },
     }
