@@ -59,7 +59,7 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
             },
           }),
           undefined,
-          'viewState/change'
+          'ProjectMainMapStore/view_state_change'
         );
       },
 
@@ -88,12 +88,16 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
             }
           },
           undefined,
-          'mapOptions/update'
+          'ProjectMainMapStore/map_options_update'
         );
       },
 
       setTimeTravelConfig: (value) =>
-        set({ timeTravelConfig: value }, undefined, 'timeTravel/setConfig'),
+        set(
+          { timeTravelConfig: value },
+          undefined,
+          'ProjectMainMapStore/time_travel_set_config'
+        ),
       setMapState: (partial) =>
         set(
           (state) => ({
@@ -106,11 +110,23 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
           'mapState/update'
         ),
       setIsExploreMode: (value) =>
-        set({ isExploreMode: value }, undefined, 'explore/setMode'),
+        set(
+          { isExploreMode: value },
+          undefined,
+          'ProjectMainMapStore/explore_set_mode'
+        ),
       setExploreLayersData: (value) =>
-        set({ exploreLayersData: value }, undefined, 'explore/setLayersData'),
+        set(
+          { exploreLayersData: value },
+          undefined,
+          'ProjectMainMapStore/explore_set_layers_data'
+        ),
       setIsSatelliteView: (value) =>
-        set({ isSatelliteView: value }, undefined, 'view/setSatellite'),
+        set(
+          { isSatelliteView: value },
+          undefined,
+          'ProjectMainMapStore/set_satellite_view'
+        ),
     }),
     {
       name: 'projectMainMapStore',

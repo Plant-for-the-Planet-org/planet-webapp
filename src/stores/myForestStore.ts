@@ -80,10 +80,11 @@ export const useMyForestStore = create<MyForestStore>()(
       ...initialState,
 
       //Actions
-      setUserInfo: (userInfo) => set({ userInfo }, undefined, 'user/setInfo'),
+      setUserInfo: (userInfo) =>
+        set({ userInfo }, undefined, 'myForest/set_user_info'),
 
       setIsPublicProfile: (isPublicProfile) =>
-        set({ isPublicProfile }, undefined, 'profile/setIsPublic'),
+        set({ isPublicProfile }, undefined, 'myForest/set_is_public_profile'),
 
       fetchMyForest: async (getApi, getApiAuthenticated) => {
         const { userInfo, isPublicProfile } = get();
@@ -136,7 +137,7 @@ export const useMyForestStore = create<MyForestStore>()(
       },
 
       resetMyForestStore: () =>
-        set(initialState, undefined, 'myForest/resetStore'),
+        set(initialState, undefined, 'myForest/reset_store'),
     }),
     {
       name: 'MyForestStore',
