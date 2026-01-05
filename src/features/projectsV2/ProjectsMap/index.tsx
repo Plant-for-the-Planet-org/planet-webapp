@@ -78,6 +78,9 @@ function ProjectsMap(props: ProjectsMapProps) {
   const viewState = useProjectMainMapStore((state) => state.viewState);
   const mapState = useProjectMainMapStore((state) => state.mapState);
 
+  const initializeMapStyle = useProjectMainMapStore(
+    (state) => state.initializeMapStyle
+  );
   const setTimeTravelConfig = useProjectMainMapStore(
     (state) => state.setTimeTravelConfig
   );
@@ -111,12 +114,8 @@ function ProjectsMap(props: ProjectsMapProps) {
   );
 
   useEffect(() => {
-    async function loadDefaultMapStyle() {
-      const style = await getMapStyle('default');
-      if (style) setMapState({ mapStyle: style });
-    }
-    loadDefaultMapStyle();
-  }, []);
+    initializeMapStyle();
+  }, [initializeMapStyle]);
 
   useEffect(() => {
     if (!mapLoaded) return;

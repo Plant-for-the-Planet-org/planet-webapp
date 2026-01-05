@@ -13,6 +13,7 @@ import {
   DEFAULT_MAP_STATE,
   DEFAULT_VIEW_STATE,
 } from '../utils/mapsV2/mapDefaults';
+import getMapStyle from '../utils/maps/getMapStyle';
 
 interface ProjectMainMapStore {
   //states
@@ -23,8 +24,10 @@ interface ProjectMainMapStore {
   timeTravelConfig: ProjectTimeTravelConfig | null;
   exploreLayersData: ExploreLayersData | null;
   isExploreMode: boolean;
+  isMapStyleLoaded: boolean;
 
   //Actions
+  initializeMapStyle: () => Promise<void>;
   handleViewStateChange: (newViewState: Partial<ViewState>) => void;
   updateMapOption: (option: MapLayerOptionsType, value: boolean) => void;
   setTimeTravelConfig: (value: ProjectTimeTravelConfig | null) => void;
@@ -36,7 +39,7 @@ interface ProjectMainMapStore {
 
 export const useProjectMainMapStore = create<ProjectMainMapStore>()(
   devtools(
-    (set) => ({
+    (set, get) => ({
       //states
       viewState: DEFAULT_VIEW_STATE,
       mapState: DEFAULT_MAP_STATE,
@@ -47,9 +50,27 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
       timeTravelConfig: null,
       isExploreMode: false,
       exploreLayersData: null,
+      isMapStyleLoaded: false,
 
       //Actions
+      initializeMapStyle: async () => {
+        const { isMapStyleLoaded } = get();
 
+        if (isMapStyleLoaded) return;
+        const style = await getMapStyle('default');
+        if (!style) return;
+        set(
+          (state) => ({
+            mapState: {
+              ...state.mapState,
+              mapStyle: style,
+            },
+            isMapStyleLoaded: true,
+          }),
+          undefined,
+          'ProjectMainMapStore/initialize_map_style'
+        );
+      },
       handleViewStateChange: (newViewState: Partial<ViewState>) => {
         set(
           (state) => ({
