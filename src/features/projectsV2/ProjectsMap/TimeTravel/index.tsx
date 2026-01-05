@@ -23,7 +23,7 @@ import TimeTravelDropdown from '../../TimeTravelDropdown';
 import styles from './TimeTravel.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
 import { clsx } from 'clsx';
-import { useProjectMainMapStore } from '../../../../stores/projectMainMapStore';
+import { useProjectMapStore } from '../../../../stores/projectMapStore';
 
 const EMPTY_STYLE = {
   version: 8 as const,
@@ -53,10 +53,10 @@ export default function TimeTravel({
   sitesGeoJson,
   isVisible,
 }: Props): ReactElement {
-  const timeTravelConfig = useProjectMainMapStore(
+  const timeTravelConfig = useProjectMapStore(
     (state) => state.timeTravelConfig
   );
-  const mainMapViewState = useProjectMainMapStore((state) => state.viewState);
+  const mainMapViewState = useProjectMapStore((state) => state.viewState);
 
   const { setErrors } = useContext(ErrorHandlingContext);
 

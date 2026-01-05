@@ -43,7 +43,7 @@ import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventio
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
 import { clsx } from 'clsx';
-import { useProjectMainMapStore } from '../../../stores/projectMainMapStore';
+import { useProjectMapStore } from '../../../stores/projectMapStore';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
@@ -69,24 +69,24 @@ function ProjectsMap(props: ProjectsMapProps) {
   const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
   const { isContextLoaded, embed } = useContext(ParamsContext);
 
-  const mapOptions = useProjectMainMapStore((state) => state.mapOptions);
-  const timeTravelConfig = useProjectMainMapStore(
+  const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  const timeTravelConfig = useProjectMapStore(
     (state) => state.timeTravelConfig
   );
 
-  const viewState = useProjectMainMapStore((state) => state.viewState);
-  const mapState = useProjectMainMapStore((state) => state.mapState);
+  const viewState = useProjectMapStore((state) => state.viewState);
+  const mapState = useProjectMapStore((state) => state.mapState);
 
-  const initializeMapStyle = useProjectMainMapStore(
+  const initializeMapStyle = useProjectMapStore(
     (state) => state.initializeMapStyle
   );
-  const setTimeTravelConfig = useProjectMainMapStore(
+  const setTimeTravelConfig = useProjectMapStore(
     (state) => state.setTimeTravelConfig
   );
-  const handleViewStateChange = useProjectMainMapStore(
+  const handleViewStateChange = useProjectMapStore(
     (state) => state.handleViewStateChange
   );
-  const setMapState = useProjectMainMapStore((state) => state.setMapState);
+  const setMapState = useProjectMapStore((state) => state.setMapState);
 
   const {
     interventions,

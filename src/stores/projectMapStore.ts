@@ -15,7 +15,7 @@ import {
 } from '../utils/mapsV2/mapDefaults';
 import getMapStyle from '../utils/maps/getMapStyle';
 
-interface ProjectMainMapStore {
+interface ProjectMapStore {
   //states
   mapState: MapState;
   viewState: ViewState;
@@ -35,7 +35,7 @@ interface ProjectMainMapStore {
   setExploreLayersData: (value: ExploreLayersData | null) => void;
 }
 
-export const useProjectMainMapStore = create<ProjectMainMapStore>()(
+export const useProjectMapStore = create<ProjectMapStore>()(
   devtools(
     (set, get) => ({
       //states
@@ -65,7 +65,7 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
             isMapStyleLoaded: true,
           }),
           undefined,
-          'projectMainMapStore/initialize_map_style'
+          'projectMapStore/initialize_map_style'
         );
       },
       handleViewStateChange: (newViewState: Partial<ViewState>) => {
@@ -77,7 +77,7 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
             },
           }),
           undefined,
-          'projectMainMapStore/view_state_change'
+          'projectMapStore/view_state_change'
         );
       },
 
@@ -106,7 +106,7 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
             }
           },
           undefined,
-          'projectMainMapStore/map_options_update'
+          'projectMapStore/map_options_update'
         );
       },
 
@@ -114,7 +114,7 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
         set(
           { timeTravelConfig: value },
           undefined,
-          'projectMainMapStore/time_travel_set_config'
+          'projectMapStore/time_travel_set_config'
         ),
       setMapState: (partial) =>
         set(
@@ -125,23 +125,23 @@ export const useProjectMainMapStore = create<ProjectMainMapStore>()(
             },
           }),
           undefined,
-          'projectMainMapStore/mapState_update'
+          'projectMapStore/mapState_update'
         ),
       setExploreLayersData: (value) =>
         set(
           { exploreLayersData: value },
           undefined,
-          'projectMainMapStore/explore_set_layers_data'
+          'projectMapStore/explore_set_layers_data'
         ),
       setIsSatelliteView: (value) =>
         set(
           { isSatelliteView: value },
           undefined,
-          'projectMainMapStore/set_satellite_view'
+          'projectMapStore/set_satellite_view'
         ),
     }),
     {
-      name: 'ProjectMainMapStore',
+      name: 'ProjectMapStore',
       enabled: process.env.NODE_ENV === 'development',
       serialize: { options: true },
     }

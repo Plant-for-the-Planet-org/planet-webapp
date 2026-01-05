@@ -17,7 +17,7 @@ import styles from '../ProjectsMap/ProjectsMap.module.scss';
 import { AllInterventions } from '../../../utils/constants/intervention';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { clsx } from 'clsx';
-import { useProjectMainMapStore } from '../../../stores/projectMainMapStore';
+import { useProjectMapStore } from '../../../stores/projectMapStore';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -36,16 +36,12 @@ const MapControls = ({
   page,
   mobileOS,
 }: MapControlsProps) => {
-  const isSatelliteView = useProjectMainMapStore(
-    (state) => state.isSatelliteView
-  );
-  const setIsSatelliteView = useProjectMainMapStore(
+  const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
+  const setIsSatelliteView = useProjectMapStore(
     (state) => state.setIsSatelliteView
   );
-  const mapOptions = useProjectMainMapStore((state) => state.mapOptions);
-  const updateMapOption = useProjectMainMapStore(
-    (state) => state.updateMapOption
-  );
+  const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
   const {
     projects,
     topProjects,

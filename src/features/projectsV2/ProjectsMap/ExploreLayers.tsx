@@ -6,7 +6,7 @@ import type {
 import type { MapLayerOptionsType } from '../../../utils/mapsV2/mapSettings.config';
 
 import { Layer, Source } from 'react-map-gl-v7/maplibre';
-import { useProjectMainMapStore } from '../../../stores/projectMainMapStore';
+import { useProjectMapStore } from '../../../stores/projectMapStore';
 
 const TILE_SIZE = 128;
 
@@ -24,8 +24,8 @@ type ValidLayer = {
 };
 
 export default function ExploreLayers(): ReactElement | null {
-  const mapOptions = useProjectMainMapStore((state) => state.mapOptions);
-  const exploreLayersData = useProjectMainMapStore(
+  const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  const exploreLayersData = useProjectMapStore(
     (state) => state.exploreLayersData
   );
   if (!exploreLayersData) return null;

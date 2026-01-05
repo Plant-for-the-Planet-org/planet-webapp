@@ -9,7 +9,7 @@ import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
 import { useUserProps } from '../UserPropsContext';
 import { ParamsContext } from '../QueryParamsContext';
-import { useProjectMainMapStore } from '../../../../stores/projectMainMapStore';
+import { useProjectMapStore } from '../../../../stores/projectMapStore';
 
 interface ProjectsLayoutProps {
   children: ReactNode;
@@ -23,10 +23,8 @@ const ProjectsLayoutContent = ({
   setCurrencyCode,
   page,
 }: Omit<ProjectsLayoutProps, 'currencyCode'>) => {
-  const mapOptions = useProjectMainMapStore((state) => state.mapOptions);
-  const updateMapOption = useProjectMainMapStore(
-    (state) => state.updateMapOption
-  );
+  const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
 
   const { isImpersonationModeOn } = useUserProps();
   const { embed, showProjectDetails, showProjectList } =

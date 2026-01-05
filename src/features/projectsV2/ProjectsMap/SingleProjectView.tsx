@@ -18,7 +18,7 @@ import FireLocationsMarker from './microComponents/FireLocationsMarker';
 import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
 import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
-import { useProjectMainMapStore } from '../../../stores/projectMainMapStore';
+import { useProjectMapStore } from '../../../stores/projectMapStore';
 
 interface Props {
   mapRef: MapLibreRef;
@@ -31,13 +31,11 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
     useProjects();
   if (singleProject === null) return null;
 
-  const isSatelliteView = useProjectMainMapStore(
-    (state) => state.isSatelliteView
-  );
-  const setIsSatelliteView = useProjectMainMapStore(
+  const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
+  const setIsSatelliteView = useProjectMapStore(
     (state) => state.setIsSatelliteView
   );
-  const handleViewStateChange = useProjectMainMapStore(
+  const handleViewStateChange = useProjectMapStore(
     (state) => state.handleViewStateChange
   );
   const router = useRouter();

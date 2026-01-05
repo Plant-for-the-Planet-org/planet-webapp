@@ -5,13 +5,13 @@ import type {
 
 import { useEffect, useRef } from 'react';
 import { mapSettingsConfig } from './mapSettings.config';
-import { useProjectMainMapStore } from '../../stores/projectMainMapStore';
+import { useProjectMapStore } from '../../stores/projectMapStore';
 
 export const useFetchLayers = () => {
-  const exploreLayersData = useProjectMainMapStore(
+  const exploreLayersData = useProjectMapStore(
     (state) => state.exploreLayersData
   );
-  const setExploreLayersData = useProjectMainMapStore(
+  const setExploreLayersData = useProjectMapStore(
     (state) => state.setExploreLayersData
   );
   const hasAttemptedFetch = useRef(false);

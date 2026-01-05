@@ -26,7 +26,7 @@ import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useApi } from '../../../hooks/useApi';
 import { useTenant } from '../../common/Layout/TenantContext';
-import { useProjectMainMapStore } from '../../../stores/projectMainMapStore';
+import { useProjectMapStore } from '../../../stores/projectMapStore';
 
 const ProjectDetails = ({
   currencyCode,
@@ -48,7 +48,7 @@ const ProjectDetails = ({
     setSelectedSampleTree,
     setPreventShallowPush,
   } = useProjects();
-  const setTimeTravelConfig = useProjectMainMapStore(
+  const setTimeTravelConfig = useProjectMapStore(
     (state) => state.setTimeTravelConfig
   );
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
