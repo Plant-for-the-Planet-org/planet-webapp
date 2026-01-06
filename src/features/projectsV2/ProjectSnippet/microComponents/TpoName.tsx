@@ -1,4 +1,4 @@
-import type { QueryParamType } from '../../../common/Layout/QueryParamsContext';
+import type { QueryParamType } from '../../../../stores/queryParamStore';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
