@@ -55,7 +55,7 @@ handler.post(async (req, response) => {
     case TIME_FRAME.DAYS:
       queryText = `
         SELECT
-          iv.intervention_start_date AS "plantedDate",
+          COALESCE(iv.intervention_start_date, iv.intervention_date) AS "plantedDate",
           SUM(iv.trees_planted) AS "treesPlanted"
         FROM intervention iv
         JOIN project pp ON iv.plant_project_id = pp.id
@@ -63,9 +63,9 @@ handler.post(async (req, response) => {
           iv.deleted_at IS NULL AND
           iv.type IN ('single-tree-registration', 'multi-tree-registration') AND
           pp.guid = $1 AND 
-          iv.intervention_start_date BETWEEN $2 AND $3
-        GROUP BY iv.intervention_start_date
-        ORDER BY iv.intervention_start_date
+          COALESCE(iv.intervention_start_date, iv.intervention_date) BETWEEN $2 AND $3
+        GROUP BY COALESCE(iv.intervention_start_date, iv.intervention_date)
+        ORDER BY COALESCE(iv.intervention_start_date, iv.intervention_date)
       `;
       break;
 
@@ -73,8 +73,8 @@ handler.post(async (req, response) => {
       queryText = `
          WITH week_ranges AS (
           SELECT
-            DATE_TRUNC('week', iv.intervention_start_date)::timestamptz AS week_start,
-            EXTRACT(WEEK FROM iv.intervention_start_date)::integer AS week_num,
+            DATE_TRUNC('week', COALESCE(iv.intervention_start_date, iv.intervention_date))::timestamptz AS week_start,
+            EXTRACT(WEEK FROM COALESCE(iv.intervention_start_date, iv.intervention_date))::integer AS week_num,
             SUM(iv.trees_planted) AS trees
           FROM intervention iv
           JOIN project pp ON iv.plant_project_id = pp.id
@@ -82,7 +82,7 @@ handler.post(async (req, response) => {
             iv.deleted_at IS NULL AND
             iv.type IN ('single-tree-registration', 'multi-tree-registration') AND 
             pp.guid = $1 AND 
-            iv.intervention_start_date BETWEEN $2 AND $3
+            COALESCE(iv.intervention_start_date, iv.intervention_date) BETWEEN $2 AND $3
           GROUP BY 
             week_start,
             week_num
@@ -102,8 +102,8 @@ handler.post(async (req, response) => {
     case TIME_FRAME.MONTHS:
       queryText = `
         SELECT 
-          TO_CHAR(iv.intervention_start_date, 'Mon') AS month,
-          EXTRACT(YEAR FROM iv.intervention_start_date) AS year,
+					TO_CHAR(COALESCE(iv.intervention_start_date, iv.intervention_date), 'Mon') AS month,
+          EXTRACT(YEAR FROM COALESCE(iv.intervention_start_date, iv.intervention_date)) AS year,
           SUM(iv.trees_planted) AS "treesPlanted"
         FROM intervention iv
         JOIN project pp ON iv.plant_project_id = pp.id 
@@ -111,16 +111,16 @@ handler.post(async (req, response) => {
           iv.deleted_at IS NULL AND
           iv.type IN ('single-tree-registration', 'multi-tree-registration') AND 
           pp.guid = $1 AND 
-          iv.intervention_start_date BETWEEN $2 AND $3
-        GROUP BY month, year, DATE_TRUNC('month', iv.intervention_start_date)
-        ORDER BY DATE_TRUNC('month', iv.intervention_start_date)
+          COALESCE(iv.intervention_start_date, iv.intervention_date) BETWEEN $2 AND $3
+        GROUP BY month, year, DATE_TRUNC('month', COALESCE(iv.intervention_start_date, iv.intervention_date))
+        ORDER BY DATE_TRUNC('month', COALESCE(iv.intervention_start_date, iv.intervention_date))
       `;
       break;
 
     case TIME_FRAME.YEARS:
       queryText = `
         SELECT 
-          EXTRACT(YEAR FROM iv.intervention_start_date) AS year,
+          EXTRACT(YEAR FROM COALESCE(iv.intervention_start_date, iv.intervention_date)) AS year,
           SUM(iv.trees_planted) AS "treesPlanted"
         FROM intervention iv 
         JOIN project pp ON iv.plant_project_id = pp.id 
@@ -128,7 +128,7 @@ handler.post(async (req, response) => {
           iv.deleted_at IS NULL AND
           iv.type IN ('single-tree-registration', 'multi-tree-registration') AND
           pp.guid = $1 AND 
-          iv.intervention_start_date BETWEEN $2 AND $3
+					COALESCE(iv.intervention_start_date, iv.intervention_date) BETWEEN $2 AND $3
         GROUP BY year 
         ORDER BY year
       `;
@@ -137,7 +137,7 @@ handler.post(async (req, response) => {
     default:
       queryText = `
         SELECT
-          EXTRACT(YEAR FROM iv.intervention_start_date) AS year,
+          EXTRACT(YEAR FROM COALESCE(iv.intervention_start_date, iv.intervention_date)) AS year,
           SUM(iv.trees_planted) AS "treesPlanted"
         FROM intervention iv
         JOIN project pp ON iv.plant_project_id = pp.id
@@ -145,7 +145,7 @@ handler.post(async (req, response) => {
           iv.deleted_at IS NULL AND
           iv.type IN ('single-tree-registration', 'multi-tree-registration') AND 
           pp.guid = $1 AND 
-          iv.intervention_start_date BETWEEN $2 AND $3
+          COALESCE(iv.intervention_start_date, iv.intervention_date) BETWEEN $2 AND $3
         GROUP BY year
         ORDER BY year
       `;
