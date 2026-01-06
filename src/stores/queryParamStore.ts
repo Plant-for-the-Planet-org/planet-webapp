@@ -10,7 +10,6 @@ interface QueryParamStore {
   callbackUrl: QueryParamType;
   showProjectDetails: QueryParamType;
   showProjectList: QueryParamType;
-  enableIntro: QueryParamType;
   isContextLoaded: boolean;
   page: EmbeddablePages | null;
 
@@ -25,11 +24,11 @@ export const useQueryParamStore = create<QueryParamStore>()(
       callbackUrl: undefined,
       showProjectDetails: undefined,
       showProjectList: undefined,
-      enableIntro: undefined,
       page: null,
       isContextLoaded: false,
 
-      initializeParams: (params) => set(params),
+      initializeParams: (params) =>
+        set(params, undefined, 'queryParamStore/sync_from_router'),
     }),
     {
       name: 'QueryParamStore',
