@@ -94,7 +94,12 @@ export default function Home({ pageProps }: Props) {
     switch (pageProps.tenantConfig.config.slug) {
       case 'salesforce':
         HomePage = SalesforceHome;
-        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+        return (
+          <HomePage
+            leaderboard={leaderboard}
+            tenantScore={{ total: 55000000 }} //temp for SF
+          />
+        );
       case 'stern':
         HomePage = SternHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
