@@ -23,8 +23,8 @@ export const useInitializeParams = () => {
         : null;
 
     initializeParams({
-      embed: query.embed,
-      showBackIcon: query.back_icon,
+      embed: getBooleanQuery(query.embed),
+      showBackIcon: getBooleanQuery(query.back_icon),
       callbackUrl: query.callback,
       showProjectDetails: getBooleanQuery(query.project_details),
       showProjectList: getBooleanQuery(query.project_list),
