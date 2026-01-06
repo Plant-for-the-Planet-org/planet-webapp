@@ -1,3 +1,4 @@
+// Used in ProjectsV2 and Profile
 import Agroforestry from '../../../../public/assets/images/icons/project/Agroforestry';
 import Mangroves from '../../../../public/assets/images/icons/project/Mangroves';
 import NaturalRegeneration from '../../../../public/assets/images/icons/project/NaturalRegeneration';
