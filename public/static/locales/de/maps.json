@@ -12,7 +12,7 @@
     "forestInfo": "Derzeit gibt es weltweit 3040 Milliarden Bäume. Es gab 6000 Milliarde Bäume, bevor der Mensch vor etwa 11.000 Jahren begann Wälder abzuholzen.",
     "restorationInfo": " Eine halbe Milliarde Hektar eignen sich für die großflächige Wiederherstellung von geschlossenen Wäldern. Weitere anderthalb Milliarden Hektar eignen sich am besten für die Mosaikrestaurierung, bei der Wälder mit anderen Landnutzungen wie Agroforstwirtschaft, kleinbäuerlicher Landwirtschaft und Siedlungen kombiniert werden.",
     "location": "Ort",
-    "timeTravel": "Zeitreise",
+    "timeTravelTab": "Zeitreise",
     "vegetationChange": "Vegetationsänderung",
     "beta": "BETA",
     "baseLayer": "Basislayer & Vektorkarten",
@@ -243,6 +243,23 @@
           }
         }
       }
+    },
+    "timeTravel": {
+      "errors": {
+        "imageryNotAvailable": "{year} Bilder sind nicht auf diesem Zoom-Level verfügbar. Bitte versuchen Sie heraus zu zoomen.",
+        "invalidGeoJson": "Fehlende oder ungültige GeoJSON-Daten",
+        "configNotAvailable": "Zeitreise-Konfiguration nicht verfügbar",
+        "yearNotFoundInSource": "Jahr {year} nicht in Quelle {source} gefunden",
+        "configNotFoundForYear": "Konfiguration für {year} nicht gefunden",
+        "containerNotFound": "Karten-Container Element nicht gefunden",
+        "mapInitializationFailed": "Initialisierung von Karten fehlgeschlagen",
+        "comparisonInitializationFailed": "Initialisierung von Vergleich fehlgeschlagen",
+        "mapError": "Karten-Fehler: {message}",
+        "layerLoadFailed": "Karten-Ebenen konnten nicht geladen werden",
+        "unsupportedSourceType": "Nicht unterstützte Quelle: {source}"
+      },
+      "loading": "Laden...",
+      "genericHistoricalYear": "Historische"
     }
   }
 }

@@ -85,14 +85,25 @@ const ProjectSnippetContent = ({
   const ecosystem =
     project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
   const progressPercentage = useMemo(() => {
-    if (project.purpose === 'trees' && project.countTarget) {
-      return Math.min((project.countPlanted / project.countTarget) * 100, 100);
+    if (
+      project.purpose === 'trees' &&
+      project.unitType === 'tree' &&
+      project.unitsContributed?.tree &&
+      project.unitsTargeted?.tree
+    ) {
+      return Math.min(
+        (project.unitsContributed.tree / project.unitsTargeted.tree) * 100,
+        100
+      );
     }
     return 0;
   }, [
-    project.purpose === 'trees' && project.countPlanted,
-    project.countTarget,
+    project.purpose,
+    project.unitType,
+    project.unitsContributed,
+    project.unitsTargeted,
   ]);
+
   const progressBarClass = useMemo(() => {
     return `${styles[getProjectCategory(project)]}`;
   }, [
