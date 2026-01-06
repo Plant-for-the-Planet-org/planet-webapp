@@ -1,4 +1,4 @@
-import type { MapProject } from '../../../../features/common/types/ProjectPropsContextInterface';
+import type { MapProject } from '../../../../features/common/types/projectv2';
 import type { APIError } from '@planet-sdk/common/build/types/errors';
 
 import { useContext, useEffect, useState } from 'react';

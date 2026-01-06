@@ -1,5 +1,5 @@
 import type { APIError, UserPublicProfile } from '@planet-sdk/common';
-import type { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+import type { MapProject } from '../../../common/types/projectv2';
 
 import { useEffect, useState, useContext } from 'react';
 import dynamic from 'next/dynamic';

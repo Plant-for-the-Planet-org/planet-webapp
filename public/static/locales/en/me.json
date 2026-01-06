@@ -41,7 +41,7 @@
     "datePlanted": "Date Planted",
     "speciesIsRequired": "Species is required",
     "treeSpecies": "Tree Species",
-    "drawPolygon": "Please draw the area where you planted the trees. Click on the first location again when you are done.",
+    "drawPolygon": "Please draw the area where you planted the trees by clicking on the map. Double-click to finish the polygon",
     "selectLocation": "Select tree planting location on the map",
     "registerButton": "Register",
     "startDrawing": "Start Drawing",
@@ -291,6 +291,7 @@
     "platform-payout": "Platform Payout",
     "vplatform-payout": "Platform Payout",
     "bankDetails": "Bank Details",
-    "refundAmount": "Refunded Amount"
+    "refundAmount": "Refunded Amount",
+    "polygonMinimumPoints": "A polygon needs at least 3 points. Please click at least three locations on the map."
   }
 }

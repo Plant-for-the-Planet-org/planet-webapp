@@ -17,21 +17,15 @@ import CopyToClipboard from '../../../common/CopyToClipboard';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 
-const ImageSlider = dynamic(
-  () => import('../../../projects/components/Intervention/ImageSlider'),
-  {
-    ssr: false,
-    loading: () => <p>Images</p>,
-  }
-);
+const ImageSlider = dynamic(() => import('./ImageSliderMulti'), {
+  ssr: false,
+  loading: () => <p>Images</p>,
+});
 
-const ImageSliderSingle = dynamic(
-  () => import('../../../projects/components/projectDetails/ImageSlider'),
-  {
-    ssr: false,
-    loading: () => <p>Images</p>,
-  }
-);
+const ImageSliderSingle = dynamic(() => import('./ImageSliderSingle'), {
+  ssr: false,
+  loading: () => <p>Images</p>,
+});
 
 interface Props {
   setSelectedIntervention: SetState<
