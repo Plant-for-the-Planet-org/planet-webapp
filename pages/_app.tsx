@@ -16,12 +16,7 @@ import TagManager from 'react-gtm-module';
 import Router from 'next/router';
 import App from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
-// NOTE - needs to be removed when old projects code is removed
-import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
-// NOTE - needs to be removed when old projects code is removed
-import './../src/features/projects/styles/Projects.scss';
-// import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
@@ -30,7 +25,6 @@ import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
-import ProjectPropsProvider from '../src/features/common/Layout/ProjectPropsContext';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
@@ -41,8 +35,6 @@ import materialTheme from '../src/theme/themeStyles';
 import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
-// NOTE - needs to be removed when old projects code is removed
-import MapHolder from '../src/features/projects/components/maps/MapHolder';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import { CurrencyProvider } from '../src/features/common/Layout/CurrencyContext';
 import {
@@ -53,13 +45,6 @@ import {
 import { NextIntlClientProvider } from 'next-intl';
 import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
-
-const VideoContainer = dynamic(
-  () => import('../src/features/common/LandingVideo'),
-  {
-    ssr: false,
-  }
-);
 
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
   ssr: false,
@@ -151,7 +136,6 @@ const PlanetWeb = ({
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) => {
   const router = useRouter();
-  const [isMap, setIsMap] = useState(false);
   const [currencyCode, setCurrencyCode] = useState('');
   const [browserCompatible, setBrowserCompatible] = useState(false);
 
@@ -172,14 +156,6 @@ const PlanetWeb = ({
   useEffect(() => {
     storeConfig(tenantConfig);
   }, []);
-
-  useEffect(() => {
-    if (router.pathname.includes('projects-archive')) {
-      setIsMap(true);
-    } else {
-      setIsMap(false);
-    }
-  }, [router.pathname]);
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
@@ -203,38 +179,6 @@ const PlanetWeb = ({
     isMobile,
   };
 
-  const [showVideo, setShowVideo] = useState(true);
-
-  // if localShowVideo is undefined
-  // set localShowVideo is true and show the video
-  // if localShowVideo is true show the video
-  // if localShowVideo is false hide the video
-
-  const [localShowVideo, setLocalShowVideo] = useState(false);
-
-  useEffect(() => {
-    if (router.pathname.endsWith('projects-archive')) {
-      if (typeof window !== 'undefined') {
-        if (localStorage.getItem('showVideo')) {
-          if (localStorage.getItem('showVideo') === 'true') {
-            setLocalShowVideo(true);
-          } else {
-            setLocalShowVideo(false);
-          }
-        } else {
-          localStorage.setItem('showVideo', 'true');
-          setLocalShowVideo(true);
-        }
-      }
-    } else {
-      setLocalShowVideo(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    setShowVideo(localShowVideo);
-  }, [localShowVideo]);
-
   const getLayout = Component.getLayout ?? ((page) => page);
   const pageContent = getLayout(
     <Component {...pageComponentProps} />,
@@ -254,77 +198,44 @@ const PlanetWeb = ({
           <ErrorHandlingProvider>
             <TenantProvider initialTenantConfig={pageProps.tenantConfig}>
               <QueryParamsProvider>
-                <div>
-                  <div
-                    style={
-                      showVideo &&
-                      (tenantConfig.config.slug === 'planet' ||
-                        tenantConfig.config.slug === 'ttc')
-                        ? {}
-                        : { display: 'none' }
-                    }
-                  >
-                    <VideoContainer setShowVideo={setShowVideo} />
-                  </div>
-
-                  <div
-                    style={
-                      showVideo &&
-                      (tenantConfig.config.slug === 'planet' ||
-                        tenantConfig.config.slug === 'ttc')
-                        ? { display: 'none' }
-                        : {}
-                    }
-                  >
-                    <Auth0Provider
-                      domain={process.env.AUTH0_CUSTOM_DOMAIN!}
-                      clientId={
-                        tenantConfig.config?.auth0ClientId
-                          ? tenantConfig.config.auth0ClientId
-                          : process.env.AUTH0_CLIENT_ID
-                      }
-                      redirectUri={
-                        typeof window !== 'undefined'
-                          ? window.location.origin
-                          : ''
-                      }
-                      audience={'urn:plant-for-the-planet'}
-                      cacheLocation={'localstorage'}
-                      onRedirectCallback={onRedirectCallback}
-                      useRefreshTokens={true}
-                    >
-                      <ThemeProvider>
-                        <MuiThemeProvider theme={materialTheme}>
-                          <CssBaseline />
-                          <UserPropsProvider>
-                            <CurrencyProvider>
-                              <PlanetCashProvider>
-                                <PayoutsProvider>
-                                  <Layout>
-                                    <ProjectPropsProvider>
-                                      <BulkCodeProvider>
-                                        <AnalyticsProvider>
-                                          <DonationReceiptProvider>
-                                            {isMap ? (
-                                              <MapHolder
-                                                setShowVideo={setShowVideo}
-                                              />
-                                            ) : null}
-                                            {pageContent}
-                                          </DonationReceiptProvider>
-                                        </AnalyticsProvider>
-                                      </BulkCodeProvider>
-                                    </ProjectPropsProvider>
-                                  </Layout>
-                                </PayoutsProvider>
-                              </PlanetCashProvider>
-                            </CurrencyProvider>
-                          </UserPropsProvider>
-                        </MuiThemeProvider>
-                      </ThemeProvider>
-                    </Auth0Provider>
-                  </div>
-                </div>
+                <Auth0Provider
+                  domain={process.env.AUTH0_CUSTOM_DOMAIN!}
+                  clientId={
+                    tenantConfig.config?.auth0ClientId
+                      ? tenantConfig.config.auth0ClientId
+                      : process.env.AUTH0_CLIENT_ID
+                  }
+                  redirectUri={
+                    typeof window !== 'undefined' ? window.location.origin : ''
+                  }
+                  audience={'urn:plant-for-the-planet'}
+                  cacheLocation={'localstorage'}
+                  onRedirectCallback={onRedirectCallback}
+                  useRefreshTokens={true}
+                >
+                  <ThemeProvider>
+                    <MuiThemeProvider theme={materialTheme}>
+                      <CssBaseline />
+                      <UserPropsProvider>
+                        <CurrencyProvider>
+                          <PlanetCashProvider>
+                            <PayoutsProvider>
+                              <Layout>
+                                <BulkCodeProvider>
+                                  <AnalyticsProvider>
+                                    <DonationReceiptProvider>
+                                      {pageContent}
+                                    </DonationReceiptProvider>
+                                  </AnalyticsProvider>
+                                </BulkCodeProvider>
+                              </Layout>
+                            </PayoutsProvider>
+                          </PlanetCashProvider>
+                        </CurrencyProvider>
+                      </UserPropsProvider>
+                    </MuiThemeProvider>
+                  </ThemeProvider>
+                </Auth0Provider>
               </QueryParamsProvider>
             </TenantProvider>
           </ErrorHandlingProvider>
