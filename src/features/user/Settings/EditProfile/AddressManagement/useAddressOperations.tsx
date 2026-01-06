@@ -2,7 +2,7 @@ import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { AddressFormData } from './microComponents/AddressForm';
 import type { AddressType, Address, APIError } from '@planet-sdk/common';
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useApi } from '../../../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
@@ -38,15 +38,28 @@ export const useAddressOperations = () => {
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isLoading, setIsLoading] = useState(false);
 
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   const safeExecute = async (operation: () => Promise<void>) => {
     if (!contextLoaded || !user || !token) return;
     setIsLoading(true);
     try {
       await operation();
     } catch (error) {
-      setErrors(handleError(error as APIError));
+      if (isMountedRef.current) {
+        setErrors(handleError(error as APIError));
+      }
     } finally {
-      setIsLoading(false);
+      if (isMountedRef.current) {
+        setIsLoading(false);
+      }
     }
   };
 
