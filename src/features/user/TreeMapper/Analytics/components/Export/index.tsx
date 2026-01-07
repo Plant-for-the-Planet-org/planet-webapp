@@ -7,7 +7,7 @@ import { utils, write } from 'xlsx';
 import { saveAs } from 'file-saver';
 import ProjectSelectAutocomplete from '../ProjectSelectAutocomplete';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
@@ -18,21 +18,22 @@ import { TextField } from '@mui/material';
 import { format } from 'date-fns';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
 import { Container } from '../Container';
-import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
+import { useErrorHandlingStore } from '../../../../../../stores/errorHandlingStore';
 
 export const Export = () => {
   const t = useTranslations('TreemapperAnalytics');
   const { projectList, project, fromDate, toDate } = useAnalytics();
   const { userLang } = useUserProps();
-  const { setErrors } = useContext(ErrorHandlingContext);
-
+  // local state
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [localFromDate, setLocalFromDate] = useState<Date | null>(fromDate);
   const [localToDate, setLocalToDate] = useState<Date | null>(toDate);
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const { makeRequest } = useNextRequest<{ data: IExportData[] }>({
     url: '/api/data-explorer/export',

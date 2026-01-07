@@ -1,6 +1,6 @@
 import { APIError, handleError } from '@planet-sdk/common';
-import { useState, useContext } from 'react';
-import { ErrorHandlingContext } from '../features/common/Layout/ErrorHandlingContext';
+import { useState } from 'react';
+import { useErrorHandlingStore } from '../stores/errorHandlingStore';
 
 export enum HTTP_METHOD {
   GET = 'GET',
@@ -28,8 +28,8 @@ const useNextRequest = <Data>({
   onSuccess,
 }: Props<Data>): Result<Data> => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const makeRequest = async (): Promise<Data | void> => {
     setIsLoading(true);

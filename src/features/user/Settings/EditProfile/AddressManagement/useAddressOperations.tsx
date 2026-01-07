@@ -2,16 +2,16 @@ import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { AddressFormData } from './microComponents/AddressForm';
 import type { AddressType, Address, APIError } from '@planet-sdk/common';
 
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useApi } from '../../../../../hooks/useApi';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import {
   updateAddressesAfterAdd,
   updateAddressesAfterEdit,
   updateAddressesAfterTypeChange,
 } from './utils';
+import { useErrorHandlingStore } from '../../../../../stores/errorHandlingStore';
 
 export type UnsetBillingAddressApiPayload = {
   type: 'other';
@@ -35,8 +35,10 @@ export const useAddressOperations = () => {
   const { contextLoaded, user, token, setUser } = useUserProps();
   const { postApiAuthenticated, putApiAuthenticated, deleteApiAuthenticated } =
     useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [isLoading, setIsLoading] = useState(false);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const safeExecute = async (operation: () => Promise<void>) => {
     if (!contextLoaded || !user || !token) return;

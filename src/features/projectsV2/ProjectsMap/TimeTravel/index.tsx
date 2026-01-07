@@ -7,24 +7,17 @@ import type {
 } from '../../../../utils/mapsV2/timeTravel';
 import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import MaplibreCompare from '@maplibre/maplibre-gl-compare';
 import '@maplibre/maplibre-gl-compare/dist/maplibre-gl-compare.css';
 import { Map as MaplibreMap } from 'maplibre-gl';
 import { useProjectsMap } from '../../ProjectsMapContext';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import TimeTravelDropdown from '../../TimeTravelDropdown';
 import styles from './TimeTravel.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
 import { useTranslations } from 'next-intl';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 const EMPTY_STYLE = {
   version: 8 as const,
@@ -58,8 +51,6 @@ export default function TimeTravel({
   const { viewState: mainMapViewState, timeTravelConfig } = useProjectsMap();
   const tTimeTravel = useTranslations('Maps.timeTravel');
 
-  const { setErrors } = useContext(ErrorHandlingContext);
-
   const comparisonContainer = useRef<HTMLDivElement>(null);
   const beforeContainer = useRef<HTMLDivElement>(null);
   const afterContainer = useRef<HTMLDivElement>(null);
@@ -71,6 +62,8 @@ export default function TimeTravel({
   const [isLoading, setIsLoading] = useState(true);
   const [beforeLoaded, setBeforeLoaded] = useState(false);
   const [afterLoaded, setAfterLoaded] = useState(false);
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const availableYears = useMemo(() => {
     if (timeTravelConfig === null || timeTravelConfig.sources === null) {

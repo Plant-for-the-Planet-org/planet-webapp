@@ -1,10 +1,9 @@
 import type { MouseEvent } from 'react';
 import type { APIError } from '@planet-sdk/common';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './ApiKey.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import EyeIcon from '../../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../../public/assets/images/icons/EyeDisabled';
@@ -14,6 +13,7 @@ import { Button, InputAdornment, TextField } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 interface EyeButtonParams {
   isVisible: boolean;
@@ -34,11 +34,13 @@ const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
 export default function ApiKey() {
   const { token, contextLoaded } = useUserProps();
   const t = useTranslations('Me');
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
+  // local state
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [apiKey, setApiKey] = useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = useState(false);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleVisibilityChange = () => {
     setIsApiKeyVisible(!isApiKeyVisible);

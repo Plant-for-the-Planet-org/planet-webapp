@@ -2,12 +2,10 @@ import type { SerializedError } from '@planet-sdk/common';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { useErrorRedirect } from '../hooks/useErrorRedirect';
 
 interface ErrorHandlingStore {
-  errors: SerializedError[] | null;
-  setErrors: (errors: SerializedError[] | null) => void;
-  redirect: (url: string) => void;
+  errors: SerializedError[] | string | null;
+  setErrors: (errors: SerializedError[] | string | null) => void;
 }
 
 export const useErrorHandlingStore = create<ErrorHandlingStore>()(
@@ -20,8 +18,6 @@ export const useErrorHandlingStore = create<ErrorHandlingStore>()(
 
       clearErrors: () =>
         set({ errors: null }, undefined, 'errorHandlingStore/clear_errors'),
-
-      redirect: useErrorRedirect(),
     }),
     {
       name: 'ErrorHandlingStore',

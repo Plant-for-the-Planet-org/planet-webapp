@@ -4,13 +4,13 @@ import type { Control, FieldValues, FieldPath } from 'react-hook-form';
 import type { APIError } from '@planet-sdk/common';
 import type { SpeciesSuggestionType } from '../Treemapper';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useApi } from '../../../../hooks/useApi';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 interface Props<
   TFieldValues extends FieldValues,
@@ -41,13 +41,15 @@ export default function SpeciesSelect<
   error,
   helperText,
 }: Props<TFieldValues, TName>) {
+  const { postApi } = useApi();
+  const t = useTranslations('Treemapper');
+  // local state
   const [speciesSuggestion, setSpeciesSuggestion] = useState<
     SpeciesSuggestionType[]
   >([]);
   const [query, setQuery] = useState('');
-  const { postApi } = useApi();
-  const t = useTranslations('Treemapper');
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const suggestSpecies = async (value: string) => {
     // Todo: debouncing

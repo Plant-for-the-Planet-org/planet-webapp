@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import Button from '@mui/material/Button';
 
 export interface RedeemFailedProps {
-  errorMessages: SerializedError[] | null;
+  errorMessages: SerializedError[] | string | null;
   inputCode: string | undefined;
   redeemAnotherCode: () => void;
   closeRedeem: () => void;
@@ -31,7 +31,9 @@ export const RedeemFailed = ({
 
       <div className={styles.redeemTitle}>{inputCode}</div>
       <div className={styles.formErrors}>
-        {errorMessages && errorMessages[0]?.message}
+        {errorMessages &&
+          typeof errorMessages !== 'string' &&
+          errorMessages[0]?.message}
       </div>
       <div className={styles.redeemCodeButtonContainer}>
         <Button variant="contained" onClick={redeemAnotherCode}>

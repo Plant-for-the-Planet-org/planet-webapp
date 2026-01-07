@@ -7,14 +7,13 @@ import type {
   PaymentHistory,
 } from '../../../../../src/features/common/types/payments';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../../../../src/features/user/Account/History';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
 import type {
@@ -32,6 +31,8 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 
 interface Props {
   pageProps: PageProps;
@@ -43,6 +44,8 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
+  const { localizedPath } = useLocalizedPath();
+  //local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
@@ -52,8 +55,8 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   const [accountingFilters, setAccountingFilters] = useState<Filters | null>(
     null
   );
-
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const { tenantConfig } = pageProps;
 
@@ -110,7 +113,7 @@ function AccountHistory({ pageProps }: Props): ReactElement {
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
+      router.push(localizedPath('/profile'));
     }
     setProgress(100);
     setTimeout(() => {

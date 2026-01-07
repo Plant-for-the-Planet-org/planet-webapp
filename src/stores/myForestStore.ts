@@ -15,6 +15,7 @@ import {
   transformResponse,
 } from '../utils/myForestUtils';
 import { APIError } from '@planet-sdk/common';
+import { useErrorHandlingStore } from './errorHandlingStore';
 
 interface UserInfo {
   profileId: string;
@@ -45,8 +46,6 @@ interface MyForestStore {
   donationGeojson: PointFeature<DonationProperties>[];
   isPublicProfile: boolean;
   isMyForestLoading: boolean;
-  //TODO: Remove once error handling is fully migrated from useContext to Zustand
-  errorMessage: string | null;
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
   leaderboardResult: Leaderboard | undefined;
@@ -67,7 +66,6 @@ const initialState = {
   registrationGeojson: [],
   donationGeojson: [],
   isMyForestLoading: true,
-  errorMessage: null,
   projectListResult: undefined,
   contributionsResult: undefined,
   leaderboardResult: undefined,
@@ -88,6 +86,8 @@ export const useMyForestStore = create<MyForestStore>()(
       fetchMyForest: async (getApi, getApiAuthenticated) => {
         const { userInfo, isPublicProfile } = get();
         if (!userInfo) return;
+
+        const { setErrors } = useErrorHandlingStore.getState();
 
         set({ isMyForestLoading: true }, undefined, 'fetchMyForest_start');
 
@@ -115,11 +115,11 @@ export const useMyForestStore = create<MyForestStore>()(
               ...transformedData,
               ...geojson,
               isMyForestLoading: false,
-              errorMessage: null,
             },
             undefined,
             'fetchMyForest_success'
           );
+          setErrors(null);
         } catch (error) {
           const errorMessage =
             error instanceof APIError ? error.message : 'Something went wrong';
@@ -127,11 +127,11 @@ export const useMyForestStore = create<MyForestStore>()(
           set(
             {
               isMyForestLoading: false,
-              errorMessage,
             },
             undefined,
             'fetchMyForest_error'
           );
+          setErrors(errorMessage);
         }
       },
 
