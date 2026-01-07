@@ -4,8 +4,8 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 interface ErrorHandlingStore {
-  errors: SerializedError[] | string | null;
-  setErrors: (errors: SerializedError[] | string | null) => void;
+  errors: SerializedError[] | null;
+  setErrors: (errors: SerializedError[] | null) => void;
 }
 
 export const useErrorHandlingStore = create<ErrorHandlingStore>()(

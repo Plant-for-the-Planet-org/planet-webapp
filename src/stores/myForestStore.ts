@@ -7,6 +7,7 @@ import type {
   ProjectListResponse,
 } from '../features/common/types/myForest';
 import type { ApiConfigBase } from '../hooks/useApi';
+import type { APIError } from '@planet-sdk/common';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -14,7 +15,7 @@ import {
   generateContributionsGeojson,
   transformResponse,
 } from '../utils/myForestUtils';
-import { APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
 import { useErrorHandlingStore } from './errorHandlingStore';
 
 interface UserInfo {
@@ -121,8 +122,7 @@ export const useMyForestStore = create<MyForestStore>()(
           );
           setErrors(null);
         } catch (error) {
-          const errorMessage =
-            error instanceof APIError ? error.message : 'Something went wrong';
+          setErrors(handleError(error as APIError));
           console.error('MyForest API error:', error);
           set(
             {
@@ -131,7 +131,6 @@ export const useMyForestStore = create<MyForestStore>()(
             undefined,
             'fetchMyForest_error'
           );
-          setErrors(errorMessage);
         }
       },
 

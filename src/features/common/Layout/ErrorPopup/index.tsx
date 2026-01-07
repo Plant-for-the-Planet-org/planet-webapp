@@ -25,7 +25,7 @@ export default function ErrorPopup(): ReactElement {
   }, [errors]);
 
   const handleRemoveError = (message: string) => {
-    if (Array.isArray(errors)) {
+    if (errors) {
       const updatedErrors = errors.filter((err) => err.message !== message);
       if (updatedErrors.length === 0) {
         setErrors(null);
