@@ -15,9 +15,6 @@ export const useErrorHandlingStore = create<ErrorHandlingStore>()(
 
       setErrors: (errors) =>
         set({ errors }, undefined, 'errorHandlingStore/set_errors'),
-
-      clearErrors: () =>
-        set({ errors: null }, undefined, 'errorHandlingStore/clear_errors'),
     }),
     {
       name: 'ErrorHandlingStore',
