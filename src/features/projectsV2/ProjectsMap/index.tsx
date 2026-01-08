@@ -5,14 +5,7 @@ import type { SelectedTab } from './ProjectMapTabs';
 import type { SingleTreeRegistration } from '@planet-sdk/common';
 import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
 
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
@@ -44,7 +37,7 @@ import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
 import { clsx } from 'clsx';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { useQueryParamStore } from '../../../stores/queryParamStore';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -67,16 +60,18 @@ function ProjectsMap(props: ProjectsMapProps) {
   // Fetch layers data
   useFetchLayers();
   const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
-  const { isContextLoaded, embed } = useContext(ParamsContext);
-
+  // store: state
+  const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
+  const isQueryParamsLoaded = useQueryParamStore(
+    (state) => state.isContextLoaded
+  );
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
   const timeTravelConfig = useProjectMapStore(
     (state) => state.timeTravelConfig
   );
-
   const viewState = useProjectMapStore((state) => state.viewState);
   const mapState = useProjectMapStore((state) => state.mapState);
-
+  // store: action
   const initializeMapStyle = useProjectMapStore(
     (state) => state.initializeMapStyle
   );
@@ -103,8 +98,6 @@ function ProjectsMap(props: ProjectsMapProps) {
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [wasTimeTravelMounted, setWasTimeTravelMounted] = useState(false);
-  const isQueryParamsLoaded = isContextLoaded;
-  const isEmbedded = embed === 'true';
   const sitesGeoJson = useMemo(
     () => getSitesGeoJson(singleProject?.sites ?? []),
     [singleProject?.sites]
