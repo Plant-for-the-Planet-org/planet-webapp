@@ -2,12 +2,12 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 type EmbeddablePages = 'project-list' | 'project-details';
-export type QueryParamType = string | undefined | string[] | null;
+export type QueryParamType = 'true' | 'false' | undefined;
 
 interface QueryParamStore {
   embed: QueryParamType;
   showBackIcon: QueryParamType;
-  callbackUrl: QueryParamType;
+  callbackUrl: string | undefined;
   showProjectDetails: QueryParamType;
   showProjectList: QueryParamType;
   isContextLoaded: boolean;
