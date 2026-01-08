@@ -9,7 +9,6 @@ import { useContext, useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
-import { useProjectsMap } from '../ProjectsMapContext';
 import { useProjects } from '../ProjectsContext';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
@@ -18,6 +17,7 @@ import styles from '../ProjectsMap/ProjectsMap.module.scss';
 import { AllInterventions } from '../../../utils/constants/intervention';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { clsx } from 'clsx';
+import { useProjectMapStore } from '../../../stores/projectMapStore';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -36,8 +36,12 @@ const MapControls = ({
   page,
   mobileOS,
 }: MapControlsProps) => {
-  const { setIsSatelliteView, isSatelliteView, updateMapOption, mapOptions } =
-    useProjectsMap();
+  const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
+  const setIsSatelliteView = useProjectMapStore(
+    (state) => state.setIsSatelliteView
+  );
+  const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
   const {
     projects,
     topProjects,

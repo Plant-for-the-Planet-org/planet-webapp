@@ -6,13 +6,10 @@ import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
-import {
-  ProjectsMapProvider,
-  useProjectsMap,
-} from '../../../projectsV2/ProjectsMapContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
 import { useUserProps } from '../UserPropsContext';
 import { ParamsContext } from '../QueryParamsContext';
+import { useProjectMapStore } from '../../../../stores/projectMapStore';
 
 interface ProjectsLayoutProps {
   children: ReactNode;
@@ -26,7 +23,9 @@ const ProjectsLayoutContent = ({
   setCurrencyCode,
   page,
 }: Omit<ProjectsLayoutProps, 'currencyCode'>) => {
-  const { mapOptions, updateMapOption } = useProjectsMap();
+  const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
+
   const { isImpersonationModeOn } = useUserProps();
   const { embed, showProjectDetails, showProjectList } =
     useContext(ParamsContext);
@@ -85,23 +84,15 @@ const ProjectsLayout = ({
   setCurrencyCode,
   page,
 }: ProjectsLayoutProps) => {
-  const { embed, isContextLoaded } = useContext(ParamsContext);
-  const isEmbedded = embed === 'true';
-
   return (
     <ProjectsProvider
       page={page}
       currencyCode={currencyCode}
       setCurrencyCode={setCurrencyCode}
     >
-      <ProjectsMapProvider
-        isEmbedded={isEmbedded}
-        isQueryParamsLoaded={isContextLoaded}
-      >
-        <ProjectsLayoutContent setCurrencyCode={setCurrencyCode} page={page}>
-          {children}
-        </ProjectsLayoutContent>
-      </ProjectsMapProvider>
+      <ProjectsLayoutContent setCurrencyCode={setCurrencyCode} page={page}>
+        {children}
+      </ProjectsLayoutContent>
     </ProjectsProvider>
   );
 };

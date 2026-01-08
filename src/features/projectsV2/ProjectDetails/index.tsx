@@ -24,9 +24,9 @@ import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
-import { useProjectsMap } from '../ProjectsMapContext';
 import { useApi } from '../../../hooks/useApi';
 import { useTenant } from '../../common/Layout/TenantContext';
+import { useProjectMapStore } from '../../../stores/projectMapStore';
 
 const ProjectDetails = ({
   currencyCode,
@@ -48,7 +48,9 @@ const ProjectDetails = ({
     setSelectedSampleTree,
     setPreventShallowPush,
   } = useProjects();
-  const { setTimeTravelConfig } = useProjectsMap();
+  const setTimeTravelConfig = useProjectMapStore(
+    (state) => state.setTimeTravelConfig
+  );
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const locale = useLocale();
   const router = useRouter();
