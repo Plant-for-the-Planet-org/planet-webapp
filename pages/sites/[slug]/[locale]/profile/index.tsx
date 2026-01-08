@@ -1,4 +1,3 @@
-import { MyForestProvider } from '../../../../../src/features/common/Layout/MyForestContext';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
@@ -32,11 +31,10 @@ const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
       <Head>
         <title>{t('profile')}</title>
       </Head>
-      <MyForestProvider>
-        <ProfileOuterContainer>
-          <ProfileLayout />
-        </ProfileOuterContainer>
-      </MyForestProvider>
+
+      <ProfileOuterContainer>
+        <ProfileLayout />
+      </ProfileOuterContainer>
     </UserLayout>
   ) : (
     <></>

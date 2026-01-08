@@ -133,7 +133,8 @@
     "uuid": "^8.3.2",
     "vizzuality-components": "^3.0.3",
     "xlsx": "^0.18.5",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@babel/plugin-transform-unicode-regex": "^7.23.3",
