@@ -11,14 +11,11 @@ import { useQueryParamStore } from '../../../stores/queryParamStore';
 const Layout = ({ children }: { children: ReactNode }) => {
   const { theme: themeType } = useTheme();
 
-  const isEmbeddedContext = useQueryParamStore(
-    (state) => state.embed === 'true'
+  const isEmbedMode = useQueryParamStore(
+    (state) =>
+      state.embed === 'true' &&
+      (state.page === 'project-list' || state.page === 'project-details')
   );
-  const page = useQueryParamStore((state) => state.page);
-
-  const isEmbedMode =
-    isEmbeddedContext &&
-    (page === 'project-list' || page === 'project-details');
 
   return (
     <>
