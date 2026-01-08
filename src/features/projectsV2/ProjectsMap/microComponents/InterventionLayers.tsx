@@ -17,11 +17,11 @@ import area from '@turf/area';
 import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useProjects } from '../../ProjectsContext';
-import { useProjectsMap } from '../../ProjectsMapContext';
 import { FillColor } from '../../../../utils/constants/intervention';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 import { clsx } from 'clsx';
+import { useProjectMapStore } from '../../../../stores/projectMapStore';
 
 interface SampleTreeMarkerProps {
   sampleTree: SampleTreeRegistration;
@@ -67,8 +67,8 @@ export default function InterventionLayers(): ReactElement {
     selectedSampleTree,
     selectedInterventionType,
   } = useProjects();
-  const { isSatelliteView, viewState } = useProjectsMap();
-
+  const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
+  const mainMapZoom = useProjectMapStore((state) => state.viewState.zoom);
   const t = useTranslations('Maps');
   const locale = useLocale();
 
@@ -224,7 +224,7 @@ export default function InterventionLayers(): ReactElement {
     selectedIntervention &&
     selectedIntervention.type !== 'single-tree-registration' &&
     isValidInterventionType &&
-    viewState.zoom > 14 &&
+    mainMapZoom > 14 &&
     selectedIntervention.sampleInterventions;
 
   return (

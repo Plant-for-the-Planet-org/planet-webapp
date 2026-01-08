@@ -79,7 +79,7 @@ const INVALID_TOKEN_STATUS_CODE = 498;
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-type ApiConfigBase = {
+export type ApiConfigBase = {
   queryParams?: Record<string, string>;
   additionalHeaders?: Record<string, string>;
   version?: string;

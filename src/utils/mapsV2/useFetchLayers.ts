@@ -1,14 +1,19 @@
 import type {
   ExploreLayersData,
   SingleExploreLayerConfig,
-} from '../../features/projectsV2/ProjectsMapContext';
+} from '../../features/common/types/map';
 
 import { useEffect, useRef } from 'react';
 import { mapSettingsConfig } from './mapSettings.config';
-import { useProjectsMap } from '../../features/projectsV2/ProjectsMapContext';
+import { useProjectMapStore } from '../../stores/projectMapStore';
 
 export const useFetchLayers = () => {
-  const { exploreLayersData, setExploreLayersData } = useProjectsMap();
+  const exploreLayersData = useProjectMapStore(
+    (state) => state.exploreLayersData
+  );
+  const setExploreLayersData = useProjectMapStore(
+    (state) => state.setExploreLayersData
+  );
   const hasAttemptedFetch = useRef(false);
 
   useEffect(() => {
