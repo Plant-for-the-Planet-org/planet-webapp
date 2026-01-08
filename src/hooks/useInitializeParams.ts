@@ -2,8 +2,19 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useQueryParamStore } from '../stores/queryParamStore';
 
-const getBooleanQuery = (value?: string | string[]) =>
-  value === 'true' || value === 'false' ? value : undefined;
+const getFirstQueryValue = (value?: string | string[]): string | undefined => {
+  if (!value) return undefined;
+  return Array.isArray(value) ? value[0] : value;
+};
+
+const getBooleanQuery = (
+  value?: string | string[]
+): 'true' | 'false' | undefined => {
+  const normalized = getFirstQueryValue(value);
+  return normalized === 'true' || normalized === 'false'
+    ? normalized
+    : undefined;
+};
 
 export const useInitializeParams = () => {
   const router = useRouter();
@@ -25,7 +36,7 @@ export const useInitializeParams = () => {
     initializeParams({
       embed: getBooleanQuery(query.embed),
       showBackIcon: getBooleanQuery(query.back_icon),
-      callbackUrl: query.callback,
+      callbackUrl: getFirstQueryValue(query.callback),
       showProjectDetails: getBooleanQuery(query.project_details),
       showProjectList: getBooleanQuery(query.project_list),
       page,
