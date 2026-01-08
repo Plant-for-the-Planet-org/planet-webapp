@@ -28,7 +28,7 @@ export const useQueryParamStore = create<QueryParamStore>()(
       isContextLoaded: false,
 
       initializeParams: (params) =>
-        set(params, undefined, 'queryParamStore/sync_from_router'),
+        set(params, undefined, 'queryParamStore/init_from_router'),
     }),
     {
       name: 'QueryParamStore',
