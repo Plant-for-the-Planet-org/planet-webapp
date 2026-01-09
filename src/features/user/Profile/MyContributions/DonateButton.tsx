@@ -1,9 +1,9 @@
 import WebappButton from '../../../common/WebappButton';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import styles from './MyContributions.module.scss';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { clsx } from 'clsx';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 type SupportedDonationButton = {
   type: 'supported';
@@ -31,9 +31,9 @@ const DonateButton = (props: DonateButtonProps) => {
     buttonText,
     customButtonClasses,
   } = props;
-
-  const { tenantConfig } = useTenant();
   const { token } = useUserProps();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   // Add custom styles depending on project purpose and unit type
   const buttonClasses = clsx(styles.donationButton, customButtonClasses, {

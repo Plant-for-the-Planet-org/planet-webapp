@@ -70,10 +70,10 @@ import apiClient from '../utils/apiRequests/apiClient';
 import getSessionId from '../utils/apiRequests/getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
-import { useTenant } from '../features/common/Layout/TenantContext';
 import { useUserProps } from '../features/common/Layout/UserPropsContext';
 import { validateToken } from '../utils/apiRequests/validateToken';
 import { useLocale } from 'next-intl';
+import { useTenantStore } from '../stores/tenantStore';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
@@ -100,8 +100,9 @@ type ApiConfig<
 
 export const useApi = () => {
   const { token, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const callApi = async <T>({
     method,

@@ -9,18 +9,20 @@ import DashboardView from '../../../common/Layout/DashboardView';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import DonationLinkForm from './DonationLinkForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import { handleError } from '@planet-sdk/common';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useApi } from '../../../../hooks/useApi';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 export default function DonationLink(): ReactElement | null {
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [projects, setProjects] = useState<ProjectOption[] | null>(null);
   const t = useTranslations('DonationLink');
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
   const { getApi } = useApi();
+  // local state
+  const [projects, setProjects] = useState<ProjectOption[] | null>(null);
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   async function fetchProjectList() {
     try {

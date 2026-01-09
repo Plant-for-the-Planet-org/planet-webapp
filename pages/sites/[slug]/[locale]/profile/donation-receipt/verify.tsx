@@ -5,7 +5,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { Tenant } from '@planet-sdk/common';
-import { useTranslations, type AbstractIntlMessages } from 'next-intl';
+import type { AbstractIntlMessages } from 'next-intl';
 
 import Head from 'next/head';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
@@ -15,17 +15,19 @@ import {
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import DonationReceiptAuthenticated from '../../../../../../src/features/user/DonationReceipt/DonationReceiptAuthenticated';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { useTranslations } from 'next-intl';
 
 export default function DonationReceiptPage({
   pageProps: { tenantConfig },
 }: Props) {
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
   const tReceipt = useTranslations('DonationReceipt');
+  //store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) setTenantConfig(tenantConfig);

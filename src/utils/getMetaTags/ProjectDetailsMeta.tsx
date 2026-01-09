@@ -4,17 +4,18 @@ import type {
   TreeProjectExtended,
 } from '@planet-sdk/common';
 
-import { useTenant } from '../../features/common/Layout/TenantContext';
 import getImageUrl from '../getImageURL';
 import Head from 'next/head';
 import { truncateString } from '../getTruncatedString';
+import { useTenantStore } from '../../stores/tenantStore';
 
 interface Props {
   project: TreeProjectExtended | ConservationProjectExtended;
 }
 
 export default function ProjectDetailsMeta({ project }: Props): ReactElement {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const description = truncateString(project.description, 147);
   return (

@@ -12,9 +12,8 @@ import SeaOfTrees from './components/SeaOfTrees';
 import ContentSection from './components/ContentSection';
 import ClimateAction from './components/ClimateAction';
 import Social from './components/Social';
-
-import { useTenant } from '../../../features/common/Layout/TenantContext';
 import themeProperties from '../../../theme/themeProperties';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 interface Props {
   leaderboard: LeaderBoardList | null;
@@ -22,7 +21,8 @@ interface Props {
 }
 
 export default function About({ tenantScore, leaderboard }: Props) {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   return (
     <>

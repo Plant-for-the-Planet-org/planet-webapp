@@ -6,6 +6,12 @@ import type {
   Filters,
   PaymentHistory,
 } from '../../../../../src/features/common/types/payments';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
 
 import { useEffect, useState, useContext } from 'react';
 import { useTranslations } from 'next-intl';
@@ -17,21 +23,15 @@ import Head from 'next/head';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
-import type {
-  GetStaticPaths,
-  GetStaticProps,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-} from 'next';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -41,8 +41,10 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   const t = useTranslations('Me');
   const { token, contextLoaded } = useUserProps();
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
+  const { tenantConfig } = pageProps;
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
@@ -52,10 +54,8 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   const [accountingFilters, setAccountingFilters] = useState<Filters | null>(
     null
   );
-
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
-
-  const { tenantConfig } = pageProps;
+  //store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

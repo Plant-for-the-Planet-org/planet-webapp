@@ -22,6 +22,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useTenant } from '../TenantContext';
 import { useRouter } from 'next/router';
 import { useCurrency } from '../CurrencyContext';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 interface MapCountryProps {
   value: string;
@@ -52,7 +53,8 @@ interface countryInterface {
 // Maps the radio buttons for language
 
 function MapLanguage({ value, handleChange }: MapLanguageProps) {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   // reduce the allowed languages to the languages listed in the tenants config file
   const selectableLanguages = useMemo(

@@ -17,8 +17,8 @@ import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import router from 'next/router';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -27,6 +27,7 @@ interface Props {
 export default function VTOFitnessChallenge({
   pageProps: { tenantConfig },
 }: Props) {
+  // local state
   const [leaderBoard, setLeaderBoard] = useState<LeaderBoard>({
     mostDonated: [],
     mostRecent: [],
@@ -35,7 +36,8 @@ export default function VTOFitnessChallenge({
     total: 0,
   });
   const [isLoaded, setIsLoaded] = useState(false);
-  const { setTenantConfig } = useTenant();
+  //store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

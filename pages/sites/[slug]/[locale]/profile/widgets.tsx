@@ -21,8 +21,8 @@ import {
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -31,9 +31,11 @@ interface Props {
 function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
   const { user } = useUserProps();
+  // local state
   const [embedModalOpen, setEmbedModalOpen] = useState(false);
+  // store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
   const embedModalProps = { embedModalOpen, setEmbedModalOpen, user };
 
   useEffect(() => {

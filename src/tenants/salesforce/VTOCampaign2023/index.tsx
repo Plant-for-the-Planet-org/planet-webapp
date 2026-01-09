@@ -8,6 +8,7 @@ import AdditionalInfo from './components/AdditionalInfo';
 
 import { useTenant } from '../../../features/common/Layout/TenantContext';
 import themeProperties from '../../../theme/themeProperties';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 interface Props {
   leaderboard: {
@@ -23,7 +24,8 @@ export default function Campaign({
   leaderboard,
   isLoaded,
 }: Props) {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   return (
     <>

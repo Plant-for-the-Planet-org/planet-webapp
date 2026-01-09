@@ -10,15 +10,17 @@ import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
-import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { clsx } from 'clsx';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 export default function ProjectGrid() {
   const { getApi } = useApi();
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  // local state
   const [projects, setProjects] = useState<MapProject[] | null>(null);
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   useEffect(() => {
     async function loadProjects() {

@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { styled } from '@mui/material';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 const AddBalanceLink = styled('span')(({ theme }) => ({
   color: theme.palette.primary.main,
@@ -22,7 +22,8 @@ const ErrorMessage = styled('span')(({ theme }) => ({
 const BulkCodesError = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
   const { user, token } = useUserProps();
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const GetDisableBulkCodesReason = () => {
     if (user) {

@@ -18,12 +18,12 @@ import {
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useRouter } from 'next/router';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { useEffect } from 'react';
 import { v4 } from 'uuid';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectDetails from '../../../../src/features/projectsV2/ProjectDetails';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 const ProjectDetailsPage: NextPageWithLayout = ({
   pageProps,
@@ -31,7 +31,7 @@ const ProjectDetailsPage: NextPageWithLayout = ({
   isMobile,
 }) => {
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {
