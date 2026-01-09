@@ -59,6 +59,72 @@ export function RecordHeader({
     [record.status]
   );
 
+  const dateDisplay = useMemo(() => {
+    const formatDateWithOffset = (dateString: string) =>
+      formatDate(
+        new Date(new Date(dateString).valueOf() + 1000 * 3600).toISOString()
+      );
+
+    // Active or Trialing - check for scheduled cancellation
+    if (record.status === 'active' || record.status === 'trialing') {
+      if (record.endsAt) {
+        const isFuture = new Date(record.endsAt) > new Date();
+        if (isFuture) {
+          return `${t('willBeCancelledOn')} ${formatDateWithOffset(
+            record.endsAt
+          )} • ${t(record.frequency)}`;
+        }
+      }
+      return `${t('nextOn')} ${formatDate(
+        new Date(record.currentPeriodEnd).toISOString()
+      )} • ${t(record.frequency)}`;
+    }
+
+    // Paused
+    if (record.status === 'paused') {
+      if (record.endsAt) {
+        const isFuture = new Date(record.endsAt) > new Date();
+        if (isFuture) {
+          return `${t('willBeCancelledOn')} ${formatDateWithOffset(
+            record.endsAt
+          )} • ${t(record.frequency)}`;
+        }
+      }
+      if (record.pauseUntil) {
+        return `${t('pausedUntil')} ${formatDateWithOffset(
+          record.pauseUntil
+        )} • ${t(record.frequency)}`;
+      }
+      return t('pausedUntilResumed');
+    }
+
+    // Past Due
+    if (record.status === 'past_due') {
+      return `${t('lastDueOn')} ${formatDate(
+        new Date(record.currentPeriodEnd).toISOString()
+      )} • ${t(record.frequency)}`;
+    }
+
+    // Canceled
+    if (record.status === 'canceled' && record.endsAt) {
+      return `${t('cancelledOn')} ${formatDateWithOffset(record.endsAt)} • ${t(
+        record.frequency
+      )}`;
+    }
+
+    // Incomplete, Incomplete Expired, Unpaid - show nothing
+    if (
+      record.status === 'incomplete' ||
+      record.status === 'incomplete_expired' ||
+      record.status === 'unpaid'
+    ) {
+      return null;
+    }
+
+    // Fallback for any other status
+    return null;
+  }, [record, t]);
+
   return (
     <div
       onClick={handleRecordToggle && (() => handleRecordToggle(index))}
@@ -69,47 +135,7 @@ export function RecordHeader({
     >
       <div className={styles.left}>
         <p className={styles.top}>{recordName}</p>
-
-        {record?.endsAt ? (
-          <p>
-            {new Date(record?.endsAt) < new Date()
-              ? t('cancelledOn')
-              : t('willBeCancelledOn')}{' '}
-            {formatDate(
-              new Date(
-                new Date(record?.endsAt).valueOf() + 1000 * 3600
-              ).toISOString()
-            )}{' '}
-            • {t(record?.frequency)}
-          </p>
-        ) : record?.status === 'paused' ? (
-          record?.pauseUntil ? (
-            <p>
-              {t('pausedUntil')}{' '}
-              {formatDate(
-                new Date(
-                  new Date(record?.pauseUntil).valueOf() + 1000 * 3600
-                ).toISOString()
-              )}{' '}
-              • {t(record?.frequency)}
-            </p>
-          ) : (
-            <p>{t('pausedUntilResumed')}</p>
-          )
-        ) : (
-          <span>
-            {t('nextOn')}{' '}
-            {formatDate(
-              new Date(
-                new Date(record?.currentPeriodEnd).valueOf()
-              ).toISOString()
-            )}{' '}
-            •{' '}
-            <span style={{ textTransform: 'capitalize' }}>
-              {t(record?.frequency)}
-            </span>
-          </span>
-        )}
+        {dateDisplay && <p>{dateDisplay}</p>}
       </div>
       <div className={styles.right}>
         <p className={clsx(styles.top, styles.amount)}>
