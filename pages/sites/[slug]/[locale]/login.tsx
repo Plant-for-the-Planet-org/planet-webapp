@@ -16,10 +16,10 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../src/utils/multiTenancy/helpers';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -28,7 +28,8 @@ interface Props {
 export default function Login({ pageProps }: Props): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setTenantConfig } = useTenant();
+  // store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

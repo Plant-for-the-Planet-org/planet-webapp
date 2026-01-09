@@ -2,7 +2,6 @@ import type { CountryCode, UnitTypes } from '@planet-sdk/common';
 import type { CountryTreeDataItem } from './sections/CountryLeaderboard';
 
 import { useEffect, useState } from 'react';
-import { useTenant } from '../../../features/common/Layout/TenantContext';
 import Banner from './sections/Banner';
 import CountryLeaderboard from './sections/CountryLeaderboard';
 import ResponsibilityStatement from './sections/ResponsibilityStatement';
@@ -11,6 +10,7 @@ import Sustainability from './sections/Sustainability';
 import Footer from '../../../features/common/Layout/Footer';
 import { INITIAL_COUNTRY_TREES } from './constants/initialCountryTrees';
 import styles from './Home.module.scss';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 type StatsDataItem = {
   country: CountryCode | null;
@@ -20,12 +20,14 @@ type StatsDataItem = {
 };
 
 const Home = () => {
-  const { tenantConfig } = useTenant();
+  // local state
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [totalTrees, setTotalTrees] = useState(0);
   const [countryWiseTrees, setCountryWiseTrees] = useState<
     CountryTreeDataItem[]
   >([]);
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   useEffect(() => {
     async function loadStats() {

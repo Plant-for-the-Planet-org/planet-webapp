@@ -4,6 +4,7 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { TextField, styled } from '@mui/material';
 import { useTenant } from '../Layout/TenantContext';
 import themeProperties from '../../../theme/themeProperties';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 interface StyledTextFieldType {
   config: Tenant;
@@ -65,7 +66,7 @@ const StyledTextField = styled(TextField, {
 }));
 
 const MaterialTextField = (props: TextFieldProps) => {
-  const { tenantConfig } = useTenant();
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   return <StyledTextField config={tenantConfig} {...props} />;
 };

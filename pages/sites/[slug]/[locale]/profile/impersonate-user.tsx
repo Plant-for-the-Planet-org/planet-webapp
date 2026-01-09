@@ -21,8 +21,8 @@ import {
 import { defaultTenant } from '../../../../../tenant.config';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -34,7 +34,8 @@ const ImpersonateUserPage = ({
   const { user, isImpersonationModeOn } = useUserProps();
   const t = useTranslations('Me');
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
+  //store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

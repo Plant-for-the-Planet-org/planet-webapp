@@ -13,8 +13,8 @@ import { handleError } from '@planet-sdk/common';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
-import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { clsx } from 'clsx';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
@@ -22,7 +22,8 @@ export default function ContentSection() {
   const currencyCode = getStoredCurrency();
   const { getApi } = useApi();
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const [project, setProject] = useState<
     TreeProjectExtended | ConservationProjectExtended | null

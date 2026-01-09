@@ -15,8 +15,8 @@ import {
 } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { defaultTenant } from '../../../../tenant.config';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import DonationReceiptUnauthenticated from '../../../../src/features/user/DonationReceipt/DonationReceiptUnauthenticated';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 interface PageProps {
   messages: AbstractIntlMessages;
@@ -31,7 +31,8 @@ export default function DonationReceipt({
   pageProps: { tenantConfig },
 }: Props) {
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
+  //store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) setTenantConfig(tenantConfig);

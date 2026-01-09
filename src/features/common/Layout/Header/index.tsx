@@ -1,12 +1,13 @@
 import Head from 'next/head';
-import { useTenant } from '../TenantContext';
 import { useTheme } from '../../../../theme/themeContext';
 import locales from '../../../../../public/static/localeList.json';
 import themeProperties from '../../../../theme/themeProperties';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 export default function Header() {
-  const { tenantConfig } = useTenant();
   const { theme: themeType } = useTheme();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   return (
     <>
       <Head>

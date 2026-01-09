@@ -1,10 +1,10 @@
 import { useUserProps } from '../UserPropsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
-import { useTenant } from '../TenantContext';
 import NavbarBrandLogos from './microComponents/NavbarBrandLogos';
 import NavbarItems from './microComponents/NavbarItems';
 import styles from './Navbar.module.scss';
 import { clsx } from 'clsx';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 const ImpersonationBanner = () => {
   const { isImpersonationModeOn } = useUserProps();
@@ -31,7 +31,8 @@ const MainNavigationHeader = () => {
 };
 
 export default function Navbar() {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   if (!tenantConfig) return null;
 
   const { setUser, logoutUser, auth0Error } = useUserProps();

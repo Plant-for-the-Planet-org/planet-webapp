@@ -44,6 +44,7 @@ import {
 import { NextIntlClientProvider } from 'next-intl';
 import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
+import { useTenantStore } from '../src/stores/tenantStore';
 
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
   ssr: false,
@@ -135,10 +136,12 @@ const PlanetWeb = ({
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) => {
   const router = useRouter();
+  const { tenantConfig } = pageProps;
+  // local state
   const [currencyCode, setCurrencyCode] = useState('');
   const [browserCompatible, setBrowserCompatible] = useState(false);
-
-  const { tenantConfig } = pageProps;
+  // store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -154,6 +157,7 @@ const PlanetWeb = ({
 
   useEffect(() => {
     storeConfig(tenantConfig);
+    setTenantConfig(tenantConfig);
   }, []);
 
   useEffect(() => {

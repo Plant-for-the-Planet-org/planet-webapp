@@ -7,18 +7,21 @@ import getLanguageName from '../../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 import { useLocale, useTranslations } from 'next-intl';
-import { useTenant } from '../TenantContext';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 // let styles = require('./Footer.module.css');
 export default function Footer(): ReactElement | null {
   const t = useTranslations('Common');
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
+  // local state
   const [openModal, setOpenModal] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+
   const handleModalOpen = () => {
     setOpenModal(true);
   };

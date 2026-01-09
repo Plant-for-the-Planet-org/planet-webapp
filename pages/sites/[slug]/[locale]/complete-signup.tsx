@@ -15,9 +15,9 @@ import {
   getTenantConfig,
 } from '../../../../src/utils/multiTenancy/helpers';
 import { useRouter } from 'next/router';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -25,7 +25,8 @@ interface Props {
 
 export default function UserProfile({ pageProps }: Props) {
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
+
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

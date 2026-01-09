@@ -20,9 +20,9 @@ import {
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../tenant.config';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -33,9 +33,10 @@ export default function DirectGift({
 }: Props): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setTenantConfig } = useTenant();
   const { getApi } = useApi();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  // store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

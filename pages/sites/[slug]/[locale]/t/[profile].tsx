@@ -18,7 +18,6 @@ import { defaultTenant } from '../../../../../tenant.config';
 import PublicProfileOuterContainer from '../../../../../src/features/user/Profile/PublicProfileOuterContainer';
 import PublicProfileLayout from '../../../../../src/features/user/Profile/PublicProfileLayout';
 import { v4 } from 'uuid';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
@@ -26,17 +25,19 @@ import { handleError } from '@planet-sdk/common';
 import GetPublicUserProfileMeta from '../../../../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import { ProjectsProvider } from '../../../../../src/features/projectsV2/ProjectsContext';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
 }
 
 const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
-  const { setTenantConfig } = useTenant();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { getApi } = useApi();
   const [profile, setProfile] = useState<null | UserPublicProfile>(null);
   const router = useRouter();
+  // store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

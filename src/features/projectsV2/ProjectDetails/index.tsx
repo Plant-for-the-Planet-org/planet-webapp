@@ -25,8 +25,8 @@ import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useApi } from '../../../hooks/useApi';
-import { useTenant } from '../../common/Layout/TenantContext';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 const ProjectDetails = ({
   currencyCode,
@@ -35,6 +35,11 @@ const ProjectDetails = ({
   currencyCode: string;
   isMobile: boolean;
 }) => {
+  const locale = useLocale();
+  const router = useRouter();
+  const { getApi } = useApi();
+  const { p: projectSlug } = router.query;
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const {
     singleProject,
     setSingleProject,
@@ -48,16 +53,14 @@ const ProjectDetails = ({
     setSelectedSampleTree,
     setPreventShallowPush,
   } = useProjects();
+  // local state
+  const [hasVideoConsent, setHasVideoConsent] = useState(false);
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: action
   const setTimeTravelConfig = useProjectMapStore(
     (state) => state.setTimeTravelConfig
   );
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
-  const locale = useLocale();
-  const router = useRouter();
-  const { getApi } = useApi();
-  const { tenantConfig } = useTenant();
-  const { p: projectSlug } = router.query;
-  const [hasVideoConsent, setHasVideoConsent] = useState(false);
 
   const fetchInterventions = async (projectId: string) => {
     setIsLoading(true);

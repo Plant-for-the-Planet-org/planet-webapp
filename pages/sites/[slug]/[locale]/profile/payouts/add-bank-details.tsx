@@ -23,8 +23,8 @@ import {
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -36,7 +36,8 @@ export default function AddBankDetailsPage({
   const t = useTranslations('Me');
   const { user } = useUserProps();
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
+  //store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

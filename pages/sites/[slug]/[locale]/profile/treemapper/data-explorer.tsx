@@ -21,8 +21,8 @@ import {
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../../tenant.config';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -35,7 +35,8 @@ function TreeMapperAnalytics({
   const { user } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setTenantConfig } = useTenant();
+  // store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

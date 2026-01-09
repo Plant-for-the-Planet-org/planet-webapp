@@ -18,15 +18,16 @@ import {
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useRouter } from 'next/router';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { useEffect } from 'react';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
+  // store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

@@ -24,9 +24,9 @@ import {
   getTenantConfig,
 } from '../../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-import { useTenant } from '../../../../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -39,7 +39,8 @@ export default function BulkCodeSelectProjectPage({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { bulkMethod, setBulkMethod } = useBulkCode();
-  const { setTenantConfig } = useTenant();
+  //store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

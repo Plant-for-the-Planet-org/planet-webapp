@@ -25,9 +25,9 @@ import {
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -38,15 +38,15 @@ function RecurrentDonations({
 }: Props): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
   const { token, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
-
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  // local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [recurrencies, setRecurrencies] = useState<Subscription[]>();
-
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  //store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

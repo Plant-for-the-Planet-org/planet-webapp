@@ -27,12 +27,12 @@ import {
   getTenantConfig,
 } from '../../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-import { useTenant } from '../../../../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
 import { useApi } from '../../../../../../../src/hooks/useApi';
 import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
+import { useTenantStore } from '../../../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -44,7 +44,6 @@ export default function BulkCodeIssueCodesPage({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Me');
-  const { setTenantConfig } = useTenant();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated } = useApi();
   const {
@@ -56,6 +55,8 @@ export default function BulkCodeIssueCodesPage({
     projectList,
   } = useBulkCode();
   const { token, user, contextLoaded } = useUserProps();
+  //store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {

@@ -22,7 +22,6 @@ import {
   SuccessfullyRedeemed,
 } from '../../../../../../src/features/common/RedeemCode';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -31,6 +30,7 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -44,14 +44,16 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   const t = useTranslations('Redeem');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setTenantConfig } = useTenant();
   const { user, contextLoaded, loginWithRedirect } = useUserProps();
   const { postApiAuthenticated } = useApi();
   const { errors, setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [code, setCode] = useState<string>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
+  //store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

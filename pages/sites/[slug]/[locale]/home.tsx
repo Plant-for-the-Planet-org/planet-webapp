@@ -23,13 +23,13 @@ import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { useApi } from '../../../../src/hooks/useApi';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -39,12 +39,12 @@ export default function Home({ pageProps }: Props) {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
-
+  const { setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
   const [tenantScore, setTenantScore] = useState<TenantScore | null>(null);
-  const { setErrors } = useContext(ErrorHandlingContext);
-
-  const { setTenantConfig } = useTenant();
+  // store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

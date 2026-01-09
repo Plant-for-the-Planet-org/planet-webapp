@@ -18,7 +18,6 @@ import LeaderBoard from '../../../../src/tenants/planet/LeaderBoard';
 import GetLeaderboardMeta from '../../../../src/utils/getMetaTags/GetLeaderboardMeta';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { useRouter } from 'next/router';
 import {
   constructPathsForTenantSlug,
@@ -27,18 +26,20 @@ import {
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
 }
 
 export default function Home({ pageProps }: Props) {
-  const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
-  const { setErrors } = useContext(ErrorHandlingContext);
-
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
   const { getApi } = useApi();
+  const { setErrors } = useContext(ErrorHandlingContext);
+  // local state
+  const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
+  // store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

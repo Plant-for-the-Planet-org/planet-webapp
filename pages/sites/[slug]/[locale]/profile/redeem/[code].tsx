@@ -22,7 +22,6 @@ import {
   EnterRedeemCode,
 } from '../../../../../../src/features/common/RedeemCode';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -31,6 +30,7 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 interface Props {
   pageProps: PageProps;
 }
@@ -43,17 +43,18 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const t = useTranslations('Redeem');
   const { user, contextLoaded } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
-  const { setTenantConfig } = useTenant();
   const { postApiAuthenticated } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-
+  // local state
   const [code, setCode] = useState<string | undefined>(undefined);
   const [inputCode, setInputCode] = useState<string | undefined>(undefined);
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  // store: action
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {

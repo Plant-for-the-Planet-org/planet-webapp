@@ -13,8 +13,8 @@ import Mangroves from '../../../../src/tenants/salesforce/Mangroves';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import router from 'next/router';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 interface Props {
   pageProps: PageProps;
@@ -25,7 +25,7 @@ export default function MangrovesLandingPage({
 }: Props) {
   const tenantScore = { total: 20000000 };
 
-  const { setTenantConfig } = useTenant();
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   useEffect(() => {
     if (router.isReady) {
