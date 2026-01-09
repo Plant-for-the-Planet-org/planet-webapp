@@ -1,4 +1,4 @@
-import type { MapOptions } from '../../ProjectsMapContext';
+import type { MapOptions } from '../../../common/types/map';
 import type { SetState } from '../../../common/types/common';
 
 import MapSettingsSection from './microComponents/MapSettingsSection';

@@ -9,7 +9,6 @@ import { useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
-import { useProjectsMap } from '../ProjectsMapContext';
 import { useProjects } from '../ProjectsContext';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
@@ -18,6 +17,7 @@ import styles from '../ProjectsMap/ProjectsMap.module.scss';
 import { AllInterventions } from '../../../utils/constants/intervention';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
+import { useProjectMapStore } from '../../../stores/projectMapStore';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -36,8 +36,6 @@ const MapControls = ({
   page,
   mobileOS,
 }: MapControlsProps) => {
-  const { setIsSatelliteView, isSatelliteView, updateMapOption, mapOptions } =
-    useProjectsMap();
   const {
     projects,
     topProjects,
@@ -61,12 +59,21 @@ const MapControls = ({
     showDonatableProjects,
     setShowDonatableProjects,
   } = useProjects();
+  // local state
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
-
+  // store: state
+  const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
+  const mapOptions = useProjectMapStore((state) => state.mapOptions);
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectDetails = useQueryParamStore(
     (state) => state.showProjectDetails
   );
+  // store: action
+  const setIsSatelliteView = useProjectMapStore(
+    (state) => state.setIsSatelliteView
+  );
+  const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
+
   const availableInterventionTypes = useMemo(() => {
     if (!interventions) return [];
 

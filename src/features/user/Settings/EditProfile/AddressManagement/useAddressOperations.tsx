@@ -2,7 +2,7 @@ import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { AddressFormData } from './microComponents/AddressForm';
 import type { AddressType, Address, APIError } from '@planet-sdk/common';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useApi } from '../../../../../hooks/useApi';
 import { handleError } from '@planet-sdk/common';
@@ -40,15 +40,28 @@ export const useAddressOperations = () => {
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   const safeExecute = async (operation: () => Promise<void>) => {
     if (!contextLoaded || !user || !token) return;
     setIsLoading(true);
     try {
       await operation();
     } catch (error) {
-      setErrors(handleError(error as APIError));
+      if (isMountedRef.current) {
+        setErrors(handleError(error as APIError));
+      }
     } finally {
-      setIsLoading(false);
+      if (isMountedRef.current) {
+        setIsLoading(false);
+      }
     }
   };
 

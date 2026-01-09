@@ -4,7 +4,7 @@ import type {
   LegendData,
 } from '../../../../../utils/mapsV2/mapSettings.config';
 import type { ChangeEvent, MouseEvent } from 'react';
-import type { MapOptions } from '../../../ProjectsMapContext';
+import type { MapOptions } from '../../../../common/types/map';
 
 import { useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';

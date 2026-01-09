@@ -11,13 +11,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import MaplibreCompare from '@maplibre/maplibre-gl-compare';
 import '@maplibre/maplibre-gl-compare/dist/maplibre-gl-compare.css';
 import { Map as MaplibreMap } from 'maplibre-gl';
-import { useProjectsMap } from '../../ProjectsMapContext';
 import TimeTravelDropdown from '../../TimeTravelDropdown';
 import styles from './TimeTravel.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
 import { useTranslations } from 'next-intl';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useProjectMapStore } from '../../../../stores/projectMapStore';
 
 const EMPTY_STYLE = {
   version: 8 as const,
@@ -48,7 +48,10 @@ export default function TimeTravel({
   sitesGeoJson,
   isVisible,
 }: Props): ReactElement {
-  const { viewState: mainMapViewState, timeTravelConfig } = useProjectsMap();
+  const timeTravelConfig = useProjectMapStore(
+    (state) => state.timeTravelConfig
+  );
+  const mainMapViewState = useProjectMapStore((state) => state.viewState);
   const tTimeTravel = useTranslations('Maps.timeTravel');
 
   const comparisonContainer = useRef<HTMLDivElement>(null);

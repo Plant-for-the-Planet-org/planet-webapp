@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
-import { ProjectsMapProvider } from '../../../projectsV2/ProjectsMapContext';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import { useUserProps } from '../UserPropsContext';
 import { clsx } from 'clsx';
@@ -65,28 +64,23 @@ const MobileProjectsLayout = ({
       selectedMode={selectedMode}
       setSelectedMode={setSelectedMode}
     >
-      <ProjectsMapProvider
-        isEmbedded={isEmbedded}
-        isQueryParamsLoaded={isContextLoaded}
-      >
-        <main className={mobileLayoutClass}>
-          {isMapMode ? (
-            <section className={styles.mobileMapContainer}>
-              <ProjectsMap
-                selectedMode={selectedMode}
-                setSelectedMode={setSelectedMode}
-                isMobile={isMobile}
-                page={page}
-              />
-            </section>
-          ) : (
-            <section className={styles.mobileContentContainer}>
-              {children}
-            </section>
-          )}
-        </main>
-        <Credits setCurrencyCode={setCurrencyCode} isMobile={isMobile} />
-      </ProjectsMapProvider>
+      <main className={mobileLayoutClass}>
+        {isMapMode ? (
+          <section className={styles.mobileMapContainer}>
+            <ProjectsMap
+              selectedMode={selectedMode}
+              setSelectedMode={setSelectedMode}
+              isMobile={isMobile}
+              page={page}
+            />
+          </section>
+        ) : (
+          <section className={styles.mobileContentContainer}>
+            {children}
+          </section>
+        )}
+      </main>
+      <Credits setCurrencyCode={setCurrencyCode} isMobile={isMobile} />
     </ProjectsProvider>
   );
 };
