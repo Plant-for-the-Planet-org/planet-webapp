@@ -13,7 +13,9 @@ interface QueryParamStore {
   isContextLoaded: boolean;
   page: EmbeddablePages | null;
 
-  initializeParams: (params: Partial<QueryParamStore>) => void;
+  initializeParams: (
+    params: Partial<Omit<QueryParamStore, 'initializeParams'>>
+  ) => void;
 }
 
 export const useQueryParamStore = create<QueryParamStore>()(
