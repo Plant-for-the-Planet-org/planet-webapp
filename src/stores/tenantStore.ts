@@ -2,22 +2,23 @@ import type { Tenant } from '@planet-sdk/common';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { defaultTenant } from '../../tenant.config';
 
 interface TenantStore {
-  tenantConfig: Tenant | null;
+  tenantConfig: Tenant;
   setTenantConfig: (config: Tenant) => void;
 }
 
 export const useTenantStore = create<TenantStore>()(
   devtools(
     (set) => ({
-      tenantConfig: null,
+      tenantConfig: defaultTenant,
 
       setTenantConfig: (config) =>
         set(
           { tenantConfig: config },
           undefined,
-          'tenantStore/init_tenant_config'
+          'tenantStore/set_tenant_config'
         ),
     }),
     {
