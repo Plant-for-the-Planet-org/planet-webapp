@@ -10,6 +10,42 @@ export interface WebGLGuardProps {
   showDetailedError?: boolean;
 }
 
+const AlertIcon = () => {
+  return (
+    <svg
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M12 2L1 21h22L12 2z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 9v4"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 17h0"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
 const WebGLGuard: FC<WebGLGuardProps> = ({
   children,
   fallback,
@@ -22,7 +58,13 @@ const WebGLGuard: FC<WebGLGuardProps> = ({
     return (
       <div className={styles.loading}>
         {loadingComponent || (
-          <div className={styles.spinner}>Loading map...</div>
+          <div
+            className={styles.spinner}
+            aria-live="polite"
+            aria-label="Loading map"
+          >
+            Loading map...
+          </div>
         )}
       </div>
     );
@@ -30,41 +72,13 @@ const WebGLGuard: FC<WebGLGuardProps> = ({
 
   if (!isWebglSupported) {
     if (fallback) {
-      return <>{fallback}</>;
+      return fallback;
     }
 
     return (
-      <div className={styles.errorContainer}>
+      <div className={styles.errorContainer} role="alert">
         <div className={styles.errorIcon}>
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 2L1 21h22L12 2z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M12 9v4"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M12 17h0"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <AlertIcon />
         </div>
 
         <h3 className={styles.errorTitle}>Graphics acceleration required</h3>
@@ -110,7 +124,7 @@ const WebGLGuard: FC<WebGLGuardProps> = ({
     );
   }
 
-  return <>{children}</>;
+  return children;
 };
 
 export default WebGLGuard;
