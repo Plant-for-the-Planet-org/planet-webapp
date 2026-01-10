@@ -60,6 +60,34 @@ export function RecordHeader({
   );
 
   const dateDisplay = useMemo(() => {
+    /**
+     * Applies a +1 hour offset to certain date fields (endsAt, pauseUntil).
+     *
+     * CONTEXT FROM API RESPONSE FORMAT:
+     * - pauseUntil: Returns with UTC timestamp "2026-02-04T00:00:00+00:00"
+     * - endsAt: Returns as date-only string "2026-01-09" (no timestamp)
+     * - currentPeriodEnd: Returns as date-only string "2026-01-24" (no timestamp)
+     *
+     * WHY THE OFFSET EXISTS (LEGACY):
+     * The +1 hour offset was added to handle timezone display issues, particularly
+     * for dates stored as midnight UTC. When JavaScript parses these dates:
+     *
+     * - Dates WITH timestamps (pauseUntil): Parsed as UTC, converted to local time
+     *   - In negative offset timezones (UTC-5, etc.), midnight UTC appears as
+     *     previous day (e.g., 00:00 UTC = 19:00 Dec 24 in UTC-5)
+     *   - +1 hour shifts to 01:00 UTC, ensuring it displays as intended date
+     *
+     * - Dates WITHOUT timestamps (endsAt, currentPeriodEnd): Parsed as LOCAL midnight
+     *   - Already displays correctly in user's timezone
+     *   - +1 hour offset is unnecessary but harmless (00:00 → 01:00 = same day)
+     *
+     * CURRENT BEHAVIOR:
+     * - endsAt and pauseUntil: Offset applied (legacy behavior preserved)
+     * - currentPeriodEnd: No offset applied (system-calculated timestamp)
+     *
+     * NOTE: This is legacy code. A proper solution would use timezone-aware date
+     * libraries (date-fns-tz, luxon) or ensure backend returns consistent formats.
+     */
     const formatDateWithOffset = (dateString: string) =>
       formatDate(
         new Date(new Date(dateString).valueOf() + 1000 * 3600).toISOString()
