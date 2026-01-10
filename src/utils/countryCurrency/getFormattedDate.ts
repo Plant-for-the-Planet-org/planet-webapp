@@ -16,7 +16,7 @@ export default function formatDate(date: number | Date | string) {
       }
       // Zero-padding month and day if needed
       const [year, month, dayWithTime] = cleanDateString.split('-');
-      const day = dayWithTime.split('T')[0];
+      const day = dayWithTime?.split('T')?.[0];
       if (!year || !month || !day) {
         return '';
       }
