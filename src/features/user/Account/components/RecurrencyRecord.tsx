@@ -61,32 +61,33 @@ export function RecordHeader({
 
   const dateDisplay = useMemo(() => {
     /**
-     * Applies a +1 hour offset to certain date fields (endsAt, pauseUntil).
+     * Date display logic with legacy +1 hour offset for specific fields.
      *
-     * CONTEXT FROM API RESPONSE FORMAT:
-     * - pauseUntil: Returns with UTC timestamp "2026-02-04T00:00:00+00:00"
-     * - endsAt: Returns as date-only string "2026-01-09" (no timestamp)
-     * - currentPeriodEnd: Returns as date-only string "2026-01-24" (no timestamp)
+     * API RESPONSE FORMATS (confirmed via console logging):
+     * - pauseUntil: "2026-02-04T00:00:00+00:00" (full UTC timestamp)
+     * - endsAt: "2026-01-09" (date-only string, parsed as midnight UTC)
+     * - currentPeriodEnd: "2026-01-24" (date-only string, parsed as midnight UTC)
      *
-     * WHY THE OFFSET EXISTS (LEGACY):
-     * The +1 hour offset was added to handle timezone display issues, particularly
-     * for dates stored as midnight UTC. When JavaScript parses these dates:
+     * KEY INSIGHT FROM TESTING:
+     * JavaScript parses date-only strings like "2026-01-24" as midnight UTC
+     * (not local midnight). In UTC+8, this becomes 08:00 local time on the same day.
+     * The formatDate() function has been corrected to properly extract the date
+     * portion, ensuring correct display across timezones.
      *
-     * - Dates WITH timestamps (pauseUntil): Parsed as UTC, converted to local time
-     *   - In negative offset timezones (UTC-5, etc.), midnight UTC appears as
-     *     previous day (e.g., 00:00 UTC = 19:00 Dec 24 in UTC-5)
-     *   - +1 hour shifts to 01:00 UTC, ensuring it displays as intended date
+     * THE +1 HOUR OFFSET (LEGACY):
+     * Applied only to endsAt and pauseUntil via formatDateWithOffset().
      *
-     * - Dates WITHOUT timestamps (endsAt, currentPeriodEnd): Parsed as LOCAL midnight
-     *   - Already displays correctly in user's timezone
-     *   - +1 hour offset is unnecessary but harmless (00:00 → 01:00 = same day)
+     * Originally intended to prevent dates from displaying as the previous day
+     * in negative offset timezones. However, with the corrected formatDate()
+     * function, this offset may now be unnecessary for date-only strings.
+     *
+     * The offset is preserved here to maintain existing behavior without risk.
      *
      * CURRENT BEHAVIOR:
-     * - endsAt and pauseUntil: Offset applied (legacy behavior preserved)
-     * - currentPeriodEnd: No offset applied (system-calculated timestamp)
+     * - endsAt, pauseUntil: Offset applied (legacy, may be unnecessary)
+     * - currentPeriodEnd: Passed directly to formatDate() (no offset needed)
      *
-     * NOTE: This is legacy code. A proper solution would use timezone-aware date
-     * libraries (date-fns-tz, luxon) or ensure backend returns consistent formats.
+     * FUTURE: Consider removing the offset after comprehensive timezone testing.
      */
     const formatDateWithOffset = (dateString: string) =>
       formatDate(
