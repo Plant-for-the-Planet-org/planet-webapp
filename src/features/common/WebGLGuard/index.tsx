@@ -2,6 +2,7 @@ import type { FC, ReactNode } from 'react';
 
 import { useWebGL } from '../../../hooks/useWebGL';
 import styles from './WebGLGuard.module.scss';
+import { useTranslations } from 'next-intl';
 
 export interface WebGLGuardProps {
   children: ReactNode;
@@ -52,6 +53,7 @@ const WebGLGuard: FC<WebGLGuardProps> = ({
   loadingComponent,
   showDetailedError = false,
 }) => {
+  const t = useTranslations('Maps.mapFeatureSupport');
   const { isWebglSupported, error, loading } = useWebGL();
 
   if (loading) {
@@ -63,7 +65,7 @@ const WebGLGuard: FC<WebGLGuardProps> = ({
             aria-live="polite"
             aria-label="Loading map"
           >
-            Loading map...
+            {t('loadingMap')}
           </div>
         )}
       </div>
@@ -81,42 +83,38 @@ const WebGLGuard: FC<WebGLGuardProps> = ({
           <AlertIcon />
         </div>
 
-        <h3 className={styles.errorTitle}>Graphics acceleration required</h3>
+        <h3 className={styles.errorTitle}>{t('notSupportedError.title')}</h3>
 
-        <p className={styles.errorMessage}>
-          This map requires graphics acceleration to function properly. This
-          feature may be disabled in your browser settings or unavailable in
-          your current environment (such as remote desktop connections).
-        </p>
+        <p className={styles.errorMessage}>{t('notSupportedError.message')}</p>
 
         <div className={styles.solutionSteps}>
-          <h4>To enable graphics acceleration:</h4>
+          <h4>{t('notSupportedError.solutionTitle')}</h4>
           <ul>
             <li>
-              <strong>Chrome:</strong> Settings → Advanced → System → Enable
-              &quot;Use graphics acceleration when available&quot;
+              {t.rich('notSupportedError.solutionChrome', {
+                strong: (chunks) => <strong>{chunks}</strong>,
+              })}
             </li>
             <li>
-              <strong>Firefox:</strong> Settings → General → Performance →
-              Uncheck &quot;Use recommended performance settings&quot;
+              {t.rich('notSupportedError.solutionFirefox', {
+                strong: (chunks) => <strong>{chunks}</strong>,
+              })}
             </li>
             <li>
-              <strong>Edge:</strong> Settings → System → Enable &quot;Use
-              hardware acceleration when available&quot;
+              {t.rich('notSupportedError.solutionEdge', {
+                strong: (chunks) => <strong>{chunks}</strong>,
+              })}
             </li>
           </ul>
         </div>
 
         <div className={styles.contactInfo}>
-          <p>
-            If you continue to have issues, please contact us at
-            support@plant-for-the-planet.org for assistance.
-          </p>
+          <p>{t('notSupportedError.contactInfo')}</p>
         </div>
 
         {showDetailedError && error && (
           <details className={styles.technicalDetails}>
-            <summary>Technical details</summary>
+            <summary>{t('notSupportedError.technicalDetails')}</summary>
             <code>{error}</code>
           </details>
         )}
