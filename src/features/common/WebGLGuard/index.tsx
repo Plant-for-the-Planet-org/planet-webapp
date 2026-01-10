@@ -63,7 +63,7 @@ const WebGLGuard: FC<WebGLGuardProps> = ({
           <div
             className={styles.spinner}
             aria-live="polite"
-            aria-label="Loading map"
+            aria-label={t('loadingMap')}
           >
             {t('loadingMap')}
           </div>
