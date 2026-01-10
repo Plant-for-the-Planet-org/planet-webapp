@@ -103,9 +103,9 @@ export function RecordHeader({
           )} • ${t(record.frequency)}`;
         }
       }
-      return `${t('nextOn')} ${formatDate(
-        new Date(record.currentPeriodEnd).toISOString()
-      )} • ${t(record.frequency)}`;
+      return `${t('nextOn')} ${formatDate(record.currentPeriodEnd)} • ${t(
+        record.frequency
+      )}`;
     }
 
     // Paused
@@ -128,8 +128,8 @@ export function RecordHeader({
 
     // Past Due
     if (record.status === 'past_due') {
-      return `${t('lastDueOn')} ${formatDate(
-        new Date(record.currentPeriodEnd).toISOString()
+      return `${t('lastDuePaymentOn')} ${formatDate(
+        record.currentPeriodEnd
       )} • ${t(record.frequency)}`;
     }
 
