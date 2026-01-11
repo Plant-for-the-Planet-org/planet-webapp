@@ -89,7 +89,7 @@ export default function ContentSection() {
               Salesforce is committed to a net zero, nature positive future.
               We’ve been on a sustainability journey for over a
               decade—minimizing energy usage, decarbonizing our operations, and
-              innovating with AI to accelerate environmental progress. Our
+              innovating with AI to accelerate environmental progress. Our{' '}
               <a
                 href="https://www.salesforce.com/content/dam/web/en_us/www/documents/white-papers/nature-positive-strategy.pdf"
                 target="_blank"
