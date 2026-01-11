@@ -30,13 +30,17 @@ export default function ContentSection() {
               The ultimate champions for climate, nature and people.
             </h3>
             <p className={styles.contentSectionBlurb}>
-              While mangrove forests cover less than 1% of land, they store up
-              to 10 times more carbon per hectare than terrestrial forests. They
-              support biodiversity by providing critical habitat for terrestrial
-              and marine species while serving as a nursery for juvenile fish.
-              And they function as a coastal barrier for climate vulnerable
-              communities. In short - mangroves are one of nature’s
-              “superheroes”.
+              Mangroves are nature’s high-performance ecosystem. While these
+              forests cover less than 1% of the Earth’s landmass, they are
+              incredibly efficient, storing up to 10 times more carbon per
+              hectare than terrestrial forests. Beyond carbon, they are
+              essential to global biodiversity, providing critical habitats for
+              both marine and land species while acting as a vital nursery for
+              juvenile fish. For climate-vulnerable communities, mangroves serve
+              as a powerful first line of defense, functioning as a natural
+              coastal barrier. Simply put, mangroves are one of nature’s
+              greatest &ldquo;superheroes&rdquo; in the fight for a resilient
+              future.
             </p>
           </div>
         </div>
@@ -80,143 +84,43 @@ export default function ContentSection() {
               styles.justifyContentCenter
             )}
           >
-            <h3>Salesforce supports the Mangrove Breakthrough</h3>
+            <h3>Scaling the Mangrove Breakthrough.</h3>
             <p>
               <em>
-                This is part of our commitment to{' '}
+                This is part of our commitment to the{' '}
                 <a
                   href="https://www.1t.org/"
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  1t.org
+                  trillion trees movement
                 </a>{' '}
-                and delivers on our{' '}
-                <a
-                  href="https://www.salesforce.com/content/dam/web/en_us/www/assets/pdf/reports/salesforce-climate-action-plan.pdf"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  climate
-                </a>{' '}
-                and{' '}
-                <a
-                  href="https://www.salesforce.com/content/dam/web/en_us/www/documents/white-papers/nature-positive-strategy.pdf"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  nature
-                </a>{' '}
-                strategies.
+                and delivers on our Nature Positive Strategy.
               </em>
             </p>
             <p>
-              Salesforce supported the establishment of the{' '}
-              <a
-                href="https://www.salesforce.com/news/stories/climate-week-investments-climate-finance-playbook/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Mangrove Breakthrough Secretariat{' '}
-              </a>{' '}
-              and the development of the recently launched{' '}
-              <a
-                href="https://climatechampions.unfccc.int/wp-content/uploads/2023/11/SY031_MangroveBreakthrough_2023_v7_JG.pdf"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Financial Roadmap
-              </a>
-              .
+              The Mangrove Breakthrough is a global movement to value, finance,
+              and safeguard these critical coastal ecosystems. It is pioneering
+              how we, as a global community, protect nature to build resilient
+              communities, financial systems, and economies. The ambition is
+              bold: to mobilize $4 billion to protect and restore 15 million
+              hectares of mangroves by 2030 by fostering radical collaboration
+              and investing in local leadership.
             </p>
             <p>
-              In partnership with{' '}
+              At Salesforce, we believe business is a platform for change, and
+              these goals are within reach if we act together. As part of our
+              commitment to the{' '}
               <a
-                href="https://www.plant-for-the-planet.org/?gad_source=1&gclid=CjwKCAjw8diwBhAbEiwA7i_sJWbkVU_BglqiNDU1QLKdNko2AdseFgtGEu65nINJ2o8UwHR5DcLAVhoCNkIQAvD_BwE"
+                href="https://www.1t.org/"
                 target="_blank"
                 rel="noreferrer noopener"
               >
-                Plant-for-the-Planet
-              </a>
-              , we invested in eight mangrove restoration and conservation
-              projects to support the Mangrove Breakthrough, including{' '}
-              <a
-                href="https://blueventures.org/what-we-do/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Blue Ventures
-              </a>
-              ,{' '}
-              <a
-                href="https://www.wwf.mg/en/our_work/priority_places/mtb_landscape/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                World Wildlife Fund (WWF)
-              </a>
-              ,{' '}
-              <a
-                href="https://osaconservation.org/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Osa Conservation
-              </a>
-              ,{' '}
-              <a
-                href="https://onetreeplanted.org/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                One Tree Planted
-              </a>
-              ,{' '}
-              <a
-                href="https://oceanfdn.org/climate-resilience-on-the-coast-of-chiapas-mexico/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                {/* cspell:ignore Fundación Mexicana Océano */}
-                Fundación Mexicana para el Océano A.C.
-              </a>
-              ,{' '}
-              <a
-                href="https://www.perryinstitute.org/wp-content/uploads/2023/10/Mangrove-Report-Card-FINAL-interactive-.pdf"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Perry Institute of Marine Science
-              </a>
-              ,{' '}
-              <a
-                href="https://www.conservation.org/priorities/surf-conservation"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Conservation International
-              </a>
-              , and the{' '}
-              <a
-                href="https://soatanzania.or.tz/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Sustainable Ocean Alliance Tanzania
-              </a>
-              .
-            </p>
-            <p>
-              In 2022, Salesforce included several mangrove projects in the{' '}
-              <a
-                href="https://www.salesforce.com/news/stories/salesforce-gives-11m-to-restore-ecosystems-and-advance-climate-justice/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                first cohort of grantees
+                trillion trees movement
               </a>{' '}
-              receiving funds from Salesforce’s Ecosystem Restoration and
-              Climate Justice Fund.
+              and our Nature Positive Strategy, we’ve supported the
+              establishment of the Mangrove Breakthrough Secretariat and the
+              development of its Financial Roadmap.
             </p>
           </div>
         </div>
@@ -259,62 +163,95 @@ export default function ContentSection() {
               <div className={styles.calloutContent}>
                 <h3>The Mangrove Breakthrough</h3>
                 <p>
-                  The Mangrove Breakthrough is a collective initiative to secure
-                  the future of the world’s entire mangrove ecosystem.{' '}
-                </p>
-                <ul>
-                  The Breakthrough has four key science-based goals to:
-                  <li>
-                    <strong>Halt mangrove loss</strong>
-                  </li>
-                  <li>
-                    <strong>Restore half of recent losses</strong>
-                  </li>
-                  <li>
-                    <strong>Double the protection</strong> of mangroves globally
-                  </li>
-                  <li>
-                    <strong>Mobilize long-term, sustainable finance</strong> for
-                    mangroves
-                  </li>
-                </ul>
-                <p>
-                  These goals are bold, but they’re also within reach. Together,
-                  we can unlock the{' '}
+                  In partnership with{' '}
                   <a
-                    href="https://climatechampions.unfccc.int/wp-content/uploads/2023/11/SY031_MangroveBreakthrough_2023_v7_JG.pdf"
+                    href="https://plant-for-the-planet.org"
                     target="_blank"
                     rel="noreferrer noopener"
                   >
-                    $4 billion investment
-                  </a>{' '}
-                  needed to secure the future of this{' '}
-                  <a
-                    href="https://www.weforum.org/agenda/2023/11/mangrove-breakthrough-climate-targets-cop28/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    crucial global ecosystem
-                  </a>{' '}
-                  by 2030. As of April, 2024, over 50 governments, corporations,
-                  non profits and civil society representatives have{' '}
-                  <a
-                    href="https://www.wetlands.org/a-breakthrough-moment-for-mangroves-delivering-global-action-on-mangrove-restoration-and-protection/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    endorsed
-                  </a>{' '}
-                  the Mangrove Breakthrough. Everyone has a role to play in this
-                  collaborative quest.{' '}
-                  <a
-                    href="https://www.mangrovealliance.org/news/the-mangrove-breakthrough/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Learn more about the Mangrove Breakthrough and how you can
-                    get involved here.
+                    Plant-for-the-Planet
                   </a>
+                  , we have invested in a diverse portfolio of restoration
+                  projects — including{' '}
+                  <a
+                    href="https://blueventures.org/what-we-do/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Blue Ventures
+                  </a>
+                  ,{' '}
+                  <a
+                    href="https://www.wwf.mg/en/our_work/priority_places/mtb_landscape/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    World Wildlife Fund (WWF)
+                  </a>
+                  ,{' '}
+                  <a
+                    href="https://osaconservation.org/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Osa Conservation
+                  </a>
+                  ,{' '}
+                  <a
+                    href="https://onetreeplanted.org/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    One Tree Planted
+                  </a>
+                  ,{' '}
+                  <a
+                    href="https://oceanfdn.org/climate-resilience-on-the-coast-of-chiapas-mexico/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Fundación Mexicana para el Océano A.C.
+                  </a>
+                  ,{' '}
+                  <a
+                    href="https://www.perryinstitute.org/wp-content/uploads/2023/10/Mangrove-Report-Card-FINAL-interactive-.pdf"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Perry Institute of Marine Science
+                  </a>
+                  ,{' '}
+                  <a
+                    href="https://www.conservation.org/projects/surf-conservation"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Conservation International
+                  </a>
+                  , and the{' '}
+                  <a
+                    href="https://soatanzania.or.tz/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Sustainable Ocean Alliance Tanzania
+                  </a>{' '}
+                  - to accelerate our impact. We are also proud to include
+                  several mangrove initiatives in our first cohort of Nature and
+                  Sustainability{' '}
+                  <a
+                    href="https://www.salesforce.com/company/philanthropy/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    philanthropy
+                  </a>{' '}
+                  grantees.
+                </p>
+                <p>
+                  These goals are bold, but they’re also within reach. Everyone
+                  has a role to play in this global movement. Learn more about
+                  the Mangrove Breakthrough and how you can join us below.
                 </p>
               </div>
             </div>
