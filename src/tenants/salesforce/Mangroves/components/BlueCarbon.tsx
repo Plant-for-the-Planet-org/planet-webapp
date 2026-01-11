@@ -78,7 +78,8 @@ export default function BlueCarbon() {
               className={clsx(
                 gridStyles.colMd6,
                 gridStyles.colLg3,
-                gridStyles.col12
+                gridStyles.col12,
+                styles.blueCarbonImage
               )}
             >
               <div className={gridStyles.circularContainer}>
