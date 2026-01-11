@@ -14,14 +14,14 @@ export default function ContentSection() {
           )}
         >
           <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
-            <h2>This beautiful planet is the only home we have.</h2>
+            <h2>This planet is our home and greatest opportunity.</h2>
             <p className={styles.contentSectionSubhead}>
-              From the Andes to the Outback, from mangroves to Giant redwood
-              groves, life on Earth hangs in the balance. Salesforce is doing
-              everything we can to counter climate change and create a
-              sustainable, low-carbon future for all. That means reducing
-              emissions, as well as protecting and improving carbon sinks like
-              forests and oceans — the lungs of the Earth.
+              The path to a better world runs through our forests and oceans. At
+              Salesforce, we’re leading the charge toward a nature positive
+              future by reducing emissions and restoring the Earth’s most
+              critical carbon sinks. From the Andes to the Outback, we’re
+              working to ensure that our only home doesn&apos;t just survive —
+              it thrives.
             </p>
           </div>
         </div>
@@ -54,15 +54,16 @@ export default function ContentSection() {
               styles.justifyContentCenter
             )}
           >
-            <h3>We save trees, trees save us.</h3>
+            <h3>Scaling the power of our forests.</h3>
             <p>
-              Trees purify our air, cool our planet, prevent soil erosion, and
-              add grace and beauty to our homes and communities. Without trees,
-              life as we know it will cease to exist. However, since the dawn of
-              civilization, nearly half the world’s forests have been cleared or
-              degraded. And we continue to lose 10 billion trees per year. Of
-              the original 6 trillion trees that once covered the earth’s
-              landmass, only 3 trillion remain.
+              Healthy forests are essential infrastructure for a flourishing
+              planet. They are our greatest allies in preventing erosion and
+              maintaining the vitality and wellbeing of our homes and
+              communities. However, the scale of forest loss is a challenge we
+              must meet head-on. With only 3 trillion trees remaining of the
+              original 6 trillion, the mission is clear. Salesforce is committed
+              to a nature-positive future, leading the charge to conserve and
+              restore the ecosystems that sustain us all.
             </p>
           </div>
         </div>
@@ -83,42 +84,39 @@ export default function ContentSection() {
               styles.justifyContentCenter
             )}
           >
-            <h3>Business is a platform for change.</h3>
+            <h3>Business is the greatest platform for change.</h3>
             <p>
-              Salesforce is committed to doing all we can to limit global
-              warming to 1.5° Celsius and halt and reverse nature loss. We are
-              rapidly accelerating our sustainability program and integrating
-              climate and nature action into the core of our business to
-              ultimately deliver on the shared, planetary goal of a more
-              sustainable and equitable future.
+              Salesforce is committed to a net zero, nature positive future.
+              We’ve been on a sustainability journey for over a
+              decade—minimizing energy usage, decarbonizing our operations, and
+              innovating with AI to accelerate environmental progress. Our
+              <a
+                href="https://www.salesforce.com/content/dam/web/en_us/www/documents/white-papers/nature-positive-strategy.pdf"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Nature Positive Strategy
+              </a>{' '}
+              serves as our roadmap, guiding our efforts to lead restoration at
+              scale and promote a world where nature and business thrive
+              together.
             </p>
             <p>
-              In January 2020, as a founding partner of{' '}
+              In January 2020, Salesforce became a founding partner of the{' '}
               <a
                 href="https://www.1t.org/"
                 target="_blank"
                 rel="noreferrer noopener"
               >
-                1t.org
+                trillion trees initiative
               </a>
-              , Salesforce announced our own goal to help fund the conservation,
-              restoration, and growth of 100 million trees by the end of 2030.
-            </p>
-            <p>
-              We know we’ll have to refine our programs and methodology over
-              time by sharing with and learning from others, but we know it must
-              be done in a{' '}
-              <a
-                href="https://www.togetherwithnature.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                socially and ecologically responsible way
-              </a>
-              . This includes meaningfully engaging with indigenous people and
-              local communities on this journey. Restoration of our ecosystems
-              is only sustainable when local communities reap social, economic,
-              and ecological benefits.
+              . This global movement is dedicated to conserving, restoring, and
+              growing healthy forest ecosystems by 2030. As part of this bold
+              commitment, we set a goal to help fund the conservation,
+              restoration, or growth of 100 million additional trees by the end
+              of the decade. We’re proud of our progress so far, and we invite
+              you to join us as a Trailblazer for our planet. We’re proud of our
+              progress so far and remain committed to the work ahead.
             </p>
           </div>
 
