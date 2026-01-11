@@ -2,16 +2,24 @@
 
 .seaOfTreesContainer {
   background-image: url('/tenants/salesforce/images/rectangle-35.png');
-  background-size: auto 1062px;
+  background-size: auto 2492px;
   background-repeat: no-repeat;
   background-position: bottom center;
   position: relative;
   z-index: 999;
-  height: 1062px;
+  height: 2492px;
   padding-top: 84px;
-  @include xsPhoneView {
-    background-size: auto 1722px;
-    height: 1722px;
+  @include smTabletView {
+    background-size: auto 2592px;
+    height: 2592px;
+  }
+  @include mdTabletView {
+    background-size: auto 1452px;
+    height: 1452px;
+  }
+  @include lgLaptopView {
+    background-size: auto 1362px;
+    height: 1362px;
   }
   * {
     text-align: center;
