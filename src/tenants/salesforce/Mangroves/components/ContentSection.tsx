@@ -25,9 +25,7 @@ export default function ContentSection() {
               gridStyles.textCenter
             )}
           >
-            <h3 className={styles.contentSectionSubhead}>
-              The ultimate champions for climate, nature and people.
-            </h3>
+            <h2>The ultimate champions for climate, nature and people.</h2>
             <p className={styles.contentSectionBlurb}>
               Mangroves are nature’s high-performance ecosystem. While these
               forests cover less than 1% of the Earth’s landmass, they are
