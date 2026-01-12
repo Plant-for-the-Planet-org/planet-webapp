@@ -25,7 +25,6 @@ export default function ContentSection() {
               gridStyles.textCenter
             )}
           >
-            <h2>Mangroves</h2>
             <h3 className={styles.contentSectionSubhead}>
               The ultimate champions for climate, nature and people.
             </h3>

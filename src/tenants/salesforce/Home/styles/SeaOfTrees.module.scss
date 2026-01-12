@@ -2,24 +2,24 @@
 
 .seaOfTreesContainer {
   background-image: url('/tenants/salesforce/images/rectangle-35.png');
-  background-size: auto 2492px;
+  background-size: auto 2592px;
   background-repeat: no-repeat;
   background-position: bottom center;
   position: relative;
   z-index: 999;
-  height: 2492px;
+  height: 2592px;
   padding-top: 84px;
   @include smTabletView {
-    background-size: auto 2592px;
-    height: 2592px;
+    background-size: auto 3092px;
+    height: 3092px;
   }
   @include mdTabletView {
-    background-size: auto 1452px;
-    height: 1452px;
+    background-size: auto 1562px;
+    height: 1562px;
   }
   @include lgLaptopView {
-    background-size: auto 1362px;
-    height: 1362px;
+    background-size: auto 1462px;
+    height: 1462px;
   }
   * {
     text-align: center;
@@ -89,6 +89,21 @@
       // color: $sfWhite;
       color: $sfBrandNavy;
       margin-bottom: 30px;
+      a {
+        text-decoration: underline;
+        color: $sfBrandBlueDeep;
+      }
+    }
+    ul.resourceList {
+      color: $sfBrandNavy;
+      font-size: $sfFontBase;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      li {
+        text-align: left;
+      }
       a {
         text-decoration: underline;
         color: $sfBrandBlueDeep;

@@ -159,6 +159,29 @@ export default function SeaOfTrees() {
                 on the Donation Tracker below and spread the word to your
                 family, friends, and colleagues.
               </p>
+              <h3>Resources</h3>
+              <ul className={styles.resourceList}>
+                <li>
+                  Explore{' '}
+                  <a
+                    href="https://www.salesforce.com/sustainability/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Sustainability at Salesforce
+                  </a>
+                </li>
+                <li>
+                  Learn more about the{' '}
+                  <a
+                    href="https://www.1t.org/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    trillion trees movement
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
