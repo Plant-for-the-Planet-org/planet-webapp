@@ -114,9 +114,9 @@ export default function ContentSection() {
               growing healthy forest ecosystems by 2030. As part of this bold
               commitment, we set a goal to help fund the conservation,
               restoration, or growth of 100 million additional trees by the end
-              of the decade. We’re proud of our progress so far, and we invite
-              you to join us as a Trailblazer for our planet. We’re proud of our
-              progress so far and remain committed to the work ahead.
+              of the decade. We’re proud of our progress so far and remain
+              committed to the work ahead. We invite you to join us as a
+              Trailblazer for our planet.
             </p>
           </div>
 
