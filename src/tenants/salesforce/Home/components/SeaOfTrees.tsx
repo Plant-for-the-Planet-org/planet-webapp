@@ -21,7 +21,7 @@ export default function SeaOfTrees() {
           >
             <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
               <h3>Healthy forests, thriving communities.</h3>
-              <p className={styles.contentSectionSubhead}>Water Stewardship</p>
+              <p className={styles.contentSectionSubhead}>Water Stewardship:</p>
               <p>
                 Water is the lifeblood of both natural ecosystems and business
                 resilience. At Salesforce, high-quality water stewardship is
@@ -159,29 +159,6 @@ export default function SeaOfTrees() {
                 on the Donation Tracker below and spread the word to your
                 family, friends, and colleagues.
               </p>
-              <h3>Resources</h3>
-              <ul className={styles.resourceList}>
-                <li>
-                  Explore{' '}
-                  <a
-                    href="https://www.salesforce.com/sustainability/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Sustainability at Salesforce
-                  </a>
-                </li>
-                <li>
-                  Learn more about the{' '}
-                  <a
-                    href="https://www.1t.org/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    trillion trees movement
-                  </a>
-                </li>
-              </ul>
             </div>
           </div>
         </div>
