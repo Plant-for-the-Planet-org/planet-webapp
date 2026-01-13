@@ -192,10 +192,10 @@ const PlanetWeb = ({
         locale={(router.query?.locale as string) ?? 'en'}
         messages={pageProps.messages}
       >
-        <StoreInitializer />
         <CacheProvider value={emotionCache}>
           <ErrorHandlingProvider>
             <TenantProvider initialTenantConfig={pageProps.tenantConfig}>
+              <StoreInitializer />
               <Auth0Provider
                 domain={process.env.AUTH0_CUSTOM_DOMAIN!}
                 clientId={
