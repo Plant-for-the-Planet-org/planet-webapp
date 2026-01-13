@@ -94,21 +94,6 @@
         color: $sfBrandBlueDeep;
       }
     }
-    ul.resourceList {
-      color: $sfBrandNavy;
-      font-size: $sfFontBase;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      li {
-        text-align: left;
-      }
-      a {
-        text-decoration: underline;
-        color: $sfBrandBlueDeep;
-      }
-    }
     img {
       margin: 0 auto 30px;
       display: block;
