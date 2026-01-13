@@ -39,7 +39,7 @@ export default function About({ tenantScore, leaderboard }: Props) {
         <ContentSection />
         <SeaOfTrees />
         <LeaderBoard leaderboard={leaderboard} />
-        <GrowingImpact />
+        {/* <GrowingImpact /> */}
         <ClimateAction />
         <Social />
         <Footer />
