@@ -7,7 +7,7 @@ import Head from 'next/head';
 import Footer from '../../../features/common/Layout/Footer';
 import Landing from './components/Landing';
 import LeaderBoard from './components/LeaderBoardSection';
-import GrowingImpact from './components/GrowingImpact';
+// import GrowingImpact from './components/GrowingImpact';
 import SeaOfTrees from './components/SeaOfTrees';
 import ContentSection from './components/ContentSection';
 import ClimateAction from './components/ClimateAction';
@@ -39,7 +39,7 @@ export default function About({ tenantScore, leaderboard }: Props) {
         <ContentSection />
         <SeaOfTrees />
         <LeaderBoard leaderboard={leaderboard} />
-        <GrowingImpact />
+        {/* <GrowingImpact /> */}
         <ClimateAction />
         <Social />
         <Footer />
