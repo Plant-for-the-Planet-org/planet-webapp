@@ -92,7 +92,15 @@ export default function ContentSection() {
                 >
                   trillion trees movement
                 </a>{' '}
-                and delivers on our Nature Positive Strategy.
+                and delivers on our{' '}
+                <a
+                  href="https://www.salesforce.com/content/dam/web/en_us/www/documents/white-papers/nature-positive-strategy.pdf"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Nature Positive Strategy
+                </a>
+                .{' '}
               </em>
             </p>
             <p>
@@ -119,139 +127,97 @@ export default function ContentSection() {
               establishment of the Mangrove Breakthrough Secretariat and the
               development of its Financial Roadmap.
             </p>
-          </div>
-        </div>
-        <div
-          className={clsx(
-            gridStyles.gridRow,
-            gridStyles.justifyContentCenter,
-            gridStyles.mb65100
-          )}
-        >
-          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
-            <p className={clsx(styles.contentSectionQuote, styles.bold)}>
-              <em>
-                “Mangroves are unparalleled in their role as a powerful climate
-                solution, a bedrock of biodiversity, and a source of livelihood
-                for millions of people around the world”{' '}
-              </em>{' '}
-              - Suzanne DiBianca, EVP and Chief Impact Officer at Salesforce
+            <p>
+              In partnership with{' '}
+              <a
+                href="https://plant-for-the-planet.org"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Plant-for-the-Planet
+              </a>
+              , we have invested in a diverse portfolio of restoration projects
+              — including{' '}
+              <a
+                href="https://blueventures.org/what-we-do/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Blue Ventures
+              </a>
+              ,{' '}
+              <a
+                href="https://www.wwf.mg/en/our_work/priority_places/mtb_landscape/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                World Wildlife Fund (WWF)
+              </a>
+              ,{' '}
+              <a
+                href="https://osaconservation.org/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Osa Conservation
+              </a>
+              ,{' '}
+              <a
+                href="https://onetreeplanted.org/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                One Tree Planted
+              </a>
+              ,{' '}
+              <a
+                href="https://oceanfdn.org/climate-resilience-on-the-coast-of-chiapas-mexico/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Fundación Mexicana para el Océano A.C.
+              </a>
+              ,{' '}
+              <a
+                href="https://www.perryinstitute.org/wp-content/uploads/2023/10/Mangrove-Report-Card-FINAL-interactive-.pdf"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Perry Institute of Marine Science
+              </a>
+              ,{' '}
+              <a
+                href="https://www.conservation.org/projects/surf-conservation"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Conservation International
+              </a>
+              , and the{' '}
+              <a
+                href="https://soatanzania.or.tz/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Sustainable Ocean Alliance Tanzania
+              </a>{' '}
+              - to accelerate our impact. We are also proud to include several
+              mangrove initiatives in our first cohort of Nature and
+              Sustainability{' '}
+              <a
+                href="https://www.salesforce.com/company/philanthropy/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                philanthropy
+              </a>{' '}
+              grantees.
             </p>
-          </div>
-        </div>
-        <div
-          className={clsx(
-            gridStyles.gridRow,
-            gridStyles.justifyContentCenter,
-            gridStyles.mb65100,
-            styles.calloutContainer
-          )}
-        >
-          <div
-            className={clsx(
-              gridStyles.col12,
-              gridStyles.colMd8,
-              styles.justifyContentCenter,
-              styles.mbCallout
-            )}
-          >
-            <div className={styles.calloutContentContainer}>
-              <div className={styles.calloutContentOverlay}></div>
-              <div className={styles.calloutContent}>
-                <h3>The Mangrove Breakthrough</h3>
-                <p>
-                  In partnership with{' '}
-                  <a
-                    href="https://plant-for-the-planet.org"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Plant-for-the-Planet
-                  </a>
-                  , we have invested in a diverse portfolio of restoration
-                  projects — including{' '}
-                  <a
-                    href="https://blueventures.org/what-we-do/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Blue Ventures
-                  </a>
-                  ,{' '}
-                  <a
-                    href="https://www.wwf.mg/en/our_work/priority_places/mtb_landscape/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    World Wildlife Fund (WWF)
-                  </a>
-                  ,{' '}
-                  <a
-                    href="https://osaconservation.org/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Osa Conservation
-                  </a>
-                  ,{' '}
-                  <a
-                    href="https://onetreeplanted.org/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    One Tree Planted
-                  </a>
-                  ,{' '}
-                  <a
-                    href="https://oceanfdn.org/climate-resilience-on-the-coast-of-chiapas-mexico/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Fundación Mexicana para el Océano A.C.
-                  </a>
-                  ,{' '}
-                  <a
-                    href="https://www.perryinstitute.org/wp-content/uploads/2023/10/Mangrove-Report-Card-FINAL-interactive-.pdf"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Perry Institute of Marine Science
-                  </a>
-                  ,{' '}
-                  <a
-                    href="https://www.conservation.org/projects/surf-conservation"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Conservation International
-                  </a>
-                  , and the{' '}
-                  <a
-                    href="https://soatanzania.or.tz/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Sustainable Ocean Alliance Tanzania
-                  </a>{' '}
-                  - to accelerate our impact. We are also proud to include
-                  several mangrove initiatives in our first cohort of Nature and
-                  Sustainability{' '}
-                  <a
-                    href="https://www.salesforce.com/company/philanthropy/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    philanthropy
-                  </a>{' '}
-                  grantees.
-                </p>
-                <p>
-                  These goals are bold, but they’re also within reach. Everyone
-                  has a role to play in this global movement. Learn more about
-                  the Mangrove Breakthrough and how you can join us below.
-                </p>
-              </div>
-            </div>
+            <p>
+              These goals are bold, but they’re also within reach. Everyone has
+              a role to play in this global movement. Learn more about the
+              Mangrove Breakthrough and how you can join us below.
+            </p>
           </div>
         </div>
       </div>
