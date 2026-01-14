@@ -12,7 +12,7 @@ export default function Landing({ tenantScore, isLoaded }: Props) {
       <div className={styles.landingOverlay}></div>
       <div className={styles.landingContent}>
         <div className={styles.landingContentTop}>
-          <h3>Mangroves We Helped To Conserve Restore And Grow</h3>
+          <h3>Mangroves We Helped To Conserve, Restore, And Grow</h3>
           {isLoaded && (
             <TreeCounter
               planted={tenantScoreData || 0}
