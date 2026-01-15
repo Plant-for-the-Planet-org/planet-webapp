@@ -11,7 +11,6 @@ import { useContext, useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
-import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { useTranslations } from 'next-intl';
 import { TextField } from '@mui/material';
@@ -22,17 +21,19 @@ import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandling
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
+import { useUserStore } from '../../../../../../stores/userStore';
 
 export const Export = () => {
   const t = useTranslations('TreemapperAnalytics');
   const { projectList, project, fromDate, toDate } = useAnalytics();
-  const { userLang } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
-
+  // local state
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [localFromDate, setLocalFromDate] = useState<Date | null>(fromDate);
   const [localToDate, setLocalToDate] = useState<Date | null>(toDate);
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
+  // store: state
+  const userLanguage = useUserStore((state) => state.userLanguage);
 
   const { makeRequest } = useNextRequest<{ data: IExportData[] }>({
     url: '/api/data-explorer/export',
@@ -191,11 +192,7 @@ export const Export = () => {
         <div className={styles.datePickerContainer}>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
-            adapterLocale={
-              localeMapForDate[userLang]
-                ? localeMapForDate[userLang]
-                : localeMapForDate['en']
-            }
+            adapterLocale={localeMapForDate[userLanguage]}
           >
             <MuiDatePicker
               label={t('from')}
@@ -210,11 +207,7 @@ export const Export = () => {
           </LocalizationProvider>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
-            adapterLocale={
-              localeMapForDate[userLang]
-                ? localeMapForDate[userLang]
-                : localeMapForDate['en']
-            }
+            adapterLocale={localeMapForDate[userLanguage]}
           >
             <MuiDatePicker
               label={t('to')}

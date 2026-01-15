@@ -23,7 +23,7 @@ export const useInitializeUser = () => {
   const setIsImpersonationModeOn = useUserStore(
     (state) => state.setIsImpersonationModeOn
   );
-  const setUserLanguage = useUserStore((state) => state.setUserLanguage);
+  const initializeLocale = useUserStore((state) => state.initializeLocale);
 
   useEffect(() => {
     if (token) {
@@ -55,9 +55,6 @@ export const useInitializeUser = () => {
   }, [user, isLoading, error, isAuthenticated]);
 
   useEffect(() => {
-    const userLang = localStorage.getItem('language');
-    if (userLang) {
-      setUserLanguage(userLang);
-    }
+    initializeLocale();
   }, []);
 };

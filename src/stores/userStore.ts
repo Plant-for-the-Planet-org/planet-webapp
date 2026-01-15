@@ -23,9 +23,8 @@ interface UserStore {
   isImpersonationModeOn: boolean;
   profileApiError: APIError | null;
 
-  setUserProfile: (userProfile: User | null) => Promise<User>;
+  setUserProfile: (data: User | null) => void;
   setIsProfileLoaded: (value: boolean) => void;
-  setUserLanguage: (value: string) => void;
   setIsImpersonationModeOn: (value: boolean) => void;
   setRefetchUserData: (value: boolean) => void;
   fetchUserProfile: (params: FetchUserProfileParams) => Promise<User>;
@@ -33,6 +32,7 @@ interface UserStore {
     returnUrl: string | undefined,
     logout: (options?: LogoutOptions | undefined) => void
   ) => void;
+  initializeLocale: () => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -44,8 +44,6 @@ export const useUserStore = create<UserStore>()(
       refetchUserData: false,
       isImpersonationModeOn: false,
       profileApiError: null,
-
-      setUserLanguage: (value) => set({ userLanguage: value }),
 
       setIsProfileLoaded: (value) => set({ isProfileLoaded: value }),
 
@@ -66,7 +64,6 @@ export const useUserStore = create<UserStore>()(
         }
 
         set({ isProfileLoaded: false });
-        //TODO: Take the  tenant id from the tenant store
         const { token } = useAuthStore.getState();
         const sessionId = await getsessionId();
         const header = {
@@ -85,6 +82,10 @@ export const useUserStore = create<UserStore>()(
             }
           );
 
+          if (!response.ok) {
+            throw new APIError(response.status, 'Failed to fetch user profile');
+          }
+
           const result = await response.json();
           if (result) {
             set({
@@ -93,16 +94,34 @@ export const useUserStore = create<UserStore>()(
               isProfileLoaded: true,
             });
           }
+          return result;
         } catch (error) {
+          // 🔹 Impersonation-specific 403: Handle ONLY in component
+          if (
+            error instanceof APIError &&
+            error.statusCode === 403 &&
+            impersonationData
+          ) {
+            set({
+              userProfile: null,
+              isProfileLoaded: true,
+              profileApiError: null, // ❌ do NOT trigger global handler
+            });
+
+            throw error; // handled by component
+          }
+          // 🔹 All other errors → global handling
           set({
             userProfile: null,
             isProfileLoaded: true,
+            profileApiError: error instanceof APIError ? error : null,
           });
-          if (error instanceof APIError) {
-            set({ profileApiError: error });
-          } else {
-            console.error('Unexpected error:', error);
-          }
+        }
+      },
+      initializeLocale: () => {
+        const storedLocale = localStorage.getItem('language');
+        if (storedLocale) {
+          set({ userLanguage: storedLocale });
         }
       },
       logoutUser: (
