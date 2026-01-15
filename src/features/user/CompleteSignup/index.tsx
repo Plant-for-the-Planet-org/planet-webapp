@@ -30,6 +30,7 @@ import FullNameInput from './components/FullNameInput';
 import OrganizationNameInput from './components/OrganizationNameInput';
 import AccountTypeSelector from './components/AccountTypeSelector';
 import { useAuthStore } from '../../../stores';
+import { useAuthSession } from '../../../hooks/useAuthSession';
 
 export const MuiTextField = styled(TextField)(() => {
   return {
@@ -62,7 +63,8 @@ export default function CompleteSignup(): ReactElement | null {
   const t = useTranslations('EditProfile');
   const { postApi } = useApi();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
-  const { user, setUser, auth0User, contextLoaded } = useUserProps();
+  const { user, setUser, contextLoaded } = useUserProps();
+  const { auth0User } = useAuthSession();
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');

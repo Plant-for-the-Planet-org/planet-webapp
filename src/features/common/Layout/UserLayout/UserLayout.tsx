@@ -26,15 +26,15 @@ import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
 
 const UserLayout = ({ children }: { children: ReactNode }) => {
   const t = useTranslations('Me');
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-
-  const { user, logoutUser, contextLoaded, isImpersonationModeOn } =
-    useUserProps();
+  const { logoutUser } = useAuthSession();
+  const { user, contextLoaded, isImpersonationModeOn } = useUserProps();
   // Navigation structure with keys, paths, and submenu configurations
   // Flags can be added to show labels on the right
   const navLinks: NavLinkType[] = useMemo(

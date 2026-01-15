@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import { useAuthStore, useUserStore } from '../stores';
 import { useTenant } from '../features/common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
-import { useAuth0 } from '@auth0/auth0-react';
 import useProfileErrorHandler from './useProfileErrorHandler';
+import { useAuthSession } from './useAuthSession';
 
 export const useInitializeUser = () => {
   const { tenantConfig } = useTenant();
   const locale = useLocale();
-  const { isAuthenticated, user, isLoading, error } = useAuth0();
+  const { isAuthLoading, isAuthenticated, auth0User, auth0Error } =
+    useAuthSession();
   const { handleProfileError } = useProfileErrorHandler();
   // store: state
   const profileApiError = useUserStore((state) => state.profileApiError);
@@ -40,8 +41,8 @@ export const useInitializeUser = () => {
 
   useEffect(() => {
     if (
-      !isLoading &&
-      (user === undefined || error !== undefined || !isAuthenticated)
+      !isAuthLoading &&
+      (auth0User === undefined || auth0Error !== undefined || !isAuthenticated)
     ) {
       localStorage.removeItem('impersonationData');
     }
@@ -51,7 +52,7 @@ export const useInitializeUser = () => {
     } else if (impersonationData === null && isImpersonationModeOn) {
       setIsImpersonationModeOn(false);
     }
-  }, [user, isLoading, error, isAuthenticated]);
+  }, [auth0User, isAuthLoading, auth0Error, isAuthenticated]);
 
   useEffect(() => {
     initializeLocale();

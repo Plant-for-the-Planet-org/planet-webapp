@@ -7,9 +7,11 @@ import Me from '../../../../../../public/assets/images/icons/headerIcons/Me';
 import styles from '../Navbar.module.scss';
 import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useAuthSession } from '../../../../../hooks/useAuthSession';
 
 export const SignInButton = () => {
-  const { user, loginWithRedirect } = useUserProps();
+  const { user } = useUserProps();
+  const { loginWithRedirect } = useAuthSession();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Common');

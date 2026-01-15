@@ -13,9 +13,11 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
 
 export default function DeleteProfileForm() {
-  const { user, logoutUser } = useUserProps();
+  const { user } = useUserProps();
+  const { logoutUser } = useAuthSession();
   const tCommon = useTranslations('Common');
 
   const handleChange = (e: ChangeEvent<{}>) => {

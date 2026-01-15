@@ -20,6 +20,7 @@ import { useTenant } from '../../../../src/features/common/Layout/TenantContext'
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
+import { useAuthSession } from '../../../../src/hooks/useAuthSession';
 
 interface Props {
   pageProps: PageProps;
@@ -29,6 +30,7 @@ export default function Login({ pageProps }: Props): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
+  const { auth0Error, isAuthenticated, loginWithRedirect } = useAuthSession();
 
   useEffect(() => {
     if (router.isReady) {
@@ -39,13 +41,7 @@ export default function Login({ pageProps }: Props): ReactElement {
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
 
-  const {
-    user,
-    contextLoaded,
-    loginWithRedirect,
-    isAuthenticated,
-    auth0Error,
-  } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
 
   useEffect(() => {
     async function loadFunction() {

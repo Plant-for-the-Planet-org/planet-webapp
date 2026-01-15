@@ -5,8 +5,8 @@ import styles from '../DonationReceipt.module.scss';
 import DonationsTable from './DonationsTable';
 import ReceiptActions from './ReceiptActions';
 import DonorDetails from './DonorDetails';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslations } from 'next-intl';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
 
 interface ReceiptDataSectionProps {
   donationReceipt: ReceiptData;
@@ -33,7 +33,7 @@ const ReceiptDataSection = ({
     donations,
   } = donationReceipt;
   const hasMultipleDonations = donations.length > 1;
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuthSession();
   const tReceipt = useTranslations('DonationReceipt');
   return (
     <section className={styles.receiptDataSection}>

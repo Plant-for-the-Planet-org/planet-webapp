@@ -71,10 +71,10 @@ import getSessionId from '../utils/apiRequests/getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
 import { useTenant } from '../features/common/Layout/TenantContext';
-import { useUserProps } from '../features/common/Layout/UserPropsContext';
 import { validateToken } from '../utils/apiRequests/validateToken';
 import { useLocale } from 'next-intl';
 import { useAuthStore } from '../stores';
+import { useAuthSession } from './useAuthSession';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
@@ -100,7 +100,7 @@ type ApiConfig<
   : ApiConfigWithoutPayload;
 
 export const useApi = () => {
-  const { logoutUser } = useUserProps();
+  const { logoutUser } = useAuthSession();
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   //store: state

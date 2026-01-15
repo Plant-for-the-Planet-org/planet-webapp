@@ -1,14 +1,14 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useUserStore, useAuthStore } from '../stores';
+import { useAuthSession } from './useAuthSession';
 
 export const useInitializeAuth = () => {
   const {
-    isLoading: auth0Loading,
+    isAuthLoading,
     isAuthenticated,
     loginWithRedirect,
     getAccessTokenSilently,
-  } = useAuth0();
+  } = useAuthSession();
   const redirectCountRef = useRef(0);
   // store: action
   const setToken = useAuthStore((state) => state.setToken);
@@ -42,7 +42,7 @@ export const useInitializeAuth = () => {
   }, [getAccessTokenSilently, setToken, redirectToLogin]);
 
   useEffect(() => {
-    if (auth0Loading) return;
+    if (isAuthLoading) return;
 
     if (!isAuthenticated) {
       setIsProfileLoaded(true);
@@ -50,5 +50,5 @@ export const useInitializeAuth = () => {
     }
 
     loadToken();
-  }, [auth0Loading, isAuthenticated, loadToken, setIsProfileLoaded]);
+  }, [isAuthLoading, isAuthenticated, loadToken, setIsProfileLoaded]);
 };

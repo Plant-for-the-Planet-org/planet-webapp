@@ -1,6 +1,5 @@
 import type { User } from '@planet-sdk/common';
 import type { ImpersonationData } from '../utils/apiRequests/impersonation';
-import type { LogoutOptions } from '@auth0/auth0-react';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -28,10 +27,6 @@ interface UserStore {
   setIsImpersonationModeOn: (value: boolean) => void;
   setRefetchUserData: (value: boolean) => void;
   fetchUserProfile: (params: FetchUserProfileParams) => Promise<User>;
-  logoutUser: (
-    returnUrl: string | undefined,
-    logout: (options?: LogoutOptions | undefined) => void
-  ) => void;
   initializeLocale: () => void;
 }
 
@@ -123,15 +118,6 @@ export const useUserStore = create<UserStore>()(
         if (storedLocale) {
           set({ userLanguage: storedLocale });
         }
-      },
-      logoutUser: (
-        returnUrl: string | undefined = `${window.location.origin}/`,
-        logout: (options?: LogoutOptions | undefined) => void
-      ) => {
-        localStorage.removeItem('impersonationData');
-        localStorage.removeItem('redirectLink');
-        sessionStorage.removeItem('donationReceiptContext');
-        logout({ returnTo: returnUrl });
       },
     }),
     {

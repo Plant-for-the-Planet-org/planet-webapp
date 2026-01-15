@@ -25,6 +25,7 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useAuthStore } from '../../../../../../src/stores';
+import { useAuthSession } from '../../../../../../src/hooks/useAuthSession';
 
 interface Props {
   pageProps: PageProps;
@@ -34,7 +35,8 @@ export default function AddProjectType({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('ManageProjects');
-  const { user, contextLoaded, loginWithRedirect } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
+  const { loginWithRedirect } = useAuthSession();
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   // local state

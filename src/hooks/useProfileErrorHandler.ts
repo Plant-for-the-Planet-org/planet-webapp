@@ -3,12 +3,12 @@ import type { APIError } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { useAuthStore } from '../stores';
-import { useAuth0 } from '@auth0/auth0-react';
 import useLocalizedPath from './useLocalizedPath';
+import { useAuthSession } from './useAuthSession';
 
 const useProfileErrorHandler = () => {
   const router = useRouter();
-  const { loginWithRedirect } = useAuth0();
+  const { loginWithRedirect } = useAuthSession();
   const { localizedPath } = useLocalizedPath();
   // store: action
   const setToken = useAuthStore((state) => state.setToken);
