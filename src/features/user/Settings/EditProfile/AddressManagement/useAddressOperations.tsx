@@ -12,6 +12,7 @@ import {
   updateAddressesAfterEdit,
   updateAddressesAfterTypeChange,
 } from './utils';
+import { useAuthStore } from '../../../../../stores/authStore';
 
 export type UnsetBillingAddressApiPayload = {
   type: 'other';
@@ -32,13 +33,15 @@ type AddressTypeApiPayload = {
 };
 
 export const useAddressOperations = () => {
-  const { contextLoaded, user, token, setUser } = useUserProps();
+  const { contextLoaded, user, setUser } = useUserProps();
   const { postApiAuthenticated, putApiAuthenticated, deleteApiAuthenticated } =
     useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [isLoading, setIsLoading] = useState(false);
-
   const isMountedRef = useRef(true);
+  // local state
+  const [isLoading, setIsLoading] = useState(false);
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   useEffect(() => {
     isMountedRef.current = true;

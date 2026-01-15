@@ -32,6 +32,7 @@ import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/New
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useAuthStore } from '../../../../stores/authStore';
 
 type ProfileFormData = {
   address: string;
@@ -65,12 +66,12 @@ type UpdateProfileApiPayload = Omit<ProfileFormData, 'isPublic'> & {
 
 export default function EditProfileForm() {
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { user, setUser, token, contextLoaded } = useUserProps();
+  const { user, setUser, contextLoaded } = useUserProps();
   const t = useTranslations('EditProfile');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { putApiAuthenticated } = useApi();
-
+  // local state
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [updatingPic, setUpdatingPic] = useState(false);
@@ -85,6 +86,8 @@ export default function EditProfileForm() {
     title: t('individual'),
     value: 'individual',
   });
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   const defaultProfileDetails = useMemo(() => {
     return {

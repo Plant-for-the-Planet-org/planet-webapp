@@ -1,6 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
 import type { PaymentHistory } from '../../../common/types/payments';
 import type { ReactElement } from 'react';
+
 import { useContext, useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import AccountRecord from '../../Account/components/AccountRecord';
@@ -12,6 +13,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import { useAuthStore } from '../../../../stores/authStore';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -21,15 +23,18 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const t = useTranslations('Me');
-  const { token, contextLoaded } = useUserProps();
+  const { contextLoaded } = useUserProps();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { accounts } = usePlanetCash();
   const { getApiAuthenticated } = useApi();
+  // local state
   const [transactionHistory, setTransactionHistory] =
     useState<PaymentHistory | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   const handleRecordToggle = (index: number | undefined): void => {
     if (selectedRecord === index || index === undefined) {

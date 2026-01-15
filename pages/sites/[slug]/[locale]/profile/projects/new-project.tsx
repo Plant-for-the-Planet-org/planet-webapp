@@ -24,6 +24,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useAuthStore } from '../../../../../../src/stores/authStore';
 
 interface Props {
   pageProps: PageProps;
@@ -33,11 +34,14 @@ export default function AddProjectType({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('ManageProjects');
-  const [accessDenied, setAccessDenied] = useState<boolean>(false);
-  const [setupAccess, setSetupAccess] = useState<boolean>(false);
-  const { user, contextLoaded, token, loginWithRedirect } = useUserProps();
+  const { user, contextLoaded, loginWithRedirect } = useUserProps();
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  // local state
+  const [accessDenied, setAccessDenied] = useState<boolean>(false);
+  const [setupAccess, setSetupAccess] = useState<boolean>(false);
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   useEffect(() => {
     if (router.isReady) {

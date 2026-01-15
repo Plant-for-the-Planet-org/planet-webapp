@@ -31,6 +31,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
+import { useAuthStore } from '../../../../../../src/stores/authStore';
 
 interface Props {
   pageProps: PageProps;
@@ -40,17 +41,20 @@ function ManageSingleProject({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('Common');
-  const [projectGUID, setProjectGUID] = useState<string | null>(null);
-  const [ready, setReady] = useState<boolean>(false);
+  const { user, contextLoaded } = useUserProps();
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
+  // local state
+  const [projectGUID, setProjectGUID] = useState<string | null>(null);
+  const [ready, setReady] = useState<boolean>(false);
   const [accessDenied, setAccessDenied] = useState<boolean>(false);
   const [setupAccess, setSetupAccess] = useState<boolean>(false);
   const [project, setProject] =
     useState<ExtendedProfileProjectProperties | null>(null);
-  const { user, contextLoaded, token } = useUserProps();
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   useEffect(() => {
     if (router.isReady) {

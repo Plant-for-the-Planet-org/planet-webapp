@@ -18,6 +18,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import { useAuthStore } from '../../../stores/authStore';
 
 const InterventionMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
@@ -42,17 +43,20 @@ export interface ExtendedScopeInterventions {
 
 function TreeMapper(): ReactElement {
   const router = useRouter();
-  const { token, contextLoaded } = useUserProps();
+  const { contextLoaded } = useUserProps();
   const t = useTranslations('Treemapper');
   const { getApiAuthenticated } = useApi();
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [interventions, setInterventions] = useState<Intervention[]>([]);
   const [selectedIntervention, setSelectedIntervention] = useState<
     Intervention | SampleTreeRegistration | null
   >(null);
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const [links, setLinks] = useState<Links>();
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);

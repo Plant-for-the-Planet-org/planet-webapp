@@ -33,6 +33,7 @@ import getMessagesForPage from '../../../../../../../src/utils/language/getMessa
 import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
 import { useApi } from '../../../../../../../src/hooks/useApi';
 import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
+import { useAuthStore } from '../../../../../../../src/stores/authStore';
 
 interface Props {
   pageProps: PageProps;
@@ -55,7 +56,9 @@ export default function BulkCodeIssueCodesPage({
     planetCashAccount,
     projectList,
   } = useBulkCode();
-  const { token, user, contextLoaded } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {

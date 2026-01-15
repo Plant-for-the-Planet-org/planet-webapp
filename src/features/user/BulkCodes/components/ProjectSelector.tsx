@@ -10,6 +10,7 @@ import UnitCostDisplay from './UnitCostDisplay';
 import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useApi } from '../../../../hooks/useApi';
+import { useAuthStore } from '../../../../stores/authStore';
 
 interface ProjectSelectorProps {
   projectList: CountryProject[];
@@ -26,8 +27,10 @@ const ProjectSelector = ({
   planetCashAccount,
 }: ProjectSelectorProps): ReactElement | null => {
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { user, token, contextLoaded } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   const fetchPaymentOptions = async (guid: string) => {
     const paymentOptions = await getApiAuthenticated<PaymentOptions>(

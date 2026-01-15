@@ -12,6 +12,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import { useAuthStore } from '../../../stores/authStore';
 
 interface Props {
   embedModalOpen: boolean;
@@ -27,13 +28,14 @@ export default function EmbedModal({
 }: Props) {
   const t = useTranslations('EditProfile');
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [isUploadingData, setIsUploadingData] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const router = useRouter();
   const { putApiAuthenticated } = useApi();
-  // This effect is used to get and update UserInfo if the isAuthenticated changes
-
-  const { setUser, contextLoaded, token } = useUserProps();
+  const { setUser, contextLoaded } = useUserProps();
+  // local state
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);

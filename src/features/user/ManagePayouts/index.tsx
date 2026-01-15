@@ -1,8 +1,9 @@
 import type { ReactElement } from 'react';
-import { useState, useEffect, useContext } from 'react';
 import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import type { APIError } from '@planet-sdk/common';
 import type { BankAccount, PayoutMinAmounts } from '../../common/types/payouts';
+
+import { useState, useEffect, useContext } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
@@ -17,6 +18,7 @@ import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useAuthStore } from '../../../stores/authStore';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -40,12 +42,15 @@ export default function ManagePayouts({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { token, contextLoaded, user } = useUserProps();
+  const { contextLoaded, user } = useUserProps();
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
   const { getApi, getApiAuthenticated } = useApi();
+  // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   const fetchPayoutMinAmounts = async () => {
     if (!payoutMinAmounts) {

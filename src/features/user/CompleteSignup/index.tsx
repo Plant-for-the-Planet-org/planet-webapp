@@ -29,6 +29,7 @@ import CompleteSignupLayout from './components/CompleteSignupLayout';
 import FullNameInput from './components/FullNameInput';
 import OrganizationNameInput from './components/OrganizationNameInput';
 import AccountTypeSelector from './components/AccountTypeSelector';
+import { useAuthStore } from '../../../stores/authStore';
 
 export const MuiTextField = styled(TextField)(() => {
   return {
@@ -61,7 +62,7 @@ export default function CompleteSignup(): ReactElement | null {
   const t = useTranslations('EditProfile');
   const { postApi } = useApi();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
-  const { user, setUser, auth0User, contextLoaded, token } = useUserProps();
+  const { user, setUser, auth0User, contextLoaded } = useUserProps();
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
@@ -70,6 +71,9 @@ export default function CompleteSignup(): ReactElement | null {
   const [formSubmitted, setFormSubmitted] = useState(false);
   //  snack bars (for warnings, success messages, errors)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  //store: state
+  const token = useAuthStore((state) => state.token);
+
   const isPublic = watch('isPublic');
 
   useEffect(() => {

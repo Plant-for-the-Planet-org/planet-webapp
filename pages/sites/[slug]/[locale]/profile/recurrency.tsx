@@ -28,6 +28,7 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useAuthStore } from '../../../../../src/stores/authStore';
 
 interface Props {
   pageProps: PageProps;
@@ -39,14 +40,15 @@ function RecurrentDonations({
   const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  const { token, contextLoaded } = useUserProps();
+  const { contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
-
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  // local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [recurrencies, setRecurrencies] = useState<Subscription[]>();
-
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   useEffect(() => {
     if (router.isReady) {

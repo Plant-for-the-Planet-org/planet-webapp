@@ -14,6 +14,7 @@ import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button, TextField } from '@mui/material';
 import { useApi } from '../../../../hooks/useApi';
+import { useAuthStore } from '../../../../stores/authStore';
 
 interface NewSpecies {
   aliases: string;
@@ -28,12 +29,15 @@ type SpeciesPayload = {
 export default function MySpeciesForm() {
   const tTreemapper = useTranslations('Treemapper');
   const tCommon = useTranslations('Common');
-  const { token, contextLoaded } = useUserProps();
+  const { contextLoaded } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [species, setSpecies] = useState<Species[]>([]);
-  const [isUploadingData, setIsUploadingData] = useState(false);
   const { getApiAuthenticated, deleteApiAuthenticated, postApiAuthenticated } =
     useApi();
+  // local state
+  const [species, setSpecies] = useState<Species[]>([]);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   const defaultMySpeciesValue = {
     aliases: '',

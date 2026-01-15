@@ -74,6 +74,7 @@ import { useTenant } from '../features/common/Layout/TenantContext';
 import { useUserProps } from '../features/common/Layout/UserPropsContext';
 import { validateToken } from '../utils/apiRequests/validateToken';
 import { useLocale } from 'next-intl';
+import { useAuthStore } from '../stores/authStore';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
@@ -99,9 +100,11 @@ type ApiConfig<
   : ApiConfigWithoutPayload;
 
 export const useApi = () => {
-  const { token, logoutUser } = useUserProps();
+  const { logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
   const locale = useLocale();
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   const callApi = async <T>({
     method,

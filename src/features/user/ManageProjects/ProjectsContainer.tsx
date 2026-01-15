@@ -25,6 +25,7 @@ import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useAuthStore } from '../../../stores/authStore';
 
 type ProjectProperties =
   | ProfileProjectPropertiesFund
@@ -121,11 +122,15 @@ export default function ProjectsContainer() {
   const tDonate = useTranslations('Donate');
   const tManageProjects = useTranslations('ManageProjects');
   const { getApiAuthenticated } = useApi();
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const { user, contextLoaded } = useUserProps();
+  const { localizedPath } = useLocalizedPath();
+  // local state
   const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
   const [loader, setLoader] = useState(true);
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
-  const { user, contextLoaded, token } = useUserProps();
-  const { localizedPath } = useLocalizedPath();
+  //store: state
+  const token = useAuthStore((state) => state.token);
+
   async function loadProjects() {
     if (user) {
       try {

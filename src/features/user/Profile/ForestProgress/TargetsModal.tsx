@@ -13,6 +13,7 @@ import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
 import { useApi } from '../../../../hooks/useApi';
+import { useAuthStore } from '../../../../stores/authStore';
 
 interface TargetsModalProps {
   open: boolean;
@@ -38,7 +39,7 @@ const TargetsModal = ({
   conservationTarget,
 }: TargetsModalProps) => {
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
-  const { contextLoaded, token, setRefetchUserData } = useUserProps();
+  const { contextLoaded, setRefetchUserData } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
   const tProfile = useTranslations('Profile.progressBar');
@@ -55,6 +56,8 @@ const TargetsModal = ({
   );
   const [isConservedAreaTargetActive, setIsConservedAreaTargetActive] =
     useState(conservationTarget > 0);
+  //store: state
+  const token = useAuthStore((state) => state.token);
 
   const handleClose = () => {
     setOpen(false);
