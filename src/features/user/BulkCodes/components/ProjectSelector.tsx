@@ -10,7 +10,7 @@ import UnitCostDisplay from './UnitCostDisplay';
 import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../stores';
 
 interface ProjectSelectorProps {
   projectList: CountryProject[];

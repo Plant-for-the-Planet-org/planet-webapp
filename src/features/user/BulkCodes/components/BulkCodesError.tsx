@@ -5,7 +5,7 @@ import { styled } from '@mui/material';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useTenant } from '../../../common/Layout/TenantContext';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../stores';
 
 const AddBalanceLink = styled('span')(({ theme }) => ({
   color: theme.palette.primary.main,

@@ -8,8 +8,7 @@ import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
 import { useUserProps } from '../UserPropsContext';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useProjectMapStore } from '../../../../stores/projectMapStore';
+import { useProjectMapStore, useQueryParamStore } from '../../../../stores';
 
 interface ProjectsLayoutProps {
   children: ReactNode;

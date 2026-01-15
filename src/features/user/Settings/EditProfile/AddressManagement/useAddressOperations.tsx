@@ -12,7 +12,7 @@ import {
   updateAddressesAfterEdit,
   updateAddressesAfterTypeChange,
 } from './utils';
-import { useAuthStore } from '../../../../../stores/authStore';
+import { useAuthStore } from '../../../../../stores';
 
 export type UnsetBillingAddressApiPayload = {
   type: 'other';

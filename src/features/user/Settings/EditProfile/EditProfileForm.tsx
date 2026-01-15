@@ -32,7 +32,7 @@ import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/New
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../stores';
 
 type ProfileFormData = {
   address: string;

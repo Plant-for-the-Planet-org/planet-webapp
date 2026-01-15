@@ -15,7 +15,7 @@ import {
   SuccessfullyRedeemed,
   EnterRedeemCode,
 } from '../../../../common/RedeemCode';
-import { useMyForestStore } from '../../../../../stores/myForestStore';
+import { useMyForestStore } from '../../../../../stores';
 import { useApi } from '../../../../../hooks/useApi';
 
 interface RedeemModal {

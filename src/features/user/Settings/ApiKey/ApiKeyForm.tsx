@@ -14,7 +14,7 @@ import { Button, InputAdornment, TextField } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../stores';
 
 interface EyeButtonParams {
   isVisible: boolean;

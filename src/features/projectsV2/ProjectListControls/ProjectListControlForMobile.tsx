@@ -16,7 +16,7 @@ import ActiveSearchField from './microComponents/ActiveSearchField';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
+import { useQueryParamStore } from '../../../stores';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;

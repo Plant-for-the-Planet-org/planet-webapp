@@ -18,7 +18,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import { useAuthStore } from '../../../stores/authStore';
+import { useAuthStore } from '../../../stores';
 
 const InterventionMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,

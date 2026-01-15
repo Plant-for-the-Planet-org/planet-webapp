@@ -2,7 +2,7 @@ import type { APIError } from '@planet-sdk/common';
 
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { useAuthStore } from '../stores/authStore';
+import { useAuthStore } from '../stores';
 import { useAuth0 } from '@auth0/auth0-react';
 import useLocalizedPath from './useLocalizedPath';
 

@@ -8,7 +8,7 @@ import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import { useUserProps } from '../UserPropsContext';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { useQueryParamStore } from '../../../../stores';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {

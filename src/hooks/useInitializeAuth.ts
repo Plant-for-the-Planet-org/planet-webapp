@@ -1,11 +1,10 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useCallback, useEffect, useRef } from 'react';
-import { useAuthStore } from '../stores/authStore';
-import { useUserStore } from '../stores/userStore';
+import { useUserStore, useAuthStore } from '../stores';
 
 export const useInitializeAuth = () => {
   const {
-    isLoading,
+    isLoading: auth0Loading,
     isAuthenticated,
     loginWithRedirect,
     getAccessTokenSilently,
@@ -43,7 +42,7 @@ export const useInitializeAuth = () => {
   }, [getAccessTokenSilently, setToken, redirectToLogin]);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (auth0Loading) return;
 
     if (!isAuthenticated) {
       setIsProfileLoaded(true);
@@ -51,5 +50,5 @@ export const useInitializeAuth = () => {
     }
 
     loadToken();
-  }, [isLoading, isAuthenticated, loadToken, setIsProfileLoaded]);
+  }, [auth0Loading, isAuthenticated, loadToken, setIsProfileLoaded]);
 };

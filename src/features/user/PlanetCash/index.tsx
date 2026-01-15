@@ -17,7 +17,7 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useAuthStore } from '../../../stores/authStore';
+import { useAuthStore } from '../../../stores';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',

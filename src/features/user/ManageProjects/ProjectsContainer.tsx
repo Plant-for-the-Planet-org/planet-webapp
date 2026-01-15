@@ -25,7 +25,7 @@ import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useAuthStore } from '../../../stores/authStore';
+import { useAuthStore } from '../../../stores';
 
 type ProjectProperties =
   | ProfileProjectPropertiesFund

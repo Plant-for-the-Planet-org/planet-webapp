@@ -9,8 +9,7 @@ import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { clsx } from 'clsx';
-import { useAuthStore } from '../../../../stores/authStore';
-
+import { useAuthStore } from '../../../../stores';
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   padding: 24,

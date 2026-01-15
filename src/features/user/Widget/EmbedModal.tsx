@@ -12,7 +12,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import { useAuthStore } from '../../../stores/authStore';
+import { useAuthStore } from '../../../stores';
 
 interface Props {
   embedModalOpen: boolean;

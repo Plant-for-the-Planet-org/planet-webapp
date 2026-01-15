@@ -10,7 +10,7 @@ import { TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { useUserStore } from '../../../../../../stores/userStore';
+import { useUserStore } from '../../../../../../stores';
 
 const ProjectFilter = () => {
   const t = useTranslations('TreemapperAnalytics');

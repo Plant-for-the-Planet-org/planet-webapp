@@ -25,7 +25,7 @@ import {
 import TpoName from './microComponents/TpoName';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
+import { useQueryParamStore } from '../../../stores';
 
 interface Props {
   project:

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import { useAuthStore } from '../stores/authStore';
-import { useUserStore } from '../stores/userStore';
+import { useAuthStore, useUserStore } from '../stores';
 import { useTenant } from '../features/common/Layout/TenantContext';
 import { useLocale } from 'next-intl';
 import { useAuth0 } from '@auth0/auth0-react';

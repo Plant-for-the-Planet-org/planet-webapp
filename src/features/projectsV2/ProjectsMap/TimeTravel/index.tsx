@@ -24,7 +24,7 @@ import styles from './TimeTravel.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
 import { useTranslations } from 'next-intl';
 import { clsx } from 'clsx';
-import { useProjectMapStore } from '../../../../stores/projectMapStore';
+import { useProjectMapStore } from '../../../../stores';
 
 const EMPTY_STYLE = {
   version: 8 as const,

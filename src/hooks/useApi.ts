@@ -74,7 +74,7 @@ import { useTenant } from '../features/common/Layout/TenantContext';
 import { useUserProps } from '../features/common/Layout/UserPropsContext';
 import { validateToken } from '../utils/apiRequests/validateToken';
 import { useLocale } from 'next-intl';
-import { useAuthStore } from '../stores/authStore';
+import { useAuthStore } from '../stores';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 

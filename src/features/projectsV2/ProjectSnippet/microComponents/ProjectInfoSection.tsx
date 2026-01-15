@@ -9,8 +9,7 @@ import getFormattedCurrency from '../../../../utils/countryCurrency/getFormatted
 import WebappButton from '../../../common/WebappButton';
 import styles from '../styles/ProjectSnippet.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useQueryParamStore, useAuthStore } from '../../../../stores';
 
 const ProjectInfoSection = (props: ProjectInfoProps) => {
   const {

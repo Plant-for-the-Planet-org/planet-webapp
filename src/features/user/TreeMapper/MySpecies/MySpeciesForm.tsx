@@ -14,7 +14,7 @@ import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button, TextField } from '@mui/material';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../stores';
 
 interface NewSpecies {
   aliases: string;

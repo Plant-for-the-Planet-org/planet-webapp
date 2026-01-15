@@ -13,7 +13,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../stores';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;

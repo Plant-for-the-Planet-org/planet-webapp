@@ -29,7 +29,7 @@ import CompleteSignupLayout from './components/CompleteSignupLayout';
 import FullNameInput from './components/FullNameInput';
 import OrganizationNameInput from './components/OrganizationNameInput';
 import AccountTypeSelector from './components/AccountTypeSelector';
-import { useAuthStore } from '../../../stores/authStore';
+import { useAuthStore } from '../../../stores';
 
 export const MuiTextField = styled(TextField)(() => {
   return {

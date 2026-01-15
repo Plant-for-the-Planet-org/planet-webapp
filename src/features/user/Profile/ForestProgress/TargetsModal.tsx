@@ -4,7 +4,6 @@ import type { SetState } from '../../../common/types/common';
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
 import { useContext, useEffect } from 'react';
-import { useMyForestStore } from '../../../../stores/myForestStore';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -13,7 +12,7 @@ import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore, useMyForestStore } from '../../../../stores';
 
 interface TargetsModalProps {
   open: boolean;

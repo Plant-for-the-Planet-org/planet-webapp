@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useAuthStore } from '../../../stores/authStore';
+import { useAuthStore } from '../../../stores';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',

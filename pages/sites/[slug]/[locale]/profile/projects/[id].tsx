@@ -31,7 +31,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
-import { useAuthStore } from '../../../../../../src/stores/authStore';
+import { useAuthStore } from '../../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;

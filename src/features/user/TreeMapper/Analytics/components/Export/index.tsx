@@ -21,7 +21,7 @@ import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandling
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
-import { useUserStore } from '../../../../../../stores/userStore';
+import { useUserStore } from '../../../../../../stores';
 
 export const Export = () => {
   const t = useTranslations('TreemapperAnalytics');

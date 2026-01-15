@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import CommunityContributionsIcon from '../../../../../public/assets/images/icons/CommunityContributionsIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
-import { useMyForestStore } from '../../../../stores/myForestStore';
+import { useMyForestStore } from '../../../../stores';
 import { useShallow } from 'zustand/react/shallow';
 import { clsx } from 'clsx';
 
