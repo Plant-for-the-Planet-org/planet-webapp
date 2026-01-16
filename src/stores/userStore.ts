@@ -6,9 +6,9 @@ import { devtools } from 'zustand/middleware';
 import getsessionId from '../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
 import { APIError } from '@planet-sdk/common';
-import { useAuthStore } from './authStore';
 
 type FetchUserProfileParams = {
+  token: string | null;
   impersonationData?: ImpersonationData;
   tenantConfigId: string;
   locale: string;
@@ -48,6 +48,7 @@ export const useUserStore = create<UserStore>()(
       setRefetchUserData: (value) => set({ refetchUserData: value }),
 
       fetchUserProfile: async ({
+        token,
         impersonationData,
         tenantConfigId,
         locale,
@@ -59,7 +60,6 @@ export const useUserStore = create<UserStore>()(
         }
 
         set({ isProfileLoaded: false });
-        const { token } = useAuthStore.getState();
         const sessionId = await getsessionId();
         const header = {
           'tenant-key': `${tenantConfigId}`,

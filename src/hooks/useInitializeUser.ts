@@ -26,12 +26,13 @@ export const useInitializeUser = () => {
   const initializeLocale = useUserStore((state) => state.initializeLocale);
 
   useEffect(() => {
-    if (token) {
-      fetchUserProfile({
-        tenantConfigId: tenantConfig.id,
-        locale,
-      });
-    }
+    if (!token) return;
+    // Note: Intentionally not refetching on locale/tenant changes
+    fetchUserProfile({
+      token,
+      tenantConfigId: tenantConfig.id,
+      locale,
+    });
   }, [token, refetchUserData, fetchUserProfile]);
 
   useEffect(() => {
