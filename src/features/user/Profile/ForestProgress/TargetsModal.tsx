@@ -12,7 +12,11 @@ import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore, useMyForestStore } from '../../../../stores';
+import {
+  useAuthStore,
+  useMyForestStore,
+  useUserStore,
+} from '../../../../stores';
 
 interface TargetsModalProps {
   open: boolean;
@@ -38,7 +42,7 @@ const TargetsModal = ({
   conservationTarget,
 }: TargetsModalProps) => {
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
-  const { contextLoaded, setRefetchUserData } = useUserProps();
+  const { contextLoaded } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
   const tProfile = useTranslations('Profile.progressBar');
@@ -57,6 +61,9 @@ const TargetsModal = ({
     useState(conservationTarget > 0);
   //store: state
   const token = useAuthStore((state) => state.token);
+  const setShouldRefetchUserProfile = useUserStore(
+    (state) => state.setShouldRefetchUserProfile
+  );
 
   const handleClose = () => {
     setOpen(false);
@@ -103,7 +110,7 @@ const TargetsModal = ({
             areaRestored: res.scores.areaRestored.target ?? 0,
           },
         };
-        setRefetchUserData(true);
+        setShouldRefetchUserProfile(true);
         if (newUserInfo !== undefined) {
           setUserInfo(newUserInfo);
           setTreesPlantedTargetLocal(newUserInfo.targets.treesDonated ?? 0);

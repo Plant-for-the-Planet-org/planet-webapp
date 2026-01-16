@@ -18,14 +18,14 @@ interface UserStore {
   userProfile: User | null;
   isProfileLoaded: boolean;
   userLanguage: string;
-  refetchUserData: boolean;
+  shouldRefetchUserProfile: boolean;
   isImpersonationModeOn: boolean;
   profileApiError: APIError | null;
 
   setUserProfile: (data: User | null) => void;
   setIsProfileLoaded: (value: boolean) => void;
   setIsImpersonationModeOn: (value: boolean) => void;
-  setRefetchUserData: (value: boolean) => void;
+  setShouldRefetchUserProfile: (value: boolean) => void;
   fetchUserProfile: (params: FetchUserProfileParams) => Promise<User>;
   initializeLocale: () => void;
 }
@@ -45,7 +45,8 @@ export const useUserStore = create<UserStore>()(
       setIsImpersonationModeOn: (value) =>
         set({ isImpersonationModeOn: value }),
 
-      setRefetchUserData: (value) => set({ refetchUserData: value }),
+      setShouldRefetchUserProfile: (value) =>
+        set({ shouldRefetchUserProfile: value }),
 
       fetchUserProfile: async ({
         token,

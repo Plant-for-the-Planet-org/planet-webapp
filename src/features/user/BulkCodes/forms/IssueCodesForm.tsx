@@ -30,6 +30,7 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useUserStore } from '../../../../stores';
 
 const IssueCodesForm = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
@@ -44,9 +45,10 @@ const IssueCodesForm = (): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
-  const { user, setRefetchUserData } = useUserProps();
+  const { user } = useUserProps();
   const { postApiAuthenticated } = useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
@@ -57,6 +59,10 @@ const IssueCodesForm = (): ReactElement | null => {
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
   const [notificationLocale, setNotificationLocale] = useState('');
+  // store: action
+  const setShouldRefetchUserProfile = useUserStore(
+    (state) => state.setShouldRefetchUserProfile
+  );
 
   const notificationLocales = [
     {
@@ -155,7 +161,7 @@ const IssueCodesForm = (): ReactElement | null => {
         if (res?.uid) {
           resetBulkContext();
           setIsSubmitted(true);
-          setRefetchUserData(true);
+          setShouldRefetchUserProfile(true);
           setTimeout(() => {
             router.push(localizedPath(`/profile/history?ref=${res.uid}`));
           }, 5000);

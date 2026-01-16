@@ -15,7 +15,7 @@ import {
   SuccessfullyRedeemed,
   EnterRedeemCode,
 } from '../../../../common/RedeemCode';
-import { useMyForestStore } from '../../../../../stores';
+import { useMyForestStore, useUserStore } from '../../../../../stores';
 import { useApi } from '../../../../../hooks/useApi';
 
 interface RedeemModal {
@@ -32,14 +32,20 @@ export default function RedeemModal({
 }: RedeemModal): ReactElement | null {
   const t = useTranslations('Redeem');
   const { postApiAuthenticated, getApi, getApiAuthenticated } = useApi();
-  const { user, contextLoaded, setUser, setRefetchUserData } = useUserProps();
+  const { user, contextLoaded, setUser } = useUserProps();
   const { setErrors, errors: apiErrors } = useContext(ErrorHandlingContext);
-  const refetchMyForest = useMyForestStore((state) => state.fetchMyForest);
+  // local state
   const [inputCode, setInputCode] = useState<string | undefined>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  // store: action
+  const setShouldRefetchUserProfile = useUserStore(
+    (state) => state.setShouldRefetchUserProfile
+  );
+  const refetchMyForest = useMyForestStore((state) => state.fetchMyForest);
+
   async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);
     const payload = {
@@ -54,7 +60,7 @@ export default function RedeemModal({
           payload,
         });
         setRedeemedCodeData(res);
-        setRefetchUserData(true);
+        setShouldRefetchUserProfile(true);
         setIsLoading(false);
         if (res.units > 0) {
           const cloneUser = { ...user };

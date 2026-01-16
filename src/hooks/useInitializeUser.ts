@@ -14,7 +14,9 @@ export const useInitializeUser = () => {
   // store: state
   const profileApiError = useUserStore((state) => state.profileApiError);
   const token = useAuthStore((state) => state.token);
-  const refetchUserData = useUserStore((state) => state.refetchUserData);
+  const shouldRefetchUserProfile = useUserStore(
+    (state) => state.shouldRefetchUserProfile
+  );
   const isImpersonationModeOn = useUserStore(
     (state) => state.isImpersonationModeOn
   );
@@ -33,7 +35,7 @@ export const useInitializeUser = () => {
       tenantConfigId: tenantConfig.id,
       locale,
     });
-  }, [token, refetchUserData, fetchUserProfile]);
+  }, [token, shouldRefetchUserProfile, fetchUserProfile]);
 
   useEffect(() => {
     if (!profileApiError) return;
