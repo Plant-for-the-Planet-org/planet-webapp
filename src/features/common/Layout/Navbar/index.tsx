@@ -6,9 +6,12 @@ import NavbarItems from './microComponents/NavbarItems';
 import styles from './Navbar.module.scss';
 import { clsx } from 'clsx';
 import { useAuthSession } from '../../../../hooks/useAuthSession';
+import { useUserStore } from '../../../../stores';
 
 const ImpersonationBanner = () => {
-  const { isImpersonationModeOn } = useUserProps();
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
   if (!isImpersonationModeOn) return null;
   return (
     <div className={styles.impersonationBanner}>
@@ -18,7 +21,9 @@ const ImpersonationBanner = () => {
 };
 
 const MainNavigationHeader = () => {
-  const { isImpersonationModeOn } = useUserProps();
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
 
   const headerStyles = clsx(styles.mainNavigationHeader, {
     [styles.impersonationMode]: isImpersonationModeOn,

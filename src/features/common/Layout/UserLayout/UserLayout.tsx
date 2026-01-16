@@ -27,6 +27,7 @@ import NavLink from './NavLink';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
 import { useAuthSession } from '../../../../hooks/useAuthSession';
+import { useUserStore } from '../../../../stores';
 
 const UserLayout = ({ children }: { children: ReactNode }) => {
   const t = useTranslations('Me');
@@ -34,7 +35,15 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { logoutUser } = useAuthSession();
-  const { user, contextLoaded, isImpersonationModeOn } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
+  // local state
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentMenuKey, setCurrentMenuKey] = useState<string>('profile');
+  const [currentSubMenuKey, setCurrentSubMenuKey] = useState('');
+  // store: state
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
   // Navigation structure with keys, paths, and submenu configurations
   // Flags can be added to show labels on the right
   const navLinks: NavLinkType[] = useMemo(
@@ -201,10 +210,6 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
     ],
     [t, user, locale, isImpersonationModeOn]
   );
-
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentMenuKey, setCurrentMenuKey] = useState<string>('profile');
-  const [currentSubMenuKey, setCurrentSubMenuKey] = useState('');
 
   useEffect(() => {
     // Determine which menu/submenu should be highlighted based on current route

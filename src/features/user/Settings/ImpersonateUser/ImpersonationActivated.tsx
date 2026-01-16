@@ -11,12 +11,19 @@ const ImpersonationActivated = () => {
   const t = useTranslations('Me');
   const locale = useLocale();
   const { tenantConfig } = useTenant();
-  const { user, isImpersonationModeOn, setIsImpersonationModeOn } =
-    useUserProps();
-  const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
-  const token = useAuthStore((state) => state.token);
+  const { user } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  // store: state
+  const token = useAuthStore((state) => state.token);
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
+  // store: action
+  const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
+  const setIsImpersonationModeOn = useUserStore(
+    (state) => state.setIsImpersonationModeOn
+  );
 
   const exitImpersonation = () => {
     setIsImpersonationModeOn(false);

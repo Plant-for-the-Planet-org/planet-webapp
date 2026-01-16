@@ -25,11 +25,15 @@ const ImpersonateUserForm = (): ReactElement => {
   const t = useTranslations('Me');
   const { tenantConfig } = useTenant();
   const locale = useLocale();
-  const { setUser, setIsImpersonationModeOn } = useUserProps();
+  const { setUser } = useUserProps();
   // store: state
   const token = useAuthStore((state) => state.token);
   // store: action
   const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
+  const setIsImpersonationModeOn = useUserStore(
+    (state) => state.setIsImpersonationModeOn
+  );
+
   const {
     control,
     handleSubmit,
