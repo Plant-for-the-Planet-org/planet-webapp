@@ -9,7 +9,7 @@ import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import CommunityContributions from '../CommunityContributions';
-import { useMyForestStore } from '../../../../stores/myForestStore';
+import { useMyForestStore } from '../../../../stores';
 import MyContributions from '../MyContributions';
 import { useApi } from '../../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';

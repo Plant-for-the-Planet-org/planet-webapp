@@ -1,4 +1,6 @@
+import { useInitializeAuth } from '../../../hooks/useInitializeAuth';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
+import { useInitializeUser } from '../../../hooks/useInitializeUser';
 
 /**
  * StoreInitializer Component
@@ -14,6 +16,8 @@ import { useInitializeParams } from '../../../hooks/useInitializeParams';
 
 export const StoreInitializer = () => {
   useInitializeParams();
+  useInitializeAuth();
+  useInitializeUser();
 
   return null;
 };

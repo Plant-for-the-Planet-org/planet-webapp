@@ -8,7 +8,7 @@ import ProjectListControlForMobile from './ProjectListControls/ProjectListContro
 import ProjectList from './ProjectList';
 import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
 import { useTenant } from '../common/Layout/TenantContext';
-import { useProjectMapStore } from '../../stores/projectMapStore';
+import { useProjectMapStore } from '../../stores';
 
 interface ProjectsSectionProps {
   isMobile: boolean;

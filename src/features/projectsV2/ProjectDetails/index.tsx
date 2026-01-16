@@ -26,7 +26,7 @@ import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useApi } from '../../../hooks/useApi';
 import { useTenant } from '../../common/Layout/TenantContext';
-import { useProjectMapStore } from '../../../stores/projectMapStore';
+import { useProjectMapStore } from '../../../stores';
 
 const ProjectDetails = ({
   currencyCode,

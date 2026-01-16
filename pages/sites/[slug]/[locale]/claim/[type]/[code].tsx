@@ -31,6 +31,7 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
+import { useAuthSession } from '../../../../../../src/hooks/useAuthSession';
 
 interface Props {
   pageProps: PageProps;
@@ -45,7 +46,8 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
-  const { user, contextLoaded, loginWithRedirect } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
+  const { loginWithRedirect } = useAuthSession();
   const { postApiAuthenticated } = useApi();
   const { errors, setErrors } = useContext(ErrorHandlingContext);
   const [code, setCode] = useState<string>('');

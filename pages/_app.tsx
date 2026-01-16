@@ -192,7 +192,6 @@ const PlanetWeb = ({
         locale={(router.query?.locale as string) ?? 'en'}
         messages={pageProps.messages}
       >
-        <StoreInitializer />
         <CacheProvider value={emotionCache}>
           <ErrorHandlingProvider>
             <TenantProvider initialTenantConfig={pageProps.tenantConfig}>
@@ -211,6 +210,7 @@ const PlanetWeb = ({
                 onRedirectCallback={onRedirectCallback}
                 useRefreshTokens={true}
               >
+                <StoreInitializer />
                 <ThemeProvider>
                   <MuiThemeProvider theme={materialTheme}>
                     <CssBaseline />

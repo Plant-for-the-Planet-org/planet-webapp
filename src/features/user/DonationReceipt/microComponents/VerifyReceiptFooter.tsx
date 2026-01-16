@@ -3,13 +3,13 @@ import styles from '../DonationReceipt.module.scss';
 import { useTranslations } from 'next-intl';
 import SupportAssistanceInfo from './SupportAssistanceInfo';
 import Link from 'next/link';
-import { useAuth0 } from '@auth0/auth0-react';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
 
 const VerifyReceiptFooter = () => {
   const tReceipt = useTranslations('DonationReceipt');
-  const { isAuthenticated } = useAuth0();
   const { localizedPath } = useLocalizedPath();
+  const { isAuthenticated } = useAuthSession();
 
   return (
     <section className={styles.verifyReceiptFooter}>

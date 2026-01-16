@@ -5,7 +5,7 @@ import ProjectPopup from '../ProjectPopup';
 import SingleMarker from './SingleMarker';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { useQueryParamStore } from '../../../../stores';
 
 export type CategorizedProjects = {
   topApprovedProjects: MapProject[];

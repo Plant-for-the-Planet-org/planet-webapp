@@ -5,7 +5,7 @@ import styles from './Credits.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
 import { useTenant } from '../../../common/Layout/TenantContext';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { useQueryParamStore } from '../../../../stores';
 
 interface Props {
   setCurrencyCode: Function;

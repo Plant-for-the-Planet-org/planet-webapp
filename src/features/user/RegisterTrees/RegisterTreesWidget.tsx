@@ -24,6 +24,7 @@ import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../hooks/useApi';
 import dynamic from 'next/dynamic';
+import { useUserStore } from '../../../stores';
 
 type RegisteredTreesApiPayload = {
   treeCount: string;
@@ -43,8 +44,11 @@ function RegisterTreesForm({
   setContributionDetails,
   setRegistered,
 }: RegisterTreesFormProps) {
-  const { user, contextLoaded, setRefetchUserData } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
   const t = useTranslations('Me');
+  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  const { postApiAuthenticated, getApiAuthenticated } = useApi();
+  // local state
   const [isMultiple, setIsMultiple] = useState(false);
   const [userLocation, setUserLocation] = useState<number[] | null>(null);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
@@ -53,10 +57,12 @@ function RegisterTreesForm({
   );
   const [userLang, setUserLang] = useState('en');
   const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
-  const { postApiAuthenticated, getApiAuthenticated } = useApi();
-
   const [isUploadingData, setIsUploadingData] = useState(false);
+  // store
+  const setShouldRefetchUserProfile = useUserStore(
+    (state) => state.setShouldRefetchUserProfile
+  );
+
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
@@ -110,7 +116,7 @@ function RegisterTreesForm({
           setContributionDetails(res);
           setIsUploadingData(false);
           setRegistered(true);
-          setRefetchUserData(true);
+          setShouldRefetchUserProfile(true);
         } catch (err) {
           setIsUploadingData(false);
           setErrors(handleError(err as APIError));

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useQueryParamStore } from '../stores/queryParamStore';
+import { useQueryParamStore } from '../stores';
 
 const getFirstQueryValue = (value?: string | string[]): string | undefined => {
   if (!value) return undefined;

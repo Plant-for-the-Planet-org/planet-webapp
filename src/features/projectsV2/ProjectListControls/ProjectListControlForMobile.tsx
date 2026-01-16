@@ -13,10 +13,9 @@ import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
 import ViewModeTabs from './microComponents/ViewModeTabs';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
+import { useQueryParamStore, useUserStore } from '../../../stores';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
@@ -61,13 +60,16 @@ const ProjectListControlForMobile = ({
   showDonatableProjects,
   setShowDonatableProjects,
 }: ProjectListControlForMobileProps) => {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
-  const { isImpersonationModeOn } = useUserProps();
-
+  // local state
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  // store: state
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
   const page = useQueryParamStore((state) => state.page);
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
 
   const hasFilterApplied =
     selectedClassification.length > 0 || showDonatableProjects;

@@ -4,7 +4,6 @@ import type { SetState } from '../../../common/types/common';
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
 import { useContext, useEffect } from 'react';
-import { useMyForestStore } from '../../../../stores/myForestStore';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -13,6 +12,11 @@ import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
 import { useApi } from '../../../../hooks/useApi';
+import {
+  useAuthStore,
+  useMyForestStore,
+  useUserStore,
+} from '../../../../stores';
 
 interface TargetsModalProps {
   open: boolean;
@@ -38,7 +42,7 @@ const TargetsModal = ({
   conservationTarget,
 }: TargetsModalProps) => {
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
-  const { contextLoaded, token, setRefetchUserData } = useUserProps();
+  const { contextLoaded } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
   const tProfile = useTranslations('Profile.progressBar');
@@ -55,6 +59,11 @@ const TargetsModal = ({
   );
   const [isConservedAreaTargetActive, setIsConservedAreaTargetActive] =
     useState(conservationTarget > 0);
+  //store: state
+  const token = useAuthStore((state) => state.token);
+  const setShouldRefetchUserProfile = useUserStore(
+    (state) => state.setShouldRefetchUserProfile
+  );
 
   const handleClose = () => {
     setOpen(false);
@@ -101,7 +110,7 @@ const TargetsModal = ({
             areaRestored: res.scores.areaRestored.target ?? 0,
           },
         };
-        setRefetchUserData(true);
+        setShouldRefetchUserProfile(true);
         if (newUserInfo !== undefined) {
           setUserInfo(newUserInfo);
           setTreesPlantedTargetLocal(newUserInfo.targets.treesDonated ?? 0);

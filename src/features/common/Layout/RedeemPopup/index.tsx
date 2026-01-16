@@ -6,14 +6,15 @@ import { useTranslations } from 'next-intl';
 import { useTenant } from '../TenantContext';
 import { useUserProps } from '../UserPropsContext';
 import themeProperties from '../../../../theme/themeProperties';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
 
 export default function RedeemPopup() {
   const t = useTranslations('Common');
   const { tenantConfig } = useTenant();
-
+  const { loginWithRedirect } = useAuthSession();
   const [showRedeemPopup, setShowRedeemPopup] = useState(false);
 
-  const { user, contextLoaded, loginWithRedirect } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
 
   const sendUserToLogin = () => {
     if (typeof window !== 'undefined') {

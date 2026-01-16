@@ -21,8 +21,7 @@ import { FillColor } from '../../../../utils/constants/intervention';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 import { clsx } from 'clsx';
-import { useProjectMapStore } from '../../../../stores/projectMapStore';
-
+import { useProjectMapStore } from '../../../../stores';
 interface SampleTreeMarkerProps {
   sampleTree: SampleTreeRegistration;
   selectedSampleTree: SampleTreeRegistration | null;

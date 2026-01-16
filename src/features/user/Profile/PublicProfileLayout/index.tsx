@@ -7,7 +7,7 @@ import ForestProgress from '../ForestProgress';
 import ContributionsMap from '../ContributionsMap';
 import CommunityContributions from '../CommunityContributions';
 import { useContext, useEffect, useMemo } from 'react';
-import { useMyForestStore } from '../../../../stores/myForestStore';
+import { useMyForestStore } from '../../../../stores';
 import MyContributions from '../MyContributions';
 import { aggregateProgressData } from '../../../../utils/myForestUtils';
 import InfoAndCta from '../InfoAndCTA';
