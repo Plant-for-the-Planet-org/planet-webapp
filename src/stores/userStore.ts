@@ -6,6 +6,7 @@ import { devtools } from 'zustand/middleware';
 import getsessionId from '../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
 import { APIError } from '@planet-sdk/common';
+import { useAuthStore } from './authStore';
 
 type FetchUserProfileParams = {
   token: string | null;
@@ -16,14 +17,12 @@ type FetchUserProfileParams = {
 
 interface UserStore {
   userProfile: User | null;
-  isProfileLoaded: boolean;
   userLanguage: string;
   shouldRefetchUserProfile: boolean;
   isImpersonationModeOn: boolean;
   profileApiError: APIError | null;
 
   setUserProfile: (profile: User | null) => void;
-  setIsProfileLoaded: (isLoaded: boolean) => void;
   setIsImpersonationModeOn: (isEnabled: boolean) => void;
   setShouldRefetchUserProfile: (shouldRefetch: boolean) => void;
   fetchUserProfile: (params: FetchUserProfileParams) => Promise<User>;
@@ -33,20 +32,14 @@ interface UserStore {
 export const useUserStore = create<UserStore>()(
   devtools(
     (set) => ({
+      //states
       userProfile: null,
-      isProfileLoaded: false,
       userLanguage: 'en',
-      refetchUserData: false,
+      shouldRefetchUserProfile: false,
       isImpersonationModeOn: false,
       profileApiError: null,
 
-      setIsProfileLoaded: (isLoaded) =>
-        set(
-          { isProfileLoaded: isLoaded },
-          undefined,
-          'userStore/set_is_profile_loaded'
-        ),
-
+      //actions
       setUserProfile: (profile) =>
         set({ userProfile: profile }, undefined, 'userStore/set_user_profile'),
 
@@ -76,11 +69,9 @@ export const useUserStore = create<UserStore>()(
           );
         }
 
-        set(
-          { isProfileLoaded: false },
-          undefined,
-          'userStore/fetch_user_profile_start'
-        );
+        const { setIsAuthResolved } = useAuthStore.getState();
+        setIsAuthResolved(false);
+
         const sessionId = await getsessionId();
         const header = {
           'tenant-key': `${tenantConfigId}`,
@@ -108,7 +99,6 @@ export const useUserStore = create<UserStore>()(
               {
                 userProfile: result,
                 profileApiError: null,
-                isProfileLoaded: true,
               },
               undefined,
               'userStore/fetch_user_profile_success'
@@ -124,8 +114,6 @@ export const useUserStore = create<UserStore>()(
           ) {
             set(
               {
-                userProfile: null,
-                isProfileLoaded: true,
                 profileApiError: null, // ❌ do NOT trigger global handler
               },
               undefined,
@@ -138,14 +126,16 @@ export const useUserStore = create<UserStore>()(
           set(
             {
               userProfile: null,
-              isProfileLoaded: true,
               profileApiError: error instanceof APIError ? error : null,
             },
             undefined,
             'userStore/fetch_user_profile_error'
           );
+        } finally {
+          setIsAuthResolved(true);
         }
       },
+
       initializeLocale: () => {
         const storedLocale = localStorage.getItem('language');
         if (storedLocale) {
