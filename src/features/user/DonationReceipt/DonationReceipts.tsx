@@ -57,7 +57,7 @@ const DonationReceipts = () => {
         if (response) setDonationReceipts(response);
       } catch (error) {
         handleError(error as APIError);
-        redirect('/');
+        redirect('/profile');
       }
     })();
   }, []);
