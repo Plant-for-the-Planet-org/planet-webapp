@@ -22,10 +22,10 @@ interface UserStore {
   isImpersonationModeOn: boolean;
   profileApiError: APIError | null;
 
-  setUserProfile: (data: User | null) => void;
-  setIsProfileLoaded: (value: boolean) => void;
-  setIsImpersonationModeOn: (value: boolean) => void;
-  setShouldRefetchUserProfile: (value: boolean) => void;
+  setUserProfile: (profile: User | null) => void;
+  setIsProfileLoaded: (isLoaded: boolean) => void;
+  setIsImpersonationModeOn: (isEnabled: boolean) => void;
+  setShouldRefetchUserProfile: (shouldRefetch: boolean) => void;
   fetchUserProfile: (params: FetchUserProfileParams) => Promise<User>;
   initializeLocale: () => void;
 }
@@ -40,13 +40,29 @@ export const useUserStore = create<UserStore>()(
       isImpersonationModeOn: false,
       profileApiError: null,
 
-      setIsProfileLoaded: (value) => set({ isProfileLoaded: value }),
+      setIsProfileLoaded: (isLoaded) =>
+        set(
+          { isProfileLoaded: isLoaded },
+          undefined,
+          'userStore/set_is_profile_loaded'
+        ),
 
-      setIsImpersonationModeOn: (value) =>
-        set({ isImpersonationModeOn: value }),
+      setUserProfile: (profile) =>
+        set({ userProfile: profile }, undefined, 'userStore/set_user_profile'),
 
-      setShouldRefetchUserProfile: (value) =>
-        set({ shouldRefetchUserProfile: value }),
+      setIsImpersonationModeOn: (isEnabled) =>
+        set(
+          { isImpersonationModeOn: isEnabled },
+          undefined,
+          'userStore/set_is_impersonation_mode_on'
+        ),
+
+      setShouldRefetchUserProfile: (shouldRefetch) =>
+        set(
+          { shouldRefetchUserProfile: shouldRefetch },
+          undefined,
+          'set_should_refetch_user_profile'
+        ),
 
       fetchUserProfile: async ({
         token,
@@ -60,7 +76,11 @@ export const useUserStore = create<UserStore>()(
           );
         }
 
-        set({ isProfileLoaded: false });
+        set(
+          { isProfileLoaded: false },
+          undefined,
+          'userStore/fetch_user_profile_start'
+        );
         const sessionId = await getsessionId();
         const header = {
           'tenant-key': `${tenantConfigId}`,
@@ -84,11 +104,15 @@ export const useUserStore = create<UserStore>()(
 
           const result = await response.json();
           if (result) {
-            set({
-              userProfile: result,
-              profileApiError: null,
-              isProfileLoaded: true,
-            });
+            set(
+              {
+                userProfile: result,
+                profileApiError: null,
+                isProfileLoaded: true,
+              },
+              undefined,
+              'userStore/fetch_user_profile_success'
+            );
           }
           return result;
         } catch (error) {
@@ -98,26 +122,38 @@ export const useUserStore = create<UserStore>()(
             error.statusCode === 403 &&
             impersonationData
           ) {
-            set({
-              userProfile: null,
-              isProfileLoaded: true,
-              profileApiError: null, // ❌ do NOT trigger global handler
-            });
+            set(
+              {
+                userProfile: null,
+                isProfileLoaded: true,
+                profileApiError: null, // ❌ do NOT trigger global handler
+              },
+              undefined,
+              'userStore/fetch_user_profile_impersonation_error'
+            );
 
             throw error; // handled by component
           }
           // 🔹 All other errors → global handling
-          set({
-            userProfile: null,
-            isProfileLoaded: true,
-            profileApiError: error instanceof APIError ? error : null,
-          });
+          set(
+            {
+              userProfile: null,
+              isProfileLoaded: true,
+              profileApiError: error instanceof APIError ? error : null,
+            },
+            undefined,
+            'userStore/fetch_user_profile_error'
+          );
         }
       },
       initializeLocale: () => {
         const storedLocale = localStorage.getItem('language');
         if (storedLocale) {
-          set({ userLanguage: storedLocale });
+          set(
+            { userLanguage: storedLocale },
+            undefined,
+            'userStore/init_locale'
+          );
         }
       },
     }),
