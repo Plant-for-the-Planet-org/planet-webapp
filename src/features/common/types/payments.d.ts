@@ -150,7 +150,15 @@ export interface Subscription {
   trialPeriodStart: string | null;
   trialPeriodEnd: string | null;
   endsAt: string | null;
-  status: string;
+  status:
+    | 'incomplete'
+    | 'active'
+    | 'trialing'
+    | 'paused'
+    | 'canceled'
+    | 'incomplete_expired'
+    | 'past_due'
+    | 'unpaid';
   isSynced: boolean;
   pauseUntil: string | null;
   donorName?: string;

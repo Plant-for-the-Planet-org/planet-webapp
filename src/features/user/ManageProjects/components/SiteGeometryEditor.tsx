@@ -32,6 +32,7 @@ import {
   DEFAULT_VIEW_STATE,
 } from '../../../../utils/mapsV2/mapDefaults';
 import { clsx } from 'clsx';
+import WebGLGuard from '../../../common/WebGLGuard';
 
 interface Props {
   geoJson: ProjectSiteFeatureCollection | null;
@@ -226,40 +227,42 @@ export default function SiteGeometryEditor({
 
   return (
     <div className={clsx(styles.formFieldLarge, styles.siteGeometryEditor)}>
-      <MapControls
-        isDrawing={isDrawing}
-        setIsDrawing={setIsDrawing}
-        coordinates={coordinates}
-        setCoordinates={setCoordinates}
-        isSatelliteMode={isSatelliteMode}
-        setIsSatelliteMode={setIsSatelliteMode}
-      />
-      <MapGL
-        {...viewport}
-        {...mapState}
-        style={{ width: '100%', height: '400px' }}
-        ref={mapRef}
-        onMove={onMove}
-        onClick={handleClick}
-        onDblClick={handleDoubleClick}
-        cursor={isDrawing ? 'crosshair' : 'grab'}
-        onLoad={() => setIsMapReady(true)}
-      >
-        {isSatelliteMode && <SatelliteLayer />}
-        {geoJson !== null && (
-          <ProjectSiteLayer
-            isSatelliteMode={isSatelliteMode}
-            geoJson={geoJson}
-          />
-        )}
-        {coordinates.length > 1 && (
-          <DrawingPreviewLayer
-            coordinates={coordinates}
-            isSatelliteMode={isSatelliteMode}
-          />
-        )}
-        <NavigationControl position="bottom-right" showCompass={false} />
-      </MapGL>
+      <WebGLGuard>
+        <MapControls
+          isDrawing={isDrawing}
+          setIsDrawing={setIsDrawing}
+          coordinates={coordinates}
+          setCoordinates={setCoordinates}
+          isSatelliteMode={isSatelliteMode}
+          setIsSatelliteMode={setIsSatelliteMode}
+        />
+        <MapGL
+          {...viewport}
+          {...mapState}
+          style={{ width: '100%', height: '400px' }}
+          ref={mapRef}
+          onMove={onMove}
+          onClick={handleClick}
+          onDblClick={handleDoubleClick}
+          cursor={isDrawing ? 'crosshair' : 'grab'}
+          onLoad={() => setIsMapReady(true)}
+        >
+          {isSatelliteMode && <SatelliteLayer />}
+          {geoJson !== null && (
+            <ProjectSiteLayer
+              isSatelliteMode={isSatelliteMode}
+              geoJson={geoJson}
+            />
+          )}
+          {coordinates.length > 1 && (
+            <DrawingPreviewLayer
+              coordinates={coordinates}
+              isSatelliteMode={isSatelliteMode}
+            />
+          )}
+          <NavigationControl position="bottom-right" showCompass={false} />
+        </MapGL>
+      </WebGLGuard>
       <Dropzone
         accept={['.geojson', '.kml']}
         multiple={false}
