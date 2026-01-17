@@ -255,6 +255,19 @@
       },
       "loading": "Loading...",
       "genericHistoricalYear": "Historical"
+    },
+    "mapFeatureSupport": {
+      "loadingMap": "Loading map...",
+      "notSupportedError": {
+        "title": "Graphics acceleration required",
+        "message": "This map requires graphics acceleration to function properly. This feature may be disabled in your browser settings or unavailable in your current environment (such as remote desktop connections).",
+        "solutionTitle": "To enable graphics acceleration:",
+        "solutionChrome": "<strong>Chrome:</strong> Settings → Advanced → System → Enable \"Use graphics acceleration when available\"",
+        "solutionFirefox": "<strong>Firefox:</strong> Settings → General → Performance → Uncheck \"Use recommended performance settings\"",
+        "solutionEdge": "<strong>Edge:</strong> Settings → System → Enable \"Use hardware acceleration when available\"",
+        "contactInfo": "If you continue to have issues, please contact us at support@plant-for-the-planet.org for assistance.",
+        "technicalDetails": "Technical details"
+      }
     }
   }
 }

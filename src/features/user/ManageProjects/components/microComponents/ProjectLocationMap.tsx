@@ -32,6 +32,7 @@ import {
   DEFAULT_MAP_STATE,
   DEFAULT_VIEW_STATE,
 } from '../../../../../utils/mapsV2/mapDefaults';
+import WebGLGuard from '../../../../common/WebGLGuard';
 
 interface ProjectLocationMapProps {
   clearErrors: UseFormClearErrors<ConservationFormData | TreeFormData>;
@@ -126,29 +127,31 @@ const ProjectLocationMap = ({
   );
 
   return (
-    <MapGL
-      {...viewState}
-      {...mapState}
-      ref={mapRef}
-      onMove={onMove}
-      onClick={handleMapClick}
-      style={{ width: '100%', height: '400px' }}
-      attributionControl={false}
-      onLoad={() => setMapLoaded(true)}
-    >
-      {projectCoords !== null && mapLoaded && (
-        <Marker
-          longitude={projectCoords.lng}
-          latitude={projectCoords.lat}
-          anchor="bottom"
-        >
-          <ProjectLocationIcon
-            color={themeProperties.designSystem.colors.primaryColor}
-          />
-        </Marker>
-      )}
-      <NavigationControl position="top-right" showCompass={false} />
-    </MapGL>
+    <WebGLGuard>
+      <MapGL
+        {...viewState}
+        {...mapState}
+        ref={mapRef}
+        onMove={onMove}
+        onClick={handleMapClick}
+        style={{ width: '100%', height: '400px' }}
+        attributionControl={false}
+        onLoad={() => setMapLoaded(true)}
+      >
+        {projectCoords !== null && mapLoaded && (
+          <Marker
+            longitude={projectCoords.lng}
+            latitude={projectCoords.lat}
+            anchor="bottom"
+          >
+            <ProjectLocationIcon
+              color={themeProperties.designSystem.colors.primaryColor}
+            />
+          </Marker>
+        )}
+        <NavigationControl position="top-right" showCompass={false} />
+      </MapGL>
+    </WebGLGuard>
   );
 };
 
