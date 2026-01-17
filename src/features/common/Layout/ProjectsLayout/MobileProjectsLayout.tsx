@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react';
 import type { SetState } from '../../types/common';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
-import { ParamsContext } from '../QueryParamsContext';
 import { useUserProps } from '../UserPropsContext';
 import { clsx } from 'clsx';
+import { useQueryParamStore } from '../../../../stores/queryParamStore';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
@@ -26,10 +26,17 @@ const MobileProjectsLayout = ({
   setCurrencyCode,
   isMobile,
 }: ProjectsLayoutProps) => {
-  const { embed, showProjectList, showProjectDetails, isContextLoaded } =
-    useContext(ParamsContext);
-  const isEmbedded = embed === 'true';
   const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
+
+  const isMapMode = selectedMode === 'map';
+
+  const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
+  const showProjectList = useQueryParamStore((state) => state.showProjectList);
+  const showProjectDetails = useQueryParamStore(
+    (state) => state.showProjectDetails
+  );
+  const isContextLoaded = useQueryParamStore((state) => state.isContextLoaded);
+
   const { isImpersonationModeOn } = useUserProps();
 
   useEffect(() => {
@@ -44,7 +51,7 @@ const MobileProjectsLayout = ({
   }, [page, isEmbedded, isContextLoaded, showProjectDetails, showProjectList]);
 
   const mobileLayoutClass = clsx(styles.mobileProjectsLayout, {
-    [styles.mapMode]: selectedMode === 'map',
+    [styles.mapMode]: isMapMode,
     [styles.embedModeMobile]: isEmbedded,
     [styles.impersonationMobile]: isImpersonationModeOn,
   });
@@ -58,7 +65,7 @@ const MobileProjectsLayout = ({
       setSelectedMode={setSelectedMode}
     >
       <main className={mobileLayoutClass}>
-        {selectedMode === 'map' ? (
+        {isMapMode ? (
           <section className={styles.mobileMapContainer}>
             <ProjectsMap
               selectedMode={selectedMode}

@@ -1,7 +1,7 @@
 import type { MouseEvent } from 'react';
 import type { ImageSectionProps } from '..';
 
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -13,9 +13,9 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectReports from './TopProjectReports';
 import styles from '../styles/ProjectSnippet.module.scss';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
+import { useQueryParamStore } from '../../../../stores/queryParamStore';
 
 const MAX_NAME_LENGTH = 32;
 
@@ -41,10 +41,13 @@ const ImageSection = (props: ImageSectionProps) => {
   const tProjectsCommon = useTranslations('Project');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { embed, callbackUrl, showBackIcon } = useContext(ParamsContext);
-  const isEmbed = embed === 'true';
+
+  const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
+  const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
+  const showBackIcon = useQueryParamStore((state) => state.showBackIcon);
+
   const showBackButton =
-    page === 'project-details' && !(isEmbed && showBackIcon === 'false');
+    page === 'project-details' && !(isEmbedMode && showBackIcon === 'false');
 
   const handleBackButton = () => {
     if (setPreventShallowPush) setPreventShallowPush(true);
@@ -64,7 +67,7 @@ const ImageSection = (props: ImageSectionProps) => {
     // Cleans up internal routing parameters like `locale`, `slug` etc.
     const pathWithoutQuery = path.split('?')[0];
     // Handle query parameters for the new navigation
-    const queryParams = isEmbed
+    const queryParams = isEmbedMode
       ? {
           embed: 'true',
           ...(callbackUrl !== undefined && { callback: callbackUrl }),

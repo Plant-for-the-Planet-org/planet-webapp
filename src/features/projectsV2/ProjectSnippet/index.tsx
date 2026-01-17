@@ -12,10 +12,9 @@ import type {
 } from '@planet-sdk/common';
 import type { SetState } from '../../common/types/common';
 
-import { useContext, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
 import ImageSection from './microComponents/ImageSection';
 import styles from './styles/ProjectSnippet.module.scss';
@@ -26,6 +25,7 @@ import {
 import TpoName from './microComponents/TpoName';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
+import { useQueryParamStore } from '../../../stores/queryParamStore';
 
 interface Props {
   project:
@@ -166,9 +166,12 @@ export default function ProjectSnippet({
   utmCampaign,
   disableDonations,
 }: Props): ReactElement {
-  const { embed, callbackUrl } = useContext(ParamsContext);
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+
+  const embed = useQueryParamStore((state) => state.embed);
+  const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
+
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
 

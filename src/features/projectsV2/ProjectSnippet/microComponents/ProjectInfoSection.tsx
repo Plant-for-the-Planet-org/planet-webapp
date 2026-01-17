@@ -1,16 +1,16 @@
 import type { CountryCode } from '@planet-sdk/common';
 import type { ProjectInfoProps } from '..';
 
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import WebappButton from '../../../common/WebappButton';
 import styles from '../styles/ProjectSnippet.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
+import { useQueryParamStore } from '../../../../stores/queryParamStore';
 
 const ProjectInfoSection = (props: ProjectInfoProps) => {
   const {
@@ -34,7 +34,9 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
   const { tenantConfig } = useTenant();
   const { token } = useUserProps();
   const locale = useLocale();
-  const { embed, callbackUrl } = useContext(ParamsContext);
+
+  const embed = useQueryParamStore((state) => state.embed);
+  const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
 
   const donateLink = getDonationUrl(
     tenantConfig.id,
