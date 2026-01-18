@@ -50,7 +50,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.1",
-    "@formatjs/intl-localematcher": "^0.7.2",
+    "@formatjs/intl-localematcher": "^0.7.3",
     "@mapbox/mapbox-gl-draw": "^1.5.1",
     "@mapbox/togeojson": "^0.16.1",
     "@maplibre/maplibre-gl-compare": "^0.5.0",
