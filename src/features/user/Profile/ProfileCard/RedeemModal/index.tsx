@@ -41,7 +41,7 @@ export default function RedeemModal({
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // store
-  const apiErrors = useErrorHandlingStore((state) => state.errors);
+  const errors = useErrorHandlingStore((state) => state.errors);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function redeemingCode(data: string): Promise<void> {
@@ -132,7 +132,7 @@ export default function RedeemModal({
     >
       <Fade in={redeemModalOpen}>
         <div>
-          {redeemedCodeData === undefined && !apiErrors && (
+          {redeemedCodeData === undefined && !errors && (
             <EnterRedeemCode
               isLoading={isLoading}
               setInputCode={setInputCode}
@@ -142,7 +142,7 @@ export default function RedeemModal({
             />
           )}
 
-          {redeemedCodeData && !apiErrors && (
+          {redeemedCodeData && !errors && (
             <SuccessfullyRedeemed
               redeemedCodeData={redeemedCodeData}
               redeemAnotherCode={redeemAnotherCode}
@@ -150,9 +150,9 @@ export default function RedeemModal({
             />
           )}
 
-          {apiErrors && (
+          {errors && (
             <RedeemFailed
-              errorMessages={apiErrors}
+              errorMessages={errors}
               inputCode={inputCode}
               redeemAnotherCode={redeemAnotherCode}
               closeRedeem={closeModal}
