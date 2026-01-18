@@ -5,7 +5,7 @@ import type {
   ExtendedProfileProjectProperties,
 } from '../../common/types/project';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import BasicDetails from './components/BasicDetails';
 import ProjectMedia from './components/ProjectMedia';
 import ProjectSelection from './components/ProjectSelection';
@@ -15,12 +15,12 @@ import ProjectSpending from './components/ProjectSpending';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import TabbedView from '../../common/Layout/TabbedView';
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -47,17 +47,18 @@ export default function ManageProjects({
 }: ManageProjectsProps) {
   const t = useTranslations('ManageProjects');
   const locale = useLocale();
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { putApiAuthenticated, getApiAuthenticated } = useApi();
-
+  // local state
   const [tabSelected, setTabSelected] = useState<number>(0);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [projectGUID, setProjectGUID] = useState<string>(GUID ? GUID : '');
   const [tablist, setTabList] = useState<TabItem[]>([]);
   const [projectDetails, setProjectDetails] =
     useState<ExtendedProfileProjectProperties | null>(null);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const formRouteHandler = (val: number) => {
     if (router.query.purpose) return;
@@ -151,7 +152,7 @@ export default function ManageProjects({
         setProjectDetails(res);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/profile');
+        router.push(localizedPath('/profile'));
       }
     };
 

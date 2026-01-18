@@ -18,7 +18,6 @@ import {
 } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -30,6 +29,7 @@ import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import themeProperties from '../../../../theme/themeProperties';
 import ProjectLocationMap from './microComponents/ProjectLocationMap';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 export type BaseFormData = {
   name: string;
@@ -101,10 +101,9 @@ export default function BasicDetails({
   const locale = useLocale();
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated, postApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-
+  // local state
   const [acceptDonations, setAcceptDonations] = useState(false);
   const [IsSkipButtonVisible, setIsSkipButtonVisible] =
     useState<boolean>(false);
@@ -112,6 +111,8 @@ export default function BasicDetails({
   const [projectCoords, setProjectCoords] = useState<ProjectCoordinates | null>(
     null
   );
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const canChangeUnitType =
     !projectDetails ||

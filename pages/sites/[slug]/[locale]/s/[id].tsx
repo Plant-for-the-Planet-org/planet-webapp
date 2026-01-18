@@ -9,10 +9,9 @@ import type { APIError, UserPublicProfile } from '@planet-sdk/common';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import { useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
-import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import {
   constructPathsForTenantSlug,
@@ -23,6 +22,7 @@ import { defaultTenant } from '../../../../../tenant.config';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
 
 interface Props {
   pageProps: PageProps;
@@ -35,7 +35,8 @@ export default function DirectGift({
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
   const { getApi } = useApi();
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (router.isReady) {
@@ -59,10 +60,10 @@ export default function DirectGift({
           })
         );
       }
-      router.push(localizedPath('/'));
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/');
+    } finally {
+      router.push(localizedPath('/'));
     }
   }
 

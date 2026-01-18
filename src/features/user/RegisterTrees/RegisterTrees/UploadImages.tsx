@@ -1,17 +1,17 @@
 import type { ReactElement } from 'react';
 import type { APIError, Image } from '@planet-sdk/common';
 
-import { useState, useContext, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import styles from '../RegisterModal.module.scss';
 import { useDropzone } from 'react-dropzone';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslations } from 'next-intl';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button } from '@mui/material';
 import { useApi } from '../../../../hooks/useApi';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 interface Props {
   contributionGUID: string;
@@ -25,11 +25,13 @@ type UploadImageApiPayload = {
 export default function UploadImages({
   contributionGUID,
 }: Props): ReactElement {
+  const t = useTranslations('Me');
+  const { deleteApiAuthenticated, postApiAuthenticated } = useApi();
+  // local state
   const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
   const [isUploadingData, setIsUploadingData] = useState(false);
-  const t = useTranslations('Me');
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const { deleteApiAuthenticated, postApiAuthenticated } = useApi();
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);

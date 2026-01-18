@@ -1,10 +1,9 @@
 import type { ChangeEvent } from 'react';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import styles from './DeleteProfile.module.scss';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../../common/Layout/CustomModal';
 import { useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
@@ -13,23 +12,24 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 export default function DeleteProfileForm() {
   const { user, logoutUser } = useUserProps();
   const tCommon = useTranslations('Common');
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
+  const { deleteApiAuthenticated } = useApi();
+  // local state
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); //true when subscriptions are present
+  const [canDeleteAccount, setCanDeleteAccount] = useState(false);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleChange = (e: ChangeEvent<{}>) => {
     e.preventDefault();
   };
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const router = useRouter();
-  const { localizedPath } = useLocalizedPath();
-  const { deleteApiAuthenticated } = useApi();
-
-  const [isUploadingData, setIsUploadingData] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); //true when subscriptions are present
-  const [canDeleteAccount, setCanDeleteAccount] = useState(false);
-
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
     try {

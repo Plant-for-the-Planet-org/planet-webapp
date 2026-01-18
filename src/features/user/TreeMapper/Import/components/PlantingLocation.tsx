@@ -15,7 +15,7 @@ import type {
   ProfileProjectFeature,
 } from '@planet-sdk/common';
 
-import { useEffect, useState, useContext, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import styles from '../Import.module.scss';
 import { useTranslations } from 'next-intl';
@@ -33,9 +33,9 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { handleError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { useApi } from '../../../../../hooks/useApi';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../../stores/errorHandlingStore';
 
 // import { DevTool } from '@hookform/devtools';
 
@@ -164,12 +164,6 @@ export default function PlantingLocation({
 }: Props): ReactElement {
   const { getApiAuthenticated } = useApi();
   const { user, contextLoaded } = useUserProps();
-  const [isUploadingData, setIsUploadingData] = useState(false);
-  const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
-  const importMethods = ['import', 'editor'];
-  const [geoJsonError, setGeoJsonError] = useState(false);
-  const [mySpecies, setMySpecies] = useState<Species[] | null>(null);
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated } = useApi();
   const tTreemapper = useTranslations('Treemapper');
   const tMe = useTranslations('Me');
@@ -193,11 +187,18 @@ export default function PlantingLocation({
     mode: 'onBlur',
     defaultValues: defaultValues,
   });
-
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'plantedSpecies',
   });
+  // local state
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
+  const importMethods = ['import', 'editor'];
+  const [geoJsonError, setGeoJsonError] = useState(false);
+  const [mySpecies, setMySpecies] = useState<Species[] | null>(null);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const loadProjects = async () => {
     try {

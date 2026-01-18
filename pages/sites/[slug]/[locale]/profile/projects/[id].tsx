@@ -10,7 +10,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
 import GlobeContentLoader from '../../../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
@@ -20,7 +20,6 @@ import { useUserProps } from '../../../../../../src/features/common/Layout/UserP
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
-import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import {
   constructPathsForTenantSlug,
@@ -31,6 +30,8 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
+import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
+import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
 
 interface Props {
   pageProps: PageProps;
@@ -40,17 +41,20 @@ function ManageSingleProject({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('Common');
-  const [projectGUID, setProjectGUID] = useState<string | null>(null);
-  const [ready, setReady] = useState<boolean>(false);
+  const { user, contextLoaded, token } = useUserProps();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
+  //local state
+  const [ready, setReady] = useState<boolean>(false);
+  const [projectGUID, setProjectGUID] = useState<string | null>(null);
   const [accessDenied, setAccessDenied] = useState<boolean>(false);
   const [setupAccess, setSetupAccess] = useState<boolean>(false);
   const [project, setProject] =
     useState<ExtendedProfileProjectProperties | null>(null);
-  const { user, contextLoaded, token } = useUserProps();
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (router.isReady) {
@@ -77,7 +81,7 @@ function ManageSingleProject({
       } catch (err) {
         setAccessDenied(true);
         setErrors(handleError(err as APIError));
-        redirect('/profile');
+        router.push(localizedPath('/profile'));
       }
     }
 

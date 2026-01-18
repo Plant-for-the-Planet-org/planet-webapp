@@ -17,13 +17,13 @@ import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 interface EditModalProps {
   editModalOpen: boolean;
@@ -52,8 +52,6 @@ export const EditModal = ({
   fetchRecurrentDonations,
 }: EditModalProps) => {
   const { theme } = useContext(ThemeContext);
-  const [userLang, setUserLang] = useState('en');
-  const [disabled, setDisabled] = useState(false);
   const { putApiAuthenticated } = useApi();
   const t = useTranslations('Me');
   const locale = useLocale();
@@ -64,7 +62,12 @@ export const EditModal = ({
   } = useForm<FormData>({
     mode: 'all',
   });
-  const { setErrors } = useContext(ErrorHandlingContext);
+  //local state
+  const [userLang, setUserLang] = useState('en');
+  const [disabled, setDisabled] = useState(false);
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');

@@ -1,23 +1,25 @@
 import type { Project } from '../../../common/Layout/AnalyticsContext';
 import type { APIError, ProfileProjectFeature } from '@planet-sdk/common';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslations } from 'next-intl';
 import ProjectFilter from './components/ProjectFilter';
 import { useAnalytics } from '../../../common/Layout/AnalyticsContext';
 import { DataExplorerGridContainer } from './components/DataExplorerGridContainer';
 import { handleError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import NoProjectsFound from './components/NoProjectsFound';
 import { useApi } from '../../../../hooks/useApi';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 const Analytics = () => {
   const t = useTranslations('TreemapperAnalytics');
   const { projectList, setProjectList, setProject } = useAnalytics();
-  const [isLoaded, setIsLoaded] = useState(false);
   const { getApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // local state
+  const [isLoaded, setIsLoaded] = useState(false);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const fetchProjects = async () => {
     try {

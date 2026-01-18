@@ -10,7 +10,7 @@ import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './DonationReceipt.module.scss';
 import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import YearlyReceiptGroup from './microComponents/YearlyReceiptGroup';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
@@ -20,7 +20,6 @@ import {
   transformProfileToPrimaryAddressView,
 } from './transformers';
 import { useApi } from '../../../hooks/useApi';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
@@ -38,14 +37,14 @@ const DonationReceipts = () => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const tReceipt = useTranslations('DonationReceipt');
+  const { initForIssuance, initForVerification } = useDonationReceiptContext();
+  // local state
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
   const [processReceiptId, setProcessReceiptId] = useState<string | null>(null);
   const [overviewLoadingYear, setOverviewLoadingYear] = useState<string | null>(
     null
   );
-  const { initForIssuance, initForVerification } = useDonationReceiptContext();
-  const { redirect } = useContext(ErrorHandlingContext);
 
   useEffect(() => {
     (async () => {
@@ -57,7 +56,7 @@ const DonationReceipts = () => {
         if (response) setDonationReceipts(response);
       } catch (error) {
         handleError(error as APIError);
-        redirect('/');
+        router.push(localizedPath('/'));
       }
     })();
   }, []);

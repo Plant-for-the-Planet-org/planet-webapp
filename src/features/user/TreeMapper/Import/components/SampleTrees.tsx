@@ -5,7 +5,7 @@ import type { FileImportError } from '../../../BulkCodes/BulkCodesTypes';
 import type { MultiTreeRegistration, Measurements } from '@planet-sdk/common';
 import type { SampleTree } from '../../Treemapper';
 
-import { useState, useContext, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
 import { useTranslations } from 'next-intl';
@@ -13,9 +13,9 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
 import { handleError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
 import { useApi } from '../../../../../hooks/useApi';
+import { useErrorHandlingStore } from '../../../../../stores/errorHandlingStore';
 
 interface Props {
   handleNext: Function;
@@ -47,13 +47,15 @@ export default function SampleTrees({
 }: Props): ReactElement {
   const tTreemapper = useTranslations('Treemapper');
   const tBulkCodes = useTranslations('BulkCodes');
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated } = useApi();
+  // local state
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<string[]>([]);
   const [sampleTrees, setSampleTrees] = useState<SampleTree[]>([]);
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const {
     handleSubmit,

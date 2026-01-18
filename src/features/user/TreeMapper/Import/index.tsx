@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { APIError, Intervention } from '@planet-sdk/common';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
 import { useTranslations } from 'next-intl';
@@ -16,9 +16,9 @@ import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
 import { handleError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useApi } from '../../../../hooks/useApi';
 import themeProperties from '../../../../theme/themeProperties';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -45,8 +45,15 @@ export default function ImportData(): ReactElement {
   const router = useRouter();
   const tTreemapper = useTranslations('Treemapper');
   const tCommon = useTranslations('Common');
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated } = useApi();
+  // local state
+  const [activeStep, setActiveStep] = useState(0);
+  const [intervention, setIntervention] = useState<Intervention | null>(null);
+  const [userLang, setUserLang] = useState('en');
+  const [geoJson, setGeoJson] = useState(null);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   function getSteps() {
     return [
       tTreemapper('plantingLocation'),
@@ -54,12 +61,7 @@ export default function ImportData(): ReactElement {
       tTreemapper('submitted'),
     ];
   }
-  const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
-  const [intervention, setIntervention] = useState<Intervention | null>(null);
-  const [userLang, setUserLang] = useState('en');
-  const [geoJson, setGeoJson] = useState(null);
-
   const fetchIntervention = async (id: string) => {
     try {
       const result = await getApiAuthenticated<Intervention>(

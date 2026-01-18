@@ -6,14 +6,13 @@ import type {
 } from '@planet-sdk/common';
 import type { ExtendedProject } from '../../common/types/projectv2';
 
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
 import { useProjects } from '../ProjectsContext';
 import ProjectInfo from './components/ProjectInfo';
 import { useLocale } from 'next-intl';
 import { handleError, ClientError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -26,6 +25,8 @@ import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useApi } from '../../../hooks/useApi';
 import { useTenant } from '../../common/Layout/TenantContext';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
 
 const ProjectDetails = ({
@@ -51,13 +52,16 @@ const ProjectDetails = ({
   const setTimeTravelConfig = useProjectMapStore(
     (state) => state.setTimeTravelConfig
   );
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const locale = useLocale();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
   const { tenantConfig } = useTenant();
   const { p: projectSlug } = router.query;
+  //local state
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const fetchInterventions = async (projectId: string) => {
     setIsLoading(true);
@@ -75,7 +79,7 @@ const ProjectDetails = ({
     } catch (err) {
       setErrors(handleError(err as APIError | ClientError));
       setIsError(true);
-      redirect('/');
+      router.push(localizedPath('/'));
     } finally {
       setIsLoading(false);
     }
@@ -118,7 +122,7 @@ const ProjectDetails = ({
       } catch (err) {
         setErrors(handleError(err as APIError | ClientError));
         setIsError(true);
-        redirect('/');
+        router.push(localizedPath('/'));
       } finally {
         setIsLoading(false);
       }

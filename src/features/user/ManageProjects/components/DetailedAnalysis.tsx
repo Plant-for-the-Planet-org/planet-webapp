@@ -8,7 +8,7 @@ import type {
   ExtendedProfileProjectProperties,
 } from '../../../common/types/project';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import styles from './../StepForm.module.scss';
@@ -19,7 +19,6 @@ import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { TextField, Button, Tooltip } from '@mui/material';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -30,6 +29,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { useApi } from '../../../../hooks/useApi';
 import themeProperties from '../../../../theme/themeProperties';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 type BaseFormData = {
   employeesCount: string;
@@ -105,9 +105,9 @@ export default function DetailedAnalysis({
 }: DetailedAnalysisProps): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
   const { colors } = themeProperties.designSystem;
+  // local state
   const [siteOwners, setSiteOwners] = useState<SiteOwners[]>([
     {
       id: 1,
@@ -147,7 +147,6 @@ export default function DetailedAnalysis({
     },
   ]);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
-
   const [plantingSeasons, setPlantingSeasons] = useState<PlantingSeason[]>([
     { id: 1, title: tCommon('january'), isSet: false },
     { id: 2, title: tCommon('february'), isSet: false },
@@ -162,7 +161,6 @@ export default function DetailedAnalysis({
     { id: 11, title: tCommon('november'), isSet: false },
     { id: 12, title: tCommon('december'), isSet: false },
   ]);
-
   const [interventionOptions, setInterventionOptions] = useState<
     InterventionOption[]
   >([
@@ -184,15 +182,15 @@ export default function DetailedAnalysis({
     ['soil-improvement', false],
     ['stop-tree-harvesting', false],
   ]);
-
   const [mainInterventions, setMainInterventions] = useState<
     InterventionTypes[]
   >([]);
   const [isInterventionsMissing, setIsInterventionsMissing] = useState<
     boolean | null
   >(null);
-
   const [minDensity, setMinDensity] = useState<number | string | null>(0);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleSetPlantingSeasons = (id: number) => {
     const month = plantingSeasons[id - 1];

@@ -13,10 +13,9 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import LeaderBoard from '../../../../src/tenants/planet/LeaderBoard';
 import GetLeaderboardMeta from '../../../../src/utils/getMetaTags/GetLeaderboardMeta';
-import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import { useRouter } from 'next/router';
@@ -27,18 +26,20 @@ import {
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../src/hooks/useApi';
+import { useErrorHandlingStore } from '../../../../src/stores/errorHandlingStore';
 
 interface Props {
   pageProps: PageProps;
 }
 
 export default function Home({ pageProps }: Props) {
-  const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
-  const { setErrors } = useContext(ErrorHandlingContext);
-
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { getApi } = useApi();
+  // local state
+  const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (router.isReady) {

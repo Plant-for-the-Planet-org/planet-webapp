@@ -1,7 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
 import type { Species, SpeciesSuggestionType } from '../Treemapper';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import StyledForm from '../../../common/Layout/StyledForm';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -9,11 +9,11 @@ import SpeciesSelect from './SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button, TextField } from '@mui/material';
 import { useApi } from '../../../../hooks/useApi';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 interface NewSpecies {
   aliases: string;
@@ -29,11 +29,13 @@ export default function MySpeciesForm() {
   const tTreemapper = useTranslations('Treemapper');
   const tCommon = useTranslations('Common');
   const { token, contextLoaded } = useUserProps();
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const [species, setSpecies] = useState<Species[]>([]);
-  const [isUploadingData, setIsUploadingData] = useState(false);
   const { getApiAuthenticated, deleteApiAuthenticated, postApiAuthenticated } =
     useApi();
+  // local state
+  const [species, setSpecies] = useState<Species[]>([]);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const defaultMySpeciesValue = {
     aliases: '',

@@ -8,12 +8,11 @@ import type {
 } from '@planet-sdk/common';
 
 import Link from 'next/link';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import getImageUrl from '../../../utils/getImageURL';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
@@ -25,6 +24,7 @@ import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 type ProjectProperties =
   | ProfileProjectPropertiesFund
@@ -118,14 +118,18 @@ function SingleProject({ project }: { project: ProjectProperties }) {
 }
 
 export default function ProjectsContainer() {
+  const router = useRouter();
   const tDonate = useTranslations('Donate');
   const tManageProjects = useTranslations('ManageProjects');
   const { getApiAuthenticated } = useApi();
   const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
-  const [loader, setLoader] = useState(true);
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { user, contextLoaded, token } = useUserProps();
   const { localizedPath } = useLocalizedPath();
+  // local state
+  const [loader, setLoader] = useState(true);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   async function loadProjects() {
     if (user) {
       try {
@@ -136,7 +140,7 @@ export default function ProjectsContainer() {
         setProjects(projects);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/profile');
+        router.push(localizedPath('/profile'));
       }
       setLoader(false);
     }

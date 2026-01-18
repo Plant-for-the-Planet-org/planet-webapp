@@ -1,14 +1,16 @@
 import type { ReactElement } from 'react';
 
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './ErrorPopup.module.scss';
 import { useTranslations } from 'next-intl';
-import { ErrorHandlingContext } from '../ErrorHandlingContext';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 export default function ErrorPopup(): ReactElement {
   const t = useTranslations('Common');
-  const { errors, setErrors } = useContext(ErrorHandlingContext);
+  //store
+  const errors = useErrorHandlingStore((state) => state.errors);
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;

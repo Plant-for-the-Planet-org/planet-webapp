@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { handleError } from '@planet-sdk/common';
 import { createContext, useState, useContext, useEffect } from 'react';
 import { useApi } from '../../../hooks/useApi';
-import { ErrorHandlingContext } from './ErrorHandlingContext';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 type CurrencyList = {
   [key in CurrencyCode]?: string;
@@ -17,11 +17,13 @@ interface CurrencyContextInterface {
 const CurrencyContext = createContext<CurrencyContextInterface | null>(null);
 
 export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { getApi } = useApi();
   const [supportedCurrencies, setSupportedCurrencies] =
     useState<Set<CurrencyCode> | null>(null);
   const [fetchCount, setFetchCount] = useState(0);
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   const MAX_FETCH_TRIES = 2;
 
   const fetchCurrencies = async () => {
