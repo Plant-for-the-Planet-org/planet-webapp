@@ -25,6 +25,7 @@ import {
 } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 interface Props {
   project:
@@ -84,14 +85,25 @@ const ProjectSnippetContent = ({
   const ecosystem =
     project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
   const progressPercentage = useMemo(() => {
-    if (project.purpose === 'trees' && project.countTarget) {
-      return Math.min((project.countPlanted / project.countTarget) * 100, 100);
+    if (
+      project.purpose === 'trees' &&
+      project.unitType === 'tree' &&
+      project.unitsContributed?.tree &&
+      project.unitsTargeted?.tree
+    ) {
+      return Math.min(
+        (project.unitsContributed.tree / project.unitsTargeted.tree) * 100,
+        100
+      );
     }
     return 0;
   }, [
-    project.purpose === 'trees' && project.countPlanted,
-    project.countTarget,
+    project.purpose,
+    project.unitType,
+    project.unitsContributed,
+    project.unitsTargeted,
   ]);
+
   const progressBarClass = useMemo(() => {
     return `${styles[getProjectCategory(project)]}`;
   }, [
@@ -136,7 +148,7 @@ const ProjectSnippetContent = ({
       <ImageSection {...imageProps} />
       <div className={styles.progressBar}>
         <div
-          className={`${styles.progressBarHighlight} ${progressBarClass}`}
+          className={clsx(styles.progressBarHighlight, progressBarClass)}
           style={{ width: `${progressPercentage}%` }}
         />
       </div>
@@ -160,11 +172,10 @@ export default function ProjectSnippet({
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
 
-  const projectSnippetContainerClasses = `${styles.singleProject} ${
-    page === 'project-details' && isMobile
-      ? styles.projectDetailsSnippetMobile
-      : ''
-  }`;
+  const projectSnippetContainerClasses = clsx(styles.singleProject, {
+    [styles.projectDetailsSnippetMobile]:
+      page === 'project-details' && isMobile,
+  });
   const ProjectSnippetContentProps = {
     showTooltipPopups,
     page,

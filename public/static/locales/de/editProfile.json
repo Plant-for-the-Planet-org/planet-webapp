@@ -65,7 +65,7 @@
       "stateInvalid": "Bundesland ist ungültig. Es sind nur Buchstaben und folgende Sonderzeichen erlaubt: Leerzeichen . , ( ) -",
       "zipCodeRequired": "Postleitzahl ist ein Pflichtfeld",
       "zipCodeInvalid": "Postleitzahl ist ungültig",
-      "websiteInvalid": "Bitte gib eine gültige Website-URL ein",
+      "websiteInvalid": "Bitte gebe eine gültige Website-URL ein",
       "countryRequired": "Land ist ein Pflichtfeld",
       "companyRequired": "Firmenname ist ein Pflichtfeld"
     },
@@ -103,7 +103,8 @@
         "editAddress": "Adresse bearbeiten",
         "saveChanges": "Änderungen speichern",
         "address2": "Adresse 2 (optional)"
-      }
+      },
+      "addressSuggestions": "Addressvorschläge"
     }
   }
 }

@@ -67,7 +67,7 @@ function TreemapperIntervention({
   return (
     <div
       onClick={() => handleClick(intervention)}
-      className={`${styles.singleLocation}`}
+      className={styles.singleLocation}
     >
       <div className={styles.locationHeader}>
         <div className={styles.left}>

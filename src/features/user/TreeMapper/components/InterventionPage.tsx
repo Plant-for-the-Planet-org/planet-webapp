@@ -17,21 +17,15 @@ import CopyToClipboard from '../../../common/CopyToClipboard';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 
-const ImageSlider = dynamic(
-  () => import('../../../projects/components/Intervention/ImageSlider'),
-  {
-    ssr: false,
-    loading: () => <p>Images</p>,
-  }
-);
+const ImageSlider = dynamic(() => import('./ImageSliderMulti'), {
+  ssr: false,
+  loading: () => <p>Images</p>,
+});
 
-const ImageSliderSingle = dynamic(
-  () => import('../../../projects/components/projectDetails/ImageSlider'),
-  {
-    ssr: false,
-    loading: () => <p>Images</p>,
-  }
-);
+const ImageSliderSingle = dynamic(() => import('./ImageSliderSingle'), {
+  ssr: false,
+  loading: () => <p>Images</p>,
+});
 
 interface Props {
   setSelectedIntervention: SetState<
@@ -167,7 +161,7 @@ export function InterventionInfo({
         )}
       {selectedIntervention.type !== 'multi-tree-registration' &&
         selectedIntervention.coordinates?.length > 0 && (
-          <div className={`${styles.projectImageSliderContainer}`}>
+          <div className={styles.projectImageSliderContainer}>
             <ImageSliderSingle
               images={selectedIntervention.coordinates}
               height={233}

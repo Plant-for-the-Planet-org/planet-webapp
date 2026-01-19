@@ -30,6 +30,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import CustomModal from '../../../common/Layout/CustomModal';
 import EditSite from './microComponent/EditSite';
 import SitesSyncActions from './microComponent/SitesSyncActions';
+import { clsx } from 'clsx';
 
 const defaultSiteDetails = {
   name: '',
@@ -367,7 +368,7 @@ export default function ProjectSites({
         </InlineFormDisplayGroup>
         {showForm ? (
           <div
-            className={`${isUploadingData ? styles.shallowOpacity : ''}`}
+            className={clsx({ [styles.shallowOpacity]: isUploadingData })}
             style={{ width: 'inherit' }}
           >
             <InlineFormDisplayGroup>

@@ -1,4 +1,4 @@
-import type { MapOptions } from '../../ProjectsMapContext';
+import type { MapOptions } from '../../../common/types/map';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -7,6 +7,7 @@ import { ExploreIcon } from '../../../../../public/assets/images/icons/projectV2
 import CustomButton from './CustomButton';
 import MapSettings from './MapSettings';
 import styles from './MapFeatureExplorer.module.scss';
+import { clsx } from 'clsx';
 
 type MapFeatureExplorerProps = {
   mapOptions: MapOptions;
@@ -26,7 +27,7 @@ const MapFeatureExplorer = ({
       <CustomButton
         startIcon={<ExploreIcon />}
         onClick={() => setIsOpen(!isOpen)}
-        className={`${styles.exploreButton} ${isOpen ? 'active' : ''}`}
+        className={clsx(styles.exploreButton, { active: isOpen })}
       >
         <div className={styles.exploreButtonContent}>
           <h3>{tExplore('title')}</h3>

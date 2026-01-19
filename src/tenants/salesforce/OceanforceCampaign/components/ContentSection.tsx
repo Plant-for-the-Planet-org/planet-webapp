@@ -14,6 +14,7 @@ import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
+import { clsx } from 'clsx';
 
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
@@ -50,17 +51,21 @@ export default function ContentSection() {
     }
   }, [projectSlug, currencyCode, locale, tenantConfig.id]);
   return (
-    <div className={`${styles.contentSectionContainer}`}>
-      <div className={`${gridStyles.fluidContainer} ${styles.contentSection}`}>
+    <div className={styles.contentSectionContainer}>
+      <div className={clsx(gridStyles.fluidContainer, styles.contentSection)}>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
             <h2>World Ocean Month Fundraising Challenge</h2>
-            <p className={`${styles.contentSectionSubhead} ${styles.bold}`}>
+            <p className={clsx(styles.contentSectionSubhead, styles.bold)}>
               Powered by Oceanforce
             </p>
-            <p className={`${styles.contentSectionSubhead}`}>
+            <p className={styles.contentSectionSubhead}>
               Help us conserve, restore, and grow 15,000 mangroves throughout
               the month of June. Everyone is eligible to participate! Click on
               the blue Donate button below to donate.
@@ -68,10 +73,18 @@ export default function ContentSection() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
           <div
-            className={`${gridStyles.colMd8} ${gridStyles.col12} ${gridStyles.textCenter}`}
+            className={clsx(
+              gridStyles.colMd8,
+              gridStyles.col12,
+              gridStyles.textCenter
+            )}
           >
             <p>
               June is World Oceans Month, and we are inviting Salesforce
@@ -81,10 +94,18 @@ export default function ContentSection() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg3,
+              gridStyles.col12
+            )}
           >
             <img
               src="/tenants/salesforce/images/oceanforce_1.png"
@@ -93,7 +114,12 @@ export default function ContentSection() {
             />
           </div>
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg6,
+              gridStyles.col12,
+              styles.justifyContentCenter
+            )}
           >
             <p>
               Mangrove forests are the ultimate climate champion and a bedrock
@@ -108,10 +134,14 @@ export default function ContentSection() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <p className={`${styles.contentSectionQuote}`}>
+          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
+            <p className={styles.contentSectionQuote}>
               <em>
                 “Mangroves are unparalleled in their role as a powerful climate
                 solution, a bedrock of biodiversity, and a source of livelihood
@@ -122,10 +152,19 @@ export default function ContentSection() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            gridStyles.mb65100
+          )}
         >
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg6,
+              gridStyles.col12,
+              styles.justifyContentCenter
+            )}
           >
             <p>
               By participating in this fundraising challenge, you will also be a
@@ -147,7 +186,11 @@ export default function ContentSection() {
             </p>
           </div>
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg4} ${gridStyles.col12}`}
+            className={clsx(
+              gridStyles.colMd6,
+              gridStyles.colLg4,
+              gridStyles.col12
+            )}
           >
             {project !== null && (
               <div className={styles.projectItem}>

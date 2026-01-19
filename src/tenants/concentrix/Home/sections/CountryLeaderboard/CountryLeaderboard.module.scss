@@ -1,0 +1,211 @@
+@import '../../../../../theme/theme';
+
+.countryLeaderboard {
+  background-image: url('/tenants/concentrix/images/half-earth-background.png'),
+    linear-gradient(180deg, $cnxBrandBlueDark 0%, $cnxBrandBlueDark 100%);
+  background-position: left center;
+  background-repeat: no-repeat;
+  color: $cnxWhite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+  overflow: hidden;
+}
+
+.contentContainer {
+  position: relative;
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: center;
+  text-align: center;
+}
+
+.title {
+  text-align: center;
+  color: $cnxWhite;
+}
+
+.leaderboardTable {
+  overflow: hidden;
+  width: 100%;
+  max-width: 700px;
+}
+
+.tableHeader {
+  background: $cnxWhite;
+  border-radius: 30px;
+  border: 2px solid $cnxBrandTeal;
+  display: grid;
+  grid-template-columns: 40px 1fr 50px;
+  gap: 16px;
+  padding: 20px;
+  font-weight: 700;
+  font-size: $cnxFontBase;
+  position: relative;
+  z-index: 30;
+
+  @include smTabletView {
+    grid-template-columns: 80px 1fr 120px;
+    gap: 20px;
+    padding: 20px 30px;
+  }
+}
+
+.rankHeader,
+.countryHeader,
+.amountHeader {
+  color: $cnxBrandBlueDark;
+}
+
+.countryHeader {
+  text-align: left;
+}
+
+.amountHeader {
+  text-align: right;
+  margin-right: 0;
+
+  @include smTabletView {
+    margin-right: 15px;
+  }
+}
+
+.tableBody {
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  background: $cnxBrandBlueDarkTransparent50;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  margin-top: -10px;
+  padding-top: 10px;
+  position: relative;
+  z-index: 20;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 40px 1fr 50px;
+  gap: 16px;
+  padding: 10px 0;
+  margin: 0 20px;
+  font-size: $cnxFontBase;
+  color: $cnxWhite;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+
+  @include smTabletView {
+    grid-template-columns: 80px 1fr 120px;
+    gap: 20px;
+    margin: 0 30px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.rankCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rankNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.countryCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+  min-width: 0; // Allow text to shrink
+
+  @include smTabletView {
+    gap: 12px;
+  }
+}
+
+.flag {
+  font-family: 'Twemoji Country Flags';
+  font-size: $cnxFontLarge;
+  flex-shrink: 0; // Prevent flag from shrinking
+
+  @include smTabletView {
+    font-size: 22px;
+  }
+}
+
+.countryName {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.treeCountCell {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 0;
+
+  @include smTabletView {
+    margin-right: 15px;
+  }
+}
+
+.treeCount {
+  font-weight: 700;
+  white-space: nowrap; // Prevent tree count from wrapping
+}
+
+.loading {
+  color: $cnxWhite;
+  font-size: $cnxFontBase;
+  margin-bottom: 60px;
+}
+
+.emptyData {
+  padding: 60px 0;
+}
+
+.pagination {
+  margin: 35px 10px 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  @include smTabletView {
+    margin: 35px 30px 65px;
+    gap: 20px;
+  }
+
+  @include xsPhoneView {
+    .buttonStyles {
+      padding: 10px;
+      span {
+        font-size: $cnxFontXS;
+      }
+    }
+  }
+}
+
+.pageIndicator {
+  font-size: $cnxFontSmall;
+  white-space: nowrap;
+
+  @include smTabletView {
+    font-size: $cnxFontBase;
+  }
+}

@@ -4,7 +4,7 @@ import type { SetState } from '../../../common/types/common';
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
 import { useContext, useEffect } from 'react';
-import { useMyForest } from '../../../common/Layout/MyForestContext';
+import { useMyForestStore } from '../../../../stores/myForestStore';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -37,7 +37,7 @@ const TargetsModal = ({
   restorationTarget,
   conservationTarget,
 }: TargetsModalProps) => {
-  const { setUserInfo } = useMyForest();
+  const setUserInfo = useMyForestStore((state) => state.setUserInfo);
   const { contextLoaded, token, setRefetchUserData } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();

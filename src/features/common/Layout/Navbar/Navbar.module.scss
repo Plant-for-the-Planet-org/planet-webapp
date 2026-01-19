@@ -87,6 +87,15 @@ $campaignRightOffsetMobile: 57px;
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 200px;
+
+  a {
+    width: 100%;
+    img {
+      width: 100%;
+      object-fit: contain;
+    }
+  }
   @include xsPhoneView {
     height: 42px;
     a {
@@ -113,6 +122,9 @@ $campaignRightOffsetMobile: 57px;
     @include xsPhoneView {
       height: 32px;
       width: 31px;
+      &.wideLogo {
+        width: 60px;
+      }
     }
   }
 

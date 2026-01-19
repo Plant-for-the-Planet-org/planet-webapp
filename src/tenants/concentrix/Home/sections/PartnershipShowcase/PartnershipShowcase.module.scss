@@ -1,0 +1,159 @@
+@import '../../../../../theme/theme';
+
+.partnershipShowcase {
+  padding: 60px 20px;
+  background: linear-gradient(
+    180deg,
+    $cnxBrandBlueDark 0%,
+    $cnxBrandBlueGreen 100%
+  );
+}
+
+.contentWrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.videoContainer {
+  width: 100%;
+  max-width: 600px;
+}
+
+.content {
+  font-size: $cnxFontMedium;
+}
+
+.donationBreakdown {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+
+  @include smTabletView {
+    flex-direction: row;
+  }
+}
+
+.mainProjectInfo,
+.supportProjectInfo {
+  border-radius: 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 30px;
+
+  .percentage {
+    font-size: $cnxFontDisplay2;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .explanation {
+    font-size: $cnxFontBase;
+  }
+
+  @include smTabletView {
+    height: 300px;
+    padding: 70px 20px 20px;
+  }
+
+  @include lgLaptopView {
+    height: 400px;
+    padding: 100px 40px 20px;
+  }
+}
+
+.mainProjectInfo {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('/tenants/concentrix/images/Klimaneutralität.jpg'), $cnxBrandBlueDark;
+  background-size: cover;
+  background-position: center;
+}
+
+.supportProjectInfo {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('/tenants/concentrix/images/kiko_possenhofen_2018.jpg'),
+    $cnxBrandBlueDark;
+  background-size: cover;
+  background-position: center;
+}
+
+.imageBentoGrid {
+  width: 100%;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+
+  @include smTabletView {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 250px);
+  }
+
+  @include lgLaptopView {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 360px;
+    align-items: center;
+  }
+}
+
+.bentoImage {
+  width: 100%;
+  height: 250px;
+  border-radius: 13px;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @include smTabletView {
+    height: 100%;
+  }
+
+  @include lgLaptopView {
+    height: 300px;
+  }
+}
+
+.bentoImageLeft {
+  @include smTabletView {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  @include lgLaptopView {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+}
+
+.bentoImageCenter {
+  @include lgLaptopView {
+    height: 360px;
+  }
+
+  @include smTabletView {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+  }
+}
+
+.bentoImageRight {
+  @include smTabletView {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  @include lgLaptopView {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+  }
+}

@@ -16,6 +16,7 @@ import Downloads, { canHaveCertificates } from './Downloads';
 import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../../utils/projectV2';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
 
 interface HeaderProps {
   record: PaymentHistoryRecord;
@@ -53,6 +54,11 @@ export function RecordHeader({
         break;
       case 'bouquet':
       case 'funds':
+      case 'academy':
+      case 'endowment':
+      case 'forest-protection':
+      case 'sponsorship':
+      case 'membership':
         title = record.details.project;
         break;
       case 'planet-cash':
@@ -62,7 +68,7 @@ export function RecordHeader({
     }
 
     return (
-      <p title={title} className={`${styles.top} ${styles.recordTitle}`}>
+      <p title={title} className={clsx(styles.top, styles.recordTitle)}>
         {title}
       </p>
     );
@@ -85,11 +91,11 @@ export function RecordHeader({
         <p>{formatDate(record.created)}</p>
       </div>
       <div className={styles.right}>
-        <p className={`${styles.top} ${styles[netAmountStatus]}`}>
+        <p className={clsx(styles.top, styles[netAmountStatus])}>
           {netAmountStatus === 'outgoing' && '-'}
           {getFormattedCurrency(locale, record.currency, record.netAmount)}
         </p>
-        <p className={`${styles.recordStatus} ${styles[record.status]}`}>
+        <p className={clsx(styles.recordStatus, styles[record.status])}>
           {tMe(record.status)}
         </p>
       </div>
@@ -284,13 +290,13 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         </div>
       )}
       {record.details?.giftOccasion && (
-        <div className={`${styles.singleDetail} ${styles.fullWidth}`}>
+        <div className={clsx(styles.singleDetail, styles.fullWidth)}>
           <p className={styles.title}>{tMe('giftOccasion')}</p>
           <p>{record.details.giftOccasion}</p>
         </div>
       )}
       {record.details?.giftComment && (
-        <div className={`${styles.singleDetail} ${styles.fullWidth}`}>
+        <div className={clsx(styles.singleDetail, styles.fullWidth)}>
           <p className={styles.title}>{tMe('giftComment')}</p>
           <p>{record.details.giftComment}</p>
         </div>
@@ -429,9 +435,11 @@ export default function AccountRecord({
 }: Props): ReactElement {
   const t = useTranslations('Me');
 
-  const outerDivClasses = isModal
-    ? styles.recordModal
-    : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
+  const outerDivClasses = clsx({
+    [styles.recordModal]: isModal,
+    [styles.record]: !isModal,
+    [styles.selected]: !isModal && selectedRecord === index,
+  });
 
   const showDownloads = useMemo(() => {
     if (

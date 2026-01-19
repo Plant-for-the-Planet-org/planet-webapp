@@ -17,6 +17,7 @@ import type {
   Polygon,
 } from 'geojson';
 import type { Map as MapLibreMap } from 'maplibre-gl';
+import type { MapLayerOptionsType } from '../../../utils/mapsV2/mapSettings.config';
 
 export interface ClusterMarker {
   geometry: {
@@ -143,11 +144,7 @@ export interface ViewportProps {
   transitionEasing?: (normalizedTime: number) => number;
 }
 
-export interface RegisteredTreesGeometry {
-  features?: [];
-  coordinates: [number, number] | number[][];
-  type: 'Polygon' | 'Point';
-}
+export type RegisteredTreesGeometry = Point | Polygon;
 
 export interface RegisterTreesFormProps {
   setContributionGUID: SetState<string>;
@@ -317,3 +314,43 @@ export interface ExtendedMapLibreMap extends MapLibreMap {
   getMap: () => MapLibreMap;
 }
 export type MapLibreRef = MutableRefObject<ExtendedMapLibreMap | null>;
+
+// Main map: Explore feature
+
+/**
+ * Contains current state of map settings (set using MapFeatureExplorer)
+ */
+export type MapOptions = {
+  [key in MapLayerOptionsType]?: boolean;
+};
+
+export type ExploreLayersData = {
+  [key in MapLayerOptionsType]?: SingleExploreLayerConfig;
+};
+
+export type SingleExploreLayerConfig = {
+  uuid: string;
+  name: string;
+  key: MapLayerOptionsType;
+  description: string;
+  earthEngineAssetId: string;
+  visParams: VisParams;
+  zoomConfig: LayerZoomConfig;
+  tileUrl: string;
+  googleEarthUrl: string;
+  metadata: Record<never, never>;
+  enabled: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type VisParams = {
+  max: number;
+  min: number;
+  palette: string[];
+};
+
+export type LayerZoomConfig = {
+  minZoom: number;
+  maxZoom: number;
+};

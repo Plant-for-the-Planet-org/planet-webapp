@@ -1,4 +1,4 @@
-import type { MapProject } from '../../../../features/common/types/ProjectPropsContextInterface';
+import type { MapProject } from '../../../../features/common/types/projectv2';
 import type { APIError } from '@planet-sdk/common/build/types/errors';
 
 import { useContext, useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
+import { clsx } from 'clsx';
 
 export default function ProjectGrid() {
   const { getApi } = useApi();
@@ -47,7 +48,7 @@ export default function ProjectGrid() {
       .map((allowedProject) => {
         return (
           <div
-            className={`${styles.projectItem}`}
+            className={styles.projectItem}
             key={allowedProject.properties.id}
           >
             <ProjectSnippet
@@ -63,12 +64,12 @@ export default function ProjectGrid() {
   };
 
   return (
-    <div className={`${styles.projectGridContainer}`}>
-      <div className={`${gridStyles.fluidContainer} ${styles.projectGrid}`}>
+    <div className={styles.projectGridContainer}>
+      <div className={clsx(gridStyles.fluidContainer, styles.projectGrid)}>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
+          className={clsx(gridStyles.gridRow, gridStyles.justifyContentCenter)}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+          <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
             <h3>Projects</h3>
             <p className={styles.contentSectionSubhead}>
               You can donate to these projects.
@@ -76,7 +77,11 @@ export default function ProjectGrid() {
           </div>
         </div>
         <div
-          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${styles.projectList}`}
+          className={clsx(
+            gridStyles.gridRow,
+            gridStyles.justifyContentCenter,
+            styles.projectList
+          )}
         >
           {projects ? renderAllowedProjects(projects) : <></>}
         </div>

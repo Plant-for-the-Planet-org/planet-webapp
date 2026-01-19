@@ -210,6 +210,21 @@
   }
 }
 
+.regularProject {
+  background-color: $dsLeafGreen;
+  border: none;
+  &:hover {
+    background-color: $dsLeafGreen;
+    opacity: 0.7;
+    border: none;
+  }
+}
+
+.nonDonatableProject {
+  background-color: transparent;
+  border: none;
+}
+
 .projectEcosystemOrTypeContainer {
   display: flex;
   align-items: center;

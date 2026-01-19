@@ -3,7 +3,7 @@ import type { SetState } from '../../common/types/common';
 import type { ProjectTabs } from '.';
 import type { MapProject } from '../../common/types/projectv2';
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import type { MapOptions } from '../ProjectsMapContext';
+import type { MapOptions } from '../../common/types/map';
 
 import { useContext, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -16,6 +16,7 @@ import ActiveSearchField from './microComponents/ActiveSearchField';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { clsx } from 'clsx';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
@@ -74,14 +75,18 @@ const ProjectListControlForMobile = ({
     embed === 'true' && page === 'project-list' && showProjectList === 'false';
   const shouldDisplayMapFeatureExplorer =
     selectedMode === 'map' && process.env.ENABLE_EXPLORE === 'true';
-  const projectListControlsMobileClasses = `${
-    styles.projectListControlsMobile
-  } ${selectedMode === 'map' ? styles.mapModeControls : ''} ${
-    isImpersonationModeOn ? styles['impersonationMode'] : ''
-  }`;
-  const tabContainerClasses = `${styles.tabsContainer} ${
-    isImpersonationModeOn ? styles['impersonationMode'] : ''
-  }`;
+
+  const projectListControlsMobileClasses = clsx(
+    styles.projectListControlsMobile,
+    {
+      [styles.mapModeControls]: selectedMode === 'map',
+      [styles.impersonationMode]: isImpersonationModeOn,
+    }
+  );
+
+  const tabContainerClasses = clsx(styles.tabsContainer, {
+    [styles.impersonationMode]: isImpersonationModeOn,
+  });
 
   const activeSearchFieldProps = {
     setIsFilterOpen,

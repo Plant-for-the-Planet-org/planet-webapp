@@ -3,7 +3,7 @@ import type {
   InterventionFeature,
   RequiredMapStyle,
 } from '../../../common/types/map';
-import type { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
+import type { ViewPort } from '../../../common/types/project';
 import type { MapEvent } from 'react-map-gl';
 import type { SetState } from '../../../common/types/common';
 import type { AllGeoJSON } from '@turf/turf';
@@ -28,12 +28,13 @@ import MapGL, {
 } from 'react-map-gl';
 import LayerIcon from '../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabled';
-import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { easeCubic } from 'd3-ease';
 import { useRouter } from 'next/router';
-import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
+import SatelliteLayer from '../common/SatelliteLayer';
 import themeProperties from '../../../../theme/themeProperties';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { clsx } from 'clsx';
+import { useIsMobile } from '../../../../hooks/useIsMobile';
 
 interface Props {
   interventions: Intervention[] | null;
@@ -62,7 +63,7 @@ export default function MyTreesMap({
 }: Props): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { isMobile } = useProjectProps();
+  const isMobile = useIsMobile();
   const { primaryColor, white } = themeProperties.designSystem.colors;
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
@@ -304,11 +305,10 @@ export default function MyTreesMap({
                         {viewport.zoom > 14 && (
                           <div
                             key={`${str.id}-marker`}
-                            className={`${styles.single} ${
-                              str.id === selectedIntervention?.id
-                                ? styles.singleSelected
-                                : ''
-                            }`}
+                            className={clsx(styles.single, {
+                              [styles.singleSelected]:
+                                str.id === selectedIntervention?.id,
+                            })}
                             role="button"
                             tabIndex={0}
                             onClick={() => setSelectedIntervention(str)}
@@ -332,11 +332,10 @@ export default function MyTreesMap({
                     onClick={() => {
                       setSelectedIntervention(intervention);
                     }}
-                    className={`${styles.single} ${
-                      intervention.id === selectedIntervention?.id
-                        ? styles.singleSelected
-                        : ''
-                    }`}
+                    className={clsx(styles.single, {
+                      [styles.singleSelected]:
+                        intervention.id === selectedIntervention?.id,
+                    })}
                     role="button"
                     tabIndex={0}
                   />

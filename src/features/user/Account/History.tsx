@@ -8,9 +8,10 @@ import TransactionsNotFound from '../../../../public/assets/images/icons/Transac
 import AccountRecord from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
-import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import Grid from '@mui/material/Grid';
 import MembershipCta from './components/MembershipCta';
+import { clsx } from 'clsx';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 interface Props {
   filter: string | null;
   setFilter: (filter: string) => void;
@@ -31,7 +32,7 @@ export default function History({
   const t = useTranslations('Me');
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isMobile } = useProjectProps();
+  const isMobile = useIsMobile();
   const router = useRouter();
 
   const handleRecordToggle = (index: number | undefined) => {
@@ -71,9 +72,9 @@ export default function History({
               return (
                 <div
                   key={item[0]}
-                  className={`${styles.filterButton} ${
-                    filter === item[0] ? styles.selected : ''
-                  }`}
+                  className={clsx(styles.filterButton, {
+                    [styles.selected]: filter === item[0],
+                  })}
                   onClick={() => handleSetFilter(item[0])}
                 >
                   {t(item[0])}
@@ -140,9 +141,9 @@ export default function History({
                     return (
                       <div
                         key={item[0]}
-                        className={`${styles.filterButton} ${
-                          filter === item[0] ? styles.selected : ''
-                        }`}
+                        className={clsx(styles.filterButton, {
+                          [styles.selected]: filter === item[0],
+                        })}
                         onClick={() => handleSetFilter(item[0])}
                       >
                         {t(item[0])}
