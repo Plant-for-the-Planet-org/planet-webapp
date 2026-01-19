@@ -6,7 +6,6 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { useState, useEffect } from 'react';
 import TopProgressBar from '../../../../../../src/features/common/ContentLoaders/TopProgressBar';
@@ -16,33 +15,16 @@ import PlanetCash, {
   PlanetCashTabs,
 } from '../../../../../../src/features/user/PlanetCash';
 import { useTranslations } from 'next-intl';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
-import { useRouter } from 'next/router';
+import { constructPathsForTenantSlug } from '../../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function PlanetCashPage({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+export default function PlanetCashPage(): ReactElement {
   const t = useTranslations('Me');
+  // local state
   const [progress, setProgress] = useState(0);
-  const router = useRouter();
   // store: action
-  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   useEffect(() => {
     // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.
@@ -51,7 +33,9 @@ export default function PlanetCashPage({
     };
   }, []);
 
-  return tenantConfig ? (
+  if (!tenantConfig) return <></>;
+
+  return (
     <>
       {progress > 0 && (
         <div className={'topLoader'}>
@@ -65,8 +49,6 @@ export default function PlanetCashPage({
         <PlanetCash step={PlanetCashTabs.ACCOUNTS} setProgress={setProgress} />
       </UserLayout>
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -91,15 +73,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'planetcash'],
@@ -108,7 +86,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

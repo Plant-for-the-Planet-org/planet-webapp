@@ -11,29 +11,17 @@ import type {
   PageProps,
 } from '../../../_app';
 
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../tenant.config';
+import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 
-const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
-  const router = useRouter();
+const ProjectListPage: NextPageWithLayout = ({ isMobile }) => {
   // store: action
-  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  if (!tenantConfig) return <></>;
 
   return <ProjectsSection isMobile={isMobile} />;
 };
@@ -80,8 +68,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -99,7 +85,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

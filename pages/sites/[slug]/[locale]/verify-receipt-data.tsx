@@ -5,38 +5,20 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../src/utils/multiTenancy/helpers';
+import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import { defaultTenant } from '../../../../tenant.config';
 import DonationReceiptUnauthenticated from '../../../../src/features/user/DonationReceipt/DonationReceiptUnauthenticated';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function DonationReceipt({
-  pageProps: { tenantConfig },
-}: Props) {
-  const router = useRouter();
+export default function DonationReceipt() {
   //store: action
-  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
-
-  useEffect(() => {
-    if (router.isReady) setTenantConfig(tenantConfig);
-  }, [router.isReady]);
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  if (!tenantConfig) return <></>;
 
   return <DonationReceiptUnauthenticated />;
 }
@@ -63,9 +45,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'donationReceipt'],
@@ -74,7 +53,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

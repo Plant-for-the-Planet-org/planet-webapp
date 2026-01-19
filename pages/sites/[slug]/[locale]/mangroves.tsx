@@ -1,5 +1,4 @@
 import type { AbstractIntlMessages } from 'next-intl';
-import type { Tenant } from '@planet-sdk/common';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -7,31 +6,15 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 
-import { useEffect } from 'react';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import Mangroves from '../../../../src/tenants/salesforce/Mangroves';
-import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import router from 'next/router';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function MangrovesLandingPage({
-  pageProps: { tenantConfig },
-}: Props) {
+export default function MangrovesLandingPage() {
   const tenantScore = { total: 20000000 };
 
-  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   function getCampaignPage() {
     let CampaignPage;
@@ -43,11 +26,12 @@ export default function MangrovesLandingPage({
         return CampaignPage;
     }
   }
+  if (!tenantConfig) return <></>;
 
   return (
     <>
       <GetHomeMeta />
-      {tenantConfig ? getCampaignPage() : <></>}
+      {getCampaignPage()}
     </>
   );
 }
@@ -61,15 +45,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -87,7 +67,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

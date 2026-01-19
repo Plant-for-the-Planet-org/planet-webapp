@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -8,43 +7,26 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import { useEffect } from 'react';
 import Footer from '../../../../src/features/common/Layout/Footer';
 import LandingSection from '../../../../src/features/common/Layout/LandingSection';
 import VerifyEmailComponent from '../../../../src/features/common/VerifyEmail/VerifyEmail';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../src/utils/multiTenancy/helpers';
-import { useRouter } from 'next/router';
-import { defaultTenant } from '../../../../tenant.config';
+import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function VerifyEmail({ pageProps }: Props): ReactElement {
-  const router = useRouter();
+export default function VerifyEmail(): ReactElement {
   //store: action
-  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
+  if (!tenantConfig) return <></>;
 
-  return pageProps.tenantConfig ? (
+  return (
     <div>
       <LandingSection>
         <VerifyEmailComponent />
       </LandingSection>
       <Footer />
     </div>
-  ) : (
-    <></>
   );
 }
 
@@ -69,15 +51,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'profile'],
@@ -86,7 +64,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

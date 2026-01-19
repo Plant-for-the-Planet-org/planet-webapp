@@ -8,7 +8,6 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { useEffect, useState, useContext } from 'react';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
@@ -19,25 +18,13 @@ import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import RecurrentPayments from '../../../../../src/features/user/Account/RecurrentPayments';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../tenant.config';
-import { useRouter } from 'next/router';
+import { constructPathsForTenantSlug } from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-function RecurrentDonations({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+function RecurrentDonations(): ReactElement {
   const t = useTranslations('Me');
-  const router = useRouter();
   const { token, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
@@ -46,13 +33,7 @@ function RecurrentDonations({
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [recurrencies, setRecurrencies] = useState<Subscription[]>();
   //store: action
-  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   async function fetchRecurrentDonations(): Promise<void> {
     setIsDataLoading(true);
@@ -100,7 +81,9 @@ function RecurrentDonations({
     fetchRecurrentDonations,
   };
 
-  return tenantConfig ? (
+  if (!tenantConfig) return <></>;
+
+  return (
     <>
       {progress > 0 && (
         <div className={'topLoader'}>
@@ -114,8 +97,6 @@ function RecurrentDonations({
         <RecurrentPayments {...RecurrencyProps} />
       </UserLayout>
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -142,15 +123,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country'],
@@ -159,7 +136,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };
