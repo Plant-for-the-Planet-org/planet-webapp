@@ -3,6 +3,7 @@ import commonStyles from '../../common.module.scss';
 import WebappButton from '../../../../../features/common/WebappButton';
 import VideoPlayer from '../../../../../features/projectsV2/ProjectDetails/components/VideoPlayer';
 import { useState } from 'react';
+import clsx from 'clsx';
 
 const PartnershipShowcase = () => {
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
@@ -42,19 +43,19 @@ const PartnershipShowcase = () => {
           that effective and ever evolving best practice rely upon.
         </p>
         <div className={styles.imageBentoGrid}>
-          <div className={`${styles.bentoImage} ${styles.bentoImageLeft}`}>
+          <div className={clsx(styles.bentoImage, styles.bentoImageLeft)}>
             <img
               src="/tenants/concentrix/images/20200128_ac_flaviai_156.jpg"
               alt="Children planting trees"
             />
           </div>
-          <div className={`${styles.bentoImage} ${styles.bentoImageCenter}`}>
+          <div className={clsx(styles.bentoImage, styles.bentoImageCenter)}>
             <img
               src="/tenants/concentrix/images/20170513_de_Gersthofen_pflanzaktion_01.jpg"
               alt="Girls planting a tree"
             />
           </div>
-          <div className={`${styles.bentoImage} ${styles.bentoImageRight}`}>
+          <div className={clsx(styles.bentoImage, styles.bentoImageRight)}>
             <img
               src="/tenants/concentrix/images/54882972563_b6d580f721_o.jpg"
               alt="Children learning about trees"

@@ -20,12 +20,12 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <>
       <Header />
       <style>{theme}</style>
-      <div className={`${themeType}`}>
+      <div className={themeType}>
         {!isEmbed && <Navbar />}
         <div>{children}</div>
 
         <div>
-          <div className={'notificationContainer'}>
+          <div className="notificationContainer">
             {!isEmbed && (
               <>
                 <CookiePolicy />
