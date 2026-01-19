@@ -6,7 +6,6 @@ import ProjectGrid from './components/ProjectGrid';
 import LeaderBoard from './components/LeaderBoardSection';
 import AdditionalInfo from './components/AdditionalInfo';
 
-import { useTenant } from '../../../features/common/Layout/TenantContext';
 import themeProperties from '../../../theme/themeProperties';
 import { useTenantStore } from '../../../stores/tenantStore';
 

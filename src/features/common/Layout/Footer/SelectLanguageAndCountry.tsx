@@ -19,7 +19,6 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../InputTypes/GreenRadio';
 import styles from './SelectLanguageAndCountry.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
-import { useTenant } from '../TenantContext';
 import { useRouter } from 'next/router';
 import { useCurrency } from '../CurrencyContext';
 import { useTenantStore } from '../../../../stores/tenantStore';
