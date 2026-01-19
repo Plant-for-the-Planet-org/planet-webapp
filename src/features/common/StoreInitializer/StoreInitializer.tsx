@@ -1,4 +1,11 @@
+import type { Tenant } from '@planet-sdk/common';
+
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
+import { useInitializeTenant } from '../../../hooks/useInitializeTenant';
+
+interface StoreInitializerProps {
+  tenantConfig?: Tenant;
+}
 
 /**
  * StoreInitializer Component
@@ -12,7 +19,8 @@ import { useInitializeParams } from '../../../hooks/useInitializeParams';
  * - Component:     src/features/common/StoreInitializer/StoreInitializer.tsx
  */
 
-export const StoreInitializer = () => {
+export const StoreInitializer = ({ tenantConfig }: StoreInitializerProps) => {
+  if (tenantConfig) useInitializeTenant(tenantConfig);
   useInitializeParams();
 
   return null;

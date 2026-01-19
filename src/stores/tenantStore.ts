@@ -6,6 +6,7 @@ import { defaultTenant } from '../../tenant.config';
 
 interface TenantStore {
   tenantConfig: Tenant;
+  isInitialized: boolean;
   setTenantConfig: (config: Tenant) => void;
 }
 
@@ -13,10 +14,11 @@ export const useTenantStore = create<TenantStore>()(
   devtools(
     (set) => ({
       tenantConfig: defaultTenant,
+      isInitialized: false,
 
       setTenantConfig: (config) =>
         set(
-          { tenantConfig: config },
+          { tenantConfig: config, isInitialized: true },
           undefined,
           'tenantStore/set_tenant_config'
         ),

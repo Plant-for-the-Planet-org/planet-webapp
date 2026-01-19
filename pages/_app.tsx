@@ -22,7 +22,6 @@ import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
-import { storeConfig } from '../src/utils/storeConfig';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
@@ -43,7 +42,6 @@ import {
 import { NextIntlClientProvider } from 'next-intl';
 import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
-import { useTenantStore } from '../src/stores/tenantStore';
 
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
   ssr: false,
@@ -139,8 +137,6 @@ const PlanetWeb = ({
   // local state
   const [currencyCode, setCurrencyCode] = useState('');
   const [browserCompatible, setBrowserCompatible] = useState(false);
-  // store: action
-  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -153,11 +149,6 @@ const PlanetWeb = ({
       }
     }
   }
-
-  useEffect(() => {
-    storeConfig(tenantConfig);
-    setTenantConfig(tenantConfig);
-  }, []);
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
@@ -195,7 +186,7 @@ const PlanetWeb = ({
         locale={(router.query?.locale as string) ?? 'en'}
         messages={pageProps.messages}
       >
-        <StoreInitializer />
+        <StoreInitializer tenantConfig={tenantConfig} />
         <CacheProvider value={emotionCache}>
           <ErrorHandlingProvider>
             <Auth0Provider
