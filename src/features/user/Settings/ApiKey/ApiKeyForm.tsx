@@ -3,7 +3,6 @@ import type { APIError } from '@planet-sdk/common';
 
 import { useEffect, useState, useContext } from 'react';
 import styles from './ApiKey.module.scss';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import EyeIcon from '../../../../../public/assets/images/icons/EyeIcon';
@@ -33,7 +32,6 @@ const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
 };
 
 export default function ApiKey() {
-  const { contextLoaded } = useUserProps();
   const t = useTranslations('Me');
   const { setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
@@ -42,7 +40,9 @@ export default function ApiKey() {
   const [apiKey, setApiKey] = useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = useState(false);
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
 
   const handleVisibilityChange = () => {
     setIsApiKeyVisible(!isApiKeyVisible);
@@ -81,10 +81,10 @@ export default function ApiKey() {
   };
 
   useEffect(() => {
-    if (token && contextLoaded) {
+    if (isAuthReady) {
       getApiKey();
     }
-  }, [token, contextLoaded]);
+  }, [isAuthReady]);
 
   return (
     <StyledForm>

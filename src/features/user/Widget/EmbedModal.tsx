@@ -8,11 +8,10 @@ import styles from './EmbedModal.module.scss';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import { useAuthStore } from '../../../stores';
+import { useAuthStore, useUserStore } from '../../../stores';
 
 interface Props {
   embedModalOpen: boolean;
@@ -30,12 +29,15 @@ export default function EmbedModal({
   const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { putApiAuthenticated } = useApi();
-  const { setUser, contextLoaded } = useUserProps();
   // local state
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  //store: action
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -52,7 +54,7 @@ export default function EmbedModal({
     const payload: ProfileStatusApiPayload = {
       isPrivate: false,
     };
-    if (contextLoaded && token) {
+    if (isAuthReady) {
       try {
         const res = await putApiAuthenticated<User>('/app/profile', {
           payload,
@@ -60,7 +62,7 @@ export default function EmbedModal({
         handleSnackbarOpen();
         setEmbedModalOpen(false);
         setIsUploadingData(false);
-        setUser(res);
+        setUserProfile(res);
       } catch (err) {
         setIsUploadingData(false);
         setErrors(handleError(err as APIError));

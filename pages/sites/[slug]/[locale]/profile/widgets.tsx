@@ -9,7 +9,6 @@ import type {
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { useState, useEffect } from 'react';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../../../../src/features/user/Widget/EmbedModal';
 import styles from '../../../../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
@@ -23,6 +22,7 @@ import { defaultTenant } from '../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useUserStore } from '../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -32,9 +32,11 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  const { user } = useUserProps();
+  // local state
   const [embedModalOpen, setEmbedModalOpen] = useState(false);
-  const embedModalProps = { embedModalOpen, setEmbedModalOpen, user };
+  // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const embedModalProps = { embedModalOpen, setEmbedModalOpen, userProfile };
 
   useEffect(() => {
     if (router.isReady) {
@@ -43,10 +45,10 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   }, [router.isReady]);
 
   useEffect(() => {
-    if (user && user.isPrivate) {
+    if (userProfile && userProfile.isPrivate) {
       setEmbedModalOpen(true);
     }
-  }, [user]);
+  }, [userProfile]);
 
   // TO DO - change widget link
   return tenantConfig ? (
@@ -54,12 +56,12 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
       <Head>
         <title>{t('widgets')}</title>
       </Head>
-      {user !== null && (
+      {userProfile !== null && (
         <>
-          {user.isPrivate === false ? (
+          {userProfile.isPrivate === false ? (
             <div className={styles.widgetsContainer}>
               <iframe
-                src={`${process.env.WIDGET_URL}?user=${user.slug}&tenantkey=${tenantConfig.id}`}
+                src={`${process.env.WIDGET_URL}?user=${userProfile.slug}&tenantkey=${tenantConfig.id}`}
                 className={styles.widgetIFrame}
               />
             </div>
