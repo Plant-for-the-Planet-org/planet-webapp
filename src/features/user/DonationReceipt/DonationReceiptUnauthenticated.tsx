@@ -11,21 +11,22 @@ import styles from './DonationReceipt.module.scss';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import DonationReceiptWrapper from './DonationReceiptWrapper';
 import { useApi } from '../../../hooks/useApi';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useTranslations } from 'next-intl';
 import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
+import { useUserStore } from '../../../stores';
 
 const DonationReceiptUnauthenticated = () => {
   const router = useRouter();
   const tReceipt = useTranslations('DonationReceipt');
-
-  const { getApi } = useApi();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isReceiptInvalid, setIsReceiptInvalid] = useState(false);
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { dtn, year, challenge } = router.query;
   const { initForVerification } = useDonationReceiptContext();
-  const { user } = useUserProps();
+  const { getApi } = useApi();
+  // local state
+  const [isLoading, setIsLoading] = useState(false);
+  const [isReceiptInvalid, setIsReceiptInvalid] = useState(false);
+  // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
 
   const areParamsValid =
     typeof dtn === 'string' &&
@@ -45,7 +46,7 @@ const DonationReceiptUnauthenticated = () => {
         )}`;
         const data = await getApi<IssuedReceiptDataApi>(url);
 
-        if (data) initForVerification(data, user);
+        if (data) initForVerification(data, userProfile);
       } catch (err) {
         const errorResponse = err as APIError;
         setErrors(handleError(errorResponse));
@@ -59,7 +60,7 @@ const DonationReceiptUnauthenticated = () => {
         setIsLoading(false);
       }
     })();
-  }, [dtn, year, challenge, router.isReady, areParamsValid, user]);
+  }, [dtn, year, challenge, router.isReady, areParamsValid, userProfile]);
 
   if (!router.isReady) return null;
 
