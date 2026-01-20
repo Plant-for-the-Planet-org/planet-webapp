@@ -10,7 +10,6 @@ import { useEffect, useState, useContext } from 'react';
 import styles from './TreeMapper.module.scss';
 import dynamic from 'next/dynamic';
 import TreeMapperList from './components/TreeMapperList';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import InterventionPage from './components/InterventionPage';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
@@ -43,7 +42,6 @@ export interface ExtendedScopeInterventions {
 
 function TreeMapper(): ReactElement {
   const router = useRouter();
-  const { contextLoaded } = useUserProps();
   const t = useTranslations('Treemapper');
   const { getApiAuthenticated } = useApi();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
@@ -56,7 +54,9 @@ function TreeMapper(): ReactElement {
   >(null);
   const [links, setLinks] = useState<Links>();
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
 
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
@@ -146,8 +146,8 @@ function TreeMapper(): ReactElement {
   }
 
   useEffect(() => {
-    if (contextLoaded && token) fetchTreemapperData();
-  }, [contextLoaded, token]);
+    if (isAuthReady) fetchTreemapperData();
+  }, [isAuthReady]);
 
   useEffect(() => {
     if (router.query.l) {

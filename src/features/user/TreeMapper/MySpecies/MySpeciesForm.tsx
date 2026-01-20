@@ -4,7 +4,6 @@ import type { Species, SpeciesSuggestionType } from '../Treemapper';
 import { useEffect, useState, useContext } from 'react';
 import StyledForm from '../../../common/Layout/StyledForm';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import SpeciesSelect from './SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm, Controller } from 'react-hook-form';
@@ -29,7 +28,6 @@ type SpeciesPayload = {
 export default function MySpeciesForm() {
   const tTreemapper = useTranslations('Treemapper');
   const tCommon = useTranslations('Common');
-  const { contextLoaded } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated, deleteApiAuthenticated, postApiAuthenticated } =
     useApi();
@@ -37,7 +35,9 @@ export default function MySpeciesForm() {
   const [species, setSpecies] = useState<Species[]>([]);
   const [isUploadingData, setIsUploadingData] = useState(false);
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
 
   const defaultMySpeciesValue = {
     aliases: '',
@@ -97,10 +97,10 @@ export default function MySpeciesForm() {
   };
 
   useEffect(() => {
-    if (contextLoaded && token) {
+    if (isAuthReady) {
       fetchMySpecies();
     }
-  }, [contextLoaded, token]);
+  }, [isAuthReady]);
   return (
     <StyledForm>
       <div className="inputContainer">

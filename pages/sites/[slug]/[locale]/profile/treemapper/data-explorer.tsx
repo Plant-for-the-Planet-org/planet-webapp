@@ -15,7 +15,6 @@ import Analytics from '../../../../../../src/features/user/TreeMapper/Analytics'
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -23,6 +22,7 @@ import {
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useUserStore } from '../../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -32,10 +32,11 @@ function TreeMapperAnalytics({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('TreemapperAnalytics');
-  const { user } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
+  // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
 
   useEffect(() => {
     if (router.isReady) {
@@ -44,12 +45,15 @@ function TreeMapperAnalytics({
   }, [router.isReady]);
 
   useEffect(() => {
-    if (user) {
-      if (!(process.env.ENABLE_ANALYTICS && user.type === 'tpo')) {
-        router.push(localizedPath('/profile'));
-      }
+    if (!userProfile) return;
+
+    const isTpoWithAnalyticsEnabled =
+      process.env.ENABLE_ANALYTICS && userProfile.type === 'tpo';
+
+    if (!isTpoWithAnalyticsEnabled) {
+      router.push(localizedPath('/profile'));
     }
-  }, [user]);
+  }, [userProfile]);
 
   return tenantConfig ? (
     <>
