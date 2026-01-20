@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { useUserStore, useAuthStore } from '../stores';
+import { useAuthStore } from '../stores';
 import { useAuthSession } from './useAuthSession';
 
 export const useInitializeAuth = () => {
@@ -12,7 +12,7 @@ export const useInitializeAuth = () => {
   const redirectCountRef = useRef(0);
   // store: action
   const setToken = useAuthStore((state) => state.setToken);
-  const setIsProfileLoaded = useUserStore((state) => state.setIsProfileLoaded);
+  const setIsAuthResolved = useAuthStore((state) => state.setIsAuthResolved);
 
   const redirectToLogin = useCallback(() => {
     if (redirectCountRef.current >= 3) {
@@ -45,10 +45,10 @@ export const useInitializeAuth = () => {
     if (isAuthLoading) return;
 
     if (!isAuthenticated) {
-      setIsProfileLoaded(true);
+      setIsAuthResolved(true);
       return;
     }
 
     loadToken();
-  }, [isAuthLoading, isAuthenticated, loadToken, setIsProfileLoaded]);
+  }, [isAuthLoading, isAuthenticated, loadToken]);
 };
