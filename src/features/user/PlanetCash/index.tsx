@@ -10,7 +10,6 @@ import TabbedView from '../../common/Layout/TabbedView';
 import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
@@ -39,14 +38,15 @@ export default function PlanetCash({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const locale = useLocale();
-  const { contextLoaded } = useUserProps();
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { setErrors } = useContext(ErrorHandlingContext);
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
 
   const sortAccountsByActive = (
     accounts: PlanetCashAccount[]
@@ -109,8 +109,8 @@ export default function PlanetCash({
   }, [accounts]);
 
   useEffect(() => {
-    if (contextLoaded && token) fetchAccounts();
-  }, [contextLoaded, token]);
+    if (isAuthReady) fetchAccounts();
+  }, [isAuthReady]);
 
   const renderStep = () => {
     switch (step) {

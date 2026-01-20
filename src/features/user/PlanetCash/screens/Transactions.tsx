@@ -8,7 +8,6 @@ import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError } from '@planet-sdk/common';
@@ -23,7 +22,6 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const t = useTranslations('Me');
-  const { contextLoaded } = useUserProps();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { accounts } = usePlanetCash();
   const { getApiAuthenticated } = useApi();
@@ -34,7 +32,9 @@ const Transactions = ({
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
 
   const handleRecordToggle = (index: number | undefined): void => {
     if (selectedRecord === index || index === undefined) {
@@ -97,9 +97,8 @@ const Transactions = ({
   );
 
   useEffect(() => {
-    if (contextLoaded && token && accounts && accounts.length > 0)
-      fetchTransactions();
-  }, [contextLoaded, token, accounts]);
+    if (isAuthReady && accounts && accounts.length > 0) fetchTransactions();
+  }, [isAuthReady, accounts]);
 
   useEffect(() => {
     // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.
