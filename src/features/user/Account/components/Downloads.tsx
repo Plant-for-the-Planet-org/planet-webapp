@@ -25,17 +25,19 @@ export default function Downloads({
 
   return (
     <>
-      {recordDetails?.donorCertificate && canHaveCertificates(purpose) && (
-        <div className={styles.singleDetail}>
-          <a
-            href={recordDetails?.donorCertificate}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('donorCertificate')}
-          </a>
-        </div>
-      )}
+      {recordDetails?.donorCertificate &&
+        recordDetails?.bouquetDonation == null &&
+        canHaveCertificates(purpose) && (
+          <div className={styles.singleDetail}>
+            <a
+              href={recordDetails?.donorCertificate}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t('donorCertificate')}
+            </a>
+          </div>
+        )}
       {recordDetails?.taxDeductibleReceipt && (
         <div className={styles.singleDetail}>
           <a
