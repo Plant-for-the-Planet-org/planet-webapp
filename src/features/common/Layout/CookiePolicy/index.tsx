@@ -1,21 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
-import { useUserProps } from '../UserPropsContext';
 import { useLocale, useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
+import { useAuthStore, useUserStore } from '../../../../stores';
 
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(false);
   const t = useTranslations('Common');
   const locale = useLocale();
-  const { user, contextLoaded } = useUserProps();
+
+  //store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
 
   useEffect(() => {
-    if (contextLoaded && user) {
+    if (isAuthResolved && userProfile) {
       setShowCookieNotice(false);
     }
-  }, [contextLoaded, user]);
+  }, [isAuthResolved, userProfile]);
 
   const isMountedRef = useRef(false);
 
@@ -34,7 +37,7 @@ export default function CookiePolicy() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('cookieNotice', showCookieNotice);
+    localStorage.setItem('cookieNotice', `${showCookieNotice}`);
   }, [showCookieNotice]);
 
   // useEffect to update the isMountedRef after the initial mount

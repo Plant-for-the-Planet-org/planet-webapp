@@ -13,7 +13,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { getStoredConfig } from '../../../utils/storeConfig';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -24,7 +23,7 @@ import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../hooks/useApi';
 import dynamic from 'next/dynamic';
-import { useUserStore } from '../../../stores';
+import { useAuthStore, useUserStore } from '../../../stores';
 
 type RegisteredTreesApiPayload = {
   treeCount: string;
@@ -44,7 +43,6 @@ function RegisterTreesForm({
   setContributionDetails,
   setRegistered,
 }: RegisterTreesFormProps) {
-  const { user, contextLoaded } = useUserProps();
   const t = useTranslations('Me');
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated, getApiAuthenticated } = useApi();
@@ -58,7 +56,10 @@ function RegisterTreesForm({
   const [userLang, setUserLang] = useState('en');
   const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
   const [isUploadingData, setIsUploadingData] = useState(false);
-  // store
+  // store: state
+  const isTpo = useUserStore((state) => state.userProfile?.type === 'tpo');
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  // store: action
   const setShouldRefetchUserProfile = useUserStore(
     (state) => state.setShouldRefetchUserProfile
   );
@@ -66,7 +67,7 @@ function RegisterTreesForm({
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
-    plantProject: user?.type === 'tpo' ? '' : null,
+    plantProject: isTpo ? '' : null,
     plantDate: new Date(),
     geometry: {},
   };
@@ -142,10 +143,10 @@ function RegisterTreesForm({
   }
 
   useEffect(() => {
-    if (contextLoaded && user?.type === 'tpo') {
+    if (isAuthResolved && isTpo) {
       loadProjects();
     }
-  }, [contextLoaded]);
+  }, [isAuthResolved]);
 
   useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -246,7 +247,7 @@ function RegisterTreesForm({
               />
             )}
           />
-          {user && user.type === 'tpo' && (
+          {isTpo && (
             <Controller
               name="plantProject"
               control={control}

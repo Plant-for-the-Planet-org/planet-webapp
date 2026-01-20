@@ -4,7 +4,6 @@ import type { SetState } from '../../../common/types/common';
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
 import { useContext, useEffect } from 'react';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
@@ -17,6 +16,7 @@ import {
   useMyForestStore,
   useUserStore,
 } from '../../../../stores';
+import { transformProfileToForestUserInfo } from '../../../../utils/myForestUtils';
 
 interface TargetsModalProps {
   open: boolean;
@@ -41,8 +41,6 @@ const TargetsModal = ({
   restorationTarget,
   conservationTarget,
 }: TargetsModalProps) => {
-  const setUserInfo = useMyForestStore((state) => state.setUserInfo);
-  const { contextLoaded } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
   const tProfile = useTranslations('Profile.progressBar');
@@ -60,7 +58,11 @@ const TargetsModal = ({
   const [isConservedAreaTargetActive, setIsConservedAreaTargetActive] =
     useState(conservationTarget > 0);
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  //store: action
+  const setUserInfo = useMyForestStore((state) => state.setUserInfo);
   const setShouldRefetchUserProfile = useUserStore(
     (state) => state.setShouldRefetchUserProfile
   );
@@ -80,7 +82,7 @@ const TargetsModal = ({
 
   const handleTargets = async () => {
     setIsTargetModalLoading(true);
-    if (contextLoaded && token && open && !isTargetModalLoading) {
+    if (isAuthReady && open && !isTargetModalLoading) {
       const payload: ForestProgressTargetApiPayload = {
         targets: {
           treesDonated: isTreesPlantedTargetActive
@@ -101,21 +103,15 @@ const TargetsModal = ({
         >('/app/profile', {
           payload,
         });
-        const newUserInfo = {
-          profileId: res.id,
-          slug: res.slug,
-          targets: {
-            treesDonated: res.scores.treesDonated.target ?? 0,
-            areaConserved: res.scores.areaConserved.target ?? 0,
-            areaRestored: res.scores.areaRestored.target ?? 0,
-          },
-        };
+        const forestUserInfo = transformProfileToForestUserInfo(res);
         setShouldRefetchUserProfile(true);
-        if (newUserInfo !== undefined) {
-          setUserInfo(newUserInfo);
-          setTreesPlantedTargetLocal(newUserInfo.targets.treesDonated ?? 0);
-          setAreaRestoredTargetLocal(newUserInfo.targets.areaRestored ?? 0);
-          setAreaConservedTargetLocal(newUserInfo.targets.areaConserved ?? 0);
+        if (forestUserInfo !== undefined) {
+          setUserInfo(forestUserInfo);
+          setTreesPlantedTargetLocal(forestUserInfo.targets.treesDonated ?? 0);
+          setAreaRestoredTargetLocal(forestUserInfo.targets.areaRestored ?? 0);
+          setAreaConservedTargetLocal(
+            forestUserInfo.targets.areaConserved ?? 0
+          );
           setIsTargetModalLoading(false);
           handleClose();
         }
