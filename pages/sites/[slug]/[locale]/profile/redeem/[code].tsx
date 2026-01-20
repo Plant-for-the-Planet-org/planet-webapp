@@ -14,7 +14,6 @@ import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { useState, useEffect, useContext } from 'react';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
@@ -31,6 +30,7 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
+import { useAuthStore, useUserStore } from '../../../../../../src/stores';
 interface Props {
   pageProps: PageProps;
 }
@@ -41,19 +41,21 @@ type RedeemCodeApiPayload = {
 
 const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const t = useTranslations('Redeem');
-  const { user, contextLoaded } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
   const { postApiAuthenticated } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-
+  // local state
   const [code, setCode] = useState<string | undefined>(undefined);
   const [inputCode, setInputCode] = useState<string | undefined>(undefined);
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const userProfile = useUserStore((state) => state.userProfile);
+  // store: state
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
 
   useEffect(() => {
     if (router.isReady) {
@@ -62,13 +64,13 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   }, [router.isReady]);
 
   useEffect(() => {
-    if (contextLoaded) {
-      if (!user) {
-        localStorage.setItem('redirectLink', router.asPath);
-        router.push(localizedPath('/login'));
-      }
+    if (!isAuthResolved) return;
+
+    if (!userProfile) {
+      localStorage.setItem('redirectLink', router.asPath);
+      router.push(localizedPath('/login'));
     }
-  }, [contextLoaded, user]);
+  }, [isAuthResolved, userProfile]);
 
   useEffect(() => {
     if (
@@ -86,7 +88,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
       code: data,
     };
 
-    if (contextLoaded && user) {
+    if (isAuthResolved && userProfile) {
       try {
         const res = await postApiAuthenticated<
           RedeemedCodeData,
@@ -132,15 +134,15 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
 
   useEffect(() => {
     if (
-      contextLoaded &&
-      user &&
+      isAuthResolved &&
+      userProfile &&
       router.query.code &&
       !Array.isArray(router.query.code) &&
       !inputCode
     ) {
       redeemingCode(router.query.code);
     }
-  }, [user, contextLoaded, router.query.code]);
+  }, [userProfile, isAuthResolved, router.query.code]);
 
   const redeemCode = () => {
     if (inputCode) {
@@ -164,10 +166,13 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
     }
   };
 
-  return tenantConfig && user ? (
-    !errors && !redeemedCodeData ? (
-      // to input  redeem code
-      <LandingSection>
+  if (!tenantConfig || !userProfile) return null;
+
+  const showEnterCode = !errors && !redeemedCodeData;
+
+  return (
+    <LandingSection>
+      {showEnterCode && (
         <EnterRedeemCode
           isLoading={isLoading}
           setInputCode={setInputCode}
@@ -175,32 +180,25 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
           redeemCode={redeemCode}
           closeRedeem={closeRedeem}
         />
-      </LandingSection>
-    ) : (
-      //after successful redeem
-      <LandingSection>
-        {redeemedCodeData && !errors && (
-          <SuccessfullyRedeemed
-            redeemedCodeData={redeemedCodeData}
-            redeemAnotherCode={redeemAnotherCode}
-            closeRedeem={closeRedeem}
-          />
-        )}{' '}
-        {
-          errors && (
-            <RedeemFailed
-              errorMessages={errors}
-              inputCode={code}
-              redeemAnotherCode={redeemAnotherCode}
-              closeRedeem={closeRedeem}
-            />
-          )
-          // if redeem code is invalid and  redeem process failed
-        }
-      </LandingSection>
-    )
-  ) : (
-    <></>
+      )}
+
+      {!showEnterCode && redeemedCodeData && !errors && (
+        <SuccessfullyRedeemed
+          redeemedCodeData={redeemedCodeData}
+          redeemAnotherCode={redeemAnotherCode}
+          closeRedeem={closeRedeem}
+        />
+      )}
+
+      {!showEnterCode && errors && (
+        <RedeemFailed
+          errorMessages={errors}
+          inputCode={code}
+          redeemAnotherCode={redeemAnotherCode}
+          closeRedeem={closeRedeem}
+        />
+      )}
+    </LandingSection>
   );
 };
 

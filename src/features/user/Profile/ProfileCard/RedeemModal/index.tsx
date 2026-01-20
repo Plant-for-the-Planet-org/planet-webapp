@@ -7,7 +7,6 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { useTranslations } from 'next-intl';
 import { ThemeContext } from '../../../../../theme/themeContext';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import {
@@ -15,7 +14,11 @@ import {
   SuccessfullyRedeemed,
   EnterRedeemCode,
 } from '../../../../common/RedeemCode';
-import { useMyForestStore, useUserStore } from '../../../../../stores';
+import {
+  useAuthStore,
+  useMyForestStore,
+  useUserStore,
+} from '../../../../../stores';
 import { useApi } from '../../../../../hooks/useApi';
 
 interface RedeemModal {
@@ -32,7 +35,6 @@ export default function RedeemModal({
 }: RedeemModal): ReactElement | null {
   const t = useTranslations('Redeem');
   const { postApiAuthenticated, getApi, getApiAuthenticated } = useApi();
-  const { user, contextLoaded, setUser } = useUserProps();
   const { setErrors, errors: apiErrors } = useContext(ErrorHandlingContext);
   // local state
   const [inputCode, setInputCode] = useState<string | undefined>('');
@@ -40,7 +42,11 @@ export default function RedeemModal({
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   // store: action
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
   const setShouldRefetchUserProfile = useUserStore(
     (state) => state.setShouldRefetchUserProfile
   );
@@ -51,7 +57,7 @@ export default function RedeemModal({
     const payload = {
       code: data,
     };
-    if (contextLoaded && user) {
+    if (isAuthResolved && userProfile) {
       try {
         const res = await postApiAuthenticated<
           RedeemedCodeData,
@@ -63,9 +69,9 @@ export default function RedeemModal({
         setShouldRefetchUserProfile(true);
         setIsLoading(false);
         if (res.units > 0) {
-          const cloneUser = { ...user };
+          const cloneUser = { ...userProfile };
           cloneUser.score.received = cloneUser.score.received + res.units;
-          setUser(cloneUser);
+          setUserProfile(cloneUser);
           refetchMyForest(getApi, getApiAuthenticated);
         }
       } catch (err) {
