@@ -3,16 +3,16 @@ import type { AddressFormData } from './microComponents/AddressForm';
 import type { AddressType, Address, APIError } from '@planet-sdk/common';
 
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useApi } from '../../../../../hooks/useApi';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import {
   updateAddressesAfterAdd,
+  updateAddressesAfterDelete,
   updateAddressesAfterEdit,
   updateAddressesAfterTypeChange,
 } from './utils';
-import { useAuthStore } from '../../../../../stores';
+import { useAuthStore, useUserStore } from '../../../../../stores';
 
 export type UnsetBillingAddressApiPayload = {
   type: 'other';
@@ -33,7 +33,6 @@ type AddressTypeApiPayload = {
 };
 
 export const useAddressOperations = () => {
-  const { contextLoaded, user, setUser } = useUserProps();
   const { postApiAuthenticated, putApiAuthenticated, deleteApiAuthenticated } =
     useApi();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -41,7 +40,12 @@ export const useAddressOperations = () => {
   // local state
   const [isLoading, setIsLoading] = useState(false);
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+
+  const userProfile = useUserStore((state) => state.userProfile);
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -51,7 +55,7 @@ export const useAddressOperations = () => {
   }, []);
 
   const safeExecute = async (operation: () => Promise<void>) => {
-    if (!contextLoaded || !user || !token) return;
+    if (!isAuthReady || !userProfile) return;
     setIsLoading(true);
     try {
       await operation();
@@ -72,10 +76,11 @@ export const useAddressOperations = () => {
         Address,
         AddAddressApiPayload
       >('/app/addresses', { payload });
-      if (addAddressResponse)
-        setUser((existingUserDetails) =>
-          updateAddressesAfterAdd(existingUserDetails, addAddressResponse)
+      if (addAddressResponse) {
+        setUserProfile(
+          updateAddressesAfterAdd(userProfile, addAddressResponse)
         );
+      }
     });
   };
 
@@ -85,10 +90,11 @@ export const useAddressOperations = () => {
         Address,
         EditAddressApiPayload
       >(`/app/addresses/${id}`, { payload });
-      if (editAddressResponse)
-        setUser((existingUserDetails) =>
-          updateAddressesAfterEdit(existingUserDetails, editAddressResponse)
+      if (editAddressResponse) {
+        setUserProfile(
+          updateAddressesAfterEdit(userProfile, editAddressResponse)
         );
+      }
     });
   };
 
@@ -100,9 +106,9 @@ export const useAddressOperations = () => {
         AddressTypeApiPayload
       >(`/app/addresses/${id}`, { payload });
       if (updateAddressResponse)
-        setUser((existingUserDetails) =>
+        setUserProfile(
           updateAddressesAfterTypeChange(
-            existingUserDetails,
+            userProfile,
             updateAddressResponse,
             addressType
           )
@@ -118,15 +124,12 @@ export const useAddressOperations = () => {
         UnsetBillingAddressApiPayload
       >(`/app/addresses/${id}`, { payload });
       if (updateAddressResponse) {
-        setUser((existingUserDetails) =>
-          existingUserDetails
-            ? {
-                ...existingUserDetails,
-                addresses: existingUserDetails.addresses.map((address) =>
-                  address.id === id ? { ...address, type: 'other' } : address
-                ),
-              }
-            : null
+        setUserProfile(
+          updateAddressesAfterTypeChange(
+            userProfile,
+            updateAddressResponse,
+            'other'
+          )
         );
       }
     });
@@ -135,16 +138,7 @@ export const useAddressOperations = () => {
   const deleteAddress = async (id: string) => {
     await safeExecute(async () => {
       await deleteApiAuthenticated(`/app/addresses/${id}`);
-      setUser((existingUserDetails) =>
-        existingUserDetails
-          ? {
-              ...existingUserDetails,
-              addresses: existingUserDetails.addresses.filter(
-                (address) => address.id !== id
-              ),
-            }
-          : null
-      );
+      setUserProfile(updateAddressesAfterDelete(userProfile, id));
     });
   };
 

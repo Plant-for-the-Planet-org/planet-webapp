@@ -5,7 +5,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import AddressList from './microComponents/AddressList';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import WebappButton from '../../../../common/WebappButton';
 import styles from './AddressManagement.module.scss';
 import {
@@ -21,15 +20,15 @@ import DeleteAddress from './DeleteAddress';
 import EditAddress from './EditAddress';
 import AddAddress from './AddAddress';
 import UnsetBillingAddress from './UnsetBillingAddress';
+import { useUserStore } from '../../../../../stores';
 
 const AddressManagement = () => {
-  const { user } = useUserProps();
+  // store: state
+  const userAddresses = useUserStore((state) => state.userProfile?.addresses);
   // If addresses is null (not an empty array), it indicates a malformed API response
   // Normal users without addresses will have an empty array, not null
-  if (!user?.addresses) return null;
-  const userAddresses = user.addresses;
+  if (!userAddresses) return null;
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
-
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
   );
