@@ -16,7 +16,6 @@ import ManageProjects from '../../../../../../src/features/user/ManageProjects';
 import GlobeContentLoader from '../../../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../../../../src/features/common/Layout/Footer';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
@@ -31,7 +30,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
-import { useAuthStore } from '../../../../../../src/stores';
+import { useAuthStore, useUserStore } from '../../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -41,7 +40,6 @@ function ManageSingleProject({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('Common');
-  const { user, contextLoaded } = useUserProps();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { setTenantConfig } = useTenant();
@@ -55,6 +53,8 @@ function ManageSingleProject({
     useState<ExtendedProfileProjectProperties | null>(null);
   //store: state
   const token = useAuthStore((state) => state.token);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const userProfile = useUserStore((state) => state.userProfile);
 
   useEffect(() => {
     if (router.isReady) {
@@ -86,10 +86,10 @@ function ManageSingleProject({
     }
 
     // ready is for router, loading is for session
-    if (ready && contextLoaded && user) {
+    if (ready && isAuthResolved && userProfile) {
       loadProject();
     }
-  }, [ready, contextLoaded, user]);
+  }, [ready, isAuthResolved, userProfile]);
 
   if (tenantConfig && accessDenied && setupAccess) {
     return (

@@ -14,7 +14,6 @@ import NotFound from '../../../../public/assets/images/NotFound';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import getImageUrl from '../../../utils/getImageURL';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useLocale, useTranslations } from 'next-intl';
@@ -25,7 +24,7 @@ import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useAuthStore } from '../../../stores';
+import { useAuthStore, useUserStore } from '../../../stores';
 
 type ProjectProperties =
   | ProfileProjectPropertiesFund
@@ -123,16 +122,18 @@ export default function ProjectsContainer() {
   const tManageProjects = useTranslations('ManageProjects');
   const { getApiAuthenticated } = useApi();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
-  const { user, contextLoaded } = useUserProps();
   const { localizedPath } = useLocalizedPath();
   // local state
   const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
   const [loader, setLoader] = useState(true);
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  const userProfile = useUserStore((state) => state.userProfile);
 
   async function loadProjects() {
-    if (user) {
+    if (userProfile) {
       try {
         const projects = await getApiAuthenticated<ProfileProjectFeature[]>(
           '/app/profile/projects',
@@ -148,10 +149,10 @@ export default function ProjectsContainer() {
   }
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   useEffect(() => {
-    if (contextLoaded && token) {
+    if (isAuthReady) {
       loadProjects();
     }
-  }, [contextLoaded, token]);
+  }, [isAuthReady]);
 
   return (
     <DashboardView
