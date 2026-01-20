@@ -12,7 +12,6 @@ import { Controller, useForm } from 'react-hook-form';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
 import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
@@ -32,7 +31,7 @@ import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/New
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useAuthStore } from '../../../../stores';
+import { useAuthStore, useUserStore } from '../../../../stores';
 
 type ProfileFormData = {
   address: string;
@@ -66,7 +65,6 @@ type UpdateProfileApiPayload = Omit<ProfileFormData, 'isPublic'> & {
 
 export default function EditProfileForm() {
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { user, setUser, contextLoaded } = useUserProps();
   const t = useTranslations('EditProfile');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -78,9 +76,6 @@ export default function EditProfileForm() {
   // the form values
   const [severity, setSeverity] = useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
-  const [type, setAccountType] = useState(
-    user?.type ? user.type : 'individual'
-  );
   const [localProfileType, setLocalProfileType] = useState<ProfileTypeOption>({
     id: 1,
     title: t('individual'),
@@ -88,24 +83,32 @@ export default function EditProfileForm() {
   });
   //store: state
   const token = useAuthStore((state) => state.token);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const userProfile = useUserStore((state) => state.userProfile);
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
+
+  const [type, setAccountType] = useState(
+    userProfile?.type ? userProfile.type : 'individual'
+  );
 
   const defaultProfileDetails = useMemo(() => {
     return {
-      firstname: user?.firstname ? user.firstname : '',
-      lastname: user?.lastname ? user.lastname : '',
-      address:
-        user?.address && user.address.address ? user.address.address : '',
-      city: user?.address && user.address.city ? user.address.city : '',
-      zipCode:
-        user?.address && user.address.zipCode ? user.address.zipCode : '',
-      isPublic: user?.isPrivate === false ? true : false,
-      getNews: user?.getNews ? user.getNews : false,
-      bio: user?.bio ? user.bio : '',
-      url: user?.url ? user.url : '',
-      name: user?.type !== 'individual' && user?.name ? user.name : '',
-      exposeCommunity: user?.exposeCommunity === true ? true : false,
+      firstname: userProfile?.firstname ?? '',
+      lastname: userProfile?.lastname ?? '',
+      address: userProfile?.address?.address ?? '',
+      city: userProfile?.address?.city ?? '',
+      zipCode: userProfile?.address?.zipCode ?? '',
+      isPublic: userProfile?.isPrivate === false,
+      getNews: userProfile?.getNews ?? false,
+      bio: userProfile?.bio ?? '',
+      url: userProfile?.url ?? '',
+      name:
+        userProfile?.type !== 'individual' && userProfile?.name
+          ? userProfile.name
+          : '',
+      exposeCommunity: userProfile?.exposeCommunity === true,
     };
-  }, [user]);
+  }, [userProfile]);
   const {
     handleSubmit,
     control,
@@ -175,10 +178,10 @@ export default function EditProfileForm() {
         { payload: profileImagePayload }
       );
 
-      if (user) {
-        const newUserInfo = { ...user, image: res.image };
+      if (userProfile) {
+        const newUserInfo = { ...userProfile, image: res.image };
         setUpdatingPic(false);
-        setUser(newUserInfo);
+        setUserProfile(newUserInfo);
       }
     } catch (err) {
       setUpdatingPic(false);
@@ -195,7 +198,7 @@ export default function EditProfileForm() {
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
         reader.onload = async (event) => {
-          if (contextLoaded && token) {
+          if (isAuthResolved && token) {
             const profileImagePayload = {
               imageFile: event.target?.result,
             };
@@ -235,7 +238,7 @@ export default function EditProfileForm() {
       ...(type !== 'tpo' ? { type: type } : {}),
     };
 
-    if (contextLoaded && token) {
+    if (isAuthResolved && token) {
       try {
         const res = await putApiAuthenticated<User, UpdateProfileApiPayload>(
           `/app/profile`,
@@ -245,7 +248,7 @@ export default function EditProfileForm() {
         setSnackbarMessage(t('profileSaved'));
         handleSnackbarOpen();
         setIsUploadingData(false);
-        setUser(res);
+        setUserProfile(res);
       } catch (err) {
         setIsUploadingData(false);
         setErrors(handleError(err as APIError));
@@ -263,10 +266,10 @@ export default function EditProfileForm() {
               <div className={styles.spinnerContainer}>
                 <div className={styles.spinnerImage}></div>
               </div>
-            ) : user?.image ? (
+            ) : userProfile?.image ? (
               <div className={styles.profilePic}>
                 <img
-                  src={getImageUrl('profile', 'thumb', user.image)}
+                  src={getImageUrl('profile', 'thumb', userProfile.image)}
                   className={styles.profilePicImg}
                 />
               </div>
@@ -393,7 +396,7 @@ export default function EditProfileForm() {
           <TextField
             label={t('fieldLabels.email')}
             name="email"
-            defaultValue={user?.email}
+            defaultValue={userProfile?.email}
             disabled
           ></TextField>
           <Controller
@@ -587,7 +590,7 @@ export default function EditProfileForm() {
         <button
           onClick={(e) => {
             e.preventDefault();
-            router.push(localizedPath(`/t/${user?.slug}`));
+            router.push(localizedPath(`/t/${userProfile?.slug}`));
           }}
           className={styles.viewPublicProfileButton}
         >
