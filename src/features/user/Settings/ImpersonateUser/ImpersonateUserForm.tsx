@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import { TextField, Button } from '@mui/material';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import StyledForm from '../../../common/Layout/StyledForm';
 import styles from './ImpersonateUser.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
@@ -25,7 +24,6 @@ const ImpersonateUserForm = (): ReactElement => {
   const t = useTranslations('Me');
   const { tenantConfig } = useTenant();
   const locale = useLocale();
-  const { setUser } = useUserProps();
   // store: state
   const token = useAuthStore((state) => state.token);
   // store: action
@@ -110,7 +108,6 @@ const ImpersonateUserForm = (): ReactElement => {
           'impersonationData',
           JSON.stringify(impersonationData)
         );
-        setUser(res);
         router.push(localizedPath('/profile'));
       } catch (err) {
         if (err instanceof APIError) {

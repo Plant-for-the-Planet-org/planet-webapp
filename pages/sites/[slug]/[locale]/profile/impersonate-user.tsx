@@ -12,7 +12,6 @@ import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import ImpersonateUser from '../../../../../src/features/user/Settings/ImpersonateUser';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import { useEffect } from 'react';
 import AccessDeniedLoader from '../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
@@ -32,13 +31,15 @@ interface Props {
 const ImpersonateUserPage = ({
   pageProps: { tenantConfig },
 }: Props): ReactElement => {
-  const { user } = useUserProps();
   const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   // store: state
   const isImpersonationModeOn = useUserStore(
     (state) => state.isImpersonationModeOn
+  );
+  const hasImpersonationAccess = useUserStore(
+    (state) => state.userProfile?.allowedToSwitch
   );
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const ImpersonateUserPage = ({
       <Head>
         <title>{t('switchUser')}</title>
       </Head>
-      {user?.allowedToSwitch && !isImpersonationModeOn ? (
+      {hasImpersonationAccess && !isImpersonationModeOn ? (
         <ImpersonateUser />
       ) : (
         <AccessDeniedLoader />
