@@ -17,7 +17,6 @@ import { useEffect, useState, useContext } from 'react';
 import { useTranslations } from 'next-intl';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../../../../src/features/user/Account/History';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
@@ -40,7 +39,6 @@ interface Props {
 
 function AccountHistory({ pageProps }: Props): ReactElement {
   const t = useTranslations('Me');
-  const { contextLoaded } = useUserProps();
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
@@ -55,8 +53,11 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   );
   const [accountingFilters, setAccountingFilters] = useState<Filters | null>(
     null
-  ); //store: state
-  const token = useAuthStore((state) => state.token);
+  );
+  //store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
 
   useEffect(() => {
     if (router.isReady) {
@@ -121,8 +122,8 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   }
 
   useEffect(() => {
-    if (contextLoaded && token) fetchPaymentHistory();
-  }, [filter, contextLoaded, token]);
+    if (isAuthReady) fetchPaymentHistory();
+  }, [filter, isAuthReady]);
 
   const HistoryProps = {
     filter,

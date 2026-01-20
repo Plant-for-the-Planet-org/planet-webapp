@@ -12,7 +12,6 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { useEffect, useState, useContext } from 'react';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
@@ -40,7 +39,6 @@ function RecurrentDonations({
   const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  const { contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
   const { setErrors, redirect } = useContext(ErrorHandlingContext);
   // local state
@@ -48,7 +46,9 @@ function RecurrentDonations({
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [recurrencies, setRecurrencies] = useState<Subscription[]>();
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
 
   useEffect(() => {
     if (router.isReady) {
@@ -93,8 +93,8 @@ function RecurrentDonations({
   }
 
   useEffect(() => {
-    if (contextLoaded && token) fetchRecurrentDonations();
-  }, [contextLoaded, token]);
+    if (isAuthReady) fetchRecurrentDonations();
+  }, [isAuthReady]);
 
   const RecurrencyProps = {
     isDataLoading,
