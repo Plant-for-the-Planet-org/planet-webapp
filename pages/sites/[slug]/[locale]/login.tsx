@@ -11,7 +11,6 @@ import type { AbstractIntlMessages } from 'next-intl';
 import { useEffect } from 'react';
 import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
-import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -21,6 +20,7 @@ import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
 import { useAuthSession } from '../../../../src/hooks/useAuthSession';
+import { useAuthStore, useUserStore } from '../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -31,6 +31,9 @@ export default function Login({ pageProps }: Props): ReactElement {
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
   const { auth0Error, isAuthenticated, loginWithRedirect } = useAuthSession();
+  // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
 
   useEffect(() => {
     if (router.isReady) {
@@ -41,39 +44,37 @@ export default function Login({ pageProps }: Props): ReactElement {
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
 
-  const { user, contextLoaded } = useUserProps();
-
   useEffect(() => {
-    async function loadFunction() {
-      // redirect
-      if (user) {
-        if (localStorage.getItem('redirectLink')) {
-          const redirectLink = localStorage.getItem('redirectLink');
-          if (redirectLink) {
-            localStorage.removeItem('redirectLink');
-            router.push(localizedPath(redirectLink));
-          }
-        } else {
-          router.push(localizedPath('/profile'));
-        }
-      }
-    }
-    if (contextLoaded) {
-      if (user) {
-        loadFunction();
-      } else if (
-        user === null &&
-        (isAuthenticated || auth0Error?.message === '401')
-      ) {
-        // wait for context to redirect to complete signup
+    if (!isAuthResolved) return;
+
+    // User profile exists → redirect
+    if (userProfile) {
+      const redirectLink = localStorage.getItem('redirectLink');
+
+      if (redirectLink) {
+        localStorage.removeItem('redirectLink');
+        router.push(localizedPath(redirectLink));
       } else {
-        loginWithRedirect({
-          redirectUri: `${window.location.origin}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
+        router.push(localizedPath('/profile'));
       }
+      return;
     }
-  }, [user, contextLoaded]);
+
+    // User profile is explicitly null and auth is resolved
+    // → wait for context to redirect to complete signup
+    if (
+      userProfile === null &&
+      (isAuthenticated || auth0Error?.message === '401')
+    ) {
+      return;
+    }
+
+    // Not authenticated → login
+    loginWithRedirect({
+      redirectUri: `${window.location.origin}/login`,
+      ui_locales: localStorage.getItem('language') || 'en',
+    });
+  }, [userProfile, isAuthResolved]);
 
   return pageProps.tenantConfig ? (
     <div>

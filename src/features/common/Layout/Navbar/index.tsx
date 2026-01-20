@@ -1,4 +1,3 @@
-import { useUserProps } from '../UserPropsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
 import { useTenant } from '../TenantContext';
 import NavbarBrandLogos from './microComponents/NavbarBrandLogos';
@@ -40,24 +39,21 @@ export default function Navbar() {
   const { tenantConfig } = useTenant();
   if (!tenantConfig) return null;
   const { logoutUser, auth0Error } = useAuthSession();
-
-  const { setUser } = useUserProps();
+  // store: state
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
 
   if (auth0Error) {
     const { message } = auth0Error;
+    const isBrowser = typeof window !== 'undefined';
 
-    if (message === '401') {
-      if (typeof window !== 'undefined') {
-        setUser(null);
-        logoutUser(`${window.location.origin}/verify-email`);
-      }
+    setUserProfile(null);
+
+    if (message === '401' && isBrowser) {
+      logoutUser(`${window.location.origin}/verify-email`);
     } else if (message === 'Invalid state') {
-      setUser(null);
-    } else if (typeof window !== 'undefined') {
-      if (message) {
-        alert(message);
-      }
-      setUser(null);
+      // Only clear user, no logout needed
+    } else if (isBrowser) {
+      if (message) alert(message);
       logoutUser(`${window.location.origin}/`);
     }
   }
