@@ -15,7 +15,6 @@ import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../../../../src/features/user/ManagePayouts';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
   constructPathsForTenantSlug,
@@ -25,6 +24,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useUserStore } from '../../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -34,9 +34,10 @@ export default function AddBankDetailsPage({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('Me');
-  const { user } = useUserProps();
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  // store: state
+  const isTpo = useUserStore((state) => state.userProfile?.type === 'tpo');
 
   useEffect(() => {
     if (router.isReady) {
@@ -49,7 +50,7 @@ export default function AddBankDetailsPage({
       <Head>
         <title>{t('managePayouts.titleAddBankDetails')}</title>
       </Head>
-      {user?.type === 'tpo' ? (
+      {isTpo ? (
         <ManagePayouts step={ManagePayoutTabs.ADD_BANK_DETAILS} />
       ) : (
         <AccessDeniedLoader />

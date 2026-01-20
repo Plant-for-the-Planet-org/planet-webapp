@@ -16,7 +16,6 @@ import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../../../../src/features/user/ManagePayouts';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
   constructPathsForTenantSlug,
@@ -26,6 +25,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useUserStore } from '../../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -35,10 +35,12 @@ export default function OverviewPage({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('Me');
-  const [progress, setProgress] = useState(0);
-  const { user } = useUserProps();
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  // local state
+  const [progress, setProgress] = useState(0);
+  // store: state
+  const isTpo = useUserStore((state) => state.userProfile?.type === 'tpo');
 
   useEffect(() => {
     if (router.isReady) {
@@ -57,7 +59,7 @@ export default function OverviewPage({
         <Head>
           <title>{t('managePayouts.titleOverview')}</title>
         </Head>
-        {user?.type === 'tpo' ? (
+        {isTpo ? (
           <ManagePayouts
             step={ManagePayoutTabs.OVERVIEW}
             setProgress={setProgress}
