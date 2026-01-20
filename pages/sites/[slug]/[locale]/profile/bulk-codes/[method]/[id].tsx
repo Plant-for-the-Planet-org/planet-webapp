@@ -30,10 +30,9 @@ import { v4 } from 'uuid';
 import { useTenant } from '../../../../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
-import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
 import { useApi } from '../../../../../../../src/hooks/useApi';
 import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
-import { useAuthStore } from '../../../../../../../src/stores';
+import { useAuthStore, useUserStore } from '../../../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -56,13 +55,15 @@ export default function BulkCodeIssueCodesPage({
     planetCashAccount,
     projectList,
   } = useBulkCode();
-  const { user, contextLoaded } = useUserProps();
   //store: state
-  const token = useAuthStore((state) => state.token);
+  const isAuthReady = useAuthStore((state) =>
+    Boolean(state.token && state.isAuthResolved)
+  );
+  const userProfile = useUserStore((state) => state.userProfile);
 
   // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {
-    if (planetCashAccount && token && contextLoaded && projectList) {
+    if (planetCashAccount && isAuthReady && projectList) {
       if (!project) {
         if (router.isReady) {
           try {
@@ -71,7 +72,9 @@ export default function BulkCodeIssueCodesPage({
               {
                 queryParams: {
                   country: planetCashAccount?.country ?? '',
-                  ...(user !== null && { legacyPriceFor: user.id }),
+                  ...(userProfile !== null && {
+                    legacyPriceFor: userProfile.id,
+                  }),
                 },
               }
             );
@@ -111,7 +114,7 @@ export default function BulkCodeIssueCodesPage({
         }
       }
     }
-  }, [router.isReady, planetCashAccount, token, contextLoaded, projectList]);
+  }, [router.isReady, planetCashAccount, isAuthReady, projectList]);
 
   useEffect(() => {
     if (router.isReady) {
