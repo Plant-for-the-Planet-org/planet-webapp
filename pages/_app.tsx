@@ -34,7 +34,6 @@ import materialTheme from '../src/theme/themeStyles';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
-import { CurrencyProvider } from '../src/features/common/Layout/CurrencyContext';
 import {
   DEFAULT_TENANT,
   getTenantConfig,
@@ -213,21 +212,19 @@ const PlanetWeb = ({
                   <CssBaseline />
                   <UserPropsProvider>
                     <StoreInitializer />
-                    <CurrencyProvider>
-                      <PlanetCashProvider>
-                        <PayoutsProvider>
-                          <Layout>
-                            <BulkCodeProvider>
-                              <AnalyticsProvider>
-                                <DonationReceiptProvider>
-                                  {pageContent}
-                                </DonationReceiptProvider>
-                              </AnalyticsProvider>
-                            </BulkCodeProvider>
-                          </Layout>
-                        </PayoutsProvider>
-                      </PlanetCashProvider>
-                    </CurrencyProvider>
+                    <PlanetCashProvider>
+                      <PayoutsProvider>
+                        <Layout>
+                          <BulkCodeProvider>
+                            <AnalyticsProvider>
+                              <DonationReceiptProvider>
+                                {pageContent}
+                              </DonationReceiptProvider>
+                            </AnalyticsProvider>
+                          </BulkCodeProvider>
+                        </Layout>
+                      </PayoutsProvider>
+                    </PlanetCashProvider>
                   </UserPropsProvider>
                 </MuiThemeProvider>
               </ThemeProvider>
