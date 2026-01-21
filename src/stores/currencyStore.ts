@@ -11,44 +11,44 @@ type CurrencyList = {
 };
 
 interface CurrencyStore {
-  supportedCurrencies: Set<CurrencyCode> | null;
-  fetchAttempts: number;
+  supportedCurrencies: Set<CurrencyCode>;
+  isFetching: boolean;
 
   fetchCurrencies: (
     getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>
   ) => void;
 }
 
-const MAX_FETCH_ATTEMPTS = 2;
-
 export const useCurrencyStore = create<CurrencyStore>()(
   devtools(
     (set, get) => ({
-      supportedCurrencies: null,
-      fetchAttempts: 0,
+      supportedCurrencies: new Set<CurrencyCode>(),
+      isFetching: false,
 
       fetchCurrencies: async (getApi) => {
-        const { supportedCurrencies, fetchAttempts } = get();
-        const { setErrors } = useErrorHandlingStore.getState();
+        const { supportedCurrencies, isFetching } = get();
 
-        if (supportedCurrencies !== null || fetchAttempts >= MAX_FETCH_ATTEMPTS)
-          return;
+        if (isFetching || supportedCurrencies.size > 0) return;
 
+        set({ isFetching: true }, undefined, 'currencyStore/fetch_start');
         try {
           const currencyData = await getApi<CurrencyList>('/app/currencies');
 
           set(
             {
-              fetchAttempts: fetchAttempts + 1,
               supportedCurrencies: new Set(
                 Object.keys(currencyData) as CurrencyCode[]
               ),
             },
             undefined,
-            'currencyStore/set_support_currency'
+            'currencyStore/fetch_success'
           );
         } catch (err) {
-          setErrors(handleError(err as APIError));
+          useErrorHandlingStore
+            .getState()
+            .setErrors(handleError(err as APIError));
+        } finally {
+          set({ isFetching: false }, undefined, 'currencyStore/fetch_complete');
         }
       },
     }),

@@ -8,5 +8,5 @@ export const useInitializeCurrency = () => {
 
   useEffect(() => {
     fetchCurrencies(getApi);
-  }, []);
+  }, [fetchCurrencies]);
 };
