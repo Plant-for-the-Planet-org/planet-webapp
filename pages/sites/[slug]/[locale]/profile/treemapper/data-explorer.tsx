@@ -9,7 +9,7 @@ import type {
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import Head from 'next/head';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Analytics from '../../../../../../src/features/user/TreeMapper/Analytics';
 import { useTranslations } from 'next-intl';
@@ -23,6 +23,9 @@ import {
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import FeatureMigrated from '../../../../../../src/features/user/TreeMapper/FeatureMigrated';
+import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import DashboardPromoBanner from '../../../../../../src/features/user/TreeMapper/DashboardPromoBanner';
 
 interface Props {
   pageProps: PageProps;
@@ -51,13 +54,48 @@ function TreeMapperAnalytics({
     }
   }, [user]);
 
+  const pageContent = useMemo(() => {
+    if (!user) return null;
+
+    if (user.type !== 'tpo') {
+      return <AccessDeniedLoader />;
+    }
+
+    const { treemapperMigrationState } = user;
+
+    const isBlockedByMigration =
+      treemapperMigrationState === 'completed' ||
+      treemapperMigrationState === 'in-progress';
+
+    if (isBlockedByMigration) {
+      return (
+        <FeatureMigrated
+          status={treemapperMigrationState}
+          featureKey="data-explorer"
+        />
+      );
+    }
+
+    const showPromoBanner =
+      user.type === 'tpo' &&
+      !isBlockedByMigration &&
+      process.env.NEXT_PUBLIC_SHOW_DASHBOARD_PROMO === 'true';
+
+    return (
+      <>
+        {showPromoBanner && <DashboardPromoBanner />}
+        <Analytics />
+      </>
+    );
+  }, [user]);
+
   return tenantConfig ? (
     <>
       <UserLayout>
         <Head>
           <title> {t('title')} </title>
         </Head>
-        <Analytics />
+        {pageContent}
       </UserLayout>
     </>
   ) : (
@@ -99,7 +137,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'treemapperAnalytics'],
+    filenames: ['common', 'me', 'country', 'treemapperAnalytics', 'treemapper'],
   });
 
   return {

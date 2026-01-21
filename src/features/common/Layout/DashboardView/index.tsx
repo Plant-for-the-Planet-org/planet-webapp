@@ -5,8 +5,8 @@ import materialTheme from '../../../../theme/themeStyles';
 import themeProperties from '../../../../theme/themeProperties';
 
 interface DashboardViewProps {
-  title: string;
-  subtitle: string | ReactElement | null;
+  title?: string;
+  subtitle?: string | ReactElement;
   children: ReactNode;
   variant?: 'full-width' | 'compact';
   multiColumn?: boolean;
@@ -54,6 +54,7 @@ export default function DashboardView({
   variant = 'full-width',
   multiColumn = false,
 }: DashboardViewProps): ReactElement {
+  const hasHeader = Boolean(title || subtitle);
   return (
     <ThemeProvider theme={materialTheme}>
       <DashboardGridContainer className="DashboardView">
@@ -62,21 +63,23 @@ export default function DashboardView({
           className="dashboardGrid"
           style={{ maxWidth: multiColumn ? '100%' : 1060 }}
         >
-          <Grid
-            item
-            container
-            component="header"
-            className="dashboardHeader"
-            xs={12}
-            md={10}
-          >
-            <Grid item component="h1" className="dashboardTitle">
-              {title}
+          {hasHeader && (
+            <Grid
+              item
+              container
+              component="header"
+              className="dashboardHeader"
+              xs={12}
+              md={10}
+            >
+              <Grid item component="h1" className="dashboardTitle">
+                {title}
+              </Grid>
+              <Grid item className="dashboardSubtitle">
+                {subtitle}
+              </Grid>
             </Grid>
-            <Grid item className="dashboardSubtitle">
-              {subtitle}
-            </Grid>
-          </Grid>
+          )}
           {!multiColumn ? (
             <Grid
               item
