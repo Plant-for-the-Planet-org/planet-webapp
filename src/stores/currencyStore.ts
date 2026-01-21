@@ -37,12 +37,16 @@ export const useCurrencyStore = create<CurrencyStore>()(
         try {
           const currencyData = await getApi<CurrencyList>('/app/currencies');
 
-          set({
-            fetchAttempts: fetchAttempts + 1,
-            supportedCurrencies: new Set(
-              Object.keys(currencyData) as CurrencyCode[]
-            ),
-          });
+          set(
+            {
+              fetchAttempts: fetchAttempts + 1,
+              supportedCurrencies: new Set(
+                Object.keys(currencyData) as CurrencyCode[]
+              ),
+            },
+            undefined,
+            'currencyStore/set_support_currency'
+          );
         } catch (err) {
           setErrors(handleError(err as APIError));
         }
