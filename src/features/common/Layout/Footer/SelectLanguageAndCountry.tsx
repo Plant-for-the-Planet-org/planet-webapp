@@ -21,7 +21,7 @@ import styles from './SelectLanguageAndCountry.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { useTenant } from '../TenantContext';
 import { useRouter } from 'next/router';
-import { useCurrency } from '../CurrencyContext';
+import { useCurrencyStore } from '../../../../stores/currencyStore';
 
 interface MapCountryProps {
   value: string;
@@ -90,7 +90,9 @@ function MapLanguage({ value, handleChange }: MapLanguageProps) {
 // Maps the radio buttons for countries
 function MapCountry({ value, handleChange }: MapCountryProps) {
   const t = useTranslations('Country');
-  const { supportedCurrencies } = useCurrency();
+  const supportedCurrencies = useCurrencyStore(
+    (state) => state.supportedCurrencies
+  );
   const locale = useLocale();
   const country = getStoredConfig('country');
   const priorityCountries = country === value ? [value] : [value, country];
