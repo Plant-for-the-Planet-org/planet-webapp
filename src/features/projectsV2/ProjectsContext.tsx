@@ -29,6 +29,7 @@ import {
 import { useApi } from '../../hooks/useApi';
 import { useTenant } from '../common/Layout/TenantContext';
 import { useErrorHandlingStore } from '../../stores/errorHandlingStore';
+import { useCurrencyStore } from '../../stores/currencyStore';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -70,7 +71,6 @@ const ProjectsContext = createContext<ProjectsState | null>(null);
 type ProjectsProviderProps = {
   children: ReactNode;
   page?: 'project-list' | 'project-details';
-  currencyCode?: string;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
 };
@@ -78,7 +78,6 @@ type ProjectsProviderProps = {
 export const ProjectsProvider = ({
   children,
   page,
-  currencyCode,
   selectedMode,
   setSelectedMode,
 }: ProjectsProviderProps) => {
@@ -116,7 +115,9 @@ export const ProjectsProvider = ({
   const [projectsLocale, setProjectsLocale] = useState('');
   const [projectsCurrencyCode, setProjectsCurrencyCode] = useState('');
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
-  //store
+  // store: state
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   // Read filter from URL only on initial load
   useEffect(() => {

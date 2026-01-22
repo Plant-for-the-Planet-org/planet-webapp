@@ -25,11 +25,7 @@ import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayou
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectDetails from '../../../../src/features/projectsV2/ProjectDetails';
 
-const ProjectDetailsPage: NextPageWithLayout = ({
-  pageProps,
-  currencyCode,
-  isMobile,
-}) => {
+const ProjectDetailsPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
@@ -39,7 +35,7 @@ const ProjectDetailsPage: NextPageWithLayout = ({
     }
   }, [router.isReady]);
 
-  return <ProjectDetails currencyCode={currencyCode} isMobile={isMobile} />;
+  return <ProjectDetails isMobile={isMobile} />;
 };
 
 ProjectDetailsPage.getLayout = function getLayout(
@@ -47,8 +43,6 @@ ProjectDetailsPage.getLayout = function getLayout(
   pageComponentProps: PageComponentProps
 ): ReactElement {
   const layoutProps = {
-    currencyCode: pageComponentProps.currencyCode,
-    setCurrencyCode: pageComponentProps.setCurrencyCode,
     page: 'project-details',
     isMobile: pageComponentProps.isMobile,
   } as const;

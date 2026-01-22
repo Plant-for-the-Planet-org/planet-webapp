@@ -4,7 +4,6 @@ import type { AppContext, AppInitialProps, AppProps } from 'next/app';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { AbstractIntlMessages } from 'next-intl';
 import type { NextPage } from 'next';
-import type { SetState } from '../src/features/common/types/common';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
@@ -122,8 +121,6 @@ export type PageProps = {
 
 export type PageComponentProps = {
   pageProps: PageProps;
-  currencyCode: string;
-  setCurrencyCode: SetState<string>;
   isMobile: boolean;
 };
 
@@ -133,7 +130,6 @@ const PlanetWeb = ({
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) => {
   const router = useRouter();
-  const [currencyCode, setCurrencyCode] = useState('');
   const [browserCompatible, setBrowserCompatible] = useState(false);
 
   const { tenantConfig } = pageProps;
@@ -171,8 +167,6 @@ const PlanetWeb = ({
 
   const pageComponentProps = {
     pageProps,
-    currencyCode,
-    setCurrencyCode,
     isMobile,
   };
 
