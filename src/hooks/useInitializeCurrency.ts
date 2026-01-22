@@ -5,14 +5,16 @@ import { useApi } from './useApi';
 export const useInitializeCurrency = () => {
   const { getApi } = useApi();
   // store: action
-  const fetchCurrencies = useCurrencyStore((state) => state.fetchCurrencies);
+  const fetchSupportedCurrencies = useCurrencyStore(
+    (state) => state.fetchSupportedCurrencies
+  );
   const initializeCurrencyCode = useCurrencyStore(
     (state) => state.initializeCurrencyCode
   );
 
   useEffect(() => {
-    fetchCurrencies(getApi);
-  }, [fetchCurrencies]);
+    fetchSupportedCurrencies(getApi);
+  }, [fetchSupportedCurrencies]);
 
   useEffect(() => {
     initializeCurrencyCode();

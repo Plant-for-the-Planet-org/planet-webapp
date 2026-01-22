@@ -15,7 +15,7 @@ interface CurrencyStore {
   currencyCode: CurrencyCode;
   isFetching: boolean;
 
-  fetchCurrencies: (
+  fetchSupportedCurrencies: (
     getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>
   ) => void;
   setCurrencyCode: (code: CurrencyCode) => void;
@@ -29,7 +29,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
       currencyCode: 'EUR',
       isFetching: false,
 
-      fetchCurrencies: async (getApi) => {
+      fetchSupportedCurrencies: async (getApi) => {
         const { supportedCurrencies, isFetching } = get();
 
         if (isFetching || supportedCurrencies.size > 0) return;
