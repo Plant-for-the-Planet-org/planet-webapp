@@ -2,7 +2,6 @@ import type { MapProject } from '../../../../features/common/types/projectv2';
 import type { APIError } from '@planet-sdk/common/build/types/errors';
 
 import { useEffect, useState } from 'react';
-import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
@@ -14,6 +13,7 @@ import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useCurrencyStore } from '../../../../stores/currencyStore';
 
 // cspell:disable
 const MANGROVE_PROJECTS = [
@@ -41,12 +41,13 @@ export default function ProjectGrid() {
   // local state
   const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  // store
+  // store: state
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  // store : action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     async function loadProjects() {
-      const currencyCode = getStoredCurrency();
       try {
         const projects = await getApi<MapProject[]>(`/app/projects`, {
           queryParams: {

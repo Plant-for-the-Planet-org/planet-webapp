@@ -22,7 +22,6 @@ import {
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
-import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import {
   buildProjectDetailsQuery,
   isValidClassification,
@@ -72,7 +71,6 @@ type ProjectsProviderProps = {
   children: ReactNode;
   page?: 'project-list' | 'project-details';
   currencyCode?: string;
-  setCurrencyCode?: SetState<string> | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
 };
@@ -81,7 +79,6 @@ export const ProjectsProvider = ({
   children,
   page,
   currencyCode,
-  setCurrencyCode,
   selectedMode,
   setSelectedMode,
 }: ProjectsProviderProps) => {
@@ -269,13 +266,6 @@ export const ProjectsProvider = ({
     }
     loadProjects();
   }, [currencyCode, locale, tenantConfig.id, page]);
-
-  useEffect(() => {
-    if (!currencyCode && setCurrencyCode !== undefined) {
-      const currency = getStoredCurrency();
-      setCurrencyCode(currency);
-    }
-  }, [currencyCode, setCurrencyCode]);
 
   useEffect(() => {
     setDebouncedSearchValue('');
