@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import type { CountryCode } from '@planet-sdk/common';
+import type { CountryCode, CurrencyCode } from '@planet-sdk/common';
 
 import {
   Modal,
@@ -37,7 +37,6 @@ interface TransitionsModalProps {
   setSelectedCurrency: Function;
   selectedCountry: string;
   setSelectedCountry: Function;
-  setCurrencyCode?: Function;
 }
 
 interface countryInterface {
@@ -134,16 +133,16 @@ export default function TransitionsModal({
   setSelectedCurrency,
   selectedCountry,
   setSelectedCountry,
-  setCurrencyCode,
 }: TransitionsModalProps) {
-  const [modalLanguage, setModalLanguage] = useState('en');
-  const [selectedModalCountry, setSelectedModalCountry] = useState('DE');
-
   const tCommon = useTranslations('Common');
   const locale = useLocale();
   const router = useRouter();
-
   const { theme } = useContext(ThemeContext);
+  // local  state
+  const [modalLanguage, setModalLanguage] = useState('en');
+  const [selectedModalCountry, setSelectedModalCountry] = useState('DE');
+  // store: action
+  const setCurrencyCode = useCurrencyStore((state) => state.setCurrencyCode);
 
   // changes the language in when a language is selected
   const handleLanguageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -166,7 +165,7 @@ export default function TransitionsModal({
     if (currencyCode) {
       window.localStorage.setItem('currencyCode', currencyCode);
       setSelectedCurrency(currencyCode);
-      if (setCurrencyCode) setCurrencyCode(currencyCode);
+      setCurrencyCode(currencyCode as CurrencyCode);
     }
     // TODO - loader while changing the locale
     if (modalLanguage !== locale) {

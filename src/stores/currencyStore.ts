@@ -12,20 +12,24 @@ type CurrencyList = {
 
 interface CurrencyStore {
   supportedCurrencies: Set<CurrencyCode>;
+  currencyCode: CurrencyCode;
   isFetching: boolean;
 
-  fetchCurrencies: (
+  fetchSupportedCurrencies: (
     getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>
   ) => void;
+  setCurrencyCode: (code: CurrencyCode) => void;
+  initializeCurrencyCode: () => void;
 }
 
 export const useCurrencyStore = create<CurrencyStore>()(
   devtools(
     (set, get) => ({
       supportedCurrencies: new Set<CurrencyCode>(),
+      currencyCode: 'EUR',
       isFetching: false,
 
-      fetchCurrencies: async (getApi) => {
+      fetchSupportedCurrencies: async (getApi) => {
         const { supportedCurrencies, isFetching } = get();
 
         if (isFetching || supportedCurrencies.size > 0) return;
@@ -50,6 +54,24 @@ export const useCurrencyStore = create<CurrencyStore>()(
         } finally {
           set({ isFetching: false }, undefined, 'currencyStore/fetch_complete');
         }
+      },
+
+      setCurrencyCode: (code) => set({ currencyCode: code }),
+
+      initializeCurrencyCode: () => {
+        if (typeof window === 'undefined') return;
+
+        const storedCurrency = localStorage.getItem(
+          'currencyCode'
+        ) as CurrencyCode | null;
+
+        if (!storedCurrency) return;
+
+        set(
+          { currencyCode: storedCurrency },
+          undefined,
+          'currencyStore/initialize_currency_code'
+        );
       },
     }),
     {

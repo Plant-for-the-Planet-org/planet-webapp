@@ -4,9 +4,19 @@ import { useApi } from './useApi';
 
 export const useInitializeCurrency = () => {
   const { getApi } = useApi();
-  const fetchCurrencies = useCurrencyStore((state) => state.fetchCurrencies);
+  // store: action
+  const fetchSupportedCurrencies = useCurrencyStore(
+    (state) => state.fetchSupportedCurrencies
+  );
+  const initializeCurrencyCode = useCurrencyStore(
+    (state) => state.initializeCurrencyCode
+  );
 
   useEffect(() => {
-    fetchCurrencies(getApi);
-  }, [fetchCurrencies]);
+    fetchSupportedCurrencies(getApi);
+  }, [fetchSupportedCurrencies]);
+
+  useEffect(() => {
+    initializeCurrencyCode();
+  }, [initializeCurrencyCode]);
 };

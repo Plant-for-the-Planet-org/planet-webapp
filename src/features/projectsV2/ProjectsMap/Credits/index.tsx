@@ -8,14 +8,10 @@ import { useTenant } from '../../../common/Layout/TenantContext';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
 
 interface Props {
-  setCurrencyCode: Function;
   isMobile?: boolean;
 }
 
-export default function Credits({
-  setCurrencyCode,
-  isMobile,
-}: Props): ReactElement {
+export default function Credits({ isMobile }: Props): ReactElement {
   const { tenantConfig } = useTenant();
   const tCommon = useTranslations('Common');
   const tMaps = useTranslations('Maps');
@@ -162,7 +158,6 @@ export default function Credits({
         setSelectedCurrency={setSelectedCurrency}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}
-        setCurrencyCode={setCurrencyCode}
       />
     </>
   );
