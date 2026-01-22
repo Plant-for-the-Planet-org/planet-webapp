@@ -18,6 +18,7 @@ interface CurrencyStore {
   fetchCurrencies: (
     getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>
   ) => void;
+  setCurrencyCode: (code: CurrencyCode) => void;
   initializeCurrencyCode: () => void;
 }
 
@@ -54,6 +55,8 @@ export const useCurrencyStore = create<CurrencyStore>()(
           set({ isFetching: false }, undefined, 'currencyStore/fetch_complete');
         }
       },
+
+      setCurrencyCode: (code) => set({ currencyCode: code }),
 
       initializeCurrencyCode: () => {
         if (typeof window === 'undefined') return;
