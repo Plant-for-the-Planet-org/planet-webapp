@@ -30,6 +30,7 @@ import { useApi } from '../../hooks/useApi';
 import { useTenant } from '../common/Layout/TenantContext';
 import { useErrorHandlingStore } from '../../stores/errorHandlingStore';
 import { useCurrencyStore } from '../../stores/currencyStore';
+import { useViewStore } from '../../stores';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -70,14 +71,12 @@ const ProjectsContext = createContext<ProjectsState | null>(null);
 
 type ProjectsProviderProps = {
   children: ReactNode;
-  page?: 'project-list' | 'project-details';
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
 };
 
 export const ProjectsProvider = ({
   children,
-  page,
   selectedMode,
   setSelectedMode,
 }: ProjectsProviderProps) => {
@@ -117,11 +116,12 @@ export const ProjectsProvider = ({
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  const currentPage = useViewStore((state) => state.page);
   //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   // Read filter from URL only on initial load
   useEffect(() => {
-    if (router.isReady && page === 'project-list') {
+    if (router.isReady && currentPage === 'project-list') {
       const { filter, donatable_projects_only } = router.query;
 
       // Initialize classification filters from URL
@@ -234,7 +234,7 @@ export const ProjectsProvider = ({
 
   useEffect(() => {
     async function loadProjects() {
-      if (page !== 'project-list' || !currencyCode) return;
+      if (currentPage !== 'project-list' || !currencyCode) return;
       if (
         projectsLocale === locale &&
         projectsCurrencyCode === currencyCode &&
@@ -266,11 +266,11 @@ export const ProjectsProvider = ({
       }
     }
     loadProjects();
-  }, [currencyCode, locale, tenantConfig.id, page]);
+  }, [currencyCode, locale, tenantConfig.id, currentPage]);
 
   useEffect(() => {
     setDebouncedSearchValue('');
-    if (page === 'project-details') {
+    if (currentPage === 'project-details') {
       if (setSelectedMode) setSelectedMode('list');
       setIsSearching(false);
       setSelectedClassification([]);
@@ -283,9 +283,9 @@ export const ProjectsProvider = ({
       setPreventShallowPush(false);
       setInterventions(null);
     }
-    if (selectedMode === 'list' && page === 'project-list')
+    if (selectedMode === 'list' && currentPage === 'project-list')
       setInterventions(null);
-  }, [page]);
+  }, [currentPage]);
 
   const updateProjectDetailsPath = (
     locale: string,
@@ -352,7 +352,7 @@ export const ProjectsProvider = ({
   useEffect(() => {
     if (
       !router.isReady ||
-      page !== 'project-details' ||
+      currentPage !== 'project-details' ||
       singleProject === null ||
       interventions === null ||
       interventions.length === 0 ||
@@ -386,7 +386,7 @@ export const ProjectsProvider = ({
       updateProjectDetailsPath(locale, singleProject.slug, updatedQueryParams);
     }
   }, [
-    page,
+    currentPage,
     singleProject?.slug,
     locale,
     requestedIntervention,
@@ -401,7 +401,7 @@ export const ProjectsProvider = ({
     if (requestedIntervention && interventions === null) return;
     if (
       !router.isReady ||
-      page !== 'project-details' ||
+      currentPage !== 'project-details' ||
       singleProject === null ||
       selectedIntervention !== null ||
       preventShallowPush
@@ -434,7 +434,7 @@ export const ProjectsProvider = ({
       updateSiteAndUrl(locale, singleProject.slug, siteIndex);
     }
   }, [
-    page,
+    currentPage,
     locale,
     singleProject?.slug,
     selectedSite,

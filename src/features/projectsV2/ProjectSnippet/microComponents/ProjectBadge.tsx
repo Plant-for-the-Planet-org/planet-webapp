@@ -16,7 +16,7 @@ interface Props {
   isTopProject: boolean;
   allowDonations: boolean;
   showTooltipPopups: boolean;
-  page: 'project-list' | 'project-details' | undefined;
+  currentPage: 'project-list' | 'project-details' | undefined;
 }
 interface TitleAndIconReturnType {
   icon: ReactElement;
@@ -52,7 +52,7 @@ const ProjectBadge = ({
   isTopProject,
   allowDonations,
   showTooltipPopups,
-  page,
+  currentPage,
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -130,13 +130,13 @@ const ProjectBadge = ({
   const { icon, title, displayPopup, badgeType } = badgeConfigurations;
 
   const shouldShowPopup =
-    showTooltipPopups && displayPopup && page !== 'project-details';
+    showTooltipPopups && displayPopup && currentPage !== 'project-details';
 
   const badgeContent = (
     <BadgeLabel
       icon={icon}
       title={title}
-      isInteractive={page !== 'project-details'}
+      isInteractive={currentPage !== 'project-details'}
     />
   );
 

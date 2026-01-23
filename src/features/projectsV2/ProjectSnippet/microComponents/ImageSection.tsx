@@ -1,7 +1,7 @@
 import type { MouseEvent } from 'react';
 import type { ImageSectionProps } from '..';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -31,12 +31,13 @@ const ImageSection = (props: ImageSectionProps) => {
     isApproved,
     isTopProject,
     allowDonations,
-    page,
+    currentPage,
     setPreventShallowPush,
   } = props;
 
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const tProjectsCommon = useTranslations('Project');
   const router = useRouter();
@@ -46,8 +47,14 @@ const ImageSection = (props: ImageSectionProps) => {
   const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
   const showBackIcon = useQueryParamStore((state) => state.showBackIcon);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const showBackButton =
-    page === 'project-details' && !(isEmbedMode && showBackIcon === 'false');
+    mounted &&
+    currentPage === 'project-details' &&
+    !(isEmbedMode && showBackIcon === 'false');
 
   const handleBackButton = () => {
     if (setPreventShallowPush) setPreventShallowPush(true);
@@ -88,7 +95,7 @@ const ImageSection = (props: ImageSectionProps) => {
 
   const imageSource = image ? getImageUrl('project', 'medium', image) : '';
   const imageContainerClasses = clsx(styles.projectImage, {
-    [styles.projectImageSecondary]: page === 'project-details',
+    [styles.projectImageSecondary]: currentPage === 'project-details',
   });
   const isNameTruncated = projectName.length >= MAX_NAME_LENGTH;
   const truncatedProjectName = truncateString(projectName, MAX_NAME_LENGTH);
@@ -130,7 +137,7 @@ const ImageSection = (props: ImageSectionProps) => {
         allowDonations={allowDonations}
         isTopProject={isTopProject}
         showTooltipPopups={showTooltipPopups}
-        page={page}
+        currentPage={currentPage}
       />
 
       {/* Loading state */}
@@ -203,7 +210,7 @@ const ImageSection = (props: ImageSectionProps) => {
           {isApproved && (
             <CustomTooltip
               showTooltipPopups={
-                page !== 'project-details' && showTooltipPopups
+                currentPage !== 'project-details' && showTooltipPopups
               }
               triggerElement={
                 <span className={styles.verifiedIcon} onClick={handleClick}>

@@ -38,6 +38,7 @@ interface ProjectListControlForMobileProps {
   shouldHideProjectTabs?: boolean;
   showDonatableProjects: boolean;
   setShowDonatableProjects: SetState<boolean>;
+  currentPage: 'project-list' | 'project-details';
 }
 
 const ProjectListControlForMobile = ({
@@ -60,6 +61,7 @@ const ProjectListControlForMobile = ({
   shouldHideProjectTabs,
   showDonatableProjects,
   setShowDonatableProjects,
+  currentPage,
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
@@ -67,7 +69,6 @@ const ProjectListControlForMobile = ({
 
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
-  const page = useQueryParamStore((state) => state.page);
 
   const hasFilterApplied =
     selectedClassification.length > 0 || showDonatableProjects;
@@ -75,7 +76,9 @@ const ProjectListControlForMobile = ({
   const shouldDisplayProjectListTab =
     !hasFilterApplied && selectedMode !== 'map' && !shouldHideProjectTabs;
   const onlyMapModeAllowed =
-    isEmbedMode && page === 'project-list' && showProjectList === 'false';
+    isEmbedMode &&
+    currentPage === 'project-list' &&
+    showProjectList === 'false';
   const shouldDisplayMapFeatureExplorer =
     selectedMode === 'map' && process.env.ENABLE_EXPLORE === 'true';
 

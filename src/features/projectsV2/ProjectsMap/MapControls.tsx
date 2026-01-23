@@ -24,7 +24,7 @@ interface MapControlsProps {
   selectedTab: SelectedTab | null;
   selectedMode: ViewMode | undefined;
   setSelectedMode: SetState<ViewMode> | undefined;
-  page: 'project-list' | 'project-details';
+  currentPage: 'project-list' | 'project-details';
   mobileOS: MobileOs;
 }
 
@@ -33,7 +33,7 @@ const MapControls = ({
   selectedMode,
   selectedTab,
   setSelectedMode,
-  page,
+  currentPage,
   mobileOS,
 }: MapControlsProps) => {
   const {
@@ -92,7 +92,7 @@ const MapControls = ({
       isMobile &&
       (selectedIntervention !== null || selectedSampleTree !== null)
     ) && selectedTab === 'field';
-  const isProjectDetailsPage = page === 'project-details';
+  const isProjectDetailsPage = currentPage === 'project-details';
   const canShowInterventionDropdown =
     isProjectDetailsPage &&
     selectedTab === 'field' &&
@@ -100,7 +100,7 @@ const MapControls = ({
   const onlyMapModeAllowed =
     isEmbedMode &&
     isMobile &&
-    page === 'project-details' &&
+    currentPage === 'project-details' &&
     showProjectDetails === 'false';
 
   const siteDropdownProps = {
@@ -140,7 +140,7 @@ const MapControls = ({
     isMobile,
     isSearching,
     setIsSearching,
-    page,
+    currentPage,
     hasProjectSites,
     mapOptions,
     updateMapOption,
@@ -169,7 +169,7 @@ const MapControls = ({
 
   return (
     <>
-      {isMobile && page === 'project-list' && (
+      {isMobile && currentPage === 'project-list' && (
         <div className={projectListControlsContainerStyles}>
           <ProjectListControlForMobile {...projectListControlProps} />
         </div>

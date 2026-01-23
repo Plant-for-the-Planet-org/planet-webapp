@@ -196,7 +196,6 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
           project={singleProject}
           showTooltipPopups={true}
           isMobile={isMobile}
-          page="project-details"
           setPreventShallowPush={setPreventShallowPush}
         />
         {shouldShowSingleTreeInfo && (

@@ -9,7 +9,7 @@ import { clsx } from 'clsx';
 
 interface TpoNameProps {
   projectTpoName: string;
-  page: 'project-list' | 'project-details' | undefined;
+  currentPage: 'project-list' | 'project-details' | undefined;
   allowDonations: boolean;
   isTopProject: boolean;
   isApproved: boolean;
@@ -19,7 +19,7 @@ interface TpoNameProps {
 
 const TpoName = ({
   projectTpoName,
-  page,
+  currentPage,
   allowDonations,
   isTopProject,
   isApproved,
@@ -47,7 +47,7 @@ const TpoName = ({
   const tpoNameContainerClasses = clsx(
     styles.projectTpoName,
     tpoNameBackgroundClass,
-    { [styles.projectTpoNameSecondary]: page === 'project-details' }
+    { [styles.projectTpoNameSecondary]: currentPage === 'project-details' }
   );
   return (
     <div className={tpoNameContainerClasses} onClick={handleClick}>

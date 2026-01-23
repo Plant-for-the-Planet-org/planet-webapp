@@ -8,19 +8,15 @@ import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import { useUserProps } from '../UserPropsContext';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { useViewStore } from '../../../../stores';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
   children: ReactNode;
-  page: 'project-list' | 'project-details';
   isMobile: boolean;
 }
 
-const MobileProjectsLayout = ({
-  children,
-  page,
-  isMobile,
-}: ProjectsLayoutProps) => {
+const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
   const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
 
   const isMapMode = selectedMode === 'map';
@@ -31,19 +27,26 @@ const MobileProjectsLayout = ({
     (state) => state.showProjectDetails
   );
   const isContextLoaded = useQueryParamStore((state) => state.isContextLoaded);
+  const currentPage = useViewStore((state) => state.page);
 
   const { isImpersonationModeOn } = useUserProps();
 
   useEffect(() => {
     if (isEmbedded && isContextLoaded) {
-      if (page === 'project-details' && showProjectDetails === 'false') {
+      if (currentPage === 'project-details' && showProjectDetails === 'false') {
         setSelectedMode('map');
       }
-      if (page === 'project-list' && showProjectList === 'false') {
+      if (currentPage === 'project-list' && showProjectList === 'false') {
         setSelectedMode('map');
       }
     }
-  }, [page, isEmbedded, isContextLoaded, showProjectDetails, showProjectList]);
+  }, [
+    currentPage,
+    isEmbedded,
+    isContextLoaded,
+    showProjectDetails,
+    showProjectList,
+  ]);
 
   const mobileLayoutClass = clsx(styles.mobileProjectsLayout, {
     [styles.mapMode]: isMapMode,
@@ -53,7 +56,6 @@ const MobileProjectsLayout = ({
 
   return (
     <ProjectsProvider
-      page={page}
       selectedMode={selectedMode}
       setSelectedMode={setSelectedMode}
     >
@@ -64,7 +66,7 @@ const MobileProjectsLayout = ({
               selectedMode={selectedMode}
               setSelectedMode={setSelectedMode}
               isMobile={isMobile}
-              page={page}
+              currentPage={currentPage}
             />
           </section>
         ) : (

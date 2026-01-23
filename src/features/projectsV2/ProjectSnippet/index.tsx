@@ -26,6 +26,7 @@ import TpoName from './microComponents/TpoName';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
+import { useViewStore } from '../../../stores';
 
 interface Props {
   project:
@@ -35,13 +36,14 @@ interface Props {
     | ConservationProjectExtended;
   showTooltipPopups: boolean;
   isMobile?: boolean;
-  page?: 'project-list' | 'project-details';
   setPreventShallowPush?: SetState<boolean> | undefined;
   utmCampaign?: string;
   disableDonations?: boolean;
 }
 
-type ProjectSnippetContentProps = Omit<Props, 'isMobile'>;
+type ProjectSnippetContentProps = Omit<Props, 'isMobile'> & {
+  currentPage?: 'project-list' | 'project-details';
+};
 export interface CommonProps {
   slug: string;
   isApproved: boolean;
@@ -57,7 +59,7 @@ export interface ImageSectionProps extends CommonProps {
   showTooltipPopups: boolean;
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
-  page?: 'project-list' | 'project-details';
+  currentPage?: 'project-list' | 'project-details';
   setPreventShallowPush: SetState<boolean> | undefined;
 }
 
@@ -75,7 +77,7 @@ export interface ProjectInfoProps extends CommonProps {
 const ProjectSnippetContent = ({
   project,
   showTooltipPopups,
-  page,
+  currentPage,
   setPreventShallowPush,
   utmCampaign,
   disableDonations,
@@ -114,8 +116,8 @@ const ProjectSnippetContent = ({
 
   const commonProps: CommonProps = {
     slug: project.slug,
-    isApproved: isApproved,
-    isTopProject: isTopProject,
+    isApproved,
+    isTopProject,
     allowDonations: project.allowDonations,
     purpose: project.purpose,
   };
@@ -123,11 +125,11 @@ const ProjectSnippetContent = ({
     ...commonProps,
     projectName: project.name,
     image: project.image,
-    ecosystem: ecosystem,
-    showTooltipPopups: showTooltipPopups,
+    ecosystem,
+    showTooltipPopups,
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
-    page,
+    currentPage,
     setPreventShallowPush,
   };
   const projectInfoProps: ProjectInfoProps = {
@@ -161,7 +163,6 @@ export default function ProjectSnippet({
   project,
   showTooltipPopups,
   isMobile,
-  page,
   setPreventShallowPush,
   utmCampaign,
   disableDonations,
@@ -171,21 +172,32 @@ export default function ProjectSnippet({
 
   const embed = useQueryParamStore((state) => state.embed);
   const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
+  const currentPage = useViewStore((state) => state.page);
 
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
 
   const projectSnippetContainerClasses = clsx(styles.singleProject, {
     [styles.projectDetailsSnippetMobile]:
-      page === 'project-details' && isMobile,
+      currentPage === 'project-details' && isMobile,
   });
   const ProjectSnippetContentProps = {
     showTooltipPopups,
-    page,
+    currentPage,
     project,
     setPreventShallowPush,
     utmCampaign,
     disableDonations,
+  };
+
+  const tpoNameProps = {
+    projectTpoName: project.tpo.name,
+    allowDonations: project.allowDonations,
+    isTopProject,
+    isApproved,
+    currentPage,
+    tpoSlug: project.tpo.slug,
+    embed,
   };
 
   const projectPath = useMemo(() => {
@@ -222,7 +234,7 @@ export default function ProjectSnippet({
   return (
     <>
       <div className={projectSnippetContainerClasses}>
-        {page === 'project-details' ? (
+        {currentPage === 'project-details' ? (
           <ProjectSnippetContent {...ProjectSnippetContentProps} />
         ) : (
           <Link href={localizedPath(projectPath)} style={{ cursor: 'pointer' }}>
@@ -230,29 +242,9 @@ export default function ProjectSnippet({
           </Link>
         )}
 
-        {!isMobile && (
-          <TpoName
-            projectTpoName={project.tpo.name}
-            allowDonations={project.allowDonations}
-            isTopProject={isTopProject}
-            isApproved={isApproved}
-            page={page}
-            tpoSlug={project.tpo.slug}
-            embed={embed}
-          />
-        )}
+        {!isMobile && <TpoName {...tpoNameProps} />}
       </div>
-      {isMobile && (
-        <TpoName
-          page={page}
-          projectTpoName={project.tpo.name}
-          allowDonations={project.allowDonations}
-          isTopProject={isTopProject}
-          isApproved={isApproved}
-          tpoSlug={project.tpo.slug}
-          embed={embed}
-        />
-      )}
+      {isMobile && <TpoName {...tpoNameProps} />}
     </>
   );
 }

@@ -38,6 +38,7 @@ import ExploreLayers from './ExploreLayers';
 import { clsx } from 'clsx';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
+import { useViewStore } from '../../../stores';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -46,19 +47,20 @@ const TimeTravel = dynamic(() => import('./TimeTravel'), {
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
-  page: 'project-list' | 'project-details';
+  currentPage: 'project-list' | 'project-details';
 };
 export type ProjectsMapMobileProps = {
   selectedMode: ViewMode;
   setSelectedMode: SetState<ViewMode>;
   isMobile: true;
-  page: 'project-list' | 'project-details';
+  currentPage: 'project-list' | 'project-details';
 };
 export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
   // Fetch layers data
   useFetchLayers();
+  const { currentPage, isMobile } = props;
   const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
   // store: state
   const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
@@ -120,14 +122,14 @@ function ProjectsMap(props: ProjectsMapProps) {
   }, [mapLoaded]);
 
   useEffect(() => {
-    if (props.page === 'project-details') {
+    if (currentPage === 'project-details') {
       setSelectedTab('field');
     } else {
       setTimeTravelConfig(null);
       setSelectedTab(null);
       setWasTimeTravelMounted(false);
     }
-  }, [props.page]);
+  }, [currentPage]);
 
   useEffect(() => {
     if (selectedTab === 'timeTravel') {
@@ -151,7 +153,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         (filteredProjects.length < 30 ||
           filteredProjects.length === projects?.length) &&
         map !== null &&
-        props.page === 'project-list';
+        currentPage === 'project-list';
 
       if (!shouldCenterMap) return;
       const validFeatures = getValidFeatures(filteredProjects);
@@ -171,7 +173,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   );
 
   const shouldShowSingleProjectsView =
-    singleProject !== null && props.page === 'project-details' && mapLoaded;
+    singleProject !== null && currentPage === 'project-details' && mapLoaded;
   const shouldShowMultipleProjectsView =
     Boolean(mapOptions.projects) &&
     projects &&
@@ -179,11 +181,11 @@ function ProjectsMap(props: ProjectsMapProps) {
     !shouldShowSingleProjectsView &&
     mapLoaded;
   const shouldShowMultiTreeInfo =
-    props.isMobile &&
+    isMobile &&
     selectedSampleTree === null &&
     selectedIntervention?.type === 'multi-tree-registration';
   const shouldShowSingleTreeInfo =
-    props.isMobile &&
+    isMobile &&
     (selectedSampleTree !== null ||
       selectedIntervention?.type === 'single-tree-registration');
   const shouldShowNavigationControls = !(
@@ -194,26 +196,18 @@ function ProjectsMap(props: ProjectsMapProps) {
     timeTravelConfig !== null &&
     timeTravelConfig.sources !== null &&
     timeTravelConfig.projectId === singleProject?.id &&
-    !props.isMobile;
+    !isMobile;
   const shouldShowTimeTravel =
     isTimeTravelEnabled &&
     (selectedTab === 'timeTravel' || wasTimeTravelMounted);
   const shouldShowMapTabs = selectedTab !== null;
   const shouldShowExploreLayers =
-    props.page === 'project-list' && isExploreMode;
+    currentPage === 'project-list' && isExploreMode;
 
-  const mobileOS = useMemo(() => getDeviceType(), [props.isMobile]);
-  const mapControlProps = {
-    selectedMode: props.isMobile ? props.selectedMode : undefined,
-    setSelectedMode: props.isMobile ? props.setSelectedMode : undefined,
-    selectedTab,
-    isMobile: props.isMobile,
-    page: props.page,
-    mobileOS,
-  };
+  const mobileOS = useMemo(() => getDeviceType(), [isMobile]);
 
   useEffect(() => {
-    if (props.page === 'project-details' || !mapLoaded) return;
+    if (currentPage === 'project-details' || !mapLoaded) return;
 
     if (mapRef.current) {
       const map = mapRef.current.getMap
@@ -231,7 +225,7 @@ function ProjectsMap(props: ProjectsMapProps) {
         console.error('Failed to zoom out map:', err);
       }
     }
-  }, [props.page, mapLoaded]);
+  }, [currentPage, mapLoaded]);
 
   const onMove = useCallback(
     (evt: ViewStateChangeEvent) => {
@@ -242,7 +236,7 @@ function ProjectsMap(props: ProjectsMapProps) {
 
   const onMouseMove = useCallback(
     (e) => {
-      if (props.page !== 'project-details') return;
+      if (currentPage !== 'project-details') return;
       const features = getFeaturesAtPoint(mapRef, e.point);
       if (!features || features.length === 0) return;
 
@@ -257,7 +251,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       }
       setHoveredIntervention(newIntervention);
     },
-    [interventions, props.page, selectedIntervention]
+    [interventions, currentPage, selectedIntervention]
   );
   /**
    * Map click handler invoked when user clicks on the map in 'project-details' or 'project-list' page (which results in an early return).
@@ -268,7 +262,7 @@ function ProjectsMap(props: ProjectsMapProps) {
    */
   const onClick = useCallback(
     (e) => {
-      if (props.page !== 'project-details') return;
+      if (currentPage !== 'project-details') return;
 
       const features = getFeaturesAtPoint(mapRef, e.point);
       if (!features || features.length === 0) return;
@@ -313,12 +307,21 @@ function ProjectsMap(props: ProjectsMapProps) {
     },
     [
       interventions,
-      props.page,
+      currentPage,
       selectedIntervention,
       singleProject,
       selectedSampleTree,
     ]
   );
+
+  const mapControlProps = {
+    selectedMode: isMobile ? props.selectedMode : undefined,
+    setSelectedMode: isMobile ? props.setSelectedMode : undefined,
+    selectedTab,
+    isMobile,
+    currentPage,
+    mobileOS,
+  };
 
   const singleProjectViewProps = {
     mapRef,
@@ -326,18 +329,13 @@ function ProjectsMap(props: ProjectsMapProps) {
     sitesGeoJson,
   };
 
-  const multipleProjectsViewProps = {
-    mapRef,
-    page: props.page,
-  };
-
   const baseInterventionInfoProps = {
-    isMobile: props.isMobile,
+    isMobile,
     setSelectedSampleTree,
   };
 
   const shouldShowOtherIntervention =
-    props.isMobile &&
+    isMobile &&
     selectedIntervention !== null &&
     !PLANTATION_TYPES.includes(selectedIntervention.type);
 
@@ -380,9 +378,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           {shouldShowSingleProjectsView && (
             <SingleProjectView {...singleProjectViewProps} />
           )}
-          {shouldShowMultipleProjectsView && (
-            <MultipleProjectsView {...multipleProjectsViewProps} />
-          )}
+          {shouldShowMultipleProjectsView && <MultipleProjectsView />}
           {shouldShowNavigationControls && (
             <NavigationControl position="bottom-right" showCompass={false} />
           )}
@@ -403,7 +399,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           {...baseInterventionInfoProps}
         />
       )}
-      {shouldShowOtherIntervention ? (
+      {shouldShowOtherIntervention && (
         <OtherInterventionInfo
           selectedIntervention={
             selectedIntervention?.type !== 'single-tree-registration' &&
@@ -413,7 +409,7 @@ function ProjectsMap(props: ProjectsMapProps) {
           }
           {...baseInterventionInfoProps}
         />
-      ) : null}
+      )}
     </>
   );
 }

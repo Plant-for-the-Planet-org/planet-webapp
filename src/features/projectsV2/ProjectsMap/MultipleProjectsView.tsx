@@ -5,11 +5,7 @@ import ProjectMarkers from './ProjectMarkers';
 import { useProjects } from '../ProjectsContext';
 import { getProjectCategory } from '../../../utils/projectV2';
 
-interface MultipleProjectsViewProps {
-  page: 'project-list' | 'project-details';
-}
-
-const MultipleProjectsView = ({ page }: MultipleProjectsViewProps) => {
+const MultipleProjectsView = () => {
   const { isError, filteredProjects } = useProjects();
   if (isError || !filteredProjects) return null;
 
@@ -38,9 +34,7 @@ const MultipleProjectsView = ({ page }: MultipleProjectsViewProps) => {
     );
   }, [filteredProjects]);
 
-  return (
-    <ProjectMarkers categorizedProjects={categorizedProjects} page={page} />
-  );
+  return <ProjectMarkers categorizedProjects={categorizedProjects} />;
 };
 
 export default MultipleProjectsView;
