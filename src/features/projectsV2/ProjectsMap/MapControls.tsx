@@ -1,5 +1,3 @@
-import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { DropdownType } from '../../common/types/projectv2';
@@ -18,21 +16,18 @@ import { AllInterventions } from '../../../utils/constants/intervention';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
+import { useViewStore } from '../../../stores';
 
 interface MapControlsProps {
   isMobile: boolean;
   selectedTab: SelectedTab | null;
-  selectedMode: ViewMode | undefined;
-  setSelectedMode: SetState<ViewMode> | undefined;
   currentPage: 'project-list' | 'project-details';
   mobileOS: MobileOs;
 }
 
 const MapControls = ({
   isMobile,
-  selectedMode,
   selectedTab,
-  setSelectedMode,
   currentPage,
   mobileOS,
 }: MapControlsProps) => {
@@ -73,6 +68,7 @@ const MapControls = ({
     (state) => state.setIsSatelliteView
   );
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
+  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
 
   const availableInterventionTypes = useMemo(() => {
     if (!interventions) return [];
@@ -135,7 +131,6 @@ const MapControls = ({
     setSelectedClassification,
     debouncedSearchValue,
     setDebouncedSearchValue,
-    selectedMode,
     setSelectedMode,
     isMobile,
     isSearching,
@@ -148,9 +143,7 @@ const MapControls = ({
     setShowDonatableProjects,
   };
 
-  const exitMapMode = () => {
-    setSelectedMode && setSelectedMode('list');
-  };
+  const exitMapMode = () => setSelectedMode('list');
 
   const layerToggleClass = clsx(styles.layerToggle, {
     [styles.layerToggleAndroid]: isMobile && mobileOS === 'android',

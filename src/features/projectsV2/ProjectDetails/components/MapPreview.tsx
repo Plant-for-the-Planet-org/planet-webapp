@@ -1,13 +1,13 @@
+import { useViewStore } from '../../../../stores';
 import styles from '../styles/MapPreview.module.scss';
 import ShowMapButton from './microComponents/ShowMapButton';
 
-type MapPreviewProps = {
-  handleMap: () => void;
-};
-const MapPreview = ({ handleMap }: MapPreviewProps) => {
+const MapPreview = () => {
+  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
+
   return (
     <div className={styles.mapPreviewContainer}>
-      <ShowMapButton handleMap={handleMap} />
+      <ShowMapButton handleMap={() => setSelectedMode('map')} />
     </div>
   );
 };

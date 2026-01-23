@@ -2,7 +2,6 @@ import type { TreeProjectClassification } from '@planet-sdk/common';
 import type { SetState } from '../../common/types/common';
 import type { ProjectTabs } from '.';
 import type { MapProject } from '../../common/types/projectv2';
-import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { MapOptions } from '../../common/types/map';
 
 import { useState } from 'react';
@@ -17,6 +16,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
+import { useViewStore } from '../../../stores';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
@@ -29,8 +29,6 @@ interface ProjectListControlForMobileProps {
   setDebouncedSearchValue: SetState<string>;
   isSearching: boolean;
   setIsSearching: SetState<boolean>;
-  selectedMode: ViewMode | undefined;
-  setSelectedMode: SetState<ViewMode> | undefined;
   isMobile: boolean;
   filteredProjects: MapProject[] | undefined;
   mapOptions: MapOptions;
@@ -51,8 +49,6 @@ const ProjectListControlForMobile = ({
   setDebouncedSearchValue,
   selectedClassification,
   setSelectedClassification,
-  selectedMode,
-  setSelectedMode,
   isMobile,
   isSearching,
   setIsSearching,
@@ -69,6 +65,7 @@ const ProjectListControlForMobile = ({
 
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
+  const selectedMode = useViewStore((state) => state.selectedMode);
 
   const hasFilterApplied =
     selectedClassification.length > 0 || showDonatableProjects;
@@ -103,7 +100,6 @@ const ProjectListControlForMobile = ({
   const viewModeTabsProps = {
     setIsFilterOpen,
     isSearching,
-    setSelectedMode,
     selectedMode,
   };
   const tabProps = {

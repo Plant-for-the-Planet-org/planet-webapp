@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
@@ -17,10 +17,7 @@ interface ProjectsLayoutProps {
 }
 
 const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
-  const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
-
-  const isMapMode = selectedMode === 'map';
-
+  // store: state
   const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
   const showProjectDetails = useQueryParamStore(
@@ -28,7 +25,11 @@ const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
   );
   const isContextLoaded = useQueryParamStore((state) => state.isContextLoaded);
   const currentPage = useViewStore((state) => state.page);
+  const selectedMode = useViewStore((state) => state.selectedMode);
+  // store: action
+  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
 
+  const isMapMode = selectedMode === 'map';
   const { isImpersonationModeOn } = useUserProps();
 
   useEffect(() => {
@@ -55,19 +56,11 @@ const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
   });
 
   return (
-    <ProjectsProvider
-      selectedMode={selectedMode}
-      setSelectedMode={setSelectedMode}
-    >
+    <ProjectsProvider>
       <main className={mobileLayoutClass}>
         {isMapMode ? (
           <section className={styles.mobileMapContainer}>
-            <ProjectsMap
-              selectedMode={selectedMode}
-              setSelectedMode={setSelectedMode}
-              isMobile={isMobile}
-              currentPage={currentPage}
-            />
+            <ProjectsMap isMobile={isMobile} currentPage={currentPage} />
           </section>
         ) : (
           <section className={styles.mobileContentContainer}>

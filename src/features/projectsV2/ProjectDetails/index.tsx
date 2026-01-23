@@ -37,7 +37,6 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
     setInterventions,
     setIsLoading,
     setIsError,
-    setSelectedMode,
     selectedIntervention,
     hoveredIntervention,
     selectedSampleTree,
@@ -233,7 +232,6 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
           <ProjectInfo
             project={singleProject}
             isMobile={isMobile}
-            setSelectedMode={setSelectedMode}
             hasVideoConsent={hasVideoConsent}
             onVideoConsentChange={setHasVideoConsent}
           />

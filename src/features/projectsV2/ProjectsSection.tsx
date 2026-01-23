@@ -9,6 +9,7 @@ import ProjectList from './ProjectList';
 import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
 import { useTenant } from '../common/Layout/TenantContext';
 import { useProjectMapStore } from '../../stores/projectMapStore';
+import { useViewStore } from '../../stores';
 
 interface ProjectsSectionProps {
   isMobile: boolean;
@@ -27,12 +28,13 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     setIsSearching,
     isLoading,
     isError,
-    setSelectedMode,
-    selectedMode,
     showDonatableProjects,
     setShowDonatableProjects,
   } = useProjects();
+  // store: state
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  const currentPage = useViewStore((state) => state.page);
+  // store: action
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
   const { tenantConfig } = useTenant();
 
@@ -81,13 +83,12 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   };
   const projectListControlMobileProps = {
     debouncedSearchValue,
-    setSelectedMode,
-    selectedMode,
     isMobile,
     isSearching,
     setIsSearching,
     mapOptions,
     updateMapOption,
+    currentPage,
   };
 
   return (

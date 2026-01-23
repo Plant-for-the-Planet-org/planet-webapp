@@ -38,7 +38,6 @@ import ExploreLayers from './ExploreLayers';
 import { clsx } from 'clsx';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useViewStore } from '../../../stores';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -50,8 +49,6 @@ export type ProjectsMapDesktopProps = {
   currentPage: 'project-list' | 'project-details';
 };
 export type ProjectsMapMobileProps = {
-  selectedMode: ViewMode;
-  setSelectedMode: SetState<ViewMode>;
   isMobile: true;
   currentPage: 'project-list' | 'project-details';
 };
@@ -315,8 +312,6 @@ function ProjectsMap(props: ProjectsMapProps) {
   );
 
   const mapControlProps = {
-    selectedMode: isMobile ? props.selectedMode : undefined,
-    setSelectedMode: isMobile ? props.setSelectedMode : undefined,
     selectedTab,
     isMobile,
     currentPage,

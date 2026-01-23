@@ -1,6 +1,4 @@
 import type { CountryCode } from '@planet-sdk/common';
-import type { SetState } from '../../../common/types/common';
-import type { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { ExtendedProject } from '../../../common/types/projectv2';
 
 import { useMemo } from 'react';
@@ -20,7 +18,6 @@ import area from '@turf/area';
 interface ProjectInfoProps {
   project: ExtendedProject;
   isMobile: boolean;
-  setSelectedMode: SetState<ViewMode> | undefined;
   hasVideoConsent: boolean;
   onVideoConsentChange: (consent: boolean) => void;
 }
@@ -28,7 +25,6 @@ interface ProjectInfoProps {
 const ProjectInfo = ({
   project,
   isMobile,
-  setSelectedMode,
   hasVideoConsent,
   onVideoConsentChange,
 }: ProjectInfoProps) => {
@@ -162,8 +158,6 @@ const ProjectInfo = ({
     return null;
   }, [sites]);
 
-  const handleMap = () => setSelectedMode?.('map');
-
   return (
     <section className={styles.projectInfoSection}>
       {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
@@ -183,7 +177,7 @@ const ProjectInfo = ({
           imageSize="medium"
         />
       )}
-      {isMobile && <MapPreview handleMap={handleMap} />}
+      {isMobile && <MapPreview />}
       {shouldRenderKeyInfo && (
         <KeyInfo
           abandonment={isTreeProject ? metadata.yearAbandoned : null}

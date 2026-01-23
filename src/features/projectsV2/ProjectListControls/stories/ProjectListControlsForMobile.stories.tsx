@@ -21,10 +21,6 @@ const meta: Meta<typeof ProjectListControlForMobile> = {
         'other-planting',
       ],
     },
-    selectedMode: {
-      control: 'radio',
-      options: ['list', 'map'],
-    },
   },
 };
 
@@ -111,7 +107,6 @@ export const Default: Story = {
     const [selectedClassification, setSelectedClassification] = useState(
       args.selectedClassification
     );
-    const [selectedMode, setSelectedMode] = useState(args.selectedMode);
     const [isSearching, setIsSearching] = useState(false);
     return (
       <ProjectListControlForMobile
@@ -124,10 +119,6 @@ export const Default: Story = {
         setSelectedClassification={(classification) =>
           setSelectedClassification(classification)
         }
-        selectedMode={selectedMode}
-        setSelectedMode={(mode) => {
-          setSelectedMode(mode);
-        }}
         setDebouncedSearchValue={(value) => {
           if (value) window.alert(`Search value: ${value}`);
         }}

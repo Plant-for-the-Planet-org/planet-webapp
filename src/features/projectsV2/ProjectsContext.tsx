@@ -8,7 +8,6 @@ import type {
   TreeProjectClassification,
 } from '@planet-sdk/common';
 import type { SetState } from '../common/types/common';
-import type { ViewMode } from '../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { INTERVENTION_TYPE } from '../../utils/constants/intervention';
 
 import {
@@ -61,8 +60,6 @@ interface ProjectsState {
   setIsSearching: SetState<boolean>;
   filteredProjects: MapProject[] | undefined;
   topProjects: MapProject[] | undefined;
-  selectedMode?: ViewMode;
-  setSelectedMode?: SetState<ViewMode>;
   selectedInterventionType: INTERVENTION_TYPE;
   setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
 }
@@ -71,15 +68,9 @@ const ProjectsContext = createContext<ProjectsState | null>(null);
 
 type ProjectsProviderProps = {
   children: ReactNode;
-  selectedMode?: ViewMode;
-  setSelectedMode?: SetState<ViewMode>;
 };
 
-export const ProjectsProvider = ({
-  children,
-  selectedMode,
-  setSelectedMode,
-}: ProjectsProviderProps) => {
+export const ProjectsProvider = ({ children }: ProjectsProviderProps) => {
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
@@ -117,8 +108,10 @@ export const ProjectsProvider = ({
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
   const currentPage = useViewStore((state) => state.page);
+  const selectedMode = useViewStore((state) => state.selectedMode);
   //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
   // Read filter from URL only on initial load
   useEffect(() => {
     if (router.isReady && currentPage === 'project-list') {
@@ -271,7 +264,7 @@ export const ProjectsProvider = ({
   useEffect(() => {
     setDebouncedSearchValue('');
     if (currentPage === 'project-details') {
-      if (setSelectedMode) setSelectedMode('list');
+      setSelectedMode('list');
       setIsSearching(false);
       setSelectedClassification([]);
     } else {
@@ -472,8 +465,6 @@ export const ProjectsProvider = ({
       setSelectedClassification,
       showDonatableProjects,
       setShowDonatableProjects,
-      selectedMode,
-      setSelectedMode,
       singleProject,
       setSingleProject,
       interventions,
@@ -499,7 +490,6 @@ export const ProjectsProvider = ({
       topProjects,
       selectedClassification,
       debouncedSearchValue,
-      selectedMode,
       singleProject,
       interventions,
       selectedIntervention,
