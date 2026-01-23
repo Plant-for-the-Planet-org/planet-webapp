@@ -278,6 +278,24 @@
         "longitudeRange": "Longitude must be between -180 and 180."
       }
     },
-    "editSite": "Edit site"
+    "editSite": "Edit site",
+    "syncSites": {
+      "modal": {
+        "title": "Send Site Data to Restor.eco",
+        "terms": "By clicking <highlightedAction>Send</highlightedAction>, your site data will be submitted to <restorLink>Restor.eco</restorLink>. Please note that the <privacyPolicyLink>Restor.eco Privacy Policy</privacyPolicyLink> applies to all shared data.",
+        "requirements": {
+          "title": "Requirements:",
+          "activeAccount": "<bold>Active Account:</bold> Ensure you have an active account on Restor.eco before proceeding.",
+          "consultation": "<bold>Consultation:</bold> Please only use this feature if you have already consulted with the Plant-for-the-Planet team."
+        },
+        "helpText": "If you have questions about this integration, please contact <emailLink>maximilian.schmidt@plant-for-the-planet.org</emailLink>."
+      },
+      "send": "Send",
+      "cancel": "Cancel",
+      "syncing": "Syncing...",
+      "syncSitesToRestorEco": "Sync Sites to Restor.eco",
+      "success": "Your sites have been synced successfully with Restor.eco!",
+      "error": "Failed to sync site data. Please try again later."
+    }
   }
 }
