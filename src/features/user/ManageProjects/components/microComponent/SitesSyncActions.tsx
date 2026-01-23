@@ -3,6 +3,7 @@ import type { SetState } from '../../../../common/types/common';
 import { Alert, Snackbar } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import CustomModal from '../../../../common/Layout/CustomModal';
+import SitesSyncModalContent from './SitesSyncModalContent';
 import styles from '../../StepForm.module.scss';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 
@@ -54,28 +55,7 @@ const SitesSyncActions = ({
       </Snackbar>
       <CustomModal
         modalTitle={tSyncSites('modal.title')}
-        modalSubtitle={tSyncSites.rich('modal.subtitle', {
-          restorLink: (chunks) => (
-            <a
-              href="https://restor.eco"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.restorLink}
-            >
-              {chunks}
-            </a>
-          ),
-          privacyPolicyLink: (chunks) => (
-            <a
-              href="https://restor.eco/privacy-policy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.restorLink}
-            >
-              {chunks}
-            </a>
-          ),
-        })}
+        modalSubtitle={<SitesSyncModalContent />}
         continueButtonText={tSyncSites('send')}
         cancelButtonText={tSyncSites('cancel')}
         isOpen={isSiteSyncModalOpen}

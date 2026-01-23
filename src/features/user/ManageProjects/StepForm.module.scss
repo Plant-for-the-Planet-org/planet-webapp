@@ -391,6 +391,22 @@
   gap: 20px;
 }
 
+.siteSyncModalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+
+  .terms,
+  .helpText {
+    text-align: center;
+  }
+
+  .requirements ul li {
+    margin-left: 16px;
+  }
+}
+
 .restorLink {
   color: $dsPrimaryColor;
 }
