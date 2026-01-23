@@ -5,11 +5,8 @@ import type {
   GetStaticPropsResult,
 } from 'next/types';
 import type { ReactElement } from 'react';
-import type {
-  NextPageWithLayout,
-  PageComponentProps,
-  PageProps,
-} from '../../../_app';
+import type { NextPageWithLayout, PageComponentProps } from '../../../_app';
+import type { AbstractIntlMessages } from 'next-intl';
 
 import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
@@ -65,6 +62,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: 'blocking',
   };
 };
+
+interface PageProps {
+  messages: AbstractIntlMessages;
+}
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
