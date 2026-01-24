@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProjectSelectAutocomplete from '../components/ProjectSelectAutocomplete';
+import ProjectSelectAutocomplete from '../../../common/ProjectSelectAutocomplete';
 
 const meta: Meta<typeof ProjectSelectAutocomplete> = {
   title: 'Components/ProjectSelectAutocomplete',

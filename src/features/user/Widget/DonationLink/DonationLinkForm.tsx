@@ -10,7 +10,7 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
 
-import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
+import ProjectSelectAutocomplete from '../../../common/ProjectSelectAutocomplete';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import styles from '../../../../../src/features/user/Widget/DonationLink/DonationLinkForm.module.scss';
 import CopyToClipboard from '../../../common/CopyToClipboard';

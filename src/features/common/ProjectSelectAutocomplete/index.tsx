@@ -3,7 +3,7 @@ import type { ReactElement } from 'react';
 import { useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
+import SearchIcon from '../../../../public/assets/images/icons/SearchIcon';
 
 export interface BaseProject {
   guid: string;

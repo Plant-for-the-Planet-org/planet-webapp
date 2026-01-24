@@ -5,7 +5,7 @@ import type { APIError, CountryProject } from '@planet-sdk/common';
 
 import { useContext } from 'react';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
+import ProjectSelectAutocomplete from '../../../common/ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
 import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
