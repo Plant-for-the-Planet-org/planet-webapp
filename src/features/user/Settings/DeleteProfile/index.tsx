@@ -10,7 +10,7 @@ export default function DonationLink(): ReactElement | null {
   const t = useTranslations('Me');
 
   return (
-    <DashboardView title={t('deleteProfile')} subtitle={null}>
+    <DashboardView title={t('deleteProfile')}>
       <SingleColumnView>
         <CenteredContainer>
           <DeleteProfileForm />
