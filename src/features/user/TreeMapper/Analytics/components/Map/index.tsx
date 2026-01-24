@@ -145,7 +145,7 @@ export const MapContainer = () => {
 
   // Custom hook for making requests to fetch distinct species
   const { makeRequest } = useNextRequest<{ data: DistinctSpecies }>({
-    url: `/api/data-explorer/map/distinct-species/${project?.id}`,
+    url: `/api/data-explorer/map/distinct-species/${project?.guid}`,
     method: HTTP_METHOD.GET,
   });
 
@@ -153,7 +153,7 @@ export const MapContainer = () => {
   const { makeRequest: makeReqToFetchProjectSites } = useNextRequest<{
     data: FeatureCollection;
   }>({
-    url: `/api/data-explorer/map/sites/${project?.id}`,
+    url: `/api/data-explorer/map/sites/${project?.guid}`,
     method: HTTP_METHOD.GET,
   });
 
@@ -164,7 +164,7 @@ export const MapContainer = () => {
     url: `/api/data-explorer/map/intervention`,
     method: HTTP_METHOD.POST,
     body: {
-      projectId: project?.id,
+      projectId: project?.guid,
       species: species,
       queryType: queryType,
       searchQuery: search,

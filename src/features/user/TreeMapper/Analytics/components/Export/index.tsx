@@ -38,7 +38,7 @@ export const Export = () => {
     url: '/api/data-explorer/export',
     method: HTTP_METHOD.POST,
     body: {
-      projectId: localProject?.id,
+      projectId: localProject?.guid,
       startDate: localFromDate,
       endDate: localToDate,
     },

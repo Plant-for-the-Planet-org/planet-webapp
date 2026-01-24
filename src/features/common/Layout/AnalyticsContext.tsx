@@ -5,8 +5,7 @@ import { useContext, createContext, useMemo, useState } from 'react';
 import { subYears } from 'date-fns';
 
 export interface Project {
-  id: string;
-  guid: string; // Added: same value as id for compatibility with ProjectSelectAutocomplete
+  guid: string;
   name: string;
 }
 
