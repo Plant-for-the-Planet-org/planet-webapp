@@ -27,7 +27,7 @@
         "line3": "Les noms et les adresses électroniques ne peuvent pas être associés au code."
       }
     },
-    "projectName": "Nom du projet",
+    "labelProject": "Nom du projet",
     "costPerUnit": "Coût par unité",
     "labelComment": "Commentaire [Privé]",
     "unitOfMeasurement": "Unité de mesure",
