@@ -6,6 +6,7 @@ import { subYears } from 'date-fns';
 
 export interface Project {
   id: string;
+  guid: string; // Added: same value as id for compatibility with ProjectSelectAutocomplete
   name: string;
 }
 

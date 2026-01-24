@@ -10,6 +10,7 @@ import UnitCostDisplay from './UnitCostDisplay';
 import { handleError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useApi } from '../../../../hooks/useApi';
+import { useTranslations } from 'next-intl';
 
 interface ProjectSelectorProps {
   projectList: CountryProject[];
@@ -25,6 +26,7 @@ const ProjectSelector = ({
   active = true,
   planetCashAccount,
 }: ProjectSelectorProps): ReactElement | null => {
+  const tBulkCodes = useTranslations('BulkCodes');
   const { setErrors } = useContext(ErrorHandlingContext);
   const { user, token, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
@@ -71,6 +73,8 @@ const ProjectSelector = ({
         project={project}
         projectList={projectList || []}
         active={active}
+        showSearchIcon={true}
+        label={tBulkCodes('labelProject')}
       />
       <UnitCostDisplay
         unitCost={project ? project.unitCost : '-'}

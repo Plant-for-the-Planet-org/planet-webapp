@@ -31,7 +31,7 @@ const Analytics = () => {
 
       res.forEach((_proj) => {
         const { id, name } = _proj.properties;
-        const proj = { id, name };
+        const proj = { id, guid: id, name };
         projects.push(proj);
       });
 

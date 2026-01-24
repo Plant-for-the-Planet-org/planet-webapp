@@ -8,10 +8,9 @@ import SearchIcon from '../../../../public/assets/images/icons/SearchIcon';
 export interface BaseProject {
   guid: string;
   name: string;
-  slug: string;
 }
 
-const MuiAutocomplete = styled(Autocomplete<BaseProject>)((/* { theme } */) => {
+const MuiAutocomplete = styled(Autocomplete<BaseProject>)(() => {
   return {
     '& .MuiAutocomplete-popupIndicatorOpen': {
       transform: 'none',
@@ -27,17 +26,20 @@ interface ProjectSelectAutocompleteProps<T extends BaseProject> {
   project: T | null;
   handleProjectChange?: (project: T | null) => void;
   active?: boolean;
+  showSearchIcon?: boolean;
+  label?: string;
 }
 
-// TODO - move this to a common folder
 const ProjectSelectAutocomplete = <T extends BaseProject>({
   projectList,
   project = null,
   handleProjectChange,
   active = true,
+  showSearchIcon = false,
+  label,
 }: ProjectSelectAutocompleteProps<T>): ReactElement | null => {
   const [localProject, setLocalProject] = useState<T | null>(project);
-  const t = useTranslations('BulkCodes');
+  const t = useTranslations('Common');
 
   useEffect(() => {
     setLocalProject(project);
@@ -51,7 +53,7 @@ const ProjectSelectAutocomplete = <T extends BaseProject>({
 
   return (
     <MuiAutocomplete
-      popupIcon={SearchIcon()}
+      popupIcon={showSearchIcon ? SearchIcon() : undefined}
       options={projectList}
       getOptionLabel={(option) => option.name}
       isOptionEqualToValue={(option, value) => option.guid === value.guid}
@@ -63,7 +65,7 @@ const ProjectSelectAutocomplete = <T extends BaseProject>({
         </span>
       )}
       renderInput={(params) => (
-        <TextField {...params} label={t('projectName')} />
+        <TextField {...params} label={label || t('project')} />
       )}
       disabled={!active}
     />

@@ -189,6 +189,8 @@ const DonationLinkForm = ({
               project={localProject}
               projectList={projectsList || []}
               active={true}
+              showSearchIcon={true}
+              label={tDonationLink('labelProject')}
             />
           </div>
           <div className={styles.formSection}>
