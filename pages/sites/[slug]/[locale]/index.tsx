@@ -10,6 +10,7 @@ import type {
   PageComponentProps,
   PageProps,
 } from '../../../_app';
+import type { DirectGiftI } from '../../../../src/features/donations/components/DirectGift';
 
 import {
   constructPathsForTenantSlug,
@@ -19,14 +20,17 @@ import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection';
+import DirectGift from '../../../../src/features/donations/components/DirectGift';
 
 const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+
+  const [directGift, setDirectGift] = useState<DirectGiftI | null>(null);
 
   useEffect(() => {
     if (router.isReady) {
@@ -34,7 +38,21 @@ const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
     }
   }, [router.isReady]);
 
-  return <ProjectsSection isMobile={isMobile} />;
+  useEffect(() => {
+    const storedDirectGift = localStorage.getItem('directGift');
+    if (storedDirectGift) {
+      setDirectGift(JSON.parse(storedDirectGift));
+    }
+  }, []);
+
+  return (
+    <>
+      <ProjectsSection isMobile={isMobile} />
+      {directGift !== null && (
+        <DirectGift directGift={directGift} setDirectGift={setDirectGift} />
+      )}
+    </>
+  );
 };
 
 ProjectListPage.getLayout = function getLayout(

@@ -28,7 +28,7 @@ interface Props {
   pageProps: PageProps;
 }
 
-export default function DirectGift({
+export default function DirectGiftCheckPage({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const router = useRouter();
@@ -55,7 +55,6 @@ export default function DirectGift({
             id: newProfile.slug,
             displayName: newProfile.displayName,
             type: newProfile.type,
-            show: true,
           })
         );
       }
