@@ -40,8 +40,21 @@ const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
 
   useEffect(() => {
     const storedDirectGift = localStorage.getItem('directGift');
-    if (storedDirectGift) {
-      setDirectGift(JSON.parse(storedDirectGift));
+    if (!storedDirectGift) return;
+    try {
+      const parsedDirectGift = JSON.parse(storedDirectGift);
+      if (
+        parsedDirectGift &&
+        typeof parsedDirectGift.id === 'string' &&
+        typeof parsedDirectGift.displayName === 'string' &&
+        typeof parsedDirectGift.type === 'string'
+      ) {
+        setDirectGift(parsedDirectGift);
+      } else {
+        localStorage.removeItem('directGift');
+      }
+    } catch {
+      localStorage.removeItem('directGift');
     }
   }, []);
 
