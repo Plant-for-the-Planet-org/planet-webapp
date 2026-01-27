@@ -288,7 +288,7 @@
           "activeAccount": "<bold>Aktives Konto:</bold> Stellen Sie sicher, dass Sie über ein aktives Konto bei Restor.eco verfügen, bevor Sie fortfahren.",
           "consultation": "<bold>Rücksprache:</bold> Bitte nutzen Sie diese Funktion nur, wenn Sie sich zuvor mit dem Team von Plant-for-the-Planet abgestimmt haben."
         },
-        "helpText": "Falls Sie Fragen zu dieser Integration haben, wenden Sie sich bitte an <emailLink>maximilian.schmidt@plant-for-the-planet.org</emailLink>."
+        "helpText": "Falls Sie Fragen zu dieser Integration haben, wenden Sie sich bitte an <emailLink>{email}</emailLink>."
       },
       "send": "Senden",
       "cancel": "Abbrechen",
