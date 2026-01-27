@@ -48,9 +48,10 @@ const SitesSyncModalContent = () => {
       </div>
       <div className={styles.helpText}>
         {tSyncSites.rich('modal.helpText', {
+          email: process.env.NEXT_PUBLIC_HELP_EMAIL_RESTOR,
           emailLink: (chunks) => (
             <a
-              href="mailto:maximilian.schmidt@plant-for-the-planet.org"
+              href={`mailto:${process.env.NEXT_PUBLIC_HELP_EMAIL_RESTOR}`}
               className={styles.restorLink}
             >
               {chunks}

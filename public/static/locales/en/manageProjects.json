@@ -288,7 +288,7 @@
           "activeAccount": "<bold>Active Account:</bold> Ensure you have an active account on Restor.eco before proceeding.",
           "consultation": "<bold>Consultation:</bold> Please only use this feature if you have already consulted with the Plant-for-the-Planet team."
         },
-        "helpText": "If you have questions about this integration, please contact <emailLink>maximilian.schmidt@plant-for-the-planet.org</emailLink>."
+        "helpText": "If you have questions about this integration, please contact <emailLink>{email}</emailLink>."
       },
       "send": "Send",
       "cancel": "Cancel",
