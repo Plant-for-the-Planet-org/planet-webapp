@@ -33,7 +33,6 @@ const MapControls = ({
   mobileOS,
 }: MapControlsProps) => {
   const {
-    topProjects,
     selectedClassification,
     filteredProjects,
     setSelectedClassification,
@@ -58,6 +57,7 @@ const MapControls = ({
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
   // store: state
   const projects = useProjectStore((state) => state.projects);
+  const topProjects = useProjectStore((state) => state.topProjects);
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');

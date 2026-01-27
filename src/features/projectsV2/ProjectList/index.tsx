@@ -16,10 +16,10 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
     selectedClassification,
     filteredProjects,
     showDonatableProjects,
-    topProjects,
   } = useProjects();
   // store: state
   const projects = useProjectStore((state) => state.projects);
+  const topProjects = useProjectStore((state) => state.topProjects);
 
   const projectsToDisplay = useMemo(() => {
     const hasFilterOrSearchApplied =

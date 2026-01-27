@@ -17,7 +17,6 @@ interface ProjectsSectionProps {
 
 const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   const {
-    topProjects,
     selectedClassification,
     setSelectedClassification,
     filteredProjects,
@@ -34,6 +33,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
   const currentPage = useViewStore((state) => state.page);
   const projects = useProjectStore((state) => state.projects);
+  const topProjects = useProjectStore((state) => state.topProjects);
   // store: action
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
   const { tenantConfig } = useTenant();

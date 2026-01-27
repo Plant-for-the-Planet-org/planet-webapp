@@ -497,3 +497,19 @@ export function prepareInterventionMetadata(
     .map(([key, value]) => formatMetadataEntry(key, value))
     .filter((entry): entry is { key: string; value: string } => !!entry);
 }
+
+/**
+ * Returns top projects with purpose "trees".
+ */
+
+export const getTopTreeProjects = (
+  projects: MapProject[] | null
+): MapProject[] => {
+  if (!projects) return [];
+
+  return projects.filter(
+    (project) =>
+      project.properties.purpose === 'trees' &&
+      project.properties.isTopProject === true
+  );
+};
