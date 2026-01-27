@@ -1,9 +1,8 @@
 import type { ViewStateChangeEvent } from 'react-map-gl-v7/maplibre';
-import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import type { SetState } from '../../common/types/common';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { SingleTreeRegistration } from '@planet-sdk/common';
 import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
+import type { Page } from '../../../stores/viewStore';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -46,11 +45,11 @@ const TimeTravel = dynamic(() => import('./TimeTravel'), {
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
-  currentPage: 'project-list' | 'project-details';
+  currentPage: Page;
 };
 export type ProjectsMapMobileProps = {
   isMobile: true;
-  currentPage: 'project-list' | 'project-details';
+  currentPage: Page;
 };
 export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 

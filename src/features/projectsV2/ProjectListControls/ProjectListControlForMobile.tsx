@@ -3,6 +3,7 @@ import type { SetState } from '../../common/types/common';
 import type { ProjectTabs } from '.';
 import type { MapProject } from '../../common/types/projectv2';
 import type { MapOptions } from '../../common/types/map';
+import type { Page } from '../../../stores/viewStore';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -36,7 +37,7 @@ interface ProjectListControlForMobileProps {
   shouldHideProjectTabs?: boolean;
   showDonatableProjects: boolean;
   setShowDonatableProjects: SetState<boolean>;
-  currentPage: 'project-list' | 'project-details';
+  currentPage: Page;
 }
 
 const ProjectListControlForMobile = ({

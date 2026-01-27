@@ -2,6 +2,7 @@ import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { DropdownType } from '../../common/types/projectv2';
 import type { InterventionTypes } from '@planet-sdk/common';
+import type { Page } from '../../../stores/viewStore';
 
 import { useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
@@ -21,7 +22,7 @@ import { useViewStore } from '../../../stores';
 interface MapControlsProps {
   isMobile: boolean;
   selectedTab: SelectedTab | null;
-  currentPage: 'project-list' | 'project-details';
+  currentPage: Page;
   mobileOS: MobileOs;
 }
 
