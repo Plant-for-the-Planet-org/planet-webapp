@@ -19,8 +19,8 @@ import { useInitializeView } from '../../../hooks/useInitializeView';
 export const StoreInitializer = () => {
   useInitializeParams();
   useInitializeCurrency();
+  useInitializeView();
   useInitializeProject();
   useInitializeIntervention();
-  useInitializeView()
   return null;
 };

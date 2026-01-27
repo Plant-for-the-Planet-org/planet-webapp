@@ -1,1 +1,43 @@
-export const useInitializeProject = () => {};
+import { useLocale } from 'next-intl';
+import { useTenant } from '../features/common/Layout/TenantContext';
+import { useEffect } from 'react';
+import { useProjectStore, useViewStore } from '../stores';
+import { useApi } from './useApi';
+import { useCurrencyStore } from '../stores/currencyStore';
+
+export const useInitializeProject = () => {
+  const locale = useLocale();
+  const { tenantConfig } = useTenant();
+  const { getApi } = useApi();
+  // store: state
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  const currentPage = useViewStore((state) => state.page);
+  const projectsCurrencyCode = useProjectStore(
+    (state) => state.projectsCurrencyCode
+  );
+  const projectsLocale = useProjectStore((state) => state.projectsLocale);
+  const projects = useProjectStore((state) => state.projects);
+  // store: action
+  const fetchProjects = useProjectStore((state) => state.fetchProjects);
+  useEffect(() => {
+    if (currentPage !== 'project-list' || !currencyCode) return;
+    if (
+      projectsLocale === locale &&
+      projectsCurrencyCode === currencyCode &&
+      projects !== null
+    )
+      return;
+
+    fetchProjects(getApi, {
+      queryParams: {
+        _scope: 'map',
+        currency: currencyCode,
+        //passing locale/tenant as a query param to break cache when locale changes,
+        //as the browser uses the cached response even though the x-locale header is different
+        locale,
+        tenant: tenantConfig.id,
+        'filter[purpose]': 'trees,conservation',
+      },
+    });
+  }, [currencyCode, locale, tenantConfig.id, currentPage]);
+};
