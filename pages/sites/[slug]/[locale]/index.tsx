@@ -23,17 +23,11 @@ import { useEffect } from 'react';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection';
-import { useViewStore } from '../../../../src/stores';
+
 
 const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  // store: action
-  const setPage = useViewStore((state) => state.setPage);
-
-  useEffect(() => {
-    setPage('project-list');
-  }, [setPage]);
 
   useEffect(() => {
     if (router.isReady) {

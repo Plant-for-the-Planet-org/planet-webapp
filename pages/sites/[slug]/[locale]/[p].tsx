@@ -24,23 +24,17 @@ import { v4 } from 'uuid';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectDetails from '../../../../src/features/projectsV2/ProjectDetails';
-import { useViewStore } from '../../../../src/stores';
+
 
 const ProjectDetailsPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-  // store: action
-  const setPage = useViewStore((state) => state.setPage);
 
   useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
-
-  useEffect(() => {
-    setPage('project-details');
-  }, [setPage]);
 
   return <ProjectDetails isMobile={isMobile} />;
 };

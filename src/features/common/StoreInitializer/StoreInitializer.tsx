@@ -2,6 +2,7 @@ import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
 import { useInitializeProject } from '../../../hooks/useInitializeProject';
 import { useInitializeIntervention } from '../../../hooks/useInitializeIntervention';
+import { useInitializeView } from '../../../hooks/useInitializeView';
 
 /**
  * StoreInitializer Component
@@ -20,6 +21,6 @@ export const StoreInitializer = () => {
   useInitializeCurrency();
   useInitializeProject();
   useInitializeIntervention();
-
+  useInitializeView()
   return null;
 };
