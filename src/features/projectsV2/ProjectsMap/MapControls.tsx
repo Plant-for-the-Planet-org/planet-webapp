@@ -17,7 +17,7 @@ import { AllInterventions } from '../../../utils/constants/intervention';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { useViewStore } from '../../../stores';
+import { useProjectStore, useViewStore } from '../../../stores';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -33,7 +33,6 @@ const MapControls = ({
   mobileOS,
 }: MapControlsProps) => {
   const {
-    projects,
     topProjects,
     selectedClassification,
     filteredProjects,
@@ -58,6 +57,7 @@ const MapControls = ({
   // local state
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
   // store: state
+  const projects = useProjectStore((state) => state.projects);
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');

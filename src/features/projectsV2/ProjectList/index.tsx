@@ -7,6 +7,7 @@ import styles from '../ProjectsSection.module.scss';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
 import { useProjects } from '../ProjectsContext';
 import ProjectSnippet from '../ProjectSnippet';
+import { useProjectStore } from '../../../stores';
 
 const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
   const tAllProjects = useTranslations('AllProjects');
@@ -16,8 +17,10 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
     filteredProjects,
     showDonatableProjects,
     topProjects,
-    projects,
   } = useProjects();
+  // store: state
+  const projects = useProjectStore((state) => state.projects);
+
   const projectsToDisplay = useMemo(() => {
     const hasFilterOrSearchApplied =
       debouncedSearchValue !== '' ||

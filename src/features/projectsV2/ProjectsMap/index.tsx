@@ -37,6 +37,7 @@ import ExploreLayers from './ExploreLayers';
 import { clsx } from 'clsx';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
+import { useProjectStore } from '../../../stores';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -69,6 +70,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   );
   const viewState = useProjectMapStore((state) => state.viewState);
   const mapState = useProjectMapStore((state) => state.mapState);
+  const projects = useProjectStore((state) => state.projects);
   // store: action
   const initializeMapStyle = useProjectMapStore(
     (state) => state.initializeMapStyle
@@ -88,7 +90,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedSite,
     setSelectedSampleTree,
     filteredProjects,
-    projects,
     singleProject,
     selectedIntervention,
     selectedSampleTree,

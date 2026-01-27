@@ -9,7 +9,7 @@ import ProjectList from './ProjectList';
 import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
 import { useTenant } from '../common/Layout/TenantContext';
 import { useProjectMapStore } from '../../stores/projectMapStore';
-import { useViewStore } from '../../stores';
+import { useProjectStore, useViewStore } from '../../stores';
 
 interface ProjectsSectionProps {
   isMobile: boolean;
@@ -17,7 +17,6 @@ interface ProjectsSectionProps {
 
 const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   const {
-    projects,
     topProjects,
     selectedClassification,
     setSelectedClassification,
@@ -34,6 +33,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   // store: state
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
   const currentPage = useViewStore((state) => state.page);
+  const projects = useProjectStore((state) => state.projects);
   // store: action
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
   const { tenantConfig } = useTenant();
