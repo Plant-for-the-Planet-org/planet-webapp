@@ -17,7 +17,7 @@ import { AllInterventions } from '../../../utils/constants/intervention';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { useProjectStore, useViewStore } from '../../../stores';
+import { useViewStore } from '../../../stores';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -33,13 +33,6 @@ const MapControls = ({
   mobileOS,
 }: MapControlsProps) => {
   const {
-    selectedClassification,
-    filteredProjects,
-    setSelectedClassification,
-    debouncedSearchValue,
-    setDebouncedSearchValue,
-    isSearching,
-    setIsSearching,
     singleProject,
     selectedSite,
     setSelectedSite,
@@ -50,14 +43,10 @@ const MapControls = ({
     selectedInterventionType,
     setSelectedInterventionType,
     interventions,
-    showDonatableProjects,
-    setShowDonatableProjects,
   } = useProjects();
   // local state
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
   // store: state
-  const projects = useProjectStore((state) => state.projects);
-  const topProjects = useProjectStore((state) => state.topProjects);
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
@@ -123,27 +112,6 @@ const MapControls = ({
     hasProjectSites,
     availableInterventionTypes,
   };
-  const projectListControlProps = {
-    ...siteDropdownProps,
-    projectCount: projects?.length,
-    topProjectCount: topProjects?.length,
-    filteredProjects,
-    selectedClassification,
-    setSelectedClassification,
-    debouncedSearchValue,
-    setDebouncedSearchValue,
-    setSelectedMode,
-    isMobile,
-    isSearching,
-    setIsSearching,
-    currentPage,
-    hasProjectSites,
-    mapOptions,
-    updateMapOption,
-    showDonatableProjects,
-    setShowDonatableProjects,
-  };
-
   const exitMapMode = () => setSelectedMode('list');
 
   const layerToggleClass = clsx(styles.layerToggle, {
@@ -165,7 +133,11 @@ const MapControls = ({
     <>
       {isMobile && currentPage === 'project-list' && (
         <div className={projectListControlsContainerStyles}>
-          <ProjectListControlForMobile {...projectListControlProps} />
+          <ProjectListControlForMobile
+            isMobile={isMobile}
+            mapOptions={mapOptions}
+            updateMapOption={updateMapOption}
+          />
         </div>
       )}
       {isProjectDetailsPage && (

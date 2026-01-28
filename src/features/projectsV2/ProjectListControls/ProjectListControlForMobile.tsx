@@ -1,9 +1,6 @@
-import type { TreeProjectClassification } from '@planet-sdk/common';
 import type { SetState } from '../../common/types/common';
 import type { ProjectTabs } from '.';
-import type { MapProject } from '../../common/types/projectv2';
 import type { MapOptions } from '../../common/types/map';
-import type { Page } from '../../../stores/viewStore';
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -17,62 +14,44 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useViewStore } from '../../../stores';
+import { useProjectStore, useViewStore } from '../../../stores';
+import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
 interface ProjectListControlForMobileProps {
-  projectCount: number | undefined;
-  topProjectCount: number | undefined;
   tabSelected?: ProjectTabs;
   setTabSelected?: SetState<ProjectTabs>;
-  selectedClassification: TreeProjectClassification[];
-  setSelectedClassification: SetState<TreeProjectClassification[]>;
-  debouncedSearchValue: string;
-  setDebouncedSearchValue: SetState<string>;
-  isSearching: boolean;
-  setIsSearching: SetState<boolean>;
   isMobile: boolean;
-  filteredProjects: MapProject[] | undefined;
   mapOptions: MapOptions;
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
   shouldHideProjectTabs?: boolean;
-  showDonatableProjects: boolean;
-  setShowDonatableProjects: SetState<boolean>;
-  currentPage: Page;
 }
 
 const ProjectListControlForMobile = ({
-  projectCount,
-  topProjectCount,
-  filteredProjects,
   tabSelected,
   setTabSelected,
-  debouncedSearchValue,
-  setDebouncedSearchValue,
-  selectedClassification,
-  setSelectedClassification,
   isMobile,
-  isSearching,
-  setIsSearching,
   mapOptions,
   updateMapOption,
   shouldHideProjectTabs,
-  showDonatableProjects,
-  setShowDonatableProjects,
-  currentPage,
 }: ProjectListControlForMobileProps) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
   const { isImpersonationModeOn } = useUserProps();
-
+  const { filteredProjectCount } = useFilteredProjects();
+  //store: state
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
   const selectedMode = useViewStore((state) => state.selectedMode);
+  const currentPage = useViewStore((state) => state.page);
+  const isFilterApplied = useProjectStore(
+    (state) =>
+      state.selectedClassification.length > 0 || state.showDonatableProjects
+  );
+  const isSearching = useProjectStore((state) => state.isSearching);
 
-  const hasFilterApplied =
-    selectedClassification.length > 0 || showDonatableProjects;
-  const shouldDisplayFilterResults = hasFilterApplied && selectedMode !== 'map';
+  const shouldDisplayFilterResults = isFilterApplied && selectedMode !== 'map';
   const shouldDisplayProjectListTab =
-    !hasFilterApplied && selectedMode !== 'map' && !shouldHideProjectTabs;
+    !isFilterApplied && selectedMode !== 'map' && !shouldHideProjectTabs;
   const onlyMapModeAllowed =
     isEmbedMode &&
     currentPage === 'project-list' &&
@@ -92,64 +71,36 @@ const ProjectListControlForMobile = ({
     [styles.impersonationMode]: isImpersonationModeOn,
   });
 
-  const activeSearchFieldProps = {
-    setIsFilterOpen,
-    setIsSearching,
-    debouncedSearchValue,
-    setDebouncedSearchValue,
-  };
-  const viewModeTabsProps = {
-    setIsFilterOpen,
-    isSearching,
-    selectedMode,
-  };
-  const tabProps = {
-    projectCount,
-    topProjectCount,
-    tabSelected,
-    setTabSelected,
-    setIsFilterOpen,
-  };
-  const listControlProps = {
-    hasFilterApplied,
-    isFilterOpen,
-    setIsFilterOpen,
-    isSearching,
-    setIsSearching,
-    isMobile,
-    selectedMode,
-  };
-
-  const classificationDropDownProps = {
-    selectedClassification,
-    setSelectedClassification,
-    selectedMode,
-    showDonatableProjects,
-    setShowDonatableProjects,
-  };
-
   return (
     <>
       {isSearching ? (
         <div className={tabContainerClasses}>
-          <ActiveSearchField {...activeSearchFieldProps} />
-          {!onlyMapModeAllowed && <ViewModeTabs {...viewModeTabsProps} />}
+          <ActiveSearchField setIsFilterOpen={setIsFilterOpen} />
+          {!onlyMapModeAllowed && (
+            <ViewModeTabs setIsFilterOpen={setIsFilterOpen} />
+          )}
         </div>
       ) : (
         <div className={projectListControlsMobileClasses}>
-          {shouldDisplayFilterResults &&
-            filteredProjects &&
-            filteredProjects?.length > 0 && (
-              <div className={styles.filterResultContainerMobile}>
-                {tAllProjects('filterResult', {
-                  count: filteredProjects?.length,
-                })}
-              </div>
-            )}
-          {shouldDisplayProjectListTab && (
-            <ProjectListTabForMobile {...tabProps} />
+          {shouldDisplayFilterResults && filteredProjectCount > 0 && (
+            <div className={styles.filterResultContainerMobile}>
+              {tAllProjects('filterResult', {
+                count: filteredProjectCount,
+              })}
+            </div>
           )}
-          <SearchAndFilter {...listControlProps} />
+          {shouldDisplayProjectListTab && (
+            <ProjectListTabForMobile
+              tabSelected={tabSelected}
+              setTabSelected={setTabSelected}
+              setIsFilterOpen={setIsFilterOpen}
+            />
+          )}
+          <SearchAndFilter
+            isFilterOpen={isFilterOpen}
+            setIsFilterOpen={setIsFilterOpen}
+            isMobile={isMobile}
+          />
           {shouldDisplayMapFeatureExplorer && (
             <MapFeatureExplorer
               mapOptions={mapOptions}
@@ -157,12 +108,12 @@ const ProjectListControlForMobile = ({
               isMobile={true}
             />
           )}
-          {!onlyMapModeAllowed && <ViewModeTabs {...viewModeTabsProps} />}
+          {!onlyMapModeAllowed && (
+            <ViewModeTabs setIsFilterOpen={setIsFilterOpen} />
+          )}
         </div>
       )}
-      {isFilterOpen && !isSearching && (
-        <ClassificationDropDown {...classificationDropDownProps} />
-      )}
+      {isFilterOpen && !isSearching && <ClassificationDropDown />}
     </>
   );
 };

@@ -38,6 +38,7 @@ import { clsx } from 'clsx';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
 import { useProjectStore } from '../../../stores';
+import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -59,6 +60,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   useFetchLayers();
   const { currentPage, isMobile } = props;
   const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
+  const { filteredProjects } = useFilteredProjects();
   // store: state
   const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
   const isQueryParamsLoaded = useQueryParamStore(
@@ -89,7 +91,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedIntervention,
     setSelectedSite,
     setSelectedSampleTree,
-    filteredProjects,
     singleProject,
     selectedIntervention,
     selectedSampleTree,
@@ -145,7 +146,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     () => {
       const map = mapRef.current;
       const shouldCenterMap =
-        filteredProjects !== undefined &&
         filteredProjects.length > 0 &&
         (filteredProjects.length < 30 ||
           filteredProjects.length === projects?.length) &&

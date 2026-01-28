@@ -1,6 +1,4 @@
-import type { SetState } from '../../../common/types/common';
 import type { TreeProjectClassification } from '@planet-sdk/common';
-import type { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
@@ -17,14 +15,7 @@ import {
 } from '../../../../../public/assets/images/icons/projectV2/PointMarkerIconsSymbol';
 import DollarIcon from '../../../../../public/assets/images/icons/projectV2/DollarIcon';
 import { clsx } from 'clsx';
-
-interface ClassificationDropDownProps {
-  selectedClassification: TreeProjectClassification[];
-  setSelectedClassification: SetState<TreeProjectClassification[]>;
-  showDonatableProjects: boolean;
-  setShowDonatableProjects: SetState<boolean>;
-  selectedMode?: ViewMode;
-}
+import { useProjectStore, useViewStore } from '../../../../stores';
 
 const classificationItemIcons = {
   'large-scale-planting': <TreePlanting width={'20'} height={'20'} />,
@@ -36,14 +27,23 @@ const classificationItemIcons = {
   mangroves: <Mangroves width={'20'} height={'20'} />,
 };
 
-export const ClassificationDropDown = ({
-  selectedClassification,
-  setSelectedClassification,
-  showDonatableProjects,
-  setShowDonatableProjects,
-  selectedMode,
-}: ClassificationDropDownProps) => {
+export const ClassificationDropDown = () => {
   const tAllProjects = useTranslations('AllProjects');
+  // store: state
+  const selectedMode = useViewStore((state) => state.selectedMode);
+  const selectedClassification = useProjectStore(
+    (state) => state.selectedClassification
+  );
+  const showDonatableProjects = useProjectStore(
+    (state) => state.showDonatableProjects
+  );
+  // store: action
+  const setShowDonatableProjects = useProjectStore(
+    (state) => state.setShowDonatableProjects
+  );
+  const setSelectedClassification = useProjectStore(
+    (state) => state.setSelectedClassification
+  );
 
   const handleFilterSelection = (
     filterItem: TreeProjectClassification
@@ -114,7 +114,7 @@ export const ClassificationDropDown = ({
       <button
         type="button"
         className={styles.donationFilterButton}
-        onClick={() => setShowDonatableProjects((prev) => !prev)}
+        onClick={() => setShowDonatableProjects(!showDonatableProjects)}
       >
         <div className={styles.donationFilterLabel}>
           <DollarIcon />

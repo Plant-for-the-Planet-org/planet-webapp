@@ -4,15 +4,25 @@ import { useMemo } from 'react';
 import ProjectMarkers from './ProjectMarkers';
 import { useProjects } from '../ProjectsContext';
 import { getProjectCategory } from '../../../utils/projectV2';
+import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
 const MultipleProjectsView = () => {
-  const { isError, filteredProjects } = useProjects();
-  if (isError || !filteredProjects) return null;
+  const { isError } = useProjects();
+  const { filteredProjectCount, filteredProjects } = useFilteredProjects();
 
   const categorizedProjects = useMemo(() => {
-    return filteredProjects?.reduce<CategorizedProjects>(
+    if (filteredProjectCount === 0) {
+      return {
+        topApprovedProjects: [],
+        nonDonatableProjects: [],
+        regularDonatableProjects: [],
+      };
+    }
+
+    return filteredProjects.reduce<CategorizedProjects>(
       (categorizedProjects, project) => {
         const projectCategory = getProjectCategory(project.properties);
+
         switch (projectCategory) {
           case 'topProject':
             categorizedProjects.topApprovedProjects.push(project);
@@ -24,6 +34,7 @@ const MultipleProjectsView = () => {
             categorizedProjects.nonDonatableProjects.push(project);
             break;
         }
+
         return categorizedProjects;
       },
       {
@@ -33,6 +44,8 @@ const MultipleProjectsView = () => {
       }
     );
   }, [filteredProjects]);
+
+  if (isError) return null;
 
   return <ProjectMarkers categorizedProjects={categorizedProjects} />;
 };

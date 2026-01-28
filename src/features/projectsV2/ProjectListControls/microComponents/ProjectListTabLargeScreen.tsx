@@ -8,29 +8,30 @@ import CustomMuiTab from './CustomMuiTab';
 import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import styles from '../styles/ProjectListControls.module.scss';
+import { useProjectStore } from '../../../../stores';
 
 interface ProjectListTabLargeScreenProps {
   setIsFilterOpen: SetState<boolean>;
-  topProjectCount: number | undefined;
-  projectCount: number | undefined;
   setTabSelected: SetState<ProjectTabs>;
   tabSelected: ProjectTabs;
 }
 
 const ProjectListTabLargeScreen = ({
   setIsFilterOpen,
-  topProjectCount,
-  projectCount,
   setTabSelected,
   tabSelected,
 }: ProjectListTabLargeScreenProps) => {
   const t = useTranslations('AllProjects');
   const { colors } = themeProperties.designSystem;
+  const isTopProjectTab = tabSelected === 'topProjects';
+  // store: state
+  const topProjectCount = useProjectStore((state) => state.topProjects?.length);
+  const projectCount = useProjectStore((state) => state.projects?.length);
+
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setTabSelected(newValue === 0 ? 'topProjects' : 'allProjects');
     setIsFilterOpen(false);
   };
-  const isTopProjectTab = tabSelected === 'topProjects';
   return (
     <Tabs
       value={isTopProjectTab ? 0 : 1}
