@@ -30,6 +30,7 @@ import {
   getSortedYears,
   getOverviewEligibilityForAllYears,
 } from './receiptGroupingUtils';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useApi();
@@ -46,6 +47,8 @@ const DonationReceipts = () => {
     null
   );
 
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   useEffect(() => {
     (async () => {
       if (!user || !contextLoaded) return;
@@ -55,8 +58,8 @@ const DonationReceipts = () => {
         );
         if (response) setDonationReceipts(response);
       } catch (error) {
-        handleError(error as APIError);
-        router.push(localizedPath('/'));
+        setErrors(handleError(error as APIError));
+        router.push(localizedPath('/profile'));
       }
     })();
   }, []);
