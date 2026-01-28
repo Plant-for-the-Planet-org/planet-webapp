@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import Modal from '@mui/material/Modal';
 import styles from './CustomModal.module.scss';
 
@@ -8,11 +10,15 @@ interface Props {
   continueButtonText: string;
   cancelButtonText: string;
   modalTitle: string;
-  modalSubtitle: string;
+  modalSubtitle: ReactNode;
+  isLoading?: boolean;
+  loadingText?: string;
 }
 
 export default function CustomModal({
   isOpen,
+  isLoading = false,
+  loadingText = 'Loading...',
   handleContinue,
   handleCancel,
   continueButtonText,
@@ -38,8 +44,9 @@ export default function CustomModal({
             id={'Continue'}
             className={styles.continueButton}
             onClick={handleContinue}
+            disabled={isLoading}
           >
-            {continueButtonText}
+            {isLoading ? loadingText : continueButtonText}
           </button>
           <button
             id={'Cancel'}

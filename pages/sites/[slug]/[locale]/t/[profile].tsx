@@ -126,6 +126,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     locale: context.params?.locale as string,
     filenames: [
       'common',
+      'maps',
       'me',
       'country',
       'donate',

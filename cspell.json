@@ -106,6 +106,7 @@
     "recurrency",
     "regenerant",
     "Regenerants",
+    "Restor",
     "seagrass",
     "Segoe",
     "senatDerWirtschaft",
@@ -179,5 +180,9 @@
     "public/loaderio-518441ea29765d4a97c1e2a9eb8e3a90.txt",
     "hardcoded-colors-report.md",
     "cspell.json"
+  ],
+  "ignoreRegExpList": [
+    "Email",
+    "/\\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\\b/g"
   ]
 }

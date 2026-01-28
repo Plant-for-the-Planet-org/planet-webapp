@@ -444,7 +444,8 @@ export default function AccountRecord({
   const showDownloads = useMemo(() => {
     if (
       (canHaveCertificates(record.purpose) &&
-        (record?.details?.donorCertificate ||
+        ((record?.details?.donorCertificate &&
+          record?.details?.bouquetDonation == null) ||
           record?.details?.giftCertificate ||
           record?.details?.codesUrl)) ||
       record?.details?.taxDeductibleReceipt
