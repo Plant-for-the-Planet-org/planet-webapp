@@ -201,8 +201,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     shouldShowSingleProjectsView &&
     timeTravelConfig !== null &&
     timeTravelConfig.sources !== null &&
-    timeTravelConfig.projectId === singleProject?.id &&
-    !props.isMobile;
+    timeTravelConfig.projectId === singleProject?.id;
   const shouldShowTimeTravel =
     isTimeTravelEnabled &&
     (selectedTab === 'timeTravel' || wasTimeTravelMounted);
