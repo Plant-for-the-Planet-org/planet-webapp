@@ -4,11 +4,14 @@ import { useEffect } from 'react';
 import { useProjectStore, useViewStore } from '../stores';
 import { useApi } from './useApi';
 import { useCurrencyStore } from '../stores/currencyStore';
+import { useRouter } from 'next/router';
+import { isValidClassification } from '../utils/projectV2';
 
 export const useInitializeProject = () => {
   const locale = useLocale();
   const { tenantConfig } = useTenant();
   const { getApi } = useApi();
+  const router = useRouter();
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
   const currentPage = useViewStore((state) => state.page);
@@ -19,6 +22,13 @@ export const useInitializeProject = () => {
   const projects = useProjectStore((state) => state.projects);
   // store: action
   const fetchProjects = useProjectStore((state) => state.fetchProjects);
+  const setSelectedClassification = useProjectStore(
+    (state) => state.setSelectedClassification
+  );
+  const setShowDonatableProjects = useProjectStore(
+    (state) => state.setShowDonatableProjects
+  );
+
   useEffect(() => {
     if (currentPage !== 'project-list' || !currencyCode) return;
     if (
@@ -40,4 +50,25 @@ export const useInitializeProject = () => {
       },
     });
   }, [currencyCode, locale, tenantConfig.id, currentPage]);
+
+  useEffect(() => {
+    if (router.isReady && currentPage === 'project-list') {
+      const { filter, donatable_projects_only } = router.query;
+
+      // Initialize classification filters from URL
+      if (filter) {
+        const filterValues = typeof filter === 'string' ? [filter] : filter;
+        const validFilters = filterValues.filter(isValidClassification);
+
+        if (validFilters.length > 0) {
+          setSelectedClassification(validFilters);
+        }
+      }
+
+      // Initialize donation filter from URL
+      if (donatable_projects_only === 'true') {
+        setShowDonatableProjects(true);
+      }
+    }
+  }, [router.isReady]);
 };

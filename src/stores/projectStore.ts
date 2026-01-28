@@ -1,6 +1,6 @@
 import type { MapProject } from '../features/common/types/projectv2';
 import type { ApiConfigBase } from '../hooks/useApi';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, TreeProjectClassification } from '@planet-sdk/common';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -10,27 +10,41 @@ import { getTopTreeProjects } from '../utils/projectV2';
 
 interface ProjectStore {
   projects: MapProject[] | null;
+  topProjects: MapProject[] | null;
   isProjectsFetching: boolean;
   isProjectsError: boolean;
-  topProjects: MapProject[] | null;
+  showDonatableProjects: boolean;
   projectsLocale: string | null;
   projectsCurrencyCode: string | null;
+  selectedClassification: TreeProjectClassification[];
+  isSearching: boolean;
+  debouncedSearchValue: string;
 
   fetchProjects: (
     getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>,
     config: ApiConfigBase
   ) => Promise<void>;
+  setShowDonatableProjects: (show: boolean) => void;
+  setSelectedClassification: (
+    classifications: TreeProjectClassification[]
+  ) => void;
+  setIsSearching: (isSearching: boolean) => void;
+  setDebouncedSearchValue: (value: string) => void;
 }
 
 export const useProjectStore = create<ProjectStore>()(
   devtools(
     (set) => ({
       projects: null,
+      topProjects: null,
       isProjectsFetching: false,
       isProjectsError: false,
-      topProjects: null,
+      showDonatableProjects: false,
       projectsLocale: null,
       projectsCurrencyCode: null,
+      selectedClassification: [],
+      isSearching: false,
+      debouncedSearchValue: '',
 
       fetchProjects: async (getApi, config) => {
         set(
@@ -67,6 +81,30 @@ export const useProjectStore = create<ProjectStore>()(
             .setErrors(handleError(error as APIError));
         }
       },
+
+      setShowDonatableProjects: (show) =>
+        set(
+          { showDonatableProjects: show },
+          undefined,
+          'projectStore/set_show_donatable_project'
+        ),
+
+      setSelectedClassification: (classifications) =>
+        set(
+          { selectedClassification: classifications },
+          undefined,
+          'projectStore/set_classification'
+        ),
+
+      setIsSearching: (isSearching) =>
+        set({ isSearching }, undefined, 'projectStore/set_is_searching'),
+
+      setDebouncedSearchValue: (value) =>
+        set(
+          { debouncedSearchValue: value },
+          undefined,
+          'projectStore/set_debounced_search_value'
+        ),
     }),
     {
       name: 'ProjectStore',

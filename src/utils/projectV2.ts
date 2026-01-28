@@ -1,4 +1,5 @@
 import type {
+  CountryCode,
   Intervention,
   OtherInterventions,
   SampleTreeRegistration,
@@ -512,4 +513,94 @@ export const getTopTreeProjects = (
       project.properties.purpose === 'trees' &&
       project.properties.isTopProject === true
   );
+};
+
+/**
+ * Filters projects that allow donations.
+ *
+ * @param projects - List of projects to filter
+ * @returns Projects where donations are enabled
+ */
+
+export const filterByDonation = (projects: MapProject[]) => {
+  return projects.filter((project) => project.properties.allowDonations);
+};
+
+/**
+ * Filters projects by selected tree classifications.
+ *
+ * - If no classification is selected, the original list is returned.
+ * - Only applies to projects with purpose "trees".
+ *
+ * @param projects - List of projects to filter
+ * @param selectedClassification - Selected tree classifications
+ * @returns Filtered projects matching the selected classifications
+ */
+
+export const filterByClassification = (
+  projects: MapProject[],
+  selectedClassification: TreeProjectClassification[]
+) => {
+  if (selectedClassification.length === 0) return projects;
+  return projects.filter((project) => {
+    if (project.properties.purpose === 'trees')
+      return selectedClassification.includes(project.properties.classification);
+  });
+};
+
+/**
+ * Filters projects based on a search keyword.
+ *
+ * The search is case-insensitive and accent-insensitive and matches against:
+ * - Project name
+ * - Project location (only for tree projects)
+ * - TPO name
+ * - Localized country name
+ *
+ * @param projects - List of projects to filter
+ * @param keyword - User-entered search keyword
+ * @param getCountryLabel - Function that resolves a country code to a localized country name
+ * @returns Projects matching the search keyword
+ */
+
+export const filterBySearch = (
+  projects: MapProject[] | null,
+  keyword: string,
+  getCountryLabel: (code: CountryCode) => string
+) => {
+  if (!keyword?.trim()) {
+    return [];
+  }
+
+  const normalizedKeyword = keyword
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
+  const filteredProjects = projects?.filter((project: MapProject) => {
+    const normalizedText = (text: string | undefined | null) => {
+      return text
+        ? text
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+        : '';
+    };
+
+    const projectName = normalizedText(project.properties.name);
+    const projectLocation =
+      project.properties.purpose === 'trees'
+        ? normalizedText(project.properties.location)
+        : '';
+    const tpoName = normalizedText(project.properties.tpo.name);
+    const country = normalizedText(getCountryLabel(project.properties.country));
+
+    return (
+      projectName.includes(normalizedKeyword) ||
+      projectLocation.includes(normalizedKeyword) ||
+      tpoName.includes(normalizedKeyword) ||
+      country.includes(normalizedKeyword)
+    );
+  });
+  return filteredProjects;
 };
