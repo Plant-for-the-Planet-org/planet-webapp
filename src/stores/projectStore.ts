@@ -6,7 +6,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { useErrorHandlingStore } from './errorHandlingStore';
 import { handleError } from '@planet-sdk/common';
-import { getTopTreeProjects } from '../utils/projectV2';
+import { getTopProjects } from '../utils/projectV2';
 
 interface ProjectStore {
   projects: MapProject[] | null;
@@ -58,7 +58,7 @@ export const useProjectStore = create<ProjectStore>()(
           set(
             {
               projects,
-              topProjects: getTopTreeProjects(projects),
+              topProjects: getTopProjects(projects),
               isProjectsFetching: false,
               projectsLocale: config.queryParams?.locale,
               projectsCurrencyCode: config.queryParams?.currency,

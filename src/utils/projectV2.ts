@@ -503,9 +503,7 @@ export function prepareInterventionMetadata(
  * Returns top projects with purpose "trees".
  */
 
-export const getTopTreeProjects = (
-  projects: MapProject[] | null
-): MapProject[] => {
+export const getTopProjects = (projects: MapProject[] | null): MapProject[] => {
   if (!projects) return [];
 
   return projects.filter(
