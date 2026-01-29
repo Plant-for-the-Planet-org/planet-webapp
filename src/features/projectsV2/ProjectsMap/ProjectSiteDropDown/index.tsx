@@ -1,5 +1,4 @@
 import type { SetState } from '../../../common/types/common';
-import type { ProjectSiteFeature } from '../../../common/types/map';
 import type { DropdownType } from '../../../common/types/projectv2';
 import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
@@ -16,9 +15,9 @@ import { truncateString } from '../../../../utils/getTruncatedString';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import themeProperties from '../../../../theme/themeProperties';
 import { clsx } from 'clsx';
+import { useInterventionStore } from '../../../../stores';
 
 interface Props {
-  projectSites: ProjectSiteFeature[] | undefined | null;
   selectedSite: number | null;
   setSelectedSite: SetState<number | null>;
   selectedIntervention: Intervention | null;
@@ -29,7 +28,6 @@ interface Props {
 }
 
 const ProjectSiteDropdown = ({
-  projectSites,
   selectedSite,
   setSelectedSite,
   selectedIntervention,
@@ -43,6 +41,10 @@ const ProjectSiteDropdown = ({
   const locale = useLocale();
   const router = useRouter();
   const { query } = router;
+  // store: state
+  const projectSites = useInterventionStore(
+    (state) => state.singleProject?.sites
+  );
   const siteList = useMemo(() => {
     if (!projectSites) return [];
     return projectSites.map((site, index: number) => {

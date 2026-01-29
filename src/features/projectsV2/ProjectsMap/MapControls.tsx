@@ -17,7 +17,7 @@ import { AllInterventions } from '../../../utils/constants/intervention';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { useViewStore } from '../../../stores';
+import { useInterventionStore, useViewStore } from '../../../stores';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -33,7 +33,6 @@ const MapControls = ({
   mobileOS,
 }: MapControlsProps) => {
   const {
-    singleProject,
     selectedSite,
     setSelectedSite,
     selectedIntervention,
@@ -53,6 +52,11 @@ const MapControls = ({
   const showProjectDetails = useQueryParamStore(
     (state) => state.showProjectDetails
   );
+  const hasProjectSites = useInterventionStore(
+    (state) =>
+      state.singleProject?.sites?.length !== undefined &&
+      state.singleProject?.sites?.length > 0
+  );
   // store: action
   const setIsSatelliteView = useProjectMapStore(
     (state) => state.setIsSatelliteView
@@ -70,9 +74,6 @@ const MapControls = ({
     return [...types];
   }, [interventions]);
 
-  const hasProjectSites =
-    singleProject?.sites?.length !== undefined &&
-    singleProject?.sites?.length > 0;
   const canShowSatelliteToggle =
     !(
       isMobile &&
@@ -92,7 +93,6 @@ const MapControls = ({
   const siteDropdownProps = {
     selectedSite,
     setSelectedSite,
-    projectSites: singleProject?.sites,
     selectedIntervention,
     setSelectedIntervention,
     setSelectedSampleTree,

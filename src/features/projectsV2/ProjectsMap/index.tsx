@@ -37,7 +37,7 @@ import ExploreLayers from './ExploreLayers';
 import { clsx } from 'clsx';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useProjectStore } from '../../../stores';
+import { useInterventionStore, useProjectStore } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
@@ -73,6 +73,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const viewState = useProjectMapStore((state) => state.viewState);
   const mapState = useProjectMapStore((state) => state.mapState);
   const projects = useProjectStore((state) => state.projects);
+  const singleProject = useInterventionStore((state) => state.singleProject);
   // store: action
   const initializeMapStyle = useProjectMapStore(
     (state) => state.initializeMapStyle
@@ -91,13 +92,13 @@ function ProjectsMap(props: ProjectsMapProps) {
     setSelectedIntervention,
     setSelectedSite,
     setSelectedSampleTree,
-    singleProject,
     selectedIntervention,
     selectedSampleTree,
   } = useProjects();
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [wasTimeTravelMounted, setWasTimeTravelMounted] = useState(false);
+
   const sitesGeoJson = useMemo(
     () => getSitesGeoJson(singleProject?.sites ?? []),
     [singleProject?.sites]

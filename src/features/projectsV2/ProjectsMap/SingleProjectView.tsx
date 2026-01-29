@@ -19,6 +19,7 @@ import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
 import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
+import { useInterventionStore } from '../../../stores';
 
 interface Props {
   mapRef: MapLibreRef;
@@ -27,8 +28,9 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
-  const { singleProject, selectedSite, selectedIntervention, interventions } =
-    useProjects();
+  const { selectedSite, selectedIntervention, interventions } = useProjects();
+
+  const singleProject = useInterventionStore((state) => state.singleProject);
   if (singleProject === null) return null;
 
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
