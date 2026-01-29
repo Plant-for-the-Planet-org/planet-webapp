@@ -89,8 +89,6 @@ export const useMyForestStore = create<MyForestStore>()(
         const { userInfo, isPublicProfile } = get();
         if (!userInfo) return;
 
-        const { setErrors } = useErrorHandlingStore.getState();
-
         set({ isMyForestLoading: true }, undefined, 'myForest/fetch_start');
 
         try {
@@ -121,9 +119,10 @@ export const useMyForestStore = create<MyForestStore>()(
             undefined,
             'myForest/fetch_success'
           );
-          setErrors(null);
         } catch (error) {
-          setErrors(handleError(error as APIError));
+          useErrorHandlingStore
+            .getState()
+            .setErrors(handleError(error as APIError));
           console.error('MyForest API error:', error);
           set(
             {
