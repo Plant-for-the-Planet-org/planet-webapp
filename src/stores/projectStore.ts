@@ -30,6 +30,8 @@ interface ProjectStore {
   ) => void;
   setIsSearching: (isSearching: boolean) => void;
   setDebouncedSearchValue: (value: string) => void;
+
+  clearFilterStates: () => void;
 }
 
 export const useProjectStore = create<ProjectStore>()(
@@ -105,6 +107,14 @@ export const useProjectStore = create<ProjectStore>()(
           undefined,
           'projectStore/set_debounced_search_value'
         ),
+
+      clearFilterStates: () => {
+        set({
+          debouncedSearchValue: '',
+          selectedClassification: [],
+          isSearching: false,
+        });
+      },
     }),
     {
       name: 'ProjectStore',

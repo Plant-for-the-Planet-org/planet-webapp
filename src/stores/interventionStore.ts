@@ -38,12 +38,17 @@ interface InterventionStore {
     projectId: string
   ) => Promise<void>;
 
+  setInterventions: (interventions: Intervention[] | null) => void;
   setSelectedSite: (sideIndex: number | null) => void;
   setSelectedSampleTree: (sampleTree: SampleTreeRegistration | null) => void;
   setSelectedIntervention: (intervention: Intervention | null) => void;
   setSelectedInterventionType: (interventionType: INTERVENTION_TYPE) => void;
   setHoveredIntervention: (intervention: Intervention | null) => void;
   setPreventShallowPush: (prevent: boolean) => void;
+
+  clearInterventionStates: () => void;
+  clearProjectStates: () => void;
+  clearMapLayerInteractionStates: () => void;
 }
 
 export const useInterventionStore = create<InterventionStore>()(
@@ -155,6 +160,8 @@ export const useInterventionStore = create<InterventionStore>()(
         }
       },
 
+      setInterventions: (interventions) => set({ interventions }),
+
       setSelectedSite: (siteIndex) =>
         set(
           { selectedSite: siteIndex },
@@ -195,6 +202,41 @@ export const useInterventionStore = create<InterventionStore>()(
           { preventShallowPush: prevent },
           undefined,
           'interventionStore/set_prevent_shallow_push'
+        ),
+
+      clearInterventionStates: () =>
+        set(
+          {
+            selectedIntervention: null,
+            hoveredIntervention: null,
+            selectedInterventionType: 'all',
+            interventions: null,
+          },
+          undefined,
+          'interventionStore/clear_intervention_state'
+        ),
+
+      clearProjectStates: () =>
+        set(
+          {
+            singleProject: null,
+            selectedSampleTree: null,
+            selectedSite: null,
+            preventShallowPush: false,
+          },
+          undefined,
+          'interventionStore/clear_project_state'
+        ),
+
+      clearMapLayerInteractionStates: () =>
+        set(
+          {
+            selectedSampleTree: null,
+            selectedIntervention: null,
+            hoveredIntervention: null,
+          },
+          undefined,
+          'interventionStore/clear_map_layer_interaction_states'
         ),
     }),
     {

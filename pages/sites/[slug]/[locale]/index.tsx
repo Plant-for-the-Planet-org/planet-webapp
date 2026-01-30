@@ -23,17 +23,25 @@ import { useEffect } from 'react';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection';
-
+import { useProjectStore } from '../../../../src/stores';
 
 const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+
+  const clearFilterStates = useProjectStore((state) => state.clearFilterStates);
 
   useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
+
+  useEffect(() => {
+    return () => {
+      clearFilterStates();
+    };
+  }, []);
 
   return <ProjectsSection isMobile={isMobile} />;
 };
