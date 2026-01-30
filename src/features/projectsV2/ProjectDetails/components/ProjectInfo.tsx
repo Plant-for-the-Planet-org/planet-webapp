@@ -1,5 +1,4 @@
 import type { CountryCode } from '@planet-sdk/common';
-import type { ExtendedProject } from '../../../common/types/projectv2';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
@@ -14,21 +13,23 @@ import ContactDetails from './ContactDetails';
 import MapPreview from './MapPreview';
 import ImageSlider from './ImageSlider';
 import area from '@turf/area';
+import { useInterventionStore } from '../../../../stores';
 
 interface ProjectInfoProps {
-  project: ExtendedProject;
   isMobile: boolean;
   hasVideoConsent: boolean;
   onVideoConsentChange: (consent: boolean) => void;
 }
 
 const ProjectInfo = ({
-  project,
   isMobile,
   hasVideoConsent,
   onVideoConsentChange,
 }: ProjectInfoProps) => {
   const tCountry = useTranslations('Country');
+  const project = useInterventionStore((state) => state.singleProject);
+  if (!project) return null;
+
   const {
     metadata,
     tpo,
