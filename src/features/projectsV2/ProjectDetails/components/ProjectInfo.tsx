@@ -13,7 +13,7 @@ import ContactDetails from './ContactDetails';
 import MapPreview from './MapPreview';
 import ImageSlider from './ImageSlider';
 import area from '@turf/area';
-import { useInterventionStore } from '../../../../stores';
+import { useSingleProjectStore } from '../../../../stores';
 
 interface ProjectInfoProps {
   isMobile: boolean;
@@ -27,7 +27,7 @@ const ProjectInfo = ({
   onVideoConsentChange,
 }: ProjectInfoProps) => {
   const tCountry = useTranslations('Country');
-  const project = useInterventionStore((state) => state.singleProject);
+  const project = useSingleProjectStore((state) => state.singleProject);
   if (!project) return null;
 
   const {

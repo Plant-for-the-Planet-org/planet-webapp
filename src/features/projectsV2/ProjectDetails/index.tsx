@@ -20,7 +20,7 @@ import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { useApi } from '../../../hooks/useApi';
 import { useTenant } from '../../common/Layout/TenantContext';
 import { useCurrencyStore } from '../../../stores/currencyStore';
-import { useInterventionStore } from '../../../stores';
+import { useInterventionStore, useSingleProjectStore } from '../../../stores';
 
 const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const locale = useLocale();
@@ -32,19 +32,19 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
-  const singleProject = useInterventionStore((state) => state.singleProject);
+  const singleProject = useSingleProjectStore((state) => state.singleProject);
+  const selectedSampleTree = useSingleProjectStore(
+    (state) => state.selectedSampleTree
+  );
   const hoveredIntervention = useInterventionStore(
     (state) => state.hoveredIntervention
   );
   const selectedIntervention = useInterventionStore(
     (state) => state.selectedIntervention
   );
-  const selectedSampleTree = useInterventionStore(
-    (state) => state.selectedSampleTree
-  );
   // store: action
-  const fetchProjectData = useInterventionStore((state) => state.fetchProject);
-  const setSelectedSampleTree = useInterventionStore(
+  const fetchProjectData = useSingleProjectStore((state) => state.fetchProject);
+  const setSelectedSampleTree = useSingleProjectStore(
     (state) => state.setSelectedSampleTree
   );
 

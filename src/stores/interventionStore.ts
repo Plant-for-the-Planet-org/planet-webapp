@@ -1,37 +1,20 @@
-import type {
-  APIError,
-  Intervention,
-  SampleTreeRegistration,
-} from '@planet-sdk/common';
-import type { ExtendedProject } from '../features/common/types/projectv2';
+import type { APIError, Intervention } from '@planet-sdk/common';
 import type { ApiConfigBase } from '../hooks/useApi';
 import type { INTERVENTION_TYPE } from '../utils/constants/intervention';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { useErrorHandlingStore } from './errorHandlingStore';
-import { ClientError, handleError } from '@planet-sdk/common';
-import { getProjectTimeTravelConfig } from '../utils/mapsV2/timeTravel';
-import { useProjectMapStore } from './projectMapStore';
+import { handleError } from '@planet-sdk/common';
 
 interface InterventionStore {
-  singleProject: ExtendedProject | null;
-  selectedSite: number | null;
-  selectedSampleTree: SampleTreeRegistration | null;
   interventions: Intervention[] | null;
   selectedIntervention: Intervention | null;
   hoveredIntervention: Intervention | null;
   selectedInterventionType: INTERVENTION_TYPE;
-  preventShallowPush: boolean;
 
   isFetching: boolean;
   fetchError: boolean;
-
-  fetchProject: (
-    getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>,
-    config: ApiConfigBase,
-    projectSlug: string
-  ) => Promise<void>;
 
   fetchInterventions: (
     getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>,
@@ -39,89 +22,25 @@ interface InterventionStore {
   ) => Promise<void>;
 
   setInterventions: (interventions: Intervention[] | null) => void;
-  setSelectedSite: (sideIndex: number | null) => void;
-  setSelectedSampleTree: (sampleTree: SampleTreeRegistration | null) => void;
   setSelectedIntervention: (intervention: Intervention | null) => void;
   setSelectedInterventionType: (interventionType: INTERVENTION_TYPE) => void;
   setHoveredIntervention: (intervention: Intervention | null) => void;
-  setPreventShallowPush: (prevent: boolean) => void;
 
   clearInterventionStates: () => void;
-  clearProjectStates: () => void;
   clearMapLayerInteractionStates: () => void;
 }
 
 export const useInterventionStore = create<InterventionStore>()(
   devtools(
-    (set, get) => ({
-      singleProject: null,
-      selectedSite: null,
-      selectedSampleTree: null,
+    (set) => ({
       interventions: null,
       selectedIntervention: null,
       hoveredIntervention: null,
       selectedInterventionType: 'all',
-      preventShallowPush: false,
 
       // status flags
       isFetching: false,
       fetchError: false,
-
-      fetchProject: async (getApi, config, projectSlug) => {
-        set(
-          { isFetching: true, fetchError: false },
-          undefined,
-          'interventionStore/project_fetch_start'
-        );
-        try {
-          const project = await getApi<ExtendedProject>(
-            `/app/projects/${projectSlug}`,
-            config
-          );
-
-          set(
-            {
-              singleProject: project,
-              isFetching: false,
-            },
-            undefined,
-            'interventionStore/project_fetch_success'
-          );
-
-          const { purpose, id: projectId } = project;
-
-          if (projectId && purpose === 'trees') {
-            const { fetchInterventions } = get();
-            fetchInterventions(getApi, projectId);
-          }
-
-          if (purpose === 'conservation' || purpose === 'trees') {
-            const timeTravelConfig = await getProjectTimeTravelConfig(
-              project.id,
-              project.geoLocation
-            );
-            useProjectMapStore.getState().setTimeTravelConfig(timeTravelConfig);
-          } else {
-            throw new ClientError(404, {
-              error_type: 'project_not_available',
-              error_code: 'project_not_available',
-            });
-          }
-        } catch (error) {
-          useErrorHandlingStore
-            .getState()
-            .setErrors(handleError(error as APIError));
-          set(
-            {
-              fetchError: true,
-              isFetching: false,
-              singleProject: null,
-            },
-            undefined,
-            'interventionStore/project_fetch_error'
-          );
-        }
-      },
 
       fetchInterventions: async (getApi, projectId) => {
         set(
@@ -162,20 +81,6 @@ export const useInterventionStore = create<InterventionStore>()(
 
       setInterventions: (interventions) => set({ interventions }),
 
-      setSelectedSite: (siteIndex) =>
-        set(
-          { selectedSite: siteIndex },
-          undefined,
-          'interventionStore/set_project_site'
-        ),
-
-      setSelectedSampleTree: (sampleTree) =>
-        set(
-          { selectedSampleTree: sampleTree },
-          undefined,
-          'interventionStore/set_selected_sample_tree'
-        ),
-
       setSelectedIntervention: (intervention) =>
         set(
           { selectedIntervention: intervention },
@@ -197,13 +102,6 @@ export const useInterventionStore = create<InterventionStore>()(
           'interventionStore/set_hovered_intervention'
         ),
 
-      setPreventShallowPush: (prevent) =>
-        set(
-          { preventShallowPush: prevent },
-          undefined,
-          'interventionStore/set_prevent_shallow_push'
-        ),
-
       clearInterventionStates: () =>
         set(
           {
@@ -216,22 +114,9 @@ export const useInterventionStore = create<InterventionStore>()(
           'interventionStore/clear_intervention_state'
         ),
 
-      clearProjectStates: () =>
-        set(
-          {
-            singleProject: null,
-            selectedSampleTree: null,
-            selectedSite: null,
-            preventShallowPush: false,
-          },
-          undefined,
-          'interventionStore/clear_project_state'
-        ),
-
       clearMapLayerInteractionStates: () =>
         set(
           {
-            selectedSampleTree: null,
             selectedIntervention: null,
             hoveredIntervention: null,
           },

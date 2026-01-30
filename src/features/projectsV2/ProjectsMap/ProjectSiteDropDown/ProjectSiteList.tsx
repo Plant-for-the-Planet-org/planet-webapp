@@ -4,7 +4,10 @@ import { useLocale } from 'next-intl';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import styles from '../../ProjectsMap/ProjectSiteDropDown/SiteDropdown.module.scss';
 import { clsx } from 'clsx';
-import { useInterventionStore } from '../../../../stores';
+import {
+  useInterventionStore,
+  useSingleProjectStore,
+} from '../../../../stores';
 
 type SiteData = {
   siteName: string;
@@ -24,14 +27,14 @@ const ProjectSiteList = ({
 }: ProjectSiteListProps) => {
   const locale = useLocale();
   // store: action
-  const setSelectedSite = useInterventionStore(
+  const setSelectedSite = useSingleProjectStore(
     (state) => state.setSelectedSite
+  );
+  const setSelectedSampleTree = useSingleProjectStore(
+    (state) => state.setSelectedSampleTree
   );
   const setSelectedIntervention = useInterventionStore(
     (state) => state.setSelectedIntervention
-  );
-  const setSelectedSampleTree = useInterventionStore(
-    (state) => state.setSelectedSampleTree
   );
   const handleSiteSelection = (index: number) => {
     setSelectedIntervention(null);

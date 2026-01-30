@@ -21,7 +21,10 @@ import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 import { clsx } from 'clsx';
 import { useProjectMapStore } from '../../../../stores/projectMapStore';
-import { useInterventionStore } from '../../../../stores';
+import {
+  useInterventionStore,
+  useSingleProjectStore,
+} from '../../../../stores';
 
 interface SampleTreeMarkerProps {
   sampleTree: SampleTreeRegistration;
@@ -69,13 +72,13 @@ export default function InterventionLayers(): ReactElement {
   const selectedInterventionType = useInterventionStore(
     (state) => state.selectedInterventionType
   );
-  const selectedSampleTree = useInterventionStore(
+  const selectedSampleTree = useSingleProjectStore(
     (state) => state.selectedSampleTree
   );
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
   const mainMapZoom = useProjectMapStore((state) => state.viewState.zoom);
   // store: action
-  const setSelectedSampleTree = useInterventionStore(
+  const setSelectedSampleTree = useSingleProjectStore(
     (state) => state.setSelectedSampleTree
   );
   const setSelectedIntervention = useInterventionStore(

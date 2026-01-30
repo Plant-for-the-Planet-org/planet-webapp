@@ -24,7 +24,10 @@ import { v4 } from 'uuid';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectDetails from '../../../../src/features/projectsV2/ProjectDetails';
-import { useInterventionStore } from '../../../../src/stores';
+import {
+  useInterventionStore,
+  useSingleProjectStore,
+} from '../../../../src/stores';
 
 const ProjectDetailsPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
@@ -33,7 +36,7 @@ const ProjectDetailsPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const clearInterventionStates = useInterventionStore(
     (state) => state.clearInterventionStates
   );
-  const clearSingleProjectStates = useInterventionStore(
+  const clearProjectStates = useSingleProjectStore(
     (state) => state.clearProjectStates
   );
 
@@ -46,7 +49,7 @@ const ProjectDetailsPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   useEffect(() => {
     return () => {
       clearInterventionStates();
-      clearSingleProjectStates();
+      clearProjectStates();
     };
   }, []);
 

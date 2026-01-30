@@ -16,7 +16,11 @@ import { AllInterventions } from '../../../utils/constants/intervention';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { useInterventionStore, useViewStore } from '../../../stores';
+import {
+  useInterventionStore,
+  useSingleProjectStore,
+  useViewStore,
+} from '../../../stores';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -40,17 +44,17 @@ const MapControls = ({
   const showProjectDetails = useQueryParamStore(
     (state) => state.showProjectDetails
   );
-  const hasProjectSites = useInterventionStore(
+  const hasProjectSites = useSingleProjectStore(
     (state) =>
       state.singleProject?.sites?.length !== undefined &&
       state.singleProject?.sites?.length > 0
   );
+  const selectedSampleTree = useSingleProjectStore(
+    (state) => state.selectedSampleTree
+  );
   const interventions = useInterventionStore((state) => state.interventions);
   const selectedIntervention = useInterventionStore(
     (state) => state.interventions
-  );
-  const selectedSampleTree = useInterventionStore(
-    (state) => state.selectedSampleTree
   );
   // store: action
   const setIsSatelliteView = useProjectMapStore(

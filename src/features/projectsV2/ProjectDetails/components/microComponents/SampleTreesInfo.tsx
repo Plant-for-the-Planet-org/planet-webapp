@@ -3,13 +3,13 @@ import type { SampleTreeRegistration } from '@planet-sdk/common';
 import { useTranslations } from 'next-intl';
 import styles from '../../styles/InterventionInfo.module.scss';
 import { clsx } from 'clsx';
-import { useInterventionStore } from '../../../../../stores';
+import { useSingleProjectStore } from '../../../../../stores';
 
 interface Props {
   sampleTrees: SampleTreeRegistration[];
 }
 const SampleTreeList = ({ sampleTrees }: Props) => {
-  const setSelectedSampleTree = useInterventionStore(
+  const setSelectedSampleTree = useSingleProjectStore(
     (state) => state.setSelectedSampleTree
   );
   const tProjectDetails = useTranslations('ProjectDetails');

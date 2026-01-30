@@ -16,7 +16,7 @@ import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useInterventionStore, useViewStore } from '../../../../stores';
+import { useSingleProjectStore, useViewStore } from '../../../../stores';
 
 const MAX_NAME_LENGTH = 32;
 
@@ -47,7 +47,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const showBackIcon = useQueryParamStore((state) => state.showBackIcon);
   const currentPage = useViewStore((state) => state.page);
 
-  const setPreventShallowPush = useInterventionStore(
+  const setPreventShallowPush = useSingleProjectStore(
     (state) => state.setPreventShallowPush
   );
 

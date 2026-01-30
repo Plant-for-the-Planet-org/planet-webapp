@@ -5,7 +5,10 @@ import type { InterventionTypes } from '@planet-sdk/common';
 import styles from '../../ProjectsMap/InterventionDropDown/InterventionList.module.scss';
 import { useTranslations } from 'next-intl';
 import { clsx } from 'clsx';
-import { useInterventionStore } from '../../../../stores';
+import {
+  useInterventionStore,
+  useSingleProjectStore,
+} from '../../../../stores';
 
 type InterventionData = {
   label: string;
@@ -29,7 +32,7 @@ const InterventionList = ({
   const setSelectedInterventionType = useInterventionStore(
     (state) => state.setSelectedInterventionType
   );
-  const hasProjectSites = useInterventionStore(
+  const hasProjectSites = useSingleProjectStore(
     (state) =>
       state.singleProject?.sites?.length !== undefined &&
       state.singleProject?.sites?.length > 0

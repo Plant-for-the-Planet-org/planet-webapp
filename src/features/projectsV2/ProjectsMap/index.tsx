@@ -36,7 +36,11 @@ import ExploreLayers from './ExploreLayers';
 import { clsx } from 'clsx';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useInterventionStore, useProjectStore } from '../../../stores';
+import {
+  useInterventionStore,
+  useProjectStore,
+  useSingleProjectStore,
+} from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
@@ -72,12 +76,12 @@ function ProjectsMap(props: ProjectsMapProps) {
   const viewState = useProjectMapStore((state) => state.viewState);
   const mapState = useProjectMapStore((state) => state.mapState);
   const projects = useProjectStore((state) => state.projects);
-  const singleProject = useInterventionStore((state) => state.singleProject);
+  const singleProject = useSingleProjectStore((state) => state.singleProject);
+  const selectedSampleTree = useSingleProjectStore(
+    (state) => state.selectedSampleTree
+  );
   const selectedIntervention = useInterventionStore(
     (state) => state.selectedIntervention
-  );
-  const selectedSampleTree = useInterventionStore(
-    (state) => state.selectedSampleTree
   );
   const interventions = useInterventionStore((state) => state.interventions);
   // store: action
@@ -91,14 +95,14 @@ function ProjectsMap(props: ProjectsMapProps) {
     (state) => state.handleViewStateChange
   );
   const setMapState = useProjectMapStore((state) => state.setMapState);
-  const setSelectedSite = useInterventionStore(
+  const setSelectedSite = useSingleProjectStore(
     (state) => state.setSelectedSite
+  );
+  const setSelectedSampleTree = useSingleProjectStore(
+    (state) => state.setSelectedSampleTree
   );
   const setHoveredIntervention = useInterventionStore(
     (state) => state.setHoveredIntervention
-  );
-  const setSelectedSampleTree = useInterventionStore(
-    (state) => state.setSelectedSampleTree
   );
   const setSelectedIntervention = useInterventionStore(
     (state) => state.setSelectedIntervention

@@ -14,7 +14,10 @@ import { truncateString } from '../../../../utils/getTruncatedString';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import themeProperties from '../../../../theme/themeProperties';
 import { clsx } from 'clsx';
-import { useInterventionStore } from '../../../../stores';
+import {
+  useInterventionStore,
+  useSingleProjectStore,
+} from '../../../../stores';
 
 interface Props {
   activeDropdown: DropdownType;
@@ -28,10 +31,10 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
   const router = useRouter();
   const { query } = router;
   // store: state
-  const projectSites = useInterventionStore(
+  const projectSites = useSingleProjectStore(
     (state) => state.singleProject?.sites
   );
-  const selectedSite = useInterventionStore((state) => state.selectedSite);
+  const selectedSite = useSingleProjectStore((state) => state.selectedSite);
   const selectedIntervention = useInterventionStore(
     (state) => state.selectedIntervention
   );
