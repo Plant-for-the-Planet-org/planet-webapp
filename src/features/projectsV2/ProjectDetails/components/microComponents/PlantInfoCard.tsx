@@ -1,10 +1,10 @@
-import type { SetState } from '../../../../common/types/common';
-import type { Measurements, SampleTreeRegistration } from '@planet-sdk/common';
+import type { Measurements } from '@planet-sdk/common';
 
 import styles from '../../styles/InterventionInfo.module.scss';
 import { useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { clsx } from 'clsx';
+import { useInterventionStore } from '../../../../../stores';
 
 interface Props {
   plantDate: string | null | undefined;
@@ -12,7 +12,6 @@ interface Props {
   scientificName: string | undefined | null;
   measurements: Measurements | undefined;
   type: 'single-tree-registration' | 'sample-tree-registration' | undefined;
-  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
 const PlantInfoCard = ({
@@ -21,9 +20,11 @@ const PlantInfoCard = ({
   scientificName,
   measurements,
   type,
-  setSelectedSampleTree,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
+  const setSelectedSampleTree = useInterventionStore(
+    (state) => state.setSelectedSampleTree
+  );
   const sampleTreeConfig = [
     {
       label: tProjectDetails('plantingDate'),
