@@ -1,15 +1,17 @@
-import type { SetState } from '../../../../common/types/common';
 import type { SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useTranslations } from 'next-intl';
 import styles from '../../styles/InterventionInfo.module.scss';
 import { clsx } from 'clsx';
+import { useInterventionStore } from '../../../../../stores';
 
 interface Props {
   sampleTrees: SampleTreeRegistration[];
-  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
-const SampleTreeList = ({ sampleTrees, setSelectedSampleTree }: Props) => {
+const SampleTreeList = ({ sampleTrees }: Props) => {
+  const setSelectedSampleTree = useInterventionStore(
+    (state) => state.setSelectedSampleTree
+  );
   const tProjectDetails = useTranslations('ProjectDetails');
 
   return (
@@ -50,7 +52,7 @@ const SampleTreeList = ({ sampleTrees, setSelectedSampleTree }: Props) => {
     </div>
   );
 };
-const SampleTreesInfo = ({ sampleTrees, setSelectedSampleTree }: Props) => {
+const SampleTreesInfo = ({ sampleTrees }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   return (
     <div
@@ -61,10 +63,7 @@ const SampleTreesInfo = ({ sampleTrees, setSelectedSampleTree }: Props) => {
           count: sampleTrees.length,
         })}
       </h2>
-      <SampleTreeList
-        sampleTrees={sampleTrees}
-        setSelectedSampleTree={setSelectedSampleTree}
-      />
+      <SampleTreeList sampleTrees={sampleTrees} />
     </div>
   );
 };
