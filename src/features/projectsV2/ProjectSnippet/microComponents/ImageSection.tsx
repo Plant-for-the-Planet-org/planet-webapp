@@ -16,6 +16,7 @@ import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { useInterventionStore, useViewStore } from '../../../../stores';
 
 const MAX_NAME_LENGTH = 32;
 
@@ -31,8 +32,6 @@ const ImageSection = (props: ImageSectionProps) => {
     isApproved,
     isTopProject,
     allowDonations,
-    currentPage,
-    setPreventShallowPush,
   } = props;
 
   const [isImageLoading, setIsImageLoading] = useState(true);
@@ -46,6 +45,11 @@ const ImageSection = (props: ImageSectionProps) => {
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
   const showBackIcon = useQueryParamStore((state) => state.showBackIcon);
+  const currentPage = useViewStore((state) => state.page);
+
+  const setPreventShallowPush = useInterventionStore(
+    (state) => state.setPreventShallowPush
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -57,7 +61,7 @@ const ImageSection = (props: ImageSectionProps) => {
     !(isEmbedMode && showBackIcon === 'false');
 
   const handleBackButton = () => {
-    if (setPreventShallowPush) setPreventShallowPush(true);
+    setPreventShallowPush(true);
 
     const previousPageRoute = sessionStorage.getItem('backNavigationUrl');
     const defaultRoute = `/`;
@@ -137,7 +141,6 @@ const ImageSection = (props: ImageSectionProps) => {
         allowDonations={allowDonations}
         isTopProject={isTopProject}
         showTooltipPopups={showTooltipPopups}
-        currentPage={currentPage}
       />
 
       {/* Loading state */}

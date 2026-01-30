@@ -36,14 +36,11 @@ interface Props {
     | ConservationProjectExtended;
   showTooltipPopups: boolean;
   isMobile?: boolean;
-  setPreventShallowPush?: SetState<boolean> | undefined;
   utmCampaign?: string;
   disableDonations?: boolean;
 }
 
-type ProjectSnippetContentProps = Omit<Props, 'isMobile'> & {
-  currentPage?: 'project-list' | 'project-details';
-};
+type ProjectSnippetContentProps = Omit<Props, 'isMobile'>;
 export interface CommonProps {
   slug: string;
   isApproved: boolean;
@@ -59,8 +56,6 @@ export interface ImageSectionProps extends CommonProps {
   showTooltipPopups: boolean;
   projectReviews: Review[] | undefined;
   classification: TreeProjectClassification;
-  currentPage?: 'project-list' | 'project-details';
-  setPreventShallowPush: SetState<boolean> | undefined;
 }
 
 export interface ProjectInfoProps extends CommonProps {
@@ -77,8 +72,6 @@ export interface ProjectInfoProps extends CommonProps {
 const ProjectSnippetContent = ({
   project,
   showTooltipPopups,
-  currentPage,
-  setPreventShallowPush,
   utmCampaign,
   disableDonations,
 }: ProjectSnippetContentProps) => {
@@ -129,8 +122,6 @@ const ProjectSnippetContent = ({
     showTooltipPopups,
     projectReviews: project.reviews,
     classification: (project as TreeProjectConcise).classification,
-    currentPage,
-    setPreventShallowPush,
   };
   const projectInfoProps: ProjectInfoProps = {
     ...commonProps,
@@ -163,7 +154,6 @@ export default function ProjectSnippet({
   project,
   showTooltipPopups,
   isMobile,
-  setPreventShallowPush,
   utmCampaign,
   disableDonations,
 }: Props): ReactElement {
@@ -183,9 +173,7 @@ export default function ProjectSnippet({
   });
   const ProjectSnippetContentProps = {
     showTooltipPopups,
-    currentPage,
     project,
-    setPreventShallowPush,
     utmCampaign,
     disableDonations,
   };
@@ -195,7 +183,6 @@ export default function ProjectSnippet({
     allowDonations: project.allowDonations,
     isTopProject,
     isApproved,
-    currentPage,
     tpoSlug: project.tpo.slug,
     embed,
   };

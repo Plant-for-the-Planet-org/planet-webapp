@@ -10,13 +10,13 @@ import styles from '../styles/Badge.module.scss';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { clsx } from 'clsx';
+import { useViewStore } from '../../../../stores';
 
 interface Props {
   isApproved: boolean;
   isTopProject: boolean;
   allowDonations: boolean;
   showTooltipPopups: boolean;
-  currentPage: 'project-list' | 'project-details' | undefined;
 }
 interface TitleAndIconReturnType {
   icon: ReactElement;
@@ -52,10 +52,10 @@ const ProjectBadge = ({
   isTopProject,
   allowDonations,
   showTooltipPopups,
-  currentPage,
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
+  const currentPage = useViewStore((state) => state.page);
   const { tenantConfig } = useTenant();
 
   const badgeConfigurations: TitleAndIconReturnType | undefined =
