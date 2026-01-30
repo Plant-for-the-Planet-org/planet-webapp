@@ -16,12 +16,12 @@ import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
 import area from '@turf/area';
 import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
-import { useProjects } from '../../ProjectsContext';
 import { FillColor } from '../../../../utils/constants/intervention';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 import { clsx } from 'clsx';
 import { useProjectMapStore } from '../../../../stores/projectMapStore';
+import { useInterventionStore } from '../../../../stores';
 
 interface SampleTreeMarkerProps {
   sampleTree: SampleTreeRegistration;
@@ -58,17 +58,30 @@ const SampleTreeMarker = ({
 );
 
 export default function InterventionLayers(): ReactElement {
-  const {
-    interventions,
-    hoveredIntervention,
-    selectedIntervention,
-    setSelectedIntervention,
-    setSelectedSampleTree,
-    selectedSampleTree,
-    selectedInterventionType,
-  } = useProjects();
+  // store: state
+  const interventions = useInterventionStore((state) => state.interventions);
+  const hoveredIntervention = useInterventionStore(
+    (state) => state.hoveredIntervention
+  );
+  const selectedIntervention = useInterventionStore(
+    (state) => state.selectedIntervention
+  );
+  const selectedInterventionType = useInterventionStore(
+    (state) => state.selectedInterventionType
+  );
+  const selectedSampleTree = useInterventionStore(
+    (state) => state.selectedSampleTree
+  );
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
   const mainMapZoom = useProjectMapStore((state) => state.viewState.zoom);
+  // store: action
+  const setSelectedSampleTree = useInterventionStore(
+    (state) => state.setSelectedSampleTree
+  );
+  const setSelectedIntervention = useInterventionStore(
+    (state) => state.setSelectedIntervention
+  );
+
   const t = useTranslations('Maps');
   const locale = useLocale();
 
