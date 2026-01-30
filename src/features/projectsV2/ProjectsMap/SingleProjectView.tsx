@@ -6,7 +6,6 @@ import type {
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useProjects } from '../ProjectsContext';
 import SatelliteLayer from './microComponents/SatelliteLayer';
 import { zoomInToProjectSite } from '../../../utils/mapsV2/zoomToProjectSite';
 import SiteLayers from './microComponents/SiteLayers';
@@ -28,12 +27,16 @@ interface Props {
 }
 
 const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
-  const { selectedSite, selectedIntervention, interventions } = useProjects();
-
   const singleProject = useInterventionStore((state) => state.singleProject);
   if (singleProject === null) return null;
 
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
+  const selectedIntervention = useInterventionStore(
+    (state) => state.selectedIntervention
+  );
+  const selectedSite = useInterventionStore((state) => state.selectedSite);
+  const interventions = useInterventionStore((state) => state.interventions);
+  // store: action
   const setIsSatelliteView = useProjectMapStore(
     (state) => state.setIsSatelliteView
   );
