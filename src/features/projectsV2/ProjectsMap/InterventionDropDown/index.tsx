@@ -12,6 +12,7 @@ import InterventionIcon from '../../../../../public/assets/images/icons/Interven
 import { useTranslations } from 'next-intl';
 import DropdownUpArrow from '../../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
 import DropdownDownArrow from '../../../../../public/assets/images/icons/projectV2/DropdownDownArrow';
+import { useInterventionStore } from '../../../../stores';
 
 interface InterventionOptionType {
   label: string;
@@ -21,8 +22,6 @@ interface InterventionOptionType {
 
 interface Props {
   allInterventions: InterventionOptionType[];
-  selectedInterventionType: INTERVENTION_TYPE;
-  setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
   isMobile?: boolean;
   activeDropdown: DropdownType;
   setActiveDropdown: SetState<DropdownType>;
@@ -32,15 +31,15 @@ interface Props {
 
 const InterventionDropdown = ({
   allInterventions,
-  selectedInterventionType,
-  setSelectedInterventionType,
   activeDropdown,
   setActiveDropdown,
   isMobile,
-  hasProjectSites,
   availableInterventionTypes,
 }: Props) => {
   const tIntervention = useTranslations('ProjectDetails.intervention');
+  const selectedInterventionType = useInterventionStore(
+    (state) => state.selectedInterventionType
+  );
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const interventionList = useMemo(() => {
@@ -113,10 +112,8 @@ const InterventionDropdown = ({
       {isMenuOpen && (
         <InterventionList
           interventionList={interventionList}
-          setSelectedInterventionType={setSelectedInterventionType}
           setIsMenuOpen={setIsMenuOpen}
           selectedInterventionData={interventionData}
-          hasProjectSites={hasProjectSites}
           availableInterventionTypes={availableInterventionTypes}
         />
       )}

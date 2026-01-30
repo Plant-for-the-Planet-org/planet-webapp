@@ -5,6 +5,7 @@ import type { InterventionTypes } from '@planet-sdk/common';
 import styles from '../../ProjectsMap/InterventionDropDown/InterventionList.module.scss';
 import { useTranslations } from 'next-intl';
 import { clsx } from 'clsx';
+import { useInterventionStore } from '../../../../stores';
 
 type InterventionData = {
   label: string;
@@ -13,22 +14,26 @@ type InterventionData = {
 };
 interface InterventionListProps {
   interventionList: InterventionData[];
-  setSelectedInterventionType: SetState<INTERVENTION_TYPE>;
   setIsMenuOpen: SetState<boolean>;
   selectedInterventionData: InterventionData | undefined;
-  hasProjectSites?: boolean;
   availableInterventionTypes: InterventionTypes[];
 }
 
 const InterventionList = ({
   interventionList,
-  setSelectedInterventionType,
   setIsMenuOpen,
   selectedInterventionData,
-  hasProjectSites,
   availableInterventionTypes,
 }: InterventionListProps) => {
   const tProjectDetails = useTranslations('ProjectDetails.intervention');
+  const setSelectedInterventionType = useInterventionStore(
+    (state) => state.setSelectedInterventionType
+  );
+  const hasProjectSites = useInterventionStore(
+    (state) =>
+      state.singleProject?.sites?.length !== undefined &&
+      state.singleProject?.sites?.length > 0
+  );
   const handleFilterSelection = (key: INTERVENTION_TYPE) => {
     setIsMenuOpen(false);
     setSelectedInterventionType(key);
