@@ -6,7 +6,6 @@ import type {
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
-import { useProjects } from '../ProjectsContext';
 import ProjectInfo from './components/ProjectInfo';
 import { useLocale } from 'next-intl';
 import styles from './ProjectDetails.module.scss';
@@ -24,14 +23,6 @@ import { useCurrencyStore } from '../../../stores/currencyStore';
 import { useInterventionStore } from '../../../stores';
 
 const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
-  const {
-    selectedIntervention,
-    hoveredIntervention,
-    selectedSampleTree,
-    setSelectedSampleTree,
-    setPreventShallowPush,
-  } = useProjects();
-
   const locale = useLocale();
   const router = useRouter();
   const { getApi } = useApi();
@@ -41,9 +32,21 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  const singleProject = useInterventionStore((state) => state.singleProject);
+  const hoveredIntervention = useInterventionStore(
+    (state) => state.hoveredIntervention
+  );
+  const selectedIntervention = useInterventionStore(
+    (state) => state.selectedIntervention
+  );
+  const selectedSampleTree = useInterventionStore(
+    (state) => state.selectedSampleTree
+  );
   // store: action
   const fetchProjectData = useInterventionStore((state) => state.fetchProject);
-  const singleProject = useInterventionStore((state) => state.singleProject);
+  const setSelectedSampleTree = useInterventionStore(
+    (state) => state.setSelectedSampleTree
+  );
 
   useEffect(() => {
     if (typeof projectSlug === 'string' && currencyCode && router.isReady) {
@@ -114,11 +117,6 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
     [selectedIntervention, hoveredIntervention, selectedSampleTree]
   );
 
-  const baseInterventionInfoProps = {
-    isMobile,
-    setSelectedSampleTree,
-  };
-
   if (singleProject === null) {
     return <Skeleton className={styles.projectDetailsSkeleton} />;
   }
@@ -131,42 +129,26 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
           project={singleProject}
           showTooltipPopups={true}
           isMobile={isMobile}
-          setPreventShallowPush={setPreventShallowPush}
         />
         {shouldShowSingleTreeInfo && (
           <SingleTreeInfo
             activeSingleTree={activeSingleTree}
-            {...baseInterventionInfoProps}
+            isMobile={isMobile}
           />
         )}
         {shouldShowMultiTreeInfo && (
           <MultiTreeInfo
             activeMultiTree={activeMultiTree}
-            {...baseInterventionInfoProps}
+            isMobile={isMobile}
           />
         )}
 
         {shouldShowOtherIntervention && (
-          <OtherInterventionInfo
-            selectedIntervention={
-              selectedIntervention?.type !== 'single-tree-registration' &&
-              selectedIntervention?.type !== 'multi-tree-registration'
-                ? selectedIntervention
-                : null
-            }
-            hoveredIntervention={
-              hoveredIntervention?.type !== 'single-tree-registration' &&
-              hoveredIntervention?.type !== 'multi-tree-registration'
-                ? hoveredIntervention
-                : null
-            }
-            {...baseInterventionInfoProps}
-          />
+          <OtherInterventionInfo isMobile={isMobile} />
         )}
 
         {shouldShowProjectInfo && (
           <ProjectInfo
-            project={singleProject}
             isMobile={isMobile}
             hasVideoConsent={hasVideoConsent}
             onVideoConsentChange={setHasVideoConsent}
