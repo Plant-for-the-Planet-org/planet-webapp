@@ -25,7 +25,6 @@ import {
 } from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import MapTabs from './ProjectMapTabs';
-import { useProjects } from '../ProjectsContext';
 import MultiTreeInfo from '../ProjectDetails/components/MultiTreeInfo';
 import SingleTreeInfo from '../ProjectDetails/components/SingleTreeInfo';
 import styles from './ProjectsMap.module.scss';
@@ -74,6 +73,13 @@ function ProjectsMap(props: ProjectsMapProps) {
   const mapState = useProjectMapStore((state) => state.mapState);
   const projects = useProjectStore((state) => state.projects);
   const singleProject = useInterventionStore((state) => state.singleProject);
+  const selectedIntervention = useInterventionStore(
+    (state) => state.selectedIntervention
+  );
+  const selectedSampleTree = useInterventionStore(
+    (state) => state.selectedSampleTree
+  );
+  const interventions = useInterventionStore((state) => state.interventions);
   // store: action
   const initializeMapStyle = useProjectMapStore(
     (state) => state.initializeMapStyle
@@ -85,16 +91,19 @@ function ProjectsMap(props: ProjectsMapProps) {
     (state) => state.handleViewStateChange
   );
   const setMapState = useProjectMapStore((state) => state.setMapState);
+  const setSelectedSite = useInterventionStore(
+    (state) => state.setSelectedSite
+  );
+  const setHoveredIntervention = useInterventionStore(
+    (state) => state.setHoveredIntervention
+  );
+  const setSelectedSampleTree = useInterventionStore(
+    (state) => state.setSelectedSampleTree
+  );
+  const setSelectedIntervention = useInterventionStore(
+    (state) => state.setSelectedIntervention
+  );
 
-  const {
-    interventions,
-    setHoveredIntervention,
-    setSelectedIntervention,
-    setSelectedSite,
-    setSelectedSampleTree,
-    selectedIntervention,
-    selectedSampleTree,
-  } = useProjects();
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [wasTimeTravelMounted, setWasTimeTravelMounted] = useState(false);
@@ -325,11 +334,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     sitesGeoJson,
   };
 
-  const baseInterventionInfoProps = {
-    isMobile,
-    setSelectedSampleTree,
-  };
-
   const shouldShowOtherIntervention =
     isMobile &&
     selectedIntervention !== null &&
@@ -383,7 +387,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       {shouldShowMultiTreeInfo && (
         <MultiTreeInfo
           activeMultiTree={selectedIntervention}
-          {...baseInterventionInfoProps}
+          isMobile={isMobile}
         />
       )}
       {shouldShowSingleTreeInfo && (
@@ -392,19 +396,11 @@ function ProjectsMap(props: ProjectsMapProps) {
             selectedSampleTree ||
             (selectedIntervention as SingleTreeRegistration)
           }
-          {...baseInterventionInfoProps}
+          isMobile={isMobile}
         />
       )}
       {shouldShowOtherIntervention && (
-        <OtherInterventionInfo
-          selectedIntervention={
-            selectedIntervention?.type !== 'single-tree-registration' &&
-            selectedIntervention?.type !== 'multi-tree-registration'
-              ? selectedIntervention
-              : null
-          }
-          {...baseInterventionInfoProps}
-        />
+        <OtherInterventionInfo isMobile={isMobile} />
       )}
     </>
   );
