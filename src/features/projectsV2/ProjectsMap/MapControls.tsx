@@ -8,7 +8,6 @@ import { useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
-import { useProjects } from '../ProjectsContext';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIcon';
@@ -32,17 +31,6 @@ const MapControls = ({
   currentPage,
   mobileOS,
 }: MapControlsProps) => {
-  const {
-    selectedSite,
-    setSelectedSite,
-    selectedIntervention,
-    selectedSampleTree,
-    setSelectedIntervention,
-    setSelectedSampleTree,
-    selectedInterventionType,
-    setSelectedInterventionType,
-    interventions,
-  } = useProjects();
   // local state
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
   // store: state
@@ -56,6 +44,13 @@ const MapControls = ({
     (state) =>
       state.singleProject?.sites?.length !== undefined &&
       state.singleProject?.sites?.length > 0
+  );
+  const interventions = useInterventionStore((state) => state.interventions);
+  const selectedIntervention = useInterventionStore(
+    (state) => state.interventions
+  );
+  const selectedSampleTree = useInterventionStore(
+    (state) => state.selectedSampleTree
   );
   // store: action
   const setIsSatelliteView = useProjectMapStore(
@@ -91,25 +86,14 @@ const MapControls = ({
     showProjectDetails === 'false';
 
   const siteDropdownProps = {
-    selectedSite,
-    setSelectedSite,
-    selectedIntervention,
-    setSelectedIntervention,
-    setSelectedSampleTree,
     activeDropdown,
     setActiveDropdown,
   };
 
   const interventionDropDownProps = {
-    selectedInterventionType,
-    setSelectedInterventionType,
     allInterventions: AllInterventions,
-    selectedIntervention,
-    setSelectedIntervention,
-    setSelectedSampleTree,
     activeDropdown,
     setActiveDropdown,
-    hasProjectSites,
     availableInterventionTypes,
   };
   const exitMapMode = () => setSelectedMode('list');
