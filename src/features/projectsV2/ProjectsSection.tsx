@@ -2,7 +2,6 @@ import Skeleton from 'react-loading-skeleton';
 import { useEffect, useState } from 'react';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './ProjectsSection.module.scss';
-import { useProjects } from './ProjectsContext';
 import ProjectListControls, { type ProjectTabs } from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import ProjectList from './ProjectList';
@@ -17,14 +16,16 @@ interface ProjectsSectionProps {
 }
 
 const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
-  const { isLoading, isError } = useProjects();
   const { filteredProjectCount } = useFilteredProjects();
   // store: state
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
-  const projects = useProjectStore((state) => state.projects);
   const showDonatableProjects = useProjectStore(
     (state) => state.showDonatableProjects
   );
+  const isProjectsFetching = useProjectStore(
+    (state) => state.isProjectsFetching
+  );
+  const isProjectsError = useProjectStore((state) => state.isProjectsError);
   const isClassificationSelected = useProjectStore(
     (state) => state.selectedClassification.length > 0
   );
@@ -53,7 +54,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
 
   const shouldHideProjectTabs = tenantConfig.topProjectsOnly === true;
 
-  if ((isLoading || isError || projects === null) && !hasFilteredProjects) {
+  if ((isProjectsFetching || isProjectsError) && !hasFilteredProjects) {
     return <Skeleton className={styles.projectSectionSkeleton} />;
   }
 

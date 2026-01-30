@@ -2,12 +2,12 @@ import type { CategorizedProjects } from './ProjectMarkers';
 
 import { useMemo } from 'react';
 import ProjectMarkers from './ProjectMarkers';
-import { useProjects } from '../ProjectsContext';
 import { getProjectCategory } from '../../../utils/projectV2';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
+import { useProjectStore } from '../../../stores';
 
 const MultipleProjectsView = () => {
-  const { isError } = useProjects();
+  const isProjectsError = useProjectStore((state) => state.isProjectsError);
   const { filteredProjectCount, filteredProjects } = useFilteredProjects();
 
   const categorizedProjects = useMemo(() => {
@@ -45,7 +45,7 @@ const MultipleProjectsView = () => {
     );
   }, [filteredProjects]);
 
-  if (isError) return null;
+  if (isProjectsError) return null;
 
   return <ProjectMarkers categorizedProjects={categorizedProjects} />;
 };
