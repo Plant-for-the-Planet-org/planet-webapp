@@ -1,10 +1,10 @@
 import type { SetState } from '../../../common/types/common';
-import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useLocale } from 'next-intl';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import styles from '../../ProjectsMap/ProjectSiteDropDown/SiteDropdown.module.scss';
 import { clsx } from 'clsx';
+import { useInterventionStore } from '../../../../stores';
 
 type SiteData = {
   siteName: string;
@@ -13,22 +13,26 @@ type SiteData = {
 };
 interface ProjectSiteListProps {
   siteList: SiteData[];
-  setSelectedSite: SetState<number | null>;
   setIsMenuOpen: SetState<boolean>;
   selectedSiteData: SiteData | undefined;
-  setSelectedIntervention: SetState<Intervention | null>;
-  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
 const ProjectSiteList = ({
   siteList,
-  setSelectedSite,
   setIsMenuOpen,
   selectedSiteData,
-  setSelectedIntervention,
-  setSelectedSampleTree,
 }: ProjectSiteListProps) => {
   const locale = useLocale();
+  // store: action
+  const setSelectedSite = useInterventionStore(
+    (state) => state.setSelectedSite
+  );
+  const setSelectedIntervention = useInterventionStore(
+    (state) => state.setSelectedIntervention
+  );
+  const setSelectedSampleTree = useInterventionStore(
+    (state) => state.setSelectedSampleTree
+  );
   const handleSiteSelection = (index: number) => {
     setSelectedIntervention(null);
     setSelectedSampleTree(null);
