@@ -4,7 +4,6 @@ import { useMemo } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
-import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
 import { useUserProps } from '../UserPropsContext';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
@@ -86,11 +85,7 @@ const ProjectsLayoutContent = ({ children }: ProjectsLayoutProps) => {
 };
 
 const ProjectsLayout = ({ children }: ProjectsLayoutProps) => {
-  return (
-    <ProjectsProvider>
-      <ProjectsLayoutContent>{children}</ProjectsLayoutContent>
-    </ProjectsProvider>
-  );
+  return <ProjectsLayoutContent>{children}</ProjectsLayoutContent>;
 };
 
 export default ProjectsLayout;

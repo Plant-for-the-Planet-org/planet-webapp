@@ -3,7 +3,6 @@ import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
-import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import { useUserProps } from '../UserPropsContext';
 import { clsx } from 'clsx';
@@ -56,7 +55,7 @@ const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
   });
 
   return (
-    <ProjectsProvider>
+    <>
       <main className={mobileLayoutClass}>
         {isMapMode ? (
           <section className={styles.mobileMapContainer}>
@@ -69,7 +68,7 @@ const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
         )}
       </main>
       <Credits isMobile={isMobile} />
-    </ProjectsProvider>
+    </>
   );
 };
 
