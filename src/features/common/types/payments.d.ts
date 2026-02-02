@@ -1,18 +1,19 @@
-import type { ProjectPurpose, UnitTypes } from '@planet-sdk/common';
+import type { ProjectPurpose, UnitTypes, Nullable } from '@planet-sdk/common';
+import type { DateString } from './common';
 
 export interface Fees {
-  disputeFee: number;
-  planetFee: number;
-  transactionFee: number;
-  transferFee: number;
+  disputeFee: Nullable<number>;
+  planetFee: Nullable<number>;
+  transactionFee: Nullable<number>;
+  transferFee: Nullable<number>;
 }
 
 export interface BankAccount {
-  beneficiary: string;
-  iban: string;
-  bic: string;
-  bankName: string;
-  swift: string;
+  beneficiary?: string;
+  iban?: string;
+  bic?: string;
+  bankName?: string;
+  swift?: string;
 }
 
 export interface RecipientBank {
@@ -23,41 +24,51 @@ export interface RecipientBank {
   aba?: string;
   swift?: string;
   isDefault?: string | number;
-  created?: Date;
-  updated?: Date;
+  /** ISO 8601 format like "2025-09-14T07:55:22+00:00" */
+  created?: DateString;
+  /** ISO 8601 format like "2025-09-14T07:55:22+00:00" */
+  updated?: DateString;
 }
 
 export interface PaymentDetails {
-  donorName: string;
-  quantity: number;
+  /** @deprecated Likely deprecation */
+  donorName?: Nullable<string>;
+  quantity: Nullable<number>;
   method: string;
-  created: Date;
+  /** ISO 8601 format like "2025-09-14T07:55:22+00:00" */
+  created: DateString;
   unitCost: number;
-  lastUpdate: Date;
-  project: string;
+  /** ISO 8601 format like "2025-09-14T07:55:22+00:00" */
+  lastUpdate: DateString;
+  /** Can be null for planet-cash/composite donations */
+  project: Nullable<string>;
   paidAmount: number;
-  refundAmount?: number;
-  donorCertificate?: string;
-  taxDeductibleReceipt?: string;
+  refundAmount?: Nullable<number>;
+  donorCertificate?: Nullable<string>;
+  taxDeductibleReceipt?: Nullable<string>;
   account?: BankAccount;
-  paymentDate?: Date;
+  /** ISO 8601 format like "2025-09-14T07:55:22+00:00" */
+  paymentDate?: DateString;
   totalAmount?: number;
   fees?: Fees;
   recipientBank?: RecipientBank;
-  codesUrl?: string;
-  giftOccasion?: string;
-  giftCertificate?: string;
-  giftComment?: string;
-  giftMessage?: string;
-  giftRecipient?: string;
-  bouquetDonation?: string;
+  codesUrl?: Nullable<string>;
+  giftOccasion?: Nullable<string>;
+  giftCertificate?: Nullable<string>;
+  giftComment?: Nullable<string>;
+  giftMessage?: Nullable<string>;
+  giftRecipient?: Nullable<string>;
+  bouquetDonation?: Nullable<string>;
+  /** Present only for recurring donations, pointing to first donation in the series. Else null */
+  firstDonation?: Nullable<string>;
 }
 
 export interface Links {
   self: string;
   first: string;
   last: string;
-  next: string;
+  next?: string;
+  prev?: string;
 }
 
 interface Filters {
@@ -67,11 +78,13 @@ interface Filters {
 export interface Filters {
   all: string;
   'donation-all': string;
-  'payout-all': string;
+  'payout-all'?: string;
   completed: string;
-  'in-progress': string;
-  'tree-cash': string;
-  'action-required': string;
+  'in-progress'?: string;
+  pending?: string;
+  failed?: string;
+  'planet-cash': string;
+  'action-required'?: string;
 }
 
 export type SingleDestination = {
@@ -103,20 +116,23 @@ export type DonationPurpose =
   | 'membership';
 
 export interface PaymentHistoryRecord {
-  quantity: number;
-  bouquetPurpose?: string;
+  quantity: Nullable<number>;
+  bouquetPurpose?: Nullable<string>;
   netAmount: number;
   purpose: DonationPurpose;
-  created: Date;
-  treeCount: number;
+  /** ISO 8601 format like "2025-09-14T07:55:22+00:00" */
+  created: DateString;
+  treeCount: Nullable<number>;
   type: string;
   reference: string;
-  lastUpdate: Date;
-  projectGuid: string;
+  /** ISO 8601 format like "2025-09-14T07:55:22+00:00" */
+  lastUpdate: DateString;
+  /** Present for TPO users only */
+  projectGuid?: string;
   currency: string;
   details: PaymentDetails;
   status: string;
-  unitType: UnitTypes;
+  unitType: Nullable<UnitTypes>;
 }
 
 export interface PaymentHistory {

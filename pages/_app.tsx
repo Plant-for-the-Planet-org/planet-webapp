@@ -32,7 +32,6 @@ import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext'
 import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
@@ -44,6 +43,7 @@ import {
 } from '../src/utils/multiTenancy/helpers';
 import { NextIntlClientProvider } from 'next-intl';
 import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
+import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
 
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
   ssr: false,
@@ -192,49 +192,48 @@ const PlanetWeb = ({
         locale={(router.query?.locale as string) ?? 'en'}
         messages={pageProps.messages}
       >
+        <StoreInitializer />
         <CacheProvider value={emotionCache}>
           <ErrorHandlingProvider>
             <TenantProvider initialTenantConfig={pageProps.tenantConfig}>
-              <QueryParamsProvider>
-                <Auth0Provider
-                  domain={process.env.AUTH0_CUSTOM_DOMAIN!}
-                  clientId={
-                    tenantConfig.config?.auth0ClientId
-                      ? tenantConfig.config.auth0ClientId
-                      : process.env.AUTH0_CLIENT_ID
-                  }
-                  redirectUri={
-                    typeof window !== 'undefined' ? window.location.origin : ''
-                  }
-                  audience={'urn:plant-for-the-planet'}
-                  cacheLocation={'localstorage'}
-                  onRedirectCallback={onRedirectCallback}
-                  useRefreshTokens={true}
-                >
-                  <ThemeProvider>
-                    <MuiThemeProvider theme={materialTheme}>
-                      <CssBaseline />
-                      <UserPropsProvider>
-                        <CurrencyProvider>
-                          <PlanetCashProvider>
-                            <PayoutsProvider>
-                              <Layout>
-                                <BulkCodeProvider>
-                                  <AnalyticsProvider>
-                                    <DonationReceiptProvider>
-                                      {pageContent}
-                                    </DonationReceiptProvider>
-                                  </AnalyticsProvider>
-                                </BulkCodeProvider>
-                              </Layout>
-                            </PayoutsProvider>
-                          </PlanetCashProvider>
-                        </CurrencyProvider>
-                      </UserPropsProvider>
-                    </MuiThemeProvider>
-                  </ThemeProvider>
-                </Auth0Provider>
-              </QueryParamsProvider>
+              <Auth0Provider
+                domain={process.env.AUTH0_CUSTOM_DOMAIN!}
+                clientId={
+                  tenantConfig.config?.auth0ClientId
+                    ? tenantConfig.config.auth0ClientId
+                    : process.env.AUTH0_CLIENT_ID
+                }
+                redirectUri={
+                  typeof window !== 'undefined' ? window.location.origin : ''
+                }
+                audience={'urn:plant-for-the-planet'}
+                cacheLocation={'localstorage'}
+                onRedirectCallback={onRedirectCallback}
+                useRefreshTokens={true}
+              >
+                <ThemeProvider>
+                  <MuiThemeProvider theme={materialTheme}>
+                    <CssBaseline />
+                    <UserPropsProvider>
+                      <CurrencyProvider>
+                        <PlanetCashProvider>
+                          <PayoutsProvider>
+                            <Layout>
+                              <BulkCodeProvider>
+                                <AnalyticsProvider>
+                                  <DonationReceiptProvider>
+                                    {pageContent}
+                                  </DonationReceiptProvider>
+                                </AnalyticsProvider>
+                              </BulkCodeProvider>
+                            </Layout>
+                          </PayoutsProvider>
+                        </PlanetCashProvider>
+                      </CurrencyProvider>
+                    </UserPropsProvider>
+                  </MuiThemeProvider>
+                </ThemeProvider>
+              </Auth0Provider>
             </TenantProvider>
           </ErrorHandlingProvider>
         </CacheProvider>
