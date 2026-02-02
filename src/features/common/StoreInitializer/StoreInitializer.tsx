@@ -3,6 +3,7 @@ import { useInitializeParams } from '../../../hooks/useInitializeParams';
 import { useInitializeProject } from '../../../hooks/useInitializeProject';
 import { useInitializeIntervention } from '../../../hooks/useInitializeIntervention';
 import { useInitializeView } from '../../../hooks/useInitializeView';
+import { useInitializeSingleProject } from '../../../hooks/useInitializeSingleProject';
 
 /**
  * StoreInitializer Component
@@ -21,6 +22,7 @@ export const StoreInitializer = () => {
   useInitializeCurrency();
   useInitializeView();
   useInitializeProject();
+  useInitializeSingleProject();
   useInitializeIntervention();
   return null;
 };
