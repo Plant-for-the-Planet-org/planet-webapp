@@ -217,7 +217,9 @@
 
 .inlineLinkButton {
   font-family: $primaryFontFamily;
-  width: 100%;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 30px;
   font-size: $fontSmall;
   font-weight: normal;
   font-stretch: normal;
@@ -227,12 +229,15 @@
   color: $dsPrimaryColor;
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  align-items: center;
 }
+
 .inlineLinkButton:hover {
   cursor: pointer;
-  font-weight: bold;
+  border-color: $dsPrimaryColor;
+  background-color: $dsPrimaryColorTransparent7;
 }
+
 .projSiteSaveAndAdd {
   display: flex;
   justify-content: center;
@@ -380,6 +385,31 @@
     }
   }
 }
+.syncAndAddSitesButtons {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}
+
+.siteSyncModalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+
+  .terms,
+  .helpText {
+    text-align: center;
+  }
+
+  .requirements ul li {
+    margin-left: 16px;
+  }
+}
+
+.restorLink {
+  color: $dsPrimaryColor;
+}
 
 .drawingControls {
   display: flex;
@@ -449,6 +479,7 @@
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   border: dashed 1px $dsCoreText;
+  margin-bottom: 10px;
 }
 
 .mapNavigation {
