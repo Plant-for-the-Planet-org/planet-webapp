@@ -14,7 +14,7 @@ interface ViewStore {
 export const useViewStore = create<ViewStore>()(
   devtools(
     (set) => ({
-      page: null,
+      page: 'project-list',
       selectedMode: 'list',
 
       setPage: (currentPage) =>
