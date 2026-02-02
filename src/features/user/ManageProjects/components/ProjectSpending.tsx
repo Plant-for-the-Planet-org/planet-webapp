@@ -48,7 +48,7 @@ export default function ProjectSpending({
 }: ProjectSpendingProps): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const {
     formState: { errors, isDirty },
     getValues,
@@ -158,7 +158,6 @@ export default function ProjectSpending({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
     }
   };
 

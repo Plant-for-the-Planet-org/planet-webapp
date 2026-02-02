@@ -37,7 +37,7 @@ function ProjectCertificates({
   userLang,
 }: ProjectCertificatesProps): ReactElement {
   const t = useTranslations('ManageProjects');
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated, getApiAuthenticated, deleteApiAuthenticated } =
     useApi();
   const {
@@ -121,7 +121,6 @@ function ProjectCertificates({
         setUploadedFiles(result.certificates);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/profile');
         setShowToggle(true);
         setIsCertified(false);
         setShowForm(true);
