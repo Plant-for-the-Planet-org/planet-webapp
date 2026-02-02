@@ -228,17 +228,45 @@ export const getSiteIndex = (
 };
 
 /**
- * Retrieves the matching intervention based on the topmost hovered map feature.
+ * Returns the topmost (highest priority) map feature from a list of features.
  *
- * This function checks whether the topmost feature in the provided feature list
- * corresponds to a valid intervention layer (as defined by `PLANT_LAYERS`) and,
- * if so, finds and returns the intervention with a matching `id`.
+ * Map libraries typically return features ordered by render stack,
+ * where the first item represents the topmost visible layer at the point.
  *
- * @param {Intervention[] | null} interventions - The list of intervention objects to match against.
- * @param {MapGeoJSONFeature[]} features - An array of GeoJSON features returned from a map hover or click event.
- * @returns {Intervention | undefined} The matched intervention if found, or `undefined` if no match exists or input is invalid.
+ * @param features - Array of GeoJSON features returned from a map interaction
+ * @returns The topmost feature, or `undefined` if the list is empty
  */
+export const getTopmostFeature = (
+  features: MapGeoJSONFeature[]
+): MapGeoJSONFeature | undefined => {
+  return features.length > 0 ? features[0] : undefined;
+};
 
+/**
+ * Determines whether a map feature belongs to a plant intervention layer.
+ *
+ * This is used to distinguish plant-related map features from other
+ * interactive layers such as site polygons or background layers.
+ *
+ * @param feature - A GeoJSON feature from the map
+ * @returns `true` if the feature is from a plant layer, otherwise `false`
+ */
+export const isPlantFeature = (feature: MapGeoJSONFeature): boolean => {
+  return PLANT_LAYERS.includes(feature.layer.id);
+};
+
+/**
+ * Resolves an intervention based on the topmost map feature.
+ *
+ * The function:
+ * 1. Selects the topmost feature from the map interaction result
+ * 2. Verifies that the feature belongs to a plant intervention layer
+ * 3. Finds and returns the matching intervention by ID
+ *
+ * @param interventions - List of available interventions
+ * @param features - GeoJSON features returned from a map hover or click event
+ * @returns The matched intervention, or `undefined` if no valid match is found
+ */
 export const getInterventionInfo = (
   interventions: Intervention[] | null,
   features: MapGeoJSONFeature[]
@@ -246,13 +274,11 @@ export const getInterventionInfo = (
   if (!interventions || interventions.length === 0 || features.length === 0)
     return;
 
-  const topmostFeature = features[0]; // top layer
-  const layerId = topmostFeature.layer.id;
-  const isPlantLayer = PLANT_LAYERS.includes(layerId);
-  if (!isPlantLayer) return;
+  const feature = getTopmostFeature(features);
+  if (!feature || !isPlantFeature(feature)) return;
 
   return interventions.find(
-    (intervention) => intervention.id === topmostFeature.properties.id
+    (intervention) => intervention.id === feature.properties.id
   );
 };
 
