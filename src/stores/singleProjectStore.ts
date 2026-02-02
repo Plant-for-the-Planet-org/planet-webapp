@@ -196,7 +196,7 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
         updateUrlWithSiteId(locale, singleProject.slug, siteId, router);
 
         set(
-          { selectedSite: index },
+          { selectedSite: index, selectedSampleTree: null },
           undefined,
           'singleProjectStore/select_site_and_sync_url'
         );

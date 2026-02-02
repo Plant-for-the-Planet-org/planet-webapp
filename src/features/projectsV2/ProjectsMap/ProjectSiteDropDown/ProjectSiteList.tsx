@@ -4,10 +4,8 @@ import { useLocale } from 'next-intl';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import styles from '../../ProjectsMap/ProjectSiteDropDown/SiteDropdown.module.scss';
 import { clsx } from 'clsx';
-import {
-  useInterventionStore,
-  useSingleProjectStore,
-} from '../../../../stores';
+import { useSingleProjectStore } from '../../../../stores';
+import { useRouter } from 'next/router';
 
 type SiteData = {
   siteName: string;
@@ -26,21 +24,15 @@ const ProjectSiteList = ({
   selectedSiteData,
 }: ProjectSiteListProps) => {
   const locale = useLocale();
+  const router = useRouter();
   // store: action
-  const setSelectedSite = useSingleProjectStore(
-    (state) => state.setSelectedSite
-  );
-  const setSelectedSampleTree = useSingleProjectStore(
-    (state) => state.setSelectedSampleTree
-  );
-  const setSelectedIntervention = useInterventionStore(
-    (state) => state.setSelectedIntervention
+
+  const selectSiteAndSyncUrl = useSingleProjectStore(
+    (state) => state.selectSiteAndSyncUrl
   );
   const handleSiteSelection = (index: number) => {
-    setSelectedIntervention(null);
-    setSelectedSampleTree(null);
+    selectSiteAndSyncUrl(index, locale, router);
     setIsMenuOpen(false);
-    setSelectedSite(index);
   };
 
   return (
