@@ -112,7 +112,7 @@ export default function ApiKey() {
             color="primary"
           >
             {isUploadingData ? (
-              <div className={'spinner'}></div>
+              <div className="spinner"></div>
             ) : (
               t('regenerateKey')
             )}
