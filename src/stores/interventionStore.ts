@@ -1,11 +1,14 @@
 import type { APIError, Intervention } from '@planet-sdk/common';
 import type { ApiConfigBase } from '../hooks/useApi';
 import type { INTERVENTION_TYPE } from '../utils/constants/intervention';
+import type { NextRouter } from 'next/router';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { useErrorHandlingStore } from './errorHandlingStore';
 import { handleError } from '@planet-sdk/common';
+import { buildProjectDetailsQuery } from '../utils/projectV2';
+import { useSingleProjectStore } from './singleProjectStore';
 
 interface InterventionStore {
   interventions: Intervention[] | null;
@@ -21,13 +24,19 @@ interface InterventionStore {
     projectId: string
   ) => Promise<void>;
 
-  setInterventions: (interventions: Intervention[] | null) => void;
   setSelectedIntervention: (intervention: Intervention | null) => void;
   setSelectedInterventionType: (interventionType: INTERVENTION_TYPE) => void;
   setHoveredIntervention: (intervention: Intervention | null) => void;
 
+  selectInterventionSyncUrl: (
+    intervention: Intervention,
+    locale: string,
+    projectSlug: string,
+    router: NextRouter
+  ) => void;
+
   clearInterventionStates: () => void;
-  clearMapLayerInteractionStates: () => void;
+  clearInterventionSelectionAndHover: () => void;
 }
 
 export const useInterventionStore = create<InterventionStore>()(
@@ -79,8 +88,6 @@ export const useInterventionStore = create<InterventionStore>()(
         }
       },
 
-      setInterventions: (interventions) => set({ interventions }),
-
       setSelectedIntervention: (intervention) =>
         set(
           { selectedIntervention: intervention },
@@ -97,7 +104,7 @@ export const useInterventionStore = create<InterventionStore>()(
 
       setHoveredIntervention: (intervention) =>
         set(
-          { selectedIntervention: intervention },
+          { hoveredIntervention: intervention },
           undefined,
           'interventionStore/set_hovered_intervention'
         ),
@@ -114,7 +121,7 @@ export const useInterventionStore = create<InterventionStore>()(
           'interventionStore/clear_intervention_state'
         ),
 
-      clearMapLayerInteractionStates: () =>
+      clearInterventionSelectionAndHover: () =>
         set(
           {
             selectedIntervention: null,
@@ -123,6 +130,30 @@ export const useInterventionStore = create<InterventionStore>()(
           undefined,
           'interventionStore/clear_map_layer_interaction_states'
         ),
+
+      selectInterventionSyncUrl: (
+        intervention,
+        locale,
+        projectSlug,
+        router
+      ) => {
+        const { setSelectedSite, updateProjectDetailsPath } =
+          useSingleProjectStore.getState();
+        setSelectedSite(null);
+
+        set({ selectedIntervention: intervention });
+
+        const updatedQueryParams = buildProjectDetailsQuery(router.query, {
+          plocId: intervention.hid,
+        });
+
+        updateProjectDetailsPath(
+          locale,
+          projectSlug,
+          updatedQueryParams,
+          router
+        );
+      },
     }),
     {
       name: 'InterventionStore',
