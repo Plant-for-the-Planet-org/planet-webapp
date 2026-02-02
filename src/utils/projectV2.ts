@@ -602,3 +602,33 @@ export const filterBySearch = (
   });
   return filteredProjects;
 };
+
+/**
+ * Resolves a site ID from the provided site index.
+ *
+ * @param sites - List of project site features
+ * @param siteIndex - Index of the selected site
+ * @returns The site ID if the index is valid and sites exist, otherwise `null`
+ */
+export const getSiteIdFromIndex = (
+  sites: ProjectSiteFeature[],
+  siteIndex: number | null
+): string | null => {
+  return sites && sites.length > 0 && siteIndex !== null
+    ? sites[siteIndex]?.properties.id
+    : null;
+};
+
+export const FIRST_SITE_INDEX = 0;
+
+/**
+ * Checks whether the provided value is a string.
+ *
+ * Acts as a type guard to safely narrow an `unknown` value to `string`.
+ *
+ * @param value - The value to check
+ * @returns `true` if the value is a string, otherwise `false`
+ */
+export const isString = (value: unknown): value is string => {
+  return typeof value === 'string';
+};
