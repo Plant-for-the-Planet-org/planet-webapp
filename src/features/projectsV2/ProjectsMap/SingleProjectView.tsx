@@ -45,6 +45,9 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
   );
   const router = useRouter();
   const { ploc: requestedIntervention, site: requestedSite } = router.query;
+  const hasOnlyRequestedIntervention = Boolean(
+    !requestedSite && requestedIntervention
+  );
 
   const canShowSites = sitesGeoJson.features.length > 0;
   const displayIntervention = selectedTab === 'field' && !isSatelliteView;
@@ -86,7 +89,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
     if (
       !router.isReady ||
       selectedIntervention !== null ||
-      Boolean(requestedIntervention)
+      hasOnlyRequestedIntervention
     )
       return;
     if (canShowSites && selectedSite !== null) {
