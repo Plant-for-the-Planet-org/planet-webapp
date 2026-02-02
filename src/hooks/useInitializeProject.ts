@@ -28,6 +28,7 @@ export const useInitializeProject = () => {
   const setShowDonatableProjects = useProjectStore(
     (state) => state.setShowDonatableProjects
   );
+  const clearFilterStates = useProjectStore((state) => state.clearFilterStates);
 
   useEffect(() => {
     if (currentPage !== 'project-list' || !currencyCode) return;
@@ -71,4 +72,8 @@ export const useInitializeProject = () => {
       }
     }
   }, [router.isReady]);
+
+  useEffect(() => {
+    if (currentPage === 'project-details') clearFilterStates();
+  }, [currentPage]);
 };
