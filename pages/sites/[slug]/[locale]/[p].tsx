@@ -24,34 +24,16 @@ import { v4 } from 'uuid';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectDetails from '../../../../src/features/projectsV2/ProjectDetails';
-import {
-  useInterventionStore,
-  useSingleProjectStore,
-} from '../../../../src/stores';
 
 const ProjectDetailsPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
-
-  const clearInterventionStates = useInterventionStore(
-    (state) => state.clearInterventionStates
-  );
-  const clearProjectStates = useSingleProjectStore(
-    (state) => state.clearProjectStates
-  );
 
   useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
-
-  useEffect(() => {
-    return () => {
-      clearInterventionStates();
-      clearProjectStates();
-    };
-  }, []);
 
   return <ProjectDetails isMobile={isMobile} />;
 };
