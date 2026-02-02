@@ -1,3 +1,5 @@
+// cSpell:ignore pflanzaktion flaviai Gersthofen
+
 import styles from './PartnershipShowcase.module.scss';
 import commonStyles from '../../common.module.scss';
 import WebappButton from '../../../../../features/common/WebappButton';
