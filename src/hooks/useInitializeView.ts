@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { useViewStore } from '../stores/viewStore';
 import { useInterventionStore } from '../stores';
+import { useRouter } from 'next/router';
 
 export const useInitializeView = () => {
   const router = useRouter();
@@ -10,8 +10,8 @@ export const useInitializeView = () => {
   const selectedMode = useViewStore((state) => state.selectedMode);
   // store: action
   const setPage = useViewStore((state) => state.setPage);
-  const clearMapLayerInteractionStates = useInterventionStore(
-    (state) => state.clearMapLayerInteractionStates
+  const clearInterventionSelectionAndHover = useInterventionStore(
+    (state) => state.clearInterventionSelectionAndHover
   );
   const setSelectedMode = useViewStore((state) => state.setSelectedMode);
 
@@ -36,7 +36,7 @@ export const useInitializeView = () => {
     if (selectedMode === 'map') return;
 
     if (currentPage === 'project-details') {
-      clearMapLayerInteractionStates();
+      clearInterventionSelectionAndHover();
     }
   }, [currentPage, selectedMode]);
 
