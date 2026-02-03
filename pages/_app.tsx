@@ -26,7 +26,6 @@ import { storeConfig } from '../src/utils/storeConfig';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
-import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext';
@@ -194,48 +193,46 @@ const PlanetWeb = ({
       >
         <StoreInitializer />
         <CacheProvider value={emotionCache}>
-          <ErrorHandlingProvider>
-            <TenantProvider initialTenantConfig={pageProps.tenantConfig}>
-              <Auth0Provider
-                domain={process.env.AUTH0_CUSTOM_DOMAIN!}
-                clientId={
-                  tenantConfig.config?.auth0ClientId
-                    ? tenantConfig.config.auth0ClientId
-                    : process.env.AUTH0_CLIENT_ID
-                }
-                redirectUri={
-                  typeof window !== 'undefined' ? window.location.origin : ''
-                }
-                audience={'urn:plant-for-the-planet'}
-                cacheLocation={'localstorage'}
-                onRedirectCallback={onRedirectCallback}
-                useRefreshTokens={true}
-              >
-                <ThemeProvider>
-                  <MuiThemeProvider theme={materialTheme}>
-                    <CssBaseline />
-                    <UserPropsProvider>
-                      <CurrencyProvider>
-                        <PlanetCashProvider>
-                          <PayoutsProvider>
-                            <Layout>
-                              <BulkCodeProvider>
-                                <AnalyticsProvider>
-                                  <DonationReceiptProvider>
-                                    {pageContent}
-                                  </DonationReceiptProvider>
-                                </AnalyticsProvider>
-                              </BulkCodeProvider>
-                            </Layout>
-                          </PayoutsProvider>
-                        </PlanetCashProvider>
-                      </CurrencyProvider>
-                    </UserPropsProvider>
-                  </MuiThemeProvider>
-                </ThemeProvider>
-              </Auth0Provider>
-            </TenantProvider>
-          </ErrorHandlingProvider>
+          <TenantProvider initialTenantConfig={pageProps.tenantConfig}>
+            <Auth0Provider
+              domain={process.env.AUTH0_CUSTOM_DOMAIN!}
+              clientId={
+                tenantConfig.config?.auth0ClientId
+                  ? tenantConfig.config.auth0ClientId
+                  : process.env.AUTH0_CLIENT_ID
+              }
+              redirectUri={
+                typeof window !== 'undefined' ? window.location.origin : ''
+              }
+              audience={'urn:plant-for-the-planet'}
+              cacheLocation={'localstorage'}
+              onRedirectCallback={onRedirectCallback}
+              useRefreshTokens={true}
+            >
+              <ThemeProvider>
+                <MuiThemeProvider theme={materialTheme}>
+                  <CssBaseline />
+                  <UserPropsProvider>
+                    <CurrencyProvider>
+                      <PlanetCashProvider>
+                        <PayoutsProvider>
+                          <Layout>
+                            <BulkCodeProvider>
+                              <AnalyticsProvider>
+                                <DonationReceiptProvider>
+                                  {pageContent}
+                                </DonationReceiptProvider>
+                              </AnalyticsProvider>
+                            </BulkCodeProvider>
+                          </Layout>
+                        </PayoutsProvider>
+                      </PlanetCashProvider>
+                    </CurrencyProvider>
+                  </UserPropsProvider>
+                </MuiThemeProvider>
+              </ThemeProvider>
+            </Auth0Provider>
+          </TenantProvider>
         </CacheProvider>
       </NextIntlClientProvider>
     ) : (

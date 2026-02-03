@@ -3,12 +3,11 @@ import type { AccountFormData } from '../components/BankDetailsForm';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { BankAccount } from '../../../common/types/payouts';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import BankDetailsForm from '../components/BankDetailsForm';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import CustomSnackbar from '../../../common/CustomSnackbar';
@@ -18,17 +17,21 @@ import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 const EditBankAccount = (): ReactElement | null => {
+  const t = useTranslations('ManagePayouts');
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const { putApiAuthenticated } = useApi();
+  // local state
   const [accountToEdit, setAccountToEdit] = useState<BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
-  const { putApiAuthenticated } = useApi();
-  const { setErrors, errors } = useContext(ErrorHandlingContext);
-  const t = useTranslations('ManagePayouts');
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const errors = useErrorHandlingStore((state) => state.errors);
 
   const closeSnackbar = (): void => {
     setIsAccountUpdated(false);

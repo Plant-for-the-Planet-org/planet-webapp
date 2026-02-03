@@ -10,12 +10,11 @@ import type {
 } from 'next';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import RecurrentPayments from '../../../../../src/features/user/Account/RecurrentPayments';
@@ -28,6 +27,8 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 
 interface Props {
   pageProps: PageProps;
@@ -38,15 +39,16 @@ function RecurrentDonations({
 }: Props): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
   const { token, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
-
+  //local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [recurrencies, setRecurrencies] = useState<Subscription[]>();
-
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (router.isReady) {
@@ -83,7 +85,7 @@ function RecurrentDonations({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
+      router.push(localizedPath('/profile'));
     }
     setProgress(100);
     setIsDataLoading(false);
