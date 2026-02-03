@@ -2,7 +2,6 @@ import type { ViewStateChangeEvent } from 'react-map-gl-v7/maplibre';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { SingleTreeRegistration } from '@planet-sdk/common';
 import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
-import type { Page } from '../../../stores/viewStore';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -41,6 +40,7 @@ import {
   useInterventionStore,
   useProjectStore,
   useSingleProjectStore,
+  useViewStore,
 } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 import { useLocale } from 'next-intl';
@@ -53,18 +53,16 @@ const TimeTravel = dynamic(() => import('./TimeTravel'), {
 
 export type ProjectsMapDesktopProps = {
   isMobile: false;
-  currentPage: Page;
 };
 export type ProjectsMapMobileProps = {
   isMobile: true;
-  currentPage: Page;
 };
 export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
 
 function ProjectsMap(props: ProjectsMapProps) {
   // Fetch layers data
   useFetchLayers();
-  const { currentPage, isMobile } = props;
+  const { isMobile } = props;
   const locale = useLocale();
   const router = useRouter();
   const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
@@ -72,6 +70,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const lastHoveredIdRef = useRef<string | null>(null);
   const { filteredProjects } = useFilteredProjects();
   // store: state
+  const currentPage = useViewStore((state) => state.page);
   const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
   const isQueryParamsLoaded = useQueryParamStore(
     (state) => state.isContextLoaded

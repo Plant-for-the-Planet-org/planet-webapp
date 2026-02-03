@@ -59,7 +59,7 @@ const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
       <main className={mobileLayoutClass}>
         {isMapMode ? (
           <section className={styles.mobileMapContainer}>
-            <ProjectsMap isMobile={isMobile} currentPage={currentPage} />
+            <ProjectsMap isMobile={isMobile} />
           </section>
         ) : (
           <section className={styles.mobileContentContainer}>

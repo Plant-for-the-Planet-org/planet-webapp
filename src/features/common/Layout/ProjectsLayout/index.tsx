@@ -76,7 +76,7 @@ const ProjectsLayoutContent = ({ children }: ProjectsLayoutProps) => {
               />
             </div>
           )}
-          <ProjectsMap isMobile={false} currentPage={currentPage} />
+          <ProjectsMap isMobile={false} />
         </section>
       </main>
       <Credits />
