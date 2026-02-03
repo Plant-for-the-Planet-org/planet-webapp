@@ -282,7 +282,9 @@ export default function ProjectSites({
     setIsSyncingSites(true);
 
     try {
-      const webhookUrl = `${webhookBase}/33878023-ee47-44e1-8a62-34eb2d2b3246/?project=${projectGUID}`;
+      const modeParam =
+        process.env.NEXT_PUBLIC_APP_ENV === 'production' ? '' : '&mode=dev';
+      const webhookUrl = `${webhookBase}/33878023-ee47-44e1-8a62-34eb2d2b3246/?project=${projectGUID}${modeParam}`;
       const response = await fetch(webhookUrl, {
         method: 'GET',
       });
