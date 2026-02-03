@@ -49,13 +49,12 @@ const MapControls = ({
       state.singleProject?.sites?.length !== undefined &&
       state.singleProject?.sites?.length > 0
   );
-  const selectedSampleTree = useSingleProjectStore(
-    (state) => state.selectedSampleTree
+  const isInterventionSelected = useInterventionStore(
+    (state) =>
+      state.selectedSampleIntervention !== null ||
+      state.selectedIntervention !== null
   );
   const interventions = useInterventionStore((state) => state.interventions);
-  const selectedIntervention = useInterventionStore(
-    (state) => state.interventions
-  );
   // store: action
   const setIsSatelliteView = useProjectMapStore(
     (state) => state.setIsSatelliteView
@@ -74,10 +73,7 @@ const MapControls = ({
   }, [interventions]);
 
   const canShowSatelliteToggle =
-    !(
-      isMobile &&
-      (selectedIntervention !== null || selectedSampleTree !== null)
-    ) && selectedTab === 'field';
+    !(isMobile && isInterventionSelected) && selectedTab === 'field';
   const isProjectDetailsPage = currentPage === 'project-details';
   const canShowInterventionDropdown =
     isProjectDetailsPage &&

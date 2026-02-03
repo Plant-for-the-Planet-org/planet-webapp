@@ -1,4 +1,8 @@
-import type { APIError, Intervention } from '@planet-sdk/common';
+import type {
+  APIError,
+  Intervention,
+  SampleTreeRegistration,
+} from '@planet-sdk/common';
 import type { ApiConfigBase } from '../hooks/useApi';
 import type { INTERVENTION_TYPE } from '../utils/constants/intervention';
 import type { NextRouter } from 'next/router';
@@ -13,6 +17,7 @@ import { useSingleProjectStore } from './singleProjectStore';
 interface InterventionStore {
   interventions: Intervention[] | null;
   selectedIntervention: Intervention | null;
+  selectedSampleIntervention: SampleTreeRegistration | null;
   hoveredIntervention: Intervention | null;
   selectedInterventionType: INTERVENTION_TYPE;
 
@@ -25,6 +30,9 @@ interface InterventionStore {
   ) => Promise<void>;
 
   setSelectedIntervention: (intervention: Intervention | null) => void;
+  setSelectedSampleIntervention: (
+    sampleIntervention: SampleTreeRegistration | null
+  ) => void;
   setSelectedInterventionType: (interventionType: INTERVENTION_TYPE) => void;
   setHoveredIntervention: (intervention: Intervention | null) => void;
 
@@ -44,6 +52,7 @@ export const useInterventionStore = create<InterventionStore>()(
     (set) => ({
       interventions: null,
       selectedIntervention: null,
+      selectedSampleIntervention: null,
       hoveredIntervention: null,
       selectedInterventionType: 'all',
 
@@ -95,6 +104,13 @@ export const useInterventionStore = create<InterventionStore>()(
           'interventionStore/set_selected_intervention'
         ),
 
+      setSelectedSampleIntervention: (sampleIntervention) =>
+        set(
+          { selectedSampleIntervention: sampleIntervention },
+          undefined,
+          'interventionStore/set_selected_sample_intervention'
+        ),
+
       setSelectedInterventionType: (intervention) =>
         set(
           { selectedInterventionType: intervention },
@@ -113,6 +129,7 @@ export const useInterventionStore = create<InterventionStore>()(
         set(
           {
             selectedIntervention: null,
+            selectedSampleIntervention: null,
             hoveredIntervention: null,
             selectedInterventionType: 'all',
             interventions: null,
@@ -126,6 +143,7 @@ export const useInterventionStore = create<InterventionStore>()(
           {
             selectedIntervention: null,
             hoveredIntervention: null,
+            selectedSampleIntervention: null,
           },
           undefined,
           'interventionStore/clear_map_layer_interaction_states'

@@ -21,41 +21,39 @@ import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 import { clsx } from 'clsx';
 import { useProjectMapStore } from '../../../../stores/projectMapStore';
-import {
-  useInterventionStore,
-  useSingleProjectStore,
-} from '../../../../stores';
+import { useInterventionStore } from '../../../../stores';
 
-interface SampleTreeMarkerProps {
-  sampleTree: SampleTreeRegistration;
-  selectedSampleTree: SampleTreeRegistration | null;
-  toggleSampleTree: (
+interface SampleInterventionMarkerProps {
+  sampleIntervention: SampleTreeRegistration;
+  selectedSampleIntervention: SampleTreeRegistration | null;
+  togglePointIntervention: (
     e: MouseEvent<HTMLDivElement>,
-    sampleTree: SampleTreeRegistration
+    sampleIntervention: SampleTreeRegistration
   ) => void;
 }
 
 const { colors } = themeProperties.designSystem;
 
-const SampleTreeMarker = ({
-  sampleTree,
-  selectedSampleTree,
-  toggleSampleTree,
-}: SampleTreeMarkerProps) => (
+const SampleInterventionMarker = ({
+  sampleIntervention,
+  selectedSampleIntervention,
+  togglePointIntervention,
+}: SampleInterventionMarkerProps) => (
   <Marker
-    key={`${sampleTree.id}-sample`}
-    latitude={sampleTree.geometry.coordinates[1]}
-    longitude={sampleTree.geometry.coordinates[0]}
+    key={`${sampleIntervention.id}-sample`}
+    latitude={sampleIntervention.geometry.coordinates[1]}
+    longitude={sampleIntervention.geometry.coordinates[0]}
     anchor="center"
   >
     <div
-      key={`${sampleTree.id}-marker`}
+      key={`${sampleIntervention.id}-marker`}
       className={clsx(styles.single, {
-        [styles.singleSelected]: sampleTree.hid === selectedSampleTree?.hid,
+        [styles.singleSelected]:
+          sampleIntervention.hid === selectedSampleIntervention?.hid,
       })}
       role="button"
       tabIndex={0}
-      onClick={(e) => toggleSampleTree(e, sampleTree)}
+      onClick={(e) => togglePointIntervention(e, sampleIntervention)}
     />
   </Marker>
 );
@@ -72,14 +70,14 @@ export default function InterventionLayers(): ReactElement {
   const selectedInterventionType = useInterventionStore(
     (state) => state.selectedInterventionType
   );
-  const selectedSampleTree = useSingleProjectStore(
-    (state) => state.selectedSampleTree
+  const selectedSampleIntervention = useInterventionStore(
+    (state) => state.selectedSampleIntervention
   );
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
   const mainMapZoom = useProjectMapStore((state) => state.viewState.zoom);
   // store: action
-  const setSelectedSampleTree = useSingleProjectStore(
-    (state) => state.setSelectedSampleTree
+  const setSelectedSampleIntervention = useInterventionStore(
+    (state) => state.setSelectedSampleIntervention
   );
   const setSelectedIntervention = useInterventionStore(
     (state) => state.setSelectedIntervention
@@ -88,19 +86,19 @@ export default function InterventionLayers(): ReactElement {
   const t = useTranslations('Maps');
   const locale = useLocale();
 
-  const toggleSampleTree = (
+  const togglePointIntervention = (
     e: MouseEvent<HTMLDivElement>,
     tree: SingleTreeRegistration | SampleTreeRegistration
   ) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (selectedSampleTree?.hid === tree.hid) {
-      setSelectedSampleTree(null);
+    if (selectedSampleIntervention?.hid === tree.hid) {
+      setSelectedSampleIntervention(null);
     } else {
       switch (tree.type) {
         case 'sample-tree-registration':
-          setSelectedSampleTree(tree);
+          setSelectedSampleIntervention(tree);
           break;
         case 'single-tree-registration':
           setSelectedIntervention(tree);
@@ -303,14 +301,16 @@ export default function InterventionLayers(): ReactElement {
           filter={['!=', ['get', 'dateDiff'], '']}
         />
         {shouldRenderMarkers
-          ? selectedIntervention.sampleInterventions.map((sampleTree) => (
-              <SampleTreeMarker
-                key={sampleTree.id}
-                sampleTree={sampleTree}
-                selectedSampleTree={selectedSampleTree}
-                toggleSampleTree={toggleSampleTree}
-              />
-            ))
+          ? selectedIntervention.sampleInterventions.map(
+              (sampleIntervention) => (
+                <SampleInterventionMarker
+                  key={sampleIntervention.id}
+                  sampleIntervention={sampleIntervention}
+                  selectedSampleIntervention={selectedSampleIntervention}
+                  togglePointIntervention={togglePointIntervention}
+                />
+              )
+            )
           : null}
       </Source>
     </>

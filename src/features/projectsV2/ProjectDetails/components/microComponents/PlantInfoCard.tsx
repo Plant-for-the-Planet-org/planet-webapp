@@ -22,8 +22,8 @@ const PlantInfoCard = ({
   type,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
-  const setSelectedSampleTree = useInterventionStore(
-    (state) => state.setSelectedSampleTree
+  const setSelectedSampleIntervention = useInterventionStore(
+    (state) => state.setSelectedSampleIntervention
   );
   const sampleTreeConfig = [
     {
@@ -92,7 +92,7 @@ const PlantInfoCard = ({
           <h2 className={styles.label}>{tProjectDetails('plot')}</h2>
           <button
             className={styles.showWholeArea}
-            onClick={() => setSelectedSampleTree(null)}
+            onClick={() => setSelectedSampleIntervention(null)}
           >
             {tProjectDetails('showWholeArea')}
           </button>

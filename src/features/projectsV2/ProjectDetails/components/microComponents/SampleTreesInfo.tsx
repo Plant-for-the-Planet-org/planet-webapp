@@ -3,14 +3,14 @@ import type { SampleTreeRegistration } from '@planet-sdk/common';
 import { useTranslations } from 'next-intl';
 import styles from '../../styles/InterventionInfo.module.scss';
 import { clsx } from 'clsx';
-import { useSingleProjectStore } from '../../../../../stores';
+import { useInterventionStore } from '../../../../../stores';
 
 interface Props {
   sampleTrees: SampleTreeRegistration[];
 }
 const SampleTreeList = ({ sampleTrees }: Props) => {
-  const setSelectedSampleTree = useSingleProjectStore(
-    (state) => state.setSelectedSampleTree
+  const setSelectedSampleIntervention = useInterventionStore(
+    (state) => state.setSelectedSampleIntervention
   );
   const tProjectDetails = useTranslations('ProjectDetails');
 
@@ -32,7 +32,7 @@ const SampleTreeList = ({ sampleTrees }: Props) => {
           >
             <button
               className={styles.scientificNameContainer}
-              onClick={() => setSelectedSampleTree(sampleTree)}
+              onClick={() => setSelectedSampleIntervention(sampleTree)}
             >
               <span>{index + 1}</span>.
               <p className={styles.scientificName}>

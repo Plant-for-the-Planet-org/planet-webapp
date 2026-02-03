@@ -1,4 +1,4 @@
-import type { APIError, SampleTreeRegistration } from '@planet-sdk/common';
+import type { APIError } from '@planet-sdk/common';
 import type { ExtendedProject } from '../features/common/types/projectv2';
 import type { ApiConfigBase } from '../hooks/useApi';
 import type { NextRouter } from 'next/router';
@@ -18,7 +18,6 @@ import {
 interface SingleProjectStore {
   singleProject: ExtendedProject | null;
   selectedSite: number | null;
-  selectedSampleTree: SampleTreeRegistration | null;
 
   isFetching: boolean;
   fetchError: boolean;
@@ -30,7 +29,6 @@ interface SingleProjectStore {
   ) => Promise<void>;
 
   setSelectedSite: (sideIndex: number | null) => void;
-  setSelectedSampleTree: (sampleTree: SampleTreeRegistration | null) => void;
 
   updateProjectDetailsPath: (
     locale: string,
@@ -58,7 +56,6 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
     (set, get) => ({
       singleProject: null,
       selectedSite: null,
-      selectedSampleTree: null,
 
       // status flags
       isFetching: false,
@@ -128,13 +125,6 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
           'singleProjectStore/set_project_site'
         ),
 
-      setSelectedSampleTree: (sampleTree) =>
-        set(
-          { selectedSampleTree: sampleTree },
-          undefined,
-          'singleProjectStore/set_selected_sample_tree'
-        ),
-
       updateProjectDetailsPath: (
         locale,
         projectSlug,
@@ -186,7 +176,7 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
         updateUrlWithSiteId(locale, singleProject.slug, siteId, router);
 
         set(
-          { selectedSite: index, selectedSampleTree: null },
+          { selectedSite: index },
           undefined,
           'singleProjectStore/select_site_and_sync_url'
         );
@@ -196,7 +186,6 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
         set(
           {
             singleProject: null,
-            selectedSampleTree: null,
             selectedSite: null,
           },
           undefined,

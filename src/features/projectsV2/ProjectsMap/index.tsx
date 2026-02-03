@@ -83,8 +83,8 @@ function ProjectsMap(props: ProjectsMapProps) {
   const mapState = useProjectMapStore((state) => state.mapState);
   const projects = useProjectStore((state) => state.projects);
   const singleProject = useSingleProjectStore((state) => state.singleProject);
-  const selectedSampleTree = useSingleProjectStore(
-    (state) => state.selectedSampleTree
+  const selectedSampleIntervention = useInterventionStore(
+    (state) => state.selectedSampleIntervention
   );
   const selectedIntervention = useInterventionStore(
     (state) => state.selectedIntervention
@@ -101,8 +101,8 @@ function ProjectsMap(props: ProjectsMapProps) {
     (state) => state.handleViewStateChange
   );
   const setMapState = useProjectMapStore((state) => state.setMapState);
-  const setSelectedSampleTree = useSingleProjectStore(
-    (state) => state.setSelectedSampleTree
+  const setSelectedSampleIntervention = useInterventionStore(
+    (state) => state.setSelectedSampleIntervention
   );
   const selectSiteAndSyncUrl = useSingleProjectStore(
     (state) => state.selectSiteAndSyncUrl
@@ -198,11 +198,11 @@ function ProjectsMap(props: ProjectsMapProps) {
     mapLoaded;
   const shouldShowMultiTreeInfo =
     isMobile &&
-    selectedSampleTree === null &&
+    selectedSampleIntervention === null &&
     selectedIntervention?.type === 'multi-tree-registration';
   const shouldShowSingleTreeInfo =
     isMobile &&
-    (selectedSampleTree !== null ||
+    (selectedSampleIntervention !== null ||
       selectedIntervention?.type === 'single-tree-registration');
   const shouldShowNavigationControls = !(
     shouldShowMultiTreeInfo || shouldShowSingleTreeInfo
@@ -296,8 +296,8 @@ function ProjectsMap(props: ProjectsMapProps) {
       const hasSites = sites.length > 0;
       const siteIndex = hasSites ? getSiteIndex(sites, features) : null;
 
-      // Deselect sample tree when clicking the parent multi tree polygon
-      if (selectedSampleTree) setSelectedSampleTree(null);
+      // Deselect sample intervention when clicking the parent intervention (polygon)
+      if (selectedSampleIntervention) setSelectedSampleIntervention(null);
 
       if (isPlantFeature(features[0])) {
         const isSameIntervention =
@@ -328,7 +328,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       currentPage,
       selectedIntervention,
       singleProject,
-      selectedSampleTree,
+      selectedSampleIntervention,
     ]
   );
 
@@ -404,7 +404,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       {shouldShowSingleTreeInfo && (
         <SingleTreeInfo
           activeSingleTree={
-            selectedSampleTree ||
+            selectedSampleIntervention ||
             (selectedIntervention as SingleTreeRegistration)
           }
           isMobile={isMobile}

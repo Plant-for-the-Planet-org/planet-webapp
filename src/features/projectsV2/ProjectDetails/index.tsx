@@ -33,8 +33,8 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
   const singleProject = useSingleProjectStore((state) => state.singleProject);
-  const selectedSampleTree = useSingleProjectStore(
-    (state) => state.selectedSampleTree
+  const selectedSampleIntervention = useInterventionStore(
+    (state) => state.selectedSampleIntervention
   );
   const hoveredIntervention = useInterventionStore(
     (state) => state.hoveredIntervention
@@ -44,10 +44,9 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   );
   // store: action
   const fetchProjectData = useSingleProjectStore((state) => state.fetchProject);
-  const setSelectedSampleTree = useSingleProjectStore(
-    (state) => state.setSelectedSampleTree
+  const setSelectedSampleIntervention = useInterventionStore(
+    (state) => state.setSelectedSampleIntervention
   );
-
   useEffect(() => {
     if (typeof projectSlug === 'string' && currencyCode && router.isReady) {
       const config = {
@@ -84,7 +83,7 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const shouldShowSingleTreeInfo =
     (hoveredIntervention?.type === 'single-tree-registration' ||
       selectedIntervention?.type === 'single-tree-registration' ||
-      selectedSampleTree !== null) &&
+      selectedSampleIntervention !== null) &&
     !isMobile;
 
   const shouldShowMultiTreeInfo =
@@ -97,11 +96,12 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const shouldShowProjectInfo =
     hoveredIntervention === null &&
     selectedIntervention === null &&
-    selectedSampleTree === null;
+    selectedSampleIntervention === null;
 
   // clean up sample tree when intervention change
   useEffect(() => {
-    if (selectedSampleTree !== null) setSelectedSampleTree(null);
+    if (selectedSampleIntervention !== null)
+      setSelectedSampleIntervention(null);
   }, [selectedIntervention?.hid]);
 
   const activeSingleTree:
@@ -112,9 +112,9 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
       getActiveSingleTree(
         selectedIntervention,
         hoveredIntervention,
-        selectedSampleTree
+        selectedSampleIntervention
       ),
-    [selectedIntervention, hoveredIntervention, selectedSampleTree]
+    [selectedIntervention, hoveredIntervention, selectedSampleIntervention]
   );
 
   if (singleProject === null) {
