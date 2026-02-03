@@ -47,10 +47,6 @@ const ImageSection = (props: ImageSectionProps) => {
   const showBackIcon = useQueryParamStore((state) => state.showBackIcon);
   const currentPage = useViewStore((state) => state.page);
 
-  const setPreventShallowPush = useSingleProjectStore(
-    (state) => state.setPreventShallowPush
-  );
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -61,8 +57,6 @@ const ImageSection = (props: ImageSectionProps) => {
     !(isEmbedMode && showBackIcon === 'false');
 
   const handleBackButton = () => {
-    setPreventShallowPush(true);
-
     const previousPageRoute = sessionStorage.getItem('backNavigationUrl');
     const defaultRoute = `/`;
 

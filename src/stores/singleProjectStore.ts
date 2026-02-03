@@ -19,7 +19,6 @@ interface SingleProjectStore {
   singleProject: ExtendedProject | null;
   selectedSite: number | null;
   selectedSampleTree: SampleTreeRegistration | null;
-  preventShallowPush: boolean;
 
   isFetching: boolean;
   fetchError: boolean;
@@ -32,7 +31,6 @@ interface SingleProjectStore {
 
   setSelectedSite: (sideIndex: number | null) => void;
   setSelectedSampleTree: (sampleTree: SampleTreeRegistration | null) => void;
-  setPreventShallowPush: (prevent: boolean) => void;
 
   updateProjectDetailsPath: (
     locale: string,
@@ -61,7 +59,6 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
       singleProject: null,
       selectedSite: null,
       selectedSampleTree: null,
-      preventShallowPush: false,
 
       // status flags
       isFetching: false,
@@ -138,13 +135,6 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
           'singleProjectStore/set_selected_sample_tree'
         ),
 
-      setPreventShallowPush: (prevent) =>
-        set(
-          { preventShallowPush: prevent },
-          undefined,
-          'singleProjectStore/set_prevent_shallow_push'
-        ),
-
       updateProjectDetailsPath: (
         locale,
         projectSlug,
@@ -208,7 +198,6 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
             singleProject: null,
             selectedSampleTree: null,
             selectedSite: null,
-            preventShallowPush: false,
           },
           undefined,
           'singleProjectStore/clear_project_state'
