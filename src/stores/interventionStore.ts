@@ -135,7 +135,7 @@ export const useInterventionStore = create<InterventionStore>()(
             interventions: null,
           },
           undefined,
-          'interventionStore/clear_intervention_state'
+          'interventionStore/clear_intervention_states'
         ),
 
       clearInterventionSelectionAndHover: () =>
@@ -146,7 +146,7 @@ export const useInterventionStore = create<InterventionStore>()(
             selectedSampleIntervention: null,
           },
           undefined,
-          'interventionStore/clear_map_layer_interaction_states'
+          'interventionStore/clear_selected_hovered_intervention'
         ),
 
       selectInterventionSyncUrl: (

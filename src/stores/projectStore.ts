@@ -109,11 +109,15 @@ export const useProjectStore = create<ProjectStore>()(
         ),
 
       clearFilterStates: () => {
-        set({
-          debouncedSearchValue: '',
-          selectedClassification: [],
-          isSearching: false,
-        });
+        set(
+          {
+            debouncedSearchValue: '',
+            selectedClassification: [],
+            isSearching: false,
+          },
+          undefined,
+          'projectStore/clear_filter_states'
+        );
       },
     }),
     {
