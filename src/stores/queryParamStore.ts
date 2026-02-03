@@ -2,18 +2,20 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 type EmbeddablePages = 'project-list' | 'project-details';
-export type QueryParamType = 'true' | 'false' | undefined;
+export type BooleanQueryParam = 'true' | 'false' | undefined;
 
 interface QueryParamStore {
-  embed: QueryParamType;
-  showBackIcon: QueryParamType;
+  embed: BooleanQueryParam;
+  showBackIcon: BooleanQueryParam;
   callbackUrl: string | undefined;
-  showProjectDetails: QueryParamType;
-  showProjectList: QueryParamType;
+  showProjectDetails: BooleanQueryParam;
+  showProjectList: BooleanQueryParam;
   isContextLoaded: boolean;
   page: EmbeddablePages | null;
 
-  initializeParams: (params: Partial<QueryParamStore>) => void;
+  initializeParams: (
+    params: Partial<Omit<QueryParamStore, 'initializeParams'>>
+  ) => void;
 }
 
 export const useQueryParamStore = create<QueryParamStore>()(

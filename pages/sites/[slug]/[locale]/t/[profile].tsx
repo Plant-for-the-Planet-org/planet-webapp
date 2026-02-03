@@ -14,22 +14,25 @@ import PublicProfileOuterContainer from '../../../../../src/features/user/Profil
 import PublicProfileLayout from '../../../../../src/features/user/Profile/PublicProfileLayout';
 import { v4 } from 'uuid';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
-import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
+import { useEffect, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import GetPublicUserProfileMeta from '../../../../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import { ProjectsProvider } from '../../../../../src/features/projectsV2/ProjectsContext';
 import { useApi } from '../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
+import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 
 const PublicProfilePage = () => {
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { getApi } = useApi();
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   // local state
   const [profile, setProfile] = useState<null | UserPublicProfile>(null);
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function loadPublicProfile(slug: string) {
     try {
@@ -39,7 +42,7 @@ const PublicProfilePage = () => {
       setProfile(profileData);
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/');
+      router.push(localizedPath('/'));
     }
   }
 
@@ -105,6 +108,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     locale: context.params?.locale as string,
     filenames: [
       'common',
+      'maps',
       'me',
       'country',
       'donate',

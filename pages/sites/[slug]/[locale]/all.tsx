@@ -12,23 +12,24 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import LeaderBoard from '../../../../src/tenants/planet/LeaderBoard';
 import GetLeaderboardMeta from '../../../../src/utils/getMetaTags/GetLeaderboardMeta';
-import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
+import { useErrorHandlingStore } from '../../../../src/stores/errorHandlingStore';
 
 export default function Home() {
   const { getApi } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
   // local state
   const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     async function loadLeaderboard() {

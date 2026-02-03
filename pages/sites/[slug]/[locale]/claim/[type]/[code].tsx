@@ -9,13 +9,12 @@ import type { AbstractIntlMessages } from 'next-intl';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
@@ -26,6 +25,7 @@ import { v4 } from 'uuid';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
 
 type RedeemCodePayload = {
   code: string;
@@ -37,7 +37,6 @@ function ClaimDonation(): ReactElement {
   const { localizedPath } = useLocalizedPath();
   const { user, contextLoaded, loginWithRedirect } = useUserProps();
   const { postApiAuthenticated } = useApi();
-  const { errors, setErrors } = useContext(ErrorHandlingContext);
   // local state
   const [code, setCode] = useState<string>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
@@ -45,6 +44,9 @@ function ClaimDonation(): ReactElement {
   >(undefined);
   //store: action
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const errors = useErrorHandlingStore((state) => state.errors);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (

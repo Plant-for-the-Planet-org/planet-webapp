@@ -2,18 +2,20 @@
 
 .contentSectionContainer {
   background-image: url('/tenants/salesforce/images/rectangle-35.png');
-  background-size: auto 1352px;
   background-repeat: no-repeat;
   background-position: bottom center;
   position: relative;
   z-index: 999;
-  height: 1352px;
   // height: 1142px;
   margin-top: -292px;
   padding-top: 124px;
   @include xsPhoneView {
-    background-size: auto 1882px;
-    height: 1882px;
+    background-size: auto 1845px;
+    height: 1845px;
+  }
+  @include smTabletView {
+    background-size: auto 1645px;
+    height: 1645px;
   }
   @include mdTabletView {
     background-size: auto 1422px;

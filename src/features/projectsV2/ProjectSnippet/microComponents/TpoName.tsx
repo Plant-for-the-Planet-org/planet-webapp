@@ -1,4 +1,4 @@
-import type { QueryParamType } from '../../../../stores/queryParamStore';
+import type { BooleanQueryParam } from '../../../../stores/queryParamStore';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
@@ -14,7 +14,7 @@ interface TpoNameProps {
   isTopProject: boolean;
   isApproved: boolean;
   tpoSlug: string;
-  embed: QueryParamType;
+  embed: BooleanQueryParam;
 }
 
 const TpoName = ({

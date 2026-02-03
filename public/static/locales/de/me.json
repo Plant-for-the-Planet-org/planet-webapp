@@ -119,6 +119,7 @@
     "cancelledOn": "Beendet am",
     "willBeCancelledOn": "Wird beendet am",
     "nextOn": "Nächstes Mal am",
+    "lastDueOn": "Zuletzt fällig am",
     "download": "Herunterladen",
     "donations": "Spenden",
     "in-progress": "In Bearbeitung",
@@ -291,6 +292,7 @@
     "platform-payout": "Platform Payout",
     "vplatform-payout": "Platform Payout",
     "bankDetails": "Bankverbindung",
-    "refundAmount": "Erstatteter Betrag"
+    "refundAmount": "Erstatteter Betrag",
+    "polygonMinimumPoints": "Ein Polygon benötigt mindestens 3 Punkte. Bitte klicken Sie mindestens drei Punkte auf der Karte an."
   }
 }

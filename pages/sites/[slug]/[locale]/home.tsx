@@ -11,7 +11,7 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
 import SalesforceHome from '../../../../src/tenants/salesforce/Home';
@@ -20,22 +20,23 @@ import BasicHome from '../../../../src/tenants/common/Home';
 import ConcentrixHome from '../../../../src/tenants/concentrix/Home';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { useApi } from '../../../../src/hooks/useApi';
-import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import { useErrorHandlingStore } from '../../../../src/stores/errorHandlingStore';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 export default function Home() {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
   // local state
   const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
   const [tenantScore, setTenantScore] = useState<TenantScore | null>(null);
-  // store: action
+  // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     async function loadTenantScore() {
@@ -82,7 +83,7 @@ export default function Home() {
         return (
           <HomePage
             leaderboard={leaderboard}
-            tenantScore={{ total: 55000000 }} //temp for SF
+            tenantScore={{ total: 65000000 }} //temp for SF
           />
         );
       case 'stern':

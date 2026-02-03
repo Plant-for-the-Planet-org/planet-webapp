@@ -3,19 +3,18 @@ import type { ProjectOption } from '../../../common/types/project';
 import type { MapProject } from '../../../common/types/projectv2';
 import type { APIError } from '@planet-sdk/common';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../../common/Layout/DashboardView';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import DonationLinkForm from './DonationLinkForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
 import { handleError } from '@planet-sdk/common';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useApi } from '../../../../hooks/useApi';
 import { useTenantStore } from '../../../../stores/tenantStore';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 export default function DonationLink(): ReactElement | null {
-  const { setErrors } = useContext(ErrorHandlingContext);
   const t = useTranslations('DonationLink');
   const locale = useLocale();
   const { getApi } = useApi();
@@ -23,6 +22,8 @@ export default function DonationLink(): ReactElement | null {
   const [projects, setProjects] = useState<ProjectOption[] | null>(null);
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function fetchProjectList() {
     try {

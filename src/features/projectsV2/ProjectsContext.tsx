@@ -23,13 +23,13 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
-import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 import {
   buildProjectDetailsQuery,
   isValidClassification,
 } from '../../utils/projectV2';
 import { useApi } from '../../hooks/useApi';
 import { useTenantStore } from '../../stores/tenantStore';
+import { useErrorHandlingStore } from '../../stores/errorHandlingStore';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -85,7 +85,6 @@ export const ProjectsProvider = ({
   selectedMode,
   setSelectedMode,
 }: ProjectsProviderProps) => {
-  const { setErrors } = useContext(ErrorHandlingContext);
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
@@ -121,6 +120,8 @@ export const ProjectsProvider = ({
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   // Read filter from URL only on initial load
   useEffect(() => {

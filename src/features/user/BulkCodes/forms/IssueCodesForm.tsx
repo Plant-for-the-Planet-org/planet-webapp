@@ -8,7 +8,7 @@ import type {
 import type { Recipient } from '../../../common/Layout/BulkCodeContext';
 import type { Recipient as LocalRecipient } from '../BulkCodesTypes';
 
-import { useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Button, TextField, MenuItem } from '@mui/material';
 import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
@@ -20,7 +20,6 @@ import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { v4 as uuidV4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
@@ -30,6 +29,7 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 const IssueCodesForm = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
@@ -46,7 +46,7 @@ const IssueCodesForm = (): ReactElement | null => {
   } = useBulkCode();
   const { user, setRefetchUserData } = useUserProps();
   const { postApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
@@ -57,6 +57,8 @@ const IssueCodesForm = (): ReactElement | null => {
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
   const [notificationLocale, setNotificationLocale] = useState('');
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const notificationLocales = [
     {

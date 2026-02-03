@@ -1,0 +1,170 @@
+@import '../../../theme/theme';
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  background: $dsBackgroundBase;
+  border-radius: 8px;
+  border: 1px solid $dsMediumGreyTransparent30;
+}
+
+.spinner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: $dsSoftText;
+  font-size: $fontSmall;
+
+  &::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid $dsMediumGreyTransparent50;
+    border-top: 2px solid $dsSoftText;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 24px;
+  background: $dsBackgroundBase;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.errorIcon {
+  color: $dsSunriseOrange;
+
+  svg {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.errorTitle {
+  font-size: $fontMedium;
+  font-weight: 600;
+  color: $dsCoreText;
+  font-family: $primaryFontFamily;
+}
+
+.errorMessage {
+  font-size: $fontSmall;
+  color: $dsSoftText;
+  max-width: 500px;
+}
+
+.solutionSteps {
+  background: $dsWhite;
+  border: 1px solid $dsMediumGreyTransparent50;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: left;
+  width: 100%;
+  max-width: 500px;
+
+  h4 {
+    font-size: $fontSmall;
+    font-weight: 600;
+    color: $dsCoreText;
+    font-family: $primaryFontFamily;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 20px;
+
+    li {
+      margin: 5px 0;
+      color: $dsSoftText;
+      font-size: $fontSmall;
+
+      strong {
+        color: $dsCoreText;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.contactInfo {
+  font-size: $fontSmall;
+  color: $dsSoftText2;
+
+  p {
+    margin: 0;
+  }
+}
+
+.technicalDetails {
+  width: 100%;
+  max-width: 500px;
+
+  summary {
+    cursor: pointer;
+    font-size: $fontSmall;
+    color: $dsSoftText2;
+    padding: 8px 0;
+
+    &:hover {
+      color: $dsSoftText;
+    }
+  }
+
+  code {
+    display: block;
+    background: $dsBackgroundBase;
+    border: 1px solid $dsMediumGreyTransparent50;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 8px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: $fontXSmall;
+    color: $dsFireRed;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .errorContainer {
+    min-height: 300px;
+    padding: 32px 20px;
+  }
+
+  .errorTitle {
+    font-size: $fontMedium;
+  }
+
+  .errorMessage {
+    font-size: $fontSmall;
+  }
+
+  .solutionSteps {
+    padding: 16px;
+
+    ul li {
+      font-size: $fontXSmall;
+    }
+  }
+}

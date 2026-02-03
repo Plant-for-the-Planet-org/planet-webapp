@@ -5,7 +5,7 @@ import type {
   PlanetCashAccount,
 } from '../../../common/types/planetcash';
 
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { MenuItem, TextField } from '@mui/material';
 import { useLocale, useTranslations } from 'next-intl';
@@ -18,11 +18,11 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import WebappButton from '../../../common/WebappButton';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import { useApi } from '../../../../hooks/useApi';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import CustomModal from '../../../common/Layout/CustomModal';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 type TopUpFormData = {
   isAutoRefillEnabled: boolean;
@@ -43,14 +43,15 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   const tTopUp = useTranslations('PlanetCash.topUpManagement');
   const locale = useLocale();
   const { putApiAuthenticated, deleteApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { updateAccount } = usePlanetCash();
-
+  // local state
   const [isProcessingDelete, setIsProcessingDelete] = useState(false);
   const [isProcessingSave, setIsProcessingSave] = useState(false);
   const [isDisableConfirmationOpen, setIsDisableConfirmationOpen] =
     useState(false);
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const defaultTopUpDetails = useMemo(() => {
     const hasExistingTopUp =

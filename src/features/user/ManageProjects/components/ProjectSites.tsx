@@ -9,7 +9,7 @@ import type {
 } from '../../../common/types/project';
 import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -18,7 +18,6 @@ import dynamic from 'next/dynamic';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import { MenuItem, Button, TextField } from '@mui/material';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -29,7 +28,11 @@ import SitePreviewMap from './microComponent/SitePreviewMap';
 import themeProperties from '../../../../theme/themeProperties';
 import CustomModal from '../../../common/Layout/CustomModal';
 import EditSite from './microComponent/EditSite';
+import SitesSyncActions from './microComponent/SitesSyncActions';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const defaultSiteDetails = {
   name: '',
@@ -67,16 +70,22 @@ export default function ProjectSites({
     useApi();
   const { colors } = themeProperties.designSystem;
   const t = useTranslations('ManageProjects');
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const {
     handleSubmit,
     formState: { errors },
     control,
     reset,
   } = useForm<ProjectSitesFormData>();
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [isSyncingSites, setIsSyncingSites] = useState(false);
+  const [isSiteSyncModalOpen, setIsSiteSyncModalOpen] = useState(false);
+  const [isSiteSyncSuccessful, setIsSiteSyncSuccessful] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
@@ -94,7 +103,8 @@ export default function ProjectSites({
     siteId: null,
     siteName: null,
   });
-
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
   // Assigning defaultSiteDetails as default
   const changeSiteDetails = (e: ChangeEvent<HTMLInputElement>): void => {
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
@@ -134,7 +144,7 @@ export default function ProjectSites({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
+      router.push(localizedPath('/profile'));
     }
   };
   useEffect(() => {
@@ -259,6 +269,39 @@ export default function ProjectSites({
     setEditMode(true);
     setOpenModal(true);
   };
+
+  const handleSyncSites = useCallback(async () => {
+    // prevent multiple parallel syncs
+    if (isSyncingSites) return;
+
+    const webhookBase = process.env.WEBHOOK_URL;
+    if (!webhookBase) {
+      console.warn('WEBHOOK_URL is not defined');
+      return;
+    }
+    setIsSyncingSites(true);
+
+    try {
+      const webhookUrl = `${webhookBase}/33878023-ee47-44e1-8a62-34eb2d2b3246/?project=${projectGUID}`;
+      const response = await fetch(webhookUrl, {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Webhook call failed with status ${response.status}`);
+      }
+
+      setIsSiteSyncSuccessful(true);
+      setSnackbarOpen(true);
+      setErrorMessage(null);
+    } catch (err) {
+      console.error('Sync error:', err);
+      setErrorMessage(t('syncSites.error'));
+    } finally {
+      setIsSyncingSites(false);
+      setIsSiteSyncModalOpen(false);
+    }
+  }, [isSyncingSites, projectGUID, t]);
 
   const EditProps = {
     openModal,
@@ -402,20 +445,31 @@ export default function ProjectSites({
             </Button>
           </div>
         ) : (
-          <Button
-            id={'manageProjAddSite'}
-            onClick={() => {
-              setShowForm(true);
-              setGeoJson(null);
-              setSiteDetails(defaultSiteDetails);
-              setSiteGUID(null);
-              setEditMode(false);
-              setOpenModal(false);
-            }}
-            className={styles.formFieldLarge}
-          >
-            <p className={styles.inlineLinkButton}>{t('addSite')}</p>
-          </Button>
+          <div className={styles.syncAndAddSitesButtons}>
+            <button
+              className={styles.inlineLinkButton}
+              type="button"
+              onClick={() => {
+                setShowForm(true);
+                setGeoJson(null);
+                setSiteDetails(defaultSiteDetails);
+                setSiteGUID(null);
+                setEditMode(false);
+                setOpenModal(false);
+              }}
+            >
+              {t('addSite')}
+            </button>
+            <SitesSyncActions
+              isSyncingSites={isSyncingSites}
+              isSiteSyncModalOpen={isSiteSyncModalOpen}
+              setIsSiteSyncModalOpen={setIsSiteSyncModalOpen}
+              isSiteSyncSuccessful={isSiteSyncSuccessful}
+              snackbarOpen={snackbarOpen}
+              setSnackbarOpen={setSnackbarOpen}
+              handleSyncSites={handleSyncSites}
+            />
+          </div>
         )}
 
         {errorMessage !== null && (

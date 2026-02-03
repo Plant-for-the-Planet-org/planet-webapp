@@ -7,7 +7,6 @@ import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import {
   CircularProgress,
   Modal,
@@ -21,6 +20,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import { CalendarPicker } from '@mui/x-date-pickers';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+
 interface CancelModalProps {
   cancelModalOpen: boolean;
   handleCancelModalClose: () => void;
@@ -43,12 +44,14 @@ export const CancelModal = ({
 }: CancelModalProps) => {
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
+  const t = useTranslations('Me');
+  //local state
   const [option, setOption] = useState('cancelImmediately');
   const [showCalender, setShowCalender] = useState(false);
   const [date, setdate] = useState<Date | null>(new Date());
   const [disabled, setDisabled] = useState(false);
-  const t = useTranslations('Me');
-  const { setErrors } = useContext(ErrorHandlingContext);
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     setDisabled(false);

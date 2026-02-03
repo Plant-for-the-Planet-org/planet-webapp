@@ -7,6 +7,7 @@ import type {
   ProjectListResponse,
 } from '../features/common/types/myForest';
 import type { ApiConfigBase } from '../hooks/useApi';
+import type { APIError } from '@planet-sdk/common';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -14,7 +15,8 @@ import {
   generateContributionsGeojson,
   transformResponse,
 } from '../utils/myForestUtils';
-import { APIError } from '@planet-sdk/common';
+import { handleError } from '@planet-sdk/common';
+import { useErrorHandlingStore } from './errorHandlingStore';
 
 interface UserInfo {
   profileId: string;
@@ -45,8 +47,6 @@ interface MyForestStore {
   donationGeojson: PointFeature<DonationProperties>[];
   isPublicProfile: boolean;
   isMyForestLoading: boolean;
-  //TODO: Remove once error handling is fully migrated from useContext to Zustand
-  errorMessage: string | null;
   projectListResult: ProjectListResponse | undefined;
   contributionsResult: ContributionsResponse | undefined;
   leaderboardResult: Leaderboard | undefined;
@@ -67,7 +67,6 @@ const initialState = {
   registrationGeojson: [],
   donationGeojson: [],
   isMyForestLoading: true,
-  errorMessage: null,
   projectListResult: undefined,
   contributionsResult: undefined,
   leaderboardResult: undefined,
@@ -116,19 +115,18 @@ export const useMyForestStore = create<MyForestStore>()(
               ...transformedData,
               ...geojson,
               isMyForestLoading: false,
-              errorMessage: null,
             },
             undefined,
             'myForest/fetch_success'
           );
         } catch (error) {
-          const errorMessage =
-            error instanceof APIError ? error.message : 'Something went wrong';
+          useErrorHandlingStore
+            .getState()
+            .setErrors(handleError(error as APIError));
           console.error('MyForest API error:', error);
           set(
             {
               isMyForestLoading: false,
-              errorMessage,
             },
             undefined,
             'myForest/fetch_error'

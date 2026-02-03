@@ -4,10 +4,9 @@ import type {
   ConservationProjectExtended,
 } from '@planet-sdk/common';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
-import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import { handleError } from '@planet-sdk/common';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
@@ -15,10 +14,14 @@ import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 import { clsx } from 'clsx';
 import { useTenantStore } from '../../../../stores/tenantStore';
+import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const currencyCode = getStoredCurrency();
   const { getApi } = useApi();
   const locale = useLocale();
@@ -28,6 +31,9 @@ export default function ContentSection() {
   const [project, setProject] = useState<
     TreeProjectExtended | ConservationProjectExtended | null
   >(null);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   useEffect(() => {
     async function loadProject() {
       try {
@@ -44,7 +50,7 @@ export default function ContentSection() {
         setProject(project);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/');
+        router.push(localizedPath('/'));
       }
     }
     if (projectSlug) {

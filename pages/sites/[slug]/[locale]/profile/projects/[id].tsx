@@ -9,7 +9,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
 import GlobeContentLoader from '../../../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
@@ -19,20 +19,21 @@ import { useUserProps } from '../../../../../../src/features/common/Layout/UserP
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
-import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { constructPathsForTenantSlug } from '../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
+import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
 
 function ManageSingleProject(): ReactElement {
   const t = useTranslations('Common');
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { getApiAuthenticated } = useApi();
   const { user, contextLoaded, token } = useUserProps();
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   // local state
   const [projectGUID, setProjectGUID] = useState<string | null>(null);
   const [ready, setReady] = useState<boolean>(false);
@@ -42,6 +43,8 @@ function ManageSingleProject(): ReactElement {
     useState<ExtendedProfileProjectProperties | null>(null);
   // store: action
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (router.query.id && !Array.isArray(router.query.id)) {
@@ -62,7 +65,7 @@ function ManageSingleProject(): ReactElement {
       } catch (err) {
         setAccessDenied(true);
         setErrors(handleError(err as APIError));
-        redirect('/profile');
+        router.push(localizedPath('/profile'));
       }
     }
 
@@ -136,7 +139,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 ): Promise<GetStaticPropsResult<PageProps>> => {
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'manageProjects'],
+    filenames: ['common', 'maps', 'me', 'country', 'manageProjects'],
   });
 
   return {

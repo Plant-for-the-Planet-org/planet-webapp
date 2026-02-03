@@ -59,6 +59,101 @@ export function RecordHeader({
     [record.status]
   );
 
+  const dateDisplay = useMemo(() => {
+    /**
+     * Date display logic with legacy +1 hour offset for specific fields.
+     *
+     * API RESPONSE FORMATS (confirmed via console logging):
+     * - pauseUntil: "2026-02-04T00:00:00+00:00" (full UTC timestamp)
+     * - endsAt: "2026-01-09" (date-only string, parsed as midnight UTC)
+     * - currentPeriodEnd: "2026-01-24" (date-only string, parsed as midnight UTC)
+     *
+     * KEY INSIGHT FROM TESTING:
+     * JavaScript parses date-only strings like "2026-01-24" as midnight UTC
+     * (not local midnight). In UTC+8, this becomes 08:00 local time on the same day.
+     * The formatDate() function has been corrected to properly extract the date
+     * portion, ensuring correct display across timezones.
+     *
+     * THE +1 HOUR OFFSET (LEGACY):
+     * Applied only to endsAt and pauseUntil via formatDateWithOffset().
+     *
+     * Originally intended to prevent dates from displaying as the previous day
+     * in negative offset timezones. However, with the corrected formatDate()
+     * function, this offset may now be unnecessary for date-only strings.
+     *
+     * The offset is preserved here to maintain existing behavior without risk.
+     *
+     * CURRENT BEHAVIOR:
+     * - endsAt, pauseUntil: Offset applied (legacy, may be unnecessary)
+     * - currentPeriodEnd: Passed directly to formatDate() (no offset needed)
+     *
+     * FUTURE: Consider removing the offset after comprehensive timezone testing.
+     */
+    const formatDateWithOffset = (dateString: string) =>
+      formatDate(
+        new Date(new Date(dateString).valueOf() + 1000 * 3600).toISOString()
+      );
+
+    // Active or Trialing - check for scheduled cancellation
+    if (record.status === 'active' || record.status === 'trialing') {
+      if (record.endsAt) {
+        const isFuture = new Date(record.endsAt) > new Date();
+        if (isFuture) {
+          return `${t('willBeCancelledOn')} ${formatDateWithOffset(
+            record.endsAt
+          )} • ${t(record.frequency)}`;
+        }
+      }
+      return `${t('nextOn')} ${formatDate(record.currentPeriodEnd)} • ${t(
+        record.frequency
+      )}`;
+    }
+
+    // Paused
+    if (record.status === 'paused') {
+      if (record.endsAt) {
+        const isFuture = new Date(record.endsAt) > new Date();
+        if (isFuture) {
+          return `${t('willBeCancelledOn')} ${formatDateWithOffset(
+            record.endsAt
+          )} • ${t(record.frequency)}`;
+        }
+      }
+      if (record.pauseUntil) {
+        return `${t('pausedUntil')} ${formatDateWithOffset(
+          record.pauseUntil
+        )} • ${t(record.frequency)}`;
+      }
+      return t('pausedUntilResumed');
+    }
+
+    // Past Due
+    if (record.status === 'past_due') {
+      return `${t('lastDueOn')} ${formatDate(record.currentPeriodEnd)} • ${t(
+        record.frequency
+      )}`;
+    }
+
+    // Canceled
+    if (record.status === 'canceled' && record.endsAt) {
+      return `${t('cancelledOn')} ${formatDateWithOffset(record.endsAt)} • ${t(
+        record.frequency
+      )}`;
+    }
+
+    // Incomplete, Incomplete Expired, Unpaid - show nothing
+    if (
+      record.status === 'incomplete' ||
+      record.status === 'incomplete_expired' ||
+      record.status === 'unpaid'
+    ) {
+      return null;
+    }
+
+    // Fallback for any other status
+    return null;
+  }, [record, t]);
+
   return (
     <div
       onClick={handleRecordToggle && (() => handleRecordToggle(index))}
@@ -69,47 +164,7 @@ export function RecordHeader({
     >
       <div className={styles.left}>
         <p className={styles.top}>{recordName}</p>
-
-        {record?.endsAt ? (
-          <p>
-            {new Date(record?.endsAt) < new Date()
-              ? t('cancelledOn')
-              : t('willBeCancelledOn')}{' '}
-            {formatDate(
-              new Date(
-                new Date(record?.endsAt).valueOf() + 1000 * 3600
-              ).toISOString()
-            )}{' '}
-            • {t(record?.frequency)}
-          </p>
-        ) : record?.status === 'paused' ? (
-          record?.pauseUntil ? (
-            <p>
-              {t('pausedUntil')}{' '}
-              {formatDate(
-                new Date(
-                  new Date(record?.pauseUntil).valueOf() + 1000 * 3600
-                ).toISOString()
-              )}{' '}
-              • {t(record?.frequency)}
-            </p>
-          ) : (
-            <p>{t('pausedUntilResumed')}</p>
-          )
-        ) : (
-          <span>
-            {t('nextOn')}{' '}
-            {formatDate(
-              new Date(
-                new Date(record?.currentPeriodEnd).valueOf()
-              ).toISOString()
-            )}{' '}
-            •{' '}
-            <span style={{ textTransform: 'capitalize' }}>
-              {t(record?.frequency)}
-            </span>
-          </span>
-        )}
+        {dateDisplay && <p>{dateDisplay}</p>}
       </div>
       <div className={styles.right}>
         <p className={clsx(styles.top, styles.amount)}>

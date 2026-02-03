@@ -10,11 +10,10 @@ import type { RedeemedCodeData } from '../../../../../../src/features/common/typ
 
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
@@ -26,6 +25,7 @@ import { v4 } from 'uuid';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
 
 type RedeemCodeApiPayload = {
   code: string;
@@ -34,7 +34,6 @@ type RedeemCodeApiPayload = {
 const RedeemCode = () => {
   const t = useTranslations('Redeem');
   const { user, contextLoaded } = useUserProps();
-  const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -45,8 +44,11 @@ const RedeemCode = () => {
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // store: action
+  //store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const errors = useErrorHandlingStore((state) => state.errors);
+  //store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (contextLoaded) {
