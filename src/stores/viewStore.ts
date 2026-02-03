@@ -19,12 +19,12 @@ export const useViewStore = create<ViewStore>()(
 
       setPage: (currentPage) =>
         set({ page: currentPage }, undefined, 'viewStore/set_current_page'),
-      setSelectedMode: (viewMode) => set({ selectedMode: viewMode }),
+      setSelectedMode: (viewMode) =>
+        set({ selectedMode: viewMode }, undefined, 'viewStore/set_view_mode'),
     }),
     {
       name: 'ViewStore',
       enabled: process.env.NODE_ENV === 'development',
-      serialize: { options: true },
     }
   )
 );
