@@ -9,7 +9,6 @@ import { useTranslations } from 'next-intl';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
@@ -17,6 +16,7 @@ import {
 } from '../../../../common/RedeemCode';
 import { useMyForestStore } from '../../../../../stores/myForestStore';
 import { useApi } from '../../../../../hooks/useApi';
+import { useErrorHandlingStore } from '../../../../../stores/errorHandlingStore';
 
 interface RedeemModal {
   redeemModalOpen: boolean;
@@ -33,13 +33,17 @@ export default function RedeemModal({
   const t = useTranslations('Redeem');
   const { postApiAuthenticated, getApi, getApiAuthenticated } = useApi();
   const { user, contextLoaded, setUser, setRefetchUserData } = useUserProps();
-  const { setErrors, errors: apiErrors } = useContext(ErrorHandlingContext);
   const refetchMyForest = useMyForestStore((state) => state.fetchMyForest);
+  // local state
   const [inputCode, setInputCode] = useState<string | undefined>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  // store
+  const errors = useErrorHandlingStore((state) => state.errors);
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);
     const payload = {
@@ -128,7 +132,7 @@ export default function RedeemModal({
     >
       <Fade in={redeemModalOpen}>
         <div>
-          {redeemedCodeData === undefined && !apiErrors && (
+          {redeemedCodeData === undefined && !errors && (
             <EnterRedeemCode
               isLoading={isLoading}
               setInputCode={setInputCode}
@@ -138,7 +142,7 @@ export default function RedeemModal({
             />
           )}
 
-          {redeemedCodeData && !apiErrors && (
+          {redeemedCodeData && !errors && (
             <SuccessfullyRedeemed
               redeemedCodeData={redeemedCodeData}
               redeemAnotherCode={redeemAnotherCode}
@@ -146,9 +150,9 @@ export default function RedeemModal({
             />
           )}
 
-          {apiErrors && (
+          {errors && (
             <RedeemFailed
-              errorMessages={apiErrors}
+              errorMessages={errors}
               inputCode={inputCode}
               redeemAnotherCode={redeemAnotherCode}
               closeRedeem={closeModal}

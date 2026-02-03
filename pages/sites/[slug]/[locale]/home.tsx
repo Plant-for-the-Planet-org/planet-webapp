@@ -12,7 +12,7 @@ import type {
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
 import SalesforceHome from '../../../../src/tenants/salesforce/Home';
@@ -21,7 +21,6 @@ import BasicHome from '../../../../src/tenants/common/Home';
 import ConcentrixHome from '../../../../src/tenants/concentrix/Home';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { useApi } from '../../../../src/hooks/useApi';
-import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 import {
@@ -30,21 +29,23 @@ import {
 } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import { useErrorHandlingStore } from '../../../../src/stores/errorHandlingStore';
 
 interface Props {
   pageProps: PageProps;
 }
 
 export default function Home({ pageProps }: Props) {
+  //route
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
-
+  const { setTenantConfig } = useTenant();
+  //local state
   const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
   const [tenantScore, setTenantScore] = useState<TenantScore | null>(null);
-  const { setErrors } = useContext(ErrorHandlingContext);
-
-  const { setTenantConfig } = useTenant();
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (router.isReady) {

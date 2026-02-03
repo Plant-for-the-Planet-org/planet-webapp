@@ -6,10 +6,10 @@ import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress, Modal, Fade } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 interface ReactivateModalProps {
   reactivateModalOpen: boolean;
@@ -24,11 +24,13 @@ export const ReactivateModal = ({
   record,
   fetchRecurrentDonations,
 }: ReactivateModalProps) => {
-  const [disabled, setDisabled] = useState(false);
+  const t = useTranslations('Me');
   const { putApiAuthenticated } = useApi();
   const { theme } = useContext(ThemeContext);
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const t = useTranslations('Me');
+  // local state
+  const [disabled, setDisabled] = useState(false);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const payload = {};
 
   useEffect(() => {

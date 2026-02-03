@@ -3,24 +3,26 @@ import type { ProjectOption } from '../../../common/types/project';
 import type { MapProject } from '../../../common/types/projectv2';
 import type { APIError } from '@planet-sdk/common';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../../common/Layout/DashboardView';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import DonationLinkForm from './DonationLinkForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
 import { useTenant } from '../../../common/Layout/TenantContext';
 import { handleError } from '@planet-sdk/common';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useApi } from '../../../../hooks/useApi';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 export default function DonationLink(): ReactElement | null {
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const [projects, setProjects] = useState<ProjectOption[] | null>(null);
   const t = useTranslations('DonationLink');
   const locale = useLocale();
   const { tenantConfig } = useTenant();
   const { getApi } = useApi();
+  // local state
+  const [projects, setProjects] = useState<ProjectOption[] | null>(null);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function fetchProjectList() {
     try {

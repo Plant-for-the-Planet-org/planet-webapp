@@ -23,13 +23,13 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
-import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 import {
   buildProjectDetailsQuery,
   isValidClassification,
 } from '../../utils/projectV2';
 import { useApi } from '../../hooks/useApi';
 import { useTenant } from '../common/Layout/TenantContext';
+import { useErrorHandlingStore } from '../../stores/errorHandlingStore';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -85,6 +85,13 @@ export const ProjectsProvider = ({
   selectedMode,
   setSelectedMode,
 }: ProjectsProviderProps) => {
+  const locale = useLocale();
+  const tCountry = useTranslations('Country');
+  const router = useRouter();
+  const { tenantConfig } = useTenant();
+  const { getApi } = useApi();
+  const { ploc: requestedIntervention, site: requestedSite } = router.query;
+
   const [projects, setProjects] = useState<MapProject[] | null>(null);
   const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null
@@ -112,14 +119,8 @@ export const ProjectsProvider = ({
   const [projectsLocale, setProjectsLocale] = useState('');
   const [projectsCurrencyCode, setProjectsCurrencyCode] = useState('');
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const locale = useLocale();
-  const tCountry = useTranslations('Country');
-  const router = useRouter();
-  const { tenantConfig } = useTenant();
-  const { getApi } = useApi();
-  const { ploc: requestedIntervention, site: requestedSite } = router.query;
-
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
   // Read filter from URL only on initial load
   useEffect(() => {
     if (router.isReady && page === 'project-list') {
