@@ -228,21 +228,6 @@ export const getSiteIndex = (
 };
 
 /**
- * Returns the topmost (highest priority) map feature from a list of features.
- *
- * Map libraries typically return features ordered by render stack,
- * where the first item represents the topmost visible layer at the point.
- *
- * @param features - Array of GeoJSON features returned from a map interaction
- * @returns The topmost feature, or `undefined` if the list is empty
- */
-export const getTopmostFeature = (
-  features: MapGeoJSONFeature[]
-): MapGeoJSONFeature | undefined => {
-  return features.length > 0 ? features[0] : undefined;
-};
-
-/**
  * Determines whether a map feature belongs to a plant intervention layer.
  *
  * This is used to distinguish plant-related map features from other
@@ -256,29 +241,25 @@ export const isPlantFeature = (feature: MapGeoJSONFeature): boolean => {
 };
 
 /**
- * Resolves an intervention based on the topmost map feature.
+ * Retrieves the intervention that matches a given map feature.
  *
  * The function:
- * 1. Selects the topmost feature from the map interaction result
- * 2. Verifies that the feature belongs to a plant intervention layer
- * 3. Finds and returns the matching intervention by ID
+ * 1. Ensures the interventions list is available and non-empty
+ * 2. Compares the feature's `properties.id` with intervention IDs
+ * 3. Returns the first matching intervention, if found
  *
- * @param interventions - List of available interventions
- * @param features - GeoJSON features returned from a map hover or click event
- * @returns The matched intervention, or `undefined` if no valid match is found
+ * @param interventions - List of available interventions (may be null)
+ * @param feature - A GeoJSON feature from a map interaction event
+ * @returns The matched intervention, or `undefined` if no match exists
  */
 export const getInterventionInfo = (
   interventions: Intervention[] | null,
-  features: MapGeoJSONFeature[]
+  feature: MapGeoJSONFeature
 ): Intervention | undefined => {
-  if (!interventions || interventions.length === 0 || features.length === 0)
-    return;
-
-  const feature = getTopmostFeature(features);
-  if (!feature || !isPlantFeature(feature)) return;
+  if (!interventions?.length) return;
 
   return interventions.find(
-    (intervention) => intervention.id === feature.properties.id
+    (intervention) => intervention.id === feature.properties?.id
   );
 };
 

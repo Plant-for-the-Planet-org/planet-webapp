@@ -22,6 +22,7 @@ import {
   getSiteIndex,
   getValidFeatures,
   INTERACTIVE_LAYERS,
+  isPlantFeature,
 } from '../../../utils/projectV2';
 import MapControls from './MapControls';
 import MapTabs from './ProjectMapTabs';
@@ -42,6 +43,8 @@ import {
   useSingleProjectStore,
 } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
+import { useLocale } from 'next-intl';
+import { useRouter } from 'next/router';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -62,7 +65,11 @@ function ProjectsMap(props: ProjectsMapProps) {
   // Fetch layers data
   useFetchLayers();
   const { currentPage, isMobile } = props;
+  const locale = useLocale();
+  const router = useRouter();
   const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
+  // track last hovered intervention to avoid duplicate state updates
+  const lastHoveredIdRef = useRef<string | null>(null);
   const { filteredProjects } = useFilteredProjects();
   // store: state
   const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
@@ -95,17 +102,17 @@ function ProjectsMap(props: ProjectsMapProps) {
     (state) => state.handleViewStateChange
   );
   const setMapState = useProjectMapStore((state) => state.setMapState);
-  const setSelectedSite = useSingleProjectStore(
-    (state) => state.setSelectedSite
-  );
   const setSelectedSampleTree = useSingleProjectStore(
     (state) => state.setSelectedSampleTree
+  );
+  const selectSiteAndSyncUrl = useSingleProjectStore(
+    (state) => state.selectSiteAndSyncUrl
   );
   const setHoveredIntervention = useInterventionStore(
     (state) => state.setHoveredIntervention
   );
-  const setSelectedIntervention = useInterventionStore(
-    (state) => state.setSelectedIntervention
+  const selectInterventionSyncUrl = useInterventionStore(
+    (state) => state.selectInterventionSyncUrl
   );
 
   const [selectedTab, setSelectedTab] = useState<SelectedTab | null>(null);
@@ -182,7 +189,6 @@ function ProjectsMap(props: ProjectsMapProps) {
     250,
     [filteredProjects]
   );
-
   const shouldShowSingleProjectsView =
     singleProject !== null && currentPage === 'project-details' && mapLoaded;
   const shouldShowMultipleProjectsView =
@@ -248,21 +254,29 @@ function ProjectsMap(props: ProjectsMapProps) {
   const onMouseMove = useCallback(
     (e) => {
       if (currentPage !== 'project-details') return;
+
       const features = getFeaturesAtPoint(mapRef, e.point);
-      if (!features || features.length === 0) return;
-
-      const newIntervention = getInterventionInfo(interventions, features);
-
-      if (
-        !newIntervention ||
-        newIntervention.hid === selectedIntervention?.hid
-      ) {
-        setHoveredIntervention(null);
+      if (!features?.length) {
+        // only clear hover if something was previously hovered
+        if (lastHoveredIdRef.current !== null) {
+          lastHoveredIdRef.current = null;
+          setHoveredIntervention(null);
+        }
         return;
       }
-      setHoveredIntervention(newIntervention);
+
+      // Map libraries typically return features ordered by render stack,
+      // where the first item represents the topmost visible layer at the point.
+      if (!isPlantFeature(features[0])) return;
+      if (features[0].properties.id === lastHoveredIdRef.current) return;
+
+      const newIntervention = getInterventionInfo(interventions, features[0]);
+      const newId = newIntervention?.id ?? null;
+
+      lastHoveredIdRef.current = newId;
+      setHoveredIntervention(newIntervention ?? null);
     },
-    [interventions, currentPage, selectedIntervention]
+    [interventions, currentPage]
   );
   /**
    * Map click handler invoked when user clicks on the map in 'project-details' or 'project-list' page (which results in an early return).
@@ -278,42 +292,36 @@ function ProjectsMap(props: ProjectsMapProps) {
       const features = getFeaturesAtPoint(mapRef, e.point);
       if (!features || features.length === 0) return;
 
-      const newIntervention = getInterventionInfo(interventions, features);
-      const isSamePlant = newIntervention?.id === selectedIntervention?.id;
-      const isPointGeometry =
-        newIntervention !== undefined &&
-        newIntervention.geometry.type === 'Point';
-
       const sites = singleProject?.sites || [];
+      const projectSlug = singleProject?.slug ?? '';
       const hasSites = sites.length > 0;
       const siteIndex = hasSites ? getSiteIndex(sites, features) : null;
 
       // Deselect sample tree when clicking the parent multi tree polygon
       if (selectedSampleTree) setSelectedSampleTree(null);
 
-      // Deselect if clicking the same point intervention again
-      if (isSamePlant && isPointGeometry) {
-        setSelectedIntervention(null);
-        if (siteIndex !== null && siteIndex >= 0) {
-          setSelectedSite(siteIndex);
-        } else {
-          setSelectedSite(null);
-        }
-        return;
-      }
-      // If clicking a point/polygon intervention, set it and clear selected site
-      if (newIntervention) {
-        setSelectedIntervention(newIntervention);
-        setSelectedSite(null);
-        return;
-      } else {
-        // Otherwise, check if a site polygon was clicked
-        if (siteIndex !== null && siteIndex >= 0) {
-          setSelectedSite(siteIndex);
-          setSelectedIntervention(null);
-          setHoveredIntervention(null);
+      if (isPlantFeature(features[0])) {
+        const isSameIntervention =
+          features[0].properties?.id === selectedIntervention?.id;
+        if (isSameIntervention) return;
+
+        const newIntervention = getInterventionInfo(interventions, features[0]);
+
+        // Clicking an intervention → select it
+        if (newIntervention) {
+          selectInterventionSyncUrl(
+            newIntervention,
+            locale,
+            projectSlug,
+            router
+          );
           return;
         }
+      }
+
+      // Otherwise, handle site selection
+      if (siteIndex !== null && siteIndex >= 0) {
+        selectSiteAndSyncUrl(siteIndex, locale, router);
       }
     },
     [
