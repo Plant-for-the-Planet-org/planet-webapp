@@ -48,6 +48,11 @@ interface countryInterface {
   languageCode: string;
 }
 
+function isCurrencyCode(code: string): code is CurrencyCode {
+  const { supportedCurrencies } = useCurrencyStore.getState();
+  return supportedCurrencies.has(code as CurrencyCode);
+}
+
 // Maps the radio buttons for language
 
 function MapLanguage({ value, handleChange }: MapLanguageProps) {
@@ -162,10 +167,10 @@ export default function TransitionsModal({
     const currencyCode = (
       getCountryDataBy('countryCode', selectedModalCountry) as countryInterface
     ).currencyCode;
-    if (currencyCode) {
+    if (isCurrencyCode(currencyCode)) {
       window.localStorage.setItem('currencyCode', currencyCode);
       setSelectedCurrency(currencyCode);
-      setCurrencyCode(currencyCode as CurrencyCode);
+      setCurrencyCode(currencyCode);
     }
     // TODO - loader while changing the locale
     if (modalLanguage !== locale) {
