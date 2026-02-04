@@ -43,9 +43,10 @@ export default function BulkCodes({
   } = useBulkCode();
   const { getApi } = useApi();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  // store: action
+  // store: state
   const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {

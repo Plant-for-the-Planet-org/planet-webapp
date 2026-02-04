@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import type { SetState } from '../../types/common';
 
 import { useEffect, useState } from 'react';
 import styles from './ProjectsLayout.module.scss';
@@ -12,8 +11,6 @@ import { useQueryParamStore, useUserStore } from '../../../../stores';
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
   children: ReactNode;
-  currencyCode: string;
-  setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
   isMobile: boolean;
 }
@@ -21,8 +18,6 @@ interface ProjectsLayoutProps {
 const MobileProjectsLayout = ({
   children,
   page,
-  currencyCode,
-  setCurrencyCode,
   isMobile,
 }: ProjectsLayoutProps) => {
   // local state
@@ -60,8 +55,6 @@ const MobileProjectsLayout = ({
   return (
     <ProjectsProvider
       page={page}
-      currencyCode={currencyCode}
-      setCurrencyCode={setCurrencyCode}
       selectedMode={selectedMode}
       setSelectedMode={setSelectedMode}
     >
@@ -81,7 +74,7 @@ const MobileProjectsLayout = ({
           </section>
         )}
       </main>
-      <Credits setCurrencyCode={setCurrencyCode} isMobile={isMobile} />
+      <Credits isMobile={isMobile} />
     </ProjectsProvider>
   );
 };

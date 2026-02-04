@@ -55,11 +55,11 @@ function ManageSingleProject({
   const [setupAccess, setSetupAccess] = useState<boolean>(false);
   const [project, setProject] =
     useState<ExtendedProfileProjectProperties | null>(null);
-  //store: state
+  // store: state
   const token = useAuthStore((state) => state.token);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   const userProfile = useUserStore((state) => state.userProfile);
-  // store
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {

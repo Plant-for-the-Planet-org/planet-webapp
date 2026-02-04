@@ -47,7 +47,7 @@ const ProfileLayout = () => {
     if (userSlug) fetchMyForest(getApi, getApiAuthenticated);
   }, [userSlug, fetchMyForest]);
 
-  // myForest data is always fetched fresh;clear the store on unmount since persisting it provides no caching benefit
+  // My forest data is always fetched fresh; clear the store on unmount since persisting it provides no caching benefit
   useEffect(() => {
     return () => {
       resetMyForestStore();

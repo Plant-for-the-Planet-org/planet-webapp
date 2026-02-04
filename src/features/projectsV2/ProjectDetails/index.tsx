@@ -25,16 +25,14 @@ import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useApi } from '../../../hooks/useApi';
 import { useTenant } from '../../common/Layout/TenantContext';
-import { useProjectMapStore, useErrorHandlingStore } from '../../../stores';
+import {
+  useProjectMapStore,
+  useErrorHandlingStore,
+  useCurrencyStore,
+} from '../../../stores';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
-const ProjectDetails = ({
-  currencyCode,
-  isMobile,
-}: {
-  currencyCode: string;
-  isMobile: boolean;
-}) => {
+const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const {
     singleProject,
     setSingleProject,
@@ -56,7 +54,9 @@ const ProjectDetails = ({
   const { p: projectSlug } = router.query;
   //local state
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
-  //store
+  // store: state
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const setTimeTravelConfig = useProjectMapStore(
     (state) => state.setTimeTravelConfig

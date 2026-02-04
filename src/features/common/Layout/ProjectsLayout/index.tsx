@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import type { SetState } from '../../types/common';
 
 import { useMemo } from 'react';
 import styles from './ProjectsLayout.module.scss';
@@ -15,16 +14,10 @@ import {
 
 interface ProjectsLayoutProps {
   children: ReactNode;
-  currencyCode: string;
-  setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
 }
 
-const ProjectsLayoutContent = ({
-  children,
-  setCurrencyCode,
-  page,
-}: Omit<ProjectsLayoutProps, 'currencyCode'>) => {
+const ProjectsLayoutContent = ({ children, page }: ProjectsLayoutProps) => {
   // store: state
   const embed = useQueryParamStore((state) => state.embed);
   const showProjectDetails = useQueryParamStore(
@@ -81,26 +74,15 @@ const ProjectsLayoutContent = ({
           <ProjectsMap isMobile={false} page={page} />
         </section>
       </main>
-      <Credits setCurrencyCode={setCurrencyCode} />
+      <Credits />
     </div>
   );
 };
 
-const ProjectsLayout = ({
-  children,
-  currencyCode,
-  setCurrencyCode,
-  page,
-}: ProjectsLayoutProps) => {
+const ProjectsLayout = ({ children, page }: ProjectsLayoutProps) => {
   return (
-    <ProjectsProvider
-      page={page}
-      currencyCode={currencyCode}
-      setCurrencyCode={setCurrencyCode}
-    >
-      <ProjectsLayoutContent setCurrencyCode={setCurrencyCode} page={page}>
-        {children}
-      </ProjectsLayoutContent>
+    <ProjectsProvider page={page}>
+      <ProjectsLayoutContent page={page}>{children}</ProjectsLayoutContent>
     </ProjectsProvider>
   );
 };

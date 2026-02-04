@@ -2,7 +2,6 @@ import type { MapProject } from '../../../../features/common/types/projectv2';
 import type { APIError } from '@planet-sdk/common/build/types/errors';
 
 import { useEffect, useState } from 'react';
-import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
@@ -13,7 +12,7 @@ import { useLocale } from 'next-intl';
 import { clsx } from 'clsx';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useErrorHandlingStore, useCurrencyStore } from '../../../../stores';
 
 export default function ProjectGrid() {
   const { tenantConfig } = useTenant();
@@ -23,12 +22,13 @@ export default function ProjectGrid() {
   const { localizedPath } = useLocalizedPath();
   // local state
   const [projects, setProjects] = useState<MapProject[] | null>(null);
-  // store
+  // store: state
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  // store : action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     async function loadProjects() {
-      const currencyCode = getStoredCurrency();
       try {
         const projects = await getApi<MapProject[]>(`/app/projects`, {
           queryParams: {

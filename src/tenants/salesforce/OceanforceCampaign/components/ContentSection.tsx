@@ -7,7 +7,6 @@ import type {
 import { useEffect, useState } from 'react';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
-import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import { handleError } from '@planet-sdk/common';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { useApi } from '../../../../hooks/useApi';
@@ -16,13 +15,12 @@ import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { clsx } from 'clsx';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useErrorHandlingStore, useCurrencyStore } from '../../../../stores';
 
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const currencyCode = getStoredCurrency();
   const { getApi } = useApi();
   const locale = useLocale();
   const { tenantConfig } = useTenant();
@@ -30,7 +28,9 @@ export default function ContentSection() {
   const [project, setProject] = useState<
     TreeProjectExtended | ConservationProjectExtended | null
   >(null);
-  // store
+  // store: state
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  // store : action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {

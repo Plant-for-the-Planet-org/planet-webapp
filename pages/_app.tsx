@@ -4,7 +4,6 @@ import type { AppContext, AppInitialProps, AppProps } from 'next/app';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { AbstractIntlMessages } from 'next-intl';
 import type { NextPage } from 'next';
-import type { SetState } from '../src/features/common/types/common';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
@@ -33,7 +32,6 @@ import materialTheme from '../src/theme/themeStyles';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
-import { CurrencyProvider } from '../src/features/common/Layout/CurrencyContext';
 import {
   DEFAULT_TENANT,
   getTenantConfig,
@@ -122,8 +120,6 @@ export type PageProps = {
 
 export type PageComponentProps = {
   pageProps: PageProps;
-  currencyCode: string;
-  setCurrencyCode: SetState<string>;
   isMobile: boolean;
 };
 
@@ -133,7 +129,6 @@ const PlanetWeb = ({
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) => {
   const router = useRouter();
-  const [currencyCode, setCurrencyCode] = useState('');
   const [browserCompatible, setBrowserCompatible] = useState(false);
 
   const { tenantConfig } = pageProps;
@@ -171,8 +166,6 @@ const PlanetWeb = ({
 
   const pageComponentProps = {
     pageProps,
-    currencyCode,
-    setCurrencyCode,
     isMobile,
   };
 
@@ -211,21 +204,19 @@ const PlanetWeb = ({
               <ThemeProvider>
                 <MuiThemeProvider theme={materialTheme}>
                   <CssBaseline />
-                  <CurrencyProvider>
-                    <PlanetCashProvider>
-                      <PayoutsProvider>
-                        <Layout>
-                          <BulkCodeProvider>
-                            <AnalyticsProvider>
-                              <DonationReceiptProvider>
-                                {pageContent}
-                              </DonationReceiptProvider>
-                            </AnalyticsProvider>
-                          </BulkCodeProvider>
-                        </Layout>
-                      </PayoutsProvider>
-                    </PlanetCashProvider>
-                  </CurrencyProvider>
+                  <PlanetCashProvider>
+                    <PayoutsProvider>
+                      <Layout>
+                        <BulkCodeProvider>
+                          <AnalyticsProvider>
+                            <DonationReceiptProvider>
+                              {pageContent}
+                            </DonationReceiptProvider>
+                          </AnalyticsProvider>
+                        </BulkCodeProvider>
+                      </Layout>
+                    </PayoutsProvider>
+                  </PlanetCashProvider>
                 </MuiThemeProvider>
               </ThemeProvider>
             </Auth0Provider>

@@ -1,4 +1,5 @@
 import { useInitializeAuth } from '../../../hooks/useInitializeAuth';
+import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
 import { useInitializeUser } from '../../../hooks/useInitializeUser';
 
@@ -18,6 +19,6 @@ export const StoreInitializer = () => {
   useInitializeParams();
   useInitializeAuth();
   useInitializeUser();
-
+  useInitializeCurrency();
   return null;
 };
