@@ -9,7 +9,10 @@ import CommunityContributions from '../CommunityContributions';
 import { useEffect, useMemo } from 'react';
 import { useMyForestStore } from '../../../../stores/myForestStore';
 import MyContributions from '../MyContributions';
-import { aggregateProgressData } from '../../../../utils/myForestUtils';
+import {
+  aggregateProgressData,
+  transformProfileToForestUserInfo,
+} from '../../../../utils/myForestUtils';
 import InfoAndCta from '../InfoAndCTA';
 import TpoProjects from '../TpoProjects';
 import { useApi } from '../../../../hooks/useApi';
@@ -20,7 +23,8 @@ interface Props {
   isProfileLoaded: boolean;
 }
 
-// We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
+// We may choose to accept the components for each section as props depending on how we choose to pass data.
+// In that case, we would need to add an interface to accept the components as props.
 const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
   const { getApi, getApiAuthenticated } = useApi();
 
@@ -43,20 +47,9 @@ const PublicProfileLayout = ({ profile, isProfileLoaded }: Props) => {
   );
 
   useEffect(() => {
-    if (profile) {
-      setIsPublicProfile(true);
-      const _userInfo = {
-        profileId: profile.id,
-        slug: profile.slug,
-        targets: {
-          treesDonated: profile.scores.treesDonated.target ?? 0,
-          areaRestored: profile.scores.areaRestored.target ?? 0,
-          areaConserved: profile.scores.areaConserved.target ?? 0,
-        },
-      };
-
-      setUserInfo(_userInfo);
-    }
+    if (!profile) return;
+    setIsPublicProfile(true);
+    setUserInfo(transformProfileToForestUserInfo(profile));
   }, [profile]);
 
   useEffect(() => {

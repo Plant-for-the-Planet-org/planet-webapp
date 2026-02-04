@@ -10,15 +10,14 @@ import { useEffect, useState } from 'react';
 import styles from './TreeMapper.module.scss';
 import dynamic from 'next/dynamic';
 import TreeMapperList from './components/TreeMapperList';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import InterventionPage from './components/InterventionPage';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import { useAuthStore, useErrorHandlingStore } from '../../../stores';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 const InterventionMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
@@ -44,7 +43,6 @@ export interface ExtendedScopeInterventions {
 function TreeMapper(): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { token, contextLoaded } = useUserProps();
   const t = useTranslations('Treemapper');
   const { getApiAuthenticated } = useApi();
   // local state
@@ -55,7 +53,11 @@ function TreeMapper(): ReactElement {
     Intervention | SampleTreeRegistration | null
   >(null);
   const [links, setLinks] = useState<Links>();
-  // store
+  // store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function fetchTreemapperData(next = false) {
@@ -146,8 +148,8 @@ function TreeMapper(): ReactElement {
   }
 
   useEffect(() => {
-    if (contextLoaded && token) fetchTreemapperData();
-  }, [contextLoaded, token]);
+    if (isAuthReady) fetchTreemapperData();
+  }, [isAuthReady]);
 
   useEffect(() => {
     if (router.query.l) {

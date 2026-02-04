@@ -10,7 +10,7 @@ import { TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
+import { useUserStore } from '../../../../../../stores';
 
 const ProjectFilter = () => {
   const t = useTranslations('TreemapperAnalytics');
@@ -23,14 +23,15 @@ const ProjectFilter = () => {
     project,
     setProject,
   } = useAnalytics();
-  const { userLang } = useUserProps();
 
   const handleProjectChange = (proj: Project | null) => {
     setProject(proj);
   };
-
+  // local state
   const [localToDate, setLocalToDate] = useState<Date | null>(toDate);
   const [localFromDate, setLocalFromDate] = useState<Date | null>(fromDate);
+  // store: state
+  const userLanguage = useUserStore((state) => state.userLanguage);
 
   return (
     <Grid alignItems="top" container spacing={2}>
@@ -45,11 +46,7 @@ const ProjectFilter = () => {
         <Grid item xs={6} md={6}>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
-            adapterLocale={
-              localeMapForDate[userLang]
-                ? localeMapForDate[userLang]
-                : localeMapForDate['en']
-            }
+            adapterLocale={localeMapForDate[userLanguage]}
           >
             <MuiDatePicker
               label={t('from')}
@@ -71,11 +68,7 @@ const ProjectFilter = () => {
         <Grid item xs={6} md={6}>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
-            adapterLocale={
-              localeMapForDate[userLang]
-                ? localeMapForDate[userLang]
-                : localeMapForDate['en']
-            }
+            adapterLocale={localeMapForDate[userLanguage]}
           >
             <MuiDatePicker
               label={t('to')}

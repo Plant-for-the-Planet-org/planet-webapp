@@ -6,9 +6,12 @@ import type { APIError, CountryProject } from '@planet-sdk/common';
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
 import { handleError } from '@planet-sdk/common';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useApi } from '../../../../hooks/useApi';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../stores';
 
 interface ProjectSelectorProps {
   projectList: CountryProject[];
@@ -24,10 +27,14 @@ const ProjectSelector = ({
   active = true,
   planetCashAccount,
 }: ProjectSelectorProps): ReactElement | null => {
-  //store
-  const setErrors = useErrorHandlingStore((state) => state.setErrors);
-  const { user, token, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
+  //store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  const userProfile = useUserStore((state) => state.userProfile);
+  //store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const fetchPaymentOptions = async (guid: string) => {
     const paymentOptions = await getApiAuthenticated<PaymentOptions>(
@@ -35,7 +42,7 @@ const ProjectSelector = ({
       {
         queryParams: {
           country: planetCashAccount?.country || '',
-          ...(user !== null && { legacyPriceFor: user.id }),
+          ...(userProfile !== null && { legacyPriceFor: userProfile.id }),
         },
       }
     );
@@ -44,7 +51,7 @@ const ProjectSelector = ({
 
   const handleProjectChange = async (project: CountryProject | null) => {
     // fetch project details
-    if (project && user && token && contextLoaded) {
+    if (project && userProfile && isAuthReady) {
       try {
         const paymentOptions = await fetchPaymentOptions(project.guid);
         // Add/update project object

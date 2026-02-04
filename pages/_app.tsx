@@ -24,7 +24,6 @@ import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
-import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext';
@@ -201,25 +200,23 @@ const PlanetWeb = ({
               onRedirectCallback={onRedirectCallback}
               useRefreshTokens={true}
             >
+              <StoreInitializer />
               <ThemeProvider>
                 <MuiThemeProvider theme={materialTheme}>
                   <CssBaseline />
-                  <UserPropsProvider>
-                    <StoreInitializer />
-                    <PlanetCashProvider>
-                      <PayoutsProvider>
-                        <Layout>
-                          <BulkCodeProvider>
-                            <AnalyticsProvider>
-                              <DonationReceiptProvider>
-                                {pageContent}
-                              </DonationReceiptProvider>
-                            </AnalyticsProvider>
-                          </BulkCodeProvider>
-                        </Layout>
-                      </PayoutsProvider>
-                    </PlanetCashProvider>
-                  </UserPropsProvider>
+                  <PlanetCashProvider>
+                    <PayoutsProvider>
+                      <Layout>
+                        <BulkCodeProvider>
+                          <AnalyticsProvider>
+                            <DonationReceiptProvider>
+                              {pageContent}
+                            </DonationReceiptProvider>
+                          </AnalyticsProvider>
+                        </BulkCodeProvider>
+                      </Layout>
+                    </PayoutsProvider>
+                  </PlanetCashProvider>
                 </MuiThemeProvider>
               </ThemeProvider>
             </Auth0Provider>

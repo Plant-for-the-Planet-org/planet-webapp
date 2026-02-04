@@ -7,16 +7,19 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { useTranslations } from 'next-intl';
 import { ThemeContext } from '../../../../../theme/themeContext';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
   EnterRedeemCode,
 } from '../../../../common/RedeemCode';
-import { useMyForestStore } from '../../../../../stores/myForestStore';
+import {
+  useAuthStore,
+  useMyForestStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../../stores';
 import { useApi } from '../../../../../hooks/useApi';
-import { useErrorHandlingStore } from '../../../../../stores/errorHandlingStore';
 
 interface RedeemModal {
   redeemModalOpen: boolean;
@@ -32,16 +35,22 @@ export default function RedeemModal({
 }: RedeemModal): ReactElement | null {
   const t = useTranslations('Redeem');
   const { postApiAuthenticated, getApi, getApiAuthenticated } = useApi();
-  const { user, contextLoaded, setUser, setRefetchUserData } = useUserProps();
-  const refetchMyForest = useMyForestStore((state) => state.fetchMyForest);
   // local state
   const [inputCode, setInputCode] = useState<string | undefined>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // store
+  // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   const errors = useErrorHandlingStore((state) => state.errors);
+  // store: action
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
+  const setShouldRefetchUserProfile = useUserStore(
+    (state) => state.setShouldRefetchUserProfile
+  );
+  const refetchMyForest = useMyForestStore((state) => state.fetchMyForest);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function redeemingCode(data: string): Promise<void> {
@@ -49,7 +58,7 @@ export default function RedeemModal({
     const payload = {
       code: data,
     };
-    if (contextLoaded && user) {
+    if (isAuthResolved && userProfile) {
       try {
         const res = await postApiAuthenticated<
           RedeemedCodeData,
@@ -58,12 +67,12 @@ export default function RedeemModal({
           payload,
         });
         setRedeemedCodeData(res);
-        setRefetchUserData(true);
+        setShouldRefetchUserProfile(true);
         setIsLoading(false);
         if (res.units > 0) {
-          const cloneUser = { ...user };
+          const cloneUser = { ...userProfile };
           cloneUser.score.received = cloneUser.score.received + res.units;
-          setUser(cloneUser);
+          setUserProfile(cloneUser);
           refetchMyForest(getApi, getApiAuthenticated);
         }
       } catch (err) {

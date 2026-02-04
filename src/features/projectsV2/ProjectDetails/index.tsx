@@ -25,10 +25,12 @@ import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useApi } from '../../../hooks/useApi';
 import { useTenant } from '../../common/Layout/TenantContext';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  useProjectMapStore,
+  useErrorHandlingStore,
+  useCurrencyStore,
+} from '../../../stores';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { useCurrencyStore } from '../../../stores/currencyStore';
 
 const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const {
@@ -44,9 +46,6 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
     setSelectedSampleTree,
     setPreventShallowPush,
   } = useProjects();
-  const setTimeTravelConfig = useProjectMapStore(
-    (state) => state.setTimeTravelConfig
-  );
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -59,6 +58,9 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setTimeTravelConfig = useProjectMapStore(
+    (state) => state.setTimeTravelConfig
+  );
 
   const fetchInterventions = async (projectId: string) => {
     setIsLoading(true);

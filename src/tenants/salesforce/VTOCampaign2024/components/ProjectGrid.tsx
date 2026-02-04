@@ -10,10 +10,9 @@ import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { clsx } from 'clsx';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useErrorHandlingStore, useCurrencyStore } from '../../../../stores';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useCurrencyStore } from '../../../../stores/currencyStore';
 
 export default function ProjectGrid() {
   const { getApi } = useApi();

@@ -1,13 +1,16 @@
-import { useUserProps } from '../UserPropsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
 import { useTenant } from '../TenantContext';
 import NavbarBrandLogos from './microComponents/NavbarBrandLogos';
 import NavbarItems from './microComponents/NavbarItems';
 import styles from './Navbar.module.scss';
 import { clsx } from 'clsx';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
+import { useUserStore } from '../../../../stores';
 
 const ImpersonationBanner = () => {
-  const { isImpersonationModeOn } = useUserProps();
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
   if (!isImpersonationModeOn) return null;
   return (
     <div className={styles.impersonationBanner}>
@@ -17,7 +20,9 @@ const ImpersonationBanner = () => {
 };
 
 const MainNavigationHeader = () => {
-  const { isImpersonationModeOn } = useUserProps();
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
 
   const headerStyles = clsx(styles.mainNavigationHeader, {
     [styles.impersonationMode]: isImpersonationModeOn,
@@ -33,24 +38,22 @@ const MainNavigationHeader = () => {
 export default function Navbar() {
   const { tenantConfig } = useTenant();
   if (!tenantConfig) return null;
-
-  const { setUser, logoutUser, auth0Error } = useUserProps();
+  const { logoutUser, auth0Error } = useAuthSession();
+  // store: state
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
 
   if (auth0Error) {
     const { message } = auth0Error;
+    const isBrowser = typeof window !== 'undefined';
 
-    if (message === '401') {
-      if (typeof window !== 'undefined') {
-        setUser(null);
-        logoutUser(`${window.location.origin}/verify-email`);
-      }
+    setUserProfile(null);
+
+    if (message === '401' && isBrowser) {
+      logoutUser(`${window.location.origin}/verify-email`);
     } else if (message === 'Invalid state') {
-      setUser(null);
-    } else if (typeof window !== 'undefined') {
-      if (message) {
-        alert(message);
-      }
-      setUser(null);
+      // Only clear user, no logout needed
+    } else if (isBrowser) {
+      if (message) alert(message);
       logoutUser(`${window.location.origin}/`);
     }
   }

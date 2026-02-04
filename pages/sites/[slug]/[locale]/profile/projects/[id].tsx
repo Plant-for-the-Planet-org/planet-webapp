@@ -16,7 +16,6 @@ import ManageProjects from '../../../../../../src/features/user/ManageProjects';
 import GlobeContentLoader from '../../../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../../../../src/features/common/Layout/Footer';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
@@ -30,8 +29,12 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../../../src/stores';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
 
 interface Props {
   pageProps: PageProps;
@@ -41,19 +44,22 @@ function ManageSingleProject({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('Common');
-  const { user, contextLoaded, token } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
-  //local state
-  const [ready, setReady] = useState<boolean>(false);
+  // local state
   const [projectGUID, setProjectGUID] = useState<string | null>(null);
+  const [ready, setReady] = useState<boolean>(false);
   const [accessDenied, setAccessDenied] = useState<boolean>(false);
   const [setupAccess, setSetupAccess] = useState<boolean>(false);
   const [project, setProject] =
     useState<ExtendedProfileProjectProperties | null>(null);
-  // store
+  // store: state
+  const token = useAuthStore((state) => state.token);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
@@ -86,10 +92,10 @@ function ManageSingleProject({
     }
 
     // ready is for router, loading is for session
-    if (ready && contextLoaded && user) {
+    if (ready && isAuthResolved && userProfile) {
       loadProject();
     }
-  }, [ready, contextLoaded, user]);
+  }, [ready, isAuthResolved, userProfile]);
 
   if (tenantConfig && accessDenied && setupAccess) {
     return (

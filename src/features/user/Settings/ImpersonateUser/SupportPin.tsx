@@ -1,18 +1,21 @@
 import styles from '../../../common/Layout/UserLayout/UserLayout.module.scss';
 import { useTranslations } from 'next-intl';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useApi } from '../../../../hooks/useApi';
+import { useUserStore } from '../../../../stores';
 
 interface SupportPin {
   supportPin: string;
 }
 
 const SupportPin = () => {
-  const { user, setUser } = useUserProps();
-  if (!user) return null;
+  const userProfile = useUserStore((state) => state.userProfile);
+  if (!userProfile) return null;
+  // store: action
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
   const t = useTranslations('Me');
   const { putApiAuthenticated } = useApi();
+
   const handleNewPin = async () => {
     try {
       const response = await putApiAuthenticated<SupportPin>(
@@ -20,9 +23,9 @@ const SupportPin = () => {
         { payload: {} }
       );
       if (response) {
-        const updateUserData = { ...user };
+        const updateUserData = { ...userProfile };
         updateUserData['supportPin'] = response.supportPin;
-        setUser(updateUserData);
+        setUserProfile(updateUserData);
       } else {
         return false;
       }
@@ -35,7 +38,7 @@ const SupportPin = () => {
     <>
       <div className={styles.supportPinContainer}>
         <div className={styles.supportPin}>{t('supportPin')} :</div>
-        <div className={styles.pinValue}>{user?.supportPin}</div>
+        <div className={styles.pinValue}>{userProfile?.supportPin}</div>
         <div>
           <button className={styles.resetPinButton} onClick={handleNewPin}>
             <RestartAltIcon />

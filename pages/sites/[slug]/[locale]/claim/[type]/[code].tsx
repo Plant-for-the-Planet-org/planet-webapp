@@ -15,7 +15,6 @@ import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
@@ -30,7 +29,12 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
-import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
+import { useAuthSession } from '../../../../../../src/hooks/useAuthSession';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -45,7 +49,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
-  const { user, contextLoaded, loginWithRedirect } = useUserProps();
+  const { loginWithRedirect } = useAuthSession();
   const { postApiAuthenticated } = useApi();
   // local state
   const [code, setCode] = useState<string>('');
@@ -53,6 +57,8 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     RedeemedCodeData | undefined
   >(undefined);
   // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   const errors = useErrorHandlingStore((state) => state.errors);
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
@@ -90,7 +96,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     const submitData: RedeemCodePayload = {
       code: code,
     };
-    if (contextLoaded && user) {
+    if (isAuthResolved && userProfile) {
       try {
         const res = await postApiAuthenticated<
           RedeemedCodeData,
@@ -141,7 +147,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     // If the user is not logged in - send the user to log in page, store the claim redirect link in the localstorage.
     // When the user logs in, redirect user to the claim link from the localstorage and clear the localstorage.
     // For this  fetch the link from the storage, clears the storage and then redirects the user using the link
-    if (contextLoaded && !user) {
+    if (isAuthResolved && !userProfile) {
       // store the claim link in localstorage
       if (typeof window !== 'undefined') {
         localStorage.setItem('redirectLink', router.asPath);
@@ -151,11 +157,11 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
         });
       }
     }
-  }, [contextLoaded, user]);
+  }, [isAuthResolved, userProfile]);
 
   useEffect(() => {
     //redeem code using route
-    if (user && contextLoaded) {
+    if (userProfile && isAuthResolved) {
       if (
         router.query.type &&
         router.query.code &&
@@ -164,9 +170,9 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
         redeemingCode(router.query.code);
       }
     }
-  }, [user, contextLoaded, router.query.type, router.query.code]);
+  }, [userProfile, isAuthResolved, router.query.type, router.query.code]);
 
-  return pageProps.tenantConfig && user ? (
+  return pageProps.tenantConfig && userProfile ? (
     <LandingSection>
       <>
         {redeemedCodeData ? (

@@ -13,7 +13,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { getStoredConfig } from '../../../utils/storeConfig';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
@@ -23,9 +22,13 @@ import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../hooks/useApi';
 import dynamic from 'next/dynamic';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../stores';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 import WebGLGuard from '../../common/WebGLGuard';
 
 type RegisteredTreesApiPayload = {
@@ -46,7 +49,6 @@ function RegisterTreesForm({
   setContributionDetails,
   setRegistered,
 }: RegisterTreesFormProps) {
-  const { user, contextLoaded, setRefetchUserData } = useUserProps();
   const t = useTranslations('Me');
   const { postApiAuthenticated, getApiAuthenticated } = useApi();
   const router = useRouter();
@@ -60,14 +62,20 @@ function RegisterTreesForm({
   );
   const [userLang, setUserLang] = useState('en');
   const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
-  // store
-  const setErrors = useErrorHandlingStore((state) => state.setErrors);
-
   const [isUploadingData, setIsUploadingData] = useState(false);
+  // store: state
+  const isTpo = useUserStore((state) => state.userProfile?.type === 'tpo');
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setShouldRefetchUserProfile = useUserStore(
+    (state) => state.setShouldRefetchUserProfile
+  );
+
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
-    plantProject: user?.type === 'tpo' ? '' : null,
+    plantProject: isTpo ? '' : null,
     plantDate: new Date(),
     geometry: {},
   };
@@ -117,7 +125,7 @@ function RegisterTreesForm({
           setContributionDetails(res);
           setIsUploadingData(false);
           setRegistered(true);
-          setRefetchUserData(true);
+          setShouldRefetchUserProfile(true);
         } catch (err) {
           setIsUploadingData(false);
           setErrors(handleError(err as APIError));
@@ -143,10 +151,10 @@ function RegisterTreesForm({
   }
 
   useEffect(() => {
-    if (contextLoaded && user?.type === 'tpo') {
+    if (isAuthResolved && isTpo) {
       loadProjects();
     }
-  }, [contextLoaded]);
+  }, [isAuthResolved]);
 
   useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -247,7 +255,7 @@ function RegisterTreesForm({
               />
             )}
           />
-          {user && user.type === 'tpo' && (
+          {isTpo && (
             <Controller
               name="plantProject"
               control={control}

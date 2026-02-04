@@ -28,8 +28,7 @@ import {
 } from '../../utils/projectV2';
 import { useApi } from '../../hooks/useApi';
 import { useTenant } from '../common/Layout/TenantContext';
-import { useErrorHandlingStore } from '../../stores/errorHandlingStore';
-import { useCurrencyStore } from '../../stores/currencyStore';
+import { useErrorHandlingStore, useCurrencyStore } from '../../stores';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -117,7 +116,7 @@ export const ProjectsProvider = ({
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
-  //store: action
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   // Read filter from URL only on initial load
   useEffect(() => {

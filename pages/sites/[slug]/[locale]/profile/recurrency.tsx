@@ -12,7 +12,6 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { useEffect, useState } from 'react';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
@@ -27,7 +26,7 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
-import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
+import { useAuthStore, useErrorHandlingStore } from '../../../../../src/stores';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 
 interface Props {
@@ -41,13 +40,16 @@ function RecurrentDonations({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
-  const { token, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
-  //local state
+  // local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [recurrencies, setRecurrencies] = useState<Subscription[]>();
-  // store
+  // store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
@@ -93,8 +95,8 @@ function RecurrentDonations({
   }
 
   useEffect(() => {
-    if (contextLoaded && token) fetchRecurrentDonations();
-  }, [contextLoaded, token]);
+    if (isAuthReady) fetchRecurrentDonations();
+  }, [isAuthReady]);
 
   const RecurrencyProps = {
     isDataLoading,

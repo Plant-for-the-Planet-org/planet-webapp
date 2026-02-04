@@ -12,7 +12,6 @@ import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../../../../src/features/common/Layout/Footer';
 import Head from 'next/head';
@@ -24,6 +23,8 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useAuthStore, useUserStore } from '../../../../../../src/stores';
+import { useAuthSession } from '../../../../../../src/hooks/useAuthSession';
 
 interface Props {
   pageProps: PageProps;
@@ -33,11 +34,15 @@ export default function AddProjectType({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('ManageProjects');
-  const [accessDenied, setAccessDenied] = useState<boolean>(false);
-  const [setupAccess, setSetupAccess] = useState<boolean>(false);
-  const { user, contextLoaded, token, loginWithRedirect } = useUserProps();
+  const { loginWithRedirect } = useAuthSession();
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  // local state
+  const [accessDenied, setAccessDenied] = useState<boolean>(false);
+  //store: state
+  const token = useAuthStore((state) => state.token);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const userProfile = useUserStore((state) => state.userProfile);
 
   useEffect(() => {
     if (router.isReady) {
@@ -46,35 +51,29 @@ export default function AddProjectType({
   }, [router.isReady]);
 
   useEffect(() => {
-    async function loadUserData() {
-      const userType = user?.type;
-      if (userType === 'tpo') {
-        setAccessDenied(false);
-        setSetupAccess(true);
-      } else {
-        setAccessDenied(true);
-        setSetupAccess(true);
-      }
+    if (!isAuthResolved) return;
+
+    // Auth resolved but missing token or profile → redirect to login
+    if (!token || !userProfile) {
+      localStorage.setItem(
+        'redirectLink',
+        '/profile/projects/add-project/restoration-project'
+      );
+
+      loginWithRedirect({
+        redirectUri: `${window.location.origin}/login`,
+        ui_locales: localStorage.getItem('language') || 'en',
+      });
+      return;
     }
 
-    if (contextLoaded) {
-      if (token && user) {
-        loadUserData();
-      } else {
-        localStorage.setItem(
-          'redirectLink',
-          '/profile/projects/add-project/restoration-project'
-        );
-        loginWithRedirect({
-          redirectUri: `${window.location.origin}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
-      }
-    }
-  }, [contextLoaded]);
+    // Auth resolved and user profile exists
+    const isTPO = userProfile.type === 'tpo';
+    setAccessDenied(!isTPO);
+  }, [isAuthResolved]);
 
   // User is not TPO
-  if (tenantConfig && accessDenied && setupAccess) {
+  if (tenantConfig && accessDenied) {
     return (
       <>
         <AccessDeniedLoader />
@@ -89,7 +88,7 @@ export default function AddProjectType({
         <title>{t('addNewProject')}</title>
       </Head>
 
-      {user?.type === 'tpo' && token !== null ? (
+      {userProfile?.type === 'tpo' && token !== null ? (
         <ManageProjects token={token} />
       ) : (
         <AccessDeniedLoader />

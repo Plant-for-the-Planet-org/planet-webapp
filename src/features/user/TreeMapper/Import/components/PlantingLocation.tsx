@@ -25,7 +25,6 @@ import DeleteIcon from '../../../../../../public/assets/images/icons/manageProje
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
 import { Button, MenuItem, TextField } from '@mui/material';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
@@ -35,7 +34,11 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../../hooks/useApi';
 import { clsx } from 'clsx';
-import { useErrorHandlingStore } from '../../../../../stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useErrorHandlingStore,
+  useUserStore,
+} from '../../../../../stores';
 
 // import { DevTool } from '@hookform/devtools';
 
@@ -163,11 +166,22 @@ export default function PlantingLocation({
   setActiveMethod,
 }: Props): ReactElement {
   const { getApiAuthenticated } = useApi();
-  const { user, contextLoaded } = useUserProps();
   const { postApiAuthenticated } = useApi();
   const tTreemapper = useTranslations('Treemapper');
   const tMe = useTranslations('Me');
   const tMaps = useTranslations('Maps');
+  // local state
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
+  const importMethods = ['import', 'editor'];
+  const [geoJsonError, setGeoJsonError] = useState(false);
+  const [mySpecies, setMySpecies] = useState<Species[] | null>(null);
+  // store: state
+  const isTpo = useUserStore((state) => state.userProfile?.type === 'tpo');
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   const defaultValues = {
     plantDate: '',
     plantProject: '',
@@ -191,14 +205,6 @@ export default function PlantingLocation({
     control,
     name: 'plantedSpecies',
   });
-  // local state
-  const [isUploadingData, setIsUploadingData] = useState(false);
-  const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
-  const importMethods = ['import', 'editor'];
-  const [geoJsonError, setGeoJsonError] = useState(false);
-  const [mySpecies, setMySpecies] = useState<Species[] | null>(null);
-  // store
-  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const loadProjects = async () => {
     try {
@@ -223,11 +229,11 @@ export default function PlantingLocation({
   };
 
   useEffect(() => {
-    if (contextLoaded) {
+    if (isAuthResolved) {
       loadProjects();
       loadMySpecies();
     }
-  }, [contextLoaded]);
+  }, [isAuthResolved]);
 
   const normalizeGeoJson = (geoJson: GeometryObject | FeatureCollection) => {
     if (
@@ -428,7 +434,7 @@ export default function PlantingLocation({
         </div>
       </div>
 
-      {user && user?.type === 'tpo' && (
+      {isTpo && (
         <div className={styles.formFieldLarge}>
           <Controller
             name="plantProject"

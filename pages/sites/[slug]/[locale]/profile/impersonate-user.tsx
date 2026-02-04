@@ -6,12 +6,12 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import ImpersonateUser from '../../../../../src/features/user/Settings/ImpersonateUser';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import { useEffect } from 'react';
 import AccessDeniedLoader from '../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
@@ -19,10 +19,10 @@ import {
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../tenant.config';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useUserStore } from '../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -31,10 +31,16 @@ interface Props {
 const ImpersonateUserPage = ({
   pageProps: { tenantConfig },
 }: Props): ReactElement => {
-  const { user, isImpersonationModeOn } = useUserProps();
   const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  // store: state
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
+  const hasImpersonationAccess = useUserStore(
+    (state) => state.userProfile?.allowedToSwitch
+  );
 
   useEffect(() => {
     if (router.isReady) {
@@ -47,7 +53,7 @@ const ImpersonateUserPage = ({
       <Head>
         <title>{t('switchUser')}</title>
       </Head>
-      {user?.allowedToSwitch && !isImpersonationModeOn ? (
+      {hasImpersonationAccess && !isImpersonationModeOn ? (
         <ImpersonateUser />
       ) : (
         <AccessDeniedLoader />

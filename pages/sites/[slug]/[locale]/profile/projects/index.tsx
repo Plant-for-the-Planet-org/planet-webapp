@@ -13,7 +13,6 @@ import ProjectsContainer from '../../../../../../src/features/user/ManageProject
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
   constructPathsForTenantSlug,
@@ -23,6 +22,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useUserStore } from '../../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -32,9 +32,10 @@ export default function Register({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('Me');
-  const { user } = useUserProps();
   const router = useRouter();
   const { setTenantConfig } = useTenant();
+  // store: state
+  const isTpo = useUserStore((state) => state.userProfile?.type === 'tpo');
 
   useEffect(() => {
     if (router.isReady) {
@@ -47,7 +48,7 @@ export default function Register({
       <Head>
         <title>{t('projects')}</title>
       </Head>
-      {user?.type === 'tpo' ? <ProjectsContainer /> : <AccessDeniedLoader />}
+      {isTpo ? <ProjectsContainer /> : <AccessDeniedLoader />}
     </UserLayout>
   ) : (
     <></>
