@@ -48,11 +48,22 @@ interface countryInterface {
   languageCode: string;
 }
 
+/**
+ * Checks whether a currency code is supported.
+ *
+ * NOTE:
+ * While supported currencies are still loading, this function
+ * returns true to avoid blocking user selections. Validation
+ * becomes strict once the list is available.
+ */
 function isCurrencyCode(code: string): code is CurrencyCode {
-  const { supportedCurrencies } = useCurrencyStore.getState();
+  const { supportedCurrencies, isFetching } = useCurrencyStore.getState();
+
+  // Allow currency while list is still loading
+  if (isFetching || supportedCurrencies.size === 0) return true;
+
   return supportedCurrencies.has(code as CurrencyCode);
 }
-
 // Maps the radio buttons for language
 
 function MapLanguage({ value, handleChange }: MapLanguageProps) {
