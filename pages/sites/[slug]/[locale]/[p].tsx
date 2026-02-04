@@ -16,12 +16,12 @@ import MobileProjectsLayout from '../../../../src/features/common/Layout/Project
 import ProjectDetails from '../../../../src/features/projectsV2/ProjectDetails';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 
-const ProjectDetailsPage: NextPageWithLayout = ({ currencyCode, isMobile }) => {
+const ProjectDetailsPage: NextPageWithLayout = ({ isMobile }) => {
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
   if (!tenantConfig) return <></>;
 
-  return <ProjectDetails currencyCode={currencyCode} isMobile={isMobile} />;
+  return <ProjectDetails isMobile={isMobile} />;
 };
 
 ProjectDetailsPage.getLayout = function getLayout(
@@ -29,8 +29,6 @@ ProjectDetailsPage.getLayout = function getLayout(
   pageComponentProps: PageComponentProps
 ): ReactElement {
   const layoutProps = {
-    currencyCode: pageComponentProps.currencyCode,
-    setCurrencyCode: pageComponentProps.setCurrencyCode,
     page: 'project-details',
     isMobile: pageComponentProps.isMobile,
   } as const;

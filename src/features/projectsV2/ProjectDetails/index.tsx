@@ -28,19 +28,9 @@ import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
 import { useTenantStore } from '../../../stores/tenantStore';
+import { useCurrencyStore } from '../../../stores/currencyStore';
 
-const ProjectDetails = ({
-  currencyCode,
-  isMobile,
-}: {
-  currencyCode: string;
-  isMobile: boolean;
-}) => {
-  const locale = useLocale();
-  const router = useRouter();
-  const { localizedPath } = useLocalizedPath();
-  const { getApi } = useApi();
-  const { p: projectSlug } = router.query;
+const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const {
     singleProject,
     setSingleProject,
@@ -54,10 +44,16 @@ const ProjectDetails = ({
     setSelectedSampleTree,
     setPreventShallowPush,
   } = useProjects();
+  const { getApi } = useApi();
+  const locale = useLocale();
+  const router = useRouter();
+  const { p: projectSlug } = router.query;
+  const { localizedPath } = useLocalizedPath();
   // local state
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
   // store: action
   const setTimeTravelConfig = useProjectMapStore(
     (state) => state.setTimeTravelConfig

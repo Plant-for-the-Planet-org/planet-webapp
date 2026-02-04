@@ -22,7 +22,6 @@ import {
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
-import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
 import {
   buildProjectDetailsQuery,
   isValidClassification,
@@ -30,6 +29,7 @@ import {
 import { useApi } from '../../hooks/useApi';
 import { useTenantStore } from '../../stores/tenantStore';
 import { useErrorHandlingStore } from '../../stores/errorHandlingStore';
+import { useCurrencyStore } from '../../stores/currencyStore';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -71,8 +71,6 @@ const ProjectsContext = createContext<ProjectsState | null>(null);
 type ProjectsProviderProps = {
   children: ReactNode;
   page?: 'project-list' | 'project-details';
-  currencyCode?: string;
-  setCurrencyCode?: SetState<string> | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
 };
@@ -80,8 +78,6 @@ type ProjectsProviderProps = {
 export const ProjectsProvider = ({
   children,
   page,
-  currencyCode,
-  setCurrencyCode,
   selectedMode,
   setSelectedMode,
 }: ProjectsProviderProps) => {
@@ -120,6 +116,7 @@ export const ProjectsProvider = ({
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -271,13 +268,6 @@ export const ProjectsProvider = ({
     }
     loadProjects();
   }, [currencyCode, locale, tenantConfig.id, page]);
-
-  useEffect(() => {
-    if (!currencyCode && setCurrencyCode !== undefined) {
-      const currency = getStoredCurrency();
-      setCurrencyCode(currency);
-    }
-  }, [currencyCode, setCurrencyCode]);
 
   useEffect(() => {
     setDebouncedSearchValue('');

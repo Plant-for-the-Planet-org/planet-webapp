@@ -1,5 +1,6 @@
 import type { Tenant } from '@planet-sdk/common';
 
+import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
 import { useInitializeTenant } from '../../../hooks/useInitializeTenant';
 
@@ -22,6 +23,6 @@ interface StoreInitializerProps {
 export const StoreInitializer = ({ tenantConfig }: StoreInitializerProps) => {
   if (tenantConfig) useInitializeTenant(tenantConfig);
   useInitializeParams();
-
+  useInitializeCurrency();
   return null;
 };
