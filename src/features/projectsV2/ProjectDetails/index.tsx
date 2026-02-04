@@ -28,14 +28,9 @@ import { useTenant } from '../../common/Layout/TenantContext';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
+import { useCurrencyStore } from '../../../stores/currencyStore';
 
-const ProjectDetails = ({
-  currencyCode,
-  isMobile,
-}: {
-  currencyCode: string;
-  isMobile: boolean;
-}) => {
+const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const {
     singleProject,
     setSingleProject,
@@ -60,7 +55,9 @@ const ProjectDetails = ({
   const { p: projectSlug } = router.query;
   //local state
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
-  //store
+  // store: state
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const fetchInterventions = async (projectId: string) => {
