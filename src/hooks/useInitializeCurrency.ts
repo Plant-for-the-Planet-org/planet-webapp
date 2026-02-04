@@ -14,7 +14,7 @@ export const useInitializeCurrency = () => {
 
   useEffect(() => {
     fetchSupportedCurrencies(getApi);
-  }, [fetchSupportedCurrencies]);
+  }, [fetchSupportedCurrencies, getApi]);
 
   useEffect(() => {
     initializeCurrencyCode();
