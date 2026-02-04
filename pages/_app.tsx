@@ -177,7 +177,6 @@ const PlanetWeb = ({
         locale={(router.query?.locale as string) ?? 'en'}
         messages={pageProps.messages}
       >
-        <StoreInitializer tenantConfig={tenantConfig} />
         <CacheProvider value={emotionCache}>
           <Auth0Provider
             domain={process.env.AUTH0_CUSTOM_DOMAIN!}
@@ -198,6 +197,7 @@ const PlanetWeb = ({
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
                 <UserPropsProvider>
+                  <StoreInitializer tenantConfig={tenantConfig} />
                   <PlanetCashProvider>
                     <PayoutsProvider>
                       <Layout>
