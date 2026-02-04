@@ -1,3 +1,4 @@
+import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
 
 /**
@@ -14,6 +15,6 @@ import { useInitializeParams } from '../../../hooks/useInitializeParams';
 
 export const StoreInitializer = () => {
   useInitializeParams();
-
+  useInitializeCurrency();
   return null;
 };
