@@ -1,9 +1,8 @@
 import type { ChangeEvent } from 'react';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import styles from './DeleteProfile.module.scss';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../../common/Layout/CustomModal';
 import { useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
@@ -13,12 +12,11 @@ import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { useAuthSession } from '../../../../hooks/useAuthSession';
-import { useUserStore } from '../../../../stores';
+import { useUserStore, useErrorHandlingStore } from '../../../../stores';
 
 export default function DeleteProfileForm() {
   const { logoutUser } = useAuthSession();
   const tCommon = useTranslations('Common');
-  const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { deleteApiAuthenticated } = useApi();
@@ -28,6 +26,8 @@ export default function DeleteProfileForm() {
   const [canDeleteAccount, setCanDeleteAccount] = useState(false);
   // store: state
   const userEmail = useUserStore((state) => state.userProfile?.email);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleChange = (e: ChangeEvent<{}>) => {
     e.preventDefault();

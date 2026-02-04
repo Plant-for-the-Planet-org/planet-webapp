@@ -10,12 +10,11 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
-import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
@@ -31,7 +30,11 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
 import { useAuthSession } from '../../../../../../src/hooks/useAuthSession';
-import { useAuthStore, useUserStore } from '../../../../../../src/stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -48,7 +51,6 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   const { setTenantConfig } = useTenant();
   const { loginWithRedirect } = useAuthSession();
   const { postApiAuthenticated } = useApi();
-  const { errors, setErrors } = useContext(ErrorHandlingContext);
   // local state
   const [code, setCode] = useState<string>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
@@ -57,6 +59,9 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const errors = useErrorHandlingStore((state) => state.errors);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (router.isReady) {

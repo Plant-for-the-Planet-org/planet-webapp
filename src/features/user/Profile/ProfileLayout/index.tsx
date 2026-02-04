@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import ContributionsMap from '../ContributionsMap';
 import styles from './ProfileLayout.module.scss';
 import { useEffect } from 'react';
@@ -13,7 +12,6 @@ import {
 } from '../../../../stores';
 import MyContributions from '../MyContributions';
 import { useApi } from '../../../../hooks/useApi';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { clsx } from 'clsx';
 import { transformProfileToForestUserInfo } from '../../../../utils/myForestUtils';
 
@@ -21,16 +19,14 @@ import { transformProfileToForestUserInfo } from '../../../../utils/myForestUtil
 
 const ProfileLayout = () => {
   const { getApi, getApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
-
+  // store: state
   const isMyForestLoading = useMyForestStore(
     (state) => state.isMyForestLoading
   );
   const userSlug = useMyForestStore((state) => state.userInfo?.slug);
-  const errorMessage = useMyForestStore((state) => state.errorMessage);
   const userProfile = useUserStore((state) => state.userProfile);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
-  // Actions
+  // store: action
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
   const fetchMyForest = useMyForestStore((state) => state.fetchMyForest);
   const setIsPublicProfile = useMyForestStore(
@@ -51,18 +47,12 @@ const ProfileLayout = () => {
     if (userSlug) fetchMyForest(getApi, getApiAuthenticated);
   }, [userSlug, fetchMyForest]);
 
-  // myForest data is always fetched fresh;
-  // clear the store on unmount since persisting it provides no caching benefit
+  // myForest data is always fetched fresh;clear the store on unmount since persisting it provides no caching benefit
   useEffect(() => {
     return () => {
       resetMyForestStore();
     };
   }, []);
-
-  //TODO: Remove once error handling is fully migrated from useContext to Zustand
-  useEffect(() => {
-    setErrors(errorMessage ? [{ message: errorMessage }] : null);
-  }, [errorMessage]);
 
   return (
     <article className={styles.profileLayout}>

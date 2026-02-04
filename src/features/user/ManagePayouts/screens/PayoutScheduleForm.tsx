@@ -1,19 +1,18 @@
 import type { ReactElement } from 'react';
 import type { APIError, User } from '@planet-sdk/common';
 
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, MenuItem, CircularProgress } from '@mui/material';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import StyledForm from '../../../common/Layout/StyledForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useTranslations } from 'next-intl';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import { useUserStore } from '../../../../stores';
+import { useUserStore, useErrorHandlingStore } from '../../../../stores';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -30,7 +29,6 @@ type FormData = {
 const PayoutScheduleForm = (): ReactElement | null => {
   const t = useTranslations('ManagePayouts');
   const { putApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
   const {
     handleSubmit,
     control,
@@ -43,7 +41,9 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const [isSaved, setIsSaved] = useState(false);
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const onSubmit = async (data: FormData): Promise<void> => {
     setIsProcessing(true);

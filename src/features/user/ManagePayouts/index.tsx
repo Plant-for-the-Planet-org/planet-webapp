@@ -3,11 +3,10 @@ import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import type { APIError } from '@planet-sdk/common';
 import type { BankAccount, PayoutMinAmounts } from '../../common/types/payouts';
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePayouts } from '../../common/Layout/PayoutsContext';
 import PayoutScheduleForm from './screens/PayoutScheduleForm';
 import Overview from './screens/Overview';
@@ -17,7 +16,11 @@ import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useAuthStore, useUserStore } from '../../../stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../stores';
 import { useShallow } from 'zustand/react/shallow';
 
 export enum ManagePayoutTabs {
@@ -41,14 +44,13 @@ export default function ManagePayouts({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
   const { getApi, getApiAuthenticated } = useApi();
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
-  //store: state
+  // store: state
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
   );
@@ -58,6 +60,8 @@ export default function ManagePayouts({
       isTpo: state.userProfile?.type === 'tpo',
     }))
   );
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const fetchPayoutMinAmounts = async () => {
     if (!payoutMinAmounts) {

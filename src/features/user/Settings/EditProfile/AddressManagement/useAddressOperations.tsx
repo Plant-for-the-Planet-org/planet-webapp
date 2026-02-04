@@ -2,9 +2,8 @@ import type { ExtendedCountryCode } from '../../../../common/types/country';
 import type { AddressFormData } from './microComponents/AddressForm';
 import type { AddressType, Address, APIError } from '@planet-sdk/common';
 
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useApi } from '../../../../../hooks/useApi';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import {
   updateAddressesAfterAdd,
@@ -12,7 +11,11 @@ import {
   updateAddressesAfterEdit,
   updateAddressesAfterTypeChange,
 } from './utils';
-import { useAuthStore, useUserStore } from '../../../../../stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../../stores';
 
 export type UnsetBillingAddressApiPayload = {
   type: 'other';
@@ -35,16 +38,16 @@ type AddressTypeApiPayload = {
 export const useAddressOperations = () => {
   const { postApiAuthenticated, putApiAuthenticated, deleteApiAuthenticated } =
     useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
   const isMountedRef = useRef(true);
   // local state
   const [isLoading, setIsLoading] = useState(false);
-  //store: state
+  // store: state
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
   );
-
   const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const setUserProfile = useUserStore((state) => state.setUserProfile);
 
   useEffect(() => {

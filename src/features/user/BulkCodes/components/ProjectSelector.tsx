@@ -3,13 +3,15 @@ import type { PlanetCashAccount } from '../../../common/Layout/BulkCodeContext';
 import type { PaymentOptions } from '../BulkCodesTypes';
 import type { APIError, CountryProject } from '@planet-sdk/common';
 
-import { useContext } from 'react';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore, useUserStore } from '../../../../stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../stores';
 
 interface ProjectSelectorProps {
   projectList: CountryProject[];
@@ -25,13 +27,14 @@ const ProjectSelector = ({
   active = true,
   planetCashAccount,
 }: ProjectSelectorProps): ReactElement | null => {
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated } = useApi();
   //store: state
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
   );
   const userProfile = useUserStore((state) => state.userProfile);
+  //store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const fetchPaymentOptions = async (guid: string) => {
     const paymentOptions = await getApiAuthenticated<PaymentOptions>(

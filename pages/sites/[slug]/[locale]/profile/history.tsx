@@ -13,13 +13,12 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../../../../src/features/user/Account/History';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
 import {
@@ -31,7 +30,8 @@ import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
-import { useAuthStore } from '../../../../../src/stores';
+import { useAuthStore, useErrorHandlingStore } from '../../../../../src/stores';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 
 interface Props {
   pageProps: PageProps;
@@ -42,9 +42,8 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
-  const { tenantConfig } = pageProps;
-  // local state
+  const { localizedPath } = useLocalizedPath();
+  //local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
@@ -58,6 +57,10 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
   );
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
+  const { tenantConfig } = pageProps;
 
   useEffect(() => {
     if (router.isReady) {
@@ -112,7 +115,7 @@ function AccountHistory({ pageProps }: Props): ReactElement {
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
+      router.push(localizedPath('/profile'));
     }
     setProgress(100);
     setTimeout(() => {

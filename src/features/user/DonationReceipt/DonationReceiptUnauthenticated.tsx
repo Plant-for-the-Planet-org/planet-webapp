@@ -1,24 +1,24 @@
 import type { APIError } from '@planet-sdk/common';
 import type { IssuedReceiptDataApi } from './donationReceiptTypes';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from 'next/router';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import styles from './DonationReceipt.module.scss';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import DonationReceiptWrapper from './DonationReceiptWrapper';
 import { useApi } from '../../../hooks/useApi';
 import { useTranslations } from 'next-intl';
 import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
-import { useUserStore } from '../../../stores';
+import { useUserStore, useErrorHandlingStore } from '../../../stores';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
 const DonationReceiptUnauthenticated = () => {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const tReceipt = useTranslations('DonationReceipt');
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { dtn, year, challenge } = router.query;
   const { initForVerification } = useDonationReceiptContext();
   const { getApi } = useApi();
@@ -27,6 +27,8 @@ const DonationReceiptUnauthenticated = () => {
   const [isReceiptInvalid, setIsReceiptInvalid] = useState(false);
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const areParamsValid =
     typeof dtn === 'string' &&
@@ -54,7 +56,7 @@ const DonationReceiptUnauthenticated = () => {
         if (errorResponse.statusCode === 400) {
           setIsReceiptInvalid(true);
         } else {
-          redirect('/');
+          router.push(localizedPath('/'));
         }
       } finally {
         setIsLoading(false);

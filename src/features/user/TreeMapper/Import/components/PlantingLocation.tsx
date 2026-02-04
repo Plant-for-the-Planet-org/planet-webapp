@@ -15,7 +15,7 @@ import type {
   ProfileProjectFeature,
 } from '@planet-sdk/common';
 
-import { useEffect, useState, useContext, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import styles from '../Import.module.scss';
 import { useTranslations } from 'next-intl';
@@ -32,10 +32,13 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { handleError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { useApi } from '../../../../../hooks/useApi';
 import { clsx } from 'clsx';
-import { useAuthStore, useUserStore } from '../../../../../stores';
+import {
+  useAuthStore,
+  useErrorHandlingStore,
+  useUserStore,
+} from '../../../../../stores';
 
 // import { DevTool } from '@hookform/devtools';
 
@@ -163,7 +166,6 @@ export default function PlantingLocation({
   setActiveMethod,
 }: Props): ReactElement {
   const { getApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated } = useApi();
   const tTreemapper = useTranslations('Treemapper');
   const tMe = useTranslations('Me');
@@ -177,6 +179,8 @@ export default function PlantingLocation({
   // store: state
   const isTpo = useUserStore((state) => state.userProfile?.type === 'tpo');
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const defaultValues = {
     plantDate: '',
@@ -197,7 +201,6 @@ export default function PlantingLocation({
     mode: 'onBlur',
     defaultValues: defaultValues,
   });
-
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'plantedSpecies',

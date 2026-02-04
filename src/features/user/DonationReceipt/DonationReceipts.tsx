@@ -9,7 +9,7 @@ import type {
 import { handleError } from '@planet-sdk/common';
 import styles from './DonationReceipt.module.scss';
 import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import YearlyReceiptGroup from './microComponents/YearlyReceiptGroup';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
@@ -19,7 +19,6 @@ import {
   transformProfileToPrimaryAddressView,
 } from './transformers';
 import { useApi } from '../../../hooks/useApi';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
@@ -30,7 +29,11 @@ import {
   getSortedYears,
   getOverviewEligibilityForAllYears,
 } from './receiptGroupingUtils';
-import { useAuthStore, useUserStore } from '../../../stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../stores';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useApi();
@@ -38,7 +41,6 @@ const DonationReceipts = () => {
   const { localizedPath } = useLocalizedPath();
   const tReceipt = useTranslations('DonationReceipt');
   const { initForIssuance, initForVerification } = useDonationReceiptContext();
-  const { redirect } = useContext(ErrorHandlingContext);
   // local state
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
@@ -49,6 +51,8 @@ const DonationReceipts = () => {
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     (async () => {
@@ -59,8 +63,8 @@ const DonationReceipts = () => {
         );
         if (response) setDonationReceipts(response);
       } catch (error) {
-        handleError(error as APIError);
-        redirect('/');
+        setErrors(handleError(error as APIError));
+        router.push(localizedPath('/profile'));
       }
     })();
   }, []);

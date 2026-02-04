@@ -3,17 +3,20 @@ import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import type { APIError, CountryProject } from '@planet-sdk/common';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useCallback, useContext, useState } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
 import { useBulkCode } from '../../common/Layout/BulkCodeContext';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import { useAuthStore, useUserStore } from '../../../stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../stores';
 
 export enum BulkCodeSteps {
   SELECT_METHOD = 'select_method',
@@ -38,12 +41,12 @@ export default function BulkCodes({
     bulkMethod,
     project,
   } = useBulkCode();
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { getApi } = useApi();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   // store: action
   const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     setTabConfig([

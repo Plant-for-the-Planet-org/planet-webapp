@@ -8,11 +8,13 @@ import styles from './EmbedModal.module.scss';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import { useAuthStore, useUserStore } from '../../../stores';
-
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../stores';
 interface Props {
   embedModalOpen: boolean;
   setEmbedModalOpen: Function;
@@ -26,7 +28,6 @@ export default function EmbedModal({
   setEmbedModalOpen,
 }: Props) {
   const t = useTranslations('EditProfile');
-  const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const { putApiAuthenticated } = useApi();
   // local state
@@ -38,6 +39,7 @@ export default function EmbedModal({
   );
   //store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);

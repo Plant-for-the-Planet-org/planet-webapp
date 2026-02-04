@@ -2,17 +2,18 @@ import type { APIError } from '@planet-sdk/common';
 import type { PaymentHistory } from '../../../common/types/payments';
 import type { ReactElement } from 'react';
 
-import { useContext, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore } from '../../../../stores';
+import { useAuthStore, useErrorHandlingStore } from '../../../../stores';
+import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -22,7 +23,8 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const t = useTranslations('Me');
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { accounts } = usePlanetCash();
   const { getApiAuthenticated } = useApi();
   // local state
@@ -31,10 +33,12 @@ const Transactions = ({
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  //store: state
+  // store: state
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
   );
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleRecordToggle = (index: number | undefined): void => {
     if (selectedRecord === index || index === undefined) {
@@ -85,7 +89,7 @@ const Transactions = ({
         }
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/profile/planetcash');
+        router.push(localizedPath('/profile/planetcash'));
       }
       setIsDataLoading(false);
       if (setProgress) {

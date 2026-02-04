@@ -10,7 +10,7 @@ import type { APIError } from '@planet-sdk/common';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { PaymentOptions } from '../../../../../../../src/features/user/BulkCodes/BulkCodesTypes';
 
-import { useEffect, useCallback, useContext } from 'react';
+import { useEffect, useCallback } from 'react';
 import UserLayout from '../../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import BulkCodes, {
   BulkCodeSteps,
@@ -18,7 +18,6 @@ import BulkCodes, {
 import Head from 'next/head';
 import { BulkCodeMethods } from '../../../../../../../src/utils/constants/bulkCodeConstants';
 import { useBulkCode } from '../../../../../../../src/features/common/Layout/BulkCodeContext';
-import { ErrorHandlingContext } from '../../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
@@ -32,7 +31,11 @@ import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../../src/hooks/useApi';
 import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
-import { useAuthStore, useUserStore } from '../../../../../../../src/stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../../../../src/stores';
 
 interface Props {
   pageProps: PageProps;
@@ -45,7 +48,6 @@ export default function BulkCodeIssueCodesPage({
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Me');
   const { setTenantConfig } = useTenant();
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { getApiAuthenticated } = useApi();
   const {
     project,
@@ -60,6 +62,8 @@ export default function BulkCodeIssueCodesPage({
     Boolean(state.token && state.isAuthResolved)
   );
   const userProfile = useUserStore((state) => state.userProfile);
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {
@@ -93,7 +97,7 @@ export default function BulkCodeIssueCodesPage({
             }
           } catch (err) {
             setErrors(handleError(err as APIError));
-            redirect('/');
+            router.push(localizedPath('/'));
           }
         } else {
           router.push(localizedPath('/profile/bulk-codes'));

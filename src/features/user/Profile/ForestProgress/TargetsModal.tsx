@@ -3,9 +3,8 @@ import type { SetState } from '../../../common/types/common';
 
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { handleError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
 import TargetFormInput from './TargetFormInput';
@@ -15,6 +14,7 @@ import {
   useAuthStore,
   useMyForestStore,
   useUserStore,
+  useErrorHandlingStore,
 } from '../../../../stores';
 import { transformProfileToForestUserInfo } from '../../../../utils/myForestUtils';
 
@@ -41,7 +41,6 @@ const TargetsModal = ({
   restorationTarget,
   conservationTarget,
 }: TargetsModalProps) => {
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
   const tProfile = useTranslations('Profile.progressBar');
   // states to manage modal
@@ -66,6 +65,7 @@ const TargetsModal = ({
   const setShouldRefetchUserProfile = useUserStore(
     (state) => state.setShouldRefetchUserProfile
   );
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleClose = () => {
     setOpen(false);

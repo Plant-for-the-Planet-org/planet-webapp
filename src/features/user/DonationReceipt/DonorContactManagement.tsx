@@ -2,7 +2,7 @@ import type { AddressAction } from '../../common/types/profile';
 import type { APIError, Address, User } from '@planet-sdk/common';
 import type { FormValues } from './microComponents/DonorContactForm';
 
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
@@ -15,12 +15,11 @@ import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
 import { useApi } from '../../../hooks/useApi';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import DonorContactForm from './microComponents/DonorContactForm';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { transformProfileToDonorView } from './transformers'; // TODO: remove for production
 import { validateOwnership } from './DonationReceiptValidator';
 import EditPermissionDenied from './microComponents/EditPermissionDenied';
 import { RECEIPT_STATUS } from './donationReceiptTypes';
-import { useUserStore } from '../../../stores';
+import { useUserStore, useErrorHandlingStore } from '../../../stores';
 
 type IndividualProfile = {
   firstname: string;
@@ -40,7 +39,6 @@ const DonorContactManagement = () => {
     useDonationReceiptContext();
   const t = useTranslations('DonationReceipt');
   const router = useRouter();
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
   // local state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,7 +52,9 @@ const DonorContactManagement = () => {
   );
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const isOwner = validateOwnership(email, userProfile?.email);
   if (!isOwner && getOperation() !== RECEIPT_STATUS.ISSUE)

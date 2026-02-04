@@ -35,6 +35,7 @@ import { zoomOutMap } from '../../../utils/mapsV2/zoomToProjectSite';
 import OtherInterventionInfo from '../ProjectDetails/components/OtherInterventionInfo';
 import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
+import WebGLGuard from '../../common/WebGLGuard';
 import { clsx } from 'clsx';
 import { useQueryParamStore, useProjectMapStore } from '../../../stores';
 
@@ -344,49 +345,53 @@ function ProjectsMap(props: ProjectsMapProps) {
     <>
       <MapControls {...mapControlProps} />
 
-      <div className={clsx(styles.mapContainer, mobileOS && styles[mobileOS])}>
-        {shouldShowMapTabs && (
-          <MapTabs
-            selectedTab={selectedTab}
-            setSelectedTab={setSelectedTab}
-            isTimeTravelEnabled={isTimeTravelEnabled}
-          />
-        )}
-        {shouldShowTimeTravel && (
-          <div>
-            <TimeTravel
-              sitesGeoJson={sitesGeoJson}
-              isVisible={selectedTab === 'timeTravel'}
-            />
-          </div>
-        )}
-        <Map
-          {...viewState}
-          {...mapState}
-          onMove={onMove}
-          onLoad={() => setMapLoaded(true)}
-          onMouseMove={onMouseMove}
-          onMouseOut={() => setHoveredIntervention(null)}
-          onClick={onClick}
-          attributionControl={false}
-          ref={mapRef}
-          interactiveLayerIds={
-            singleProject !== null ? INTERACTIVE_LAYERS : undefined
-          }
-          style={{ width: '100%', height: '100%' }}
+      <WebGLGuard>
+        <div
+          className={clsx(styles.mapContainer, mobileOS && styles[mobileOS])}
         >
-          {shouldShowExploreLayers && <ExploreLayers />}
-          {shouldShowSingleProjectsView && (
-            <SingleProjectView {...singleProjectViewProps} />
+          {shouldShowMapTabs && (
+            <MapTabs
+              selectedTab={selectedTab}
+              setSelectedTab={setSelectedTab}
+              isTimeTravelEnabled={isTimeTravelEnabled}
+            />
           )}
-          {shouldShowMultipleProjectsView && (
-            <MultipleProjectsView {...multipleProjectsViewProps} />
+          {shouldShowTimeTravel && (
+            <div>
+              <TimeTravel
+                sitesGeoJson={sitesGeoJson}
+                isVisible={selectedTab === 'timeTravel'}
+              />
+            </div>
           )}
-          {shouldShowNavigationControls && (
-            <NavigationControl position="bottom-right" showCompass={false} />
-          )}
-        </Map>
-      </div>
+          <Map
+            {...viewState}
+            {...mapState}
+            onMove={onMove}
+            onLoad={() => setMapLoaded(true)}
+            onMouseMove={onMouseMove}
+            onMouseOut={() => setHoveredIntervention(null)}
+            onClick={onClick}
+            attributionControl={false}
+            ref={mapRef}
+            interactiveLayerIds={
+              singleProject !== null ? INTERACTIVE_LAYERS : undefined
+            }
+            style={{ width: '100%', height: '100%' }}
+          >
+            {shouldShowExploreLayers && <ExploreLayers />}
+            {shouldShowSingleProjectsView && (
+              <SingleProjectView {...singleProjectViewProps} />
+            )}
+            {shouldShowMultipleProjectsView && (
+              <MultipleProjectsView {...multipleProjectsViewProps} />
+            )}
+            {shouldShowNavigationControls && (
+              <NavigationControl position="bottom-right" showCompass={false} />
+            )}
+          </Map>
+        </div>
+      </WebGLGuard>
       {shouldShowMultiTreeInfo && (
         <MultiTreeInfo
           activeMultiTree={selectedIntervention}

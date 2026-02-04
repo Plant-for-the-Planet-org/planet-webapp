@@ -6,14 +6,13 @@ import type { User, UserType } from '@planet-sdk/common/build/types/user';
 import { TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
 import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
 import styles from './EditProfile.module.scss';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
@@ -31,7 +30,11 @@ import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/New
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useAuthStore, useUserStore } from '../../../../stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../stores';
 
 type ProfileFormData = {
   address: string;
@@ -64,7 +67,6 @@ type UpdateProfileApiPayload = Omit<ProfileFormData, 'isPublic'> & {
 };
 
 export default function EditProfileForm() {
-  const { setErrors } = useContext(ErrorHandlingContext);
   const t = useTranslations('EditProfile');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -73,7 +75,6 @@ export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [updatingPic, setUpdatingPic] = useState(false);
-  // the form values
   const [severity, setSeverity] = useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const [localProfileType, setLocalProfileType] = useState<ProfileTypeOption>({
@@ -81,11 +82,13 @@ export default function EditProfileForm() {
     title: t('individual'),
     value: 'individual',
   });
-  //store: state
+  // store: state
   const token = useAuthStore((state) => state.token);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const [type, setAccountType] = useState(
     userProfile?.type ? userProfile.type : 'individual'

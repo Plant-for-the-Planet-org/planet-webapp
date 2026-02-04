@@ -10,7 +10,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
 import GlobeContentLoader from '../../../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
@@ -19,7 +19,6 @@ import Footer from '../../../../../../src/features/common/Layout/Footer';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
-import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import {
   constructPathsForTenantSlug,
@@ -30,7 +29,12 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
-import { useAuthStore, useUserStore } from '../../../../../../src/stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../../../src/stores';
+import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 
 interface Props {
   pageProps: PageProps;
@@ -40,8 +44,8 @@ function ManageSingleProject({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
   const t = useTranslations('Common');
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
   // local state
@@ -55,6 +59,8 @@ function ManageSingleProject({
   const token = useAuthStore((state) => state.token);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   const userProfile = useUserStore((state) => state.userProfile);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (router.isReady) {
@@ -81,7 +87,7 @@ function ManageSingleProject({
       } catch (err) {
         setAccessDenied(true);
         setErrors(handleError(err as APIError));
-        redirect('/profile');
+        router.push(localizedPath('/profile'));
       }
     }
 
@@ -159,7 +165,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country', 'manageProjects'],
+    filenames: ['common', 'maps', 'me', 'country', 'manageProjects'],
   });
 
   return {

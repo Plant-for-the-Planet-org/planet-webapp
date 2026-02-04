@@ -6,7 +6,7 @@ import type {
   RegisterTreesFormProps,
 } from '../../common/types/map';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import { MenuItem, TextField, Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
@@ -15,7 +15,6 @@ import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -23,7 +22,14 @@ import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../hooks/useApi';
 import dynamic from 'next/dynamic';
-import { useAuthStore, useUserStore } from '../../../stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../stores';
+import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import WebGLGuard from '../../common/WebGLGuard';
 
 type RegisteredTreesApiPayload = {
   treeCount: string;
@@ -44,8 +50,9 @@ function RegisterTreesForm({
   setRegistered,
 }: RegisterTreesFormProps) {
   const t = useTranslations('Me');
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated, getApiAuthenticated } = useApi();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   // local state
   const [isMultiple, setIsMultiple] = useState(false);
   const [userLocation, setUserLocation] = useState<number[] | null>(null);
@@ -60,6 +67,7 @@ function RegisterTreesForm({
   const isTpo = useUserStore((state) => state.userProfile?.type === 'tpo');
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const setShouldRefetchUserProfile = useUserStore(
     (state) => state.setShouldRefetchUserProfile
   );
@@ -138,7 +146,7 @@ function RegisterTreesForm({
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
+      router.push(localizedPath('/profile'));
     }
   }
 
@@ -276,20 +284,22 @@ function RegisterTreesForm({
               )}
             />
           )}
-          <div className={styles.mapNote}>
-            {isMultiple ? (
-              <p>{t('drawPolygon')}</p>
-            ) : (
-              <p>{t('selectLocation')}</p>
-            )}
-          </div>
-          <RegisterTreeMap
-            isMultiple={isMultiple}
-            geometry={geometry}
-            setGeometry={setGeometry}
-            userLocation={userLocation}
-            setErrorMessage={setErrorMessage}
-          />
+          <WebGLGuard>
+            <div className={styles.mapNote}>
+              {isMultiple ? (
+                <p>{t('drawPolygon')}</p>
+              ) : (
+                <p>{t('selectLocation')}</p>
+              )}
+            </div>
+            <RegisterTreeMap
+              isMultiple={isMultiple}
+              geometry={geometry}
+              setGeometry={setGeometry}
+              userLocation={userLocation}
+              setErrorMessage={setErrorMessage}
+            />
+          </WebGLGuard>
           {errorMessage !== null && (
             <div className={styles.center}>
               <p className={styles.formErrors}>{`${errorMessage}`}</p>

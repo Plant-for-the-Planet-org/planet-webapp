@@ -8,12 +8,11 @@ import type {
 } from '@planet-sdk/common';
 
 import Link from 'next/link';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import getImageUrl from '../../../utils/getImageURL';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useLocale, useTranslations } from 'next-intl';
@@ -24,7 +23,11 @@ import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useAuthStore, useUserStore } from '../../../stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../stores';
 
 type ProjectProperties =
   | ProfileProjectPropertiesFund
@@ -118,19 +121,21 @@ function SingleProject({ project }: { project: ProjectProperties }) {
 }
 
 export default function ProjectsContainer() {
+  const router = useRouter();
   const tDonate = useTranslations('Donate');
   const tManageProjects = useTranslations('ManageProjects');
   const { getApiAuthenticated } = useApi();
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { localizedPath } = useLocalizedPath();
   // local state
   const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
   const [loader, setLoader] = useState(true);
-  //store: state
+  // store: state
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
   );
   const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function loadProjects() {
     if (userProfile) {
@@ -142,7 +147,7 @@ export default function ProjectsContainer() {
         setProjects(projects);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/profile');
+        router.push(localizedPath('/profile'));
       }
       setLoader(false);
     }

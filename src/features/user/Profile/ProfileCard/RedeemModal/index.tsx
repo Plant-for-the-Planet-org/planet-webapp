@@ -8,7 +8,6 @@ import Fade from '@mui/material/Fade';
 import { useTranslations } from 'next-intl';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import { handleError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
@@ -18,6 +17,7 @@ import {
   useAuthStore,
   useMyForestStore,
   useUserStore,
+  useErrorHandlingStore,
 } from '../../../../../stores';
 import { useApi } from '../../../../../hooks/useApi';
 
@@ -35,7 +35,6 @@ export default function RedeemModal({
 }: RedeemModal): ReactElement | null {
   const t = useTranslations('Redeem');
   const { postApiAuthenticated, getApi, getApiAuthenticated } = useApi();
-  const { setErrors, errors: apiErrors } = useContext(ErrorHandlingContext);
   // local state
   const [inputCode, setInputCode] = useState<string | undefined>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
@@ -45,12 +44,14 @@ export default function RedeemModal({
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const errors = useErrorHandlingStore((state) => state.errors);
   // store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
   const setShouldRefetchUserProfile = useUserStore(
     (state) => state.setShouldRefetchUserProfile
   );
   const refetchMyForest = useMyForestStore((state) => state.fetchMyForest);
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);
@@ -140,7 +141,7 @@ export default function RedeemModal({
     >
       <Fade in={redeemModalOpen}>
         <div>
-          {redeemedCodeData === undefined && !apiErrors && (
+          {redeemedCodeData === undefined && !errors && (
             <EnterRedeemCode
               isLoading={isLoading}
               setInputCode={setInputCode}
@@ -150,7 +151,7 @@ export default function RedeemModal({
             />
           )}
 
-          {redeemedCodeData && !apiErrors && (
+          {redeemedCodeData && !errors && (
             <SuccessfullyRedeemed
               redeemedCodeData={redeemedCodeData}
               redeemAnotherCode={redeemAnotherCode}
@@ -158,9 +159,9 @@ export default function RedeemModal({
             />
           )}
 
-          {apiErrors && (
+          {errors && (
             <RedeemFailed
-              errorMessages={apiErrors}
+              errorMessages={errors}
               inputCode={inputCode}
               redeemAnotherCode={redeemAnotherCode}
               closeRedeem={closeModal}
