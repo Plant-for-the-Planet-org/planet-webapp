@@ -1,6 +1,7 @@
 import type { Country, CountryCode, CurrencyCode } from '@planet-sdk/common';
 import countriesData from './countriesData.json';
 
+// Type the imported data as Country array
 const typedCountriesData = countriesData as Country[];
 
 const sortedCountries: Record<string, Country[]> = {};
@@ -50,10 +51,30 @@ export function sortCountriesByTranslation(
   const key = `${language}.${priorityCountryCodes.join(',')}`;
 
   if (!sortedCountries[key]) {
+    // Build priority countries in the exact order specified by priorityCountryCodes
     const priorityCountries: Country[] = [];
+    const priorityCodesSet = new Set(priorityCountryCodes);
 
-    // filter priority countries from list
+    for (const code of priorityCountryCodes) {
+      const country = typedCountriesData.find((c) => c.countryCode === code);
+      if (country) {
+        // Check if currency is supported
+        if (
+          !supportedCurrencyCodes ||
+          supportedCurrencyCodes.has(country.currencyCode)
+        ) {
+          priorityCountries.push(country);
+        }
+      }
+    }
+
+    // Filter out priority countries and unsupported currencies from the remaining list
     const filteredCountries = typedCountriesData.filter((country) => {
+      // Skip if already in priority list
+      if (priorityCodesSet.has(country.countryCode)) {
+        return false;
+      }
+
       // Filter out countries with unsupported currency codes
       if (
         supportedCurrencyCodes &&
@@ -62,10 +83,6 @@ export function sortCountriesByTranslation(
         return false;
       }
 
-      if (priorityCountryCodes.includes(country.countryCode)) {
-        priorityCountries.push(country);
-        return false;
-      }
       return true;
     });
 
