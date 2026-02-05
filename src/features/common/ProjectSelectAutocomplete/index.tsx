@@ -25,7 +25,7 @@ interface ProjectSelectAutocompleteProps<T extends BaseProject> {
   projectList: T[];
   project: T | null;
   handleProjectChange?: (project: T | null) => void;
-  active?: boolean;
+  disabled?: boolean;
   showSearchIcon?: boolean;
   label?: string;
 }
@@ -34,7 +34,7 @@ const ProjectSelectAutocomplete = <T extends BaseProject>({
   projectList,
   project = null,
   handleProjectChange,
-  active = true,
+  disabled = false,
   showSearchIcon = false,
   label,
 }: ProjectSelectAutocompleteProps<T>): ReactElement | null => {
@@ -67,7 +67,7 @@ const ProjectSelectAutocomplete = <T extends BaseProject>({
       renderInput={(params) => (
         <TextField {...params} label={label || t('project')} />
       )}
-      disabled={!active}
+      disabled={disabled}
     />
   );
 };

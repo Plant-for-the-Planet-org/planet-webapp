@@ -16,14 +16,14 @@ interface ProjectSelectorProps {
   projectList: CountryProject[];
   project: CountryProject | null;
   setProject?: (project: CountryProject | null) => void;
-  active?: boolean;
+  disabled?: boolean;
   planetCashAccount: PlanetCashAccount | null;
 }
 const ProjectSelector = ({
   projectList,
   project,
   setProject,
-  active = true,
+  disabled = false,
   planetCashAccount,
 }: ProjectSelectorProps): ReactElement | null => {
   const tBulkCodes = useTranslations('BulkCodes');
@@ -72,7 +72,7 @@ const ProjectSelector = ({
         handleProjectChange={handleProjectChange}
         project={project}
         projectList={projectList || []}
-        active={active}
+        disabled={disabled}
         showSearchIcon={true}
         label={tBulkCodes('labelProject')}
       />

@@ -188,7 +188,6 @@ const DonationLinkForm = ({
               handleProjectChange={handleProjectChange}
               project={localProject}
               projectList={projectsList || []}
-              active={true}
               showSearchIcon={true}
               label={tDonationLink('labelProject')}
             />

@@ -312,7 +312,7 @@ const IssueCodesForm = (): ReactElement | null => {
             <ProjectSelector
               projectList={projectList || []}
               project={project}
-              active={false}
+              disabled={true}
               planetCashAccount={planetCashAccount}
             />
             <TextField
