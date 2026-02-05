@@ -31,11 +31,10 @@ const MainNavigationHeader = () => {
 };
 
 export default function Navbar() {
-  // store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
-  if (!tenantConfig) return null;
-
+  const isInitialized = useTenantStore((state) => state.isInitialized);
   const { setUser, logoutUser, auth0Error } = useUserProps();
+
+  if (!isInitialized) return null;
 
   if (auth0Error) {
     const { message } = auth0Error;
