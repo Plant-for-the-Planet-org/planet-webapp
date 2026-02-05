@@ -23,7 +23,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import GetPublicUserProfileMeta from '../../../../../src/utils/getMetaTags/GetPublicUserProfileMeta';
-import { ProjectsProvider } from '../../../../../src/features/projectsV2/ProjectsContext';
+
 import { useApi } from '../../../../../src/hooks/useApi';
 import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
@@ -76,12 +76,10 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
     <>
       <GetPublicUserProfileMeta userprofile={profile} />
       <PublicProfileOuterContainer>
-        <ProjectsProvider>
-          <PublicProfileLayout
-            profile={profile}
-            isProfileLoaded={profile !== null && profile !== undefined}
-          />
-        </ProjectsProvider>
+        <PublicProfileLayout
+          profile={profile}
+          isProfileLoaded={profile !== null && profile !== undefined}
+        />
       </PublicProfileOuterContainer>
     </>
   ) : (
