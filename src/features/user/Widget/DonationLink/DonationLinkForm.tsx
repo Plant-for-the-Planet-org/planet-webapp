@@ -9,8 +9,7 @@ import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry'
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
-
-import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
+import ProjectSelectAutocomplete from '../../../common/ProjectSelectAutocomplete';
 import styles from '../../../../../src/features/user/Widget/DonationLink/DonationLinkForm.module.scss';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import {
@@ -190,7 +189,8 @@ const DonationLinkForm = ({
               handleProjectChange={handleProjectChange}
               project={localProject}
               projectList={projectsList || []}
-              active={true}
+              showSearchIcon={true}
+              label={tDonationLink('labelProject')}
             />
           </div>
           <div className={styles.formSection}>
