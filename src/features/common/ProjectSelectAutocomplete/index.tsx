@@ -28,6 +28,7 @@ interface ProjectSelectAutocompleteProps<T extends BaseProject> {
   disabled?: boolean;
   showSearchIcon?: boolean;
   label?: string;
+  id?: string;
 }
 
 const ProjectSelectAutocomplete = <T extends BaseProject>({
@@ -37,6 +38,7 @@ const ProjectSelectAutocomplete = <T extends BaseProject>({
   disabled = false,
   showSearchIcon = false,
   label,
+  id = 'project-select-autocomplete',
 }: ProjectSelectAutocompleteProps<T>): ReactElement | null => {
   const [localProject, setLocalProject] = useState<T | null>(project);
   const t = useTranslations('Common');
@@ -53,7 +55,8 @@ const ProjectSelectAutocomplete = <T extends BaseProject>({
 
   return (
     <MuiAutocomplete
-      popupIcon={showSearchIcon ? SearchIcon() : undefined}
+      id={id}
+      popupIcon={showSearchIcon ? <SearchIcon /> : undefined}
       options={projectList}
       getOptionLabel={(option) => option.name}
       isOptionEqualToValue={(option, value) => option.guid === value.guid}
