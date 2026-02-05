@@ -50,7 +50,7 @@ const Analytics = () => {
   }, []);
 
   return isLoaded ? (
-    <DashboardView title={t('title')} subtitle={null}>
+    <DashboardView title={t('title')}>
       {projectList && projectList.length > 0 ? (
         <>
           <ProjectFilter />
