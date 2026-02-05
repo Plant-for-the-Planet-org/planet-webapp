@@ -41,12 +41,7 @@
     "daysAgo": "vor {days} Tagen",
     "today": "Heute",
     "yesterday": "Gestern",
-    "clickForDetails": "Klicke für Details",
     "treeMapper": "TreeMapper",
-    "showProjectList": "Projektliste anzeigen",
-    "showProjectDetails": "Projektdetails anzeigen",
-    "hideProjectList": "Projektliste ausblenden",
-    "hideProjectDetails": "Projektdetails ausblenden",
     "countries": "Länder",
     "exploreLayers": {
       "title": "Entdecken",
@@ -246,20 +241,33 @@
     },
     "timeTravel": {
       "errors": {
-        "imageryNotAvailable": "{year} Bilder sind nicht auf diesem Zoom-Level verfügbar. Bitte versuchen Sie heraus zu zoomen.",
-        "invalidGeoJson": "Fehlende oder ungültige GeoJSON-Daten",
+        "imageryNotAvailable": "Bildmaterial für {year} ist auf diesem Zoom-Level nicht verfügbar. Bitte versuchen Sie, die Ansicht zu verkleinern.",
+        "invalidGeoJson": "Ungültige oder fehlende GeoJSON-Daten",
         "configNotAvailable": "Zeitreise-Konfiguration nicht verfügbar",
-        "yearNotFoundInSource": "Jahr {year} nicht in Quelle {source} gefunden",
-        "configNotFoundForYear": "Konfiguration für {year} nicht gefunden",
-        "containerNotFound": "Karten-Container Element nicht gefunden",
-        "mapInitializationFailed": "Initialisierung von Karten fehlgeschlagen",
-        "comparisonInitializationFailed": "Initialisierung von Vergleich fehlgeschlagen",
-        "mapError": "Karten-Fehler: {message}",
-        "layerLoadFailed": "Karten-Ebenen konnten nicht geladen werden",
-        "unsupportedSourceType": "Nicht unterstützte Quelle: {source}"
+        "yearNotFoundInSource": "Jahr {year} nicht in Quelle gefunden {source}",
+        "configNotFoundForYear": "Konfiguration für Jahr {year} nicht gefunden.",
+        "containerNotFound": "Map-Container-Element nicht gefunden",
+        "mapInitializationFailed": "Karten konnten nicht initialisiert werden",
+        "comparisonInitializationFailed": "Vergleich konnte nicht initialisiert werden",
+        "mapError": "Kartenfehler: {message}",
+        "layerLoadFailed": "Kartenebenen konnten nicht geladen werden",
+        "unsupportedSourceType": "Nicht unterstützter Quellentyp: {source}"
       },
       "loading": "Laden...",
-      "genericHistoricalYear": "Historische"
+      "genericHistoricalYear": "Historisch"
+    },
+    "mapFeatureSupport": {
+      "loadingMap": "Karte laden...",
+      "notSupportedError": {
+        "title": "Grafikbeschleunigung erforderlich",
+        "message": "Diese Karte benötigt Grafikbeschleunigung, um richtig zu funktionieren. Diese Funktion ist möglicherweise in den Einstellungen Ihres Browsers deaktiviert oder in Ihrer aktuellen Umgebung nicht verfügbar (z. B. bei Remote-Desktop-Verbindungen).",
+        "solutionTitle": "So aktivieren Sie die Grafikbeschleunigung:",
+        "solutionChrome": "<strong>Chrome:</strong> Einstellungen → Erweitert → System → Aktivieren Sie \"Grafikbeschleunigung verwenden, wenn verfügbar\"",
+        "solutionFirefox": "<strong>Firefox:</strong> Einstellungen → Allgemein → Leistung → \"Empfohlene Leistungseinstellungen verwenden\" deaktivieren",
+        "solutionEdge": "<strong>Edge:</strong> Einstellungen → System → Aktivieren Sie \"Hardwarebeschleunigung verwenden, wenn verfügbar\"",
+        "contactInfo": "Sollten Sie weiterhin Probleme haben, kontaktieren Sie uns bitte unter support@plant-for-the-planet.org.",
+        "technicalDetails": "Technische Details"
+      }
     }
   }
 }

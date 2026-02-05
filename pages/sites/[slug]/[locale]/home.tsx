@@ -98,7 +98,7 @@ export default function Home({ pageProps }: Props) {
         return (
           <HomePage
             leaderboard={leaderboard}
-            tenantScore={{ total: 55000000 }} //temp for SF
+            tenantScore={{ total: 65000000 }} //temp for SF
           />
         );
       case 'stern':

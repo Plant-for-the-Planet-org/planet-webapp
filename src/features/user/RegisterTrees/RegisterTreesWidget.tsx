@@ -26,6 +26,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import WebGLGuard from '../../common/WebGLGuard';
 
 type RegisteredTreesApiPayload = {
   treeCount: string;
@@ -275,20 +276,22 @@ function RegisterTreesForm({
               )}
             />
           )}
-          <div className={styles.mapNote}>
-            {isMultiple ? (
-              <p>{t('drawPolygon')}</p>
-            ) : (
-              <p>{t('selectLocation')}</p>
-            )}
-          </div>
-          <RegisterTreeMap
-            isMultiple={isMultiple}
-            geometry={geometry}
-            setGeometry={setGeometry}
-            userLocation={userLocation}
-            setErrorMessage={setErrorMessage}
-          />
+          <WebGLGuard>
+            <div className={styles.mapNote}>
+              {isMultiple ? (
+                <p>{t('drawPolygon')}</p>
+              ) : (
+                <p>{t('selectLocation')}</p>
+              )}
+            </div>
+            <RegisterTreeMap
+              isMultiple={isMultiple}
+              geometry={geometry}
+              setGeometry={setGeometry}
+              userLocation={userLocation}
+              setErrorMessage={setErrorMessage}
+            />
+          </WebGLGuard>
           {errorMessage !== null && (
             <div className={styles.center}>
               <p className={styles.formErrors}>{`${errorMessage}`}</p>

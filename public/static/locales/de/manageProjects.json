@@ -278,6 +278,24 @@
         "longitudeRange": "Der Längengrad muss zwischen -180 und 180 liegen."
       }
     },
-    "editSite": "Seite bearbeiten"
+    "editSite": "Seite bearbeiten",
+    "syncSites": {
+      "modal": {
+        "title": "Standortdaten an Restor.eco senden",
+        "terms": "Durch Klicken auf <highlightedAction>Senden</highlightedAction> werden Ihre Standortdaten an <restorLink>Restor.eco</restorLink> übermittelt. Bitte beachten Sie, dass hierfür die <privacyPolicyLink> Datenschutzbestimmungen von Restor.eco</privacyPolicyLink> gelten.",
+        "requirements": {
+          "title": "Voraussetzungen:",
+          "activeAccount": "<bold>Aktives Konto:</bold> Stellen Sie sicher, dass Sie über ein aktives Konto bei Restor.eco verfügen, bevor Sie fortfahren.",
+          "consultation": "<bold>Rücksprache:</bold> Bitte nutzen Sie diese Funktion nur, wenn Sie sich zuvor mit dem Team von Plant-for-the-Planet abgestimmt haben."
+        },
+        "helpText": "Falls Sie Fragen zu dieser Integration haben, wenden Sie sich bitte an <emailLink>{email}</emailLink>."
+      },
+      "send": "Senden",
+      "cancel": "Abbrechen",
+      "syncing": "Synchronisieren...",
+      "syncSitesToRestorEco": "Sites mit Restor.eco synchronisieren",
+      "success": "Ihre Sites wurden erfolgreich mit Restor.eco synchronisiert!",
+      "error": "Die Synchronisierung der Site-Daten ist fehlgeschlagen. Bitte versuchen Sie es später erneut."
+    }
   }
 }

@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import type { CountryCode, CurrencyCode } from '@planet-sdk/common';
+import type { Country, CountryCode } from '@planet-sdk/common';
 
 import {
   Modal,
@@ -39,17 +39,7 @@ interface TransitionsModalProps {
   setSelectedCountry: Function;
 }
 
-interface countryInterface {
-  countryName: string;
-  countryCode: CountryCode;
-  currencyName: string;
-  currencyCode: string;
-  currencyCountryFlag: string;
-  languageCode: string;
-}
-
 // Maps the radio buttons for language
-
 function MapLanguage({ value, handleChange }: MapLanguageProps) {
   const { tenantConfig } = useTenant();
 
@@ -110,13 +100,13 @@ function MapCountry({ value, handleChange }: MapCountryProps) {
         onChange={handleChange}
         className={styles.currencyGrid}
       >
-        {sortedCountriesData.map((country: countryInterface) => (
+        {sortedCountriesData.map((country: Country) => (
           <FormControlLabel
             key={country.countryCode}
             value={country.countryCode}
             control={<GreenRadio />}
             label={
-              t(country.countryCode.toLowerCase()) +
+              t(country.countryCode.toLowerCase() as Lowercase<CountryCode>) +
               ' · ' +
               country.currencyCode
             }
@@ -154,19 +144,19 @@ export default function TransitionsModal({
     setSelectedModalCountry(event.target.value);
   };
 
-  // changes the language and currency code in footer state and local storage
-  // when user clicks on OK
+  // changes the language and currency code in footer state and local storage when user clicks on OK
   function handleOKClick() {
     window.localStorage.setItem('countryCode', selectedModalCountry);
     setSelectedCountry(selectedModalCountry);
-    const currencyCode = (
-      getCountryDataBy('countryCode', selectedModalCountry) as countryInterface
-    ).currencyCode;
-    if (currencyCode) {
-      window.localStorage.setItem('currencyCode', currencyCode);
-      setSelectedCurrency(currencyCode);
-      setCurrencyCode(currencyCode as CurrencyCode);
+
+    const country = getCountryDataBy('countryCode', selectedModalCountry);
+
+    if (country?.currencyCode) {
+      window.localStorage.setItem('currencyCode', country.currencyCode);
+      setSelectedCurrency(country.currencyCode);
+      setCurrencyCode(country.currencyCode);
     }
+
     // TODO - loader while changing the locale
     if (modalLanguage !== locale) {
       const { asPath, pathname } = router;
@@ -190,6 +180,7 @@ export default function TransitionsModal({
       setModalLanguage(locale);
     }
   }, [locale]);
+
   // changes the selected country in local state whenever the currency changes
   // in Footer state
   useEffect(() => {

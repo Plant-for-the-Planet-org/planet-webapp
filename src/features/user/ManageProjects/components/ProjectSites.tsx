@@ -9,7 +9,7 @@ import type {
 } from '../../../common/types/project';
 import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -28,6 +28,7 @@ import SitePreviewMap from './microComponent/SitePreviewMap';
 import themeProperties from '../../../../theme/themeProperties';
 import CustomModal from '../../../common/Layout/CustomModal';
 import EditSite from './microComponent/EditSite';
+import SitesSyncActions from './microComponent/SitesSyncActions';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import { useRouter } from 'next/router';
@@ -81,6 +82,10 @@ export default function ProjectSites({
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [isSyncingSites, setIsSyncingSites] = useState(false);
+  const [isSiteSyncModalOpen, setIsSiteSyncModalOpen] = useState(false);
+  const [isSiteSyncSuccessful, setIsSiteSyncSuccessful] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
@@ -265,6 +270,41 @@ export default function ProjectSites({
     setOpenModal(true);
   };
 
+  const handleSyncSites = useCallback(async () => {
+    // prevent multiple parallel syncs
+    if (isSyncingSites) return;
+
+    const webhookBase = process.env.WEBHOOK_URL;
+    if (!webhookBase) {
+      console.warn('WEBHOOK_URL is not defined');
+      return;
+    }
+    setIsSyncingSites(true);
+
+    try {
+      const modeParam =
+        process.env.NEXT_PUBLIC_APP_ENV === 'production' ? '' : '&mode=dev';
+      const webhookUrl = `${webhookBase}/33878023-ee47-44e1-8a62-34eb2d2b3246/?project=${projectGUID}${modeParam}`;
+      const response = await fetch(webhookUrl, {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Webhook call failed with status ${response.status}`);
+      }
+
+      setIsSiteSyncSuccessful(true);
+      setSnackbarOpen(true);
+      setErrorMessage(null);
+    } catch (err) {
+      console.error('Sync error:', err);
+      setErrorMessage(t('syncSites.error'));
+    } finally {
+      setIsSyncingSites(false);
+      setIsSiteSyncModalOpen(false);
+    }
+  }, [isSyncingSites, projectGUID, t]);
+
   const EditProps = {
     openModal,
     handleModalClose,
@@ -407,20 +447,31 @@ export default function ProjectSites({
             </Button>
           </div>
         ) : (
-          <Button
-            id={'manageProjAddSite'}
-            onClick={() => {
-              setShowForm(true);
-              setGeoJson(null);
-              setSiteDetails(defaultSiteDetails);
-              setSiteGUID(null);
-              setEditMode(false);
-              setOpenModal(false);
-            }}
-            className={styles.formFieldLarge}
-          >
-            <p className={styles.inlineLinkButton}>{t('addSite')}</p>
-          </Button>
+          <div className={styles.syncAndAddSitesButtons}>
+            <button
+              className={styles.inlineLinkButton}
+              type="button"
+              onClick={() => {
+                setShowForm(true);
+                setGeoJson(null);
+                setSiteDetails(defaultSiteDetails);
+                setSiteGUID(null);
+                setEditMode(false);
+                setOpenModal(false);
+              }}
+            >
+              {t('addSite')}
+            </button>
+            <SitesSyncActions
+              isSyncingSites={isSyncingSites}
+              isSiteSyncModalOpen={isSiteSyncModalOpen}
+              setIsSiteSyncModalOpen={setIsSiteSyncModalOpen}
+              isSiteSyncSuccessful={isSiteSyncSuccessful}
+              snackbarOpen={snackbarOpen}
+              setSnackbarOpen={setSnackbarOpen}
+              handleSyncSites={handleSyncSites}
+            />
+          </div>
         )}
 
         {errorMessage !== null && (
