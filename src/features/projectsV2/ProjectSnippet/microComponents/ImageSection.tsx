@@ -16,7 +16,7 @@ import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useSingleProjectStore, useViewStore } from '../../../../stores';
+import { useViewStore } from '../../../../stores';
 
 const MAX_NAME_LENGTH = 32;
 

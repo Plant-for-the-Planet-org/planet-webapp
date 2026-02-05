@@ -10,7 +10,6 @@ import type {
   CountryCode,
   CurrencyCode,
 } from '@planet-sdk/common';
-import type { SetState } from '../../common/types/common';
 
 import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
