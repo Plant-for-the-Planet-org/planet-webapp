@@ -17,8 +17,8 @@ import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 const ProjectListPage: NextPageWithLayout = ({ isMobile }) => {
   // store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
-  if (!tenantConfig) return <></>;
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  if (!isInitialized) return <></>;
 
   return <ProjectsSection isMobile={isMobile} />;
 };

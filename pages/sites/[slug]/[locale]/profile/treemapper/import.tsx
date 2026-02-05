@@ -21,8 +21,8 @@ export default function Import(): ReactElement {
   const t = useTranslations('Treemapper');
   const { user } = useUserProps();
   // store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
-  if (!tenantConfig) return <></>;
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  if (!isInitialized) return <></>;
 
   return (
     <UserLayout>
