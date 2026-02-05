@@ -16,6 +16,9 @@ interface Props {
 export default function ProjectDetailsMeta({ project }: Props): ReactElement {
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+
+  if (!isInitialized) return <></>;
 
   const description = truncateString(project.description, 147);
   return (
