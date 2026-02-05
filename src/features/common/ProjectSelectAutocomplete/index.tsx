@@ -63,9 +63,9 @@ const ProjectSelectAutocomplete = <T extends BaseProject>({
       value={localProject}
       onChange={(_event, newValue) => setLocalProject(newValue as T | null)}
       renderOption={(props, option) => (
-        <span {...props} key={option.guid}>
+        <li {...props} key={option.guid}>
           {option.name}
-        </span>
+        </li>
       )}
       renderInput={(params) => (
         <TextField {...params} label={label || t('project')} />
