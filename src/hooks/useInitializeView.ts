@@ -29,6 +29,10 @@ export const useInitializeView = (isMobile: boolean) => {
 
   useEffect(() => {
     if (!isMobile) return;
+    /**
+     * Mobile-only behavior:
+     * Always default to list view on project details page
+     */
     if (currentPage === 'project-details') {
       setSelectedMode('list');
     }

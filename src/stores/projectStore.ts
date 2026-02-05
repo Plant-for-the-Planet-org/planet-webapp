@@ -10,14 +10,18 @@ import { getTopProjects } from '../utils/projectV2';
 
 interface ProjectStore {
   projects: MapProject[] | null;
+  /** Subset of projects highlighted in UI (derived from projects response) */
   topProjects: MapProject[] | null;
   isProjectsFetching: boolean;
   isProjectsError: boolean;
   showDonatableProjects: boolean;
+  /** Locale used when projects were last fetched */
   projectsLocale: string | null;
+  /** Currency used when projects were last fetched */
   projectsCurrencyCode: string | null;
   selectedClassification: TreeProjectClassification[];
   isSearching: boolean;
+  /** Debounced search input used to avoid excessive filtering/API calls */
   debouncedSearchValue: string;
 
   fetchProjects: (
@@ -30,10 +34,16 @@ interface ProjectStore {
   ) => void;
   setIsSearching: (isSearching: boolean) => void;
   setDebouncedSearchValue: (value: string) => void;
-
+  /** Resets all project filtering & search related UI state */
   clearFilterStates: () => void;
 }
 
+/**
+ * Handles project listing state including:
+ * - Project fetching & caching
+ * - Filtering and search UI state
+ * - Locale & currency awareness for fetched projects
+ */
 export const useProjectStore = create<ProjectStore>()(
   devtools(
     (set) => ({

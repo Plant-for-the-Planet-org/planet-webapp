@@ -5,6 +5,10 @@ export type ViewMode = 'list' | 'map';
 export type Page = 'project-list' | 'project-details' | null;
 interface ViewStore {
   page: Page;
+  /**
+   * View mode is primarily used for mobile layouts
+   * (e.g. map ↔ list toggle on project details, project list page).
+   */
   selectedMode: ViewMode;
 
   setPage: (currentPage: Page) => void;

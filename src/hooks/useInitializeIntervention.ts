@@ -46,6 +46,16 @@ export const useInitializeIntervention = () => {
   const hasInterventions =
     interventions?.length !== undefined && interventions?.length > 0;
 
+  /**
+   * Initialize intervention selection for project details page.
+   * Selects an intervention only when:
+   * - Router is ready
+   * - We are on project-details
+   * - Interventions are loaded
+   * - No site or intervention is already selected
+   * - URL explicitly requests an intervention
+   * - URL does not request both site and intervention together
+   */
   useEffect(() => {
     if (!router.isReady) return;
     if (currentPage === 'project-list') return;

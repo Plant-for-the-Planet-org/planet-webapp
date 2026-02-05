@@ -17,19 +17,35 @@ import {
 
 interface SingleProjectStore {
   singleProject: ExtendedProject | null;
+  /**
+   * Index of the currently selected site in `singleProject.sites`.
+   * `null` indicates no site is selected.
+   */
   selectedSite: number | null;
 
   isFetching: boolean;
   fetchError: boolean;
-
+  /**
+   * Fetches a single project and initializes related side effects.
+   *
+   * Side effects:
+   * - Fetches interventions for tree projects
+   * - Initializes map time-travel config for supported project types
+   * - Forwards errors to the global error store
+   */
   fetchProject: (
     getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>,
     config: ApiConfigBase,
     projectSlug: string
   ) => Promise<void>;
 
+  // Use when only local state update is required (no routing)
   setSelectedSite: (sideIndex: number | null) => void;
 
+  /**
+   * Updates the project details route using shallow routing.
+   * Keeps internal query params while exposing only visible params in the URL.
+   */
   updateProjectDetailsPath: (
     locale: string,
     projectSlug: string,
@@ -42,6 +58,15 @@ interface SingleProjectStore {
     siteId: string | null,
     router: NextRouter
   ) => void;
+
+  /**
+   * Selects a site by index and synchronizes the URL.
+   *
+   * - Clears intervention selection/hover state
+   * - Updates the siteId query param via shallow routing
+   * - Updates selectedSite state
+   */
+  // Use when site selection must be reflected in the URL
   selectSiteAndSyncUrl: (
     index: number | null,
     locale: string,
@@ -50,6 +75,16 @@ interface SingleProjectStore {
 
   clearProjectStates: () => void;
 }
+
+/**
+ * SingleProjectStore
+ *
+ * Manages state for a single project including:
+ * - Project data fetching
+ * - Selected site state
+ * - URL synchronization
+ * - Side effects with map and intervention stores
+ */
 
 export const useSingleProjectStore = create<SingleProjectStore>()(
   devtools(

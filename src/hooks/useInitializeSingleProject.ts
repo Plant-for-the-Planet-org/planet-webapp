@@ -20,12 +20,12 @@ const getSiteIndexById = (
 };
 
 export const useInitializeSingleProject = () => {
+  const locale = useLocale();
   const router = useRouter();
   const { site: requestedSite, ploc: requestedIntervention } = router.query;
   const hasOnlyRequestedIntervention = Boolean(
     !requestedSite && requestedIntervention
   );
-  const locale = useLocale();
   // store: state
   const currentPage = useViewStore((state) => state.page);
   const singleProject = useSingleProjectStore((state) => state.singleProject);
@@ -44,7 +44,14 @@ export const useInitializeSingleProject = () => {
   const projectSites = singleProject?.sites ?? [];
   const hasProjectSites = projectSites.length > 0;
 
-  // for project site shallow routing
+  /**
+   * Initialize site selection for project details page.
+   * Selects a site only when:
+   * - Router is ready
+   * - We are on project-details
+   * - No site or intervention is already selected
+   * - URL does not explicitly request an intervention
+   */
   useEffect(() => {
     if (!router.isReady) return;
     if (currentPage === 'project-list') return;
@@ -54,11 +61,12 @@ export const useInitializeSingleProject = () => {
     if (hasOnlyRequestedIntervention) return;
 
     let siteIndex: number | null = null;
-
+    // If site is provided in the URL, try to resolve it
     if (isString(requestedSite) && hasProjectSites) {
       const index = getSiteIndexById(projectSites, requestedSite);
       siteIndex = index !== -1 ? index : FIRST_SITE_INDEX;
     } else {
+      // Default to first site (or null if no sites exist)
       siteIndex = hasProjectSites ? FIRST_SITE_INDEX : null;
     }
 
@@ -71,6 +79,7 @@ export const useInitializeSingleProject = () => {
     selectedSite,
   ]);
 
+  // Clear single-project state when navigating back to the project list.
   useEffect(() => {
     if (currentPage === 'project-list') clearProjectStates();
   }, [currentPage]);

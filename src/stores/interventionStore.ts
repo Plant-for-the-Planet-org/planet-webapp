@@ -24,6 +24,10 @@ interface InterventionStore {
   isFetching: boolean;
   fetchError: boolean;
 
+  /**
+   * Fetches interventions for a project.
+   * Uses extended scope to include sample interventions.
+   */
   fetchInterventions: (
     getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>,
     projectId: string
@@ -36,6 +40,14 @@ interface InterventionStore {
   setSelectedInterventionType: (interventionType: INTERVENTION_TYPE) => void;
   setHoveredIntervention: (intervention: Intervention | null) => void;
 
+  /**
+   * Selects an intervention and synchronizes the URL.
+   *
+   * Side effects:
+   * - Clears selected site (interventions are site-agnostic)
+   * - Updates selected intervention state
+   * - Updates URL with intervention (plocId) via shallow routing
+   */
   selectInterventionSyncUrl: (
     intervention: Intervention,
     locale: string,
@@ -44,9 +56,22 @@ interface InterventionStore {
   ) => void;
 
   clearInterventionStates: () => void;
+  /**
+   * Clears only selection and hover state.
+   * Used when navigating between views or syncing URL state.
+   */
   clearInterventionSelectionAndHover: () => void;
 }
 
+/**
+ * InterventionStore
+ *
+ * Manages intervention-related state including:
+ * - Fetching interventions for a project
+ * - Selection, hover, and filtering state
+ * - URL synchronization when an intervention is selected
+ * - Coordination with SingleProjectStore (site reset)
+ */
 export const useInterventionStore = create<InterventionStore>()(
   devtools(
     (set) => ({
@@ -71,7 +96,6 @@ export const useInterventionStore = create<InterventionStore>()(
             `/app/interventions/${projectId}`,
             {
               queryParams: {
-                // Fetches sampleInterventions within each intervention
                 _scope: 'extended',
               },
             }

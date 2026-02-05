@@ -32,6 +32,7 @@ export const useInitializeProject = () => {
 
   useEffect(() => {
     if (currentPage !== 'project-list' || !currencyCode) return;
+    // Avoid refetching if projects are already loaded for the same locale and currency
     if (
       projectsLocale === locale &&
       projectsCurrencyCode === currencyCode &&
