@@ -37,7 +37,7 @@ export const SpeciesPlanted = () => {
     url: '/api/data-explorer/species-planted',
     method: HTTP_METHOD.POST,
     body: {
-      projectId: project?.id,
+      projectId: project?.guid,
       startDate: fromDate,
       endDate: toDate,
     },

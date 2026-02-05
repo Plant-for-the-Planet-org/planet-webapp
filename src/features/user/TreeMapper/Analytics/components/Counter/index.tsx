@@ -30,7 +30,7 @@ export const Counter = () => {
     url: '/api/data-explorer/total-trees-planted',
     method: HTTP_METHOD.POST,
     body: {
-      projectId: project?.id,
+      projectId: project?.guid,
       startDate: fromDate,
       endDate: toDate,
     },
@@ -42,7 +42,7 @@ export const Counter = () => {
     url: '/api/data-explorer/total-species-planted',
     method: HTTP_METHOD.POST,
     body: {
-      projectId: project?.id,
+      projectId: project?.guid,
       startDate: fromDate,
       endDate: toDate,
     },
