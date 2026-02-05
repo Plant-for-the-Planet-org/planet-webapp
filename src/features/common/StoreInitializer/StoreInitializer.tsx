@@ -5,6 +5,10 @@ import { useInitializeIntervention } from '../../../hooks/useInitializeIntervent
 import { useInitializeView } from '../../../hooks/useInitializeView';
 import { useInitializeSingleProject } from '../../../hooks/useInitializeSingleProject';
 
+interface StoreInitializerProp {
+  isMobile: boolean;
+}
+
 /**
  * StoreInitializer Component
  *
@@ -17,10 +21,10 @@ import { useInitializeSingleProject } from '../../../hooks/useInitializeSinglePr
  * - Component:     src/features/common/StoreInitializer/StoreInitializer.tsx
  */
 
-export const StoreInitializer = () => {
+export const StoreInitializer = ({ isMobile }: StoreInitializerProp) => {
   useInitializeParams();
   useInitializeCurrency();
-  useInitializeView();
+  useInitializeView(isMobile);
   useInitializeProject();
   useInitializeSingleProject();
   useInitializeIntervention();

@@ -1,18 +1,13 @@
 import { useEffect } from 'react';
 import { useViewStore } from '../stores/viewStore';
-import { useInterventionStore } from '../stores';
 import { useRouter } from 'next/router';
 
-export const useInitializeView = () => {
+export const useInitializeView = (isMobile: boolean) => {
   const router = useRouter();
   // store: state
   const currentPage = useViewStore((state) => state.page);
-  const selectedMode = useViewStore((state) => state.selectedMode);
   // store: action
   const setPage = useViewStore((state) => state.setPage);
-  const clearInterventionSelectionAndHover = useInterventionStore(
-    (state) => state.clearInterventionSelectionAndHover
-  );
   const setSelectedMode = useViewStore((state) => state.setSelectedMode);
 
   useEffect(() => {
@@ -33,14 +28,7 @@ export const useInitializeView = () => {
   }, [router.isReady, router.pathname, router.query, currentPage, setPage]);
 
   useEffect(() => {
-    if (selectedMode === 'map') return;
-
-    if (currentPage === 'project-details') {
-      clearInterventionSelectionAndHover();
-    }
-  }, [currentPage, selectedMode]);
-
-  useEffect(() => {
+    if (!isMobile) return;
     if (currentPage === 'project-details') {
       setSelectedMode('list');
     }

@@ -21,6 +21,9 @@ import {
   useSingleProjectStore,
   useViewStore,
 } from '../../../stores';
+import { useLocale } from 'next-intl';
+import { useRouter } from 'next/router';
+import { FIRST_SITE_INDEX } from '../../../utils/projectV2';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -35,6 +38,8 @@ const MapControls = ({
   currentPage,
   mobileOS,
 }: MapControlsProps) => {
+  const locale = useLocale();
+  const router = useRouter();
   // local state
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
   // store: state
@@ -61,6 +66,9 @@ const MapControls = ({
   );
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
   const setSelectedMode = useViewStore((state) => state.setSelectedMode);
+  const selectSiteAndSyncUrl = useSingleProjectStore(
+    (state) => state.selectSiteAndSyncUrl
+  );
 
   const availableInterventionTypes = useMemo(() => {
     if (!interventions) return [];
@@ -96,7 +104,17 @@ const MapControls = ({
     setActiveDropdown,
     availableInterventionTypes,
   };
-  const exitMapMode = () => setSelectedMode('list');
+  const exitMapMode = () => {
+    setSelectedMode('list');
+    // Mobile-only behavior: switching from map to list on project details
+    // resets intervention state, selects the first available site (or null),
+    // and syncs the site via shallow routing.
+    selectSiteAndSyncUrl(
+      hasProjectSites ? FIRST_SITE_INDEX : null,
+      locale,
+      router
+    );
+  };
 
   const layerToggleClass = clsx(styles.layerToggle, {
     [styles.layerToggleAndroid]: isMobile && mobileOS === 'android',
