@@ -192,6 +192,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const shouldShowSingleProjectsView =
     singleProject !== null && currentPage === 'project-details' && mapLoaded;
   const shouldShowMultipleProjectsView =
+    currentPage === 'project-list' &&
     Boolean(mapOptions.projects) &&
     projects &&
     projects.length > 0 &&
