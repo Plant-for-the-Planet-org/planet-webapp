@@ -10,14 +10,14 @@ export interface DirectGiftI {
   id: string;
   displayName: string;
   type: string;
-  show: boolean;
-}
-interface Props {
-  directGift: DirectGiftI;
-  setShowDirectGift: SetState<boolean>;
 }
 
-export default function DirectGift({ directGift, setShowDirectGift }: Props) {
+interface Props {
+  directGift: DirectGiftI;
+  setDirectGift: SetState<DirectGiftI | null>;
+}
+
+export default function DirectGift({ directGift, setDirectGift }: Props) {
   const t = useTranslations('Donate');
   const { localizedPath } = useLocalizedPath();
   return (
@@ -36,9 +36,8 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
       <button
         id={'giftClose'}
         onClick={() => {
-          directGift.show = false;
           localStorage.removeItem('directGift');
-          setShowDirectGift(false);
+          setDirectGift(null);
         }}
         className={styles.closeButton}
       >
