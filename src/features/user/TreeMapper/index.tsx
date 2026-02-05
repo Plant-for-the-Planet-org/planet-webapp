@@ -6,7 +6,7 @@ import type {
 import type { Links } from '../../common/types/payments';
 import type { ReactElement } from 'react';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './TreeMapper.module.scss';
 import dynamic from 'next/dynamic';
 import TreeMapperList from './components/TreeMapperList';
@@ -14,10 +14,11 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import InterventionPage from './components/InterventionPage';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 const InterventionMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
@@ -42,17 +43,20 @@ export interface ExtendedScopeInterventions {
 
 function TreeMapper(): ReactElement {
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const { token, contextLoaded } = useUserProps();
   const t = useTranslations('Treemapper');
   const { getApiAuthenticated } = useApi();
+  // local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [interventions, setInterventions] = useState<Intervention[]>([]);
   const [selectedIntervention, setSelectedIntervention] = useState<
     Intervention | SampleTreeRegistration | null
   >(null);
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const [links, setLinks] = useState<Links>();
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
@@ -92,7 +96,7 @@ function TreeMapper(): ReactElement {
         }
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/profile');
+        router.push(localizedPath('/profile'));
       }
     } else {
       try {
@@ -133,7 +137,7 @@ function TreeMapper(): ReactElement {
         }
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/profile');
+        router.push(localizedPath('/profile'));
       }
     }
     setProgress(100);

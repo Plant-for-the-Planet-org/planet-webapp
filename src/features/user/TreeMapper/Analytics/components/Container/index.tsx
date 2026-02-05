@@ -45,9 +45,7 @@ export const Container = ({
         <div>{leftElement}</div>
         <div>{rightElement}</div>
       </div>
-      <div className={overrideBodyStyles ? overrideBodyStyles : styles.body}>
-        {children}
-      </div>
+      <div className={clsx(overrideBodyStyles || styles.body)}>{children}</div>
     </div>
   );
 };

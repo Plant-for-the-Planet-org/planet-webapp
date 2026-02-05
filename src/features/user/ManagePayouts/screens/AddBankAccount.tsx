@@ -3,8 +3,7 @@ import type { AccountFormData } from '../components/BankDetailsForm';
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { BankAccount } from '../../../common/types/payouts';
 
-import { useContext, useState } from 'react';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { useState } from 'react';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import { useTranslations } from 'next-intl';
 import BankDetailsForm from '../components/BankDetailsForm';
@@ -15,6 +14,7 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 const AddBankAccount = (): ReactElement | null => {
   const t = useTranslations('ManagePayouts');
@@ -22,9 +22,12 @@ const AddBankAccount = (): ReactElement | null => {
   const { postApiAuthenticated } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   const closeSnackbar = (): void => {
     setIsAccountCreated(false);
   };

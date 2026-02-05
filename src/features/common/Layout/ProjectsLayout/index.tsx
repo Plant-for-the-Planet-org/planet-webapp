@@ -1,34 +1,32 @@
 import type { ReactNode } from 'react';
-import type { SetState } from '../../types/common';
 
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
 import { useUserProps } from '../UserPropsContext';
-import { ParamsContext } from '../QueryParamsContext';
+import { useQueryParamStore } from '../../../../stores/queryParamStore';
 import { useProjectMapStore } from '../../../../stores/projectMapStore';
 
 interface ProjectsLayoutProps {
   children: ReactNode;
-  currencyCode: string;
-  setCurrencyCode: SetState<string>;
   page: 'project-list' | 'project-details';
 }
 
-const ProjectsLayoutContent = ({
-  children,
-  setCurrencyCode,
-  page,
-}: Omit<ProjectsLayoutProps, 'currencyCode'>) => {
+const ProjectsLayoutContent = ({ children, page }: ProjectsLayoutProps) => {
+  // store: state
+  const embed = useQueryParamStore((state) => state.embed);
+  const showProjectDetails = useQueryParamStore(
+    (state) => state.showProjectDetails
+  );
+  const showProjectList = useQueryParamStore((state) => state.showProjectList);
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  // store: action
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
 
   const { isImpersonationModeOn } = useUserProps();
-  const { embed, showProjectDetails, showProjectList } =
-    useContext(ParamsContext);
 
   const showContentContainer = useMemo(() => {
     if (page === 'project-list') {
@@ -73,26 +71,15 @@ const ProjectsLayoutContent = ({
           <ProjectsMap isMobile={false} page={page} />
         </section>
       </main>
-      <Credits setCurrencyCode={setCurrencyCode} />
+      <Credits />
     </div>
   );
 };
 
-const ProjectsLayout = ({
-  children,
-  currencyCode,
-  setCurrencyCode,
-  page,
-}: ProjectsLayoutProps) => {
+const ProjectsLayout = ({ children, page }: ProjectsLayoutProps) => {
   return (
-    <ProjectsProvider
-      page={page}
-      currencyCode={currencyCode}
-      setCurrencyCode={setCurrencyCode}
-    >
-      <ProjectsLayoutContent setCurrencyCode={setCurrencyCode} page={page}>
-        {children}
-      </ProjectsLayoutContent>
+    <ProjectsProvider page={page}>
+      <ProjectsLayoutContent page={page}>{children}</ProjectsLayoutContent>
     </ProjectsProvider>
   );
 };

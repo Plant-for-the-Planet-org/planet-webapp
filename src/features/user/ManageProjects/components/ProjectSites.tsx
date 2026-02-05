@@ -9,7 +9,7 @@ import type {
 } from '../../../common/types/project';
 import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
-import { useEffect, useState, useContext, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -18,7 +18,6 @@ import dynamic from 'next/dynamic';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import { MenuItem, Button, TextField } from '@mui/material';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -31,6 +30,9 @@ import CustomModal from '../../../common/Layout/CustomModal';
 import EditSite from './microComponent/EditSite';
 import SitesSyncActions from './microComponent/SitesSyncActions';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const defaultSiteDetails = {
   name: '',
@@ -68,13 +70,15 @@ export default function ProjectSites({
     useApi();
   const { colors } = themeProperties.designSystem;
   const t = useTranslations('ManageProjects');
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const {
     handleSubmit,
     formState: { errors },
     control,
     reset,
   } = useForm<ProjectSitesFormData>();
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -99,7 +103,8 @@ export default function ProjectSites({
     siteId: null,
     siteName: null,
   });
-
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
   // Assigning defaultSiteDetails as default
   const changeSiteDetails = (e: ChangeEvent<HTMLInputElement>): void => {
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
@@ -139,7 +144,7 @@ export default function ProjectSites({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
+      router.push(localizedPath('/profile'));
     }
   };
   useEffect(() => {
@@ -277,7 +282,9 @@ export default function ProjectSites({
     setIsSyncingSites(true);
 
     try {
-      const webhookUrl = `${webhookBase}/33878023-ee47-44e1-8a62-34eb2d2b3246/?project=${projectGUID}`;
+      const modeParam =
+        process.env.NEXT_PUBLIC_APP_ENV === 'production' ? '' : '&mode=dev';
+      const webhookUrl = `${webhookBase}/33878023-ee47-44e1-8a62-34eb2d2b3246/?project=${projectGUID}${modeParam}`;
       const response = await fetch(webhookUrl, {
         method: 'GET',
       });

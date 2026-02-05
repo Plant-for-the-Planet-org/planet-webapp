@@ -1,9 +1,7 @@
 import type { MapProject } from '../../../../features/common/types/projectv2';
 import type { APIError } from '@planet-sdk/common/build/types/errors';
 
-import { useEffect, useState, useContext } from 'react';
-import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
-import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
+import { useEffect, useState } from 'react';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
@@ -12,6 +10,10 @@ import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useCurrencyStore } from '../../../../stores/currencyStore';
 
 // cspell:disable
 const MANGROVE_PROJECTS = [
@@ -31,16 +33,21 @@ const MANGROVE_PROJECTS = [
 // cspell:enable
 
 export default function ProjectGrid() {
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
   const locale = useLocale();
   const { getApi } = useApi();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
+  // local state
   const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
+  // store: state
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  // store : action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     async function loadProjects() {
-      const currencyCode = getStoredCurrency();
       try {
         const projects = await getApi<MapProject[]>(`/app/projects`, {
           queryParams: {
@@ -57,7 +64,7 @@ export default function ProjectGrid() {
       } catch (err) {
         console.error('Failed to load projects:', err);
         setErrors(handleError(err as APIError));
-        redirect('/');
+        router.push(localizedPath('/'));
       }
     }
     loadProjects();

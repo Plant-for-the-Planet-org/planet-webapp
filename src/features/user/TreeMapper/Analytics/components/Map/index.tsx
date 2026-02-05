@@ -11,7 +11,7 @@ import type { ProjectType } from '../ProjectTypeSelector';
 import type { ChangeEvent, MutableRefObject } from 'react';
 import type { ViewportProps, MapRef, MapEvent } from 'react-map-gl';
 
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { Search } from '@mui/icons-material';
@@ -39,11 +39,11 @@ import {
   parse,
   parseISO,
 } from 'date-fns';
-import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 import InterventionDetails from './components/InterventionDetails';
 import MapCredit from './components/MapCredit';
 import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 import themeProperties from '../../../../../../theme/themeProperties';
+import { useErrorHandlingStore } from '../../../../../../stores/errorHandlingStore';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -91,7 +91,6 @@ function isDateBetween(
 export const MapContainer = () => {
   const { project, fromDate, toDate } = useAnalytics();
   const { primaryColor } = themeProperties.designSystem.colors;
-  const { setErrors } = useContext(ErrorHandlingContext);
   const t = useTranslations('TreemapperAnalytics');
 
   const mapRef: MutableRefObject<MapRef | null> = useRef(null);
@@ -102,6 +101,8 @@ export const MapContainer = () => {
     minZoom: 1,
     maxZoom: 25,
   });
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     //loads the default map style

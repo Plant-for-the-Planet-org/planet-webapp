@@ -11,11 +11,10 @@ import type { RedeemedCodeData } from '../../../../../../src/features/common/typ
 
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
@@ -31,6 +30,7 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
+import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
 interface Props {
   pageProps: PageProps;
 }
@@ -42,18 +42,21 @@ type RedeemCodeApiPayload = {
 const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
   const t = useTranslations('Redeem');
   const { user, contextLoaded } = useUserProps();
-  const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
   const { postApiAuthenticated } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-
+  //local state
   const [code, setCode] = useState<string | undefined>(undefined);
   const [inputCode, setInputCode] = useState<string | undefined>(undefined);
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  //store: state
+  const errors = useErrorHandlingStore((state) => state.errors);
+  //store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (router.isReady) {
