@@ -28,7 +28,6 @@ const ProjectInfo = ({
 }: ProjectInfoProps) => {
   const tCountry = useTranslations('Country');
   const project = useSingleProjectStore((state) => state.singleProject);
-  if (!project) return null;
 
   const {
     metadata,
@@ -42,12 +41,13 @@ const ProjectInfo = ({
     expenses,
     certificates,
     sites,
-  } = project;
+  } = project ?? {};
   const isTreeProject = purpose === 'trees';
   const isConservationProject = purpose === 'conservation';
 
   const shouldRenderKeyInfo = useMemo(() => {
     if (!isTreeProject && !isConservationProject) return false;
+    if (!metadata) return false;
     // General conditions that apply to all projects (e.g employee count)
     const generalConditions = [
       metadata.employeesCount,
@@ -81,6 +81,8 @@ const ProjectInfo = ({
   }, [metadata, isTreeProject, isConservationProject, sites]);
 
   const shouldRenderAdditionalInfo = useMemo(() => {
+    if (!metadata) return false;
+
     const {
       mainChallenge,
       siteOwnerName,
@@ -126,7 +128,7 @@ const ProjectInfo = ({
   }, [metadata]);
 
   const location = useMemo(() => {
-    if (!tpo.address) return '';
+    if (!tpo) return '';
     const { address, zipCode, city, country } = tpo.address;
     return [
       address,
@@ -141,8 +143,13 @@ const ProjectInfo = ({
   }, [tpo]);
 
   const shouldRenderProjectDownloads = useMemo(() => {
-    return certificates?.length > 0 || expenses?.length > 0;
+    if (!certificates || !expenses) return false;
+
+    return certificates.length > 0 || expenses.length > 0;
   }, [certificates, expenses]);
+
+  const shouldRenderProjectReviews = reviews && reviews?.length > 0;
+  const shouldRenderProjectImages = images && images.length > 0;
 
   const projectAreaInHectares = useMemo(() => {
     try {
@@ -161,7 +168,7 @@ const ProjectInfo = ({
 
   return (
     <section className={styles.projectInfoSection}>
-      {reviews?.length > 0 && <ProjectReview reviews={reviews} />}
+      {shouldRenderProjectReviews && <ProjectReview reviews={reviews} />}
       {description && <AboutProject description={description} />}
       {videoUrl && (
         <VideoPlayer
@@ -170,7 +177,7 @@ const ProjectInfo = ({
           onConsentChange={onVideoConsentChange}
         />
       )}
-      {images?.length > 0 && (
+      {shouldRenderProjectImages && (
         <ImageSlider
           images={images}
           type="project"
@@ -179,7 +186,7 @@ const ProjectInfo = ({
         />
       )}
       {isMobile && <MapPreview />}
-      {shouldRenderKeyInfo && (
+      {shouldRenderKeyInfo && metadata && (
         <KeyInfo
           abandonment={isTreeProject ? metadata.yearAbandoned : null}
           firstTreePlanted={isTreeProject ? metadata.firstTreePlanted : null}
@@ -199,7 +206,7 @@ const ProjectInfo = ({
           projectAreaInHectares={projectAreaInHectares}
         />
       )}
-      {shouldRenderAdditionalInfo && (
+      {shouldRenderAdditionalInfo && metadata && (
         <AdditionalInfo
           mainChallenge={metadata.mainChallenge}
           siteOwnerName={metadata.siteOwnerName}
@@ -229,14 +236,14 @@ const ProjectInfo = ({
           }
         />
       )}
-      {shouldRenderProjectDownloads && (
+      {shouldRenderProjectDownloads && certificates && expenses && (
         <ProjectDownloads certificates={certificates} expenses={expenses} />
       )}
       <ContactDetails
-        publicProfileURL={`/t/${tpo.slug}`}
-        websiteURL={website}
+        publicProfileURL={`/t/${tpo?.slug}`}
+        websiteURL={website ?? ''}
         location={location}
-        email={tpo.email}
+        email={tpo ? tpo.email : ''}
       />
     </section>
   );
