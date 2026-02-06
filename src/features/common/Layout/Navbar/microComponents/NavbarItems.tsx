@@ -1,14 +1,15 @@
 import type { NavbarItemHeaderKey } from '../tenant';
 import type { HeaderItem } from '@planet-sdk/common';
 
-import { useTenant } from '../../TenantContext';
 import UserProfileButton from './UserProfileButton';
 import { useState } from 'react';
 import NavbarItemGroup from './NavbarItemGroup';
 import styles from '../Navbar.module.scss';
+import { useTenantStore } from '../../../../../stores/tenantStore';
 
 const NavbarItems = () => {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   const headerItems = tenantConfig.config.header.items;
   const [openMenuKey, setOpenMenuKey] = useState<NavbarItemHeaderKey | null>(
     null

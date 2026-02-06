@@ -6,48 +6,31 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import { useEffect } from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import BulkCodes, {
   BulkCodeSteps,
 } from '../../../../../../src/features/user/BulkCodes';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
+import { constructPathsForTenantSlug } from '../../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function BulkCodePage({ pageProps }: Props): ReactElement {
+export default function BulkCodePage(): ReactElement {
   const t = useTranslations('Me');
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
+  //store: action
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
+  if (!tenantConfig) return <></>;
 
-  return pageProps.tenantConfig ? (
+  return (
     <UserLayout>
       <Head>
         <title>{t('bulkCodesTitle')}</title>
       </Head>
       <BulkCodes step={BulkCodeSteps.SELECT_METHOD} />
     </UserLayout>
-  ) : (
-    <></>
   );
 }
 
@@ -72,15 +55,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'bulkCodes'],
@@ -89,7 +68,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

@@ -6,7 +6,6 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { useState, useEffect } from 'react';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
@@ -15,32 +14,18 @@ import EmbedModal from '../../../../../src/features/user/Widget/EmbedModal';
 import styles from '../../../../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
+import { constructPathsForTenantSlug } from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
+function ProfilePage(): ReactElement {
   const t = useTranslations('Me');
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
   const { user } = useUserProps();
+  // local state
   const [embedModalOpen, setEmbedModalOpen] = useState(false);
+  // store: action
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   const embedModalProps = { embedModalOpen, setEmbedModalOpen, user };
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
 
   useEffect(() => {
     if (user && user.isPrivate) {
@@ -48,8 +33,9 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
     }
   }, [user]);
 
+  if (!tenantConfig) return <></>;
   // TO DO - change widget link
-  return tenantConfig ? (
+  return (
     <UserLayout>
       <Head>
         <title>{t('widgets')}</title>
@@ -69,8 +55,6 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
         </>
       )}
     </UserLayout>
-  ) : (
-    <></>
   );
 }
 
@@ -97,15 +81,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'editProfile'],
@@ -114,7 +94,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

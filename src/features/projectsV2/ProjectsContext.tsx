@@ -27,7 +27,7 @@ import {
   isValidClassification,
 } from '../../utils/projectV2';
 import { useApi } from '../../hooks/useApi';
-import { useTenant } from '../common/Layout/TenantContext';
+import { useTenantStore } from '../../stores/tenantStore';
 import { useErrorHandlingStore } from '../../stores/errorHandlingStore';
 import { useCurrencyStore } from '../../stores/currencyStore';
 
@@ -84,10 +84,9 @@ export const ProjectsProvider = ({
   const locale = useLocale();
   const tCountry = useTranslations('Country');
   const router = useRouter();
-  const { tenantConfig } = useTenant();
   const { getApi } = useApi();
   const { ploc: requestedIntervention, site: requestedSite } = router.query;
-
+  // local state
   const [projects, setProjects] = useState<MapProject[] | null>(null);
   const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null
@@ -116,9 +115,11 @@ export const ProjectsProvider = ({
   const [projectsCurrencyCode, setProjectsCurrencyCode] = useState('');
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
   // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
-  //store: action
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   // Read filter from URL only on initial load
   useEffect(() => {
     if (router.isReady && page === 'project-list') {

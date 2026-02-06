@@ -6,7 +6,6 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { useEffect } from 'react';
 import UserLayout from '../../../../../../../src/features/common/Layout/UserLayout/UserLayout';
@@ -19,33 +18,18 @@ import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
 import { useBulkCode } from '../../../../../../../src/features/common/Layout/BulkCodeContext';
 import { BulkCodeMethods } from '../../../../../../../src/utils/constants/bulkCodeConstants';
 import { useTranslations } from 'next-intl';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../../../src/utils/multiTenancy/helpers';
+import { constructPathsForTenantSlug } from '../../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-import { useTenant } from '../../../../../../../src/features/common/Layout/TenantContext';
-import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function BulkCodeSelectProjectPage({
-  pageProps,
-}: Props): ReactElement {
+export default function BulkCodeSelectProjectPage(): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { bulkMethod, setBulkMethod } = useBulkCode();
-  const { setTenantConfig } = useTenant();
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
+  //store: action
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   // Sets bulk method if not already set within context when page is loaded
   useEffect(() => {
@@ -64,15 +48,15 @@ export default function BulkCodeSelectProjectPage({
     }
   }, []);
 
-  return pageProps.tenantConfig ? (
+  if (!tenantConfig) return <></>;
+
+  return (
     <UserLayout>
       <Head>
         <title>{t('bulkCodesTitleStep2')}</title>
       </Head>
       <BulkCodes step={BulkCodeSteps.SELECT_PROJECT} />
     </UserLayout>
-  ) : (
-    <></>
   );
 }
 
@@ -98,15 +82,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'bulkCodes'],
@@ -115,7 +95,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

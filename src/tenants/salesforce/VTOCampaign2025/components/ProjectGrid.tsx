@@ -6,26 +6,26 @@ import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
-import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 import { clsx } from 'clsx';
+import { useTenantStore } from '../../../../stores/tenantStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import { useCurrencyStore } from '../../../../stores/currencyStore';
 
 export default function ProjectGrid() {
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
-  const { getApi } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const { getApi } = useApi();
   // local state
   const [projects, setProjects] = useState<MapProject[] | null>(null);
   // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
-  // store : action
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {

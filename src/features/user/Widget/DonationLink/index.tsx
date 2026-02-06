@@ -8,20 +8,21 @@ import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../../common/Layout/DashboardView';
 import DonationLinkForm from './DonationLinkForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import { handleError } from '@planet-sdk/common';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useApi } from '../../../../hooks/useApi';
+import { useTenantStore } from '../../../../stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 export default function DonationLink(): ReactElement | null {
   const t = useTranslations('DonationLink');
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
   const { getApi } = useApi();
   // local state
   const [projects, setProjects] = useState<ProjectOption[] | null>(null);
-  // store
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function fetchProjectList() {

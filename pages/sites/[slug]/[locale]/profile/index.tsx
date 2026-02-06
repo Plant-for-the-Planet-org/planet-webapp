@@ -1,4 +1,3 @@
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -8,25 +7,20 @@ import type {
 import type { AbstractIntlMessages } from 'next-intl';
 
 import { useTranslations } from 'next-intl';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../src/utils/multiTenancy/helpers';
+import { constructPathsForTenantSlug } from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import { defaultTenant } from '../../../../../tenant.config';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ProfileOuterContainer from '../../../../../src/features/user/Profile/ProfileOuterContainer';
 import ProfileLayout from '../../../../../src/features/user/Profile/ProfileLayout';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
+const MyForestPage = () => {
   const t = useTranslations('Me');
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  if (!tenantConfig) return <></>;
 
-  return tenantConfig ? (
+  return (
     <UserLayout>
       <Head>
         <title>{t('profile')}</title>
@@ -36,8 +30,6 @@ const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
         <ProfileLayout />
       </ProfileOuterContainer>
     </UserLayout>
-  ) : (
-    <></>
   );
 };
 
@@ -64,15 +56,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -90,7 +78,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

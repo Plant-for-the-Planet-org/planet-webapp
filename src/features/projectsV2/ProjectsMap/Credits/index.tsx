@@ -4,23 +4,24 @@ import { useEffect, useState } from 'react';
 import styles from './Credits.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 interface Props {
   isMobile?: boolean;
 }
 
 export default function Credits({ isMobile }: Props): ReactElement {
-  const { tenantConfig } = useTenant();
   const tCommon = useTranslations('Common');
   const tMaps = useTranslations('Maps');
   const locale = useLocale();
+  // local state
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
   const [openLanguageModal, setLanguageModalOpen] = useState(false);
-
+  // store: state
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const handleLanguageModalClose = () => {
     setLanguageModalOpen(false);

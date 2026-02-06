@@ -5,34 +5,20 @@ import type {
   GetStaticPropsResult,
 } from 'next/types';
 import type { ReactElement } from 'react';
-import type {
-  NextPageWithLayout,
-  PageComponentProps,
-  PageProps,
-} from '../../../_app';
+import type { NextPageWithLayout, PageComponentProps } from '../../../_app';
+import type { AbstractIntlMessages } from 'next-intl';
 
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../tenant.config';
+import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import { useEffect } from 'react';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
-const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
+const ProjectListPage: NextPageWithLayout = ({ isMobile }) => {
+  // store: action
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  if (!isInitialized) return <></>;
 
   return <ProjectsSection isMobile={isMobile} />;
 };
@@ -74,11 +60,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
+interface PageProps {
+  messages: AbstractIntlMessages;
+}
+
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -96,7 +84,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

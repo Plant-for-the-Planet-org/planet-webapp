@@ -6,51 +6,31 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import { useEffect } from 'react';
 import ProjectsContainer from '../../../../../../src/features/user/ManageProjects/ProjectsContainer';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
+import { constructPathsForTenantSlug } from '../../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function Register({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+export default function Register(): ReactElement {
   const t = useTranslations('Me');
   const { user } = useUserProps();
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
+  // store: action
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  if (!tenantConfig) return <></>;
 
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
-
-  return tenantConfig ? (
+  return (
     <UserLayout>
       <Head>
         <title>{t('projects')}</title>
       </Head>
       {user?.type === 'tpo' ? <ProjectsContainer /> : <AccessDeniedLoader />}
     </UserLayout>
-  ) : (
-    <></>
   );
 }
 
@@ -75,15 +55,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'manageProjects', 'donate'],
@@ -92,7 +68,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };
