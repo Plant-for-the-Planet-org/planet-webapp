@@ -124,6 +124,7 @@ export const useProjectStore = create<ProjectStore>()(
             debouncedSearchValue: '',
             selectedClassification: [],
             isSearching: false,
+            showDonatableProjects: false,
           },
           undefined,
           'projectStore/clear_filter_states'
