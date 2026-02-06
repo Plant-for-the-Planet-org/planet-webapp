@@ -43,9 +43,9 @@ ProjectDetailsPage.getLayout = function getLayout(
   pageComponentProps: PageComponentProps
 ): ReactElement {
   const layoutProps = {
-    page: 'project-details',
     isMobile: pageComponentProps.isMobile,
   } as const;
+
   return pageComponentProps.isMobile ? (
     <MobileProjectsLayout {...layoutProps}>{page}</MobileProjectsLayout>
   ) : (

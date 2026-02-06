@@ -8,15 +8,9 @@ type Props = {
   project: MapProject;
   handlePopupLeave: () => void;
   visitProject: (projectSlug: string) => void;
-  page: 'project-list' | 'project-details';
 };
 
-const ProjectPopup = ({
-  project,
-  handlePopupLeave,
-  visitProject,
-  page,
-}: Props) => {
+const ProjectPopup = ({ project, handlePopupLeave, visitProject }: Props) => {
   const { coordinates } = project.geometry;
 
   return (
@@ -35,7 +29,6 @@ const ProjectPopup = ({
         <ProjectSnippet
           project={project.properties}
           showTooltipPopups={false}
-          page={page}
         />
       </div>
     </Popup>

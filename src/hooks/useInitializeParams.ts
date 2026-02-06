@@ -25,13 +25,7 @@ export const useInitializeParams = () => {
 
   useEffect(() => {
     if (!router.isReady || isContextLoaded) return;
-    const { query, pathname } = router;
-    const page =
-      pathname === '/sites/[slug]/[locale]'
-        ? 'project-list'
-        : query.p !== undefined
-        ? 'project-details'
-        : null;
+    const { query } = router;
 
     initializeParams({
       embed: getBooleanQuery(query.embed),
@@ -39,8 +33,7 @@ export const useInitializeParams = () => {
       callbackUrl: getFirstQueryValue(query.callback),
       showProjectDetails: getBooleanQuery(query.project_details),
       showProjectList: getBooleanQuery(query.project_list),
-      page,
       isContextLoaded: true,
     });
-  }, [router.isReady, router.pathname, router.query, isContextLoaded]);
+  }, [router.isReady, router.query, isContextLoaded]);
 };

@@ -4,18 +4,17 @@ import { useMemo } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
-import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
 import { useUserProps } from '../UserPropsContext';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
 import { useProjectMapStore } from '../../../../stores/projectMapStore';
+import { useViewStore } from '../../../../stores';
 
 interface ProjectsLayoutProps {
   children: ReactNode;
-  page: 'project-list' | 'project-details';
 }
 
-const ProjectsLayoutContent = ({ children, page }: ProjectsLayoutProps) => {
+const ProjectsLayoutContent = ({ children }: ProjectsLayoutProps) => {
   // store: state
   const embed = useQueryParamStore((state) => state.embed);
   const showProjectDetails = useQueryParamStore(
@@ -23,25 +22,32 @@ const ProjectsLayoutContent = ({ children, page }: ProjectsLayoutProps) => {
   );
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  const currentPage = useViewStore((state) => state.page);
   // store: action
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
 
   const { isImpersonationModeOn } = useUserProps();
 
   const showContentContainer = useMemo(() => {
-    if (page === 'project-list') {
+    if (currentPage === 'project-list') {
       return (
         (embed !== 'true' || showProjectList !== 'false') &&
         Boolean(mapOptions.projects)
       );
     }
 
-    if (page === 'project-details') {
+    if (currentPage === 'project-details') {
       return embed !== 'true' || showProjectDetails !== 'false';
     }
 
     return false;
-  }, [page, embed, showProjectList, showProjectDetails, mapOptions.projects]);
+  }, [
+    currentPage,
+    embed,
+    showProjectList,
+    showProjectDetails,
+    mapOptions.projects,
+  ]);
 
   const layoutClass = useMemo(() => {
     if (embed === 'true') return styles.embedMode;
@@ -50,8 +56,10 @@ const ProjectsLayoutContent = ({ children, page }: ProjectsLayoutProps) => {
   }, [isImpersonationModeOn, embed]);
 
   const shouldShowMapFeatureExplorer = useMemo(() => {
-    return page === 'project-list' && process.env.ENABLE_EXPLORE === 'true';
-  }, [page, process.env.ENABLE_EXPLORE]);
+    return (
+      currentPage === 'project-list' && process.env.ENABLE_EXPLORE === 'true'
+    );
+  }, [currentPage, process.env.ENABLE_EXPLORE]);
 
   return (
     <div className={layoutClass}>
@@ -68,7 +76,7 @@ const ProjectsLayoutContent = ({ children, page }: ProjectsLayoutProps) => {
               />
             </div>
           )}
-          <ProjectsMap isMobile={false} page={page} />
+          <ProjectsMap isMobile={false} />
         </section>
       </main>
       <Credits />
@@ -76,12 +84,8 @@ const ProjectsLayoutContent = ({ children, page }: ProjectsLayoutProps) => {
   );
 };
 
-const ProjectsLayout = ({ children, page }: ProjectsLayoutProps) => {
-  return (
-    <ProjectsProvider page={page}>
-      <ProjectsLayoutContent page={page}>{children}</ProjectsLayoutContent>
-    </ProjectsProvider>
-  );
+const ProjectsLayout = ({ children }: ProjectsLayoutProps) => {
+  return <ProjectsLayoutContent>{children}</ProjectsLayoutContent>;
 };
 
 export default ProjectsLayout;

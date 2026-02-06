@@ -1,4 +1,5 @@
 import type {
+  CountryCode,
   Intervention,
   OtherInterventions,
   SampleTreeRegistration,
@@ -227,31 +228,38 @@ export const getSiteIndex = (
 };
 
 /**
- * Retrieves the matching intervention based on the topmost hovered map feature.
+ * Determines whether a map feature belongs to a plant intervention layer.
  *
- * This function checks whether the topmost feature in the provided feature list
- * corresponds to a valid intervention layer (as defined by `PLANT_LAYERS`) and,
- * if so, finds and returns the intervention with a matching `id`.
+ * This is used to distinguish plant-related map features from other
+ * interactive layers such as site polygons or background layers.
  *
- * @param {Intervention[] | null} interventions - The list of intervention objects to match against.
- * @param {MapGeoJSONFeature[]} features - An array of GeoJSON features returned from a map hover or click event.
- * @returns {Intervention | undefined} The matched intervention if found, or `undefined` if no match exists or input is invalid.
+ * @param feature - A GeoJSON feature from the map
+ * @returns `true` if the feature is from a plant layer, otherwise `false`
  */
+export const isPlantFeature = (feature: MapGeoJSONFeature): boolean => {
+  return PLANT_LAYERS.includes(feature.layer.id);
+};
 
+/**
+ * Retrieves the intervention that matches a given map feature.
+ *
+ * The function:
+ * 1. Ensures the interventions list is available and non-empty
+ * 2. Compares the feature's `properties.id` with intervention IDs
+ * 3. Returns the first matching intervention, if found
+ *
+ * @param interventions - List of available interventions (may be null)
+ * @param feature - A GeoJSON feature from a map interaction event
+ * @returns The matched intervention, or `undefined` if no match exists
+ */
 export const getInterventionInfo = (
   interventions: Intervention[] | null,
-  features: MapGeoJSONFeature[]
+  feature: MapGeoJSONFeature
 ): Intervention | undefined => {
-  if (!interventions || interventions.length === 0 || features.length === 0)
-    return;
-
-  const topmostFeature = features[0]; // top layer
-  const layerId = topmostFeature.layer.id;
-  const isPlantLayer = PLANT_LAYERS.includes(layerId);
-  if (!isPlantLayer) return;
+  if (!interventions?.length) return;
 
   return interventions.find(
-    (intervention) => intervention.id === topmostFeature.properties.id
+    (intervention) => intervention.id === feature.properties?.id
   );
 };
 
@@ -497,3 +505,137 @@ export function prepareInterventionMetadata(
     .map(([key, value]) => formatMetadataEntry(key, value))
     .filter((entry): entry is { key: string; value: string } => !!entry);
 }
+
+/**
+ * Returns top projects with purpose "trees".
+ */
+
+export const getTopProjects = (projects: MapProject[] | null): MapProject[] => {
+  if (!projects) return [];
+
+  return projects.filter(
+    (project) =>
+      project.properties.purpose === 'trees' &&
+      project.properties.isTopProject === true
+  );
+};
+
+/**
+ * Filters projects that allow donations.
+ *
+ * @param projects - List of projects to filter
+ * @returns Projects where donations are enabled
+ */
+
+export const filterByDonation = (projects: MapProject[]) => {
+  return projects.filter((project) => project.properties.allowDonations);
+};
+
+/**
+ * Filters projects by selected tree classifications.
+ *
+ * - If no classification is selected, the original list is returned.
+ * - Only applies to projects with purpose "trees".
+ *
+ * @param projects - List of projects to filter
+ * @param selectedClassification - Selected tree classifications
+ * @returns Filtered projects matching the selected classifications
+ */
+
+export const filterByClassification = (
+  projects: MapProject[],
+  selectedClassification: TreeProjectClassification[]
+) => {
+  if (selectedClassification.length === 0) return projects;
+  return projects.filter((project) => {
+    if (project.properties.purpose === 'trees')
+      return selectedClassification.includes(project.properties.classification);
+  });
+};
+
+/**
+ * Filters projects based on a search keyword.
+ *
+ * The search is case-insensitive and accent-insensitive and matches against:
+ * - Project name
+ * - Project location (only for tree projects)
+ * - TPO name
+ * - Localized country name
+ *
+ * @param projects - List of projects to filter
+ * @param keyword - User-entered search keyword
+ * @param getCountryLabel - Function that resolves a country code to a localized country name
+ * @returns Projects matching the search keyword
+ */
+
+export const filterBySearch = (
+  projects: MapProject[] | null,
+  keyword: string,
+  getCountryLabel: (code: CountryCode) => string
+) => {
+  if (!keyword?.trim()) {
+    return [];
+  }
+
+  const normalizedKeyword = keyword
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
+  const filteredProjects = projects?.filter((project: MapProject) => {
+    const normalizedText = (text: string | undefined | null) => {
+      return text
+        ? text
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+        : '';
+    };
+
+    const projectName = normalizedText(project.properties.name);
+    const projectLocation =
+      project.properties.purpose === 'trees'
+        ? normalizedText(project.properties.location)
+        : '';
+    const tpoName = normalizedText(project.properties.tpo.name);
+    const country = normalizedText(getCountryLabel(project.properties.country));
+
+    return (
+      projectName.includes(normalizedKeyword) ||
+      projectLocation.includes(normalizedKeyword) ||
+      tpoName.includes(normalizedKeyword) ||
+      country.includes(normalizedKeyword)
+    );
+  });
+  return filteredProjects;
+};
+
+/**
+ * Resolves a site ID from the provided site index.
+ *
+ * @param sites - List of project site features
+ * @param siteIndex - Index of the selected site
+ * @returns The site ID if the index is valid and sites exist, otherwise `null`
+ */
+export const getSiteIdFromIndex = (
+  sites: ProjectSiteFeature[],
+  siteIndex: number | null
+): string | null => {
+  return sites && sites.length > 0 && siteIndex !== null
+    ? sites[siteIndex]?.properties.id
+    : null;
+};
+
+export const FIRST_SITE_INDEX = 0;
+
+/**
+ * Checks whether the provided value is a string.
+ *
+ * Acts as a type guard to safely narrow an `unknown` value to `string`.
+ *
+ * @param value - The value to check
+ * @returns `true` if the value is a string, otherwise `false`
+ */
+export const isString = (value: unknown): value is string => {
+  return typeof value === 'string';
+};

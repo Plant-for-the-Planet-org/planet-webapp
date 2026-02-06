@@ -5,23 +5,34 @@ import { useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../ProjectsSection.module.scss';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
-import { useProjects } from '../ProjectsContext';
 import ProjectSnippet from '../ProjectSnippet';
+import { useProjectStore } from '../../../stores';
+import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
-const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
+interface ProjectListProps {
+  tabSelected: ProjectTabs;
+}
+
+const ProjectList = ({ tabSelected }: ProjectListProps) => {
   const tAllProjects = useTranslations('AllProjects');
-  const {
-    debouncedSearchValue,
-    selectedClassification,
-    filteredProjects,
-    showDonatableProjects,
-    topProjects,
-    projects,
-  } = useProjects();
+  const { filteredProjects } = useFilteredProjects();
+  // store: state
+  const projects = useProjectStore((state) => state.projects);
+  const topProjects = useProjectStore((state) => state.topProjects);
+  const showDonatableProjects = useProjectStore(
+    (state) => state.showDonatableProjects
+  );
+  const debouncedSearchValue = useProjectStore(
+    (state) => state.debouncedSearchValue
+  );
+  const isClassificationSelected = useProjectStore(
+    (state) => state.selectedClassification.length > 0
+  );
+
   const projectsToDisplay = useMemo(() => {
     const hasFilterOrSearchApplied =
       debouncedSearchValue !== '' ||
-      selectedClassification.length > 0 ||
+      isClassificationSelected ||
       showDonatableProjects;
     if (hasFilterOrSearchApplied) return filteredProjects;
     return tabSelected === 'topProjects' ? topProjects : projects;
@@ -40,7 +51,6 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
         key={project.properties.id}
         project={project.properties}
         showTooltipPopups={true}
-        page="project-list"
       />
     ),
     []

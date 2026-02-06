@@ -42,7 +42,6 @@ ProjectListPage.getLayout = function getLayout(
   pageComponentProps: PageComponentProps
 ): ReactElement {
   const layoutProps = {
-    page: 'project-list',
     isMobile: pageComponentProps.isMobile,
   } as const;
 

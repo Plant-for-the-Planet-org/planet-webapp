@@ -1,49 +1,52 @@
 import type { ReactNode } from 'react';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
-import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import { useUserProps } from '../UserPropsContext';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { useViewStore } from '../../../../stores';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
   children: ReactNode;
-  page: 'project-list' | 'project-details';
   isMobile: boolean;
 }
 
-const MobileProjectsLayout = ({
-  children,
-  page,
-  isMobile,
-}: ProjectsLayoutProps) => {
-  const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
-
-  const isMapMode = selectedMode === 'map';
-
+const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
+  // store: state
   const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
   const showProjectDetails = useQueryParamStore(
     (state) => state.showProjectDetails
   );
   const isContextLoaded = useQueryParamStore((state) => state.isContextLoaded);
+  const currentPage = useViewStore((state) => state.page);
+  const selectedMode = useViewStore((state) => state.selectedMode);
+  // store: action
+  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
 
+  const isMapMode = selectedMode === 'map';
   const { isImpersonationModeOn } = useUserProps();
 
   useEffect(() => {
     if (isEmbedded && isContextLoaded) {
-      if (page === 'project-details' && showProjectDetails === 'false') {
+      if (currentPage === 'project-details' && showProjectDetails === 'false') {
         setSelectedMode('map');
       }
-      if (page === 'project-list' && showProjectList === 'false') {
+      if (currentPage === 'project-list' && showProjectList === 'false') {
         setSelectedMode('map');
       }
     }
-  }, [page, isEmbedded, isContextLoaded, showProjectDetails, showProjectList]);
+  }, [
+    currentPage,
+    isEmbedded,
+    isContextLoaded,
+    showProjectDetails,
+    showProjectList,
+  ]);
 
   const mobileLayoutClass = clsx(styles.mobileProjectsLayout, {
     [styles.mapMode]: isMapMode,
@@ -52,20 +55,11 @@ const MobileProjectsLayout = ({
   });
 
   return (
-    <ProjectsProvider
-      page={page}
-      selectedMode={selectedMode}
-      setSelectedMode={setSelectedMode}
-    >
+    <>
       <main className={mobileLayoutClass}>
         {isMapMode ? (
           <section className={styles.mobileMapContainer}>
-            <ProjectsMap
-              selectedMode={selectedMode}
-              setSelectedMode={setSelectedMode}
-              isMobile={isMobile}
-              page={page}
-            />
+            <ProjectsMap isMobile={isMobile} />
           </section>
         ) : (
           <section className={styles.mobileContentContainer}>
@@ -74,7 +68,7 @@ const MobileProjectsLayout = ({
         )}
       </main>
       <Credits isMobile={isMobile} />
-    </ProjectsProvider>
+    </>
   );
 };
 

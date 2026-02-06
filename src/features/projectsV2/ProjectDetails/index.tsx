@@ -1,18 +1,13 @@
 import type {
-  APIError,
-  Intervention,
   SampleTreeRegistration,
   SingleTreeRegistration,
 } from '@planet-sdk/common';
-import type { ExtendedProject } from '../../common/types/projectv2';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
-import { useProjects } from '../ProjectsContext';
 import ProjectInfo from './components/ProjectInfo';
 import { useLocale } from 'next-intl';
-import { handleError, ClientError } from '@planet-sdk/common';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -22,34 +17,14 @@ import { getActiveSingleTree } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
-import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useApi } from '../../../hooks/useApi';
 import { useTenant } from '../../common/Layout/TenantContext';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
-import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useProjectMapStore } from '../../../stores/projectMapStore';
 import { useCurrencyStore } from '../../../stores/currencyStore';
+import { useInterventionStore, useSingleProjectStore } from '../../../stores';
 
 const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
-  const {
-    singleProject,
-    setSingleProject,
-    setInterventions,
-    setIsLoading,
-    setIsError,
-    setSelectedMode,
-    selectedIntervention,
-    hoveredIntervention,
-    selectedSampleTree,
-    setSelectedSampleTree,
-    setPreventShallowPush,
-  } = useProjects();
-  const setTimeTravelConfig = useProjectMapStore(
-    (state) => state.setTimeTravelConfig
-  );
   const locale = useLocale();
   const router = useRouter();
-  const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
   const { tenantConfig } = useTenant();
   const { p: projectSlug } = router.query;
@@ -57,78 +32,36 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  const singleProject = useSingleProjectStore((state) => state.singleProject);
+  const selectedSampleIntervention = useInterventionStore(
+    (state) => state.selectedSampleIntervention
+  );
+  const hoveredIntervention = useInterventionStore(
+    (state) => state.hoveredIntervention
+  );
+  const selectedIntervention = useInterventionStore(
+    (state) => state.selectedIntervention
+  );
   // store: action
-  const setErrors = useErrorHandlingStore((state) => state.setErrors);
-
-  const fetchInterventions = async (projectId: string) => {
-    setIsLoading(true);
-    try {
-      const result = await getApi<Intervention[]>(
-        `/app/interventions/${projectId}`,
-        {
-          queryParams: {
-            // Fetches sampleInterventions within each intervention
-            _scope: 'extended',
-          },
-        }
-      );
-      setInterventions(result);
-    } catch (err) {
-      setErrors(handleError(err as APIError | ClientError));
-      setIsError(true);
-      router.push(localizedPath('/'));
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  const fetchProjectData = useSingleProjectStore((state) => state.fetchProject);
+  const setSelectedSampleIntervention = useInterventionStore(
+    (state) => state.setSelectedSampleIntervention
+  );
   useEffect(() => {
-    async function loadProject(projectSlug: string, currency: string) {
-      setIsLoading(true);
-      setIsError(false);
-      try {
-        const fetchedProject = await getApi<ExtendedProject>(
-          `/app/projects/${projectSlug}`,
-          {
-            queryParams: {
-              _scope: 'extended',
-              currency: currency,
-              //passing locale/tenant as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
-              locale: locale,
-              tenant: tenantConfig.id,
-            },
-          }
-        );
-        const { purpose, id: projectId } = fetchedProject;
-        if (projectId && purpose === 'trees') {
-          fetchInterventions(projectId);
-        }
-        if (purpose === 'conservation' || purpose === 'trees') {
-          setSingleProject(fetchedProject);
-          const timeTravelConfig = await getProjectTimeTravelConfig(
-            fetchedProject.id,
-            fetchedProject.geoLocation
-          );
-          setTimeTravelConfig(timeTravelConfig);
-        } else {
-          throw new ClientError(404, {
-            error_type: 'project_not_available',
-            error_code: 'project_not_available',
-          });
-        }
-      } catch (err) {
-        setErrors(handleError(err as APIError | ClientError));
-        setIsError(true);
-        router.push(localizedPath('/'));
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
     if (typeof projectSlug === 'string' && currencyCode && router.isReady) {
-      loadProject(projectSlug, currencyCode);
+      const config = {
+        queryParams: {
+          _scope: 'extended',
+          currency: currencyCode,
+          //passing locale/tenant as a query param to break cache when locale changes,
+          //as the browser uses the cached response even though the x-locale header is different
+          locale: locale,
+          tenant: tenantConfig.id,
+        },
+      };
+      fetchProjectData(getApi, config, projectSlug);
     }
-  }, [projectSlug, locale, currencyCode, tenantConfig?.id, router.isReady]);
+  }, [router.isReady, projectSlug, locale, currencyCode, tenantConfig?.id]);
 
   useEffect(() => {
     setHasVideoConsent(false);
@@ -150,7 +83,7 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const shouldShowSingleTreeInfo =
     (hoveredIntervention?.type === 'single-tree-registration' ||
       selectedIntervention?.type === 'single-tree-registration' ||
-      selectedSampleTree !== null) &&
+      selectedSampleIntervention !== null) &&
     !isMobile;
 
   const shouldShowMultiTreeInfo =
@@ -163,12 +96,7 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const shouldShowProjectInfo =
     hoveredIntervention === null &&
     selectedIntervention === null &&
-    selectedSampleTree === null;
-
-  // clean up sample tree when intervention change
-  useEffect(() => {
-    if (selectedSampleTree !== null) setSelectedSampleTree(null);
-  }, [selectedIntervention?.hid]);
+    selectedSampleIntervention === null;
 
   const activeSingleTree:
     | SingleTreeRegistration
@@ -178,17 +106,16 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
       getActiveSingleTree(
         selectedIntervention,
         hoveredIntervention,
-        selectedSampleTree
+        selectedSampleIntervention
       ),
-    [selectedIntervention, hoveredIntervention, selectedSampleTree]
+    [selectedIntervention, hoveredIntervention, selectedSampleIntervention]
   );
 
-  const baseInterventionInfoProps = {
-    isMobile,
-    setSelectedSampleTree,
-  };
+  if (singleProject === null) {
+    return <Skeleton className={styles.projectDetailsSkeleton} />;
+  }
 
-  return singleProject ? (
+  return (
     <>
       <ProjectDetailsMeta project={singleProject} />
       <div className={styles.projectDetailsContainer}>
@@ -196,53 +123,33 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
           project={singleProject}
           showTooltipPopups={true}
           isMobile={isMobile}
-          page="project-details"
-          setPreventShallowPush={setPreventShallowPush}
         />
         {shouldShowSingleTreeInfo && (
           <SingleTreeInfo
             activeSingleTree={activeSingleTree}
-            {...baseInterventionInfoProps}
+            isMobile={isMobile}
           />
         )}
         {shouldShowMultiTreeInfo && (
           <MultiTreeInfo
             activeMultiTree={activeMultiTree}
-            {...baseInterventionInfoProps}
+            isMobile={isMobile}
           />
         )}
 
-        {shouldShowOtherIntervention ? (
-          <OtherInterventionInfo
-            selectedIntervention={
-              selectedIntervention?.type !== 'single-tree-registration' &&
-              selectedIntervention?.type !== 'multi-tree-registration'
-                ? selectedIntervention
-                : null
-            }
-            hoveredIntervention={
-              hoveredIntervention?.type !== 'single-tree-registration' &&
-              hoveredIntervention?.type !== 'multi-tree-registration'
-                ? hoveredIntervention
-                : null
-            }
-            {...baseInterventionInfoProps}
-          />
-        ) : null}
+        {shouldShowOtherIntervention && (
+          <OtherInterventionInfo isMobile={isMobile} />
+        )}
 
         {shouldShowProjectInfo && (
           <ProjectInfo
-            project={singleProject}
             isMobile={isMobile}
-            setSelectedMode={setSelectedMode}
             hasVideoConsent={hasVideoConsent}
             onVideoConsentChange={setHasVideoConsent}
           />
         )}
       </div>
     </>
-  ) : (
-    <Skeleton className={styles.projectDetailsSkeleton} />
   );
 };
 
