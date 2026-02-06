@@ -28,8 +28,6 @@ interface Props {
 
 const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
   const singleProject = useSingleProjectStore((state) => state.singleProject);
-  if (singleProject === null) return null;
-
   const selectedSite = useSingleProjectStore((state) => state.selectedSite);
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
   const selectedIntervention = useInterventionStore(
@@ -86,12 +84,11 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
 
   // Zoom to project site
   useEffect(() => {
-    if (
-      !router.isReady ||
-      selectedIntervention !== null ||
-      hasOnlyRequestedIntervention
-    )
-      return;
+    if (!router.isReady) return;
+    if (!singleProject) return;
+    if (selectedIntervention) return;
+    if (hasOnlyRequestedIntervention) return;
+
     if (canShowSites && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
@@ -120,16 +117,16 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
   // Enable satellite view for 'conservation' projects or 'trees' projects without plant locations(tree mapper data).
   useEffect(() => {
     const isSatelliteView =
-      singleProject.purpose === 'conservation' ||
-      (singleProject.purpose === 'trees' &&
+      singleProject?.purpose === 'conservation' ||
+      (singleProject?.purpose === 'trees' &&
         Array.isArray(interventions) &&
         interventions.length === 0);
 
     setIsSatelliteView(isSatelliteView);
-  }, [interventions, singleProject.purpose]);
+  }, [interventions, singleProject?.purpose]);
   return (
     <>
-      {canShowSites ? (
+      {canShowSites && (
         <>
           <SiteLayers
             isSatelliteView={isSatelliteView}
@@ -137,13 +134,16 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
           />
           {isSatelliteView && <SatelliteLayer />}
         </>
-      ) : (
+      )}
+
+      {!canShowSites && singleProject && (
         <ProjectLocationMarker
           latitude={singleProject.coordinates.lat}
           longitude={singleProject.coordinates.lon}
           purpose={singleProject.purpose}
         />
       )}
+
       {displayIntervention && <InterventionLayers />}
       <FeatureFlag condition={isFirealertFiresEnabled()}>
         <FireLocationsMarker />
