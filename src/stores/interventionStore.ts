@@ -183,7 +183,11 @@ export const useInterventionStore = create<InterventionStore>()(
           useSingleProjectStore.getState();
         setSelectedSite(null);
 
-        set({ selectedIntervention: intervention });
+        set(
+          { selectedIntervention: intervention },
+          undefined,
+          'interventionStore/set_selected_intervention'
+        );
 
         const updatedQueryParams = buildProjectDetailsQuery(router.query, {
           plocId: intervention.hid,
