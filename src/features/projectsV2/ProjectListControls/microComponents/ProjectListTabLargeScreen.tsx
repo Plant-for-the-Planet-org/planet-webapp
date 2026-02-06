@@ -25,8 +25,10 @@ const ProjectListTabLargeScreen = ({
   const { colors } = themeProperties.designSystem;
   const isTopProjectTab = tabSelected === 'topProjects';
   // store: state
-  const topProjectCount = useProjectStore((state) => state.topProjects?.length);
-  const projectCount = useProjectStore((state) => state.projects?.length);
+  const topProjectCount = useProjectStore(
+    (state) => state.topProjects?.length ?? 0
+  );
+  const projectCount = useProjectStore((state) => state.projects?.length ?? 0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setTabSelected(newValue === 0 ? 'topProjects' : 'allProjects');
