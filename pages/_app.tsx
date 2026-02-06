@@ -21,7 +21,6 @@ import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
-import { storeConfig } from '../src/utils/storeConfig';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
@@ -32,7 +31,6 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
-import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import {
   DEFAULT_TENANT,
   getTenantConfig,
@@ -114,7 +112,7 @@ type AppPropsWithLayout = Omit<AppProps, 'pageProps'> & {
 };
 
 export type PageProps = {
-  tenantConfig: Tenant;
+  tenantConfig?: Tenant;
   messages?: AbstractIntlMessages;
   [key: string]: any;
 };
@@ -130,9 +128,8 @@ const PlanetWeb = ({
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) => {
   const router = useRouter();
-  const [browserCompatible, setBrowserCompatible] = useState(false);
-
   const { tenantConfig } = pageProps;
+  const [browserCompatible, setBrowserCompatible] = useState(false);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -145,10 +142,6 @@ const PlanetWeb = ({
       }
     }
   }
-
-  useEffect(() => {
-    storeConfig(tenantConfig);
-  }, []);
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
@@ -185,45 +178,43 @@ const PlanetWeb = ({
         messages={pageProps.messages}
       >
         <CacheProvider value={emotionCache}>
-          <TenantProvider initialTenantConfig={pageProps.tenantConfig}>
-            <Auth0Provider
-              domain={process.env.AUTH0_CUSTOM_DOMAIN!}
-              clientId={
-                tenantConfig.config?.auth0ClientId
-                  ? tenantConfig.config.auth0ClientId
-                  : process.env.AUTH0_CLIENT_ID
-              }
-              redirectUri={
-                typeof window !== 'undefined' ? window.location.origin : ''
-              }
-              audience={'urn:plant-for-the-planet'}
-              cacheLocation={'localstorage'}
-              onRedirectCallback={onRedirectCallback}
-              useRefreshTokens={true}
-            >
-              <ThemeProvider>
-                <MuiThemeProvider theme={materialTheme}>
-                  <CssBaseline />
-                  <UserPropsProvider>
-                    <StoreInitializer />
-                    <PlanetCashProvider>
-                      <PayoutsProvider>
-                        <Layout>
-                          <BulkCodeProvider>
-                            <AnalyticsProvider>
-                              <DonationReceiptProvider>
-                                {pageContent}
-                              </DonationReceiptProvider>
-                            </AnalyticsProvider>
-                          </BulkCodeProvider>
-                        </Layout>
-                      </PayoutsProvider>
-                    </PlanetCashProvider>
-                  </UserPropsProvider>
-                </MuiThemeProvider>
-              </ThemeProvider>
-            </Auth0Provider>
-          </TenantProvider>
+          <Auth0Provider
+            domain={process.env.AUTH0_CUSTOM_DOMAIN!}
+            clientId={
+              tenantConfig.config?.auth0ClientId
+                ? tenantConfig.config.auth0ClientId
+                : process.env.AUTH0_CLIENT_ID
+            }
+            redirectUri={
+              typeof window !== 'undefined' ? window.location.origin : ''
+            }
+            audience={'urn:plant-for-the-planet'}
+            cacheLocation={'localstorage'}
+            onRedirectCallback={onRedirectCallback}
+            useRefreshTokens={true}
+          >
+            <ThemeProvider>
+              <MuiThemeProvider theme={materialTheme}>
+                <CssBaseline />
+                <UserPropsProvider>
+                  <StoreInitializer tenantConfig={tenantConfig} />
+                  <PlanetCashProvider>
+                    <PayoutsProvider>
+                      <Layout>
+                        <BulkCodeProvider>
+                          <AnalyticsProvider>
+                            <DonationReceiptProvider>
+                              {pageContent}
+                            </DonationReceiptProvider>
+                          </AnalyticsProvider>
+                        </BulkCodeProvider>
+                      </Layout>
+                    </PayoutsProvider>
+                  </PlanetCashProvider>
+                </UserPropsProvider>
+              </MuiThemeProvider>
+            </ThemeProvider>
+          </Auth0Provider>
         </CacheProvider>
       </NextIntlClientProvider>
     ) : (

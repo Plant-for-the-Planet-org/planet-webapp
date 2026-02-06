@@ -4,7 +4,6 @@ import type {
   TenantScore,
   TreesDonated,
 } from '../../../../src/features/common/types/leaderboard';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -17,41 +16,26 @@ import { useEffect, useState } from 'react';
 import LeaderBoard from '../../../../src/tenants/planet/LeaderBoard';
 import GetLeaderboardMeta from '../../../../src/utils/getMetaTags/GetLeaderboardMeta';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import { useRouter } from 'next/router';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../tenant.config';
+import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../src/stores/errorHandlingStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function Home({ pageProps }: Props) {
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
+export default function Home() {
   const { getApi } = useApi();
   // local state
   const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
-  // store
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
 
   useEffect(() => {
     async function loadLeaderboard() {
       try {
         const newLeaderboard = await getApi<LeaderBoardList>(
-          `/app/leaderboard/${pageProps.tenantConfig.id}`
+          `/app/leaderboard/${tenantConfig.id}`
         );
         setLeaderboard(newLeaderboard);
       } catch (err) {
@@ -67,7 +51,7 @@ export default function Home({ pageProps }: Props) {
     async function loadTenantScore() {
       try {
         const newTenantScore = await getApi<TenantScore>(
-          `/app/tenantScore/${pageProps.tenantConfig.id}`
+          `/app/tenantScore/${tenantConfig.id}`
         );
         setTenantScore(newTenantScore);
       } catch (err) {
@@ -95,7 +79,7 @@ export default function Home({ pageProps }: Props) {
 
   let AllPage;
   function getAllPage() {
-    switch (pageProps.tenantConfig.config.slug) {
+    switch (tenantConfig.config.slug) {
       case 'planet':
         AllPage = (
           <LeaderBoard
@@ -119,14 +103,13 @@ export default function Home({ pageProps }: Props) {
         return AllPage;
     }
   }
+  if (!tenantConfig) return <></>;
 
-  return pageProps.tenantConfig ? (
+  return (
     <>
       <GetLeaderboardMeta />
       {getAllPage()}
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -151,15 +134,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'leaderboard', 'planet'],
@@ -168,7 +147,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

@@ -6,9 +6,8 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import TopProgressBar from '../../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
@@ -18,35 +17,20 @@ import ManagePayouts, {
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
+import { constructPathsForTenantSlug } from '../../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function OverviewPage({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+export default function OverviewPage(): ReactElement {
   const t = useTranslations('Me');
-  const [progress, setProgress] = useState(0);
   const { user } = useUserProps();
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
+  // local state
+  const [progress, setProgress] = useState(0);
+  //store: action
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
-
-  return tenantConfig ? (
+  if (!tenantConfig) return <></>;
+  return (
     <>
       {progress > 0 && (
         <div className={'topLoader'}>
@@ -67,8 +51,6 @@ export default function OverviewPage({
         )}
       </UserLayout>
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -93,15 +75,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'managePayouts'],
@@ -110,7 +88,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

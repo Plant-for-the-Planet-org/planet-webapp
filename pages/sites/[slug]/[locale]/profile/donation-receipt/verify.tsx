@@ -4,32 +4,17 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common';
-import { useTranslations, type AbstractIntlMessages } from 'next-intl';
+import type { AbstractIntlMessages } from 'next-intl';
 
 import Head from 'next/head';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
+import { constructPathsForTenantSlug } from '../../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import DonationReceiptAuthenticated from '../../../../../../src/features/user/DonationReceipt/DonationReceiptAuthenticated';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
-export default function DonationReceiptPage({
-  pageProps: { tenantConfig },
-}: Props) {
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
+export default function DonationReceiptPage() {
   const tReceipt = useTranslations('DonationReceipt');
-
-  useEffect(() => {
-    if (router.isReady) setTenantConfig(tenantConfig);
-  }, [router.isReady]);
 
   return (
     <UserLayout>
@@ -62,19 +47,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
-}
-
-interface Props {
-  pageProps: PageProps;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'donationReceipt'],
@@ -83,7 +60,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

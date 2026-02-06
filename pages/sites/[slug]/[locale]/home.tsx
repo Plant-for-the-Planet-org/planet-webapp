@@ -3,7 +3,6 @@ import type {
   LeaderBoardList,
   TenantScore,
 } from '../../../../src/features/common/types/leaderboard';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -22,36 +21,22 @@ import ConcentrixHome from '../../../../src/tenants/concentrix/Home';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { useApi } from '../../../../src/hooks/useApi';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../tenant.config';
+import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useErrorHandlingStore } from '../../../../src/stores/errorHandlingStore';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function Home({ pageProps }: Props) {
-  //route
+export default function Home() {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
-  const { setTenantConfig } = useTenant();
-  //local state
+  // local state
   const [leaderboard, setLeaderboard] = useState<LeaderBoardList | null>(null);
   const [tenantScore, setTenantScore] = useState<TenantScore | null>(null);
-  // store
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
 
   useEffect(() => {
     async function loadTenantScore() {
@@ -80,7 +65,7 @@ export default function Home({ pageProps }: Props) {
   }, []);
 
   if (
-    !pageProps.tenantConfig.config.header.items.find(
+    !tenantConfig.config.header.items.find(
       (item) => item.headerKey === 'home' && item.visible
     )
   ) {
@@ -92,7 +77,7 @@ export default function Home({ pageProps }: Props) {
   let HomePage;
 
   function getHomePage() {
-    switch (pageProps.tenantConfig.config.slug) {
+    switch (tenantConfig.config.slug) {
       case 'salesforce':
         HomePage = SalesforceHome;
         return (
@@ -126,14 +111,13 @@ export default function Home({ pageProps }: Props) {
         return HomePage;
     }
   }
+  if (!tenantConfig) return <></>;
 
-  return pageProps.tenantConfig ? (
+  return (
     <>
       <GetHomeMeta />
       {getHomePage()}
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -158,15 +142,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -183,7 +163,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

@@ -9,9 +9,7 @@ import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry'
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
-
 import ProjectSelectAutocomplete from '../../../common/ProjectSelectAutocomplete';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import styles from '../../../../../src/features/user/Widget/DonationLink/DonationLinkForm.module.scss';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import {
@@ -23,6 +21,7 @@ import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import QRCode from 'qrcode';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 interface DonationLinkFormProps {
   projectsList: ProjectOption[] | null;
@@ -37,8 +36,8 @@ const DonationLinkForm = ({
   projectsList,
 }: DonationLinkFormProps): ReactElement | null => {
   const { user } = useUserProps();
+  // local state
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('auto');
-  const { tenantConfig } = useTenant();
   const [language, setLanguage] = useState<LanguageType>({
     langCode: 'auto',
     languageName: 'Automatic Selection',
@@ -53,6 +52,8 @@ const DonationLinkForm = ({
   const [isArrayUpdated, setIsArrayUpdated] = useState<boolean>(false);
   const [isLinkUpdated, setIsLinkUpdated] = useState<boolean>(false);
   const [qrCode, setQrCode] = useState<string | null>(null);
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const getDonationORCode = async () => {
     const data = await QRCode.toDataURL(donationUrl);

@@ -3,7 +3,6 @@ import type {
   TenantScore,
 } from '../../../../src/features/common/types/campaign';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { Tenant } from '@planet-sdk/common';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -14,32 +13,19 @@ import type {
 import { useEffect, useState } from 'react';
 import SalesforceCampaign from '../../../../src/tenants/salesforce/OceanforceCampaign';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
-import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import router from 'next/router';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function MangroveChallenge({
-  pageProps: { tenantConfig },
-}: Props) {
+export default function MangroveChallenge() {
+  // local state
   const [leaderBoard, setLeaderBoard] = useState<LeaderBoard>({
     mostDonated: [],
     mostRecent: [],
   });
   const [tenantScore, setTenantScore] = useState<TenantScore>({ total: 0 });
   const [isLoaded, setIsLoaded] = useState(false);
-  const { setTenantConfig } = useTenant();
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  // store: action
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   useEffect(() => {
     async function loadData() {
@@ -91,11 +77,11 @@ export default function MangroveChallenge({
         return CampaignPage;
     }
   }
-
+  if (!tenantConfig || !isLoaded) return <></>;
   return (
     <>
       <GetHomeMeta />
-      {tenantConfig && isLoaded ? getCampaignPage() : <></>}
+      {getCampaignPage()}
     </>
   );
 }
@@ -109,15 +95,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -135,7 +117,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };

@@ -6,9 +6,7 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-import { useEffect } from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ManagePayouts, {
@@ -17,35 +15,20 @@ import ManagePayouts, {
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
+import { constructPathsForTenantSlug } from '../../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function PayoutSchedulePage({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+export default function PayoutSchedulePage(): ReactElement {
   const t = useTranslations('Me');
   const { user } = useUserProps();
 
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
+  // store: action
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  if (!tenantConfig) return <></>;
 
-  return tenantConfig ? (
+  return (
     <UserLayout>
       <Head>
         <title>{t('managePayouts.titlePayoutSchedule')}</title>
@@ -56,8 +39,6 @@ export default function PayoutSchedulePage({
         <AccessDeniedLoader />
       )}
     </UserLayout>
-  ) : (
-    <></>
   );
 }
 
@@ -82,15 +63,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'managePayouts'],
@@ -99,7 +76,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
-      tenantConfig,
     },
   };
 };
