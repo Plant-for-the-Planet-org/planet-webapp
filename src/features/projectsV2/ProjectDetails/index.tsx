@@ -98,12 +98,6 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
     selectedIntervention === null &&
     selectedSampleIntervention === null;
 
-  // clean up sample tree when intervention change
-  useEffect(() => {
-    if (selectedSampleIntervention !== null)
-      setSelectedSampleIntervention(null);
-  }, [selectedIntervention?.hid]);
-
   const activeSingleTree:
     | SingleTreeRegistration
     | SampleTreeRegistration
