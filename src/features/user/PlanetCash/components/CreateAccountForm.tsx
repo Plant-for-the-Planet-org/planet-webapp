@@ -20,7 +20,6 @@ import { useRouter } from 'next/router';
 import { useErrorHandlingStore, usePlanetCashStore } from '../../../../stores';
 
 interface Props {
-  isPlanetCashActive: boolean;
   allowedCountries: CountryType[];
 }
 
@@ -31,21 +30,23 @@ type PlanetCashStatusApiPayload = {
 
 const CreateAccountForm = ({
   allowedCountries,
-  isPlanetCashActive,
 }: Props): ReactElement | null => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { postApiAuthenticated } = useApi();
   const tPlanetCash = useTranslations('PlanetCash');
   const tCountry = useTranslations('Country');
-  const setPlanetCashAccounts = usePlanetCashStore(
-    (state) => state.setPlanetCashAccounts
-  );
   // local state
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
-  // store
+  // store: action
+  const setPlanetCashAccounts = usePlanetCashStore(
+    (state) => state.setPlanetCashAccounts
+  );
+  const isPlanetCashActive = usePlanetCashStore(
+    (state) => state.isPlanetCashActive
+  );
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {

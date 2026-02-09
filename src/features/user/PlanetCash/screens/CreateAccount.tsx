@@ -20,9 +20,7 @@ const CreateAccount = (): ReactElement | null => {
   const planetCashAccounts = usePlanetCashStore(
     (state) => state.planetCashAccounts
   );
-  const isPlanetCashActive = usePlanetCashStore(
-    (state) => state.isPlanetCashActive
-  );
+
   const t = useTranslations('PlanetCash');
 
   // Prevents creating a duplicate planetcash account for a country.
@@ -50,10 +48,7 @@ const CreateAccount = (): ReactElement | null => {
   ) {
     return allowedCountries.length > 0 ? (
       <CenteredContainer>
-        <CreateAccountForm
-          allowedCountries={allowedCountries}
-          isPlanetCashActive={isPlanetCashActive}
-        />
+        <CreateAccountForm allowedCountries={allowedCountries} />
       </CenteredContainer>
     ) : (
       <CenteredContainer>{t('accountQuotaReachedText')}</CenteredContainer>
