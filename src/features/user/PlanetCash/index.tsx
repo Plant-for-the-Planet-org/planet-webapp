@@ -96,30 +96,33 @@ export default function PlanetCash({
     [step]
   );
 
-  const fetchAccounts = useCallback(async () => {
-    if (!planetCashAccounts) {
-      try {
-        setIsDataLoading(true);
-        setProgress && setProgress(70);
-        const accounts = await getApiAuthenticated<PlanetCashAccount[]>(
-          '/app/planetCash'
-        );
-        redirectIfNeeded(accounts);
-        const sortedAccounts = sortAccountsByActive(accounts);
-        setIsPlanetCashActive(accounts.some((account) => account.isActive));
-        setPlanetCashAccounts(sortedAccounts);
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-      }
+  const fetchAccounts = async () => {
+    // If accounts already exist, just handle redirects
+    if (planetCashAccounts) {
+      redirectIfNeeded(planetCashAccounts);
+      return;
+    }
+
+    try {
+      setIsDataLoading(true);
+      setProgress && setProgress(70);
+      const accounts = await getApiAuthenticated<PlanetCashAccount[]>(
+        '/app/planetCash'
+      );
+      redirectIfNeeded(accounts);
+      const sortedAccounts = sortAccountsByActive(accounts);
+      setIsPlanetCashActive(accounts.some((account) => account.isActive));
+      setPlanetCashAccounts(sortedAccounts);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    } finally {
       setIsDataLoading(false);
       if (setProgress) {
         setProgress(100);
         setTimeout(() => setProgress(0), 1000);
       }
-    } else {
-      redirectIfNeeded(planetCashAccounts);
     }
-  }, [planetCashAccounts]);
+  };
 
   useEffect(() => {
     if (isAuthReady) fetchAccounts();
