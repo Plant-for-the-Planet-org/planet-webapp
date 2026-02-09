@@ -40,12 +40,13 @@ const CreateAccountForm = ({
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
+  // store: state
+  const isPlanetCashActive = usePlanetCashStore(
+    (state) => state.isPlanetCashActive
+  );
   // store: action
   const setPlanetCashAccounts = usePlanetCashStore(
     (state) => state.setPlanetCashAccounts
-  );
-  const isPlanetCashActive = usePlanetCashStore(
-    (state) => state.isPlanetCashActive
   );
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 

@@ -40,25 +40,23 @@ export default function PlanetCash({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const locale = useLocale();
+  // local state
+  const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
+  const [isDataLoading, setIsDataLoading] = useState(false);
   // store: state
   const planetCashAccounts = usePlanetCashStore(
     (state) => state.planetCashAccounts
   );
-  // store: actions
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  // store: action
   const setPlanetCashAccounts = usePlanetCashStore(
     (state) => state.setPlanetCashAccounts
   );
   const setIsPlanetCashActive = usePlanetCashStore(
     (state) => state.setIsPlanetCashActive
   );
-  // local state
-  const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const [isDataLoading, setIsDataLoading] = useState(false);
-  // store: state
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
-  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const sortAccountsByActive = (

@@ -28,9 +28,6 @@ const Transactions = ({
   const t = useTranslations('Me');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const planetCashAccounts = usePlanetCashStore(
-    (state) => state.planetCashAccounts
-  );
   const { getApiAuthenticated } = useApi();
   // local state
   const [transactionHistory, setTransactionHistory] =
@@ -39,6 +36,9 @@ const Transactions = ({
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // store: state
+  const planetCashAccounts = usePlanetCashStore(
+    (state) => state.planetCashAccounts
+  );
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
   );
