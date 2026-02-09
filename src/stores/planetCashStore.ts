@@ -16,7 +16,7 @@ interface PlanetCashStore {
 }
 
 const initialState = {
-  accounts: null,
+  planetCashAccounts: null,
   isPlanetCashActive: false,
 };
 
