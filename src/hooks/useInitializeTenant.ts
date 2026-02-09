@@ -15,6 +15,7 @@ export const useInitializeTenant = (tenantConfig: Tenant | undefined) => {
     if (isInitialized) return;
 
     storeConfig(tenantConfig);
+
     setTenantConfig(tenantConfig);
   }, [tenantConfig, setTenantConfig, isInitialized]);
 };
