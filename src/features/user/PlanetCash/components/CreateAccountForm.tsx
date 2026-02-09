@@ -13,12 +13,11 @@ import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { useTranslations } from 'next-intl';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
-import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useErrorHandlingStore, usePlanetCashStore } from '../../../../stores';
 
 interface Props {
   isPlanetCashActive: boolean;
@@ -39,7 +38,9 @@ const CreateAccountForm = ({
   const { postApiAuthenticated } = useApi();
   const tPlanetCash = useTranslations('PlanetCash');
   const tCountry = useTranslations('Country');
-  const { setAccounts } = usePlanetCash();
+  const setPlanetCashAccounts = usePlanetCashStore(
+    (state) => state.setPlanetCashAccounts
+  );
   // local state
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -63,7 +64,7 @@ const CreateAccountForm = ({
         payload,
       });
       setIsAccountCreated(true);
-      setAccounts([res]);
+      setPlanetCashAccounts([res]);
       // go to accounts tab
       setTimeout(() => {
         router.push(localizedPath('/profile/planetcash'));

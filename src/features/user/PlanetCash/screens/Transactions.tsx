@@ -7,11 +7,14 @@ import { useTranslations } from 'next-intl';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
-import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore, useErrorHandlingStore } from '../../../../stores';
+import {
+  useAuthStore,
+  useErrorHandlingStore,
+  usePlanetCashStore,
+} from '../../../../stores';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
@@ -25,7 +28,9 @@ const Transactions = ({
   const t = useTranslations('Me');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { accounts } = usePlanetCash();
+  const planetCashAccounts = usePlanetCashStore(
+    (state) => state.planetCashAccounts
+  );
   const { getApiAuthenticated } = useApi();
   // local state
   const [transactionHistory, setTransactionHistory] =
@@ -101,8 +106,9 @@ const Transactions = ({
   );
 
   useEffect(() => {
-    if (isAuthReady && accounts && accounts.length > 0) fetchTransactions();
-  }, [isAuthReady, accounts]);
+    if (isAuthReady && planetCashAccounts && planetCashAccounts.length > 0)
+      fetchTransactions();
+  }, [isAuthReady, planetCashAccounts]);
 
   useEffect(() => {
     // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.

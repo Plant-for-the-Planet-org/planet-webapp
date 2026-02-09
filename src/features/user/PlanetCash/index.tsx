@@ -10,12 +10,15 @@ import TabbedView from '../../common/Layout/TabbedView';
 import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
-import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useAuthStore, useErrorHandlingStore } from '../../../stores';
+import {
+  useAuthStore,
+  useErrorHandlingStore,
+  usePlanetCashStore,
+} from '../../../stores';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -37,7 +40,17 @@ export default function PlanetCash({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const locale = useLocale();
-  const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
+  // store: state
+  const planetCashAccounts = usePlanetCashStore(
+    (state) => state.planetCashAccounts
+  );
+  // store: actions
+  const setPlanetCashAccounts = usePlanetCashStore(
+    (state) => state.setPlanetCashAccounts
+  );
+  const setIsPlanetCashActive = usePlanetCashStore(
+    (state) => state.setIsPlanetCashActive
+  );
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -63,7 +76,7 @@ export default function PlanetCash({
   // Redirect routes based on whether at least one account is created.
   // Prevents multiple account creation.
   const redirectIfNeeded = useCallback(
-    (accounts) => {
+    (accounts: PlanetCashAccount[]) => {
       switch (step) {
         case PlanetCashTabs.CREATE_ACCOUNT:
           if (accounts.length) {
@@ -84,7 +97,7 @@ export default function PlanetCash({
   );
 
   const fetchAccounts = useCallback(async () => {
-    if (!accounts) {
+    if (!planetCashAccounts) {
       try {
         setIsDataLoading(true);
         setProgress && setProgress(70);
@@ -94,7 +107,7 @@ export default function PlanetCash({
         redirectIfNeeded(accounts);
         const sortedAccounts = sortAccountsByActive(accounts);
         setIsPlanetCashActive(accounts.some((account) => account.isActive));
-        setAccounts(sortedAccounts);
+        setPlanetCashAccounts(sortedAccounts);
       } catch (err) {
         setErrors(handleError(err as APIError));
       }
@@ -104,9 +117,9 @@ export default function PlanetCash({
         setTimeout(() => setProgress(0), 1000);
       }
     } else {
-      redirectIfNeeded(accounts);
+      redirectIfNeeded(planetCashAccounts);
     }
-  }, [accounts]);
+  }, [planetCashAccounts]);
 
   useEffect(() => {
     if (isAuthReady) fetchAccounts();
@@ -124,8 +137,8 @@ export default function PlanetCash({
     }
   };
   useEffect(() => {
-    if (accounts) {
-      if (!accounts.length) {
+    if (planetCashAccounts) {
+      if (!planetCashAccounts.length) {
         setTabConfig([
           {
             label: t('tabCreateAccount'),
@@ -147,7 +160,7 @@ export default function PlanetCash({
           },
         ]);
     }
-  }, [accounts, locale]);
+  }, [planetCashAccounts, locale]);
 
   return (
     <DashboardView

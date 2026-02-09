@@ -4,7 +4,7 @@ import type { CountryType } from '../../../common/types/country';
 import { useState, useEffect } from 'react';
 import CreateAccountForm from '../components/CreateAccountForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
-import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
+import { usePlanetCashStore } from '../../../../stores';
 import { useTranslations } from 'next-intl';
 import AccountListLoader from '../../../../../public/assets/images/icons/AccountListLoader';
 
@@ -17,15 +17,22 @@ const CreateAccount = (): ReactElement | null => {
   const [allowedCountries, setAllowedCountries] = useState<
     CountryType[] | null
   >(null);
-  const { accounts, isPlanetCashActive } = usePlanetCash();
+  const planetCashAccounts = usePlanetCashStore(
+    (state) => state.planetCashAccounts
+  );
+  const isPlanetCashActive = usePlanetCashStore(
+    (state) => state.isPlanetCashActive
+  );
   const t = useTranslations('PlanetCash');
 
   // Prevents creating a duplicate planetcash account for a country.
   // This condition cannot currently happen, as the frontend prevents users from creating multiple planet cash accounts
   useEffect(() => {
-    if (accounts) {
-      if (accounts.length > 0) {
-        const accountCountryCodes = accounts.map((account) => account.country);
+    if (planetCashAccounts) {
+      if (planetCashAccounts.length > 0) {
+        const accountCountryCodes = planetCashAccounts.map(
+          (account) => account.country
+        );
         const newAllowedCountries = initialAllowedCountries.filter(
           (country) => !accountCountryCodes.includes(country.code)
         );
@@ -34,9 +41,13 @@ const CreateAccount = (): ReactElement | null => {
         setAllowedCountries(initialAllowedCountries);
       }
     }
-  }, [accounts]);
+  }, [planetCashAccounts]);
 
-  if (accounts && allowedCountries && accounts.length === 0) {
+  if (
+    planetCashAccounts &&
+    allowedCountries &&
+    planetCashAccounts.length === 0
+  ) {
     return allowedCountries.length > 0 ? (
       <CenteredContainer>
         <CreateAccountForm

@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 
 import AccountListLoader from '../../../../../public/assets/images/icons/AccountListLoader';
 import AccountDetails from '../components/AccountDetails';
-import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
+import { usePlanetCashStore } from '../../../../stores';
 import NoPlanetCashAccount from '../components/NoPlanetCashAccount';
 
 interface AccountsProps {
@@ -10,15 +10,17 @@ interface AccountsProps {
 }
 
 const Accounts = ({ isDataLoading }: AccountsProps): ReactElement | null => {
-  const { accounts } = usePlanetCash();
+  const planetCashAccounts = usePlanetCashStore(
+    (state) => state.planetCashAccounts
+  );
 
   return isDataLoading ? (
     <>
       <AccountListLoader />
     </>
-  ) : accounts && accounts.length > 0 ? (
+  ) : planetCashAccounts && planetCashAccounts.length > 0 ? (
     <>
-      {accounts?.map((account, index) => {
+      {planetCashAccounts?.map((account, index) => {
         return <AccountDetails account={account} key={index} />;
       })}
     </>
