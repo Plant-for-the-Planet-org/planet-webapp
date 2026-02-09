@@ -14,20 +14,20 @@ const Accounts = ({ isDataLoading }: AccountsProps): ReactElement | null => {
     (state) => state.planetCashAccounts
   );
 
-  return isDataLoading ? (
-    <>
-      <AccountListLoader />
-    </>
-  ) : planetCashAccounts && planetCashAccounts.length > 0 ? (
-    <>
-      {planetCashAccounts?.map((account, index) => {
-        return <AccountDetails account={account} key={index} />;
-      })}
-    </>
-  ) : (
-    //This will never be seen, as the user is being redirected to create a new PCA when none exists
-    <NoPlanetCashAccount />
-  );
+  if (isDataLoading) return <AccountListLoader />;
+
+  if (planetCashAccounts && planetCashAccounts.length > 0) {
+    return (
+      <>
+        {planetCashAccounts.map((account, index) => (
+          <AccountDetails account={account} key={index} />
+        ))}
+      </>
+    );
+  }
+
+  // This will never be seen, as the user is being redirected to create a new PCA when none exists
+  return <NoPlanetCashAccount />;
 };
 
 export default Accounts;
