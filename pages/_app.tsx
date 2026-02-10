@@ -43,7 +43,7 @@ import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreI
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
   ssr: false,
 });
-
+const DEFAULT_HOST = 'https://www1.plant-for-the-planet.org';
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
   const distDir = `${config.serverRuntimeConfig.rootDir}/.next`;
@@ -228,9 +228,11 @@ PlanetWeb.getInitialProps = async (
 ): Promise<AppInitialProps & { pageProps: PageProps }> => {
   const ctx = await App.getInitialProps(context);
 
-  const _tenantSlug = await getTenantSlug(
-    context.ctx.req?.headers.host as string
-  );
+  const host =
+    context.ctx.req?.headers.host ??
+    (typeof window !== 'undefined' ? window.location.host : DEFAULT_HOST);
+
+  const _tenantSlug = await getTenantSlug(host);
 
   const tenantSlug = _tenantSlug ?? DEFAULT_TENANT;
 
