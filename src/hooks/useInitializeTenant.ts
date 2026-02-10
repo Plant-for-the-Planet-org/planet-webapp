@@ -7,16 +7,12 @@ import { storeConfig } from '../utils/storeConfig';
 export const useInitializeTenant = (tenantConfig: Tenant | undefined) => {
   const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
   const isInitialized = useTenantStore((state) => state.isInitialized);
+
   useEffect(() => {
-    console.log('useInitializeTenant');
-    console.log('tenant config:', tenantConfig);
-    console.log(isInitialized, 'isInitialize');
     if (!tenantConfig) return;
-    console.log('Found tenant config');
     // Prevent re-initializing the tenant store on re-renders or client-side route changes.
     // Tenant config should be set only once per app lifecycle.
     if (isInitialized) return;
-    console.log('tenant config is initialized');
 
     storeConfig(tenantConfig);
 
