@@ -129,6 +129,7 @@ const PlanetWeb = ({
 }: AppPropsWithLayout) => {
   const router = useRouter();
   const { tenantConfig } = pageProps;
+  console.log('tenant config from the page props:', tenantConfig);
   const [browserCompatible, setBrowserCompatible] = useState(false);
 
   const tagManagerArgs = {
