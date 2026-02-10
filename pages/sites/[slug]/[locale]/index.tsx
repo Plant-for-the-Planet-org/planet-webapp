@@ -22,7 +22,6 @@ import { defaultTenant } from '../../../../tenant.config';
 
 const ProjectListPage: NextPageWithLayout = ({ isMobile }) => {
   const isInitialized = useTenantStore((state) => state.isInitialized);
-
   if (!isInitialized) return <></>;
 
   return <ProjectsSection isMobile={isMobile} />;

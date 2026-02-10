@@ -5,7 +5,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError, SerializedError } from '@planet-sdk/common';
+import type { APIError, SerializedError, Tenant } from '@planet-sdk/common';
 import type { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
 
 import { useRouter } from 'next/router';
@@ -20,12 +20,16 @@ import {
   EnterRedeemCode,
 } from '../../../../../../src/features/common/RedeemCode';
 import { handleError } from '@planet-sdk/common';
-import { constructPathsForTenantSlug } from '../../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
+import { defaultTenant } from '../../../../../../tenant.config';
 
 type RedeemCodeApiPayload = {
   code: string;
@@ -45,7 +49,7 @@ const RedeemCode = () => {
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   //store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const isInitialized = useTenantStore((state) => state.isInitialized);
   const errors = useErrorHandlingStore((state) => state.errors);
   //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
@@ -153,7 +157,7 @@ const RedeemCode = () => {
     }
   };
 
-  return tenantConfig && user ? (
+  return isInitialized && user ? (
     !errors && !redeemedCodeData ? (
       // to input  redeem code
       <LandingSection>
@@ -215,6 +219,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -225,9 +230,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country', 'redeem'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

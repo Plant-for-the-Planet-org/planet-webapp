@@ -5,20 +5,25 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
 import { useTranslations } from 'next-intl';
-import { constructPathsForTenantSlug } from '../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ProfileOuterContainer from '../../../../../src/features/user/Profile/ProfileOuterContainer';
 import ProfileLayout from '../../../../../src/features/user/Profile/ProfileLayout';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../tenant.config';
 
 const MyForestPage = () => {
   const t = useTranslations('Me');
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
-  if (!tenantConfig) return <></>;
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  if (!isInitialized) return <></>;
 
   return (
     <UserLayout>
@@ -56,6 +61,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -75,9 +81,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     ],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

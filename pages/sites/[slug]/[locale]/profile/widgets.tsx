@@ -6,6 +6,7 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common';
 
 import { useState, useEffect } from 'react';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
@@ -14,17 +15,21 @@ import EmbedModal from '../../../../../src/features/user/Widget/EmbedModal';
 import styles from '../../../../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
-import { constructPathsForTenantSlug } from '../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../tenant.config';
 
 function ProfilePage(): ReactElement {
   const t = useTranslations('Me');
   const { user } = useUserProps();
   // local state
   const [embedModalOpen, setEmbedModalOpen] = useState(false);
-  // store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
   const embedModalProps = { embedModalOpen, setEmbedModalOpen, user };
 
   useEffect(() => {
@@ -33,7 +38,7 @@ function ProfilePage(): ReactElement {
     }
   }, [user]);
 
-  if (!tenantConfig) return <></>;
+  if (!isInitialized) return <></>;
   // TO DO - change widget link
   return (
     <UserLayout>
@@ -81,6 +86,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -91,9 +97,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country', 'editProfile'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };
