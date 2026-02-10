@@ -43,7 +43,7 @@ import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreI
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
   ssr: false,
 });
-const DEFAULT_HOST = 'https://www1.plant-for-the-planet.org';
+const DEFAULT_HOST = 'www1.plant-for-the-planet.org';
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
   const distDir = `${config.serverRuntimeConfig.rootDir}/.next`;
