@@ -67,6 +67,7 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
+  console.log('index page get static props');
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
