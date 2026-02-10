@@ -21,7 +21,6 @@ interface StoreInitializerProps {
  */
 
 export const StoreInitializer = ({ tenantConfig }: StoreInitializerProps) => {
-  console.log('tenant config in store initilizer:', tenantConfig);
   useInitializeTenant(tenantConfig);
   useInitializeParams();
   useInitializeCurrency();

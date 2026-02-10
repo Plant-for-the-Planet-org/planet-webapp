@@ -19,20 +19,9 @@ import MobileProjectsLayout from '../../../../src/features/common/Layout/Project
 import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 import { defaultTenant } from '../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
-const ProjectListPage: NextPageWithLayout = ({ pageProps, isMobile }) => {
-  const router = useRouter();
-  // store: action
-  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
+const ProjectListPage: NextPageWithLayout = ({ isMobile }) => {
   const isInitialized = useTenantStore((state) => state.isInitialized);
-
-  useEffect(() => {
-    if (router.isReady && pageProps.tenantConfig) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
 
   if (!isInitialized) return <></>;
 
