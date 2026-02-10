@@ -112,7 +112,7 @@ type AppPropsWithLayout = Omit<AppProps, 'pageProps'> & {
 };
 
 export type PageProps = {
-  tenantConfig?: Tenant;
+  tenantConfig: Tenant;
   messages?: AbstractIntlMessages;
   [key: string]: any;
 };
