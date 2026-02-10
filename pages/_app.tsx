@@ -235,16 +235,18 @@ const PlanetWeb = ({
 PlanetWeb.getInitialProps = async (
   context: AppContext
 ): Promise<AppInitialProps & { pageProps: PageProps }> => {
+  console.log('Entering getInitialProps...');
   const ctx = await App.getInitialProps(context);
-
+  console.log('host:', context.ctx.req?.headers.host);
   const _tenantSlug = await getTenantSlug(
     context.ctx.req?.headers.host as string
   );
 
+  console.log('tenantSlug:', _tenantSlug);
   const tenantSlug = _tenantSlug ?? DEFAULT_TENANT;
-
+  console.log('selected tenant slug:', tenantSlug);
   const tenantConfig = await getTenantConfig(tenantSlug);
-
+  console.log('tenantId:', tenantConfig.id);
   return {
     ...ctx,
     pageProps: {

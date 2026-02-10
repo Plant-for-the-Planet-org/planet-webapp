@@ -77,8 +77,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
+  console.log('Entering getStaticProps....');
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+  console.log('slug:', context.params?.slug);
+  console.log('tenantId:', tenantConfig.id);
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
