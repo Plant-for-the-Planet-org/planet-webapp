@@ -29,6 +29,7 @@ function ProfilePage(): ReactElement {
   // local state
   const [embedModalOpen, setEmbedModalOpen] = useState(false);
   // store: state
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
   const isInitialized = useTenantStore((state) => state.isInitialized);
   const embedModalProps = { embedModalOpen, setEmbedModalOpen, user };
 
@@ -50,7 +51,7 @@ function ProfilePage(): ReactElement {
           {user.isPrivate === false ? (
             <div className={styles.widgetsContainer}>
               <iframe
-                src={`${process.env.WIDGET_URL}?user=${user.slug}&tenantkey=${tenantConfig.id}`}
+                src={`${process.env.WIDGET_URL}?user=${user.slug}&tenantkey=${tenantId}`}
                 className={styles.widgetIFrame}
               />
             </div>
