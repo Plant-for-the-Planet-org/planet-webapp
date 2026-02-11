@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
-import { usePayouts } from '../../common/Layout/PayoutsContext';
 import PayoutScheduleForm from './screens/PayoutScheduleForm';
 import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
@@ -20,6 +19,7 @@ import {
   useAuthStore,
   useUserStore,
   useErrorHandlingStore,
+  useManagePayoutStore,
 } from '../../../stores';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -44,8 +44,6 @@ export default function ManagePayouts({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
-    usePayouts();
   const { getApi, getApiAuthenticated } = useApi();
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
@@ -60,39 +58,49 @@ export default function ManagePayouts({
       isTpo: state.userProfile?.type === 'tpo',
     }))
   );
+  const hasAccounts = useManagePayoutStore(
+    (state) => state.accounts !== null && state.accounts?.length > 0
+  );
+  const hasPayoutMinAmounts = useManagePayoutStore(
+    (state) => state.payoutMinAmounts !== null
+  );
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setAccounts = useManagePayoutStore((state) => state.setAccounts);
+  const setPayoutMinAmounts = useManagePayoutStore(
+    (state) => state.setPayoutMinAmounts
+  );
 
   const fetchPayoutMinAmounts = async () => {
-    if (!payoutMinAmounts) {
-      try {
-        const res = await getApi<PayoutMinAmounts>('/app/payoutMinAmounts');
-        setPayoutMinAmounts(res);
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-      }
+    if (hasPayoutMinAmounts) return;
+
+    try {
+      const res = await getApi<PayoutMinAmounts>('/app/payoutMinAmounts');
+      setPayoutMinAmounts(res);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
     }
   };
 
   useEffect(() => {
-    if (!payoutMinAmounts && isTpo) fetchPayoutMinAmounts();
+    if (!hasPayoutMinAmounts && isTpo) fetchPayoutMinAmounts();
   }, [step, userId]);
 
   const fetchAccounts = async () => {
-    if (!accounts) {
-      setIsDataLoading(true);
-      setProgress && setProgress(70);
-      try {
-        const res = await getApiAuthenticated<BankAccount[]>('/app/accounts');
-        setAccounts(res);
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-      }
-      setIsDataLoading(false);
-      if (setProgress) {
-        setProgress(100);
-        setTimeout(() => setProgress(0), 1000);
-      }
+    if (hasAccounts) return;
+
+    setIsDataLoading(true);
+    setProgress && setProgress(70);
+    try {
+      const res = await getApiAuthenticated<BankAccount[]>('/app/accounts');
+      setAccounts(res);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
+    setIsDataLoading(false);
+    if (setProgress) {
+      setProgress(100);
+      setTimeout(() => setProgress(0), 1000);
     }
   };
 
