@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import BankDetailsForm from '../components/BankDetailsForm';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import CustomSnackbar from '../../../common/CustomSnackbar';
@@ -18,10 +17,10 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useManagePayoutStore } from '../../../../stores';
 
 const EditBankAccount = (): ReactElement | null => {
   const t = useTranslations('ManagePayouts');
-  const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { putApiAuthenticated } = useApi();
@@ -29,9 +28,15 @@ const EditBankAccount = (): ReactElement | null => {
   const [accountToEdit, setAccountToEdit] = useState<BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
-  // store
-  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  // store: state
   const errors = useErrorHandlingStore((state) => state.errors);
+  const hasPayoutMinAmounts = useManagePayoutStore(
+    (state) => state.payoutMinAmounts !== null
+  );
+  const accounts = useManagePayoutStore((state) => state.accounts);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setAccounts = useManagePayoutStore((state) => state.setAccounts);
 
   const closeSnackbar = (): void => {
     setIsAccountUpdated(false);
@@ -132,7 +137,7 @@ const EditBankAccount = (): ReactElement | null => {
     }
   }, [accounts, router.query.id]);
 
-  return accountToEdit !== null && payoutMinAmounts ? (
+  return accountToEdit !== null && hasPayoutMinAmounts ? (
     <CenteredContainer>
       <FormHeader>
         <Link href={localizedPath('/profile/payouts')}>
@@ -142,7 +147,6 @@ const EditBankAccount = (): ReactElement | null => {
       </FormHeader>
       <BankDetailsForm
         account={accountToEdit}
-        payoutMinAmounts={payoutMinAmounts}
         isProcessing={isProcessing}
         handleSave={handleSaveAccount}
       />

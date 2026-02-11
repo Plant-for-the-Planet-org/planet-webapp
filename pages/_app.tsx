@@ -30,7 +30,6 @@ import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContex
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
-import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import {
   DEFAULT_TENANT,
@@ -205,17 +204,15 @@ const PlanetWeb = ({
                 <MuiThemeProvider theme={materialTheme}>
                   <CssBaseline />
                   <PlanetCashProvider>
-                    <PayoutsProvider>
-                      <Layout>
-                        <BulkCodeProvider>
-                          <AnalyticsProvider>
-                            <DonationReceiptProvider>
-                              {pageContent}
-                            </DonationReceiptProvider>
-                          </AnalyticsProvider>
-                        </BulkCodeProvider>
-                      </Layout>
-                    </PayoutsProvider>
+                    <Layout>
+                      <BulkCodeProvider>
+                        <AnalyticsProvider>
+                          <DonationReceiptProvider>
+                            {pageContent}
+                          </DonationReceiptProvider>
+                        </AnalyticsProvider>
+                      </BulkCodeProvider>
+                    </Layout>
                   </PlanetCashProvider>
                 </MuiThemeProvider>
               </ThemeProvider>
