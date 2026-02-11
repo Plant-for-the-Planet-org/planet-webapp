@@ -36,8 +36,9 @@ const Transactions = ({
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // store: state
-  const planetCashAccounts = usePlanetCashStore(
-    (state) => state.planetCashAccounts
+  const hasPlanetCashAccount = usePlanetCashStore(
+    (state) =>
+      state.planetCashAccounts !== null && state.planetCashAccounts.length > 0
   );
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
@@ -106,9 +107,8 @@ const Transactions = ({
   );
 
   useEffect(() => {
-    if (isAuthReady && planetCashAccounts && planetCashAccounts.length > 0)
-      fetchTransactions();
-  }, [isAuthReady, planetCashAccounts]);
+    if (isAuthReady && hasPlanetCashAccount) fetchTransactions();
+  }, [isAuthReady, hasPlanetCashAccount]);
 
   useEffect(() => {
     // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.
@@ -119,13 +119,29 @@ const Transactions = ({
     };
   }, []);
 
-  return !transactionHistory && isDataLoading ? (
-    <>
-      <TransactionListLoader />
-      <TransactionListLoader />
-      <TransactionListLoader />
-    </>
-  ) : transactionHistory && transactionHistory.items.length > 0 ? (
+  //Initial loading state (no data yet and request in progress)
+  if (!transactionHistory && isDataLoading) {
+    return (
+      <>
+        <TransactionListLoader />
+        <TransactionListLoader />
+        <TransactionListLoader />
+      </>
+    );
+  }
+
+  //No data available (nothing to render)
+  if (!transactionHistory) {
+    return null;
+  }
+
+  //Empty state (data loaded but no transactions found)
+  if (transactionHistory.items.length === 0) {
+    return <NoTransactionsFound />;
+  }
+
+  //Transactions available → render list, pagination, and modal
+  return (
     <>
       {transactionHistory.items.map((record, index) => {
         return (
@@ -139,6 +155,7 @@ const Transactions = ({
           />
         );
       })}
+
       {transactionHistory._links.next && (
         <Button
           variant="contained"
@@ -154,6 +171,7 @@ const Transactions = ({
           )}
         </Button>
       )}
+
       {isModalOpen && selectedRecord !== null && (
         <AccountRecord
           isModal={true}
@@ -164,8 +182,6 @@ const Transactions = ({
         />
       )}
     </>
-  ) : (
-    transactionHistory && <NoTransactionsFound />
   );
 };
 
