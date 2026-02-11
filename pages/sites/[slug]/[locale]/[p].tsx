@@ -7,8 +7,13 @@ import type {
 import type { ReactElement } from 'react';
 import type { NextPageWithLayout, PageComponentProps } from '../../../_app';
 import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
-import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../src/utils/multiTenancy/helpers';
+import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { v4 } from 'uuid';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
@@ -18,8 +23,9 @@ import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 const ProjectDetailsPage: NextPageWithLayout = ({ isMobile }) => {
   // store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
-  if (!tenantConfig) return <></>;
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+
+  if (!isInitialized) return <></>;
 
   return <ProjectDetails isMobile={isMobile} />;
 };
@@ -63,6 +69,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -81,10 +88,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
       'me',
     ],
   });
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

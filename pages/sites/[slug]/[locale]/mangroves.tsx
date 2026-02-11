@@ -5,7 +5,10 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common';
 
+import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
+import { defaultTenant } from '../../../../tenant.config';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import Mangroves from '../../../../src/tenants/salesforce/Mangroves';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
@@ -13,12 +16,15 @@ import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 export default function MangrovesLandingPage() {
   const tenantScore = { total: 20000000 };
-
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  //store: state
+  const storedTenantSlug = useTenantStore(
+    (state) => state.tenantConfig.config.slug
+  );
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
   function getCampaignPage() {
     let CampaignPage;
-    switch (tenantConfig.config.slug) {
+    switch (storedTenantSlug) {
       case 'salesforce':
         return <Mangroves tenantScore={tenantScore} isLoaded={true} />;
       default:
@@ -26,7 +32,7 @@ export default function MangrovesLandingPage() {
         return CampaignPage;
     }
   }
-  if (!tenantConfig) return <></>;
+  if (!isInitialized) return <></>;
 
   return (
     <>
@@ -45,6 +51,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -64,9 +71,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     ],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

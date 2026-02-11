@@ -1,6 +1,6 @@
 import type { EmotionCache } from '@emotion/react';
 import type { ReactElement, ReactNode } from 'react';
-import type { AppContext, AppInitialProps, AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { AbstractIntlMessages } from 'next-intl';
 import type { NextPage } from 'next';
@@ -13,7 +13,6 @@ import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import { useEffect, useMemo, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
-import App from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/theme/global.scss';
 import ThemeProvider from '../src/theme/themeContext';
@@ -31,11 +30,6 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
-import {
-  DEFAULT_TENANT,
-  getTenantConfig,
-  getTenantSlug,
-} from '../src/utils/multiTenancy/helpers';
 import { NextIntlClientProvider } from 'next-intl';
 import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
@@ -112,7 +106,7 @@ type AppPropsWithLayout = Omit<AppProps, 'pageProps'> & {
 };
 
 export type PageProps = {
-  tenantConfig?: Tenant;
+  tenantConfig: Tenant;
   messages?: AbstractIntlMessages;
   [key: string]: any;
 };
@@ -221,28 +215,6 @@ const PlanetWeb = ({
       <></>
     );
   }
-};
-
-PlanetWeb.getInitialProps = async (
-  context: AppContext
-): Promise<AppInitialProps & { pageProps: PageProps }> => {
-  const ctx = await App.getInitialProps(context);
-
-  const _tenantSlug = await getTenantSlug(
-    context.ctx.req?.headers.host as string
-  );
-
-  const tenantSlug = _tenantSlug ?? DEFAULT_TENANT;
-
-  const tenantConfig = await getTenantConfig(tenantSlug);
-
-  return {
-    ...ctx,
-    pageProps: {
-      ...ctx.pageProps,
-      tenantConfig,
-    },
-  };
 };
 
 export default PlanetWeb;

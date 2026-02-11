@@ -6,7 +6,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, Tenant } from '@planet-sdk/common';
 import type { PaymentOptions } from '../../../../../../../src/features/user/BulkCodes/BulkCodesTypes';
 
 import { useEffect, useCallback } from 'react';
@@ -20,7 +20,10 @@ import { useBulkCode } from '../../../../../../../src/features/common/Layout/Bul
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
-import { constructPathsForTenantSlug } from '../../../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
@@ -28,6 +31,7 @@ import { useApi } from '../../../../../../../src/hooks/useApi';
 import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
 import { useTenantStore } from '../../../../../../../src/stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../../../../src/stores/errorHandlingStore';
+import { defaultTenant } from '../../../../../../../tenant.config';
 
 export default function BulkCodeIssueCodesPage(): ReactElement {
   const router = useRouter();
@@ -44,7 +48,7 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
   } = useBulkCode();
   const { token, user, contextLoaded } = useUserProps();
   // store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const isInitialized = useTenantStore((state) => state.isInitialized);
   // store: state
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -105,7 +109,7 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
     checkContext();
   }, [checkContext]);
 
-  if (!tenantConfig) return <></>;
+  if (!isInitialized) return <></>;
 
   return (
     <UserLayout>
@@ -140,6 +144,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -150,9 +155,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country', 'bulkCodes'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

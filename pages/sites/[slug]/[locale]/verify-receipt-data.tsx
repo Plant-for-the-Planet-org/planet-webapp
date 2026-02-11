@@ -5,20 +5,27 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
-import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../src/utils/multiTenancy/helpers';
+import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import DonationReceiptUnauthenticated from '../../../../src/features/user/DonationReceipt/DonationReceiptUnauthenticated';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export default function DonationReceipt() {
-  //store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
-  if (!tenantConfig) return <></>;
+  //store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+
+  if (!isInitialized) return <></>;
 
   return <DonationReceiptUnauthenticated />;
 }
@@ -50,9 +57,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country', 'donationReceipt'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

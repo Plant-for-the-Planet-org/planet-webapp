@@ -6,9 +6,12 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError, UserPublicProfile } from '@planet-sdk/common';
+import type { APIError, Tenant, UserPublicProfile } from '@planet-sdk/common';
 
-import { constructPathsForTenantSlug } from '../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import PublicProfileOuterContainer from '../../../../../src/features/user/Profile/PublicProfileOuterContainer';
 import PublicProfileLayout from '../../../../../src/features/user/Profile/PublicProfileLayout';
@@ -22,6 +25,7 @@ import { useApi } from '../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
+import { defaultTenant } from '../../../../../tenant.config';
 
 const PublicProfilePage = () => {
   const { getApi } = useApi();
@@ -30,7 +34,7 @@ const PublicProfilePage = () => {
   // local state
   const [profile, setProfile] = useState<null | UserPublicProfile>(null);
   // store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const isInitialized = useTenantStore((state) => state.isInitialized);
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -58,7 +62,7 @@ const PublicProfilePage = () => {
     }
   }, [router.isReady, router.query.profile]);
 
-  if (!tenantConfig) return null;
+  if (!isInitialized) return null;
 
   return (
     <>
@@ -99,6 +103,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -119,9 +124,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     ],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };
