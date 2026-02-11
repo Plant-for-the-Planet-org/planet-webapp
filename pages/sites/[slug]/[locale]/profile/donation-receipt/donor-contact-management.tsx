@@ -15,11 +15,17 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { defaultTenant } from '../../../../../../tenant.config';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 
 export default function ModifyDonorData() {
   const t = useTranslations('DonationReceipt');
+
+  //store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  if (!isInitialized) return <></>;
+
   return (
     <UserLayout>
       <Head>
@@ -57,13 +63,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'donationReceipt', 'editProfile'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

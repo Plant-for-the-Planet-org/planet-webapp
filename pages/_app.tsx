@@ -1,6 +1,6 @@
 import type { EmotionCache } from '@emotion/react';
 import type { ReactElement, ReactNode } from 'react';
-import type { AppContext, AppInitialProps, AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { AbstractIntlMessages } from 'next-intl';
 import type { NextPage } from 'next';
@@ -13,7 +13,6 @@ import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import { useEffect, useMemo, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
-import App from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/theme/global.scss';
 import ThemeProvider from '../src/theme/themeContext';
@@ -21,7 +20,6 @@ import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
-import { storeConfig } from '../src/utils/storeConfig';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
@@ -32,12 +30,6 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
-import { TenantProvider } from '../src/features/common/Layout/TenantContext';
-import {
-  DEFAULT_TENANT,
-  getTenantConfig,
-  getTenantSlug,
-} from '../src/utils/multiTenancy/helpers';
 import { NextIntlClientProvider } from 'next-intl';
 import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
@@ -130,9 +122,8 @@ const PlanetWeb = ({
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) => {
   const router = useRouter();
-  const [browserCompatible, setBrowserCompatible] = useState(false);
-
   const { tenantConfig } = pageProps;
+  const [browserCompatible, setBrowserCompatible] = useState(false);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -145,10 +136,6 @@ const PlanetWeb = ({
       }
     }
   }
-
-  useEffect(() => {
-    storeConfig(tenantConfig);
-  }, []);
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
@@ -185,73 +172,49 @@ const PlanetWeb = ({
         messages={pageProps.messages}
       >
         <CacheProvider value={emotionCache}>
-          <TenantProvider initialTenantConfig={pageProps.tenantConfig}>
-            <Auth0Provider
-              domain={process.env.AUTH0_CUSTOM_DOMAIN!}
-              clientId={
-                tenantConfig.config?.auth0ClientId
-                  ? tenantConfig.config.auth0ClientId
-                  : process.env.AUTH0_CLIENT_ID
-              }
-              redirectUri={
-                typeof window !== 'undefined' ? window.location.origin : ''
-              }
-              audience={'urn:plant-for-the-planet'}
-              cacheLocation={'localstorage'}
-              onRedirectCallback={onRedirectCallback}
-              useRefreshTokens={true}
-            >
-              <ThemeProvider>
-                <MuiThemeProvider theme={materialTheme}>
-                  <CssBaseline />
-                  <UserPropsProvider>
-                    <StoreInitializer />
-                    <PlanetCashProvider>
-                      <PayoutsProvider>
-                        <Layout>
-                          <BulkCodeProvider>
-                            <AnalyticsProvider>
-                              <DonationReceiptProvider>
-                                {pageContent}
-                              </DonationReceiptProvider>
-                            </AnalyticsProvider>
-                          </BulkCodeProvider>
-                        </Layout>
-                      </PayoutsProvider>
-                    </PlanetCashProvider>
-                  </UserPropsProvider>
-                </MuiThemeProvider>
-              </ThemeProvider>
-            </Auth0Provider>
-          </TenantProvider>
+          <Auth0Provider
+            domain={process.env.AUTH0_CUSTOM_DOMAIN!}
+            clientId={
+              tenantConfig.config?.auth0ClientId
+                ? tenantConfig.config.auth0ClientId
+                : process.env.AUTH0_CLIENT_ID
+            }
+            redirectUri={
+              typeof window !== 'undefined' ? window.location.origin : ''
+            }
+            audience={'urn:plant-for-the-planet'}
+            cacheLocation={'localstorage'}
+            onRedirectCallback={onRedirectCallback}
+            useRefreshTokens={true}
+          >
+            <ThemeProvider>
+              <MuiThemeProvider theme={materialTheme}>
+                <CssBaseline />
+                <UserPropsProvider>
+                  <StoreInitializer tenantConfig={tenantConfig} />
+                  <PlanetCashProvider>
+                    <PayoutsProvider>
+                      <Layout>
+                        <BulkCodeProvider>
+                          <AnalyticsProvider>
+                            <DonationReceiptProvider>
+                              {pageContent}
+                            </DonationReceiptProvider>
+                          </AnalyticsProvider>
+                        </BulkCodeProvider>
+                      </Layout>
+                    </PayoutsProvider>
+                  </PlanetCashProvider>
+                </UserPropsProvider>
+              </MuiThemeProvider>
+            </ThemeProvider>
+          </Auth0Provider>
         </CacheProvider>
       </NextIntlClientProvider>
     ) : (
       <></>
     );
   }
-};
-
-PlanetWeb.getInitialProps = async (
-  context: AppContext
-): Promise<AppInitialProps & { pageProps: PageProps }> => {
-  const ctx = await App.getInitialProps(context);
-
-  const _tenantSlug = await getTenantSlug(
-    context.ctx.req?.headers.host as string
-  );
-
-  const tenantSlug = _tenantSlug ?? DEFAULT_TENANT;
-
-  const tenantConfig = await getTenantConfig(tenantSlug);
-
-  return {
-    ...ctx,
-    pageProps: {
-      ...ctx.pageProps,
-      tenantConfig,
-    },
-  };
 };
 
 export default PlanetWeb;

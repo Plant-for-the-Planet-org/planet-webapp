@@ -1,41 +1,30 @@
 import type { AbstractIntlMessages } from 'next-intl';
-import type { Tenant } from '@planet-sdk/common';
 import type {
   GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common';
 
-import { useEffect } from 'react';
-import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
-import Mangroves from '../../../../src/tenants/salesforce/Mangroves';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
+import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
+import Mangroves from '../../../../src/tenants/salesforce/Mangroves';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import router from 'next/router';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function MangrovesLandingPage({
-  pageProps: { tenantConfig },
-}: Props) {
+export default function MangrovesLandingPage() {
   const tenantScore = { total: 20000000 };
-
-  const { setTenantConfig } = useTenant();
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  //store: state
+  const storedTenantSlug = useTenantStore(
+    (state) => state.tenantConfig.config.slug
+  );
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
   function getCampaignPage() {
     let CampaignPage;
-    switch (tenantConfig.config.slug) {
+    switch (storedTenantSlug) {
       case 'salesforce':
         return <Mangroves tenantScore={tenantScore} isLoaded={true} />;
       default:
@@ -43,11 +32,12 @@ export default function MangrovesLandingPage({
         return CampaignPage;
     }
   }
+  if (!isInitialized) return <></>;
 
   return (
     <>
       <GetHomeMeta />
-      {tenantConfig ? getCampaignPage() : <></>}
+      {getCampaignPage()}
     </>
   );
 }
@@ -67,9 +57,6 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -83,6 +70,9 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
       'project',
     ],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

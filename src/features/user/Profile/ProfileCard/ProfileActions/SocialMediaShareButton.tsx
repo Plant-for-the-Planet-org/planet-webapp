@@ -5,7 +5,7 @@ import { ShareIcon } from '../../../../../../public/assets/images/icons/ProfileP
 import WebappButton from '../../../../common/WebappButton';
 import ShareModal from '../ShareModal';
 import { useTranslations } from 'next-intl';
-import { useTenant } from '../../../../common/Layout/TenantContext';
+import { useTenantStore } from '../../../../../stores/tenantStore';
 
 interface SocialMediaShareButtonProps {
   userProfile: ProfileV2Props['userProfile'];
@@ -14,9 +14,11 @@ interface SocialMediaShareButtonProps {
 const SocialMediaShareButton = ({
   userProfile,
 }: SocialMediaShareButtonProps) => {
-  const [isShareModelOpen, setIsShareModelOpen] = useState(false);
-  const { tenantConfig } = useTenant();
   const t = useTranslations('Profile');
+  // local state
+  const [isShareModelOpen, setIsShareModelOpen] = useState(false);
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const webShareData = {
     title: t('shareFeature.shareTextTitle'),

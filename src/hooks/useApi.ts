@@ -10,9 +10,10 @@
  * - Handle token validation, session ID management, and versioning.
  *
  * @dependencies
+ *  - State / Stores:
+ *   - `useTenantStore`: Retrieves tenant-specific configuration (e.g. tenant key).
  * - React Contexts:
  *   - `useUserProps`: To access the current user's token and handle logout on invalid tokens.
- *   - `useTenant`: To retrieve tenant-specific configurations (e.g., tenant key).
  *   - `useLocale` : To get the current locale for setting the `x-locale` header.
  * - Utilities:
  *   - `apiClient`: A utility to make HTTP requests.
@@ -62,7 +63,8 @@
  * - `deleteApiAuthenticated`: Makes a DELETE request with authentication.
  *
  * @notes
- * - Ensure that `useUserProps` and `useTenant` contexts are properly configured in your application.
+ * - Ensure that `useUserProps` contexts are properly configured in your application.
+ * - Tenant configuration is sourced from `useTenantStore`; no Tenant React Context is required.
  */
 import type { RequestOptions } from '../utils/apiRequests/apiClient';
 
@@ -70,10 +72,10 @@ import apiClient from '../utils/apiRequests/apiClient';
 import getSessionId from '../utils/apiRequests/getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
-import { useTenant } from '../features/common/Layout/TenantContext';
 import { useUserProps } from '../features/common/Layout/UserPropsContext';
 import { validateToken } from '../utils/apiRequests/validateToken';
 import { useLocale } from 'next-intl';
+import { useTenantStore } from '../stores/tenantStore';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
@@ -100,8 +102,9 @@ type ApiConfig<
 
 export const useApi = () => {
   const { token, logoutUser } = useUserProps();
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const callApi = async <T>({
     method,

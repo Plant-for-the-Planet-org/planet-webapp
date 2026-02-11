@@ -6,7 +6,7 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common';
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
@@ -20,30 +20,17 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function AddProjectType({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+export default function AddProjectType(): ReactElement {
   const t = useTranslations('ManageProjects');
   const [accessDenied, setAccessDenied] = useState<boolean>(false);
   const [setupAccess, setSetupAccess] = useState<boolean>(false);
   const { user, contextLoaded, token, loginWithRedirect } = useUserProps();
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
   useEffect(() => {
     async function loadUserData() {
@@ -74,7 +61,7 @@ export default function AddProjectType({
   }, [contextLoaded]);
 
   // User is not TPO
-  if (tenantConfig && accessDenied && setupAccess) {
+  if (isInitialized && accessDenied && setupAccess) {
     return (
       <>
         <AccessDeniedLoader />
@@ -82,8 +69,9 @@ export default function AddProjectType({
       </>
     );
   }
+  if (!isInitialized) return <></>;
 
-  return tenantConfig ? (
+  return (
     <UserLayout>
       <Head>
         <title>{t('addNewProject')}</title>
@@ -95,8 +83,6 @@ export default function AddProjectType({
         <AccessDeniedLoader />
       )}
     </UserLayout>
-  ) : (
-    <></>
   );
 }
 
@@ -127,13 +113,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'maps', 'me', 'country', 'manageProjects'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

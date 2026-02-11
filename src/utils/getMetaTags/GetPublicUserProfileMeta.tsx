@@ -2,8 +2,7 @@ import type { UserPublicProfile } from '@planet-sdk/common';
 import type { ReactElement } from 'react';
 
 import Head from 'next/head';
-
-import { useTenant } from '../../features/common/Layout/TenantContext';
+import { useTenantStore } from '../../stores/tenantStore';
 
 interface Props {
   userprofile: UserPublicProfile | null;
@@ -12,7 +11,8 @@ interface Props {
 export default function GetPublicUserProfileMeta({
   userprofile,
 }: Props): ReactElement {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   return (
     <Head>

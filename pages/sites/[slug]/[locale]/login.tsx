@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -7,38 +6,27 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
+import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
+import { defaultTenant } from '../../../../tenant.config';
 import { useEffect } from 'react';
 import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
-import {
-  constructPathsForTenantSlug,
-  getTenantConfig,
-} from '../../../../src/utils/multiTenancy/helpers';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import { defaultTenant } from '../../../../tenant.config';
+import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function Login({ pageProps }: Props): ReactElement {
+export default function Login(): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setTenantConfig } = useTenant();
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
-
   const {
     user,
     contextLoaded,
@@ -48,6 +36,8 @@ export default function Login({ pageProps }: Props): ReactElement {
   } = useUserProps();
 
   useEffect(() => {
+    if (!isInitialized) return;
+
     async function loadFunction() {
       // redirect
       if (user) {
@@ -77,14 +67,14 @@ export default function Login({ pageProps }: Props): ReactElement {
         });
       }
     }
-  }, [user, contextLoaded]);
+  }, [user, contextLoaded, isInitialized]);
 
-  return pageProps.tenantConfig ? (
+  if (!isInitialized) return <></>;
+
+  return (
     <div>
       <UserProfileLoader />
     </div>
-  ) : (
-    <></>
   );
 }
 
@@ -115,13 +105,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {
