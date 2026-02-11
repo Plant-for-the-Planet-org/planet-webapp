@@ -29,7 +29,6 @@ import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext'
 import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import {
@@ -204,19 +203,17 @@ const PlanetWeb = ({
               <ThemeProvider>
                 <MuiThemeProvider theme={materialTheme}>
                   <CssBaseline />
-                  <PlanetCashProvider>
-                    <PayoutsProvider>
-                      <Layout>
-                        <BulkCodeProvider>
-                          <AnalyticsProvider>
-                            <DonationReceiptProvider>
-                              {pageContent}
-                            </DonationReceiptProvider>
-                          </AnalyticsProvider>
-                        </BulkCodeProvider>
-                      </Layout>
-                    </PayoutsProvider>
-                  </PlanetCashProvider>
+                  <PayoutsProvider>
+                    <Layout>
+                      <BulkCodeProvider>
+                        <AnalyticsProvider>
+                          <DonationReceiptProvider>
+                            {pageContent}
+                          </DonationReceiptProvider>
+                        </AnalyticsProvider>
+                      </BulkCodeProvider>
+                    </Layout>
+                  </PayoutsProvider>
                 </MuiThemeProvider>
               </ThemeProvider>
             </Auth0Provider>
