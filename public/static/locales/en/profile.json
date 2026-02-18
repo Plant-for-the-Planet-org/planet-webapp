@@ -134,6 +134,9 @@
         "lifeOnLand": "Life on land",
         "partnership": "Partnerships for the goals"
       }
+    },
+    "tenant": {
+      "tenantReport": "Tenant Report"
     }
   }
 }
