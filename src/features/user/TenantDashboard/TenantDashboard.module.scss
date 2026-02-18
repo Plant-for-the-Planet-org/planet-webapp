@@ -1,0 +1,31 @@
+@import '../../../theme/theme';
+
+.tenantStatsContainer {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+
+  .statCard {
+    flex: 0 0 205px;
+    background: $dsWhite;
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+
+    .statCardIcon {
+      margin-bottom: 8px;
+    }
+
+    .statCardValue {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .statCardLabel {
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+}
