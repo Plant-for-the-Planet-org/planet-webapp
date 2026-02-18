@@ -136,7 +136,14 @@
       }
     },
     "tenant": {
-      "tenantReport": "Tenant Report"
+      "tenantReport": "Tenant Report",
+      "treesPlanted": "trees planted",
+      "hectaresRestored": "hectares restored",
+      "totalDonated": "total donated",
+      "donors": "donors",
+      "countries": "countries",
+      "countryLeaderboard": "Country Leaderboard",
+      "recentDonors": "Recent Donors"
     }
   }
 }
