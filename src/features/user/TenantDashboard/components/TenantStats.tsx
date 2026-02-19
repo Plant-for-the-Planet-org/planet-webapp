@@ -1,7 +1,6 @@
 import type { JSX } from 'react';
-import type { APIError, CountryCode } from '@planet-sdk/common';
+import type { TenantStatsData } from '..';
 
-import { useEffect, useState } from 'react';
 import {
   CountriesIcon,
   DonorsIcon,
@@ -9,73 +8,23 @@ import {
   TotalDonatedIcon,
   TreesPlantedIcon,
 } from '../../../../../public/assets/images/icons/tenantDashboard';
-import style from '../TenantDashboard.module.scss';
+import styles from '../TenantDashboard.module.scss';
 import StatCard from './microComponents/StatCard';
-import { useApi } from '../../../../hooks/useApi';
-import { handleError } from '@planet-sdk/common';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
-import { defaultTenant } from '../../../../../tenant.config';
 import { useLocale, useTranslations } from 'next-intl';
 import { formatStatNumber } from '../utils';
-import { useRouter } from 'next/router';
-import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 export interface StatItem {
   icon: JSX.Element;
   value: string | number;
   label: string;
 }
-
-export interface TenantStats {
-  global: Global;
-  countries: Country[];
+interface TenantStatsProp {
+  tenantStats: TenantStatsData | null;
 }
 
-export interface Global {
-  tenant: string;
-  totalDonated: number;
-  totalPlanted: number;
-  totalRestored: number;
-  countries: number;
-  uniqueDonors: number;
-  currency: string;
-}
-
-export interface Country {
-  country: CountryCode;
-  trees: number;
-}
-
-const TenantStats = () => {
-  const [tenantStats, setTenantStats] = useState<TenantStats | null>(null);
-  const [isFetching, setIsFetching] = useState(false);
-  // store: action
-  const setErrors = useErrorHandlingStore((state) => state.setErrors);
-
+const TenantStats = ({ tenantStats }: TenantStatsProp) => {
   const t = useTranslations('Profile.tenant');
-  const { getApi } = useApi();
   const locale = useLocale();
-  const router = useRouter();
-  const { localizedPath } = useLocalizedPath();
-
-  const fetchTenantStats = async () => {
-    setIsFetching(true);
-    try {
-      const stats = await getApi<TenantStats>(
-        `/app/tenantDashboard/${defaultTenant.id}/stats`
-      );
-      setTenantStats(stats);
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-      router.push(localizedPath('/profile'));
-    } finally {
-      setIsFetching(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTenantStats();
-  }, []);
 
   if (!tenantStats) return null;
   const { totalPlanted, totalRestored, totalDonated, uniqueDonors, countries } =
@@ -109,7 +58,7 @@ const TenantStats = () => {
     },
   ];
   return (
-    <section className={style.tenantStatsContainer}>
+    <section className={styles.tenantStatsContainer}>
       {statConfig.map((stat) => (
         <StatCard key={stat.label} {...stat} />
       ))}
