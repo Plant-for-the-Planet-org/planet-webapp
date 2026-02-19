@@ -143,7 +143,10 @@
       "donors": "donors",
       "countries": "countries",
       "countryLeaderboard": "Country Leaderboard",
-      "recentDonors": "Recent Donors"
+      "recentDonors": "Recent Donors",
+      "showAll": "Show All",
+      "showLess": "Show Less",
+      "treePlantedCount": "{count, plural, =0 {0 trees} one {# tree} other {# trees}}"
     }
   }
 }
