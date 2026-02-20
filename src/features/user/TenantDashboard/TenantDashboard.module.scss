@@ -32,8 +32,8 @@
   }
 }
 
-// leaderboard styles
-.leaderboardCard {
+// common
+.card {
   display: flex;
   flex-direction: column;
   background-color: $dsWhite;
@@ -53,15 +53,28 @@
     font-weight: 700;
     color: $dsPrimaryColor;
   }
+}
 
-  .leaderboardButton {
-    display: flex;
-    justify-content: center;
-  }
+.dashboardLayout {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+// leaderboard styles
+
+.leaderboard {
+  flex: 2;
 
   button {
     width: max-content;
   }
+}
+
+.leaderboardButton {
+  display: flex;
+  justify-content: center;
 }
 
 .leaderboardList {
@@ -117,4 +130,24 @@
   height: 100%;
   background: $dsPrimaryColor;
   border-radius: 999px;
+}
+
+// Recent donors style
+
+.recentDonors {
+  flex: 1;
+}
+
+.donorRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid $dsMediumGrey;
+  font-size: 12px;
+  font-weight: 500;
+
+  &:first-child {
+    padding-top: 0;
+  }
 }

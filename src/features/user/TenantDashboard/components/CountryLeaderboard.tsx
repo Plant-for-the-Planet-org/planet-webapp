@@ -1,4 +1,4 @@
-import type { Country } from '..';
+import type { CountryLeaderboardInterface } from '..';
 
 import { useTranslations } from 'next-intl';
 import { TreesPlantedIcon } from '../../../../../public/assets/images/icons/tenantDashboard';
@@ -6,10 +6,11 @@ import styles from '../TenantDashboard.module.scss';
 import LeaderboardRow from './microComponents/LeaderboardRow';
 import WebappButton from '../../../common/WebappButton';
 import { useState } from 'react';
+import { clsx } from 'clsx';
 
 const LEADERBOARD_PREVIEW_COUNT = 10;
 interface CountryLeaderboard {
-  countries: Country[] | undefined;
+  countries: CountryLeaderboardInterface[] | null;
   totalTreesPlanted: number | undefined;
 }
 
@@ -27,7 +28,7 @@ const CountryLeaderboard = ({
     : countries.slice(0, LEADERBOARD_PREVIEW_COUNT);
 
   return (
-    <section className={styles.leaderboardCard}>
+    <section className={clsx(styles.card, styles.leaderboard)}>
       <div className={styles.cardHeader}>
         <TreesPlantedIcon />
         <h2 className={styles.cardTitle}>{t('countryLeaderboard')}</h2>
@@ -36,8 +37,8 @@ const CountryLeaderboard = ({
       <ol className={styles.leaderboardList}>
         {displayedCountries.map((row) => (
           <LeaderboardRow
-            key={row.country}
-            countryCode={row.country}
+            key={row.donor_country}
+            countryCode={row.donor_country}
             treesPlanted={row.trees}
             totalTreePlanted={totalTreesPlanted}
           />

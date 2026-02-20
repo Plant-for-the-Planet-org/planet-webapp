@@ -146,7 +146,8 @@
       "recentDonors": "Recent Donors",
       "showAll": "Show All",
       "showLess": "Show Less",
-      "treePlantedCount": "{count, plural, =0 {0 trees} one {# tree} other {# trees}}"
+      "treePlantedCount": "{count, plural, =0 {0 trees} one {# tree} other {# trees}}",
+      "donationUnit": "{unitType, select, tree {{count, plural,one {# tree} other {# trees}}} m2 {{count} m²} other {{count}}}"
     }
   }
 }

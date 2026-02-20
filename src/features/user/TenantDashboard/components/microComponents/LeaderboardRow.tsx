@@ -6,7 +6,7 @@ import { countryToFlag } from '../../../../../utils/countryCurrency/countryToFla
 
 interface LeaderboardRow {
   countryCode: CountryCode;
-  treesPlanted: number;
+  treesPlanted: string;
   totalTreePlanted: number;
 }
 
@@ -18,7 +18,7 @@ const LeaderboardRow = ({
   const tCountry = useTranslations('Country');
   const t = useTranslations('Profile.tenant');
   const percentage =
-    totalTreePlanted > 0 ? (treesPlanted / totalTreePlanted) * 100 : 0;
+    totalTreePlanted > 0 ? (Number(treesPlanted) / totalTreePlanted) * 100 : 0;
   const flagEmoji = countryToFlag(countryCode);
 
   return (

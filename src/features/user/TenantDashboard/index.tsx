@@ -9,8 +9,22 @@ import { defaultTenant } from '../../../../tenant.config';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 import { handleError } from '@planet-sdk/common';
 import CountryLeaderboard from './components/CountryLeaderboard';
+import RecentDonors from './components/RecentDonors';
+import styles from './TenantDashboard.module.scss';
 
-export interface TenantStatsData {
+export interface RecentDonorInterface {
+  units: number;
+  unitType: 'tree' | 'm2';
+  created: string;
+  donor: string;
+}
+
+export interface CountryLeaderboardInterface {
+  donor_country: CountryCode;
+  trees: string;
+}
+
+export interface TenantStatsInterface {
   global: Global;
   countries: Country[];
 }
@@ -31,7 +45,15 @@ export interface Country {
 }
 
 const TenantDashboard = () => {
-  const [tenantStats, setTenantStats] = useState<TenantStatsData | null>(null);
+  const [tenantStats, setTenantStats] = useState<TenantStatsInterface | null>(
+    null
+  );
+  const [recentDonors, setRecentDonors] = useState<
+    RecentDonorInterface[] | null
+  >(null);
+  const [countryLeaderboard, setCountryLeaderboard] = useState<
+    CountryLeaderboardInterface[] | null
+  >(null);
   const [isFetching, setIsFetching] = useState(false);
 
   // store: action
@@ -41,32 +63,45 @@ const TenantDashboard = () => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
 
-  const fetchTenantStats = async () => {
-    setIsFetching(true);
-    try {
-      const stats = await getApi<TenantStatsData>(
-        `/app/tenantDashboard/${defaultTenant.id}/stats`
-      );
-      setTenantStats(stats);
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-      router.push(localizedPath('/profile'));
-    } finally {
-      setIsFetching(false);
-    }
-  };
-
   useEffect(() => {
-    fetchTenantStats();
+    const fetchAll = async () => {
+      try {
+        const [stats, donors, leaderboard] = await Promise.all([
+          getApi<TenantStatsInterface>(
+            `/app/tenantDashboard/${defaultTenant.id}/stats`
+          ),
+          getApi<RecentDonorInterface[]>(
+            `/app/tenantDashboard/${defaultTenant.id}/mostRecent`
+          ),
+          getApi<CountryLeaderboardInterface[]>(
+            `/app/tenantDashboard/${defaultTenant.id}/leaderboard`
+          ),
+        ]);
+
+        setTenantStats(stats);
+        setRecentDonors(donors);
+        setCountryLeaderboard(leaderboard);
+      } catch (error) {
+        setErrors(handleError(error as APIError));
+        router.push(localizedPath('/profile'));
+      } finally {
+        setIsFetching(false);
+      }
+    };
+
+    fetchAll();
   }, []);
 
   return (
     <section>
       <TenantStats tenantStats={tenantStats} />
-      <CountryLeaderboard
-        countries={tenantStats?.countries}
-        totalTreesPlanted={tenantStats?.global.totalPlanted}
-      />
+      <section className={styles.dashboardLayout}>
+        <CountryLeaderboard
+          countries={countryLeaderboard}
+          totalTreesPlanted={tenantStats?.global.totalPlanted}
+        />
+        {recentDonors && <RecentDonors recentDonors={recentDonors} />}
+      </section>
     </section>
   );
 };
