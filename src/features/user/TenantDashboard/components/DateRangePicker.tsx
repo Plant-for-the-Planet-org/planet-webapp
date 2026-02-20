@@ -1,3 +1,5 @@
+import type { SetState } from '../../../common/types/common';
+
 import { TextField } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -10,16 +12,18 @@ interface DateRangePickerProps {
   fromDate: Date | null;
   toDate: Date | null;
   today: Date;
-  onFromDateChange: (newValue: Date | null) => void;
-  onToDateChange: (newValue: Date | null) => void;
+  setFromDate: SetState<Date | null>;
+  setToDate: SetState<Date | null>;
+  onApply: (fromDate: Date | null, toDate: Date | null) => void;
 }
 
 const DateRangePicker = ({
   fromDate,
   toDate,
   today,
-  onFromDateChange,
-  onToDateChange,
+  setFromDate,
+  setToDate,
+  onApply,
 }: DateRangePickerProps) => {
   const { userLang } = useUserProps();
   return (
@@ -35,7 +39,10 @@ const DateRangePicker = ({
         <DatePicker
           label="From"
           value={fromDate}
-          onChange={onFromDateChange}
+          onChange={(val) => setFromDate(val)}
+          onAccept={(val) => {
+            onApply(val, toDate);
+          }}
           maxDate={toDate ?? today}
           inputFormat="MMM dd, yyyy"
           renderInput={(params) => (
@@ -52,7 +59,10 @@ const DateRangePicker = ({
         <DatePicker
           label={'To'}
           value={toDate}
-          onChange={onToDateChange}
+          onChange={(val) => setToDate(val)}
+          onAccept={(val) => {
+            onApply(fromDate, val);
+          }}
           minDate={fromDate ?? undefined}
           maxDate={today}
           inputFormat="MMM dd, yyyy"

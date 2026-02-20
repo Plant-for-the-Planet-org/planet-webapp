@@ -26,6 +26,10 @@
     display: flex;
     flex-direction: column;
 
+    @include xsPhoneView {
+      flex: 1 0 205px;
+    }
+
     .statCardIcon {
       margin-bottom: 8px;
     }

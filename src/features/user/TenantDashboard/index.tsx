@@ -108,19 +108,14 @@ const TenantDashboard = () => {
     }
   };
 
-  const onFromDateChange = (newValue: Date | null) => {
-    setFromDate(newValue);
-  };
-
-  const onToDateChange = (newValue: Date | null) => {
-    setToDate(newValue);
+  const handleApply = (fromDate: Date | null, toDate: Date | null) => {
+    if (!isValidRange(fromDate, toDate)) return;
+    fetchTenantReport(fromDate, toDate);
   };
 
   useEffect(() => {
-    if (!isValidRange(fromDate, toDate)) return;
-
-    fetchTenantReport(fromDate, toDate);
-  }, [fromDate, toDate]);
+    fetchTenantReport(null, null);
+  }, []);
 
   return (
     <section>
@@ -128,8 +123,9 @@ const TenantDashboard = () => {
         fromDate={fromDate}
         toDate={toDate}
         today={today}
-        onFromDateChange={onFromDateChange}
-        onToDateChange={onToDateChange}
+        setFromDate={setFromDate}
+        setToDate={setToDate}
+        onApply={handleApply}
       />
 
       {isEmptyResult && (
