@@ -11,6 +11,10 @@ import { handleError } from '@planet-sdk/common';
 import CountryLeaderboard from './components/CountryLeaderboard';
 import RecentDonors from './components/RecentDonors';
 import styles from './TenantDashboard.module.scss';
+import DateRangePicker from './components/DateRangePicker';
+import { useTranslations } from 'next-intl';
+import { formatDate, isDataEmpty, isValidRange } from './utils';
+import { clsx } from 'clsx';
 
 export interface RecentDonorInterface {
   units: number;
@@ -54,6 +58,9 @@ const TenantDashboard = () => {
   const [countryLeaderboard, setCountryLeaderboard] = useState<
     CountryLeaderboardInterface[] | null
   >(null);
+  const [fromDate, setFromDate] = useState<Date | null>(null);
+  const [toDate, setToDate] = useState<Date | null>(null);
+  const [isEmptyResult, setIsEmptyResult] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
   // store: action
@@ -62,46 +69,87 @@ const TenantDashboard = () => {
   const { getApi } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const today = new Date();
+  const t = useTranslations('Profile.tenant');
+
+  // Build query string from date state
+  const buildDateParams = (since: Date | null, till: Date | null): string => {
+    const params = new URLSearchParams();
+    if (since) params.set('since', formatDate(since));
+    if (till) params.set('till', formatDate(till));
+    return params.toString() ? `?${params.toString()}` : '';
+  };
+
+  const fetchTenantReport = async (since: Date | null, till: Date | null) => {
+    setIsFetching(true);
+    const dateParams = buildDateParams(since, till);
+    try {
+      const [stats, donors, leaderboard] = await Promise.all([
+        getApi<TenantStatsInterface>(
+          `/app/tenantDashboard/${defaultTenant.id}/stats${dateParams}`
+        ),
+        getApi<RecentDonorInterface[]>(
+          `/app/tenantDashboard/${defaultTenant.id}/mostRecent${dateParams}`
+        ),
+        getApi<CountryLeaderboardInterface[]>(
+          `/app/tenantDashboard/${defaultTenant.id}/leaderboard${dateParams}`
+        ),
+      ]);
+
+      setTenantStats(stats);
+      setIsEmptyResult(isDataEmpty(stats.global));
+      setRecentDonors(donors);
+      setCountryLeaderboard(leaderboard);
+    } catch (error) {
+      setErrors(handleError(error as APIError));
+      router.push(localizedPath('/profile'));
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  const onFromDateChange = (newValue: Date | null) => {
+    setFromDate(newValue);
+  };
+
+  const onToDateChange = (newValue: Date | null) => {
+    setToDate(newValue);
+  };
 
   useEffect(() => {
-    const fetchAll = async () => {
-      try {
-        const [stats, donors, leaderboard] = await Promise.all([
-          getApi<TenantStatsInterface>(
-            `/app/tenantDashboard/${defaultTenant.id}/stats`
-          ),
-          getApi<RecentDonorInterface[]>(
-            `/app/tenantDashboard/${defaultTenant.id}/mostRecent`
-          ),
-          getApi<CountryLeaderboardInterface[]>(
-            `/app/tenantDashboard/${defaultTenant.id}/leaderboard`
-          ),
-        ]);
+    if (!isValidRange(fromDate, toDate)) return;
 
-        setTenantStats(stats);
-        setRecentDonors(donors);
-        setCountryLeaderboard(leaderboard);
-      } catch (error) {
-        setErrors(handleError(error as APIError));
-        router.push(localizedPath('/profile'));
-      } finally {
-        setIsFetching(false);
-      }
-    };
-
-    fetchAll();
-  }, []);
+    fetchTenantReport(fromDate, toDate);
+  }, [fromDate, toDate]);
 
   return (
     <section>
-      <TenantStats tenantStats={tenantStats} />
-      <section className={styles.dashboardLayout}>
-        <CountryLeaderboard
-          countries={countryLeaderboard}
-          totalTreesPlanted={tenantStats?.global.totalPlanted}
-        />
-        {recentDonors && <RecentDonors recentDonors={recentDonors} />}
-      </section>
+      <DateRangePicker
+        fromDate={fromDate}
+        toDate={toDate}
+        today={today}
+        onFromDateChange={onFromDateChange}
+        onToDateChange={onToDateChange}
+      />
+
+      {isEmptyResult && (
+        <div className={clsx(styles.card, styles.emptyState)}>
+          <p>{t('noDataForRange')}</p>
+        </div>
+      )}
+
+      {!isEmptyResult && (
+        <>
+          <TenantStats tenantStats={tenantStats} />
+          <section className={styles.dashboardLayout}>
+            <CountryLeaderboard
+              countries={countryLeaderboard}
+              totalTreesPlanted={tenantStats?.global.totalPlanted}
+            />
+            {recentDonors && <RecentDonors recentDonors={recentDonors} />}
+          </section>
+        </>
+      )}
     </section>
   );
 };
