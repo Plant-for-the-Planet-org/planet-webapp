@@ -1,13 +1,28 @@
 @import '../../../theme/theme';
 
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap-reverse;
+}
 // Date range styles
 
 .dateRangeContainer {
   display: flex;
   align-items: center;
   gap: 18px;
-  margin-bottom: 24px;
   flex-wrap: wrap;
+}
+.dateRangeInfo {
+  display: none;
+}
+
+.printButton {
+  @include xsPhoneView {
+    margin-bottom: 24px;
+  }
 }
 
 // tenant stats styles
@@ -168,4 +183,18 @@
 
 .emptyState {
   min-height: auto;
+}
+
+@media print {
+  .leaderboardButton,
+  .topBar {
+    display: none;
+  }
+  .dateRangeInfo {
+    display: block;
+    margin-bottom: 16px;
+    font-size: 14px;
+    padding-left: 3px;
+    font-weight: 500;
+  }
 }

@@ -15,6 +15,8 @@ import DateRangePicker from './components/DateRangePicker';
 import { useTranslations } from 'next-intl';
 import { formatDate, isDataEmpty, isValidRange } from './utils';
 import { clsx } from 'clsx';
+import WebappButton from '../../common/WebappButton';
+import formatDateX from '../../../utils/countryCurrency/getFormattedDate';
 
 export interface RecentDonorInterface {
   units: number;
@@ -119,14 +121,36 @@ const TenantDashboard = () => {
 
   return (
     <section>
-      <DateRangePicker
-        fromDate={fromDate}
-        toDate={toDate}
-        today={today}
-        setFromDate={setFromDate}
-        setToDate={setToDate}
-        onApply={handleApply}
-      />
+      <div className={styles.dateRangeInfo}>
+        {fromDate && toDate && (
+          <p>
+            {t('dateRange', {
+              from: formatDateX(fromDate),
+              to: formatDateX(toDate),
+            })}
+          </p>
+        )}
+      </div>
+      <div className={styles.topBar}>
+        <DateRangePicker
+          fromDate={fromDate}
+          toDate={toDate}
+          today={today}
+          setFromDate={setFromDate}
+          setToDate={setToDate}
+          onApply={handleApply}
+        />
+
+        {!isEmptyResult && (
+          <WebappButton
+            elementType="button"
+            onClick={() => window.print()}
+            text={t('print')}
+            variant="primary"
+            buttonClasses={styles.printButton}
+          />
+        )}
+      </div>
 
       {isEmptyResult && (
         <div className={clsx(styles.card, styles.emptyState)}>

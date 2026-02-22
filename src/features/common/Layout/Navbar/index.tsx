@@ -56,7 +56,7 @@ export default function Navbar() {
   }
 
   return (
-    <div className={styles.navbar}>
+    <div className={clsx(styles.navbar, 'hideInPrint')}>
       <ImpersonationBanner />
       <MainNavigationHeader />
     </div>

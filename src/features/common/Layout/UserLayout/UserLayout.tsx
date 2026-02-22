@@ -303,7 +303,7 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
   }, [contextLoaded, user]);
 
   return user ? (
-    <div className={styles.profilePageContainer}>
+    <div className={clsx(styles.profilePageContainer, 'profilePageContainer')}>
       <div
         key={'hamburgerIcon'}
         className={styles.hamburgerIcon}
@@ -313,7 +313,7 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         <MenuIcon />
       </div>
       <div
-        className={clsx({
+        className={clsx('hideInPrint', {
           [styles.sidebarModified]: isImpersonationModeOn,
           [styles.sidebar]: !isImpersonationModeOn,
           [styles.menuClosed]: !isMobileMenuOpen,
