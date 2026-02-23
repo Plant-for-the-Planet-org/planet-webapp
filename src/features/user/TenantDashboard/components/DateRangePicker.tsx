@@ -7,6 +7,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from '../TenantDashboard.module.scss';
+import { useTranslations } from 'next-intl';
 
 interface DateRangePickerProps {
   fromDate: Date | null;
@@ -26,6 +27,7 @@ const DateRangePicker = ({
   onApply,
 }: DateRangePickerProps) => {
   const { userLang } = useUserProps();
+  const t = useTranslations('Profile.tenant');
   return (
     <section className={styles.dateRangeContainer}>
       <LocalizationProvider
@@ -37,7 +39,7 @@ const DateRangePicker = ({
         }
       >
         <DatePicker
-          label="From"
+          label={t('from')}
           value={fromDate}
           onChange={(val) => setFromDate(val)}
           onAccept={(val) => {
@@ -57,7 +59,7 @@ const DateRangePicker = ({
         />
 
         <DatePicker
-          label={'To'}
+          label={t('to')}
           value={toDate}
           onChange={(val) => setToDate(val)}
           onAccept={(val) => {

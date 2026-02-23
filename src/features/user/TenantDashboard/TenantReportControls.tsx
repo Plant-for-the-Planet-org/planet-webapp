@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import WebappButton from '../../common/WebappButton';
 import DateRangePicker from './components/DateRangePicker';
 import styles from './TenantDashboard.module.scss';
+import { useMemo } from 'react';
 
 interface TenantReportControlsProps {
   fromDate: Date | null;
@@ -24,7 +25,12 @@ const TenantReportControls = ({
   isEmptyResult,
   isFetching,
 }: TenantReportControlsProps) => {
-  const today = new Date();
+  const today = useMemo(() => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return now;
+  }, []);
+
   const t = useTranslations('Profile.tenant');
 
   return (
