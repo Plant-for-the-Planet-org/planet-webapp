@@ -1,4 +1,4 @@
-import type { Global } from '.';
+import type { Global } from './types';
 
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 

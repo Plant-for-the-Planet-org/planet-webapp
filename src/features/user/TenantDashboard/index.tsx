@@ -1,4 +1,9 @@
-import type { APIError, CountryCode } from '@planet-sdk/common';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  CountryLeaderboardApi,
+  RecentDonorApi,
+  TenantStatsApi,
+} from './types';
 
 import { useCallback, useEffect, useState } from 'react';
 import { useApi } from '../../../hooks/useApi';
@@ -14,38 +19,6 @@ import TenantDashboardSkeleton from './components/TenantDashboardSkeleton';
 import EmptyStateInfo from './components/microComponents/EmptyStateInfo';
 import TenantReportControls from './TenantReportControls';
 import DateRangeInfo from './components/microComponents/DateRangeInfo';
-
-export interface RecentDonorApi {
-  units: number;
-  unitType: 'tree' | 'm2';
-  created: string;
-  donor: string;
-}
-
-export interface CountryLeaderboardApi {
-  donor_country: CountryCode;
-  trees: string;
-}
-
-export interface Global {
-  tenant: string;
-  totalDonated: number;
-  totalPlanted: number;
-  totalRestored: number;
-  countries: number;
-  uniqueDonors: number;
-  currency: string;
-}
-
-export interface Country {
-  country: CountryCode;
-  trees: number;
-}
-
-export interface TenantStatsApi {
-  global: Global;
-  countries: Country[];
-}
 
 const TenantDashboard = () => {
   const [tenantStats, setTenantStats] = useState<TenantStatsApi | null>(null);
@@ -124,6 +97,7 @@ const TenantDashboard = () => {
 
   return (
     <section className={styles.tenantDashboard}>
+      {/* Only visible in print view */}
       {fromDate && toDate && (
         <DateRangeInfo fromDate={fromDate} toDate={toDate} />
       )}
@@ -137,7 +111,6 @@ const TenantDashboard = () => {
         isEmptyResult={isEmptyResult}
         isFetching={isFetching}
       />
-
       {isFetching ? (
         <TenantDashboardSkeleton />
       ) : isEmptyResult ? (

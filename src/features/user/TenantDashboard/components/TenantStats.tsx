@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import type { TenantStatsApi } from '..';
+import type { TenantStatsApi } from '../types';
 
 import {
   CountriesIcon,

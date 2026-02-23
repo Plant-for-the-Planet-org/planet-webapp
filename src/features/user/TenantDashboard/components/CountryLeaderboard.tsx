@@ -1,4 +1,4 @@
-import type { CountryLeaderboardApi } from '..';
+import type { CountryLeaderboardApi } from '../types';
 
 import { useTranslations } from 'next-intl';
 import { TreesPlantedIcon } from '../../../../../public/assets/images/icons/tenantDashboard';

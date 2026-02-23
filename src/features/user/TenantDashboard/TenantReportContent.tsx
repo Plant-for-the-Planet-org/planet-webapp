@@ -1,4 +1,8 @@
-import type { CountryLeaderboardApi, RecentDonorApi, TenantStatsApi } from '.';
+import type {
+  CountryLeaderboardApi,
+  RecentDonorApi,
+  TenantStatsApi,
+} from './types';
 
 import CountryLeaderboard from './components/CountryLeaderboard';
 import RecentDonors from './components/RecentDonors';

@@ -1,4 +1,4 @@
-import type { RecentDonorApi } from '..';
+import type { RecentDonorApi } from '../types';
 
 import { useTranslations } from 'next-intl';
 import RecentDonorIcon from '../../../../../public/assets/images/icons/tenantDashboard/RecentDonorIcon';
