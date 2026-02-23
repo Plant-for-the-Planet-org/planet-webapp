@@ -1,22 +1,19 @@
 import type { APIError, CountryCode } from '@planet-sdk/common';
 
 import { useEffect, useState } from 'react';
-import TenantStats from './components/TenantStats';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { defaultTenant } from '../../../../tenant.config';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 import { handleError } from '@planet-sdk/common';
-import CountryLeaderboard from './components/CountryLeaderboard';
-import RecentDonors from './components/RecentDonors';
 import styles from './TenantDashboard.module.scss';
-import DateRangePicker from './components/DateRangePicker';
-import { useTranslations } from 'next-intl';
 import { formatDate, isDataEmpty, isValidRange } from './utils';
-import { clsx } from 'clsx';
-import WebappButton from '../../common/WebappButton';
-import formatDateX from '../../../utils/countryCurrency/getFormattedDate';
+import TenantReportContent from './TenantReportContent';
+import TenantDashboardSkeleton from './components/TenantDashboardSkeleton';
+import EmptyStateInfo from './components/microComponents/EmptyStateInfo';
+import TenantReportControls from './TenantReportControls';
+import DateRangeInfo from './components/microComponents/DateRangeInfo';
 
 export interface RecentDonorInterface {
   units: number;
@@ -63,7 +60,7 @@ const TenantDashboard = () => {
   const [fromDate, setFromDate] = useState<Date | null>(null);
   const [toDate, setToDate] = useState<Date | null>(null);
   const [isEmptyResult, setIsEmptyResult] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
 
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
@@ -71,8 +68,6 @@ const TenantDashboard = () => {
   const { getApi } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const today = new Date();
-  const t = useTranslations('Profile.tenant');
 
   // Build query string from date state
   const buildDateParams = (since: Date | null, till: Date | null): string => {
@@ -119,56 +114,38 @@ const TenantDashboard = () => {
     fetchTenantReport(null, null);
   }, []);
 
+  const isInitialLoad = !fromDate && !toDate;
+
+  if (isFetching && isInitialLoad) {
+    return <TenantDashboardSkeleton />;
+  }
+
   return (
-    <section>
-      <div className={styles.dateRangeInfo}>
-        {fromDate && toDate && (
-          <p>
-            {t('dateRange', {
-              from: formatDateX(fromDate),
-              to: formatDateX(toDate),
-            })}
-          </p>
-        )}
-      </div>
-      <div className={styles.topBar}>
-        <DateRangePicker
-          fromDate={fromDate}
-          toDate={toDate}
-          today={today}
-          setFromDate={setFromDate}
-          setToDate={setToDate}
-          onApply={handleApply}
-        />
-
-        {!isEmptyResult && (
-          <WebappButton
-            elementType="button"
-            onClick={() => window.print()}
-            text={t('print')}
-            variant="primary"
-            buttonClasses={styles.printButton}
-          />
-        )}
-      </div>
-
-      {isEmptyResult && (
-        <div className={clsx(styles.card, styles.emptyState)}>
-          <p>{t('noDataForRange')}</p>
-        </div>
+    <section className={styles.tenantDashboard}>
+      {fromDate && toDate && (
+        <DateRangeInfo fromDate={fromDate} toDate={toDate} />
       )}
 
-      {!isEmptyResult && (
-        <>
-          <TenantStats tenantStats={tenantStats} />
-          <section className={styles.dashboardLayout}>
-            <CountryLeaderboard
-              countries={countryLeaderboard}
-              totalTreesPlanted={tenantStats?.global.totalPlanted}
-            />
-            {recentDonors && <RecentDonors recentDonors={recentDonors} />}
-          </section>
-        </>
+      <TenantReportControls
+        fromDate={fromDate}
+        setFromDate={setFromDate}
+        toDate={toDate}
+        setToDate={setToDate}
+        handleApply={handleApply}
+        isEmptyResult={isEmptyResult}
+        isFetching={isFetching}
+      />
+
+      {isFetching ? (
+        <TenantDashboardSkeleton />
+      ) : isEmptyResult ? (
+        <EmptyStateInfo />
+      ) : (
+        <TenantReportContent
+          tenantStats={tenantStats}
+          countryLeaderboard={countryLeaderboard}
+          recentDonors={recentDonors}
+        />
       )}
     </section>
   );

@@ -1,6 +1,15 @@
 @import '../../../theme/theme';
 
-.topBar {
+.tenantDashboard {
+  min-width: 84%;
+}
+
+.tenantDashboardSkeleton {
+  width: 100%;
+}
+
+.reportControls {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -187,7 +196,7 @@
 
 @media print {
   .leaderboardButton,
-  .topBar {
+  .reportControls {
     display: none;
   }
   .dateRangeInfo {
