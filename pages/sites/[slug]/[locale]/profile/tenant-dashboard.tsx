@@ -18,21 +18,28 @@ import UserLayout from '../../../../../src/features/common/Layout/UserLayout/Use
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
+import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
+import AccessDeniedLoader from '../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 const TenantDashboardPage = () => {
   const t = useTranslations('Profile.tenant');
+  const { user } = useUserProps();
   return (
     <UserLayout>
       <Head>
-        <title>{t('tenantReport')}</title>
+        <title>{t('tenantDashboard')}</title>
       </Head>
-      <DashboardView
-        title={t('tenantReport')}
-        subtitle={null}
-        multiColumn={true}
-      >
-        <TenantDashboard />
-      </DashboardView>
+      {user?.tenantId ? (
+        <DashboardView
+          title={t('tenantReport')}
+          subtitle={null}
+          multiColumn={true}
+        >
+          <TenantDashboard />
+        </DashboardView>
+      ) : (
+        <AccessDeniedLoader />
+      )}
     </UserLayout>
   );
 };

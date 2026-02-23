@@ -136,6 +136,7 @@
       }
     },
     "tenant": {
+      "tenantDashboard": "Tenant Dashboard",
       "tenantReport": "Tenant Report",
       "treesPlanted": "trees planted",
       "hectaresRestored": "hectares restored",

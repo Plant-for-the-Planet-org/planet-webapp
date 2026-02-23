@@ -52,6 +52,8 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         path: '/profile/tenant-dashboard',
         // TODO: Replace AssessmentOutlined with a proper tenant dashboard icon
         icon: <AssessmentOutlinedIcon />,
+        // TODO: Update the @planet-sdk type for user to include tenantId key
+        hideItem: user?.tenantId === null,
       },
       {
         key: 'register-trees',
@@ -338,18 +340,20 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
                 <button className={styles.navLinkTitle}>{t('close')}</button>
               </div>
             </div>
-            {navLinks.map((link: NavLinkType, index: number) => (
-              <NavLink
-                link={link}
-                setCurrentMenuKey={setCurrentMenuKey}
-                currentMenuKey={currentMenuKey}
-                currentSubMenuKey={currentSubMenuKey}
-                setCurrentSubMenuKey={setCurrentSubMenuKey}
-                user={user}
-                key={index}
-                closeMenu={() => setIsMobileMenuOpen(false)}
-              />
-            ))}
+            {navLinks
+              .filter((link) => !link.hideItem)
+              .map((link: NavLinkType, index: number) => (
+                <NavLink
+                  link={link}
+                  setCurrentMenuKey={setCurrentMenuKey}
+                  currentMenuKey={currentMenuKey}
+                  currentSubMenuKey={currentSubMenuKey}
+                  setCurrentSubMenuKey={setCurrentSubMenuKey}
+                  user={user}
+                  key={index}
+                  closeMenu={() => setIsMobileMenuOpen(false)}
+                />
+              ))}
           </>
         </div>
 
