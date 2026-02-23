@@ -20,7 +20,9 @@ export const formatDate = (date: Date): string => {
 
 export const isValidRange = (fromDate: Date | null, toDate: Date | null) => {
   if (!fromDate && !toDate) return true; // both missing → valid
-  if (fromDate && toDate) return fromDate <= toDate; // both present → validate
+  if (fromDate && toDate) {
+    return fromDate.getTime() <= toDate.getTime();
+  } // both present → validate
   return false; // only one present → invalid
 };
 
