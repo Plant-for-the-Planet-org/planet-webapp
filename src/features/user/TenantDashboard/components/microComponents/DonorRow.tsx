@@ -13,7 +13,7 @@ const DonorRow = ({ donorName, unitDonated, unitType }: DonorItem) => {
       <span className={styles.donorName} title={donorName}>
         {donorName}
       </span>
-      <span className={styles.donorContribution}>
+      <span>
         {t('donationUnit', {
           count: unitDonated,
           unitType,

@@ -21,7 +21,7 @@ const RecentDonors = ({ recentDonors }: RecentDonorsProp) => {
       <ul>
         {recentDonors.map((donor) => (
           <DonorRow
-            key={donor.donor}
+            key={`${donor.donor}-${donor.created}`}
             donorName={donor.donor}
             unitDonated={donor.units}
             unitType={donor.unitType}

@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import type { TenantStatsData } from '..';
+import type { TenantStatsInterface } from '..';
 
 import {
   CountriesIcon,
@@ -19,7 +19,7 @@ export interface StatItem {
   label: string;
 }
 interface TenantStatsProp {
-  tenantStats: TenantStatsData | null;
+  tenantStats: TenantStatsInterface | null;
 }
 
 const TenantStats = ({ tenantStats }: TenantStatsProp) => {
