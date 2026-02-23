@@ -19,6 +19,7 @@ import styles from './UserLayout.module.scss';
 import TreeMapperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
 import FiberPinIcon from '@mui/icons-material/FiberPin';
 import IconContainer from './IconContainer';
@@ -44,6 +45,13 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         title: t('profile'),
         path: '/profile',
         icon: <UserIcon />,
+      },
+      {
+        key: 'tenantDashboard',
+        title: t('tenantDashboard'),
+        path: '/profile/tenant-dashboard',
+        // TODO: Replace AssessmentOutlined with a proper tenant dashboard icon
+        icon: <AssessmentOutlinedIcon />,
       },
       {
         key: 'register-trees',
