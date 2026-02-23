@@ -185,6 +185,13 @@
   font-size: 12px;
   font-weight: 500;
 
+  .donorName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+
   &:first-child {
     padding-top: 0;
   }

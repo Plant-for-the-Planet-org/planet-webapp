@@ -10,7 +10,9 @@ const DonorRow = ({ donorName, unitDonated, unitType }: DonorItem) => {
   const t = useTranslations('Profile.tenant');
   return (
     <li className={styles.donorRow}>
-      <span className={styles.donorName}>{donorName}</span>
+      <span className={styles.donorName} title={donorName}>
+        {donorName}
+      </span>
       <span className={styles.donorContribution}>
         {t('donationUnit', {
           count: unitDonated,
