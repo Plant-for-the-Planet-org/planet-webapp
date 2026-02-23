@@ -1,4 +1,4 @@
-import type { CountryLeaderboardInterface } from '..';
+import type { CountryLeaderboardApi } from '..';
 
 import { useTranslations } from 'next-intl';
 import { TreesPlantedIcon } from '../../../../../public/assets/images/icons/tenantDashboard';
@@ -10,7 +10,7 @@ import { clsx } from 'clsx';
 
 const LEADERBOARD_PREVIEW_COUNT = 10;
 interface CountryLeaderboard {
-  countries: CountryLeaderboardInterface[] | null;
+  countries: CountryLeaderboardApi[] | null;
   totalTreesPlanted: number | undefined;
 }
 

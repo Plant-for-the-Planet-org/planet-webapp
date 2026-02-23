@@ -1,8 +1,4 @@
-import type {
-  CountryLeaderboardInterface,
-  RecentDonorInterface,
-  TenantStatsInterface,
-} from '.';
+import type { CountryLeaderboardApi, RecentDonorApi, TenantStatsApi } from '.';
 
 import CountryLeaderboard from './components/CountryLeaderboard';
 import RecentDonors from './components/RecentDonors';
@@ -10,9 +6,9 @@ import TenantStats from './components/TenantStats';
 import styles from './TenantDashboard.module.scss';
 
 interface TenantReportContentProps {
-  tenantStats: TenantStatsInterface | null;
-  countryLeaderboard: CountryLeaderboardInterface[] | null;
-  recentDonors: RecentDonorInterface[] | null;
+  tenantStats: TenantStatsApi | null;
+  countryLeaderboard: CountryLeaderboardApi[] | null;
+  recentDonors: RecentDonorApi[] | null;
 }
 
 const TenantReportContent = ({

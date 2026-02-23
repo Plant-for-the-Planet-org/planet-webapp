@@ -1,4 +1,4 @@
-import type { RecentDonorInterface } from '..';
+import type { RecentDonorApi } from '..';
 
 import { useTranslations } from 'next-intl';
 import RecentDonorIcon from '../../../../../public/assets/images/icons/tenantDashboard/RecentDonorIcon';
@@ -7,7 +7,7 @@ import DonorRow from './microComponents/DonorRow';
 import { clsx } from 'clsx';
 
 interface RecentDonorsProp {
-  recentDonors: RecentDonorInterface[];
+  recentDonors: RecentDonorApi[];
 }
 
 const RecentDonors = ({ recentDonors }: RecentDonorsProp) => {

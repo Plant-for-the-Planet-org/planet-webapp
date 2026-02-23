@@ -1,6 +1,6 @@
 import type { APIError, CountryCode } from '@planet-sdk/common';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
@@ -15,21 +15,16 @@ import EmptyStateInfo from './components/microComponents/EmptyStateInfo';
 import TenantReportControls from './TenantReportControls';
 import DateRangeInfo from './components/microComponents/DateRangeInfo';
 
-export interface RecentDonorInterface {
+export interface RecentDonorApi {
   units: number;
   unitType: 'tree' | 'm2';
   created: string;
   donor: string;
 }
 
-export interface CountryLeaderboardInterface {
+export interface CountryLeaderboardApi {
   donor_country: CountryCode;
   trees: string;
-}
-
-export interface TenantStatsInterface {
-  global: Global;
-  countries: Country[];
 }
 
 export interface Global {
@@ -47,15 +42,18 @@ export interface Country {
   trees: number;
 }
 
+export interface TenantStatsApi {
+  global: Global;
+  countries: Country[];
+}
+
 const TenantDashboard = () => {
-  const [tenantStats, setTenantStats] = useState<TenantStatsInterface | null>(
+  const [tenantStats, setTenantStats] = useState<TenantStatsApi | null>(null);
+  const [recentDonors, setRecentDonors] = useState<RecentDonorApi[] | null>(
     null
   );
-  const [recentDonors, setRecentDonors] = useState<
-    RecentDonorInterface[] | null
-  >(null);
   const [countryLeaderboard, setCountryLeaderboard] = useState<
-    CountryLeaderboardInterface[] | null
+    CountryLeaderboardApi[] | null
   >(null);
   const [fromDate, setFromDate] = useState<Date | null>(null);
   const [toDate, setToDate] = useState<Date | null>(null);
@@ -77,33 +75,37 @@ const TenantDashboard = () => {
     return params.toString() ? `?${params.toString()}` : '';
   };
 
-  const fetchTenantReport = async (since: Date | null, till: Date | null) => {
-    setIsFetching(true);
-    const dateParams = buildDateParams(since, till);
-    try {
-      const [stats, donors, leaderboard] = await Promise.all([
-        getApi<TenantStatsInterface>(
-          `/app/tenantDashboard/${defaultTenant.id}/stats${dateParams}`
-        ),
-        getApi<RecentDonorInterface[]>(
-          `/app/tenantDashboard/${defaultTenant.id}/mostRecent${dateParams}`
-        ),
-        getApi<CountryLeaderboardInterface[]>(
-          `/app/tenantDashboard/${defaultTenant.id}/leaderboard${dateParams}`
-        ),
-      ]);
+  const fetchTenantReport = useCallback(
+    async (since: Date | null, till: Date | null) => {
+      setIsFetching(true);
+      const dateParams = buildDateParams(since, till);
 
-      setTenantStats(stats);
-      setIsEmptyResult(isDataEmpty(stats.global));
-      setRecentDonors(donors);
-      setCountryLeaderboard(leaderboard);
-    } catch (error) {
-      setErrors(handleError(error as APIError));
-      router.push(localizedPath('/profile'));
-    } finally {
-      setIsFetching(false);
-    }
-  };
+      try {
+        const [stats, donors, leaderboard] = await Promise.all([
+          getApi<TenantStatsApi>(
+            `/app/tenantDashboard/${defaultTenant.id}/stats${dateParams}`
+          ),
+          getApi<RecentDonorApi[]>(
+            `/app/tenantDashboard/${defaultTenant.id}/mostRecent${dateParams}`
+          ),
+          getApi<CountryLeaderboardApi[]>(
+            `/app/tenantDashboard/${defaultTenant.id}/leaderboard${dateParams}`
+          ),
+        ]);
+
+        setTenantStats(stats);
+        setIsEmptyResult(isDataEmpty(stats.global));
+        setRecentDonors(donors);
+        setCountryLeaderboard(leaderboard);
+      } catch (error) {
+        setErrors(handleError(error as APIError));
+        router.push(localizedPath('/profile'));
+      } finally {
+        setIsFetching(false);
+      }
+    },
+    []
+  );
 
   const handleApply = (fromDate: Date | null, toDate: Date | null) => {
     if (!isValidRange(fromDate, toDate)) return;
@@ -112,7 +114,7 @@ const TenantDashboard = () => {
 
   useEffect(() => {
     fetchTenantReport(null, null);
-  }, []);
+  }, [fetchTenantReport]);
 
   const isInitialLoad = !fromDate && !toDate;
 
