@@ -198,7 +198,14 @@
 }
 
 .emptyState {
-  min-height: auto;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+
+  .description {
+    font-size: 14px;
+    font-weight: 500;
+  }
 }
 
 @media print {
