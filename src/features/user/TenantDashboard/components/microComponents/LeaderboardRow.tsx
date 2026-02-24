@@ -18,7 +18,9 @@ const LeaderboardRow = ({
   const tCountry = useTranslations('Country');
   const t = useTranslations('Profile.tenant');
   const percentage =
-    totalTreePlanted > 0 ? (Number(treesPlanted) / totalTreePlanted) * 100 : 0;
+    totalTreePlanted > 0
+      ? Math.min(100, ((Number(treesPlanted) || 0) / totalTreePlanted) * 100)
+      : 0;
   const flagEmoji = countryToFlag(countryCode);
 
   return (
