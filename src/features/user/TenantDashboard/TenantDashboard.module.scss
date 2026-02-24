@@ -57,12 +57,12 @@
     }
 
     .statCardValue {
-      font-size: 16px;
+      font-size: $fontSixteen;
       font-weight: 700;
     }
 
     .statCardLabel {
-      font-size: 14px;
+      font-size: $fontSmall;
       font-weight: 400;
     }
   }
@@ -86,7 +86,7 @@
 
   .cardTitle {
     margin: 0;
-    font-size: 18px;
+    font-size: $fontMedium;
     font-weight: 700;
     color: $dsPrimaryColor;
   }
@@ -142,17 +142,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: $fontSixteen;
   font-family: 'Twemoji Country Flags', sans-serif !important;
   line-height: 1;
 }
 
 .leaderboardCountryName {
-  font-size: 12px;
+  font-size: $fontXSmall;
 }
 
 .leaderboardTreeCount {
-  font-size: 14px;
+  font-size: $fontXSmall;
 }
 
 .progressBarTrack {
@@ -180,7 +180,7 @@
   align-items: center;
   padding: 12px 0;
   border-bottom: 1px solid $dsMediumGrey;
-  font-size: 12px;
+  font-size: $fontXSmall;
   font-weight: 500;
 
   .donorName {
@@ -201,7 +201,7 @@
   margin-top: 24px;
 
   .description {
-    font-size: 14px;
+    font-size: $fontSmall;
     font-weight: 500;
   }
 }
@@ -218,7 +218,7 @@
   .dateRangeInfo {
     display: block;
     margin-bottom: 16px;
-    font-size: 14px;
+    font-size: $fontSmall;
     padding-left: 3px;
     font-weight: 500;
   }
@@ -237,7 +237,7 @@
   }
 
   .leaderboardList {
-    gap: 12px;
+    gap: 14px;
   }
 
   .dashboardLayout {
