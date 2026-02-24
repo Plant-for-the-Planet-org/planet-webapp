@@ -1,7 +1,7 @@
 import type { RecentDonorApi } from '../types';
 
 import { useTranslations } from 'next-intl';
-import RecentDonorIcon from '../../../../../public/assets/images/icons/tenantDashboard/RecentDonorIcon';
+import { RecentDonorIcon } from '../../../../../public/assets/images/icons/tenantDashboard';
 import styles from '../TenantDashboard.module.scss';
 import DonorRow from './microComponents/DonorRow';
 import { clsx } from 'clsx';
