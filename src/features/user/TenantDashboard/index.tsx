@@ -5,11 +5,10 @@ import type {
   TenantStatsApi,
 } from './types';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { defaultTenant } from '../../../../tenant.config';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 import { handleError } from '@planet-sdk/common';
 import styles from './TenantDashboard.module.scss';
@@ -19,6 +18,7 @@ import TenantDashboardSkeleton from './components/TenantDashboardSkeleton';
 import EmptyStateInfo from './components/microComponents/EmptyStateInfo';
 import TenantReportControls from './TenantReportControls';
 import DateRangeInfo from './components/microComponents/DateRangeInfo';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 
 const TenantDashboard = () => {
   const [tenantStats, setTenantStats] = useState<TenantStatsApi | null>(null);
@@ -39,6 +39,7 @@ const TenantDashboard = () => {
   const { getApi } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const { user } = useUserProps();
 
   // Build query string from date state
   const buildDateParams = (since: Date | null, till: Date | null): string => {
@@ -48,37 +49,37 @@ const TenantDashboard = () => {
     return params.toString() ? `?${params.toString()}` : '';
   };
 
-  const fetchTenantReport = useCallback(
-    async (since: Date | null, till: Date | null) => {
-      setIsFetching(true);
-      const dateParams = buildDateParams(since, till);
+  const fetchTenantReport = async (since: Date | null, till: Date | null) => {
+    const tenantId = user?.tenantId;
+    if (!tenantId) return;
 
-      try {
-        const [stats, donors, leaderboard] = await Promise.all([
-          getApi<TenantStatsApi>(
-            `/app/tenantDashboard/${defaultTenant.id}/stats${dateParams}`
-          ),
-          getApi<RecentDonorApi[]>(
-            `/app/tenantDashboard/${defaultTenant.id}/mostRecent${dateParams}`
-          ),
-          getApi<CountryLeaderboardApi[]>(
-            `/app/tenantDashboard/${defaultTenant.id}/leaderboard${dateParams}`
-          ),
-        ]);
+    setIsFetching(true);
+    const dateParams = buildDateParams(since, till);
 
-        setTenantStats(stats);
-        setIsEmptyResult(isDataEmpty(stats.global));
-        setRecentDonors(donors);
-        setCountryLeaderboard(leaderboard);
-      } catch (error) {
-        setErrors(handleError(error as APIError));
-        router.push(localizedPath('/profile'));
-      } finally {
-        setIsFetching(false);
-      }
-    },
-    []
-  );
+    try {
+      const [stats, donors, leaderboard] = await Promise.all([
+        getApi<TenantStatsApi>(
+          `/app/tenantDashboard/${tenantId}/stats${dateParams}`
+        ),
+        getApi<RecentDonorApi[]>(
+          `/app/tenantDashboard/${tenantId}/mostRecent${dateParams}`
+        ),
+        getApi<CountryLeaderboardApi[]>(
+          `/app/tenantDashboard/${tenantId}/leaderboard${dateParams}`
+        ),
+      ]);
+
+      setTenantStats(stats);
+      setIsEmptyResult(isDataEmpty(stats.global));
+      setRecentDonors(donors);
+      setCountryLeaderboard(leaderboard);
+    } catch (error) {
+      setErrors(handleError(error as APIError));
+      router.push(localizedPath('/profile'));
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
   const handleApply = (fromDate: Date | null, toDate: Date | null) => {
     if (!isValidRange(fromDate, toDate)) return;
@@ -87,7 +88,7 @@ const TenantDashboard = () => {
 
   useEffect(() => {
     fetchTenantReport(null, null);
-  }, [fetchTenantReport]);
+  }, [user?.tenantId]);
 
   const isInitialLoad = !fromDate && !toDate;
 
