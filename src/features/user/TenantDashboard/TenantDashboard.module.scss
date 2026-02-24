@@ -4,10 +4,6 @@
   min-width: 84%;
 }
 
-.tenantDashboardSkeleton {
-  width: 100%;
-}
-
 .reportControls {
   width: 100%;
   display: flex;
@@ -42,17 +38,19 @@
   flex-wrap: wrap;
   margin-bottom: 24px;
 
-  .statCard {
+  .statCardBase {
     flex: 0 0 205px;
+    @include xsPhoneView {
+      flex: 1 0 205px;
+    }
+  }
+
+  .statCard {
     background: $dsWhite;
     border-radius: 12px;
     padding: 20px 24px;
     display: flex;
     flex-direction: column;
-
-    @include xsPhoneView {
-      flex: 1 0 205px;
-    }
 
     .statCardIcon {
       margin-bottom: 8px;
@@ -220,4 +218,8 @@
     padding-left: 3px;
     font-weight: 500;
   }
+}
+
+.skeletonBlock {
+  border-radius: 12px;
 }
