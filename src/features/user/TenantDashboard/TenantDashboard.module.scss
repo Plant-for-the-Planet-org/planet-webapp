@@ -206,6 +206,10 @@
   }
 }
 
+.skeletonBlock {
+  border-radius: 12px;
+}
+
 @media print {
   .leaderboardButton,
   .reportControls {
@@ -218,8 +222,25 @@
     padding-left: 3px;
     font-weight: 500;
   }
-}
 
-.skeletonBlock {
-  border-radius: 12px;
+  .tenantStatsContainer {
+    margin-bottom: 10px;
+    gap: 10px;
+
+    .statCardBase {
+      max-width: 190px;
+    }
+  }
+
+  .card {
+    padding: 22px;
+  }
+
+  .leaderboardList {
+    gap: 12px;
+  }
+
+  .dashboardLayout {
+    gap: 10px;
+  }
 }
