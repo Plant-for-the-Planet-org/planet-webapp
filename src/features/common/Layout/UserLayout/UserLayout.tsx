@@ -53,7 +53,7 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         // TODO: Replace AssessmentOutlined with a proper tenant dashboard icon
         icon: <AssessmentOutlinedIcon />,
         // TODO: Update the @planet-sdk type for user to include tenantId key
-        hideItem: user?.tenantId === null,
+        hideItem: !user?.tenantId,
       },
       {
         key: 'register-trees',
