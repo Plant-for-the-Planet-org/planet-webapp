@@ -16,7 +16,6 @@ import BulkCodes, {
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
-import { useBulkCode } from '../../../../../../../src/features/common/Layout/BulkCodeContext';
 import { BulkCodeMethods } from '../../../../../../../src/utils/constants/bulkCodeConstants';
 import { useTranslations } from 'next-intl';
 import {
@@ -27,6 +26,7 @@ import { v4 } from 'uuid';
 import { useTenant } from '../../../../../../../src/features/common/Layout/TenantContext';
 import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
+import { useBulkCodeStore } from '../../../../../../../src/stores/bulkCodeStore';
 
 interface Props {
   pageProps: PageProps;
@@ -38,8 +38,13 @@ export default function BulkCodeSelectProjectPage({
   const t = useTranslations('Me');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { bulkMethod, setBulkMethod } = useBulkCode();
   const { setTenantConfig } = useTenant();
+  // store: state
+  const isBulkMethodSet = useBulkCodeStore(
+    (state) => state.bulkMethod !== null
+  );
+  // store: action
+  const setBulkMethod = useBulkCodeStore((state) => state.setBulkMethod);
 
   useEffect(() => {
     if (router.isReady) {
@@ -49,18 +54,15 @@ export default function BulkCodeSelectProjectPage({
 
   // Sets bulk method if not already set within context when page is loaded
   useEffect(() => {
-    if (!bulkMethod) {
-      if (router.isReady) {
-        const _bulkMethod = router.query.method;
-        if (
-          _bulkMethod === BulkCodeMethods.GENERIC ||
-          _bulkMethod === BulkCodeMethods.IMPORT
-        ) {
-          setBulkMethod(_bulkMethod);
-        } else {
-          router.push(localizedPath('/profile/bulk-codes'));
-        }
-      }
+    if (!isBulkMethodSet && router.isReady) {
+      const { method } = router.query;
+
+      const isValidMethod =
+        method === BulkCodeMethods.GENERIC || method === BulkCodeMethods.IMPORT;
+
+      isValidMethod
+        ? setBulkMethod(method)
+        : router.push(localizedPath('/profile/bulk-codes'));
     }
   }, []);
 
