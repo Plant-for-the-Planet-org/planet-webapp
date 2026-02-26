@@ -49,13 +49,13 @@ interface BulkCodeStore {
   setBulkMethod: (bulkMethod: BulkCodeMethods | null) => void;
   setPlanetCashAccount: (planetCashAccount: PlanetCashAccount | null) => void;
   setProject: (project: CountryProject | null) => void;
+  resetBulkStore: () => void;
 }
 
 export const useBulkCodeStore = create<BulkCodeStore>()(
   devtools(
     (set, get) => ({
       bulkMethod: null,
-      bulkGiftData: null,
       planetCashAccount: null,
       project: null,
       projectList: null,
@@ -89,6 +89,12 @@ export const useBulkCodeStore = create<BulkCodeStore>()(
       setBulkMethod: (bulkMethod) => set({ bulkMethod }),
 
       setPlanetCashAccount: (planetCashAccount) => set({ planetCashAccount }),
+
+      resetBulkStore: () =>
+        set({
+          bulkMethod: null,
+          project: null,
+        }),
     }),
     {
       name: 'BulkCodeStore',

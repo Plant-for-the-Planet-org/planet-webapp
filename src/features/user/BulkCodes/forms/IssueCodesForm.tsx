@@ -5,7 +5,7 @@ import type {
   Donation,
   PrepaidDonationRequest,
 } from '@planet-sdk/common';
-import type { Recipient } from '../../../common/Layout/BulkCodeContext';
+import type { Recipient } from '../../../../stores/bulkCodeStore';
 import type { Recipient as LocalRecipient } from '../BulkCodesTypes';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
@@ -59,8 +59,7 @@ const IssueCodesForm = (): ReactElement | null => {
     (state) => state.setShouldRefetchUserProfile
   );
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
-  const setBulkMethod = useBulkCodeStore((state) => state.setBulkMethod);
-  const setProject = useBulkCodeStore((state) => state.setProject);
+  const resetBulkStore = useBulkCodeStore((state) => state.resetBulkStore);
 
   const notificationLocales = [
     {
@@ -72,10 +71,7 @@ const IssueCodesForm = (): ReactElement | null => {
       languageName: 'Deutsch',
     },
   ];
-  const resetBulkContext = (): void => {
-    setProject(null);
-    setBulkMethod(null);
-  };
+
   const getTotalUnits = (): number => {
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
@@ -157,7 +153,7 @@ const IssueCodesForm = (): ReactElement | null => {
         });
         // if request is successful, it will have a uid
         if (res?.uid) {
-          resetBulkContext();
+          resetBulkStore();
           setIsSubmitted(true);
           setShouldRefetchUserProfile(true);
           setTimeout(() => {
