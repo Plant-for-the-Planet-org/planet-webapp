@@ -17,7 +17,6 @@ import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
-import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import cleanObject from '../../../../utils/cleanObject';
 import { v4 as uuidV4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
@@ -29,20 +28,13 @@ import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { useUserStore, useErrorHandlingStore } from '../../../../stores';
+import { useBulkCodeStore } from '../../../../stores/bulkCodeStore';
 
 const IssueCodesForm = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const {
-    project,
-    setProject,
-    planetCashAccount,
-    projectList,
-    bulkMethod,
-    setBulkMethod,
-  } = useBulkCode();
   const { postApiAuthenticated } = useApi();
   // local state
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
@@ -57,11 +49,18 @@ const IssueCodesForm = (): ReactElement | null => {
   const [notificationLocale, setNotificationLocale] = useState('');
   // store: state
   const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+  const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
+  const planetCashAccount = useBulkCodeStore(
+    (state) => state.planetCashAccount
+  );
+  const project = useBulkCodeStore((state) => state.project);
   // store: action
   const setShouldRefetchUserProfile = useUserStore(
     (state) => state.setShouldRefetchUserProfile
   );
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setBulkMethod = useBulkCodeStore((state) => state.setBulkMethod);
+  const setProject = useBulkCodeStore((state) => state.setProject);
 
   const notificationLocales = [
     {
@@ -314,12 +313,7 @@ const IssueCodesForm = (): ReactElement | null => {
       <CenteredContainer>
         <StyledFormContainer className="IssueCodesForm" component={'section'}>
           <div className="inputContainer">
-            <ProjectSelector
-              projectList={projectList || []}
-              project={project}
-              active={false}
-              planetCashAccount={planetCashAccount}
-            />
+            <ProjectSelector project={project} active={false} />
             <TextField
               onChange={(e) => setComment(e.target.value)}
               value={comment}
