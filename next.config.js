@@ -154,6 +154,16 @@ const nextConfig = {
         destination: '/yucatan',
         permanent: true,
       },
+      {
+        source: '/tagdesbaumes',
+        destination: 'https://www.plant-for-the-planet.org/de/tagdesbaumes/',
+        permanent: true,
+      },
+      {
+        source: '/:locale/tagdesbaumes',
+        destination: 'https://www.plant-for-the-planet.org/de/tagdesbaumes/',
+        permanent: true,
+      },
     ];
   },
   assetPrefix: hasAssetPrefix
