@@ -271,27 +271,98 @@ export default function ProjectSites({
   };
 
   const handleSyncSites = useCallback(async () => {
-    // prevent multiple parallel syncs
     if (isSyncingSites) return;
-
-    const webhookBase = process.env.WEBHOOK_URL;
-    if (!webhookBase) {
-      console.warn('WEBHOOK_URL is not defined');
-      return;
-    }
     setIsSyncingSites(true);
 
     try {
-      const modeParam =
-        process.env.NEXT_PUBLIC_APP_ENV === 'production' ? '' : '&mode=dev';
-      const webhookUrl = `${webhookBase}/33878023-ee47-44e1-8a62-34eb2d2b3246/?project=${projectGUID}${modeParam}`;
-      const response = await fetch(webhookUrl, {
-        method: 'GET',
-      });
-
-      if (!response.ok) {
-        throw new Error(`Webhook call failed with status ${response.status}`);
+      const restorApiUrl = process.env.NEXT_PUBLIC_RESTOR_API
+      const restorApiKey =  process.env.NEXT_PUBLIC_RESTOR_API_KEY
+      if (!restorApiKey) {
+        throw new Error('Restor API key is not configured');
       }
+      if (!restorApiUrl) {
+        throw new Error('Restor URL is not configured');
+      }
+      interface SiteFeatureProperties {
+        id: string;
+        name: string;
+        status: string;
+        lastUpdated?: { date: string };
+      }
+      interface ExtendedScopeProject {
+        purpose: string;
+        firstTreePlanted: string | null;
+        sites: Array<{
+          type: 'Feature';
+          properties: SiteFeatureProperties;
+          geometry: { type: string; coordinates: unknown };
+        }> | null;
+      }
+
+      const project = await getApiAuthenticated<ExtendedScopeProject>(
+        `/app/projects/${projectGUID}`,
+        { queryParams: { _scope: 'extended' } }
+      );
+
+      const { purpose, firstTreePlanted, sites } = project;
+
+      const convertTo2D = (coords: unknown): unknown => {
+        if (!Array.isArray(coords)) return coords;
+        if (typeof coords[0] === 'number') return (coords as number[]).slice(0, 2);
+        return (coords as unknown[]).map(convertTo2D);
+      };
+
+      let interventionStartYear: number | '' = '';
+      if (firstTreePlanted) {
+        const dt = new Date(firstTreePlanted.trim().replace(' ', 'T'));
+        if (!isNaN(dt.getTime())) interventionStartYear = dt.getUTCFullYear();
+      }
+
+      await Promise.allSettled(
+        (sites ?? []).map(async ({ properties, geometry }) => {
+          const status = (properties.status || '').toLowerCase();
+          let stage = '';
+          if (['barren', 'planned'].includes(status)) stage = 'PLANNING';
+          else if (status === 'planted') stage = 'COMPLETED';
+          else if (['reforestation', 'planting'].includes(status)) stage = 'ONGOING';
+
+          const payload = {
+            type: 'Feature',
+            properties: {
+              name: properties.name || '',
+              siteType: purpose === 'trees' ? 'RESTORATION' : 'CONSERVATION',
+              siteVisibility: 'PRIVATE',
+              interventionStartYear,
+              stage,
+              interventionType: 'ACTIVE_RESTORATION',
+              goals: ['ENHANCING_ECOSYSTEM_PROCESSES'],
+              supportSought: ['MONITORING'],
+              externalId: properties.id,
+              customFields: [
+                { type: 'PLAIN_TEXT', title: 'remoteId', values: properties.id || '' },
+                { type: 'PLAIN_TEXT', title: 'lastUpdated', values: properties.lastUpdated?.date || '' },
+              ],
+            },
+            geometry: { ...geometry, coordinates: convertTo2D(geometry.coordinates) },
+          };
+
+          const response = await fetch(restorApiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-API-KEY': restorApiKey,
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            const body = await response.json().catch(() => ({}));
+            throw new Error(body?.message || `HTTP ${response.status} for site ${properties.id}`);
+          }
+
+          return response.json();
+        })
+      );
 
       setIsSiteSyncSuccessful(true);
       setSnackbarOpen(true);
@@ -303,7 +374,7 @@ export default function ProjectSites({
       setIsSyncingSites(false);
       setIsSiteSyncModalOpen(false);
     }
-  }, [isSyncingSites, projectGUID, t]);
+  }, [isSyncingSites, projectGUID, t, getApiAuthenticated]);
 
   const EditProps = {
     openModal,
