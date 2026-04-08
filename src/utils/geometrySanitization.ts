@@ -1,3 +1,5 @@
+import { cleanCoords, truncate } from '@turf/turf';
+
 export const STAGE_MAP: Record<string, string> = {
   barren: 'PLANNING',
   planned: 'PLANNING',
@@ -6,28 +8,14 @@ export const STAGE_MAP: Record<string, string> = {
   planting: 'ONGOING',
 };
 
-export const sanitizePolygonRing = (ring: number[][]): number[][] => {
-  const PRECISION = 6;
-  const NEAR_DUPLICATE_THRESHOLD = 1e-6;
-  const MIN_ANGLE_DEG = 1;
-
-  // 1. Round to safe precision
-  let pts = ring.map(([lng, lat]) => [
-    parseFloat(lng.toFixed(PRECISION)),
-    parseFloat(lat.toFixed(PRECISION)),
-  ]);
-
-  // 2. Remove near-duplicate consecutive points
-  pts = pts.filter((pt, i) => {
-    if (i === 0) return true;
-    const prev = pts[i - 1];
-    return (
-      Math.abs(pt[0] - prev[0]) > NEAR_DUPLICATE_THRESHOLD ||
-      Math.abs(pt[1] - prev[1]) > NEAR_DUPLICATE_THRESHOLD
-    );
-  });
-
-  // 3. Remove spike points (angle < MIN_ANGLE_DEG means the path doubles back)
+/**
+ * Removes spike points from a coordinate ring by dropping any vertex whose
+ * interior angle is less than minAngleDeg (default 1°). A near-zero angle
+ * means the path doubles back on itself, creating a needle-like artifact.
+ *
+ * No direct turf equivalent exists for angle-based spike removal.
+ */
+const removeSpikePoints = (ring: number[][], minAngleDeg = 1): number[][] => {
   const angleBetween = (a: number[], b: number[], c: number[]): number => {
     const v1 = [a[0] - b[0], a[1] - b[1]];
     const v2 = [c[0] - b[0], c[1] - b[1]];
@@ -37,6 +25,8 @@ export const sanitizePolygonRing = (ring: number[][]): number[][] => {
     if (mag1 === 0 || mag2 === 0) return 0;
     return (Math.acos(Math.max(-1, Math.min(1, dot / (mag1 * mag2)))) * 180) / Math.PI;
   };
+
+  let pts = ring;
   let changed = true;
   while (changed) {
     changed = false;
@@ -45,9 +35,8 @@ export const sanitizePolygonRing = (ring: number[][]): number[][] => {
       const prev =
         filtered.length > 0 ? filtered[filtered.length - 1] : pts[(i - 1 + pts.length) % pts.length];
       const next = pts[(i + 1) % pts.length];
-      const angle = angleBetween(prev, pts[i], next);
-      if (angle < MIN_ANGLE_DEG) {
-        changed = true; // spike — skip this point
+      if (angleBetween(prev, pts[i], next) < minAngleDeg) {
+        changed = true; // spike — drop this vertex
       } else {
         filtered.push(pts[i]);
       }
@@ -56,41 +45,52 @@ export const sanitizePolygonRing = (ring: number[][]): number[][] => {
     if (pts.length < 3) break;
   }
 
-  if (pts.length < 3) return ring; // give up — return original
-
-  // 4. Ensure ring is closed
-  const first = pts[0];
-  const last = pts[pts.length - 1];
-  if (first[0] !== last[0] || first[1] !== last[1]) {
-    pts.push([first[0], first[1]]);
-  }
-
-  return pts;
+  return pts.length >= 3 ? pts : ring; // give up — return original if too few points
 };
 
+const closeRing = (ring: number[][]): number[][] => {
+  if (ring[0][0] !== ring[ring.length - 1][0] || ring[0][1] !== ring[ring.length - 1][1]) {
+    return [...ring, [ring[0][0], ring[0][1]]];
+  }
+  return ring;
+};
+
+const sanitizeRings = (rings: number[][][]): number[][][] =>
+  rings.map((ring) => closeRing(removeSpikePoints(ring)));
+
+/**
+ * Cleans a Polygon or MultiPolygon geometry for submission to the Restor API:
+ * 1. turf/truncate  — strips to 2D coordinates and rounds to 6 decimal places
+ * 2. turf/cleanCoords — removes consecutive duplicate vertices
+ * 3. removeSpikePoints — drops vertices that create near-zero interior angles
+ * 4. closeRing — ensures each ring's first and last coordinate are identical
+ */
 export const sanitizeGeometry = (geometry: {
   type: string;
   coordinates: unknown;
 }): { type: string; coordinates: unknown } => {
-  try {
-    if (geometry.type === 'Polygon') {
-      const rings = geometry.coordinates as number[][][];
-      return { ...geometry, coordinates: rings.map(sanitizePolygonRing) };
-    }
-    if (geometry.type === 'MultiPolygon') {
-      const polys = geometry.coordinates as number[][][][];
-      return { ...geometry, coordinates: polys.map((rings) => rings.map(sanitizePolygonRing)) };
-    }
-  } catch {
-    // fall through to return original
-  }
-  return geometry;
-};
+  if (geometry.type !== 'Polygon' && geometry.type !== 'MultiPolygon') return geometry;
 
-export const convertTo2D = (coords: unknown): unknown => {
-  if (!Array.isArray(coords)) return coords;
-  if (typeof coords[0] === 'number') return (coords as number[]).slice(0, 2);
-  return (coords as unknown[]).map(convertTo2D);
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const truncated = truncate(geometry as any, { precision: 6, coordinates: 2 });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const cleaned = cleanCoords(truncated as any) as { type: string; coordinates: unknown };
+
+    if (cleaned.type === 'Polygon') {
+      return { ...cleaned, coordinates: sanitizeRings(cleaned.coordinates as number[][][]) };
+    }
+    if (cleaned.type === 'MultiPolygon') {
+      return {
+        ...cleaned,
+        coordinates: (cleaned.coordinates as number[][][][]).map(sanitizeRings),
+      };
+    }
+
+    return cleaned;
+  } catch {
+    return geometry;
+  }
 };
 
 export const buildRestorPayload = (
@@ -99,12 +99,7 @@ export const buildRestorPayload = (
   purpose: string | undefined,
   interventionStartYear: number | ''
 ) => {
-  const status = (properties.status || '').toLowerCase();
-  const stage = STAGE_MAP[status] ?? '';
-  const cleanedGeometry = sanitizeGeometry({
-    ...geometry,
-    coordinates: convertTo2D(geometry.coordinates) as unknown,
-  });
+  const stage = STAGE_MAP[(properties.status || '').toLowerCase()] ?? '';
 
   return {
     type: 'Feature',
@@ -123,6 +118,6 @@ export const buildRestorPayload = (
         { type: 'PLAIN_TEXT', title: 'lastUpdated', values: '' },
       ],
     },
-    geometry: cleanedGeometry,
+    geometry: sanitizeGeometry(geometry),
   };
 };
