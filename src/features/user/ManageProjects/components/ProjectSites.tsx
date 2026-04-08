@@ -17,7 +17,8 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import dynamic from 'next/dynamic';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
-import { MenuItem, Button, TextField } from '@mui/material';
+import { MenuItem, Button, TextField, Popover, IconButton } from '@mui/material';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -86,6 +87,8 @@ export default function ProjectSites({
   const [isSiteSyncModalOpen, setIsSiteSyncModalOpen] = useState(false);
   const [isSiteSyncSuccessful, setIsSiteSyncSuccessful] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [syncErrors, setSyncErrors] = useState<string[]>([]);
+  const [syncErrorAnchor, setSyncErrorAnchor] = useState<HTMLButtonElement | null>(null);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
@@ -386,8 +389,8 @@ export default function ProjectSites({
         if (!isNaN(dt.getTime())) interventionStartYear = dt.getUTCFullYear();
       }
 
-      await Promise.allSettled(
-        (sites ?? []).map(async ({ properties, geometry }) => {
+      const results = await Promise.allSettled(
+        sites.map(async ({ properties, geometry }) => {
           const status = (properties.status || '').toLowerCase();
           let stage = '';
           if (['barren', 'planned'].includes(status)) stage = 'PLANNING';
@@ -430,16 +433,30 @@ export default function ProjectSites({
 
           if (!response.ok) {
             const body = await response.json().catch(() => ({}));
-            throw new Error(`${body?.message || `HTTP ${response.status}`} for site ${properties.id}`);
+            throw new Error(body?.message || `HTTP ${response.status}`);
           }
 
           return response.json();
         })
       );
 
-      setIsSiteSyncSuccessful(true);
-      setSnackbarOpen(true);
-      setErrorMessage(null);
+      const failures = results.reduce<string[]>((acc, result, i) => {
+        if (result.status === 'rejected') {
+          const siteName = sites[i]?.properties.name || sites[i]?.properties.id || `Site ${i + 1}`;
+          const errMsg = result.reason instanceof Error ? result.reason.message : String(result.reason);
+          acc.push(`${siteName}: ${errMsg}`);
+        }
+        return acc;
+      }, []);
+
+      if (failures.length === 0) {
+        setIsSiteSyncSuccessful(true);
+        setSnackbarOpen(true);
+        setSyncErrors([]);
+        setErrorMessage(null);
+      } else {
+        setSyncErrors(failures);
+      }
     } catch (err) {
       setErrorMessage(t('syncSites.error'));
     } finally {
@@ -620,6 +637,37 @@ export default function ProjectSites({
         {errorMessage !== null && (
           <div className={styles.formFieldLarge}>
             <h4 className={styles.errorMessage}>{errorMessage}</h4>
+          </div>
+        )}
+
+        {syncErrors.length > 0 && (
+          <div className={styles.formFieldLarge} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+            <p className={styles.errorMessage} style={{ margin: 0, width: 'auto' }}>
+              {t('syncSites.partialError')}
+            </p>
+            <IconButton
+              size="small"
+              onClick={(e) => setSyncErrorAnchor(e.currentTarget)}
+              style={{ color: 'var(--ds-fire-red, #EB5757)', padding: 2 }}
+              aria-label="Show sync errors"
+            >
+              <InfoOutlinedIcon fontSize="small" />
+            </IconButton>
+            <Popover
+              open={Boolean(syncErrorAnchor)}
+              anchorEl={syncErrorAnchor}
+              onClose={() => setSyncErrorAnchor(null)}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+              <ul style={{ margin: 0, padding: '12px 16px 12px 28px', maxWidth: 380, fontSize: 13, lineHeight: 1.5 }}>
+                {syncErrors.map((err, i) => (
+                  <li key={i} style={{ marginBottom: i < syncErrors.length - 1 ? 6 : 0 }}>
+                    {err}
+                  </li>
+                ))}
+              </ul>
+            </Popover>
           </div>
         )}
         <div className={styles.buttonsForProjectCreationForm}>
