@@ -2,7 +2,6 @@ import type { Site, ExtendedProfileProjectProperties } from '../../../common/typ
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 
 import { useState, useCallback } from 'react';
-import { buildRestorPayload } from '../../../../utils/geometrySanitization';
 
 interface UseRestorSyncParams {
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
@@ -23,11 +22,6 @@ const useRestorSync = ({ projectDetails, siteList, onConfigError }: UseRestorSyn
     setIsSyncingSites(true);
 
     try {
-      const restorApiUrl = process.env.NEXT_PUBLIC_RESTOR_API;
-      const restorApiKey = process.env.NEXT_PUBLIC_RESTOR_API_KEY;
-      if (!restorApiKey) throw new Error('Restor API key is not configured');
-      if (!restorApiUrl) throw new Error('Restor URL is not configured');
-
       const purpose = projectDetails?.purpose;
       const firstTreePlanted =
         (projectDetails as { firstTreePlanted?: string | null } | null)?.firstTreePlanted ?? null;
@@ -39,34 +33,35 @@ const useRestorSync = ({ projectDetails, siteList, onConfigError }: UseRestorSyn
       }
 
       const sites = siteList.map((site) => ({
-        properties: { id: site.id, name: site.name, status: site.status },
+        id: site.id,
+        name: site.name,
+        status: site.status,
         geometry: site.geometry,
       }));
 
-      const results = await Promise.allSettled(
-        sites.map(async ({ properties, geometry }) => {
-          const payload = buildRestorPayload(properties, geometry, purpose, interventionStartYear);
-          const response = await fetch(restorApiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-API-KEY': restorApiKey },
-            body: JSON.stringify(payload),
-          });
-          if (!response.ok) {
-            const body = await response.json().catch(() => ({}));
-            throw new Error(body?.message || `HTTP ${response.status}`);
-          }
-          return response.json();
-        })
-      );
+      const response = await fetch('/api/restor/sync-sites', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sites, purpose, interventionStartYear }),
+      });
 
-      const failures = results.reduce<string[]>((acc, result, i) => {
-        if (result.status === 'rejected') {
-          const siteName = sites[i]?.properties.name || sites[i]?.properties.id || `Site ${i + 1}`;
-          const errMsg = result.reason instanceof Error ? result.reason.message : String(result.reason);
-          acc.push(`${siteName}: ${errMsg}`);
-        }
-        return acc;
-      }, []);
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body?.error || `HTTP ${response.status}`);
+      }
+
+      const { results } = await response.json();
+
+      const failures = (results as { siteName: string | null; siteId: string; success: boolean; error?: string }[]).reduce<string[]>(
+        (acc, result, i) => {
+          if (!result.success) {
+            const siteName = result.siteName || result.siteId || `Site ${i + 1}`;
+            acc.push(`${siteName}: ${result.error}`);
+          }
+          return acc;
+        },
+        []
+      );
 
       if (failures.length === 0) {
         setIsSiteSyncSuccessful(true);
