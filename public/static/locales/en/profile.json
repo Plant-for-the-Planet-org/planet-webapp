@@ -134,6 +134,26 @@
         "lifeOnLand": "Life on land",
         "partnership": "Partnerships for the goals"
       }
+    },
+    "tenant": {
+      "tenantDashboard": "Tenant Dashboard",
+      "tenantReport": "Tenant Report",
+      "treesPlanted": "trees planted",
+      "hectaresRestored": "hectares restored",
+      "totalDonated": "total donated",
+      "donors": "donors",
+      "countries": "countries",
+      "countryLeaderboard": "Country Leaderboard",
+      "recentDonors": "Recent Donors",
+      "showAll": "Show All",
+      "showLess": "Show Less",
+      "treePlantedCount": "{count, plural, =0 {0 trees} one {# tree} other {# trees}}",
+      "donationUnit": "{unitType, select, tree {{count, plural,one {# tree} other {# trees}}} m2 {{count} m²} other {{count}}}",
+      "noDataForRange": "No data available for the selected date range. Try adjusting your dates.",
+      "print": "Print",
+      "dateRange": "{from} - {to}",
+      "from": "From",
+      "to": "To"
     }
   }
 }

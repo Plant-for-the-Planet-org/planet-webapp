@@ -1,0 +1,246 @@
+@import '../../../theme/theme';
+
+.tenantDashboard {
+  min-width: 84%;
+}
+
+.reportControls {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap-reverse;
+}
+
+// Date range styles
+.dateRangeContainer {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.dateRangeInfo {
+  display: none;
+}
+
+.printButton {
+  @include xsPhoneView {
+    margin-bottom: 24px;
+  }
+}
+
+// tenant stats styles
+
+.tenantStatsContainer {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+
+  .statCardBase {
+    flex: 0 0 205px;
+    @include xsPhoneView {
+      flex: 1 0 205px;
+    }
+  }
+
+  .statCard {
+    background: $dsWhite;
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+
+    .statCardIcon {
+      margin-bottom: 8px;
+    }
+
+    .statCardValue {
+      font-size: $fontSixteen;
+      font-weight: 700;
+    }
+
+    .statCardLabel {
+      font-size: $fontSmall;
+      font-weight: 400;
+    }
+  }
+}
+
+// common
+.card {
+  display: flex;
+  gap: 18px;
+  flex-direction: column;
+  background-color: $dsWhite;
+  border-radius: 24px;
+  padding: 24px;
+  min-height: 350px;
+
+  .cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .cardTitle {
+    margin: 0;
+    font-size: $fontMedium;
+    font-weight: 700;
+    color: $dsPrimaryColor;
+  }
+}
+
+.dashboardLayout {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+// leaderboard styles
+
+.leaderboard {
+  flex: 2;
+
+  button {
+    width: max-content;
+  }
+}
+
+.leaderboardButton {
+  display: flex;
+  justify-content: center;
+}
+
+.leaderboardList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .leaderboardRow {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 700;
+
+    .leaderboardRowHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}
+
+.leaderboardCountry {
+  display: flex;
+  gap: 12px;
+}
+
+.leaderboardFlag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $fontSixteen;
+  font-family: 'Twemoji Country Flags', sans-serif !important;
+  line-height: 1;
+}
+
+.leaderboardCountryName {
+  font-size: $fontXSmall;
+}
+
+.leaderboardTreeCount {
+  font-size: $fontXSmall;
+}
+
+.progressBarTrack {
+  height: 6px;
+  background: $dsWarmGreenTransparent10;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: $dsPrimaryColor;
+  border-radius: 999px;
+}
+
+// Recent donors style
+
+.recentDonors {
+  flex: 1;
+}
+
+.donorRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid $dsMediumGrey;
+  font-size: $fontXSmall;
+  font-weight: 500;
+
+  .donorName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.emptyState {
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+
+  .description {
+    font-size: $fontSmall;
+    font-weight: 500;
+  }
+}
+
+.skeletonBlock {
+  border-radius: 12px;
+}
+
+@media print {
+  .leaderboardButton,
+  .reportControls {
+    display: none;
+  }
+  .dateRangeInfo {
+    display: block;
+    margin-bottom: 16px;
+    font-size: $fontSmall;
+    padding-left: 3px;
+    font-weight: 500;
+  }
+
+  .tenantStatsContainer {
+    margin-bottom: 10px;
+    gap: 10px;
+
+    .statCardBase {
+      max-width: 190px;
+    }
+  }
+
+  .card {
+    padding: 22px;
+  }
+
+  .leaderboardList {
+    gap: 14px;
+  }
+
+  .dashboardLayout {
+    gap: 10px;
+  }
+}
