@@ -49,19 +49,8 @@ export default function VTOFitnessChallenge() {
         console.error('Leaderboard could not be loaded:', err);
       }
 
-      try {
-        const tenantScoreRes = await fetch(
-          `${process.env.WEBHOOK_URL}/salesforce-vto-2025-treecount`
-        );
-        if (tenantScoreRes.ok && tenantScoreRes.status === 200) {
-          const tenantScoreArr = await tenantScoreRes.json();
-          setTenantScore(tenantScoreArr[0]);
-          setIsLoaded(true);
-        }
-      } catch (err) {
-        console.error('Treecount could not be loaded:', err);
-      }
-
+      // hardcoded as per sf request
+      setTenantScore({ total: 77573 });
       setIsLoaded(true);
     }
 
