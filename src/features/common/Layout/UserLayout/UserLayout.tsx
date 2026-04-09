@@ -45,12 +45,13 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         path: '/profile',
         icon: <UserIcon />,
       },
-      {
-        key: 'register-trees',
-        title: t('registerTrees'),
-        path: '/profile/register-trees',
-        icon: <RegisterTreeIcon />,
-      },
+      // The "Register Trees" section is currently hidden as per the requirements, but the code is left here for easy reactivation in the future.
+      // {
+      //   key: 'register-trees',
+      //   title: t('registerTrees'),
+      //   path: '/profile/register-trees',
+      //   icon: <RegisterTreeIcon />,
+      // },
       {
         key: 'payments',
         title: t('payments'),
