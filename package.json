@@ -101,7 +101,7 @@
     "negotiator": "^0.6.3",
     "next": "^14.2.35",
     "next-connect": "^0.13.0",
-    "next-intl": "^3.26.5",
+    "next-intl": "^4.9.1",
     "papaparse": "^5.5.2",
     "path-browserify": "^1.0.1",
     "prop-types": "^15.7.2",
