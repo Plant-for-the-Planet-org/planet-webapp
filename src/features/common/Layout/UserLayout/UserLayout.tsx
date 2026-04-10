@@ -17,7 +17,7 @@ import { UserProfileLoader } from '../../ContentLoaders/UserProfile/UserProfile'
 import { useUserProps } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
 import TreeMapperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
-import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
+// import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
 import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
 import FiberPinIcon from '@mui/icons-material/FiberPin';
