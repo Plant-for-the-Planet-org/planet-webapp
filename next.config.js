@@ -164,6 +164,11 @@ const nextConfig = {
         destination: 'https://www.plant-for-the-planet.org/de/tagdesbaumes/',
         permanent: true,
       },
+      {
+        source: '/:locale/profile/register-trees',
+        destination: '/:locale/profile',
+        permanent: true,
+      },
     ];
   },
   assetPrefix: hasAssetPrefix
