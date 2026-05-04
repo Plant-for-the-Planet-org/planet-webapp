@@ -50,7 +50,7 @@ export default function VTOFitnessChallenge() {
       }
 
       // hardcoded as per sf request
-      setTenantScore({ total: 77573 });
+      setTenantScore({ total: 80573 });
       setIsLoaded(true);
     }
 
