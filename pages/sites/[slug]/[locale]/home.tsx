@@ -1,4 +1,4 @@
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, Tenant } from '@planet-sdk/common';
 import type {
   LeaderBoardList,
   TenantScore,
@@ -21,12 +21,16 @@ import ConcentrixHome from '../../../../src/tenants/concentrix/Home';
 import GetHomeMeta from '../../../../src/utils/getMetaTags/GetHomeMeta';
 import { useApi } from '../../../../src/hooks/useApi';
 import { handleError } from '@planet-sdk/common';
-import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import { useErrorHandlingStore } from '../../../../src/stores/errorHandlingStore';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../tenant.config';
 
-export default function Home() {
+export default function Home({ pageProps }: { pageProps: PageProps }) {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
@@ -37,6 +41,13 @@ export default function Home() {
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setTenantConfig = useTenantStore((state) => state.setTenantConfig);
+
+  useEffect(() => {
+    if (router.isReady && pageProps.tenantConfig) {
+      setTenantConfig(pageProps.tenantConfig);
+    }
+  }, [router.isReady]);
 
   useEffect(() => {
     async function loadTenantScore() {
@@ -142,11 +153,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -163,6 +178,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

@@ -6,7 +6,10 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
+import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
+import { defaultTenant } from '../../../../tenant.config';
 import Footer from '../../../../src/features/common/Layout/Footer';
 import LandingSection from '../../../../src/features/common/Layout/LandingSection';
 import VerifyEmailComponent from '../../../../src/features/common/VerifyEmail/VerifyEmail';
@@ -15,10 +18,10 @@ import getMessagesForPage from '../../../../src/utils/language/getMessagesForPag
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 export default function VerifyEmail(): ReactElement {
-  //store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
-  if (!tenantConfig) return <></>;
+  if (!isInitialized) return <></>;
 
   return (
     <div>
@@ -51,6 +54,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -61,9 +65,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country', 'profile'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

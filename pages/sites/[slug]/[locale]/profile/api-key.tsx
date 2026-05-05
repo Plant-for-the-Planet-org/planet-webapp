@@ -6,22 +6,26 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import ApiKey from '../../../../../src/features/user/Settings/ApiKey';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import { constructPathsForTenantSlug } from '../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../tenant.config';
 
 function EditProfilePage(): ReactElement {
   const t = useTranslations('Me');
 
-  //store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
-
-  if (!tenantConfig) return <></>;
+  //store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  if (!isInitialized) return <></>;
 
   return (
     <UserLayout>
@@ -56,6 +60,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -66,9 +71,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

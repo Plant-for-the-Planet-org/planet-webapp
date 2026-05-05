@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, Tenant } from '@planet-sdk/common';
 import type { Subscription } from '../../../../../src/features/common/types/payments';
 import type {
   GetStaticPaths,
@@ -17,13 +17,17 @@ import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import RecurrentPayments from '../../../../../src/features/user/Account/RecurrentPayments';
-import { constructPathsForTenantSlug } from '../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { defaultTenant } from '../../../../../tenant.config';
 
 function RecurrentDonations(): ReactElement {
   const t = useTranslations('Me');
@@ -36,7 +40,7 @@ function RecurrentDonations(): ReactElement {
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [recurrencies, setRecurrencies] = useState<Subscription[]>();
   //store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const isInitialized = useTenantStore((state) => state.isInitialized);
   //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -86,7 +90,7 @@ function RecurrentDonations(): ReactElement {
     fetchRecurrentDonations,
   };
 
-  if (!tenantConfig) return <></>;
+  if (!isInitialized) return <></>;
 
   return (
     <>
@@ -128,6 +132,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -138,9 +143,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

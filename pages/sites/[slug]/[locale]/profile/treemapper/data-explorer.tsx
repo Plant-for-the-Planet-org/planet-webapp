@@ -6,6 +6,7 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common';
 
 import Head from 'next/head';
 import { useEffect } from 'react';
@@ -15,9 +16,13 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
-import { constructPathsForTenantSlug } from '../../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../../tenant.config';
 
 function TreeMapperAnalytics(): ReactElement {
   const t = useTranslations('TreemapperAnalytics');
@@ -25,7 +30,7 @@ function TreeMapperAnalytics(): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   // store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
   useEffect(() => {
     if (user) {
@@ -35,7 +40,7 @@ function TreeMapperAnalytics(): ReactElement {
     }
   }, [user]);
 
-  if (!tenantConfig) return <></>;
+  if (!isInitialized) return <></>;
 
   return (
     <UserLayout>
@@ -70,6 +75,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -80,9 +86,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country', 'treemapperAnalytics'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

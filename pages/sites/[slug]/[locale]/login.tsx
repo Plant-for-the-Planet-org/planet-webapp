@@ -6,7 +6,10 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
+import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
+import { defaultTenant } from '../../../../tenant.config';
 import { useEffect } from 'react';
 import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
@@ -19,11 +22,11 @@ import { useTenantStore } from '../../../../src/stores/tenantStore';
 export default function Login(): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  // store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
-
   const {
     user,
     contextLoaded,
@@ -33,6 +36,8 @@ export default function Login(): ReactElement {
   } = useUserProps();
 
   useEffect(() => {
+    if (!isInitialized) return;
+
     async function loadFunction() {
       // redirect
       if (user) {
@@ -62,9 +67,9 @@ export default function Login(): ReactElement {
         });
       }
     }
-  }, [user, contextLoaded]);
+  }, [user, contextLoaded, isInitialized]);
 
-  if (!tenantConfig) return <></>;
+  if (!isInitialized) return <></>;
 
   return (
     <div>
@@ -94,6 +99,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -104,9 +110,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

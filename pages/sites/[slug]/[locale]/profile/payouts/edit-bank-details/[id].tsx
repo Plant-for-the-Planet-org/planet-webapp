@@ -6,6 +6,7 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common';
 
 import UserLayout from '../../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
@@ -13,17 +14,21 @@ import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../../../../../src/features/user/ManagePayouts';
 import { useTranslations } from 'next-intl';
-import { constructPathsForTenantSlug } from '../../../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { useTenantStore } from '../../../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../../../tenant.config';
 
 export default function EditBankDetailsPage(): ReactElement {
   const t = useTranslations('Me');
 
-  // store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
-  if (!tenantConfig) return <></>;
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  if (!isInitialized) return <></>;
 
   return (
     <UserLayout>
@@ -57,6 +62,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -67,9 +73,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country', 'managePayouts'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

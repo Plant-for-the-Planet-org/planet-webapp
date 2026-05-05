@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, Tenant } from '@planet-sdk/common';
 import type {
   Filters,
   PaymentHistory,
@@ -21,13 +21,17 @@ import UserLayout from '../../../../../src/features/common/Layout/UserLayout/Use
 import Head from 'next/head';
 import { handleError } from '@planet-sdk/common';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
-import { constructPathsForTenantSlug } from '../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { defaultTenant } from '../../../../../tenant.config';
 
 function AccountHistory(): ReactElement {
   const t = useTranslations('Me');
@@ -46,7 +50,8 @@ function AccountHistory(): ReactElement {
     null
   );
   //store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function fetchPaymentHistory(next = false): Promise<void> {
@@ -118,7 +123,7 @@ function AccountHistory(): ReactElement {
     fetchPaymentHistory,
   };
 
-  if (!tenantConfig) return <></>;
+  if (!isInitialized) return <></>;
 
   return (
     <>
@@ -168,6 +173,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -178,9 +184,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };

@@ -6,6 +6,7 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { Tenant } from '@planet-sdk/common';
 
 import { useState, useEffect } from 'react';
 import TopProgressBar from '../../../../../../src/features/common/ContentLoaders/TopProgressBar';
@@ -15,16 +16,20 @@ import PlanetCash, {
   PlanetCashTabs,
 } from '../../../../../../src/features/user/PlanetCash';
 import { useTranslations } from 'next-intl';
-import { constructPathsForTenantSlug } from '../../../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../../tenant.config';
 
 export default function PlanetCashTransactionsPage(): ReactElement {
   const t = useTranslations('Me');
   // local state
   const [progress, setProgress] = useState(0);
-  // store: action
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
   // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.
   useEffect(() => {
@@ -33,7 +38,7 @@ export default function PlanetCashTransactionsPage(): ReactElement {
     };
   }, []);
 
-  if (!tenantConfig) return <></>;
+  if (!isInitialized) return <></>;
   return (
     <>
       {progress > 0 && (
@@ -75,6 +80,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -85,9 +91,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
     filenames: ['common', 'me', 'country', 'planetcash'],
   });
 
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
+
   return {
     props: {
       messages,
+      tenantConfig,
     },
   };
 };
