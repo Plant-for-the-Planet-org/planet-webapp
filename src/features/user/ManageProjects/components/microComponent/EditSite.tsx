@@ -63,6 +63,10 @@ function EditSite({
         name: data.name,
         geometry: geoJson,
         status: data.status,
+        acquisitionYear: data.acquisitionYear
+          ? Number(data.acquisitionYear)
+          : null,
+        yearAbandoned: data.yearAbandoned ? Number(data.yearAbandoned) : null,
       };
 
       try {
@@ -161,6 +165,53 @@ function EditSite({
                         </MenuItem>
                       ))}
                     </TextField>
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className={styles.formField}>
+              <div className={styles.formFieldHalf}>
+                <Controller
+                  name="acquisitionYear"
+                  control={control}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      label={t('acquisitionYear')}
+                      variant="outlined"
+                      type="number"
+                      onChange={onChange}
+                      value={value ?? ''}
+                      onBlur={onBlur}
+                      inputProps={{ min: 1900, max: 2100 }}
+                      error={errors.acquisitionYear !== undefined}
+                      helperText={
+                        errors.acquisitionYear !== undefined &&
+                        errors.acquisitionYear.message
+                      }
+                    />
+                  )}
+                />
+              </div>
+              <div className={styles.formFieldHalf}>
+                <Controller
+                  name="yearAbandoned"
+                  control={control}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      label={t('yearOfAbandonment')}
+                      variant="outlined"
+                      type="number"
+                      onChange={onChange}
+                      value={value ?? ''}
+                      onBlur={onBlur}
+                      inputProps={{ min: 1900, max: 2100 }}
+                      error={errors.yearAbandoned !== undefined}
+                      helperText={
+                        errors.yearAbandoned !== undefined &&
+                        errors.yearAbandoned.message
+                      }
+                    />
                   )}
                 />
               </div>

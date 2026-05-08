@@ -26,6 +26,8 @@ export interface Site {
   id: string;
   name: string;
   status: string;
+  acquisitionYear?: Nullable<number>;
+  yearAbandoned?: Nullable<number>;
 }
 
 type VerificationStatus =

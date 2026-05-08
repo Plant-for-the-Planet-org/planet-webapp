@@ -18,7 +18,7 @@ import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/I
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
-import { TextField, Button, Tooltip } from '@mui/material';
+import { TextField, Button, MenuItem, Tooltip } from '@mui/material';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -33,7 +33,6 @@ import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 type BaseFormData = {
   employeesCount: string;
-  acquisitionYear: Date | null;
   mainChallenge: string;
   motivation: string;
   longTermPlan: string;
@@ -42,39 +41,38 @@ type BaseFormData = {
 
 type TreeFormData = BaseFormData & {
   purpose: 'trees';
-  yearAbandoned: Date | null;
+  ecosystem: string;
   firstTreePlanted: Date | null;
   plantingDensity: string;
   maxPlantingDensity: string;
-  degradationYear: Date | null;
   degradationCause: string;
 };
 
 type ConservationFormData = BaseFormData & {
   purpose: 'conservation';
+  acquisitionYear: Date | null;
   areaProtected: string;
   startingProtectionYear: Date | null;
   actions: string;
   benefits: string;
 };
 
-type BaseProjectMetadata = Omit<BaseFormData, 'acquisitionYear'> & {
-  acquisitionYear: number | null;
+type BaseProjectMetadata = BaseFormData & {
   mainInterventions: string[];
 };
 
 type TreeMetadata = BaseProjectMetadata & {
+  ecosystem: string;
   degradationCause: string;
-  degradationYear: number | null;
   plantingDensity: string;
   maxPlantingDensity: string;
   plantingSeasons: number[];
   siteOwnerType: string[];
-  yearAbandoned: number | null;
   firstTreePlanted: string | null;
 };
 
 type ConservationMetadata = BaseProjectMetadata & {
+  acquisitionYear: number | null;
   activitySeasons: number[];
   areaProtected: string;
   startingProtectionYear: number | null;
@@ -192,6 +190,23 @@ export default function DetailedAnalysis({
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
+  const ecosystemTypes = [
+    'tropical-moist-forests',
+    'tropical-dry-forests',
+    'tropical-coniferous-forests',
+    'tropical-grasslands-forests',
+    'temperate-broadleaf-forests',
+    'temperate-coniferous-forests',
+    'temperate-grasslands-forests',
+    'mediterranean-forests',
+    'mangroves',
+    'deserts',
+    'flooded-grasslands',
+    'montane-grasslands',
+    'boreal-forests',
+    'tundra',
+  ];
+
   const handleSetPlantingSeasons = (id: number) => {
     const month = plantingSeasons[id - 1];
     const updatedMonth = month;
@@ -239,15 +254,13 @@ export default function DetailedAnalysis({
     purpose === 'trees'
       ? {
           purpose: 'trees',
-          yearAbandoned: new Date(),
+          ecosystem: '',
           firstTreePlanted: null,
           plantingDensity: '',
           maxPlantingDensity: '',
           employeesCount: '',
           mainChallenge: '',
           siteOwnerName: '',
-          acquisitionYear: null,
-          degradationYear: null,
           degradationCause: '',
           longTermPlan: '',
           motivation: '',
@@ -308,9 +321,6 @@ export default function DetailedAnalysis({
     }
     setIsUploadingData(true);
     const commonFields: BaseProjectMetadata = {
-      acquisitionYear: data.acquisitionYear
-        ? data.acquisitionYear.getFullYear()
-        : null,
       employeesCount: data.employeesCount,
       mainInterventions: mainInterventions,
       longTermPlan: data.longTermPlan,
@@ -324,18 +334,12 @@ export default function DetailedAnalysis({
         ? {
             metadata: {
               ...commonFields,
+              ecosystem: data.ecosystem,
               degradationCause: data.degradationCause,
-              degradationYear: data.degradationYear
-                ? data.degradationYear.getFullYear()
-                : null,
-
               plantingDensity: data.plantingDensity,
               maxPlantingDensity: data.maxPlantingDensity,
               plantingSeasons: months,
               siteOwnerType: owners,
-              yearAbandoned: data.yearAbandoned
-                ? data.yearAbandoned.getFullYear()
-                : null,
               firstTreePlanted: data.firstTreePlanted
                 ? `${data.firstTreePlanted.getFullYear()}-${
                     data.firstTreePlanted.getMonth() + 1
@@ -346,14 +350,20 @@ export default function DetailedAnalysis({
         : {
             metadata: {
               ...commonFields,
+              acquisitionYear: (data as ConservationFormData).acquisitionYear
+                ? (data as ConservationFormData).acquisitionYear!.getFullYear()
+                : null,
               activitySeasons: months,
-              areaProtected: data.areaProtected,
-              startingProtectionYear: data.startingProtectionYear
-                ? data.startingProtectionYear.getFullYear()
+              areaProtected: (data as ConservationFormData).areaProtected,
+              startingProtectionYear: (data as ConservationFormData)
+                .startingProtectionYear
+                ? (
+                    data as ConservationFormData
+                  ).startingProtectionYear!.getFullYear()
                 : null,
               landOwnershipType: owners,
-              actions: data.actions,
-              benefits: data.benefits,
+              actions: (data as ConservationFormData).actions,
+              benefits: (data as ConservationFormData).benefits,
             },
           };
 
@@ -381,9 +391,7 @@ export default function DetailedAnalysis({
         projectPurpose === 'trees'
           ? {
               purpose: 'trees',
-              yearAbandoned: metadata.yearAbandoned
-                ? new Date(new Date().setFullYear(metadata.yearAbandoned))
-                : new Date(),
+              ecosystem: metadata.ecosystem || '',
               firstTreePlanted: metadata.firstTreePlanted
                 ? new Date(metadata.firstTreePlanted)
                 : new Date(),
@@ -392,12 +400,6 @@ export default function DetailedAnalysis({
               employeesCount: metadata.employeesCount?.toString() || '',
               mainChallenge: metadata.mainChallenge || '',
               siteOwnerName: metadata.siteOwnerName || '',
-              acquisitionYear: metadata.acquisitionYear
-                ? new Date(new Date().setFullYear(metadata.acquisitionYear))
-                : new Date(),
-              degradationYear: metadata.degradationYear
-                ? new Date(new Date().setFullYear(metadata.degradationYear))
-                : new Date(),
               degradationCause: metadata.degradationCause || '',
               longTermPlan: metadata.longTermPlan || '',
               motivation: metadata.motivation || '',
@@ -516,79 +518,33 @@ export default function DetailedAnalysis({
         <div className="inputContainer">
           {purpose === 'trees' ? (
             <>
-              <InlineFormDisplayGroup>
-                <LocalizationProvider
-                  dateAdapter={AdapterDateFns}
-                  adapterLocale={
-                    localeMapForDate[userLang]
-                      ? localeMapForDate[userLang]
-                      : localeMapForDate['en']
-                  }
-                >
-                  <Controller
-                    name="yearAbandoned"
-                    control={control}
-                    defaultValue={new Date()}
-                    render={({ field: { onChange, value } }) => (
-                      <MuiDatePicker
-                        views={['year']}
-                        value={value}
-                        onChange={onChange}
-                        label={tManageProjects('yearOfAbandonment')}
-                        renderInput={(props) => (
-                          <TextField
-                            required
-                            {...props}
-                            InputProps={{
-                              endAdornment: (
-                                <Tooltip
-                                  title={tManageProjects('yearAbandonedInfo')}
-                                  arrow
-                                >
-                                  <span className={styles.tooltipIcon}>
-                                    <InfoIcon />
-                                  </span>
-                                </Tooltip>
-                              ),
-                            }}
-                          />
-                        )}
-                        disableFuture
-                        minDate={new Date(new Date().setFullYear(1950))}
-                        maxDate={new Date()}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-
-                <LocalizationProvider
-                  dateAdapter={AdapterDateFns}
-                  adapterLocale={
-                    localeMapForDate[userLang]
-                      ? localeMapForDate[userLang]
-                      : localeMapForDate['en']
-                  }
-                >
-                  <Controller
-                    name="firstTreePlanted"
-                    control={control}
-                    render={({ field: { onChange, value } }) => (
-                      <MuiDatePicker
-                        label={tManageProjects('labelRestorationStarted')}
-                        value={value}
-                        onChange={onChange}
-                        renderInput={(props) => (
-                          <TextField {...props} required />
-                        )}
-                        disableFuture
-                        minDate={new Date(new Date().setFullYear(1950))}
-                        inputFormat="d MMMM yyyy"
-                        maxDate={new Date()}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-              </InlineFormDisplayGroup>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={
+                  localeMapForDate[userLang]
+                    ? localeMapForDate[userLang]
+                    : localeMapForDate['en']
+                }
+              >
+                <Controller
+                  name="firstTreePlanted"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <MuiDatePicker
+                      label={tManageProjects('labelRestorationStarted')}
+                      value={value}
+                      onChange={onChange}
+                      renderInput={(props) => (
+                        <TextField {...props} required />
+                      )}
+                      disableFuture
+                      minDate={new Date(new Date().setFullYear(1950))}
+                      inputFormat="d MMMM yyyy"
+                      maxDate={new Date()}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
             </>
           ) : (
             <InlineFormDisplayGroup>
@@ -721,50 +677,85 @@ export default function DetailedAnalysis({
                 />
               )}
             />
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              adapterLocale={
-                localeMapForDate[userLang]
-                  ? localeMapForDate[userLang]
-                  : localeMapForDate['en']
-              }
-            >
+            {purpose === 'trees' ? (
               <Controller
-                name="acquisitionYear"
+                name="ecosystem"
                 control={control}
                 rules={{
-                  required: tManageProjects('validation', {
-                    fieldName: tManageProjects('acquisitionYear'),
-                  }),
+                  required: tManageProjects('ecosystemType'),
                 }}
-                render={({ field: { onChange, value } }) => (
-                  <MuiDatePicker
-                    label={tManageProjects('acquisitionYear')}
-                    value={value}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    required
+                    label={tManageProjects('ecosystem')}
+                    variant="outlined"
+                    select
                     onChange={onChange}
-                    renderInput={(props) => (
-                      <TextField
-                        required
-                        {...props}
-                        error={
-                          'startingProtectionYear' in errors &&
-                          errors.startingProtectionYear !== undefined
-                        }
-                        helperText={
-                          'startingProtectionYear' in errors &&
-                          errors.startingProtectionYear !== undefined &&
-                          errors.startingProtectionYear.message
-                        }
-                      />
-                    )}
-                    disableFuture
-                    minDate={new Date(new Date().setFullYear(1950))}
-                    views={['year']}
-                    maxDate={new Date()}
-                  />
+                    value={value}
+                    onBlur={onBlur}
+                    error={
+                      'ecosystem' in errors && errors.ecosystem !== undefined
+                    }
+                    helperText={
+                      'ecosystem' in errors &&
+                      errors.ecosystem !== undefined &&
+                      errors.ecosystem.message
+                    }
+                  >
+                    {ecosystemTypes.map((ecosystem) => (
+                      <MenuItem key={ecosystem} value={ecosystem}>
+                        {tManageProjects(`ecosystemTypes.${ecosystem}`)}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 )}
               />
-            </LocalizationProvider>
+            ) : (
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={
+                  localeMapForDate[userLang]
+                    ? localeMapForDate[userLang]
+                    : localeMapForDate['en']
+                }
+              >
+                <Controller
+                  name="acquisitionYear"
+                  control={control}
+                  rules={{
+                    required: tManageProjects('validation', {
+                      fieldName: tManageProjects('acquisitionYear'),
+                    }),
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <MuiDatePicker
+                      label={tManageProjects('acquisitionYear')}
+                      value={value}
+                      onChange={onChange}
+                      renderInput={(props) => (
+                        <TextField
+                          required
+                          {...props}
+                          error={
+                            'acquisitionYear' in errors &&
+                            errors.acquisitionYear !== undefined
+                          }
+                          helperText={
+                            'acquisitionYear' in errors &&
+                            errors.acquisitionYear !== undefined &&
+                            errors.acquisitionYear.message
+                          }
+                        />
+                      )}
+                      disableFuture
+                      minDate={new Date(new Date().setFullYear(1950))}
+                      views={['year']}
+                      maxDate={new Date()}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+            )}
           </InlineFormDisplayGroup>
           <div className={styles.multiSelectContainer}>
             <div className={styles.multiSelectField}>
@@ -932,31 +923,6 @@ export default function DetailedAnalysis({
                 />
               </InlineFormDisplayGroup>
 
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                adapterLocale={
-                  localeMapForDate[userLang]
-                    ? localeMapForDate[userLang]
-                    : localeMapForDate['en']
-                }
-              >
-                <Controller
-                  name="degradationYear"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <MuiDatePicker
-                      views={['year']}
-                      value={value}
-                      onChange={onChange}
-                      label={tManageProjects('yearOfDegradation')}
-                      renderInput={(props) => <TextField {...props} />}
-                      disableFuture
-                      minDate={new Date(new Date().setFullYear(1950))}
-                      maxDate={new Date()}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
             </>
           ) : (
             <Controller

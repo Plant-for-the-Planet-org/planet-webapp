@@ -47,12 +47,16 @@ const SiteGeometryEditor = dynamic(() => import('./SiteGeometryEditor'), {
 export type ProjectSitesFormData = {
   name: string;
   status: string;
+  acquisitionYear?: string;
+  yearAbandoned?: string;
 };
 
 export type SiteApiPayload = {
   name: string;
   geometry: ProjectSiteFeatureCollection;
   status: string;
+  acquisitionYear?: number | null;
+  yearAbandoned?: number | null;
 };
 
 export interface SiteInfo {
@@ -151,10 +155,22 @@ export default function ProjectSites({
     try {
       const res = await postApiAuthenticated<Site, SiteApiPayload>(
         `/app/projects/${projectGUID}/sites`,
-        { payload: { name: data.name, geometry: geoJson, status: data.status } }
+        {
+          payload: {
+            name: data.name,
+            geometry: geoJson,
+            status: data.status,
+            acquisitionYear: data.acquisitionYear
+              ? Number(data.acquisitionYear)
+              : null,
+            yearAbandoned: data.yearAbandoned
+              ? Number(data.yearAbandoned)
+              : null,
+          },
+        }
       );
       setSiteList((prev) => [...prev, { id: res.id, name: res.name, geometry: res.geometry, status: res.status }]);
-      reset({ name: '', status: '' });
+      reset({ name: '', status: '', acquisitionYear: '', yearAbandoned: '' });
       setGeoJson(null);
       setShowForm(false);
       setErrorMessage(null);
@@ -302,6 +318,49 @@ export default function ProjectSites({
                       </MenuItem>
                     ))}
                   </TextField>
+                )}
+              />
+            </InlineFormDisplayGroup>
+
+            <InlineFormDisplayGroup>
+              <Controller
+                name="acquisitionYear"
+                control={control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('acquisitionYear')}
+                    variant="outlined"
+                    type="number"
+                    onChange={onChange}
+                    value={value ?? ''}
+                    onBlur={onBlur}
+                    inputProps={{ min: 1900, max: 2100 }}
+                    error={errors.acquisitionYear !== undefined}
+                    helperText={
+                      errors.acquisitionYear !== undefined &&
+                      errors.acquisitionYear.message
+                    }
+                  />
+                )}
+              />
+              <Controller
+                name="yearAbandoned"
+                control={control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('yearOfAbandonment')}
+                    variant="outlined"
+                    type="number"
+                    onChange={onChange}
+                    value={value ?? ''}
+                    onBlur={onBlur}
+                    inputProps={{ min: 1900, max: 2100 }}
+                    error={errors.yearAbandoned !== undefined}
+                    helperText={
+                      errors.yearAbandoned !== undefined &&
+                      errors.yearAbandoned.message
+                    }
+                  />
                 )}
               />
             </InlineFormDisplayGroup>
