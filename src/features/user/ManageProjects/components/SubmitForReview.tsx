@@ -7,7 +7,7 @@ import SubmitForReviewImage from '../../../../../public/assets/images/icons/mana
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
 import { useTranslations } from 'next-intl';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
-import { Button, FormControlLabel } from '@mui/material';
+import { Alert, Button, FormControlLabel, Stack } from '@mui/material';
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
@@ -22,10 +22,16 @@ function SubmitForReview({
   projectDetails,
   handlePublishChange,
   isLocked,
+  sectionCompleteness,
 }: SubmitForReviewProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+
+  const showQuestionnaire = projectDetails?.acceptDonations === true;
+  const backTab = showQuestionnaire
+    ? ProjectCreationTabs.QUESTIONNAIRE
+    : ProjectCreationTabs.PROJECT_SPENDING;
 
   function UnderReviewComponent() {
     return (
@@ -52,11 +58,11 @@ function SubmitForReview({
 
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
-            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            onClick={() => handleBack(backTab)}
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t('backToSpending')}</p>
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
           </Button>
 
           <Button
@@ -69,6 +75,12 @@ function SubmitForReview({
       </CenteredContainer>
     );
   }
+
+  const daIncomplete = !sectionCompleteness.detailedAnalysis;
+  const qIncomplete =
+    sectionCompleteness.questionnaire !== null &&
+    !sectionCompleteness.questionnaire;
+  const canSubmit = !daIncomplete && !qIncomplete;
 
   function NotSubmittedReview() {
     return (
@@ -103,22 +115,34 @@ function SubmitForReview({
           }
         />
 
-        <div>
-          <div className={styles.reviewImageContainer}>
-            <NotReviewed />
-          </div>
-          <p className={styles.reviewMessage}>{t('projectForReview')}</p>
+        <div className={styles.reviewImageContainer}>
+          <NotReviewed />
         </div>
+        <Stack spacing={1} sx={{ width: '100%', mb: 2 }}>
+          {canSubmit && (
+            <Alert severity="success">{t('projectForReview')}</Alert>
+          )}
+          {daIncomplete && (
+            <Alert severity="warning">{t('incompleteDetailedAnalysis')}</Alert>
+          )}
+          {qIncomplete && (
+            <Alert severity="warning">{t('incompleteQuestionnaire')}</Alert>
+          )}
+        </Stack>
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
             variant="outlined"
-            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            onClick={() => handleBack(backTab)}
             startIcon={<BackArrow />}
           >
-            <p>{t('backToSpending')}</p>
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
           </Button>
 
-          <Button onClick={() => submitForReview()} variant="contained">
+          <Button
+            onClick={() => submitForReview()}
+            variant="contained"
+            disabled={!canSubmit}
+          >
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
@@ -148,11 +172,11 @@ function SubmitForReview({
         </div>
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
-            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            onClick={() => handleBack(backTab)}
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t('backToSpending')}</p>
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
           </Button>
           <Button
             variant="contained"
@@ -177,11 +201,11 @@ function SubmitForReview({
 
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
-            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            onClick={() => handleBack(backTab)}
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t('backToSpending')}</p>
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
           </Button>
           <Button
             variant="contained"
@@ -217,11 +241,11 @@ function SubmitForReview({
         />
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
-            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            onClick={() => handleBack(backTab)}
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t('backToSpending')}</p>
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
           </Button>
           <Button
             variant="contained"

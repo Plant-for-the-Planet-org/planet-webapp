@@ -9,8 +9,9 @@ import type {
 } from '../../../common/types/project';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useWatch } from 'react-hook-form';
 import {
+  Alert,
   Button,
   Checkbox,
   CircularProgress,
@@ -62,6 +63,7 @@ export default function ProjectQuestionnaire({
   projectDetails,
   setProjectDetails,
   isLocked,
+  onCompletenessChange,
 }: QuestionnaireProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
@@ -84,16 +86,21 @@ export default function ProjectQuestionnaire({
     );
   }, [schema, classification]);
 
-  const { control, handleSubmit, reset } = useForm<QuestionnaireFormData>({
-    mode: 'onBlur',
-    defaultValues: {},
-  });
+  const { control, handleSubmit, reset, trigger, getValues } =
+    useForm<QuestionnaireFormData>({
+      mode: 'onBlur',
+      defaultValues: {},
+    });
+
+  const watchedValues = useWatch({ control });
+
+  const purpose = projectDetails?.purpose ?? 'trees';
 
   useEffect(() => {
     const fetchSchema = async () => {
       try {
         const result = await getApiAuthenticated<QuestionnaireSchema>(
-          '/app/projects/questionnaire-schema/trees',
+          `/app/projects/questionnaire-schema/${purpose}`,
           { additionalHeaders: { Accept: 'application/json' } }
         );
         setSchema(result);
@@ -104,7 +111,7 @@ export default function ProjectQuestionnaire({
       }
     };
     fetchSchema();
-  }, []);
+  }, [purpose]);
 
   useEffect(() => {
     if (visibleFields.length === 0) return;
@@ -112,7 +119,18 @@ export default function ProjectQuestionnaire({
       (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
         ?.questionnaire ?? null;
     reset(buildDefaults(visibleFields, existing));
+    if (existing) trigger();
   }, [schema, projectDetails]);
+
+  useEffect(() => {
+    if (visibleFields.length === 0) return;
+    const allFilled = visibleFields.every(([name, field]) => {
+      const val = watchedValues[name];
+      if (field.type === 'multi_choice') return Array.isArray(val) && val.length > 0;
+      return val !== undefined && val !== '' && val !== null;
+    });
+    onCompletenessChange(allFilled);
+  }, [watchedValues, visibleFields.length]);
 
   const onSubmit = async (data: QuestionnaireFormData) => {
     setIsSubmitting(true);
@@ -146,6 +164,7 @@ export default function ProjectQuestionnaire({
           <Controller
             name={name}
             control={control}
+            rules={{ validate: (v) => (Array.isArray(v) ? v.length > 0 : !!v) }}
             render={({ field: { value, onChange } }) => {
               const current = Array.isArray(value) ? (value as string[]) : [];
               return (
@@ -182,6 +201,7 @@ export default function ProjectQuestionnaire({
           <Controller
             name={name}
             control={control}
+            rules={{ required: true }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextField
                 label={field.label}
@@ -204,6 +224,7 @@ export default function ProjectQuestionnaire({
         <Controller
           name={name}
           control={control}
+          rules={{ required: true }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
               label={field.label}
@@ -229,6 +250,19 @@ export default function ProjectQuestionnaire({
             verificationStatus={projectDetails.verificationStatus}
           />
         )}
+        {!isLoadingSchema && !isLocked && visibleFields.length > 0 &&
+          (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
+            ?.questionnaire != null &&
+          !visibleFields.every(([name, field]) => {
+            const val = watchedValues[name];
+            return field.type === 'multi_choice'
+              ? Array.isArray(val) && val.length > 0
+              : val !== undefined && val !== '' && val !== null;
+          }) && (
+            <Alert severity="info" sx={{ mb: 2 }}>
+              {t('incompleteFieldsBanner')}
+            </Alert>
+          )}
 
         <div className="inputContainer">
           {isLoadingSchema ? (
@@ -257,7 +291,10 @@ export default function ProjectQuestionnaire({
             <>
               <Button
                 variant="contained"
-                onClick={handleSubmit(onSubmit)}
+                onClick={() => {
+                  trigger();
+                  void onSubmit(getValues());
+                }}
                 className="formButton"
               >
                 {isSubmitting ? (

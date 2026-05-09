@@ -201,6 +201,7 @@ export interface DetailedAnalysisProps {
   projectGUID: string;
   purpose: string | string[] | undefined;
   isLocked: boolean;
+  onCompletenessChange: (complete: boolean) => void;
 }
 
 export type InterventionOption = [InterventionTypes, boolean];
@@ -280,9 +281,15 @@ export interface QuestionnaireProps {
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   isLocked: boolean;
+  onCompletenessChange: (complete: boolean) => void;
 }
 
 // project review
+
+export interface SectionCompleteness {
+  detailedAnalysis: boolean;
+  questionnaire: boolean | null;
+}
 
 export interface SubmitForReviewProps {
   submitForReview: () => Promise<void>;
@@ -291,6 +298,7 @@ export interface SubmitForReviewProps {
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   handlePublishChange: (arg: boolean) => Promise<void>;
   isLocked: boolean;
+  sectionCompleteness: SectionCompleteness;
 }
 
 // Project certificate

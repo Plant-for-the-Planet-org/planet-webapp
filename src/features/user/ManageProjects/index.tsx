@@ -23,6 +23,34 @@ import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
+function isDetailedAnalysisComplete(
+  details: ExtendedProfileProjectProperties | null
+): boolean {
+  if (!details || !details.metadata) return false;
+  if (!details.metadata.mainChallenge) return false;
+  if (!details.metadata.motivation) return false;
+  if (!details.metadata.siteOwnerName) return false;
+  if (details.purpose === 'trees') {
+    const m = details.metadata;
+    if (!m.mainInterventions?.length) return false;
+    if (!m.employeesCount) return false;
+    if (!m.longTermPlan) return false;
+    if (!m.ecosystem) return false;
+    if (!m.plantingDensity) return false;
+    if (!m.degradationCause) return false;
+    if (!m.siteOwnerType?.length) return false;
+  } else {
+    const m = details.metadata;
+    if (!m.ecosystem) return false;
+    if (!m.areaProtected) return false;
+    if (!m.startingProtectionYear) return false;
+    if (!m.ownershipType) return false;
+    if (!m.landOwnershipType?.length) return false;
+    if (!m.actions) return false;
+  }
+  return true;
+}
+
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
   BASIC_DETAILS = 1,
@@ -56,6 +84,7 @@ export default function ManageProjects({
   const [tablist, setTabList] = useState<TabItem[]>([]);
   const [projectDetails, setProjectDetails] =
     useState<ExtendedProfileProjectProperties | null>(null);
+  const [questionnaireComplete, setQuestionnaireComplete] = useState(false);
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -196,9 +225,7 @@ export default function ManageProjects({
     }
   }, [tabSelected, router.query.type]);
 
-  const showQuestionnaire =
-    projectDetails?.acceptDonations === true &&
-    projectDetails?.purpose === 'trees';
+  const showQuestionnaire = projectDetails?.acceptDonations === true;
 
   useEffect(() => {
     if (router.query.type && project) {
@@ -207,6 +234,7 @@ export default function ManageProjects({
           label: t('basicDetails'),
           link: `/profile/projects/${projectGUID}?type=basic-details`,
           step: ProjectCreationTabs.BASIC_DETAILS,
+          completionStatus: 'complete',
         },
         {
           label: t('projectMedia'),
@@ -217,6 +245,11 @@ export default function ManageProjects({
           label: t('detailedAnalysis'),
           link: `/profile/projects/${projectGUID}?type=detail-analysis`,
           step: ProjectCreationTabs.DETAILED_ANALYSIS,
+          completionStatus: projectDetails
+            ? isDetailedAnalysisComplete(projectDetails)
+              ? 'complete'
+              : 'incomplete'
+            : undefined,
         },
         {
           label: t('projectSites'),
@@ -234,6 +267,11 @@ export default function ManageProjects({
           label: t('questionnaire'),
           link: `/profile/projects/${projectGUID}?type=questionnaire`,
           step: ProjectCreationTabs.QUESTIONNAIRE,
+          completionStatus: projectDetails
+            ? questionnaireComplete
+              ? 'complete'
+              : 'incomplete'
+            : undefined,
         });
       }
       tabs.push({
@@ -267,7 +305,7 @@ export default function ManageProjects({
         },
       ]);
     }
-  }, [tabSelected, router.query.purpose, locale, projectDetails?.acceptDonations]);
+  }, [tabSelected, router.query.purpose, locale, projectDetails?.acceptDonations, projectDetails, questionnaireComplete]);
 
   const isLocked =
     projectDetails?.verificationStatus === 'submitted' ||
@@ -321,6 +359,7 @@ export default function ManageProjects({
               project?.purpose ? project?.purpose : router.query?.purpose
             }
             isLocked={isLocked}
+            onCompletenessChange={() => {}}
           />
         );
       case ProjectCreationTabs.PROJECT_SITES:
@@ -354,6 +393,7 @@ export default function ManageProjects({
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
             isLocked={isLocked}
+            onCompletenessChange={setQuestionnaireComplete}
           />
         );
       case ProjectCreationTabs.REVIEW:
@@ -366,6 +406,10 @@ export default function ManageProjects({
               isUploadingData={isUploadingData}
               handlePublishChange={handlePublishChange}
               isLocked={isLocked}
+              sectionCompleteness={{
+                detailedAnalysis: isDetailedAnalysisComplete(projectDetails),
+                questionnaire: showQuestionnaire ? questionnaireComplete : null,
+              }}
             />
           );
         break;
