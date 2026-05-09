@@ -316,31 +316,33 @@ export default function ProjectMedia({
                       defaultValue=""
                     />
 
-                    <div className={styles.uploadedImageButtonContainer}>
-                      <IconButton
-                        id={'DelProjCert'}
-                        onClick={() => deleteProjectCertificate(image.id)}
-                        size="small"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      <IconButton
-                        id={'setDefaultImg'}
-                        onClick={() => setDefaultImage(image.id, index)}
-                        size="small"
-                      >
-                        <Star
-                          color={
-                            image.isDefault
-                              ? colors.goldenYellow
-                              : colors.coreText
-                          }
-                          className={clsx({
-                            selected: image.isDefault,
-                          })}
-                        />
-                      </IconButton>
-                    </div>
+                    {!isLocked && (
+                      <div className={styles.uploadedImageButtonContainer}>
+                        <IconButton
+                          id={'DelProjCert'}
+                          onClick={() => deleteProjectCertificate(image.id)}
+                          size="small"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          id={'setDefaultImg'}
+                          onClick={() => setDefaultImage(image.id, index)}
+                          size="small"
+                        >
+                          <Star
+                            color={
+                              image.isDefault
+                                ? colors.goldenYellow
+                                : colors.coreText
+                            }
+                            className={clsx({
+                              selected: image.isDefault,
+                            })}
+                          />
+                        </IconButton>
+                      </div>
+                    )}
                   </div>
                 );
               })}
