@@ -29,6 +29,7 @@ import { clsx } from 'clsx';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 type ExpenseFormData = {
   year: Date;
@@ -47,6 +48,8 @@ export default function ProjectSpending({
   handleNext,
   userLang,
   projectGUID,
+  isLocked,
+  verificationStatus,
 }: ProjectSpendingProps): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
@@ -178,6 +181,9 @@ export default function ProjectSpending({
   return (
     <CenteredContainer>
       <StyledForm>
+        {verificationStatus && (
+          <ProjectLockedBanner verificationStatus={verificationStatus} />
+        )}
         {uploadedFiles && uploadedFiles.length > 0 ? (
           <InlineFormDisplayGroup>
             {uploadedFiles.map((report) => {
@@ -340,31 +346,35 @@ export default function ProjectSpending({
             <p>{tManageProjects('backToSites')}</p>
           </Button>
 
-          <Button
-            onClick={() => {
-              if (uploadedFiles && uploadedFiles.length > 0) {
-                handleNext(ProjectCreationTabs.REVIEW);
-              } else {
-                setErrorMessage('Please upload  report');
-              }
-            }}
-            variant="contained"
-            className="formButton"
-          >
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              tCommon('continue')
-            )}
-          </Button>
+          {!isLocked && (
+            <>
+              <Button
+                onClick={() => {
+                  if (uploadedFiles && uploadedFiles.length > 0) {
+                    handleNext(ProjectCreationTabs.REVIEW);
+                  } else {
+                    setErrorMessage('Please upload  report');
+                  }
+                }}
+                variant="contained"
+                className="formButton"
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  tCommon('continue')
+                )}
+              </Button>
 
-          <Button
-            className="formButton"
-            variant="contained"
-            onClick={() => handleNext(ProjectCreationTabs.REVIEW)}
-          >
-            {tManageProjects('skip')}
-          </Button>
+              <Button
+                className="formButton"
+                variant="contained"
+                onClick={() => handleNext(ProjectCreationTabs.REVIEW)}
+              >
+                {tManageProjects('skip')}
+              </Button>
+            </>
+          )}
         </div>
       </StyledForm>
     </CenteredContainer>

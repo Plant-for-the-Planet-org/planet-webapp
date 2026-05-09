@@ -30,6 +30,7 @@ import { useApi } from '../../../../hooks/useApi';
 import themeProperties from '../../../../theme/themeProperties';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 type BaseFormData = {
   employeesCount: string;
@@ -100,6 +101,7 @@ export default function DetailedAnalysis({
   setProjectDetails,
   projectGUID,
   purpose,
+  isLocked,
 }: DetailedAnalysisProps): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
@@ -515,6 +517,11 @@ export default function DetailedAnalysis({
   return (
     <CenteredContainer>
       <StyledForm>
+        {projectDetails && (
+          <ProjectLockedBanner
+            verificationStatus={projectDetails.verificationStatus}
+          />
+        )}
         <div className="inputContainer">
           {purpose === 'trees' ? (
             <>
@@ -1191,26 +1198,30 @@ export default function DetailedAnalysis({
             <p>{tManageProjects('backToMedia')}</p>
           </Button>
 
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            className="formButton"
-            data-test-id="detailAnalysisCont"
-            variant="contained"
-          >
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              tManageProjects('saveAndContinue')
-            )}
-          </Button>
+          {!isLocked && (
+            <>
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                className="formButton"
+                data-test-id="detailAnalysisCont"
+                variant="contained"
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  tManageProjects('saveAndContinue')
+                )}
+              </Button>
 
-          <Button
-            className="formButton"
-            variant="contained"
-            onClick={() => handleNext(ProjectCreationTabs.PROJECT_SITES)}
-          >
-            {tManageProjects('skip')}
-          </Button>
+              <Button
+                className="formButton"
+                variant="contained"
+                onClick={() => handleNext(ProjectCreationTabs.PROJECT_SITES)}
+              >
+                {tManageProjects('skip')}
+              </Button>
+            </>
+          )}
         </div>
       </StyledForm>
     </CenteredContainer>

@@ -121,6 +121,8 @@
     "addCertificate": "Add another Certification",
     "dropGeoJson": "Drop .geojson or .kml",
     "projectUnderReview": "Your project is under review, kindly wait.",
+    "projectLockedSubmitted": "This project has been submitted for review. No changes can be made while it awaits review.",
+    "projectLockedInReview": "This project is currently under review by Planet. No changes can be made at this time.",
     "projectForReview": "You can now submit the project for review.",
     "backToSpending": "Back to Project Spending",
     "pendingReview": "Pending Review",

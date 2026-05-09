@@ -35,7 +35,10 @@ type VerificationStatus =
   | 'accepted'
   | 'processing'
   | 'denied'
-  | 'pending';
+  | 'pending'
+  | 'submitted'
+  | 'in_review'
+  | 'revision_requested';
 
 export interface ExtendedProfileProjectPropertiesTrees
   extends Omit<
@@ -135,6 +138,7 @@ export interface BasicDetailsProps {
   setProjectGUID: SetState<string>;
   projectGUID: string;
   purpose: 'trees' | 'conservation';
+  isLocked: boolean;
 }
 
 export interface ViewPort {
@@ -156,6 +160,7 @@ export interface ProjectMediaProps {
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   projectGUID: string | unknown;
+  isLocked: boolean;
 }
 
 // Detail Analysis
@@ -169,6 +174,7 @@ export interface DetailedAnalysisProps {
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   projectGUID: string;
   purpose: string | string[] | undefined;
+  isLocked: boolean;
 }
 
 export type InterventionOption = [InterventionTypes, boolean];
@@ -193,6 +199,7 @@ export interface ProjectSitesProps {
   handleNext: (arg: number) => void;
   projectGUID: string;
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
+  isLocked: boolean;
 }
 export interface SiteDetails {
   geometry: {};
@@ -235,6 +242,8 @@ export interface ProjectSpendingProps {
   handleNext: (arg: number) => void;
   userLang: string;
   projectGUID: string | unknown;
+  isLocked: boolean;
+  verificationStatus?: string;
 }
 
 // project review
@@ -245,6 +254,7 @@ export interface SubmitForReviewProps {
   isUploadingData: Boolean;
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   handlePublishChange: (arg: boolean) => Promise<void>;
+  isLocked: boolean;
 }
 
 // Project certificate

@@ -29,6 +29,7 @@ import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 type UploadImageApiPayload = {
   imageFile: string;
@@ -62,6 +63,7 @@ export default function ProjectMedia({
   projectDetails,
   setProjectDetails,
   projectGUID,
+  isLocked,
 }: ProjectMediaProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const router = useRouter();
@@ -262,6 +264,11 @@ export default function ProjectMedia({
   return (
     <CenteredContainer>
       <StyledForm>
+        {projectDetails && (
+          <ProjectLockedBanner
+            verificationStatus={projectDetails.verificationStatus}
+          />
+        )}
         <div
           className={clsx('inputContainer', {
             [styles.shallowOpacity]: isUploadingData,
@@ -368,26 +375,32 @@ export default function ProjectMedia({
             <p>{t('backToBasic')}</p>
           </Button>
 
-          <Button
-            id={'SaveAndCont'}
-            onClick={handleSubmit(onSubmit)}
-            data-test-id="projMediaCont"
-            variant="contained"
-            className="formButton"
-          >
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              t('saveAndContinue')
-            )}
-          </Button>
-          <Button
-            onClick={() => handleNext(ProjectCreationTabs.DETAILED_ANALYSIS)}
-            variant="contained"
-            className="formButton"
-          >
-            {t('skip')}
-          </Button>
+          {!isLocked && (
+            <>
+              <Button
+                id={'SaveAndCont'}
+                onClick={handleSubmit(onSubmit)}
+                data-test-id="projMediaCont"
+                variant="contained"
+                className="formButton"
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('saveAndContinue')
+                )}
+              </Button>
+              <Button
+                onClick={() =>
+                  handleNext(ProjectCreationTabs.DETAILED_ANALYSIS)
+                }
+                variant="contained"
+                className="formButton"
+              >
+                {t('skip')}
+              </Button>
+            </>
+          )}
         </div>
       </StyledForm>
     </CenteredContainer>

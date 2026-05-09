@@ -249,6 +249,10 @@ export default function ManageProjects({
     }
   }, [tabSelected, router.query.purpose, locale]);
 
+  const isLocked =
+    projectDetails?.verificationStatus === 'submitted' ||
+    projectDetails?.verificationStatus === 'in_review';
+
   function getStepContent() {
     switch (tabSelected) {
       case ProjectCreationTabs.PROJECT_TYPE:
@@ -268,6 +272,7 @@ export default function ManageProjects({
                 ? 'conservation'
                 : 'trees'
             }
+            isLocked={isLocked}
           />
         );
       case ProjectCreationTabs.PROJECT_MEDIA:
@@ -279,6 +284,7 @@ export default function ManageProjects({
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
             projectGUID={projectGUID}
+            isLocked={isLocked}
           />
         );
       case ProjectCreationTabs.DETAILED_ANALYSIS:
@@ -294,6 +300,7 @@ export default function ManageProjects({
             purpose={
               project?.purpose ? project?.purpose : router.query?.purpose
             }
+            isLocked={isLocked}
           />
         );
       case ProjectCreationTabs.PROJECT_SITES:
@@ -303,6 +310,7 @@ export default function ManageProjects({
             handleBack={handleBack}
             projectGUID={projectGUID}
             projectDetails={projectDetails}
+            isLocked={isLocked}
           />
         );
       case ProjectCreationTabs.PROJECT_SPENDING:
@@ -313,6 +321,8 @@ export default function ManageProjects({
             token={token}
             handleBack={handleBack}
             projectGUID={projectGUID}
+            isLocked={isLocked}
+            verificationStatus={projectDetails?.verificationStatus}
           />
         );
       case ProjectCreationTabs.REVIEW:
@@ -324,6 +334,7 @@ export default function ManageProjects({
               submitForReview={submitForReview}
               isUploadingData={isUploadingData}
               handlePublishChange={handlePublishChange}
+              isLocked={isLocked}
             />
           );
         break;

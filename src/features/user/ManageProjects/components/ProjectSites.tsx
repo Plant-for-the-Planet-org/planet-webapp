@@ -33,6 +33,7 @@ import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import useRestorSync from '../hooks/useRestorSync';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 const defaultSiteDetails = {
   name: '',
@@ -69,6 +70,7 @@ export default function ProjectSites({
   handleNext,
   projectGUID,
   projectDetails,
+  isLocked,
 }: ProjectSitesProps): ReactElement {
   const { deleteApiAuthenticated, postApiAuthenticated, getApiAuthenticated } = useApi();
   const { colors } = themeProperties.designSystem;
@@ -250,6 +252,11 @@ export default function ProjectSites({
       {editMode && <EditSite {...EditProps} />}
 
       <StyledForm>
+        {projectDetails && (
+          <ProjectLockedBanner
+            verificationStatus={projectDetails.verificationStatus}
+          />
+        )}
         <InlineFormDisplayGroup>
           {siteList
             .filter((site) => site.geometry !== null)
@@ -427,16 +434,28 @@ export default function ProjectSites({
           >
             {t('backToAnalysis')}
           </Button>
-          <Button onClick={handleSubmit(uploadProjectSiteNext)} variant="contained" className="formButton">
-            {isUploadingData ? <div className={styles.spinner}></div> : t('saveAndContinue')}
-          </Button>
-          <Button
-            onClick={() => handleNext(ProjectCreationTabs.PROJECT_SPENDING)}
-            variant="contained"
-            className="formButton"
-          >
-            {t('skip')}
-          </Button>
+          {!isLocked && (
+            <>
+              <Button
+                onClick={handleSubmit(uploadProjectSiteNext)}
+                variant="contained"
+                className="formButton"
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('saveAndContinue')
+                )}
+              </Button>
+              <Button
+                onClick={() => handleNext(ProjectCreationTabs.PROJECT_SPENDING)}
+                variant="contained"
+                className="formButton"
+              >
+                {t('skip')}
+              </Button>
+            </>
+          )}
         </div>
 
         <CustomModal

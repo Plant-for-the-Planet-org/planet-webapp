@@ -13,6 +13,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 function SubmitForReview({
   submitForReview,
@@ -20,6 +21,7 @@ function SubmitForReview({
   isUploadingData,
   projectDetails,
   handlePublishChange,
+  isLocked,
 }: SubmitForReviewProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const router = useRouter();
@@ -192,9 +194,52 @@ function SubmitForReview({
     );
   }
 
+  function LockedReviewComponent() {
+    const verificationStatus = projectDetails?.verificationStatus ?? '';
+    return (
+      <CenteredContainer>
+        <ProjectLockedBanner verificationStatus={verificationStatus} />
+        <FormControlLabel
+          label={
+            <span className={styles.toggleText}>{t('publishProject')}</span>
+          }
+          labelPlacement="end"
+          control={
+            <NewToggleSwitch
+              name="canPublish"
+              id="publish"
+              checked={projectDetails?.publish ?? false}
+              onChange={(e) => handlePublishChange(e.target.checked)}
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+              disabled
+            />
+          }
+        />
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            variant="outlined"
+            startIcon={<BackArrow />}
+          >
+            <p>{t('backToSpending')}</p>
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => router.push(localizedPath('/profile/projects'))}
+          >
+            <p>{t('exit')}</p>
+          </Button>
+        </div>
+      </CenteredContainer>
+    );
+  }
+
   switch (projectDetails?.verificationStatus) {
     case 'incomplete':
       return <NotSubmittedReview />;
+    case 'submitted':
+    case 'in_review':
+      return <LockedReviewComponent />;
     case 'pending':
       return <UnderReviewComponent />;
     case 'processing':

@@ -30,6 +30,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import ProjectLocationMap from './microComponents/ProjectLocationMap';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 export type BaseFormData = {
   name: string;
@@ -88,6 +89,7 @@ export default function BasicDetails({
   setProjectGUID,
   projectGUID,
   purpose,
+  isLocked,
 }: BasicDetailsProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const locale = useLocale();
@@ -339,6 +341,11 @@ export default function BasicDetails({
   return (
     <CenteredContainer>
       <StyledForm>
+        {projectDetails && (
+          <ProjectLockedBanner
+            verificationStatus={projectDetails.verificationStatus}
+          />
+        )}
         <div className="inputContainer">
           <Controller
             name="name"
@@ -713,29 +720,31 @@ export default function BasicDetails({
           )}
         </div>
         <div className={styles.buttonsForProjectCreationForm}>
-          <Button
-            variant="contained"
-            onClick={handleSubmit(onSubmit)}
-            className="formButton"
-            disabled={Object.keys(errors).length > 0}
-          >
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              t('saveAndContinue')
-            )}
-          </Button>
+          {!isLocked && (
+            <>
+              <Button
+                variant="contained"
+                onClick={handleSubmit(onSubmit)}
+                className="formButton"
+                disabled={Object.keys(errors).length > 0}
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('saveAndContinue')
+                )}
+              </Button>
 
-          {IsSkipButtonVisible ? (
-            <Button
-              className="formButton"
-              variant="contained"
-              onClick={() => handleNext(ProjectCreationTabs.PROJECT_MEDIA)}
-            >
-              {t('skip')}
-            </Button>
-          ) : (
-            ''
+              {IsSkipButtonVisible && (
+                <Button
+                  className="formButton"
+                  variant="contained"
+                  onClick={() => handleNext(ProjectCreationTabs.PROJECT_MEDIA)}
+                >
+                  {t('skip')}
+                </Button>
+              )}
+            </>
           )}
         </div>
       </StyledForm>
