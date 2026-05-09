@@ -16,7 +16,7 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
 import TabbedView from '../../common/Layout/TabbedView';
-import { handleError } from '@planet-sdk/common';
+import { parseApiError } from '../../../utils/parseApiError';
 import DashboardView from '../../common/Layout/DashboardView';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
@@ -108,7 +108,7 @@ export default function ManageProjects({
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(handleError(err as APIError));
+      setErrors(parseApiError(err as APIError));
     }
   };
 
@@ -129,7 +129,7 @@ export default function ManageProjects({
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(handleError(err as APIError));
+      setErrors(parseApiError(err as APIError));
     }
   };
 
@@ -142,7 +142,7 @@ export default function ManageProjects({
         );
         setProjectDetails(res);
       } catch (err) {
-        setErrors(handleError(err as APIError));
+        setErrors(parseApiError(err as APIError));
         router.push(localizedPath('/profile'));
       }
     };
