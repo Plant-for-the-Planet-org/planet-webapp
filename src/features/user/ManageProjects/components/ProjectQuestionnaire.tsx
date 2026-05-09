@@ -146,29 +146,31 @@ export default function ProjectQuestionnaire({
           <Controller
             name={name}
             control={control}
-            render={({ field: { value, onChange } }) => (
-              <FormGroup>
-                {field.choices!.map((choice) => (
-                  <FormControlLabel
-                    key={choice}
-                    label={humanizeLabel(choice)}
-                    control={
-                      <Checkbox
-                        checked={(value as string[]).includes(choice)}
-                        onChange={(e) => {
-                          const current = value as string[];
-                          onChange(
-                            e.target.checked
-                              ? [...current, choice]
-                              : current.filter((v) => v !== choice)
-                          );
-                        }}
-                      />
-                    }
-                  />
-                ))}
-              </FormGroup>
-            )}
+            render={({ field: { value, onChange } }) => {
+              const current = Array.isArray(value) ? (value as string[]) : [];
+              return (
+                <FormGroup>
+                  {field.choices!.map((choice) => (
+                    <FormControlLabel
+                      key={choice}
+                      label={humanizeLabel(choice)}
+                      control={
+                        <Checkbox
+                          checked={current.includes(choice)}
+                          onChange={(e) => {
+                            onChange(
+                              e.target.checked
+                                ? [...current, choice]
+                                : current.filter((v) => v !== choice)
+                            );
+                          }}
+                        />
+                      }
+                    />
+                  ))}
+                </FormGroup>
+              );
+            }}
           />
         </div>
       );
