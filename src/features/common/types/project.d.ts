@@ -40,6 +40,30 @@ type VerificationStatus =
   | 'in_review'
   | 'revision_requested';
 
+// Questionnaire schema types (from GET /projects/questionnaire-schema/{purpose})
+export type QuestionnaireFieldType =
+  | 'text'
+  | 'number'
+  | 'integer'
+  | 'string'
+  | 'choice'
+  | 'multi_choice'
+  | 'boolean';
+
+export interface QuestionnaireFieldSchema {
+  type: QuestionnaireFieldType;
+  label: string;
+  description: string | null;
+  classifications: string[] | null;
+  choices?: string[];
+}
+
+export interface QuestionnaireSchema {
+  version: string;
+  purposes: string[];
+  fields: Record<string, QuestionnaireFieldSchema>;
+}
+
 export interface ExtendedProfileProjectPropertiesTrees
   extends Omit<
     ProfileProjectPropertiesTrees,
@@ -71,6 +95,7 @@ export interface ExtendedProfileProjectPropertiesTrees
   geoLatitude: number;
   isVerified: boolean;
   intensity: Nullable<string>;
+  questionnaire: Nullable<Record<string, unknown>>;
   reviewRequested: boolean;
   revisionPeriodicityLevel: Nullable<string>;
   survivalRate: Nullable<number>;
@@ -244,6 +269,16 @@ export interface ProjectSpendingProps {
   projectGUID: string | unknown;
   isLocked: boolean;
   verificationStatus?: string;
+}
+
+// project questionnaire
+export interface QuestionnaireProps {
+  handleBack: (arg: number) => void;
+  handleNext: (arg: number) => void;
+  projectGUID: string;
+  projectDetails: Nullable<ExtendedProfileProjectProperties>;
+  setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
+  isLocked: boolean;
 }
 
 // project review

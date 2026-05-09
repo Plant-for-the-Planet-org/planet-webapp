@@ -12,6 +12,7 @@ import ProjectSelection from './components/ProjectSelection';
 import DetailedAnalysis from './components/DetailedAnalysis';
 import ProjectSites from './components/ProjectSites';
 import ProjectSpending from './components/ProjectSpending';
+import ProjectQuestionnaire from './components/ProjectQuestionnaire';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
@@ -29,7 +30,8 @@ export enum ProjectCreationTabs {
   DETAILED_ANALYSIS = 3,
   PROJECT_SITES = 4,
   PROJECT_SPENDING = 5,
-  REVIEW = 6,
+  QUESTIONNAIRE = 6,
+  REVIEW = 7,
 }
 
 
@@ -79,6 +81,9 @@ export default function ManageProjects({
         path = `/profile/projects/${projectGUID}?type=project-spending`;
         break;
       case 6:
+        path = `/profile/projects/${projectGUID}?type=questionnaire`;
+        break;
+      case 7:
         path = `/profile/projects/${projectGUID}?type=review`;
         break;
       default:
@@ -180,17 +185,24 @@ export default function ManageProjects({
       case 'project-spending':
         setTabSelected(5);
         break;
-      case 'review':
+      case 'questionnaire':
         setTabSelected(6);
+        break;
+      case 'review':
+        setTabSelected(7);
         break;
       default:
         null;
     }
   }, [tabSelected, router.query.type]);
 
+  const showQuestionnaire =
+    projectDetails?.acceptDonations === true &&
+    projectDetails?.purpose === 'trees';
+
   useEffect(() => {
     if (router.query.type && project) {
-      setTabList([
+      const tabs: TabItem[] = [
         {
           label: t('basicDetails'),
           link: `/profile/projects/${projectGUID}?type=basic-details`,
@@ -216,12 +228,20 @@ export default function ManageProjects({
           link: `/profile/projects/${projectGUID}?type=project-spending`,
           step: ProjectCreationTabs.PROJECT_SPENDING,
         },
-        {
-          label: t('review'),
-          link: `/profile/projects/${projectGUID}?type=review`,
-          step: ProjectCreationTabs.REVIEW,
-        },
-      ]);
+      ];
+      if (showQuestionnaire) {
+        tabs.push({
+          label: t('questionnaire'),
+          link: `/profile/projects/${projectGUID}?type=questionnaire`,
+          step: ProjectCreationTabs.QUESTIONNAIRE,
+        });
+      }
+      tabs.push({
+        label: t('review'),
+        link: `/profile/projects/${projectGUID}?type=review`,
+        step: ProjectCreationTabs.REVIEW,
+      });
+      setTabList(tabs);
     } else if (router.query.purpose === 'trees' && !project) {
       setTabList([
         {
@@ -247,7 +267,7 @@ export default function ManageProjects({
         },
       ]);
     }
-  }, [tabSelected, router.query.purpose, locale]);
+  }, [tabSelected, router.query.purpose, locale, projectDetails?.acceptDonations]);
 
   const isLocked =
     projectDetails?.verificationStatus === 'submitted' ||
@@ -323,6 +343,17 @@ export default function ManageProjects({
             projectGUID={projectGUID}
             isLocked={isLocked}
             verificationStatus={projectDetails?.verificationStatus}
+          />
+        );
+      case ProjectCreationTabs.QUESTIONNAIRE:
+        return (
+          <ProjectQuestionnaire
+            handleBack={handleBack}
+            handleNext={handleNext}
+            projectGUID={projectGUID}
+            projectDetails={projectDetails}
+            setProjectDetails={setProjectDetails}
+            isLocked={isLocked}
           />
         );
       case ProjectCreationTabs.REVIEW:
