@@ -347,17 +347,17 @@ export default function ProjectMedia({
             </InlineFormDisplayGroup>
           ) : null}
 
-          <div {...getRootProps()}>
-            <label htmlFor="upload" className={styles.fileUploadContainer}>
-              <Button variant="contained">
-                <input {...getInputProps()} />
-                {t('uploadPhotos')}
-              </Button>
-              <p style={{ marginTop: '18px' }}>{t('dragIn')}</p>
-            </label>
-
-            {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
-          </div>
+          {!isLocked && (
+            <div {...getRootProps()}>
+              <label htmlFor="upload" className={styles.fileUploadContainer}>
+                <Button variant="contained">
+                  <input {...getInputProps()} />
+                  {t('uploadPhotos')}
+                </Button>
+                <p style={{ marginTop: '18px' }}>{t('dragIn')}</p>
+              </label>
+            </div>
+          )}
         </div>
 
         {errorMessage && errorMessage !== '' ? (
