@@ -32,9 +32,6 @@ export enum ProjectCreationTabs {
   REVIEW = 6,
 }
 
-type RequestReviewApiPayload = {
-  reviewRequested: boolean;
-};
 
 type PublishStatusApiPayload = {
   publish: boolean;
@@ -49,7 +46,7 @@ export default function ManageProjects({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { putApiAuthenticated, getApiAuthenticated } = useApi();
+  const { putApiAuthenticated, postApiAuthenticated, getApiAuthenticated } = useApi();
   // local state
   const [tabSelected, setTabSelected] = useState<number>(0);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
@@ -102,17 +99,11 @@ export default function ManageProjects({
 
   const submitForReview = async () => {
     setIsUploadingData(true);
-    const requestReviewPayload = {
-      reviewRequested: true,
-    };
-
     try {
-      const res = await putApiAuthenticated<
+      const res = await postApiAuthenticated<
         ExtendedProfileProjectProperties,
-        RequestReviewApiPayload
-      >(`/app/projects/${projectGUID}`, {
-        payload: requestReviewPayload,
-      });
+        Record<string, never>
+      >(`/app/projects/${projectGUID}/submit`, { payload: {} });
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
