@@ -235,6 +235,7 @@ function SubmitForReview({
   }
 
   switch (projectDetails?.verificationStatus) {
+    case 'draft':
     case 'incomplete':
       return <NotSubmittedReview />;
     case 'submitted':

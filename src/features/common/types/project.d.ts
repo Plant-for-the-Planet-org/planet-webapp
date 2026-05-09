@@ -31,6 +31,7 @@ export interface Site {
 }
 
 type VerificationStatus =
+  | 'draft'
   | 'incomplete'
   | 'accepted'
   | 'processing'
