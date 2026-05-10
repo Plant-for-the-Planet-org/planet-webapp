@@ -1,15 +1,26 @@
 import { Alert } from '@mui/material';
-import { useTranslations } from 'next-intl';
 
 interface Props {
   text: string;
 }
 
 export default function AnnotationCallout({ text }: Props) {
-  const t = useTranslations('ManageProjects');
   return (
-    <Alert severity="warning" sx={{ mt: 0.5, mb: 1 }}>
-      <strong>{t('reviewerNote')}:</strong> {text}
+    <Alert
+      severity="warning"
+      icon={false}
+      sx={{
+        mt: 0.25,
+        mb: 0.5,
+        py: 0.25,
+        px: 1.5,
+        backgroundColor: '#fefce8',
+        color: '#713f12',
+        border: '1px solid #fde68a',
+        '& .MuiAlert-message': { padding: '4px 0' },
+      }}
+    >
+      {text}
     </Alert>
   );
 }
