@@ -41,6 +41,12 @@ type VerificationStatus =
   | 'in_review'
   | 'revision_requested';
 
+export interface RevisionRequest {
+  snapshotAt: string;
+  globalAnnotation: string | null;
+  annotations: Record<string, string> | null;
+}
+
 // Questionnaire schema types (from GET /projects/questionnaire-schema/{purpose})
 export type QuestionnaireFieldType =
   | 'text'
@@ -105,6 +111,7 @@ export interface ExtendedProfileProjectPropertiesTrees
   verificationStatus: VerificationStatus;
   videoUrl: Nullable<string>;
   website: Nullable<string>;
+  revisionRequest: RevisionRequest | null;
 }
 
 export interface ExtendedProfileProjectPropertiesConservation
@@ -123,6 +130,7 @@ export interface ExtendedProfileProjectPropertiesConservation
   verificationStatus: VerificationStatus;
   videoUrl: Nullable<string>;
   website: Nullable<string>;
+  revisionRequest: RevisionRequest | null;
 }
 
 export type ExtendedProfileProjectProperties =

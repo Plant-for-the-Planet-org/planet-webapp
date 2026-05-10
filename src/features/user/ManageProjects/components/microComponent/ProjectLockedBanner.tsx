@@ -16,6 +16,9 @@ export default function ProjectLockedBanner({
   if (verificationStatus === 'in_review') {
     return <Alert severity="warning">{t('projectLockedInReview')}</Alert>;
   }
+  if (verificationStatus === 'revision_requested') {
+    return <Alert severity="warning">{t('projectRevisionRequested')}</Alert>;
+  }
 
   return null;
 }

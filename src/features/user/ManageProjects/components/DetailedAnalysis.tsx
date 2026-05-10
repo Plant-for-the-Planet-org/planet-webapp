@@ -31,6 +31,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
+import AnnotationCallout from './microComponent/AnnotationCallout';
 
 type BaseFormData = {
   ecosystem: string;
@@ -563,6 +564,13 @@ export default function DetailedAnalysis({
       || !cm.ownershipType || !cm.landOwnershipType?.length || !cm.actions;
   })();
 
+  const revisionAnnotations =
+    projectDetails?.verificationStatus === 'revision_requested'
+      ? (projectDetails.revisionRequest?.annotations ?? {})
+      : {};
+  const metaAnnotation = (field: string) =>
+    revisionAnnotations[`metadata.${field}`];
+
   return (
     <CenteredContainer>
       <StyledForm>
@@ -697,6 +705,12 @@ export default function DetailedAnalysis({
               </LocalizationProvider>
             </InlineFormDisplayGroup>
           )}
+          {metaAnnotation('areaProtected') && (
+            <AnnotationCallout text={metaAnnotation('areaProtected')!} />
+          )}
+          {metaAnnotation('startingProtectionYear') && (
+            <AnnotationCallout text={metaAnnotation('startingProtectionYear')!} />
+          )}
           <InlineFormDisplayGroup>
             <Controller
               name="employeesCount"
@@ -767,6 +781,12 @@ export default function DetailedAnalysis({
               )}
             />
           </InlineFormDisplayGroup>
+          {metaAnnotation('employeesCount') && (
+            <AnnotationCallout text={metaAnnotation('employeesCount')!} />
+          )}
+          {metaAnnotation('ecosystem') && (
+            <AnnotationCallout text={metaAnnotation('ecosystem')!} />
+          )}
           {purpose === 'conservation' && (
             <InlineFormDisplayGroup>
               <Controller
@@ -824,6 +844,12 @@ export default function DetailedAnalysis({
               />
             </InlineFormDisplayGroup>
           )}
+          {metaAnnotation('acquisitionYear') && (
+            <AnnotationCallout text={metaAnnotation('acquisitionYear')!} />
+          )}
+          {metaAnnotation('ownershipType') && (
+            <AnnotationCallout text={metaAnnotation('ownershipType')!} />
+          )}
           <div className={styles.multiSelectContainer}>
             <div className={styles.multiSelectField}>
               <p className={styles.multiSelectLabel}>
@@ -866,6 +892,9 @@ export default function DetailedAnalysis({
               <span className={styles.formErrors}>
                 {tManageProjects('missingInterventionsError')}
               </span>
+            )}
+            {metaAnnotation('mainInterventions') && (
+              <AnnotationCallout text={metaAnnotation('mainInterventions')!} />
             )}
           </div>
           <div className={styles.multiSelectField}>
@@ -990,6 +1019,9 @@ export default function DetailedAnalysis({
                   )}
                 />
               </InlineFormDisplayGroup>
+            {metaAnnotation('plantingDensity') && (
+              <AnnotationCallout text={metaAnnotation('plantingDensity')!} />
+            )}
 
             </>
           ) : (
@@ -1097,6 +1129,15 @@ export default function DetailedAnalysis({
               )}
             />
           )}
+          {metaAnnotation('actions') && (
+            <AnnotationCallout text={metaAnnotation('actions')!} />
+          )}
+          {metaAnnotation('degradationCause') && (
+            <AnnotationCallout text={metaAnnotation('degradationCause')!} />
+          )}
+          {metaAnnotation('benefits') && (
+            <AnnotationCallout text={metaAnnotation('benefits')!} />
+          )}
           {/* the main challenge the project is facing (max. 300 characters) */}
           <Controller
             name="mainChallenge"
@@ -1135,6 +1176,9 @@ export default function DetailedAnalysis({
               />
             )}
           />
+          {metaAnnotation('mainChallenge') && (
+            <AnnotationCallout text={metaAnnotation('mainChallenge')!} />
+          )}
           {/* the reason this project has been created (max. 300 characters) */}
           <Controller
             name="motivation"
@@ -1172,6 +1216,9 @@ export default function DetailedAnalysis({
               />
             )}
           />
+          {metaAnnotation('motivation') && (
+            <AnnotationCallout text={metaAnnotation('motivation')!} />
+          )}
           <Controller
             name="longTermPlan"
             control={control}
@@ -1200,6 +1247,9 @@ export default function DetailedAnalysis({
               />
             )}
           />
+          {metaAnnotation('longTermPlan') && (
+            <AnnotationCallout text={metaAnnotation('longTermPlan')!} />
+          )}
           <div className={styles.multiSelectField}>
             <p className={styles.multiSelectLabel}>
               {tManageProjects('siteOwner')}
@@ -1240,6 +1290,11 @@ export default function DetailedAnalysis({
                 {tManageProjects('missingSiteOwnerError')}
               </span>
             )}
+            {(metaAnnotation('siteOwnerType') || metaAnnotation('landOwnershipType')) && (
+              <AnnotationCallout
+                text={(metaAnnotation('siteOwnerType') || metaAnnotation('landOwnershipType'))!}
+              />
+            )}
           </div>
           <Controller
             name="siteOwnerName"
@@ -1258,6 +1313,9 @@ export default function DetailedAnalysis({
               />
             )}
           />
+          {metaAnnotation('siteOwnerName') && (
+            <AnnotationCallout text={metaAnnotation('siteOwnerName')!} />
+          )}
           <ProjectCertificates
             projectGUID={projectGUID}
             token={token}

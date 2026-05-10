@@ -30,6 +30,7 @@ import { useApi } from '../../../../hooks/useApi';
 import { parseApiError } from '../../../../utils/parseApiError';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
+import AnnotationCallout from './microComponent/AnnotationCallout';
 
 type QuestionnaireFormData = Record<string, string | number | string[]>;
 
@@ -150,10 +151,17 @@ export default function ProjectQuestionnaire({
     }
   };
 
+  const questionnaireAnnotations =
+    projectDetails?.verificationStatus === 'revision_requested'
+      ? (projectDetails.revisionRequest?.annotations ?? {})
+      : {};
+
   function renderField(
     name: string,
     field: QuestionnaireFieldSchema
   ): ReactElement {
+    const annotation = questionnaireAnnotations[`questionnaire.${name}`];
+
     if (field.type === 'multi_choice' && field.choices) {
       return (
         <div key={name} className={styles.formFieldLarge}>
@@ -191,6 +199,7 @@ export default function ProjectQuestionnaire({
               );
             }}
           />
+          {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );
     }
@@ -214,6 +223,7 @@ export default function ProjectQuestionnaire({
               />
             )}
           />
+          {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );
     }
@@ -238,6 +248,7 @@ export default function ProjectQuestionnaire({
             />
           )}
         />
+        {annotation && <AnnotationCallout text={annotation} />}
       </div>
     );
   }

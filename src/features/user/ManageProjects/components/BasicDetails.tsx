@@ -31,6 +31,7 @@ import ProjectLocationMap from './microComponents/ProjectLocationMap';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
+import AnnotationCallout from './microComponent/AnnotationCallout';
 
 export type BaseFormData = {
   name: string;
@@ -338,6 +339,13 @@ export default function BasicDetails({
     }
   };
 
+  const revisionAnnotations =
+    projectDetails?.verificationStatus === 'revision_requested'
+      ? (projectDetails.revisionRequest?.annotations ?? {})
+      : {};
+  const basicAnnotation = (field: string) =>
+    revisionAnnotations[`basic.${field}`];
+
   return (
     <CenteredContainer>
       <StyledForm>
@@ -363,6 +371,9 @@ export default function BasicDetails({
               />
             )}
           />
+          {basicAnnotation('name') && (
+            <AnnotationCallout text={basicAnnotation('name')!} />
+          )}
           {purpose === 'trees' && (
             <InlineFormDisplayGroup>
               <Controller
@@ -398,6 +409,9 @@ export default function BasicDetails({
                 )}
               />
             </InlineFormDisplayGroup>
+          )}
+          {basicAnnotation('classification') && (
+            <AnnotationCallout text={basicAnnotation('classification')!} />
           )}
           {purpose === 'trees' && (
             <InlineFormDisplayGroup>
@@ -475,6 +489,9 @@ export default function BasicDetails({
               />
             </InlineFormDisplayGroup>
           )}
+          {basicAnnotation('countTarget') && (
+            <AnnotationCallout text={basicAnnotation('countTarget')!} />
+          )}
           <InlineFormDisplayGroup>
             <Controller
               name="slug"
@@ -523,6 +540,12 @@ export default function BasicDetails({
               )}
             />
           </InlineFormDisplayGroup>
+          {basicAnnotation('slug') && (
+            <AnnotationCallout text={basicAnnotation('slug')!} />
+          )}
+          {basicAnnotation('website') && (
+            <AnnotationCallout text={basicAnnotation('website')!} />
+          )}
           <Controller
             name="description"
             control={control}
@@ -546,6 +569,9 @@ export default function BasicDetails({
               />
             )}
           />
+          {basicAnnotation('description') && (
+            <AnnotationCallout text={basicAnnotation('description')!} />
+          )}
           <InlineFormDisplayGroup>
             <Controller
               name="acceptDonations"
