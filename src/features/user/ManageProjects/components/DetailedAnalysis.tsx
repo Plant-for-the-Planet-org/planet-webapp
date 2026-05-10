@@ -617,37 +617,138 @@ export default function DetailedAnalysis({
             </>
           ) : (
             <InlineFormDisplayGroup>
+              <div style={{ flex: 1, minWidth: 180 }}>
+                <Controller
+                  name="areaProtected"
+                  control={control}
+                  rules={{
+                    required: tManageProjects('validation', {
+                      fieldName: tManageProjects('areaProtected'),
+                    }),
+                    validate: (value) => (value ? parseInt(value, 10) > 0 : true),
+                  }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      required
+                      label={tManageProjects('areaProtected')}
+                      variant="outlined"
+                      type="number"
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      fullWidth
+                      error={
+                        'areaProtected' in errors &&
+                        errors.areaProtected !== undefined
+                      }
+                      helperText={
+                        'areaProtected' in errors &&
+                        errors.areaProtected !== undefined &&
+                        errors.areaProtected.message
+                      }
+                      InputProps={{
+                        endAdornment: (
+                          <Tooltip
+                            title={tManageProjects('areaProtectedInfo')}
+                            arrow
+                          >
+                            <span className={styles.tooltipIcon}>
+                              <InfoIcon />
+                            </span>
+                          </Tooltip>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+                {metaAnnotation('areaProtected') && (
+                  <AnnotationCallout text={metaAnnotation('areaProtected')!} />
+                )}
+              </div>
+              <div style={{ flex: 1, minWidth: 180 }}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={
+                    localeMapForDate[userLang]
+                      ? localeMapForDate[userLang]
+                      : localeMapForDate['en']
+                  }
+                >
+                  <Controller
+                    name="startingProtectionYear"
+                    control={control}
+                    rules={{
+                      required: tManageProjects('validation', {
+                        fieldName: tManageProjects('date'),
+                      }),
+                    }}
+                    render={({ field: { value, onChange } }) => (
+                      <MuiDatePicker
+                        label={tManageProjects('protectionStartedIN')}
+                        value={value}
+                        onChange={onChange}
+                        renderInput={(props) => (
+                          <TextField
+                            required
+                            fullWidth
+                            {...props}
+                            error={
+                              'startingProtectionYear' in errors &&
+                              errors.startingProtectionYear !== undefined
+                            }
+                            helperText={
+                              'startingProtectionYear' in errors &&
+                              errors.startingProtectionYear !== undefined &&
+                              errors.startingProtectionYear.message
+                            }
+                          />
+                        )}
+                        disableFuture
+                        minDate={new Date(new Date().setFullYear(1950))}
+                        views={['year']}
+                        maxDate={new Date()}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+                {metaAnnotation('startingProtectionYear') && (
+                  <AnnotationCallout text={metaAnnotation('startingProtectionYear')!} />
+                )}
+              </div>
+            </InlineFormDisplayGroup>
+          )}
+          <InlineFormDisplayGroup>
+            <div style={{ flex: 1, minWidth: 180 }}>
               <Controller
-                name="areaProtected"
+                name="employeesCount"
                 control={control}
                 rules={{
-                  required: tManageProjects('validation', {
-                    fieldName: tManageProjects('areaProtected'),
-                  }),
-                  validate: (value) => (value ? parseInt(value, 10) > 0 : true),
+                  required: purpose === 'trees'
+                    ? tManageProjects('validation', { fieldName: tManageProjects('employeeCount') })
+                    : false,
+                  validate: (value) => !value || parseInt(value, 10) > 0,
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
-                    required
-                    label={tManageProjects('areaProtected')}
+                    required={purpose === 'trees'}
+                    label={tManageProjects('employeeCount')}
                     variant="outlined"
-                    type="number"
-                    onBlur={onBlur}
-                    onChange={onChange}
+                    fullWidth
+                    onChange={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]./g, '');
+                      onChange(e.target.value);
+                    }}
                     value={value}
-                    error={
-                      'areaProtected' in errors &&
-                      errors.areaProtected !== undefined
-                    }
+                    onBlur={onBlur}
+                    error={errors.employeesCount !== undefined}
                     helperText={
-                      'areaProtected' in errors &&
-                      errors.areaProtected !== undefined &&
-                      errors.areaProtected.message
+                      errors.employeesCount !== undefined &&
+                      errors.employeesCount.message
                     }
                     InputProps={{
                       endAdornment: (
                         <Tooltip
-                          title={tManageProjects('areaProtectedInfo')}
+                          title={tManageProjects('employeesCountInfo')}
                           arrow
                         >
                           <span className={styles.tooltipIcon}>
@@ -659,196 +760,112 @@ export default function DetailedAnalysis({
                   />
                 )}
               />
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                adapterLocale={
-                  localeMapForDate[userLang]
-                    ? localeMapForDate[userLang]
-                    : localeMapForDate['en']
-                }
-              >
-                <Controller
-                  name="startingProtectionYear"
-                  control={control}
-                  rules={{
-                    required: tManageProjects('validation', {
-                      fieldName: tManageProjects('date'),
-                    }),
-                  }}
-                  render={({ field: { value, onChange } }) => (
-                    <MuiDatePicker
-                      label={tManageProjects('protectionStartedIN')}
-                      value={value}
-                      onChange={onChange}
-                      renderInput={(props) => (
-                        <TextField
-                          required
-                          {...props}
-                          error={
-                            'startingProtectionYear' in errors &&
-                            errors.startingProtectionYear !== undefined
-                          }
-                          helperText={
-                            'startingProtectionYear' in errors &&
-                            errors.startingProtectionYear !== undefined &&
-                            errors.startingProtectionYear.message
-                          }
-                        />
-                      )}
-                      disableFuture
-                      minDate={new Date(new Date().setFullYear(1950))}
-                      views={['year']}
-                      maxDate={new Date()}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-            </InlineFormDisplayGroup>
-          )}
-          {metaAnnotation('areaProtected') && (
-            <AnnotationCallout text={metaAnnotation('areaProtected')!} />
-          )}
-          {metaAnnotation('startingProtectionYear') && (
-            <AnnotationCallout text={metaAnnotation('startingProtectionYear')!} />
-          )}
-          <InlineFormDisplayGroup>
-            <Controller
-              name="employeesCount"
-              control={control}
-              rules={{
-                required: purpose === 'trees'
-                  ? tManageProjects('validation', { fieldName: tManageProjects('employeeCount') })
-                  : false,
-                validate: (value) => !value || parseInt(value, 10) > 0,
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <TextField
-                  required={purpose === 'trees'}
-                  label={tManageProjects('employeeCount')}
-                  variant="outlined"
-                  onChange={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]./g, '');
-                    onChange(e.target.value);
-                  }}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.employeesCount !== undefined}
-                  helperText={
-                    errors.employeesCount !== undefined &&
-                    errors.employeesCount.message
-                  }
-                  InputProps={{
-                    endAdornment: (
-                      <Tooltip
-                        title={tManageProjects('employeesCountInfo')}
-                        arrow
-                      >
-                        <span className={styles.tooltipIcon}>
-                          <InfoIcon />
-                        </span>
-                      </Tooltip>
-                    ),
-                  }}
-                />
+              {metaAnnotation('employeesCount') && (
+                <AnnotationCallout text={metaAnnotation('employeesCount')!} />
               )}
-            />
-            <Controller
-              name="ecosystem"
-              control={control}
-              rules={{
-                required: tManageProjects('ecosystemType'),
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <TextField
-                  required
-                  label={tManageProjects('ecosystem')}
-                  variant="outlined"
-                  select
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.ecosystem !== undefined}
-                  helperText={
-                    errors.ecosystem !== undefined && errors.ecosystem.message
-                  }
-                >
-                  {ecosystemTypes.map((ecosystem) => (
-                    <MenuItem key={ecosystem} value={ecosystem}>
-                      {tManageProjects(`ecosystemTypes.${ecosystem}`)}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </InlineFormDisplayGroup>
-          {metaAnnotation('employeesCount') && (
-            <AnnotationCallout text={metaAnnotation('employeesCount')!} />
-          )}
-          {metaAnnotation('ecosystem') && (
-            <AnnotationCallout text={metaAnnotation('ecosystem')!} />
-          )}
-          {purpose === 'conservation' && (
-            <InlineFormDisplayGroup>
+            </div>
+            <div style={{ flex: 1, minWidth: 180 }}>
               <Controller
-                name="acquisitionYear"
+                name="ecosystem"
                 control={control}
-                render={({ field: { onChange, value } }) => (
-                  <LocalizationProvider
-                    dateAdapter={AdapterDateFns}
-                    adapterLocale={
-                      localeMapForDate[userLang]
-                        ? localeMapForDate[userLang]
-                        : localeMapForDate['en']
-                    }
-                  >
-                    <MuiDatePicker
-                      label={tManageProjects('acquisitionYear')}
-                      value={value}
-                      onChange={onChange}
-                      renderInput={(props) => <TextField {...props} />}
-                      disableFuture
-                      minDate={new Date(new Date().setFullYear(1950))}
-                      views={['year']}
-                      maxDate={new Date()}
-                    />
-                  </LocalizationProvider>
-                )}
-              />
-              <Controller
-                name="ownershipType"
-                control={control}
-                rules={{ required: tManageProjects('requiredField') }}
+                rules={{
+                  required: tManageProjects('ecosystemType'),
+                }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
                     required
-                    label={tManageProjects('ownershipType')}
+                    label={tManageProjects('ecosystem')}
                     variant="outlined"
                     select
+                    fullWidth
                     onChange={onChange}
                     value={value}
                     onBlur={onBlur}
-                    error={
-                      'ownershipType' in errors &&
-                      errors.ownershipType !== undefined
-                    }
+                    error={errors.ecosystem !== undefined}
                     helperText={
-                      'ownershipType' in errors &&
-                      errors.ownershipType !== undefined &&
-                      errors.ownershipType.message
+                      errors.ecosystem !== undefined && errors.ecosystem.message
                     }
                   >
-                    <MenuItem value="tenure">{tManageProjects('tenure')}</MenuItem>
-                    <MenuItem value="rent">{tManageProjects('rent')}</MenuItem>
+                    {ecosystemTypes.map((ecosystem) => (
+                      <MenuItem key={ecosystem} value={ecosystem}>
+                        {tManageProjects(`ecosystemTypes.${ecosystem}`)}
+                      </MenuItem>
+                    ))}
                   </TextField>
                 )}
               />
+              {metaAnnotation('ecosystem') && (
+                <AnnotationCallout text={metaAnnotation('ecosystem')!} />
+              )}
+            </div>
+          </InlineFormDisplayGroup>
+          {purpose === 'conservation' && (
+            <InlineFormDisplayGroup>
+              <div style={{ flex: 1, minWidth: 180 }}>
+                <Controller
+                  name="acquisitionYear"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <LocalizationProvider
+                      dateAdapter={AdapterDateFns}
+                      adapterLocale={
+                        localeMapForDate[userLang]
+                          ? localeMapForDate[userLang]
+                          : localeMapForDate['en']
+                      }
+                    >
+                      <MuiDatePicker
+                        label={tManageProjects('acquisitionYear')}
+                        value={value}
+                        onChange={onChange}
+                        renderInput={(props) => <TextField fullWidth {...props} />}
+                        disableFuture
+                        minDate={new Date(new Date().setFullYear(1950))}
+                        views={['year']}
+                        maxDate={new Date()}
+                      />
+                    </LocalizationProvider>
+                  )}
+                />
+                {metaAnnotation('acquisitionYear') && (
+                  <AnnotationCallout text={metaAnnotation('acquisitionYear')!} />
+                )}
+              </div>
+              <div style={{ flex: 1, minWidth: 180 }}>
+                <Controller
+                  name="ownershipType"
+                  control={control}
+                  rules={{ required: tManageProjects('requiredField') }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      required
+                      label={tManageProjects('ownershipType')}
+                      variant="outlined"
+                      select
+                      fullWidth
+                      onChange={onChange}
+                      value={value}
+                      onBlur={onBlur}
+                      error={
+                        'ownershipType' in errors &&
+                        errors.ownershipType !== undefined
+                      }
+                      helperText={
+                        'ownershipType' in errors &&
+                        errors.ownershipType !== undefined &&
+                        errors.ownershipType.message
+                      }
+                    >
+                      <MenuItem value="tenure">{tManageProjects('tenure')}</MenuItem>
+                      <MenuItem value="rent">{tManageProjects('rent')}</MenuItem>
+                    </TextField>
+                  )}
+                />
+                {metaAnnotation('ownershipType') && (
+                  <AnnotationCallout text={metaAnnotation('ownershipType')!} />
+                )}
+              </div>
             </InlineFormDisplayGroup>
-          )}
-          {metaAnnotation('acquisitionYear') && (
-            <AnnotationCallout text={metaAnnotation('acquisitionYear')!} />
-          )}
-          {metaAnnotation('ownershipType') && (
-            <AnnotationCallout text={metaAnnotation('ownershipType')!} />
           )}
           <div className={styles.multiSelectContainer}>
             <div className={styles.multiSelectField}>
@@ -940,45 +957,50 @@ export default function DetailedAnalysis({
           {purpose === 'trees' ? (
             <>
               <InlineFormDisplayGroup spacing="none">
-                {/* Integer - the planting density expressed in trees per ha */}
-                <Controller
-                  name="plantingDensity"
-                  control={control}
-                  rules={{
-                    required: tManageProjects('requiredField'),
-                    validate: (value) =>
-                      !value || parseInt(value, 10) > 1,
-                  }}
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <TextField
-                      label={tManageProjects('plantingDensity')}
-                      variant="outlined"
-                      InputProps={{
-                        endAdornment: (
-                          <p className={styles.inputEndAdornment}>
-                            {tManageProjects('treePerHa')}
-                          </p>
-                        ),
-                      }}
-                      onChange={(e) => {
-                        setMinDensity(Number(e.target.value));
-                        e.target.value = e.target.value.replace(/[^0-9]./g, '');
-                        onChange(e.target.value);
-                      }}
-                      value={value}
-                      onBlur={onBlur}
-                      error={
-                        'plantingDensity' in errors &&
-                        errors.plantingDensity !== undefined
-                      }
-                      helperText={
-                        'plantingDensity' in errors &&
-                        errors.plantingDensity !== undefined &&
-                        errors.plantingDensity.message
-                      }
-                    />
+                <div style={{ flex: 1, minWidth: 180 }}>
+                  <Controller
+                    name="plantingDensity"
+                    control={control}
+                    rules={{
+                      required: tManageProjects('requiredField'),
+                      validate: (value) =>
+                        !value || parseInt(value, 10) > 1,
+                    }}
+                    render={({ field: { onChange, value, onBlur } }) => (
+                      <TextField
+                        label={tManageProjects('plantingDensity')}
+                        variant="outlined"
+                        fullWidth
+                        InputProps={{
+                          endAdornment: (
+                            <p className={styles.inputEndAdornment}>
+                              {tManageProjects('treePerHa')}
+                            </p>
+                          ),
+                        }}
+                        onChange={(e) => {
+                          setMinDensity(Number(e.target.value));
+                          e.target.value = e.target.value.replace(/[^0-9]./g, '');
+                          onChange(e.target.value);
+                        }}
+                        value={value}
+                        onBlur={onBlur}
+                        error={
+                          'plantingDensity' in errors &&
+                          errors.plantingDensity !== undefined
+                        }
+                        helperText={
+                          'plantingDensity' in errors &&
+                          errors.plantingDensity !== undefined &&
+                          errors.plantingDensity.message
+                        }
+                      />
+                    )}
+                  />
+                  {metaAnnotation('plantingDensity') && (
+                    <AnnotationCallout text={metaAnnotation('plantingDensity')!} />
                   )}
-                />
+                </div>
                 <p className={styles.hyphen}>-</p>
                 <Controller
                   name="maxPlantingDensity"
@@ -1019,9 +1041,6 @@ export default function DetailedAnalysis({
                   )}
                 />
               </InlineFormDisplayGroup>
-            {metaAnnotation('plantingDensity') && (
-              <AnnotationCallout text={metaAnnotation('plantingDensity')!} />
-            )}
 
             </>
           ) : (

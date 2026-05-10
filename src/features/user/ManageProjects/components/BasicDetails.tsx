@@ -493,59 +493,65 @@ export default function BasicDetails({
             <AnnotationCallout text={basicAnnotation('countTarget')!} />
           )}
           <InlineFormDisplayGroup>
-            <Controller
-              name="slug"
-              control={control}
-              rules={{ required: t('slugValidation') }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextField
-                  label={t('slug')}
-                  variant="outlined"
-                  InputProps={{
-                    startAdornment: (
-                      <p className={styles.inputStartAdornment}>pp.eco/</p>
-                    ),
-                  }}
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.slug !== undefined}
-                  helperText={errors.slug !== undefined && errors.slug.message}
-                />
+            <div style={{ flex: 1, minWidth: 180 }}>
+              <Controller
+                name="slug"
+                control={control}
+                rules={{ required: t('slugValidation') }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextField
+                    label={t('slug')}
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <p className={styles.inputStartAdornment}>pp.eco/</p>
+                      ),
+                    }}
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    error={errors.slug !== undefined}
+                    helperText={errors.slug !== undefined && errors.slug.message}
+                  />
+                )}
+              />
+              {basicAnnotation('slug') && (
+                <AnnotationCallout text={basicAnnotation('slug')!} />
               )}
-            />
-            <Controller
-              name="website"
-              control={control}
-              rules={{
-                required: t('websiteValidationRequired'),
-                pattern: {
-                  value:
-                    /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-                  message: t('websiteValidationInvalid'),
-                },
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextField
-                  label={t('website')}
-                  variant="outlined"
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.website !== undefined}
-                  helperText={
-                    errors.website !== undefined && errors.website.message
-                  }
-                />
+            </div>
+            <div style={{ flex: 1, minWidth: 180 }}>
+              <Controller
+                name="website"
+                control={control}
+                rules={{
+                  required: t('websiteValidationRequired'),
+                  pattern: {
+                    value:
+                      /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                    message: t('websiteValidationInvalid'),
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextField
+                    label={t('website')}
+                    variant="outlined"
+                    fullWidth
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    error={errors.website !== undefined}
+                    helperText={
+                      errors.website !== undefined && errors.website.message
+                    }
+                  />
+                )}
+              />
+              {basicAnnotation('website') && (
+                <AnnotationCallout text={basicAnnotation('website')!} />
               )}
-            />
+            </div>
           </InlineFormDisplayGroup>
-          {basicAnnotation('slug') && (
-            <AnnotationCallout text={basicAnnotation('slug')!} />
-          )}
-          {basicAnnotation('website') && (
-            <AnnotationCallout text={basicAnnotation('website')!} />
-          )}
           <Controller
             name="description"
             control={control}
