@@ -572,6 +572,15 @@ export default function BasicDetails({
                 helperText={
                   errors.description !== undefined && errors.description.message
                 }
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip title={t('descriptionInfo')} arrow>
+                      <span className={styles.tooltipIcon}>
+                        <InfoIcon />
+                      </span>
+                    </Tooltip>
+                  ),
+                }}
               />
             )}
           />
