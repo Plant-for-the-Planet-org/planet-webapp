@@ -3,6 +3,8 @@ import type { APIError } from '@planet-sdk/common';
 import type {
   ManageProjectsProps,
   ExtendedProfileProjectProperties,
+  ExtendedProfileProjectPropertiesTrees,
+  QuestionnaireSchema,
 } from '../../common/types/project';
 
 import { useEffect, useState } from 'react';
@@ -185,6 +187,43 @@ export default function ManageProjects({
       fetchProjectDetails();
     }
   }, [GUID, projectGUID]);
+
+  // Pre-compute questionnaire completeness as soon as projectDetails loads,
+  // so the menu indicator is correct before the Questionnaire tab is visited.
+  useEffect(() => {
+    if (!projectDetails?.acceptDonations) return;
+    const purpose = projectDetails.purpose ?? 'trees';
+    const classification =
+      (projectDetails as ExtendedProfileProjectPropertiesTrees).classification ?? '';
+    const existing =
+      (projectDetails as ExtendedProfileProjectPropertiesTrees).questionnaire ?? {};
+
+    const computeCompleteness = async () => {
+      try {
+        const schema = await getApiAuthenticated<QuestionnaireSchema>(
+          `/app/projects/questionnaire-schema/${purpose}`,
+          { additionalHeaders: { Accept: 'application/json' } }
+        );
+        const visibleFields = Object.entries(schema.fields).filter(
+          ([, field]) =>
+            field.classifications === null ||
+            field.classifications.includes(classification)
+        );
+        const allFilled = visibleFields.every(([name, field]) => {
+          const val = (existing as Record<string, unknown>)[name];
+          if (field.type === 'multi_choice')
+            return Array.isArray(val) && val.length > 0;
+          return val !== undefined && val !== '' && val !== null;
+        });
+        setQuestionnaireComplete(allFilled);
+      } catch {
+        // silently fail — completeness defaults to false
+      }
+    };
+
+    void computeCompleteness();
+  }, [projectDetails]);
+
   const [userLang, setUserLang] = useState('en');
   useEffect(() => {
     if (localStorage.getItem('language')) {
