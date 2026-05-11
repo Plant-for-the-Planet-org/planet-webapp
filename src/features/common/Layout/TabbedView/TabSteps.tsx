@@ -49,7 +49,14 @@ export default function TabSteps({
 
   const renderTabs = () => {
     return tabItems.map((tabItem, index) => {
-      const label = tabItem.completionStatus ? (
+      const discColor =
+        tabItem.completionStatus === 'complete'
+          ? 'success.main'
+          : tabItem.completionStatus === 'incomplete'
+          ? 'error.main'
+          : '#d6d6d6'; // very light grey when status is unknown
+
+      const label = (
         <Box component="span" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {tabItem.label}
           <Box
@@ -60,13 +67,10 @@ export default function TabSteps({
               height: 8,
               borderRadius: '50%',
               flexShrink: 0,
-              backgroundColor:
-                tabItem.completionStatus === 'complete' ? 'success.main' : 'error.main',
+              backgroundColor: discColor,
             }}
           />
         </Box>
-      ) : (
-        tabItem.label
       );
 
       return (

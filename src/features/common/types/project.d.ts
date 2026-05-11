@@ -195,6 +195,7 @@ export interface ProjectMediaProps {
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   projectGUID: string | unknown;
   isLocked: boolean;
+  onCompletenessChange?: (complete: boolean) => void;
 }
 
 // Detail Analysis
@@ -235,6 +236,7 @@ export interface ProjectSitesProps {
   projectGUID: string;
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   isLocked: boolean;
+  onCompletenessChange?: (complete: boolean) => void;
 }
 export interface SiteDetails {
   geometry: {};

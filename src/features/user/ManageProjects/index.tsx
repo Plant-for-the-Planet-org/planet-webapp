@@ -87,6 +87,9 @@ export default function ManageProjects({
   const [projectDetails, setProjectDetails] =
     useState<ExtendedProfileProjectProperties | null>(null);
   const [questionnaireComplete, setQuestionnaireComplete] = useState(false);
+  // null = not yet loaded (grey disc), true/false = known
+  const [mediaComplete, setMediaComplete] = useState<boolean | null>(null);
+  const [sitesComplete, setSitesComplete] = useState<boolean | null>(null);
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -268,6 +271,27 @@ export default function ManageProjects({
 
   useEffect(() => {
     if (router.query.type && project) {
+      const daComplete = projectDetails
+        ? isDetailedAnalysisComplete(projectDetails)
+        : null;
+
+      const qComplete = showQuestionnaire
+        ? (projectDetails ? questionnaireComplete : null)
+        : null; // null = not applicable, doesn't block Review
+
+      // Review is green when no tracked tab is explicitly red
+      const reviewReady =
+        projectDetails !== null &&
+        daComplete === true &&
+        mediaComplete !== false &&
+        sitesComplete !== false &&
+        (qComplete === null || qComplete === true);
+
+      const toStatus = (
+        v: boolean | null
+      ): 'complete' | 'incomplete' | undefined =>
+        v === true ? 'complete' : v === false ? 'incomplete' : undefined;
+
       const tabs: TabItem[] = [
         {
           label: t('basicDetails'),
@@ -279,26 +303,26 @@ export default function ManageProjects({
           label: t('projectMedia'),
           link: `/profile/projects/${projectGUID}?type=media`,
           step: ProjectCreationTabs.PROJECT_MEDIA,
+          completionStatus: toStatus(mediaComplete),
         },
         {
           label: t('detailedAnalysis'),
           link: `/profile/projects/${projectGUID}?type=detail-analysis`,
           step: ProjectCreationTabs.DETAILED_ANALYSIS,
-          completionStatus: projectDetails
-            ? isDetailedAnalysisComplete(projectDetails)
-              ? 'complete'
-              : 'incomplete'
-            : undefined,
+          completionStatus: toStatus(daComplete),
         },
         {
           label: t('projectSites'),
           link: `/profile/projects/${projectGUID}?type=project-sites`,
           step: ProjectCreationTabs.PROJECT_SITES,
+          completionStatus: toStatus(sitesComplete),
         },
         {
           label: t('projectSpending'),
           link: `/profile/projects/${projectGUID}?type=project-spending`,
           step: ProjectCreationTabs.PROJECT_SPENDING,
+          // always grey — no completeness rule
+          completionStatus: undefined,
         },
       ];
       if (showQuestionnaire) {
@@ -317,6 +341,11 @@ export default function ManageProjects({
         label: t('review'),
         link: `/profile/projects/${projectGUID}?type=review`,
         step: ProjectCreationTabs.REVIEW,
+        completionStatus: projectDetails
+          ? reviewReady
+            ? 'complete'
+            : 'incomplete'
+          : undefined,
       });
       setTabList(tabs);
     } else if (router.query.purpose === 'trees' && !project) {
@@ -344,7 +373,7 @@ export default function ManageProjects({
         },
       ]);
     }
-  }, [tabSelected, router.query.purpose, locale, projectDetails?.acceptDonations, projectDetails, questionnaireComplete]);
+  }, [tabSelected, router.query.purpose, locale, projectDetails, questionnaireComplete, mediaComplete, sitesComplete]);
 
   const isLocked =
     projectDetails?.verificationStatus === 'submitted' ||
@@ -382,6 +411,7 @@ export default function ManageProjects({
             setProjectDetails={setProjectDetails}
             projectGUID={projectGUID}
             isLocked={isLocked}
+            onCompletenessChange={setMediaComplete}
           />
         );
       case ProjectCreationTabs.DETAILED_ANALYSIS:
@@ -409,6 +439,7 @@ export default function ManageProjects({
             projectGUID={projectGUID}
             projectDetails={projectDetails}
             isLocked={isLocked}
+            onCompletenessChange={setSitesComplete}
           />
         );
       case ProjectCreationTabs.PROJECT_SPENDING:

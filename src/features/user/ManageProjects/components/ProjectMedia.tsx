@@ -64,6 +64,7 @@ export default function ProjectMedia({
   setProjectDetails,
   projectGUID,
   isLocked,
+  onCompletenessChange,
 }: ProjectMediaProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const router = useRouter();
@@ -108,6 +109,10 @@ export default function ProjectMedia({
   useEffect(() => {
     fetchImages();
   }, [projectGUID]);
+
+  useEffect(() => {
+    onCompletenessChange?.(uploadedImages.length > 0);
+  }, [uploadedImages]);
 
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);

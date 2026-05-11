@@ -71,6 +71,7 @@ export default function ProjectSites({
   projectGUID,
   projectDetails,
   isLocked,
+  onCompletenessChange,
 }: ProjectSitesProps): ReactElement {
   const { deleteApiAuthenticated, postApiAuthenticated, getApiAuthenticated } = useApi();
   const { colors } = themeProperties.designSystem;
@@ -147,6 +148,10 @@ export default function ProjectSites({
   useEffect(() => {
     fetchProjSites();
   }, [fetchProjSites]);
+
+  useEffect(() => {
+    onCompletenessChange?.(siteList.length > 0);
+  }, [siteList]);
 
   const uploadProjectSite = async (data: ProjectSitesFormData) => {
     if (!geoJson || geoJson.features.length === 0) {
