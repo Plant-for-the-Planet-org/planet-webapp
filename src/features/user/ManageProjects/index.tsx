@@ -5,6 +5,8 @@ import type {
   ExtendedProfileProjectProperties,
   ExtendedProfileProjectPropertiesTrees,
   QuestionnaireSchema,
+  ImagesScopeProjects,
+  SitesScopeProjects,
 } from '../../common/types/project';
 
 import { useEffect, useState } from 'react';
@@ -225,6 +227,37 @@ export default function ManageProjects({
     };
 
     void computeCompleteness();
+  }, [projectDetails]);
+
+  useEffect(() => {
+    if (!projectDetails || !projectGUID) return;
+    const fetchMediaCompleteness = async () => {
+      try {
+        const result = await getApiAuthenticated<ImagesScopeProjects>(
+          `/app/profile/projects/${projectGUID}?_scope=images`
+        );
+        setMediaComplete(result.images.length > 0);
+      } catch {
+        // silently fail — stays grey
+      }
+    };
+    void fetchMediaCompleteness();
+  }, [projectDetails]);
+
+  useEffect(() => {
+    if (!projectDetails || !projectGUID) return;
+    const fetchSitesCompleteness = async () => {
+      try {
+        const result = await getApiAuthenticated<SitesScopeProjects>(
+          `/app/profile/projects/${projectGUID}`,
+          { queryParams: { _scope: 'sites' } }
+        );
+        setSitesComplete(result.sites.length > 0);
+      } catch {
+        // silently fail — stays grey
+      }
+    };
+    void fetchSitesCompleteness();
   }, [projectDetails]);
 
   const [userLang, setUserLang] = useState('en');
