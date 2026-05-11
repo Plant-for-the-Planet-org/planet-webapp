@@ -310,6 +310,8 @@ export interface QuestionnaireProps {
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   isLocked: boolean;
   onCompletenessChange: (complete: boolean) => void;
+  /** Pre-fetched schema from the parent. When provided the component skips its own fetch. */
+  initialSchema?: QuestionnaireSchema | null;
 }
 
 // project review

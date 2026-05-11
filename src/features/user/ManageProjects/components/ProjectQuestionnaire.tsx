@@ -150,13 +150,14 @@ export default function ProjectQuestionnaire({
   setProjectDetails,
   isLocked,
   onCompletenessChange,
+  initialSchema = null,
 }: QuestionnaireProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
-  const [schema, setSchema] = useState<QuestionnaireSchema | null>(null);
-  const [isLoadingSchema, setIsLoadingSchema] = useState(true);
+  const [schema, setSchema] = useState<QuestionnaireSchema | null>(initialSchema);
+  const [isLoadingSchema, setIsLoadingSchema] = useState(initialSchema === null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const classification =
@@ -183,6 +184,7 @@ export default function ProjectQuestionnaire({
   const purpose = projectDetails?.purpose ?? 'trees';
 
   useEffect(() => {
+    if (initialSchema !== null) return; // already have it from parent
     const fetchSchema = async () => {
       try {
         const result = await getApiAuthenticated<QuestionnaireSchema>(

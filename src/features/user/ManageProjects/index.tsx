@@ -89,6 +89,8 @@ export default function ManageProjects({
   const [projectDetails, setProjectDetails] =
     useState<ExtendedProfileProjectProperties | null>(null);
   const [questionnaireComplete, setQuestionnaireComplete] = useState(false);
+  const [questionnaireSchema, setQuestionnaireSchema] =
+    useState<QuestionnaireSchema | null>(null);
   // null = not yet loaded (grey disc), true/false = known
   const [mediaComplete, setMediaComplete] = useState<boolean | null>(null);
   const [sitesComplete, setSitesComplete] = useState<boolean | null>(null);
@@ -209,6 +211,7 @@ export default function ManageProjects({
           `/app/projects/questionnaire-schema/${purpose}`,
           { additionalHeaders: { Accept: 'application/json' } }
         );
+        setQuestionnaireSchema(schema);
         const visibleFields = Object.entries(schema.fields).filter(
           ([, field]) =>
             field.classifications === null ||
@@ -494,6 +497,7 @@ export default function ManageProjects({
             setProjectDetails={setProjectDetails}
             isLocked={isLocked}
             onCompletenessChange={setQuestionnaireComplete}
+            initialSchema={questionnaireSchema}
           />
         );
       case ProjectCreationTabs.REVIEW:
