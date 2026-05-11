@@ -312,6 +312,8 @@ export interface QuestionnaireProps {
   onCompletenessChange: (complete: boolean) => void;
   /** Pre-fetched schema from the parent. When provided the component skips its own fetch. */
   initialSchema?: QuestionnaireSchema | null;
+  /** Project purpose — passed explicitly so the cache lookup works even before projectDetails loads. */
+  purpose: 'trees' | 'conservation';
 }
 
 // project review

@@ -26,6 +26,10 @@ import DashboardView from '../../common/Layout/DashboardView';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  getCachedSchema,
+  setCachedSchema,
+} from './utils/questionnaireSchemaCache';
 
 function isDetailedAnalysisComplete(
   details: ExtendedProfileProjectProperties | null
@@ -195,6 +199,29 @@ export default function ManageProjects({
     }
   }, [GUID, projectGUID]);
 
+  // Kick off schema fetch immediately on mount using the SSR project prop,
+  // in parallel with the projectDetails API call. By the time the user can
+  // navigate to the Questionnaire tab, the schema will already be cached.
+  useEffect(() => {
+    const purpose = project?.purpose;
+    if (!purpose || !project?.acceptDonations) return;
+    if (getCachedSchema(purpose)) return; // already in cache
+
+    const prefetch = async () => {
+      try {
+        const schema = await getApiAuthenticated<QuestionnaireSchema>(
+          `/app/projects/questionnaire-schema/${purpose}`,
+          { additionalHeaders: { Accept: 'application/json' } }
+        );
+        setCachedSchema(purpose, schema);
+        setQuestionnaireSchema(schema);
+      } catch {
+        // silently fail
+      }
+    };
+    void prefetch();
+  }, []); // intentionally empty — project prop is stable (SSR data)
+
   // Pre-compute questionnaire completeness as soon as projectDetails loads,
   // so the menu indicator is correct before the Questionnaire tab is visited.
   useEffect(() => {
@@ -207,10 +234,16 @@ export default function ManageProjects({
 
     const computeCompleteness = async () => {
       try {
-        const schema = await getApiAuthenticated<QuestionnaireSchema>(
-          `/app/projects/questionnaire-schema/${purpose}`,
-          { additionalHeaders: { Accept: 'application/json' } }
-        );
+        // Use module-level cache to avoid a redundant HTTP request when the
+        // Questionnaire component has already fetched (or vice-versa).
+        let schema = getCachedSchema(purpose);
+        if (!schema) {
+          schema = await getApiAuthenticated<QuestionnaireSchema>(
+            `/app/projects/questionnaire-schema/${purpose}`,
+            { additionalHeaders: { Accept: 'application/json' } }
+          );
+          setCachedSchema(purpose, schema);
+        }
         setQuestionnaireSchema(schema);
         const visibleFields = Object.entries(schema.fields).filter(
           ([, field]) =>
@@ -498,6 +531,11 @@ export default function ManageProjects({
             isLocked={isLocked}
             onCompletenessChange={setQuestionnaireComplete}
             initialSchema={questionnaireSchema}
+            purpose={
+              (project?.purpose ??
+                (router.query.purpose as string | undefined) ??
+                'trees') as 'trees' | 'conservation'
+            }
           />
         );
       case ProjectCreationTabs.REVIEW:

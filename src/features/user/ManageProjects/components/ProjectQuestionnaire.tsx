@@ -37,6 +37,10 @@ import { parseApiError } from '../../../../utils/parseApiError';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import AnnotationCallout from './microComponent/AnnotationCallout';
+import {
+  getCachedSchema,
+  setCachedSchema,
+} from '../utils/questionnaireSchemaCache';
 
 // Widened to support nested row_list / matrix values
 type QuestionnaireFormData = Record<string, unknown>;
@@ -151,13 +155,17 @@ export default function ProjectQuestionnaire({
   isLocked,
   onCompletenessChange,
   initialSchema = null,
+  purpose,
 }: QuestionnaireProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
-  const [schema, setSchema] = useState<QuestionnaireSchema | null>(initialSchema);
-  const [isLoadingSchema, setIsLoadingSchema] = useState(initialSchema === null);
+  // Lazy initializer: check initialSchema then module cache synchronously,
+  // so the schema is available on the very first render if the parent pre-fetched it.
+  const [schema, setSchema] = useState<QuestionnaireSchema | null>(
+    () => initialSchema ?? getCachedSchema(purpose) ?? null
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const classification =
@@ -181,24 +189,30 @@ export default function ProjectQuestionnaire({
 
   const watchedValues = useWatch({ control });
 
-  const purpose = projectDetails?.purpose ?? 'trees';
-
+  // Sync if parent provides (or updates) the schema after mount
   useEffect(() => {
-    if (initialSchema !== null) return; // already have it from parent
+    if (initialSchema !== null) {
+      setSchema(initialSchema);
+    }
+  }, [initialSchema]);
+
+  // Fetch only when schema is still missing (no initialSchema, no cache hit)
+  useEffect(() => {
+    if (schema !== null) return;
+
     const fetchSchema = async () => {
       try {
         const result = await getApiAuthenticated<QuestionnaireSchema>(
           `/app/projects/questionnaire-schema/${purpose}`,
           { additionalHeaders: { Accept: 'application/json' } }
         );
+        setCachedSchema(purpose, result);
         setSchema(result);
       } catch (err) {
         setErrors(parseApiError(err as APIError));
-      } finally {
-        setIsLoadingSchema(false);
       }
     };
-    fetchSchema();
+    void fetchSchema();
   }, [purpose]);
 
   useEffect(() => {
@@ -480,6 +494,11 @@ export default function ProjectQuestionnaire({
     );
   }
 
+  // Show spinner until BOTH schema and projectDetails are available.
+  // Deriving directly from the data avoids any intermediate flag that could
+  // be false before the data actually arrives.
+  const isLoading = schema === null || projectDetails === null;
+
   const allFieldsFilled =
     visibleFields.length > 0 &&
     visibleFields.every(([name, field]) =>
@@ -494,7 +513,7 @@ export default function ProjectQuestionnaire({
             verificationStatus={projectDetails.verificationStatus}
           />
         )}
-        {!isLoadingSchema &&
+        {!isLoading &&
           !isLocked &&
           visibleFields.length > 0 &&
           (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
@@ -506,7 +525,7 @@ export default function ProjectQuestionnaire({
           )}
 
         <div className="inputContainer">
-          {isLoadingSchema ? (
+          {isLoading ? (
             <CircularProgress size={32} />
           ) : visibleFields.length === 0 ? (
             <p>{t('noQuestionnaire')}</p>
