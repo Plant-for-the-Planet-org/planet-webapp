@@ -55,7 +55,21 @@ export type QuestionnaireFieldType =
   | 'string'
   | 'choice'
   | 'multi_choice'
-  | 'boolean';
+  | 'boolean'
+  | 'row_list'
+  | 'matrix';
+
+export interface QuestionnaireFieldRow {
+  key: string;
+  label: string;
+}
+
+export interface QuestionnaireFieldColumn {
+  key: string;
+  label: string;
+  /** Column group header (e.g. "Direct beneficiaries"). Adjacent columns sharing the same group are merged. */
+  group?: string;
+}
 
 export interface QuestionnaireFieldSchema {
   type: QuestionnaireFieldType;
@@ -63,6 +77,10 @@ export interface QuestionnaireFieldSchema {
   description: string | null;
   classifications: string[] | null;
   choices?: string[];
+  /** Used by row_list and matrix */
+  rows?: QuestionnaireFieldRow[];
+  /** Used by matrix only */
+  columns?: QuestionnaireFieldColumn[];
 }
 
 export interface QuestionnaireSchema {

@@ -16,7 +16,7 @@ import ProjectSelection from './components/ProjectSelection';
 import DetailedAnalysis from './components/DetailedAnalysis';
 import ProjectSites from './components/ProjectSites';
 import ProjectSpending from './components/ProjectSpending';
-import ProjectQuestionnaire from './components/ProjectQuestionnaire';
+import ProjectQuestionnaire, { isFieldFilled } from './components/ProjectQuestionnaire';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
@@ -214,12 +214,9 @@ export default function ManageProjects({
             field.classifications === null ||
             field.classifications.includes(classification)
         );
-        const allFilled = visibleFields.every(([name, field]) => {
-          const val = (existing as Record<string, unknown>)[name];
-          if (field.type === 'multi_choice')
-            return Array.isArray(val) && val.length > 0;
-          return val !== undefined && val !== '' && val !== null;
-        });
+        const allFilled = visibleFields.every(([name, field]) =>
+          isFieldFilled(field, (existing as Record<string, unknown>)[name])
+        );
         setQuestionnaireComplete(allFilled);
       } catch {
         // silently fail — completeness defaults to false
