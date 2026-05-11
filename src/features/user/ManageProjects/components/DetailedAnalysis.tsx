@@ -1107,7 +1107,7 @@ export default function DetailedAnalysis({
                     }
                     InputProps={{
                       endAdornment: (
-                        <Tooltip title={tManageProjects('max300Chars')} arrow>
+                        <Tooltip title={tManageProjects('degradationCauseInfo')} arrow>
                           <span className={styles.tooltipIcon}>
                             <InfoIcon />
                           </span>
@@ -1225,7 +1225,7 @@ export default function DetailedAnalysis({
                 }
                 InputProps={{
                   endAdornment: (
-                    <Tooltip title={tManageProjects('max300Chars')} arrow>
+                    <Tooltip title={tManageProjects('motivationInfo')} arrow>
                       <span className={styles.tooltipIcon}>
                         <InfoIcon />
                       </span>
@@ -1263,6 +1263,15 @@ export default function DetailedAnalysis({
                   errors.longTermPlan !== undefined &&
                   errors.longTermPlan.message
                 }
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip title={tManageProjects('longTermPlanTooltip')} arrow>
+                      <span className={styles.tooltipIcon}>
+                        <InfoIcon />
+                      </span>
+                    </Tooltip>
+                  ),
+                }}
               />
             )}
           />
