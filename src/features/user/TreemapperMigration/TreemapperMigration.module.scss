@@ -1,0 +1,52 @@
+@import '../../../theme/theme';
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  background-color: $dsWhite;
+  border-radius: 24px;
+  padding: 24px;
+  height: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+
+  @include smTabletView {
+    height: 680px;
+    padding: 40px;
+  }
+
+  @include lgLaptopView {
+    height: 760px;
+    padding: 56px;
+  }
+}
+
+.title {
+  color: $primaryFontColor;
+  max-width: 480px;
+}
+
+.subtitle {
+  color: $dsSoftText;
+  max-width: 520px;
+  margin-bottom: 8px;
+}
+
+.supportLink {
+  font-size: $fontSmall;
+  color: $dsPrimaryColor;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: $primaryDarkColor;
+  }
+}
