@@ -299,6 +299,8 @@ export interface QuestionnaireProps {
 export interface SectionCompleteness {
   detailedAnalysis: boolean;
   questionnaire: boolean | null;
+  media: boolean | null;
+  sites: boolean | null;
 }
 
 export interface SubmitForReviewProps {

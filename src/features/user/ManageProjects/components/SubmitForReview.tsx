@@ -80,7 +80,9 @@ function SubmitForReview({
   const qIncomplete =
     sectionCompleteness.questionnaire !== null &&
     !sectionCompleteness.questionnaire;
-  const canSubmit = !daIncomplete && !qIncomplete;
+  const mediaIncomplete = sectionCompleteness.media === false;
+  const sitesIncomplete = sectionCompleteness.sites === false;
+  const canSubmit = !daIncomplete && !qIncomplete && !mediaIncomplete && !sitesIncomplete;
 
   function NotSubmittedReview() {
     return (
@@ -121,6 +123,12 @@ function SubmitForReview({
         <Stack spacing={1} sx={{ width: '100%', mb: 2 }}>
           {canSubmit && (
             <Alert severity="success">{t('projectForReview')}</Alert>
+          )}
+          {mediaIncomplete && (
+            <Alert severity="warning">{t('incompleteMedia')}</Alert>
+          )}
+          {sitesIncomplete && (
+            <Alert severity="warning">{t('incompleteSites')}</Alert>
           )}
           {daIncomplete && (
             <Alert severity="warning">{t('incompleteDetailedAnalysis')}</Alert>
@@ -312,6 +320,12 @@ function SubmitForReview({
                 })}
               </Stack>
             </Alert>
+          )}
+          {mediaIncomplete && (
+            <Alert severity="warning">{t('incompleteMedia')}</Alert>
+          )}
+          {sitesIncomplete && (
+            <Alert severity="warning">{t('incompleteSites')}</Alert>
           )}
           {daIncomplete && (
             <Alert severity="warning">{t('incompleteDetailedAnalysis')}</Alert>

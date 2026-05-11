@@ -512,6 +512,8 @@ export default function ManageProjects({
               sectionCompleteness={{
                 detailedAnalysis: isDetailedAnalysisComplete(projectDetails),
                 questionnaire: showQuestionnaire ? questionnaireComplete : null,
+                media: mediaComplete,
+                sites: sitesComplete,
               }}
             />
           );

@@ -136,6 +136,8 @@
     "backToProjectSpending": "Back to Project Spending",
     "requiredField": "This field is required",
     "incompleteFieldsBanner": "You have not filled in all fields. You can come back later to provide the missing information.",
+    "incompleteMedia": "Project Media is incomplete. Please upload at least one image before submitting.",
+    "incompleteSites": "Project Sites is incomplete. Please add at least one site before submitting.",
     "incompleteDetailedAnalysis": "Detailed Analysis is incomplete. Please fill in all required fields before submitting.",
     "incompleteQuestionnaire": "Questionnaire is incomplete. Please fill in all required fields before submitting.",
     "projectForReview": "You can now submit the project for review.",
