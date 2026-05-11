@@ -17,6 +17,7 @@ import {
   CircularProgress,
   FormControlLabel,
   FormGroup,
+  FormHelperText,
   FormLabel,
   Table,
   TableBody,
@@ -320,7 +321,7 @@ export default function ProjectQuestionnaire({
             {field.label}
           </FormLabel>
           {field.description && (
-            <p style={{ marginBottom: 8 }}>{field.description}</p>
+            <FormHelperText sx={{ mt: 0, mb: 1 }}>{field.description}</FormHelperText>
           )}
           <Table
             size="small"
@@ -374,7 +375,7 @@ export default function ProjectQuestionnaire({
             {field.label}
           </FormLabel>
           {field.description && (
-            <p style={{ marginBottom: 8 }}>{field.description}</p>
+            <FormHelperText sx={{ mt: 0, mb: 1 }}>{field.description}</FormHelperText>
           )}
           <Table
             size="small"
