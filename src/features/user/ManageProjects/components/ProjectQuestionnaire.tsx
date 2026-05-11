@@ -320,9 +320,6 @@ export default function ProjectQuestionnaire({
           <FormLabel component="legend" sx={{ mb: 1 }}>
             {field.label}
           </FormLabel>
-          {field.description && (
-            <FormHelperText sx={{ mt: 0, mb: 1 }}>{field.description}</FormHelperText>
-          )}
           <Table
             size="small"
             sx={{ '& td, & th': tableCellSx, tableLayout: 'auto' }}
@@ -355,6 +352,9 @@ export default function ProjectQuestionnaire({
               ))}
             </TableBody>
           </Table>
+          {field.description && (
+            <FormHelperText>{field.description}</FormHelperText>
+          )}
           {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );
@@ -374,9 +374,6 @@ export default function ProjectQuestionnaire({
           <FormLabel component="legend" sx={{ mb: 1 }}>
             {field.label}
           </FormLabel>
-          {field.description && (
-            <FormHelperText sx={{ mt: 0, mb: 1 }}>{field.description}</FormHelperText>
-          )}
           <Table
             size="small"
             sx={{ '& td, & th': tableCellSx, tableLayout: 'auto' }}
@@ -448,6 +445,9 @@ export default function ProjectQuestionnaire({
               ))}
             </TableBody>
           </Table>
+          {field.description && (
+            <FormHelperText>{field.description}</FormHelperText>
+          )}
           {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );
