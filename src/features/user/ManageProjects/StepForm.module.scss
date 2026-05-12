@@ -791,10 +791,35 @@
   color: $dsCoreText;
   cursor: pointer;
   width: 300px;
-  height: 140px;
-  padding: 20px;
+  min-height: 140px;
+  height: auto;
+  padding: 24px 20px;
   box-shadow: rgb(170 170 170 / 20%) 0px 1px 4px;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  text-align: left;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: $primaryColor;
+    box-shadow: rgb(170 170 170 / 40%) 0px 2px 8px;
+  }
+
+  .projectTypeTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $dsCoreText;
+  }
+
+  .projectTypeDescription {
+    font-size: 0.8125rem;
+    color: #666;
+    font-weight: 400;
+    line-height: 1.5;
+  }
 }
 
 .toggleLabelWithInfo {

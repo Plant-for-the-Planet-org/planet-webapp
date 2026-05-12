@@ -28,6 +28,7 @@ import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import themeProperties from '../../../../theme/themeProperties';
 import ProjectLocationMap from './microComponents/ProjectLocationMap';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
@@ -761,6 +762,17 @@ export default function BasicDetails({
           )}
         </div>
         <div className={styles.buttonsForProjectCreationForm}>
+          {!projectGUID && (
+            <Button
+              variant="outlined"
+              onClick={() =>
+                router.push(localizedPath('/profile/projects/new-project'))
+              }
+              startIcon={<BackArrow />}
+            >
+              <p>{t('backToProjectType')}</p>
+            </Button>
+          )}
           {!isLocked && (
             <>
               <Button
