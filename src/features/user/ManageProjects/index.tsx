@@ -304,6 +304,7 @@ export default function ManageProjects({
   useEffect(() => {
     if (router.query.purpose) {
       setTabSelected(1);
+      return;
     }
 
     switch (router.query.type) {
@@ -329,9 +330,11 @@ export default function ManageProjects({
         setTabSelected(7);
         break;
       default:
-        null;
+        // No type and no purpose on a new-project URL → back to type selection
+        if (!GUID) setTabSelected(0);
+        break;
     }
-  }, [tabSelected, router.query.type]);
+  }, [tabSelected, router.query.type, router.query.purpose]);
 
   const showQuestionnaire = projectDetails?.acceptDonations === true;
 

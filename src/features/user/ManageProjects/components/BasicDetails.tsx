@@ -765,12 +765,13 @@ export default function BasicDetails({
           {!projectGUID && (
             <Button
               variant="outlined"
+              className="formButton"
               onClick={() =>
                 router.push(localizedPath('/profile/projects/new-project'))
               }
               startIcon={<BackArrow />}
             >
-              <p>{t('backToProjectType')}</p>
+              {t('backToProjectType')}
             </Button>
           )}
           {!isLocked && (
