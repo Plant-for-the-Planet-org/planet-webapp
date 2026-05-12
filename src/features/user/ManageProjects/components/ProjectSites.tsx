@@ -15,7 +15,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import { MenuItem, Button, TextField, Stack } from '@mui/material';
+import { MenuItem, Button, TextField } from '@mui/material';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -282,58 +282,59 @@ export default function ProjectSites({
 
         {showForm ? (
           <div className={clsx({ [styles.shallowOpacity]: isUploadingData })} style={{ width: 'inherit' }}>
-            <Stack spacing={2} sx={{ mb: 2 }}>
-            <InlineFormDisplayGroup>
-              <Controller
-                name="name"
-                control={control}
-                rules={{ required: t('siteNameValidation') }}
-                defaultValue={siteDetails.name}
-                render={({ field: { onChange, value, onBlur, name } }) => (
-                  <TextField
-                    label={t('siteName')}
-                    variant="outlined"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      changeSiteDetails(e);
-                      onChange(e.target.value);
-                    }}
-                    value={value}
-                    onBlur={onBlur}
-                    name={name}
-                    error={errors.name !== undefined}
-                    helperText={errors.name !== undefined && errors.name.message}
-                  />
-                )}
-              />
-              <Controller
-                name="status"
-                rules={{ required: t('selectProjectStatus') }}
-                control={control}
-                defaultValue={siteDetails.status ? siteDetails.status : ''}
-                render={({ field: { onChange, onBlur, name, value } }) => (
-                  <TextField
-                    label={t('siteStatus')}
-                    variant="outlined"
-                    name={name}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      changeSiteDetails(e);
-                      onChange(e.target.value);
-                    }}
-                    onBlur={onBlur}
-                    select
-                    value={value}
-                    error={errors.status !== undefined}
-                    helperText={errors.status !== undefined && errors.status.message}
-                  >
-                    {statusOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
-              />
-            </InlineFormDisplayGroup>
+            <div style={{ marginBottom: 16 }}>
+              <InlineFormDisplayGroup>
+                <Controller
+                  name="name"
+                  control={control}
+                  rules={{ required: t('siteNameValidation') }}
+                  defaultValue={siteDetails.name}
+                  render={({ field: { onChange, value, onBlur, name } }) => (
+                    <TextField
+                      label={t('siteName')}
+                      variant="outlined"
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        changeSiteDetails(e);
+                        onChange(e.target.value);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      name={name}
+                      error={errors.name !== undefined}
+                      helperText={errors.name !== undefined && errors.name.message}
+                    />
+                  )}
+                />
+                <Controller
+                  name="status"
+                  rules={{ required: t('selectProjectStatus') }}
+                  control={control}
+                  defaultValue={siteDetails.status ? siteDetails.status : ''}
+                  render={({ field: { onChange, onBlur, name, value } }) => (
+                    <TextField
+                      label={t('siteStatus')}
+                      variant="outlined"
+                      name={name}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        changeSiteDetails(e);
+                        onChange(e.target.value);
+                      }}
+                      onBlur={onBlur}
+                      select
+                      value={value}
+                      error={errors.status !== undefined}
+                      helperText={errors.status !== undefined && errors.status.message}
+                    >
+                      {statusOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
+              </InlineFormDisplayGroup>
+            </div>
 
             <InlineFormDisplayGroup>
               <Controller
@@ -377,7 +378,6 @@ export default function ProjectSites({
                 )}
               />
             </InlineFormDisplayGroup>
-            </Stack>
 
             {geoLocation && <SiteGeometryEditor geoJson={geoJson} setGeoJson={setGeoJson} setErrorMessage={setErrorMessage} />}
 
