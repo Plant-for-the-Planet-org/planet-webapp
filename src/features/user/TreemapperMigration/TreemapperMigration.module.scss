@@ -18,6 +18,11 @@
   gap: 16px;
   text-align: center;
 
+  background-image: url('/assets/images/treemapper/treemapper-migration-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   @include smTabletView {
     height: 680px;
     padding: 40px;
@@ -42,7 +47,7 @@
 
 .supportLink {
   font-size: $fontSmall;
-  color: $dsPrimaryColor;
+  color: $dsWhite;
   text-decoration: underline;
   text-underline-offset: 2px;
 
