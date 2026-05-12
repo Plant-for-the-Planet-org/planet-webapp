@@ -15,7 +15,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import { MenuItem, Button, TextField } from '@mui/material';
+import { MenuItem, Button, TextField, Stack } from '@mui/material';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -282,6 +282,7 @@ export default function ProjectSites({
 
         {showForm ? (
           <div className={clsx({ [styles.shallowOpacity]: isUploadingData })} style={{ width: 'inherit' }}>
+            <Stack spacing={2} sx={{ mb: 2 }}>
             <InlineFormDisplayGroup>
               <Controller
                 name="name"
@@ -376,6 +377,7 @@ export default function ProjectSites({
                 )}
               />
             </InlineFormDisplayGroup>
+            </Stack>
 
             {geoLocation && <SiteGeometryEditor geoJson={geoJson} setGeoJson={setGeoJson} setErrorMessage={setErrorMessage} />}
 
