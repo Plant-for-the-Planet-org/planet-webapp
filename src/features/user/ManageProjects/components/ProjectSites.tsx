@@ -15,7 +15,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import { MenuItem, Button, TextField } from '@mui/material';
+import { MenuItem, Button, TextField, CircularProgress } from '@mui/material';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -85,6 +85,7 @@ export default function ProjectSites({
     reset,
   } = useForm<ProjectSitesFormData>();
 
+  const [isLoadingSites, setIsLoadingSites] = useState<boolean>(true);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -142,6 +143,8 @@ export default function ProjectSites({
     } catch (err) {
       setErrors(handleError(err as APIError));
       router.push(localizedPath('/profile'));
+    } finally {
+      setIsLoadingSites(false);
     }
   }, [projectGUID]);
 
@@ -266,6 +269,11 @@ export default function ProjectSites({
             verificationStatus={projectDetails.verificationStatus}
           />
         )}
+
+        {isLoadingSites ? (
+          <CircularProgress size={32} />
+        ) : (
+        <>
         <InlineFormDisplayGroup>
           {siteList
             .filter((site) => site.geometry !== null)
@@ -482,6 +490,8 @@ export default function ProjectSites({
           continueButtonText={t('delete')}
           cancelButtonText={t('cancel')}
         />
+        </>
+        )}
       </StyledForm>
     </CenteredContainer>
   );
