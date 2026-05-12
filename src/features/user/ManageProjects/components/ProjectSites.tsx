@@ -170,9 +170,10 @@ export default function ProjectSites({
             acquisitionYear: data.acquisitionYear
               ? Number(data.acquisitionYear)
               : null,
-            yearAbandoned: data.yearAbandoned
-              ? Number(data.yearAbandoned)
-              : null,
+            yearAbandoned:
+              projectDetails?.purpose !== 'conservation' && data.yearAbandoned
+                ? Number(data.yearAbandoned)
+                : null,
           },
         }
       );
@@ -238,6 +239,8 @@ export default function ProjectSites({
     },
   ];
 
+  const purpose = projectDetails?.purpose ?? 'trees';
+
   const EditProps = {
     openModal,
     handleModalClose,
@@ -250,6 +253,7 @@ export default function ProjectSites({
     setSiteList,
     setEditMode,
     siteGUID,
+    purpose,
   };
 
   return (
@@ -357,26 +361,28 @@ export default function ProjectSites({
                   />
                 )}
               />
-              <Controller
-                name="yearAbandoned"
-                control={control}
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <TextField
-                    label={t('yearOfAbandonment')}
-                    variant="outlined"
-                    type="number"
-                    onChange={onChange}
-                    value={value ?? ''}
-                    onBlur={onBlur}
-                    inputProps={{ min: 1900, max: 2100 }}
-                    error={errors.yearAbandoned !== undefined}
-                    helperText={
-                      errors.yearAbandoned !== undefined &&
-                      errors.yearAbandoned.message
-                    }
-                  />
-                )}
-              />
+              {purpose !== 'conservation' && (
+                <Controller
+                  name="yearAbandoned"
+                  control={control}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      label={t('yearOfAbandonment')}
+                      variant="outlined"
+                      type="number"
+                      onChange={onChange}
+                      value={value ?? ''}
+                      onBlur={onBlur}
+                      inputProps={{ min: 1900, max: 2100 }}
+                      error={errors.yearAbandoned !== undefined}
+                      helperText={
+                        errors.yearAbandoned !== undefined &&
+                        errors.yearAbandoned.message
+                      }
+                    />
+                  )}
+                />
+              )}
             </InlineFormDisplayGroup>
 
             {geoLocation && <SiteGeometryEditor geoJson={geoJson} setGeoJson={setGeoJson} setErrorMessage={setErrorMessage} />}

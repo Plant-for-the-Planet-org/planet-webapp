@@ -288,6 +288,7 @@ interface EditSiteProps {
   setSiteList: SetState<Site[]>;
   setEditMode: SetState<boolean>;
   siteGUID: Nullable<string>;
+  purpose: 'trees' | 'conservation';
 }
 
 // project spending

@@ -28,6 +28,7 @@ function EditSite({
   setSiteList,
   setEditMode,
   siteGUID,
+  purpose,
 }: EditSiteProps) {
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
@@ -66,7 +67,10 @@ function EditSite({
         acquisitionYear: data.acquisitionYear
           ? Number(data.acquisitionYear)
           : null,
-        yearAbandoned: data.yearAbandoned ? Number(data.yearAbandoned) : null,
+        yearAbandoned:
+          purpose !== 'conservation' && data.yearAbandoned
+            ? Number(data.yearAbandoned)
+            : null,
       };
 
       try {
@@ -193,28 +197,30 @@ function EditSite({
                   )}
                 />
               </div>
-              <div className={styles.formFieldHalf}>
-                <Controller
-                  name="yearAbandoned"
-                  control={control}
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <TextField
-                      label={t('yearOfAbandonment')}
-                      variant="outlined"
-                      type="number"
-                      onChange={onChange}
-                      value={value ?? ''}
-                      onBlur={onBlur}
-                      inputProps={{ min: 1900, max: 2100 }}
-                      error={errors.yearAbandoned !== undefined}
-                      helperText={
-                        errors.yearAbandoned !== undefined &&
-                        errors.yearAbandoned.message
-                      }
-                    />
-                  )}
-                />
-              </div>
+              {purpose !== 'conservation' && (
+                <div className={styles.formFieldHalf}>
+                  <Controller
+                    name="yearAbandoned"
+                    control={control}
+                    render={({ field: { onChange, value, onBlur } }) => (
+                      <TextField
+                        label={t('yearOfAbandonment')}
+                        variant="outlined"
+                        type="number"
+                        onChange={onChange}
+                        value={value ?? ''}
+                        onBlur={onBlur}
+                        inputProps={{ min: 1900, max: 2100 }}
+                        error={errors.yearAbandoned !== undefined}
+                        helperText={
+                          errors.yearAbandoned !== undefined &&
+                          errors.yearAbandoned.message
+                        }
+                      />
+                    )}
+                  />
+                </div>
+              )}
             </div>
 
             <SiteGeometryEditor {...MapProps} />
