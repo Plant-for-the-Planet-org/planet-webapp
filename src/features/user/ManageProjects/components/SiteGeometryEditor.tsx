@@ -181,7 +181,7 @@ export default function SiteGeometryEditor({
 
   useEffect(() => {
     async function loadMapStyle() {
-      const result = await getMapStyle('default');
+      const result = await getMapStyle('openStreetMap');
       if (result) {
         setMapState((prev) => ({ ...prev, mapStyle: result }));
       }
