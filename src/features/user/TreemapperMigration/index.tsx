@@ -34,7 +34,8 @@ const TreemapperMigration = (): ReactElement => {
       <div className={styles.card}>
         <Image
           src="/assets/images/treemapper/migration-graphics.webp"
-          alt="Migration Graphics"
+          alt=""
+          role="presentation"
           width={240}
           height={210}
         />
