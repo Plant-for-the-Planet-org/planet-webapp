@@ -296,7 +296,7 @@
       "syncSitesToRestorEco": "Sites mit Restor.eco synchronisieren",
       "success": "Ihre Sites wurden erfolgreich mit Restor.eco synchronisiert!",
       "error": "Die Synchronisierung der Site-Daten ist fehlgeschlagen. Bitte versuchen Sie es später erneut.",
-      "partialError": "Fehler beim Hochladen einiger Stes"
+      "partialError": "Fehler beim Hochladen einiger Sites"
     }
   }
 }
