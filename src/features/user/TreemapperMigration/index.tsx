@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
 
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
+import WebappButton from '../../common/WebappButton';
 import styles from './TreemapperMigration.module.scss';
 
 /**
@@ -20,15 +20,13 @@ const TreemapperMigration = (): ReactElement => {
         <Typography variant="body1" color="white">
           {t('migrationSubtitle')}
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
+        <WebappButton
+          elementType="link"
           href="https://dash.treemapper.app/"
           target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t('openDashboard')}
-        </Button>
+          variant="primary"
+          text={t('openDashboard')}
+        />
         <a
           className={styles.supportLink}
           href="mailto:support@plant-for-the-planet.org"
