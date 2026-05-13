@@ -75,6 +75,10 @@
     "submit": "Einreichen",
     "plantStatus": "Pflanz-Status",
     "status": "Status",
-    "reason": "Grund"
+    "reason": "Grund",
+    "migrationTitle": "Ihre Daten wurden erfolgreich migriert.",
+    "migrationSubtitle": "Ihr Dashboard-Erlebnis ist in eine eigene Web-App umgezogen – für bessere Leistung und schnellere Updates.",
+    "openDashboard": "Dashboard öffnen",
+    "contactSupport": "Support kontaktieren"
   }
 }
