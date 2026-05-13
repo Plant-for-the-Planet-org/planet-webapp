@@ -2,19 +2,23 @@ import type { ReactElement } from 'react';
 
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import styles from './TreemapperMigration.module.scss';
 
+/**
+ * Renders the migration landing card directing users to the new TreeMapper dashboard.
+ */
 const TreemapperMigration = (): ReactElement => {
+  const t = useTranslations('Treemapper');
+
   return (
     <section className={styles.container}>
       <div className={styles.card}>
         <Typography variant="h2" color="white">
-          Your Data Has Been Successfully Migrated.
+          {t('migrationTitle')}
         </Typography>
         <Typography variant="body1" color="white">
-          All your project and site data is now available in the new Data
-          Explorer.
+          {t('migrationSubtitle')}
         </Typography>
         <Button
           variant="contained"
@@ -23,16 +27,14 @@ const TreemapperMigration = (): ReactElement => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Open Dashboard
+          {t('openDashboard')}
         </Button>
-        <Link
+        <a
           className={styles.supportLink}
           href="mailto:support@plant-for-the-planet.org"
-          target="_blank"
-          rel="noopener noreferrer"
         >
-          Contact Support
-        </Link>
+          {t('contactSupport')}
+        </a>
       </div>
     </section>
   );

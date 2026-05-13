@@ -10,26 +10,25 @@
   background-color: $dsWhite;
   border-radius: 24px;
   padding: 24px;
-  height: 640px;
+  min-height: 640px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 16px;
   text-align: center;
-
   background-image: url('/assets/images/treemapper/treemapper-migration-background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
   @include smTabletView {
-    height: 680px;
+    min-height: 680px;
     padding: 40px;
   }
 
   @include lgLaptopView {
-    height: 760px;
+    min-height: 760px;
     padding: 56px;
   }
 }

@@ -13,6 +13,7 @@ import Head from 'next/head';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import TreemapperMigration from '../../../../../src/features/user/TreemapperMigration';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
+import { UserProfileLoader } from '../../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import {
@@ -21,10 +22,13 @@ import {
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../tenant.config';
 
+/**
+ * Next.js page for the new TreeMapper dashboard at /treemapper.
+ */
 function TreemapperDashboardPage(): ReactElement {
   const t = useTranslations('Me');
   const isInitialized = useTenantStore((state) => state.isInitialized);
-  if (!isInitialized) return <></>;
+  if (!isInitialized) return <UserProfileLoader />;
 
   return (
     <UserLayout>
@@ -40,6 +44,9 @@ function TreemapperDashboardPage(): ReactElement {
 
 export default TreemapperDashboardPage;
 
+/**
+ * Generates static paths for every tenant slug, locale defaulted to 'en'.
+ */
 export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
@@ -64,6 +71,9 @@ interface PageProps {
   tenantConfig: Tenant;
 }
 
+/**
+ * Loads i18n messages and the tenant config for the requested slug + locale.
+ */
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {

@@ -72,6 +72,10 @@
     "measurements": "Medidas",
     "ignoredColumnsWarning": "As colunas extras foram ignoradas",
     "back": "Voltar",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "migrationTitle": "Your Data Has Been Successfully Migrated.",
+    "migrationSubtitle": "All your project and site data is now available in the new Data Explorer.",
+    "openDashboard": "Open Dashboard",
+    "contactSupport": "Contact Support"
   }
 }
