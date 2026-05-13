@@ -76,8 +76,8 @@
     "plantStatus": "Pflanz-Status",
     "status": "Status",
     "reason": "Grund",
-    "migrationTitle": "Ihre Daten wurden erfolgreich migriert.",
-    "migrationSubtitle": "Ihr Dashboard-Erlebnis ist in eine eigene Web-App umgezogen – für bessere Leistung und schnellere Updates.",
+    "migrationTitle": "Die Daten wurden erfolgreich migriert.",
+    "migrationSubtitle": "Das Dashboard wurde in eine separate Webanwendung verlagert, um eine bessere Leistung und schnellere Updates zu ermöglichen.",
     "openDashboard": "Dashboard öffnen",
     "contactSupport": "Support kontaktieren"
   }

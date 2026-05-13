@@ -288,7 +288,7 @@
           "activeAccount": "<bold>Aktives Konto:</bold> Stellen Sie sicher, dass Sie über ein aktives Konto bei Restor.eco verfügen, bevor Sie fortfahren.",
           "consultation": "<bold>Rücksprache:</bold> Bitte nutzen Sie diese Funktion nur, wenn Sie sich zuvor mit dem Team von Plant-for-the-Planet abgestimmt haben."
         },
-        "helpText": "Falls Sie Fragen zu dieser Integration haben, wenden Sie sich bitte an <emailLink>{email}</emailLink>."
+        "helpText": "Falls Sie Fragen zu dieser Integration haben, wenden Sie sich bitte an <emailLink>maximilian.schmidt@plant-for-the-planet.org</emailLink>."
       },
       "send": "Senden",
       "cancel": "Abbrechen",
@@ -296,7 +296,7 @@
       "syncSitesToRestorEco": "Sites mit Restor.eco synchronisieren",
       "success": "Ihre Sites wurden erfolgreich mit Restor.eco synchronisiert!",
       "error": "Die Synchronisierung der Site-Daten ist fehlgeschlagen. Bitte versuchen Sie es später erneut.",
-      "partialError": "Fehler beim Hochladen einiger Sites"
+      "partialError": "Fehler beim Hochladen einiger Websites"
     }
   }
 }
