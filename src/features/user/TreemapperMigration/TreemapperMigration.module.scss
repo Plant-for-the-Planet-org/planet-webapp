@@ -17,9 +17,9 @@
   justify-content: center;
   gap: 16px;
   text-align: center;
-  background-image: url('/assets/images/treemapper/treemapper-migration-background.png');
+  background-image: url('/assets/images/treemapper/treemapper-migration-background.webp');
   background-size: cover;
-  background-position: center;
+  background-position: bottom;
   background-repeat: no-repeat;
 
   @include smTabletView {
@@ -46,7 +46,7 @@
 
 .supportLink {
   font-size: $fontSmall;
-  color: $dsWhite;
+  color: $primaryFontColor;
   text-decoration: underline;
   text-underline-offset: 2px;
 
