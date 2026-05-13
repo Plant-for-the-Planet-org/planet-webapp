@@ -23,11 +23,11 @@ const TreemapperMigration = (): ReactElement => {
   const t = useTranslations('Treemapper');
   const router = useRouter();
 
-  const source = typeof router.query.source === 'string'
-    ? router.query.source
-    : undefined;
+  const source =
+    typeof router.query.source === 'string' ? router.query.source : undefined;
 
-  const dashboardUrl = (source && DASHBOARD_URLS[source]) || DEFAULT_DASHBOARD_URL;
+  const dashboardUrl =
+    (source && DASHBOARD_URLS[source]) || DEFAULT_DASHBOARD_URL;
 
   return (
     <section className={styles.container}>
@@ -41,6 +41,7 @@ const TreemapperMigration = (): ReactElement => {
         />
         <Typography variant="h2">{t('migrationTitle')}</Typography>
         <Typography variant="body1">{t('migrationSubtitle')}</Typography>
+        <div className={styles.spacer} />
         <WebappButton
           elementType="link"
           href={dashboardUrl}
