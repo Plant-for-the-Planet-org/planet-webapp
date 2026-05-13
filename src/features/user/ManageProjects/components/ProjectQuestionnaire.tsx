@@ -89,6 +89,12 @@ function buildDefaults(
 
     if (field.type === 'multi_choice') {
       defaults[name] = Array.isArray(val) ? (val as string[]) : [];
+      // Restore companion "other" text if the field includes that choice
+      if (field.choices?.includes('other')) {
+        const otherKey = `${name}__other`;
+        const otherVal = existing?.[otherKey];
+        defaults[otherKey] = typeof otherVal === 'string' ? otherVal : '';
+      }
     } else if (field.type === 'number' || field.type === 'integer') {
       defaults[name] =
         typeof val === 'number' ? val : val != null ? Number(val) : '';
@@ -265,10 +271,12 @@ export default function ProjectQuestionnaire({
     if (field.type === 'multi_choice' && field.choices) {
       return (
         <div key={name} className={styles.formFieldLarge}>
-          <FormLabel component="legend" sx={{ mb: 1 }}>
+          <FormLabel component="legend" sx={{ mb: 0.5 }}>
             {field.label}
           </FormLabel>
-          {field.description && <p>{field.description}</p>}
+          {field.description && (
+            <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+          )}
           <Controller
             name={name}
             control={control}
@@ -299,6 +307,26 @@ export default function ProjectQuestionnaire({
               );
             }}
           />
+          {field.choices!.includes('other') &&
+            Array.isArray(watchedValues[name]) &&
+            (watchedValues[name] as string[]).includes('other') && (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              <Controller
+                name={`${name}__other` as any}
+                control={control}
+                shouldUnregister
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextField
+                    label="Please specify"
+                    fullWidth
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={(value as string) ?? ''}
+                    sx={{ mt: 1 }}
+                  />
+                )}
+              />
+            )}
           {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );
@@ -308,6 +336,9 @@ export default function ProjectQuestionnaire({
     if (field.type === 'number' || field.type === 'integer') {
       return (
         <div key={name} className={styles.formFieldLarge}>
+          {field.description && (
+            <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+          )}
           <Controller
             name={name}
             control={control}
@@ -315,7 +346,6 @@ export default function ProjectQuestionnaire({
             render={({ field: { onChange, onBlur, value } }) => (
               <TextField
                 label={field.label}
-                helperText={field.description ?? undefined}
                 type="number"
                 fullWidth
                 onChange={onChange}
@@ -333,9 +363,12 @@ export default function ProjectQuestionnaire({
     if (field.type === 'row_list' && field.rows) {
       return (
         <div key={name} className={styles.formFieldLarge}>
-          <FormLabel component="legend" sx={{ mb: 1 }}>
+          <FormLabel component="legend" sx={{ mb: 0.5 }}>
             {field.label}
           </FormLabel>
+          {field.description && (
+            <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+          )}
           <Table
             size="small"
             sx={{ '& td, & th': tableCellSx, tableLayout: 'auto' }}
@@ -368,9 +401,6 @@ export default function ProjectQuestionnaire({
               ))}
             </TableBody>
           </Table>
-          {field.description && (
-            <FormHelperText>{field.description}</FormHelperText>
-          )}
           {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );
@@ -387,9 +417,12 @@ export default function ProjectQuestionnaire({
           className={styles.formFieldLarge}
           style={{ overflowX: 'auto' }}
         >
-          <FormLabel component="legend" sx={{ mb: 1 }}>
+          <FormLabel component="legend" sx={{ mb: 0.5 }}>
             {field.label}
           </FormLabel>
+          {field.description && (
+            <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+          )}
           <Table
             size="small"
             sx={{ '& td, & th': tableCellSx, tableLayout: 'auto' }}
@@ -461,9 +494,6 @@ export default function ProjectQuestionnaire({
               ))}
             </TableBody>
           </Table>
-          {field.description && (
-            <FormHelperText>{field.description}</FormHelperText>
-          )}
           {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );
@@ -472,6 +502,9 @@ export default function ProjectQuestionnaire({
     // ── text / string / default ───────────────────────────────────────────
     return (
       <div key={name} className={styles.formFieldLarge}>
+        {field.description && (
+          <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+        )}
         <Controller
           name={name}
           control={control}
@@ -479,7 +512,6 @@ export default function ProjectQuestionnaire({
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
               label={field.label}
-              helperText={field.description ?? undefined}
               multiline
               minRows={3}
               fullWidth
