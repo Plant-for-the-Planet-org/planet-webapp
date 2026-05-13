@@ -77,7 +77,7 @@
     "status": "Status",
     "reason": "Grund",
     "migrationTitle": "Die Daten wurden erfolgreich migriert.",
-    "migrationSubtitle": "Das Dashboard wurde in eine separate Webanwendung verlagert, um eine bessere Leistung und schnellere Updates zu ermöglichen.",
+    "migrationSubtitle": "Das Dashboard-Erlebnis ist in eine eigene Web-App umgezogen – für bessere Leistung und schnellere Updates.",
     "openDashboard": "Dashboard öffnen",
     "contactSupport": "Support kontaktieren"
   }
