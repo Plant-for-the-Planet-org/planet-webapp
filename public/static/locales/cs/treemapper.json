@@ -73,9 +73,9 @@
     "ignoredColumnsWarning": "Další sloupce byly ignorovány",
     "back": "Zpět",
     "submit": "Odeslat",
-    "migrationTitle": "Your Data Has Been Successfully Migrated.",
-    "migrationSubtitle": "All your project and site data is now available in the new Data Explorer.",
-    "openDashboard": "Open Dashboard",
-    "contactSupport": "Contact Support"
+    "migrationTitle": "Vaše data byla úspěšně migrována.",
+    "migrationSubtitle": "Vaše prostředí dashboardu bylo přesunuto do samostatné webové aplikace pro lepší výkon a rychlejší aktualizace.",
+    "openDashboard": "Otevřít dashboard",
+    "contactSupport": "Kontaktovat podporu"
   }
 }

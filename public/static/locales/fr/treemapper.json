@@ -73,9 +73,9 @@
     "ignoredColumnsWarning": "Les colonnes supplémentaires ont été ignorées",
     "back": "Retour",
     "submit": "Soumettre",
-    "migrationTitle": "Your Data Has Been Successfully Migrated.",
-    "migrationSubtitle": "All your project and site data is now available in the new Data Explorer.",
-    "openDashboard": "Open Dashboard",
-    "contactSupport": "Contact Support"
+    "migrationTitle": "Vos données ont été migrées avec succès.",
+    "migrationSubtitle": "Votre tableau de bord a été déplacé vers une application web dédiée, pour de meilleures performances et des mises à jour plus rapides.",
+    "openDashboard": "Ouvrir le tableau de bord",
+    "contactSupport": "Contacter le support"
   }
 }

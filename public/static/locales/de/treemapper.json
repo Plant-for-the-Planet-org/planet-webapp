@@ -76,9 +76,9 @@
     "plantStatus": "Pflanz-Status",
     "status": "Status",
     "reason": "Grund",
-    "migrationTitle": "Your Data Has Been Successfully Migrated.",
-    "migrationSubtitle": "All your project and site data is now available in the new Data Explorer.",
-    "openDashboard": "Open Dashboard",
-    "contactSupport": "Contact Support"
+    "migrationTitle": "Ihre Daten wurden erfolgreich migriert.",
+    "migrationSubtitle": "Ihr Dashboard-Erlebnis ist in eine eigene Web-App umgezogen – für bessere Leistung und schnellere Updates.",
+    "openDashboard": "Dashboard öffnen",
+    "contactSupport": "Support kontaktieren"
   }
 }
