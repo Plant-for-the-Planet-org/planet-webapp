@@ -1,0 +1,13 @@
+diff --git a/node_modules/@planet-sdk/common/build/types/project/common.d.ts b/node_modules/@planet-sdk/common/build/types/project/common.d.ts
+index c711ea9..7f3704e 100644
+--- a/node_modules/@planet-sdk/common/build/types/project/common.d.ts
++++ b/node_modules/@planet-sdk/common/build/types/project/common.d.ts
+@@ -6,7 +6,7 @@ export interface Certificate {
+     issueDate: string;
+     certifierName: string;
+ }
+-export declare type TreeProjectClassification = 'large-scale-planting' | 'urban-planting' | 'agroforestry' | 'managed-regeneration' | 'natural-regeneration' | 'mangroves' | 'other-planting';
++export declare type TreeProjectClassification = 'restoration-tree-planting' | 'urban-planting' | 'agroforestry' | 'managed-regeneration' | 'natural-regeneration' | 'mangroves' | 'other-restoration';
+ export declare type FundProjectClassification = 'academy' | 'endowment' | 'funding' | 'membership' | 'sponsorship';
+ export interface Coordinates {
+     lon: number;

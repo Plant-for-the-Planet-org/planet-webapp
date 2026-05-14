@@ -25,7 +25,8 @@
     "prepare": "node ./husky-prepare.js",
     "analyze-css": "node scripts/css-static-analyzer.js",
     "analyze-css:ci": "node scripts/css-static-analyzer.js && echo 'CSS analysis passed'",
-    "find-typos": "cspell --words-only --unique . | sort --ignore-case >> project-words.txt"
+    "find-typos": "cspell --words-only --unique . | sort --ignore-case >> project-words.txt",
+    "postinstall": "patch-package"
   },
   "validate-branch-name": {
     "pattern": "^(main|develop){1}$|^(feature|hotfix)/[a-z0-9-_]+$",
@@ -184,6 +185,7 @@
     "eslint-plugin-storybook": "^0.6.15",
     "husky": "^8.0.3",
     "next-unused": "0.0.6",
+    "patch-package": "^8.0.1",
     "prettier": "^2.0.5",
     "storybook": "8.6.15",
     "typescript": "^5.9.2",
