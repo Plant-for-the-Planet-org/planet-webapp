@@ -156,7 +156,7 @@ export default function BasicDetails({
   const classifications = [
     {
       label: t('largeScalePlanting'),
-      value: 'large-scale-planting',
+      value: 'restoration-tree-planting',
     },
     {
       label: t('agroforestry'),
@@ -176,7 +176,7 @@ export default function BasicDetails({
     },
     {
       label: t('otherPlanting'),
-      value: 'other-planting',
+      value: 'other-restoration',
     },
   ];
 

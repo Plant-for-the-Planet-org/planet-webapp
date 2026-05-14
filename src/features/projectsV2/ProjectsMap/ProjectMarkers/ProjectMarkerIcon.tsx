@@ -53,9 +53,9 @@ const ProjectMarkerIcon = ({ projectProperties }: Props) => {
       return <Agroforestry color={iconColor} />;
     case 'urban-planting':
       return <UrbanRestoration color={iconColor} />;
-    case 'large-scale-planting':
+    case 'restoration-tree-planting':
       return <TreePlanting color={iconColor} />;
-    case 'other-planting':
+    case 'other-restoration':
       return <OtherPlanting color={iconColor} />;
     default:
       return null;

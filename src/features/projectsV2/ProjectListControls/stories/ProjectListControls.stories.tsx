@@ -13,12 +13,12 @@ const meta: Meta<typeof ProjectListControls> = {
     selectedClassification: {
       control: 'multi-select',
       options: [
-        'large-scale-planting',
+        'restoration-tree-planting',
         'agroforestry',
         'natural-regeneration',
         'managed-regeneration',
         'urban-planting',
-        'other-planting',
+        'other-restoration',
       ],
     },
   },

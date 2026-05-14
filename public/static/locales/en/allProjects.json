@@ -5,12 +5,12 @@
     "deforestation": "Deforestation",
     "projects": "Projects",
     "classificationTypes": {
-      "large-scale-planting": "Large Scale Restoration",
+      "restoration-tree-planting": "Large Scale Restoration",
       "agroforestry": "Agroforestry",
       "natural-regeneration": "Natural Regeneration",
       "managed-regeneration": "Managed Regeneration",
       "urban-planting": "Urban Planting",
-      "other-planting": "Other Planting",
+      "other-restoration": "Other Planting",
       "mangroves": "Mangroves"
     },
     "noFilterApplied": "No Filter Applied",

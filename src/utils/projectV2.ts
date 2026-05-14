@@ -128,13 +128,13 @@ export const getProjectCategory = (
 };
 
 export const availableFilters: TreeProjectClassification[] = [
-  'large-scale-planting',
+  'restoration-tree-planting',
   'agroforestry',
   'natural-regeneration',
   'managed-regeneration',
   'urban-planting',
   'mangroves',
-  'other-planting',
+  'other-restoration',
 ];
 
 export const isValidClassification = (
