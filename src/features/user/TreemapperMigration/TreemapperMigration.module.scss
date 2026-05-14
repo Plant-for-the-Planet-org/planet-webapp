@@ -17,9 +17,9 @@
   justify-content: center;
   gap: 16px;
   text-align: center;
-  background-image: url('/assets/images/treemapper/treemapper-migration-background.png');
+  background-image: url('/assets/images/treemapper/treemapper-migration-background.webp');
   background-size: cover;
-  background-position: center;
+  background-position: bottom;
   background-repeat: no-repeat;
 
   @include smTabletView {
@@ -33,20 +33,42 @@
   }
 }
 
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
 .title {
-  color: $primaryFontColor;
-  max-width: 480px;
+  font-size: $fontLarge;
+  font-weight: bold;
+
+  @include lgLaptopView {
+    font-size: $fontXLarge;
+  }
 }
 
 .subtitle {
-  color: $dsSoftText;
-  max-width: 520px;
-  margin-bottom: 8px;
+  font-size: $fontXSmall;
+
+  @include smTabletView {
+    font-size: $fontSmall;
+  }
+
+  @include lgLaptopView {
+    font-size: $fontSixteen;
+  }
+}
+
+.spacer {
+  margin-bottom: 4px;
 }
 
 .supportLink {
   font-size: $fontSmall;
-  color: $dsWhite;
+  color: $primaryFontColor;
   text-decoration: underline;
   text-underline-offset: 2px;
 

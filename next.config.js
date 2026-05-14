@@ -169,6 +169,26 @@ const nextConfig = {
         destination: '/:locale/profile',
         permanent: true,
       },
+      {
+        source: '/:locale/profile/treemapper',
+        destination: '/:locale/treemapper?source=plant-locations',
+        permanent: false,
+      },
+      {
+        source: '/:locale/profile/treemapper/data-explorer',
+        destination: '/:locale/treemapper?source=data-explorer',
+        permanent: false,
+      },
+      {
+        source: '/:locale/profile/treemapper/my-species',
+        destination: '/:locale/treemapper?source=my-species',
+        permanent: false,
+      },
+      {
+        source: '/:locale/profile/treemapper/import',
+        destination: '/:locale/treemapper?source=import',
+        permanent: false,
+      },
     ];
   },
   assetPrefix: hasAssetPrefix
