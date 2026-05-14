@@ -33,6 +33,35 @@
   }
 }
 
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.title {
+  font-size: $fontLarge;
+  font-weight: bold;
+
+  @include lgLaptopView {
+    font-size: $fontXLarge;
+  }
+}
+
+.subtitle {
+  font-size: $fontXSmall;
+
+  @include smTabletView {
+    font-size: $fontSmall;
+  }
+
+  @include lgLaptopView {
+    font-size: $fontSixteen;
+  }
+}
+
 .spacer {
   margin-bottom: 4px;
 }

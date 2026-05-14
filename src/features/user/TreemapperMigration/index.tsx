@@ -39,8 +39,11 @@ const TreemapperMigration = (): ReactElement => {
           width={240}
           height={210}
         />
-        <Typography variant="h2">{t('migrationTitle')}</Typography>
-        <Typography variant="body1">{t('migrationSubtitle')}</Typography>
+        <div className={styles.spacer} />
+        <div className={styles.contentContainer}>
+          <p className={styles.title}>{t('migrationTitle')}</p>
+          <p className={styles.subtitle}>{t('migrationSubtitle')}</p>
+        </div>
         <div className={styles.spacer} />
         <WebappButton
           elementType="link"
