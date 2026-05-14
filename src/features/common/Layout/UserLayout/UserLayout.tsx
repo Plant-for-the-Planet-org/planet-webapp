@@ -87,32 +87,8 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         key: 'treemapper',
         title: t('treemapper'),
         icon: <TreeMapperIcon />,
-        flag: t('beta'),
-        subMenu: [
-          {
-            key: 'plant-locations',
-            title: t('plantLocations'),
-            path: '/profile/treemapper',
-          },
-          {
-            key: 'my-species',
-            title: t('mySpecies'),
-            path: '/profile/treemapper/my-species',
-            hideItem: !(user?.type === 'tpo'),
-          },
-          {
-            key: 'import',
-            title: t('import'),
-            path: '/profile/treemapper/import',
-            hideItem: !(user?.type === 'tpo'),
-          },
-          {
-            key: 'data-explorer',
-            title: t('dataExplorer'),
-            path: '/profile/treemapper/data-explorer',
-            hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
-          },
-        ],
+        path: '/treemapper',
+        matchPattern: 'prefix',
       },
       {
         key: 'projects',
