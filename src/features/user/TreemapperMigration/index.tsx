@@ -1,11 +1,9 @@
 import type { ReactElement } from 'react';
 
-import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import WebappButton from '../../common/WebappButton';
 import styles from './TreemapperMigration.module.scss';
-import Image from 'next/image';
 
 const DASHBOARD_URLS: Record<string, string> = {
   'plant-locations': 'https://dash.treemapper.app/dashboard/intervention',
@@ -32,7 +30,7 @@ const TreemapperMigration = (): ReactElement => {
   return (
     <section className={styles.container}>
       <div className={styles.card}>
-        <Image
+        <img
           src="/assets/images/treemapper/migration-graphics.webp"
           alt=""
           role="presentation"
