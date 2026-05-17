@@ -205,15 +205,18 @@ export default function ManageProjects({
   useEffect(() => {
     const purpose = project?.purpose;
     if (!purpose || !project?.acceptDonations) return;
-    if (getCachedSchema(purpose)) return; // already in cache
+    if (getCachedSchema(purpose, locale)) return; // already in cache
 
     const prefetch = async () => {
       try {
         const schema = await getApiAuthenticated<QuestionnaireSchema>(
           `/app/projects/questionnaire-schema/${purpose}`,
-          { additionalHeaders: { Accept: 'application/json' } }
+          {
+            additionalHeaders: { Accept: 'application/json' },
+            queryParams: { locale },
+          }
         );
-        setCachedSchema(purpose, schema);
+        setCachedSchema(purpose, locale, schema);
         setQuestionnaireSchema(schema);
       } catch {
         // silently fail
@@ -236,13 +239,16 @@ export default function ManageProjects({
       try {
         // Use module-level cache to avoid a redundant HTTP request when the
         // Questionnaire component has already fetched (or vice-versa).
-        let schema = getCachedSchema(purpose);
+        let schema = getCachedSchema(purpose, locale);
         if (!schema) {
           schema = await getApiAuthenticated<QuestionnaireSchema>(
             `/app/projects/questionnaire-schema/${purpose}`,
-            { additionalHeaders: { Accept: 'application/json' } }
+            {
+              additionalHeaders: { Accept: 'application/json' },
+              queryParams: { locale },
+            }
           );
-          setCachedSchema(purpose, schema);
+          setCachedSchema(purpose, locale, schema);
         }
         setQuestionnaireSchema(schema);
         const visibleFields = Object.entries(schema.fields).filter(

@@ -26,7 +26,7 @@ import {
   TableRow,
   TextField,
 } from '@mui/material';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import styles from '../StepForm.module.scss';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
@@ -164,13 +164,14 @@ export default function ProjectQuestionnaire({
   purpose,
 }: QuestionnaireProps): ReactElement {
   const t = useTranslations('ManageProjects');
+  const locale = useLocale();
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   // Lazy initializer: check initialSchema then module cache synchronously,
   // so the schema is available on the very first render if the parent pre-fetched it.
   const [schema, setSchema] = useState<QuestionnaireSchema | null>(
-    () => initialSchema ?? getCachedSchema(purpose) ?? null
+    () => initialSchema ?? getCachedSchema(purpose, locale) ?? null
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -210,9 +211,12 @@ export default function ProjectQuestionnaire({
       try {
         const result = await getApiAuthenticated<QuestionnaireSchema>(
           `/app/projects/questionnaire-schema/${purpose}`,
-          { additionalHeaders: { Accept: 'application/json' } }
+          {
+            additionalHeaders: { Accept: 'application/json' },
+            queryParams: { locale },
+          }
         );
-        setCachedSchema(purpose, result);
+        setCachedSchema(purpose, locale, result);
         setSchema(result);
       } catch (err) {
         setErrors(parseApiError(err as APIError));
