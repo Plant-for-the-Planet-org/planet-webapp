@@ -126,6 +126,7 @@ const nextConfig = {
     LAYERS_API_KEY: process.env.LAYERS_API_KEY,
     LAYERS_API_ENDPOINT: process.env.LAYERS_API_ENDPOINT,
     ENABLE_EXPLORE: process.env.ENABLE_EXPLORE,
+    TREEMAPPER_URL: process.env.TREEMAPPER_URL,
   },
   trailingSlash: false,
   reactStrictMode: true,

@@ -64,13 +64,8 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
     setIsLoading(true);
     try {
       const result = await getApi<Intervention[]>(
-        `/app/interventions/${projectId}`,
-        {
-          queryParams: {
-            // Fetches sampleInterventions within each intervention
-            _scope: 'extended',
-          },
-        }
+        // TODO: temporary TreeMapper API; revert to `/app/interventions/${projectId}` before merge
+        `${process.env.TREEMAPPER_URL}/api/external/project/${projectId}/interventions`
       );
       setInterventions(result);
     } catch (err) {
