@@ -65,7 +65,7 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
     try {
       const result = await getApi<Intervention[]>(
         // TODO: temporary TreeMapper API; revert to `/app/interventions/${projectId}` before merge
-        `${process.env.TREEMAPPER_URL}/api/external/project/${projectId}/interventions`
+        `${process.env.TREEMAPPER_URL}/api/server/external/project/${projectId}/interventions`
       );
       setInterventions(result);
     } catch (err) {
