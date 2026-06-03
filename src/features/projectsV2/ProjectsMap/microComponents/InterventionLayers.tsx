@@ -194,6 +194,7 @@ export default function InterventionLayers(): ReactElement {
   if (!interventions || interventions.length === 0) {
     return <></>;
   }
+  //TODO
   const features = interventions
     .filter(hasRenderableGeometry)
     .filter(
