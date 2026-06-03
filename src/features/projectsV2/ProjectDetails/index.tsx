@@ -5,6 +5,7 @@ import type {
   SingleTreeRegistration,
 } from '@planet-sdk/common';
 import type { ExtendedProject } from '../../common/types/projectv2';
+import type { TreemapperApiResponse } from '../../common/types/map';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -63,11 +64,14 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const fetchInterventions = async (projectId: string) => {
     setIsLoading(true);
     try {
-      const result = await getApi<Intervention[]>(
+      // The TreeMapper API wraps its payload in a standard envelope
+      // ({ statusCode, message, error, data, code }); the interventions array
+      // lives in `data`, so we unwrap it before storing.
+      const response = await getApi<TreemapperApiResponse<Intervention[]>>(
         // TODO: temporary TreeMapper API; revert to `/app/interventions/${projectId}` before merge
         `${process.env.TREEMAPPER_URL}/api/server/external/project/${projectId}/interventions`
       );
-      setInterventions(result);
+      setInterventions(response.data ?? []);
     } catch (err) {
       setErrors(handleError(err as APIError | ClientError));
       setIsError(true);
