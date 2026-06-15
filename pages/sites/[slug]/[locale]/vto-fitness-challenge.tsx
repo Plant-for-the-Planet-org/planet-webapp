@@ -1,7 +1,4 @@
-import type {
-  LeaderBoard,
-  TenantScore,
-} from '../../../../src/features/common/types/campaign';
+import type { TenantScore } from '../../../../src/features/common/types/campaign';
 import type { AbstractIntlMessages } from 'next-intl';
 import type {
   GetStaticPaths,
@@ -21,10 +18,6 @@ import { useTenantStore } from '../../../../src/stores/tenantStore';
 
 export default function VTOFitnessChallenge() {
   // local state
-  const [leaderBoard, setLeaderBoard] = useState<LeaderBoard>({
-    mostDonated: [],
-    mostRecent: [],
-  });
   const [tenantScore, setTenantScore] = useState<TenantScore>({
     total: 0,
   });
@@ -36,36 +29,19 @@ export default function VTOFitnessChallenge() {
   const isInitialized = useTenantStore((state) => state.isInitialized);
 
   useEffect(() => {
-    async function loadData() {
-      try {
-        const leaderboardRes = await fetch(
-          `${process.env.WEBHOOK_URL}/salesforce-vto-2025-leaderboard`
-        );
-        if (leaderboardRes.ok && leaderboardRes.status === 200) {
-          const leaderBoardArr = await leaderboardRes.json();
-          setLeaderBoard(leaderBoardArr[0]);
-        }
-      } catch (err) {
-        console.error('Leaderboard could not be loaded:', err);
-      }
-
-      // hardcoded as per sf request
-      setTenantScore({ total: 80573 });
-      setIsLoaded(true);
-    }
-
-    loadData();
+    // hardcoded as per sf request
+    setTenantScore({ total: 80573 });
+    setIsLoaded(true);
   }, []);
 
   function getCampaignPage() {
-    if (leaderBoard === null || tenantScore === null) return <></>;
+    if (tenantScore === null) return <></>;
     let CampaignPage;
     switch (storedTenantSlug) {
       case 'salesforce':
         CampaignPage = SalesforceCampaign;
         return (
           <CampaignPage
-            leaderboard={leaderBoard}
             tenantScore={tenantScore}
             isLoaded={isLoaded}
           />
