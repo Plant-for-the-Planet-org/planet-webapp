@@ -6,8 +6,8 @@ import ProjectGrid from './components/ProjectGrid';
 import AboveFooter from './components/AboveFooter';
 
 import BlueCarbon from './components/BlueCarbon';
-import { useTenant } from '../../../features/common/Layout/TenantContext';
 import themeProperties from '../../../theme/themeProperties';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 interface Props {
   tenantScore: { total: number };
@@ -15,7 +15,8 @@ interface Props {
 }
 
 export default function Campaign({ tenantScore, isLoaded }: Props) {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   return (
     <>
       <Head>

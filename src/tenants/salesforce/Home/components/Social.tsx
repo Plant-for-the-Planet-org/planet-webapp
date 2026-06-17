@@ -1,9 +1,10 @@
 import styles from './../styles/Social.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
-import { useTenant } from '../../../../features/common/Layout/TenantContext';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 export default function Social() {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const url = encodeURI(
     tenantConfig.config.slug.indexOf('http://') == 0 ||

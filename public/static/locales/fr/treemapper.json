@@ -72,6 +72,10 @@
     "measurements": "Mesures",
     "ignoredColumnsWarning": "Les colonnes supplémentaires ont été ignorées",
     "back": "Retour",
-    "submit": "Soumettre"
+    "submit": "Soumettre",
+    "migrationTitle": "Vos données ont été migrées avec succès.",
+    "migrationSubtitle": "Votre tableau de bord a été déplacé vers une application web dédiée, pour de meilleures performances et des mises à jour plus rapides.",
+    "openDashboard": "Ouvrir le tableau de bord",
+    "contactSupport": "Contacter le support"
   }
 }

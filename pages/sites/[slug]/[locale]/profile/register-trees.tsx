@@ -6,9 +6,8 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common';
 
-import { useEffect } from 'react';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
@@ -17,40 +16,29 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
+const RegisterTrees = dynamic(
+  () => import('../../../../../src/features/user/RegisterTrees')
+);
 
-export default function Register({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+export default function Register(): ReactElement {
   const t = useTranslations('Me');
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
 
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  //store: action
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
-  const RegisterTrees = dynamic(
-    () => import('../../../../../src/features/user/RegisterTrees')
-  );
-  return tenantConfig ? (
+  if (!isInitialized) return <></>;
+
+  return (
     <UserLayout>
       <Head>
         <title>{t('registerTrees')}</title>
       </Head>
       <RegisterTrees />
     </UserLayout>
-  ) : (
-    <></>
   );
 }
 
@@ -81,13 +69,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'maps', 'me', 'country', 'profile', 'donate'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

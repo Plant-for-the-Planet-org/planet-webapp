@@ -8,9 +8,7 @@ import { Button, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
-
-import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import ProjectSelectAutocomplete from '../../../common/ProjectSelectAutocomplete';
 import styles from '../../../../../src/features/user/Widget/DonationLink/DonationLinkForm.module.scss';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import {
@@ -22,7 +20,7 @@ import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import QRCode from 'qrcode';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
-import { useUserStore } from '../../../../stores';
+import { useUserStore, useTenantStore } from '../../../../stores';
 
 interface DonationLinkFormProps {
   projectsList: ProjectOption[] | null;
@@ -39,7 +37,6 @@ const DonationLinkForm = ({
   const tDonationLink = useTranslations('DonationLink');
   const tCountry = useTranslations('Country');
   const tMe = useTranslations('Me');
-  const { tenantConfig } = useTenant();
   // local state
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('auto');
   const [language, setLanguage] = useState<LanguageType>({
@@ -54,8 +51,8 @@ const DonationLinkForm = ({
   const [qrCode, setQrCode] = useState<string | null>(null);
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
-
   const [isSupport, setIsSupport] = useState<boolean>(!userProfile?.isPrivate);
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const getDonationORCode = async () => {
     const data = await QRCode.toDataURL(donationUrl);
@@ -191,7 +188,8 @@ const DonationLinkForm = ({
               handleProjectChange={handleProjectChange}
               project={localProject}
               projectList={projectsList || []}
-              active={true}
+              showSearchIcon={true}
+              label={tDonationLink('labelProject')}
             />
           </div>
           <div className={styles.formSection}>

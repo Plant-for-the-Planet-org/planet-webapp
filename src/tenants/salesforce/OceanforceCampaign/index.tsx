@@ -5,8 +5,8 @@ import ContentSection from './components/ContentSection';
 import LeaderBoard from './components/LeaderBoardSection';
 import ParticipationSection from './components/ParticipationSection';
 import AdditionalContent from './components/AdditionalContent';
-import { useTenant } from '../../../features/common/Layout/TenantContext';
 import themeProperties from '../../../theme/themeProperties';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 interface Props {
   leaderboard: {
@@ -22,7 +22,8 @@ export default function Campaign({
   leaderboard,
   isLoaded,
 }: Props) {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   return (
     <>
       <Head>

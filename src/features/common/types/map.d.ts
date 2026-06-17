@@ -309,6 +309,18 @@ export type InterventionFeature = Feature<
   InterventionProperties
 >;
 
+/**
+ * Standard envelope every TreeMapper API response is wrapped in. The actual
+ * payload always lives in `data`.
+ */
+export interface TreemapperApiResponse<T> {
+  statusCode: number;
+  message: string;
+  error: string | null;
+  data: T | null;
+  code?: string;
+}
+
 // Map
 export interface ExtendedMapLibreMap extends MapLibreMap {
   getMap: () => MapLibreMap;

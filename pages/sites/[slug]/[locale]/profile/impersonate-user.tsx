@@ -12,28 +12,17 @@ import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import ImpersonateUser from '../../../../../src/features/user/Settings/ImpersonateUser';
-import { useEffect } from 'react';
 import AccessDeniedLoader from '../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import { useUserStore } from '../../../../../src/stores';
+import { useUserStore, useTenantStore } from '../../../../../src/stores';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-const ImpersonateUserPage = ({
-  pageProps: { tenantConfig },
-}: Props): ReactElement => {
+const ImpersonateUserPage = (): ReactElement => {
   const t = useTranslations('Me');
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
   // store: state
   const isImpersonationModeOn = useUserStore(
     (state) => state.isImpersonationModeOn
@@ -41,14 +30,11 @@ const ImpersonateUserPage = ({
   const hasImpersonationAccess = useUserStore(
     (state) => state.userProfile?.allowedToSwitch
   );
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  if (!isInitialized) return <></>;
 
-  return tenantConfig ? (
+  return (
     <UserLayout>
       <Head>
         <title>{t('switchUser')}</title>
@@ -59,8 +45,6 @@ const ImpersonateUserPage = ({
         <AccessDeniedLoader />
       )}
     </UserLayout>
-  ) : (
-    <></>
   );
 };
 
@@ -93,13 +77,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

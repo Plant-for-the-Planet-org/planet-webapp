@@ -5,7 +5,7 @@ import styles from './index.module.scss';
 import MuiButton from '../../../../../common/InputTypes/MuiButton';
 import { utils, write } from 'xlsx';
 import { saveAs } from 'file-saver';
-import ProjectSelectAutocomplete from '../ProjectSelectAutocomplete';
+import ProjectSelectAutocomplete from '../../../../../common/ProjectSelectAutocomplete';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import { useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -39,7 +39,7 @@ export const Export = () => {
     url: '/api/data-explorer/export',
     method: HTTP_METHOD.POST,
     body: {
-      projectId: localProject?.id,
+      projectId: localProject?.guid,
       startDate: localFromDate,
       endDate: localToDate,
     },
