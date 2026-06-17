@@ -10,12 +10,15 @@ import TabbedView from '../../common/Layout/TabbedView';
 import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
-import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useAuthStore, useErrorHandlingStore } from '../../../stores';
+import {
+  useAuthStore,
+  useErrorHandlingStore,
+  usePlanetCashStore,
+} from '../../../stores';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -37,15 +40,23 @@ export default function PlanetCash({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const locale = useLocale();
-  const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
   // store: state
+  const planetCashAccounts = usePlanetCashStore(
+    (state) => state.planetCashAccounts
+  );
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
   );
   // store: action
+  const setPlanetCashAccounts = usePlanetCashStore(
+    (state) => state.setPlanetCashAccounts
+  );
+  const setIsPlanetCashActive = usePlanetCashStore(
+    (state) => state.setIsPlanetCashActive
+  );
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const sortAccountsByActive = (
@@ -63,7 +74,7 @@ export default function PlanetCash({
   // Redirect routes based on whether at least one account is created.
   // Prevents multiple account creation.
   const redirectIfNeeded = useCallback(
-    (accounts) => {
+    (accounts: PlanetCashAccount[]) => {
       switch (step) {
         case PlanetCashTabs.CREATE_ACCOUNT:
           if (accounts.length) {
@@ -83,30 +94,33 @@ export default function PlanetCash({
     [step]
   );
 
-  const fetchAccounts = useCallback(async () => {
-    if (!accounts) {
-      try {
-        setIsDataLoading(true);
-        setProgress && setProgress(70);
-        const accounts = await getApiAuthenticated<PlanetCashAccount[]>(
-          '/app/planetCash'
-        );
-        redirectIfNeeded(accounts);
-        const sortedAccounts = sortAccountsByActive(accounts);
-        setIsPlanetCashActive(accounts.some((account) => account.isActive));
-        setAccounts(sortedAccounts);
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-      }
+  const fetchAccounts = async () => {
+    // If accounts already exist, just handle redirects
+    if (planetCashAccounts) {
+      redirectIfNeeded(planetCashAccounts);
+      return;
+    }
+
+    try {
+      setIsDataLoading(true);
+      setProgress && setProgress(70);
+      const accounts = await getApiAuthenticated<PlanetCashAccount[]>(
+        '/app/planetCash'
+      );
+      redirectIfNeeded(accounts);
+      const sortedAccounts = sortAccountsByActive(accounts);
+      setIsPlanetCashActive(accounts.some((account) => account.isActive));
+      setPlanetCashAccounts(sortedAccounts);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    } finally {
       setIsDataLoading(false);
       if (setProgress) {
         setProgress(100);
         setTimeout(() => setProgress(0), 1000);
       }
-    } else {
-      redirectIfNeeded(accounts);
     }
-  }, [accounts]);
+  };
 
   useEffect(() => {
     if (isAuthReady) fetchAccounts();
@@ -124,8 +138,8 @@ export default function PlanetCash({
     }
   };
   useEffect(() => {
-    if (accounts) {
-      if (!accounts.length) {
+    if (planetCashAccounts) {
+      if (!planetCashAccounts.length) {
         setTabConfig([
           {
             label: t('tabCreateAccount'),
@@ -147,7 +161,7 @@ export default function PlanetCash({
           },
         ]);
     }
-  }, [accounts, locale]);
+  }, [planetCashAccounts, locale]);
 
   return (
     <DashboardView
