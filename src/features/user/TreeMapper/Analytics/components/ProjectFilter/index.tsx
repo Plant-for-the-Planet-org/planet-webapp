@@ -2,7 +2,7 @@ import type { Project } from '../../../../../common/Layout/AnalyticsContext';
 
 import { useState } from 'react';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
-import ProjectSelectAutocomplete from '../ProjectSelectAutocomplete';
+import ProjectSelectAutocomplete from '../../../../../common/ProjectSelectAutocomplete';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import Grid from '@mui/material/Grid';
 import { useTranslations } from 'next-intl';

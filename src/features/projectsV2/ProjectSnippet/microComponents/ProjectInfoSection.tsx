@@ -3,13 +3,16 @@ import type { ProjectInfoProps } from '..';
 
 import { useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import WebappButton from '../../../common/WebappButton';
 import styles from '../styles/ProjectSnippet.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
-import { useQueryParamStore, useAuthStore } from '../../../../stores';
+import {
+  useQueryParamStore,
+  useAuthStore,
+  useTenantStore,
+} from '../../../../stores';
 
 const ProjectInfoSection = (props: ProjectInfoProps) => {
   const {
@@ -30,15 +33,15 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
   const tCommon = useTranslations('Common');
   const tCountry = useTranslations('Country');
   const tAllProjects = useTranslations('AllProjects');
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
   // store: state
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
   const embed = useQueryParamStore((state) => state.embed);
   const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
   const token = useAuthStore((state) => state.token);
 
   const donateLink = getDonationUrl(
-    tenantConfig.id,
+    tenantId,
     slug,
     token,
     embed || undefined,

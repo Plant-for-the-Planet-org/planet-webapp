@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
-import { useAuthStore, useUserStore } from '../stores';
-import { useTenant } from '../features/common/Layout/TenantContext';
+import { useAuthStore, useTenantStore, useUserStore } from '../stores';
+
 import { useLocale } from 'next-intl';
 import useProfileErrorHandler from './useProfileErrorHandler';
 import { useAuthSession } from './useAuthSession';
 
 export const useInitializeUser = () => {
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
   const { isAuthLoading, isAuthenticated, auth0User, auth0Error } =
     useAuthSession();
@@ -20,6 +19,7 @@ export const useInitializeUser = () => {
   const isImpersonationModeOn = useUserStore(
     (state) => state.isImpersonationModeOn
   );
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
   const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
   const setIsImpersonationModeOn = useUserStore(
@@ -32,7 +32,7 @@ export const useInitializeUser = () => {
     // Note: Intentionally not refetching on locale/tenant changes
     fetchUserProfile({
       token,
-      tenantConfigId: tenantConfig.id,
+      tenantConfigId: tenantId,
       locale,
     });
   }, [token, shouldRefetchUserProfile, fetchUserProfile]);

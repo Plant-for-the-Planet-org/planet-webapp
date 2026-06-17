@@ -1,9 +1,10 @@
+import { useTenantStore } from '../../../../../stores/tenantStore';
 import clsx from 'clsx';
-import { useTenant } from '../../TenantContext';
 import styles from '../Navbar.module.scss';
 
 const SecondaryLogo = ({ isMobile }: { isMobile: boolean }) => {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const shouldNotRenderLogo = isMobile && tenantConfig.config.slug === 'ttc';
   const hasWideLogo = tenantConfig.config.slug === 'concentrix';

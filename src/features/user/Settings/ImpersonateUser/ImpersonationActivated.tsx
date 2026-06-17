@@ -3,13 +3,11 @@ import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/Logout
 import styles from './ImpersonateUser.module.scss';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useAuthStore, useUserStore } from '../../../../stores';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useAuthStore, useTenantStore, useUserStore } from '../../../../stores';
 
 const ImpersonationActivated = () => {
   const t = useTranslations('Me');
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   // store: state
@@ -17,6 +15,7 @@ const ImpersonationActivated = () => {
   const isImpersonationModeOn = useUserStore(
     (state) => state.isImpersonationModeOn
   );
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
   const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
   const impersonatedUserEmail = useUserStore(
@@ -32,7 +31,7 @@ const ImpersonationActivated = () => {
     router.push(localizedPath(`/profile/impersonate-user`));
     fetchUserProfile({
       token,
-      tenantConfigId: tenantConfig.id,
+      tenantConfigId: tenantId,
       locale,
     });
   };

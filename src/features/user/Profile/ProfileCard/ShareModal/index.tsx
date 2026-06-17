@@ -13,7 +13,7 @@ import {
   XCustomIcon,
 } from '../../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import { useTranslations } from 'next-intl';
-import { useTenant } from '../../../../common/Layout/TenantContext';
+import { useTenantStore } from '../../../../../stores/tenantStore';
 
 const CustomCopyButton = () => {
   const t = useTranslations('Profile');
@@ -36,8 +36,10 @@ const ShareModal = ({
   userProfile,
 }: ShareModalProps) => {
   const { theme } = useContext(ThemeContext);
-  const { tenantConfig } = useTenant();
   const t = useTranslations('Profile');
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+
   const linkToShare = `${tenantConfig.config.tenantURL}/t/${userProfile?.slug}`;
   const textToShare = t('shareFeature.textToShare', {
     name: userProfile?.displayName,

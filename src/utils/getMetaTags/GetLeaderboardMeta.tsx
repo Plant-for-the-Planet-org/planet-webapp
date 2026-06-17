@@ -1,10 +1,11 @@
 import type { ReactElement } from 'react';
 
-import { useTenant } from '../../features/common/Layout/TenantContext';
 import Head from 'next/head';
+import { useTenantStore } from '../../stores/tenantStore';
 
 export default function GetLeaderboardMeta(): ReactElement {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   return (
     <Head>
