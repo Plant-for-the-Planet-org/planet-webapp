@@ -2,7 +2,7 @@
 
 ## Tasks
 
-- [ ] Delete `pages/sites/[slug]/[locale]/profile/treemapper/` (4 pages)
+- [x] Delete `pages/sites/[slug]/[locale]/profile/treemapper/` (4 pages)
 - [ ] Delete `src/features/user/TreeMapper/`
 - [ ] Delete `pages/sites/[slug]/[locale]/profile/register-trees.tsx`
 - [ ] Delete `src/features/user/RegisterTrees/`
