@@ -3,7 +3,8 @@
 ## Tasks
 
 - [x] Delete `pages/sites/[slug]/[locale]/profile/treemapper/` (4 pages)
-- [ ] Delete `src/features/user/TreeMapper/`
+- [x] Delete `src/features/user/TreeMapper/`
+- [x] Delete `pages/api/data-explorer/` (API routes that only served the deleted analytics page)
 - [ ] Delete `pages/sites/[slug]/[locale]/profile/register-trees.tsx`
 - [ ] Delete `src/features/user/RegisterTrees/`
 - [ ] Delete `public/static/locales/*/treemapperAnalytics.json` (7 files)
