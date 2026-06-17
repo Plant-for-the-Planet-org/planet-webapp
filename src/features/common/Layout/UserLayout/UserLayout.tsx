@@ -286,14 +286,9 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
     router.push(localizedPath('/login'));
   }, [isAuthResolved, userProfile]);
 
-  // While auth state is resolving
-  if (!isAuthResolved) {
-    return <UserProfileLoader />;
-  }
-
   //Auth resolved but no user (redirect in effect)
   if (!userProfile) {
-    return null;
+    return <UserProfileLoader />;
   }
 
   return (

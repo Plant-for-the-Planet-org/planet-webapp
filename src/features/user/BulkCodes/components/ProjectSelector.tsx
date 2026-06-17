@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import type { PlanetCashAccount } from '../../../common/Layout/BulkCodeContext';
 import type { PaymentOptions } from '../BulkCodesTypes';
 import type { APIError, CountryProject } from '@planet-sdk/common';
 
@@ -12,21 +11,19 @@ import {
   useUserStore,
   useErrorHandlingStore,
 } from '../../../../stores';
+import { useBulkCodeStore } from '../../../../stores/bulkCodeStore';
 import { useTranslations } from 'next-intl';
 
 interface ProjectSelectorProps {
-  projectList: CountryProject[];
   project: CountryProject | null;
   setProject?: (project: CountryProject | null) => void;
+  active?: boolean;
   disabled?: boolean;
-  planetCashAccount: PlanetCashAccount | null;
 }
 const ProjectSelector = ({
-  projectList,
   project,
   setProject,
   disabled = false,
-  planetCashAccount,
 }: ProjectSelectorProps): ReactElement | null => {
   const tBulkCodes = useTranslations('BulkCodes');
   const { getApiAuthenticated } = useApi();
@@ -35,6 +32,10 @@ const ProjectSelector = ({
     (state) => state.token !== null && state.isAuthResolved
   );
   const userProfile = useUserStore((state) => state.userProfile);
+  const projectList = useBulkCodeStore((state) => state.projectList);
+  const planetCashAccount = useBulkCodeStore(
+    (state) => state.planetCashAccount
+  );
   //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 

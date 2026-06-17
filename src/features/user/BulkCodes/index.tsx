@@ -1,22 +1,16 @@
 import type { ReactElement } from 'react';
 import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
-import type { APIError, CountryProject } from '@planet-sdk/common';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
-import { useBulkCode } from '../../common/Layout/BulkCodeContext';
-import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import {
-  useAuthStore,
-  useUserStore,
-  useErrorHandlingStore,
-} from '../../../stores';
+import { useAuthStore, useUserStore } from '../../../stores';
+import { useBulkCodeStore } from '../../../stores/bulkCodeStore';
 
 export enum BulkCodeSteps {
   SELECT_METHOD = 'select_method',
@@ -33,21 +27,21 @@ export default function BulkCodes({
 }: BulkCodesProps): ReactElement | null {
   const t = useTranslations('BulkCodes');
   const locale = useLocale();
-  const {
-    planetCashAccount,
-    setPlanetCashAccount,
-    projectList,
-    setProjectList,
-    bulkMethod,
-    project,
-  } = useBulkCode();
   const { getApi } = useApi();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   // store: state
   const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
+  const planetCashAccount = useBulkCodeStore(
+    (state) => state.planetCashAccount
+  );
+  const project = useBulkCodeStore((state) => state.project);
   // store: action
-  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const fetchProjectList = useBulkCodeStore((state) => state.fetchProjectList);
+  const setPlanetCashAccount = useBulkCodeStore(
+    (state) => state.setPlanetCashAccount
+  );
 
   useEffect(() => {
     setTabConfig([
@@ -74,46 +68,13 @@ export default function BulkCodes({
     ]);
   }, [bulkMethod, project, locale]);
 
-  const fetchProjectList = useCallback(async () => {
-    if (planetCashAccount && !projectList) {
-      try {
-        const fetchedProjects = await getApi<CountryProject[]>(
-          `/app/countryProjects/${planetCashAccount.country}`
-        );
-
-        // map fetchedProjects to desired form and setProject
-        if (
-          fetchedProjects &&
-          Array.isArray(fetchedProjects) &&
-          fetchedProjects.length > 0
-        ) {
-          const allowedCHFProjects = ['yucatan'];
-          setProjectList(
-            // Filter projects which allow donations, and store only required values in context
-            fetchedProjects.filter((project) => {
-              return (
-                project.unitCost > 0 &&
-                (project.purpose === 'trees' ||
-                  project.purpose === 'conservation') &&
-                (planetCashAccount.currency !== 'CHF' ||
-                  (planetCashAccount.currency === 'CHF' &&
-                    allowedCHFProjects.includes(project.slug)))
-              );
-            })
-          );
-        }
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-      }
-    }
-  }, [planetCashAccount?.currency, locale]);
+  useEffect(() => {
+    fetchProjectList(getApi);
+  }, [fetchProjectList, getApi]);
 
   useEffect(() => {
-    fetchProjectList();
-  }, [fetchProjectList]);
-
-  useEffect(() => {
-    if (!isAuthResolved && planetCashAccount) return;
+    if (!isAuthResolved) return;
+    if (planetCashAccount) return;
 
     if (userPlanetCash) {
       setPlanetCashAccount({
