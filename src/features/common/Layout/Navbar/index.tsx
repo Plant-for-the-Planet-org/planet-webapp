@@ -1,11 +1,10 @@
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
-import { useTenant } from '../TenantContext';
 import NavbarBrandLogos from './microComponents/NavbarBrandLogos';
 import NavbarItems from './microComponents/NavbarItems';
 import styles from './Navbar.module.scss';
 import { clsx } from 'clsx';
 import { useAuthSession } from '../../../../hooks/useAuthSession';
-import { useUserStore } from '../../../../stores';
+import { useUserStore, useTenantStore } from '../../../../stores';
 
 const ImpersonationBanner = () => {
   const isImpersonationModeOn = useUserStore(
@@ -36,11 +35,13 @@ const MainNavigationHeader = () => {
 };
 
 export default function Navbar() {
-  const { tenantConfig } = useTenant();
-  if (!tenantConfig) return null;
   const { logoutUser, auth0Error } = useAuthSession();
   // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  // store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
+
+  if (!isInitialized) return null;
 
   if (auth0Error) {
     const { message } = auth0Error;

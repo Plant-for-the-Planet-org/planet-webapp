@@ -72,6 +72,10 @@
     "measurements": "Medidas",
     "ignoredColumnsWarning": "Se han ignorado las columnas adicionales",
     "back": "Volver",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "migrationTitle": "Tus datos se han migrado correctamente.",
+    "migrationSubtitle": "Tu experiencia del panel se ha trasladado a una aplicación web dedicada para un mejor rendimiento y actualizaciones más rápidas.",
+    "openDashboard": "Abrir panel",
+    "contactSupport": "Contactar con soporte"
   }
 }

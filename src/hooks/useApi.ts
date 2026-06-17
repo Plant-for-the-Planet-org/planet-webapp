@@ -10,9 +10,10 @@
  * - Handle token validation, session ID management, and versioning.
  *
  * @dependencies
+ *  - State / Stores:
+ *   - `useTenantStore`: Retrieves tenant-specific configuration (e.g. tenant key).
  * - React Contexts:
  *   - `useUserProps`: To access the current user's token and handle logout on invalid tokens.
- *   - `useTenant`: To retrieve tenant-specific configurations (e.g., tenant key).
  *   - `useLocale` : To get the current locale for setting the `x-locale` header.
  * - Utilities:
  *   - `apiClient`: A utility to make HTTP requests.
@@ -62,7 +63,8 @@
  * - `deleteApiAuthenticated`: Makes a DELETE request with authentication.
  *
  * @notes
- * - Ensure that `useUserProps` and `useTenant` contexts are properly configured in your application.
+ * - Ensure that `useUserProps` contexts are properly configured in your application.
+ * - Tenant configuration is sourced from `useTenantStore`; no Tenant React Context is required.
  */
 import type { RequestOptions } from '../utils/apiRequests/apiClient';
 
@@ -70,10 +72,9 @@ import apiClient from '../utils/apiRequests/apiClient';
 import getSessionId from '../utils/apiRequests/getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
-import { useTenant } from '../features/common/Layout/TenantContext';
 import { validateToken } from '../utils/apiRequests/validateToken';
 import { useLocale } from 'next-intl';
-import { useAuthStore } from '../stores';
+import { useAuthStore, useTenantStore } from '../stores';
 import { useAuthSession } from './useAuthSession';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
@@ -101,10 +102,10 @@ type ApiConfig<
 
 export const useApi = () => {
   const { logoutUser } = useAuthSession();
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
   //store: state
   const token = useAuthStore((state) => state.token);
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
 
   const callApi = async <T>({
     method,
@@ -119,7 +120,7 @@ export const useApi = () => {
   }): Promise<T> => {
     const headers: Record<string, string> = {
       'x-locale': locale,
-      'tenant-key': tenantConfig?.id || '',
+      'tenant-key': tenantId || '',
       'X-SESSION-ID': await getSessionId(),
       ...(additionalHeaders ? additionalHeaders : {}),
     };

@@ -4,23 +4,23 @@ import { useEffect, useState } from 'react';
 import styles from './Credits.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
-import { useTenant } from '../../../common/Layout/TenantContext';
-import { useQueryParamStore } from '../../../../stores';
+import { useQueryParamStore, useTenantStore } from '../../../../stores';
 
 interface Props {
   isMobile?: boolean;
 }
 
 export default function Credits({ isMobile }: Props): ReactElement {
-  const { tenantConfig } = useTenant();
   const tCommon = useTranslations('Common');
   const tMaps = useTranslations('Maps');
   const locale = useLocale();
+  // local state
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
   const [openLanguageModal, setLanguageModalOpen] = useState(false);
-
+  // store: state
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
+  const tenantSlug = useTenantStore((state) => state.tenantConfig.config.slug);
 
   const handleLanguageModalClose = () => {
     setLanguageModalOpen(false);
@@ -57,9 +57,7 @@ export default function Credits({ isMobile }: Props): ReactElement {
           </div>
         )}
         {separator}
-        {(tenantConfig.config.slug === 'ttc' ||
-          tenantConfig.config.slug === 'planet') &&
-        !isEmbedMode ? (
+        {(tenantSlug === 'ttc' || tenantSlug === 'planet') && !isEmbedMode ? (
           <a
             rel="noopener noreferrer"
             href={`https://www.thegoodshop.org/de/shop/`}

@@ -6,3 +6,4 @@ export { useProjectMapStore } from './projectMapStore';
 export { useMyForestStore } from './myForestStore';
 export { useCurrencyStore } from './currencyStore';
 export { useManagePayoutStore } from './useManagePayout';
+export { useTenantStore } from './tenantStore';

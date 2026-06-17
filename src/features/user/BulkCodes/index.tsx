@@ -93,8 +93,8 @@ export default function BulkCodes({
             fetchedProjects.filter((project) => {
               return (
                 project.unitCost > 0 &&
-                project.classification !== 'membership' &&
-                project.classification !== 'endowment' &&
+                (project.purpose === 'trees' ||
+                  project.purpose === 'conservation') &&
                 (planetCashAccount.currency !== 'CHF' ||
                   (planetCashAccount.currency === 'CHF' &&
                     allowedCHFProjects.includes(project.slug)))

@@ -4,8 +4,8 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import type { AbstractIntlMessages } from 'next-intl';
 import type { Tenant } from '@planet-sdk/common';
-import { useTranslations, type AbstractIntlMessages } from 'next-intl';
 
 import Head from 'next/head';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
@@ -13,23 +13,18 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import DonationReceiptAuthenticated from '../../../../../../src/features/user/DonationReceipt/DonationReceiptAuthenticated';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useTranslations } from 'next-intl';
+import { defaultTenant } from '../../../../../../tenant.config';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
 
-export default function DonationReceiptPage({
-  pageProps: { tenantConfig },
-}: Props) {
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
+export default function DonationReceiptPage() {
   const tReceipt = useTranslations('DonationReceipt');
 
-  useEffect(() => {
-    if (router.isReady) setTenantConfig(tenantConfig);
-  }, [router.isReady]);
+  //store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  if (!isInitialized) return <></>;
 
   return (
     <UserLayout>
@@ -65,20 +60,16 @@ interface PageProps {
   tenantConfig: Tenant;
 }
 
-interface Props {
-  pageProps: PageProps;
-}
-
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'donationReceipt'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

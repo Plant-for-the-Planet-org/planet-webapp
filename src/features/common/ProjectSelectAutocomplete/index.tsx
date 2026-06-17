@@ -3,15 +3,14 @@ import type { ReactElement } from 'react';
 import { useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
+import SearchIcon from '../../../../public/assets/images/icons/SearchIcon';
 
 export interface BaseProject {
   guid: string;
   name: string;
-  slug: string;
 }
 
-const MuiAutocomplete = styled(Autocomplete<BaseProject>)((/* { theme } */) => {
+const MuiAutocomplete = styled(Autocomplete<BaseProject>)(() => {
   return {
     '& .MuiAutocomplete-popupIndicatorOpen': {
       transform: 'none',
@@ -26,18 +25,23 @@ interface ProjectSelectAutocompleteProps<T extends BaseProject> {
   projectList: T[];
   project: T | null;
   handleProjectChange?: (project: T | null) => void;
-  active?: boolean;
+  disabled?: boolean;
+  showSearchIcon?: boolean;
+  label?: string;
+  id?: string;
 }
 
-// TODO - move this to a common folder
 const ProjectSelectAutocomplete = <T extends BaseProject>({
   projectList,
   project = null,
   handleProjectChange,
-  active = true,
+  disabled = false,
+  showSearchIcon = false,
+  label,
+  id = 'project-select-autocomplete',
 }: ProjectSelectAutocompleteProps<T>): ReactElement | null => {
   const [localProject, setLocalProject] = useState<T | null>(project);
-  const t = useTranslations('BulkCodes');
+  const t = useTranslations('Common');
 
   useEffect(() => {
     setLocalProject(project);
@@ -51,21 +55,22 @@ const ProjectSelectAutocomplete = <T extends BaseProject>({
 
   return (
     <MuiAutocomplete
-      popupIcon={SearchIcon()}
+      id={id}
+      popupIcon={showSearchIcon ? <SearchIcon /> : undefined}
       options={projectList}
       getOptionLabel={(option) => option.name}
       isOptionEqualToValue={(option, value) => option.guid === value.guid}
       value={localProject}
       onChange={(_event, newValue) => setLocalProject(newValue as T | null)}
       renderOption={(props, option) => (
-        <span {...props} key={option.guid}>
+        <li {...props} key={option.guid}>
           {option.name}
-        </span>
+        </li>
       )}
       renderInput={(params) => (
-        <TextField {...params} label={t('projectName')} />
+        <TextField {...params} label={label || t('project')} />
       )}
-      disabled={!active}
+      disabled={disabled}
     />
   );
 };

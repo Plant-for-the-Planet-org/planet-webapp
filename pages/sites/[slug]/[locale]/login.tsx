@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -7,7 +6,9 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
+import { defaultTenant } from '../../../../tenant.config';
 import { useEffect } from 'react';
 import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
@@ -15,37 +16,28 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../src/utils/multiTenancy/helpers';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
 import { useAuthSession } from '../../../../src/hooks/useAuthSession';
-import { useAuthStore, useUserStore } from '../../../../src/stores';
+import {
+  useAuthStore,
+  useUserStore,
+  useTenantStore,
+} from '../../../../src/stores';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function Login({ pageProps }: Props): ReactElement {
+export default function Login(): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setTenantConfig } = useTenant();
   const { auth0Error, isAuthenticated, loginWithRedirect } = useAuthSession();
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
   const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
-
   useEffect(() => {
-    if (!isAuthResolved) return;
+    if (!isInitialized || !isAuthResolved) return;
 
     // User profile exists → redirect
     if (userProfile) {
@@ -74,14 +66,14 @@ export default function Login({ pageProps }: Props): ReactElement {
       redirectUri: `${window.location.origin}/login`,
       ui_locales: localStorage.getItem('language') || 'en',
     });
-  }, [userProfile, isAuthResolved]);
+  }, [userProfile, isAuthResolved, isInitialized]);
 
-  return pageProps.tenantConfig ? (
+  if (!isInitialized) return <></>;
+
+  return (
     <div>
       <UserProfileLoader />
     </div>
-  ) : (
-    <></>
   );
 }
 
@@ -112,13 +104,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

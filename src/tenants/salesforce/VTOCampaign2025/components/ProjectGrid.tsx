@@ -6,25 +6,25 @@ import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
-import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 import { clsx } from 'clsx';
+import { useTenantStore } from '../../../../stores/tenantStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore, useCurrencyStore } from '../../../../stores';
 
 export default function ProjectGrid() {
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
-  const { getApi } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const { getApi } = useApi();
   // local state
   const [projects, setProjects] = useState<MapProject[] | null>(null);
   // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
-  // store : action
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
@@ -61,6 +61,7 @@ export default function ProjectGrid() {
               project={allowedProject.properties}
               showTooltipPopups={true}
               utmCampaign="251Y48Z1NR"
+              disableDonations={true}
             />
           </div>
         );
@@ -77,7 +78,7 @@ export default function ProjectGrid() {
           <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
             <h3>Projects</h3>
             <p className={styles.contentSectionSubhead}>
-              You can donate to these projects.
+              Explore these projects.
             </p>
           </div>
         </div>

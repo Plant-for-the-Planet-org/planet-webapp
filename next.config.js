@@ -126,6 +126,7 @@ const nextConfig = {
     LAYERS_API_KEY: process.env.LAYERS_API_KEY,
     LAYERS_API_ENDPOINT: process.env.LAYERS_API_ENDPOINT,
     ENABLE_EXPLORE: process.env.ENABLE_EXPLORE,
+    TREEMAPPER_URL: process.env.TREEMAPPER_URL,
   },
   trailingSlash: false,
   reactStrictMode: true,
@@ -153,6 +154,41 @@ const nextConfig = {
         source: '/yucatan-reforestation',
         destination: '/yucatan',
         permanent: true,
+      },
+      {
+        source: '/tagdesbaumes',
+        destination: 'https://www.plant-for-the-planet.org/de/tagdesbaumes/',
+        permanent: true,
+      },
+      {
+        source: '/:locale/tagdesbaumes',
+        destination: 'https://www.plant-for-the-planet.org/de/tagdesbaumes/',
+        permanent: true,
+      },
+      {
+        source: '/:locale/profile/register-trees',
+        destination: '/:locale/profile',
+        permanent: true,
+      },
+      {
+        source: '/:locale/profile/treemapper',
+        destination: '/:locale/treemapper?source=plant-locations',
+        permanent: false,
+      },
+      {
+        source: '/:locale/profile/treemapper/data-explorer',
+        destination: '/:locale/treemapper?source=data-explorer',
+        permanent: false,
+      },
+      {
+        source: '/:locale/profile/treemapper/my-species',
+        destination: '/:locale/treemapper?source=my-species',
+        permanent: false,
+      },
+      {
+        source: '/:locale/profile/treemapper/import',
+        destination: '/:locale/treemapper?source=import',
+        permanent: false,
       },
     ];
   },

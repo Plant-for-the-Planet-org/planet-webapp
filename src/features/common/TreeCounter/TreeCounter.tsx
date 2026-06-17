@@ -10,8 +10,8 @@ import PlantedTreesBlackIcon from '../../../../public/assets/images/icons/Plante
 import HomeTreeCounter from './legacy/TreeCounterData';
 import theme from '../../../theme/themeProperties';
 import { _tenants } from '../../../utils/constants/HomeTreeCounter';
-import { useTenant } from '../Layout/TenantContext';
 import { clsx } from 'clsx';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 const { primaryColorNew, light } = theme;
 
@@ -68,15 +68,17 @@ interface TreeCounterInterface {
 
 // TODO: examine logic, see if we always render HomeTreeCounter and the alternate code can be removed
 export default function TreeCounter(props: TreeCounterInterface) {
+  const t = useTranslations('Me');
+  const locale = useLocale();
+  // local state
   const [progress, setProgress] = useState(0);
   const [isHomeTreeCounter, setIsHomeTreeCounter] = useState(false);
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
-  const t = useTranslations('Me');
-  const locale = useLocale();
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const _isTreeTarget = () => {
     if (props?.target !== 0) {
