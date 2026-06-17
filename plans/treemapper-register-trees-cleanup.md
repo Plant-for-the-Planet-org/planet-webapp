@@ -7,14 +7,16 @@
 - [x] Delete `pages/api/data-explorer/` (API routes that only served the deleted analytics page)
 - [x] Delete `pages/sites/[slug]/[locale]/profile/register-trees.tsx`
 - [x] Delete `src/features/user/RegisterTrees/`
+- [x] Delete `public/assets/images/icons/Sidebar/RegisterIcon.tsx`
+- [x] Remove commented-out register-trees import + nav block from `UserLayout.tsx`
+- [x] Remove `DB_CONN_URL` and `ENABLE_ANALYTICS` from `next.config.js`
+- [x] Delete `src/utils/connectDB.ts` (only used by the deleted data-explorer API routes)
+- [x] Remove `DB_CONN_URL` from `.env.local.example`
+- [ ] Remove `'registerTrees'` and `'treemapperAnalytics'` from filename union type in `getMessagesForPage.ts`
 - [ ] Delete `public/static/locales/*/treemapperAnalytics.json` (7 files)
 - [ ] Delete `public/static/locales/*/registerTrees.json` (7 files)
 - [ ] Trim `public/static/locales/*/treemapper.json` to 4 migration keys (7 files)
 - [ ] Remove `registerTrees` key from `public/static/locales/*/me.json` (7 files)
-- [ ] Delete `public/assets/images/icons/Sidebar/RegisterIcon.tsx`
-- [ ] Remove commented-out register-trees import + nav block from `UserLayout.tsx`
-- [ ] Remove `DB_CONN_URL`, `ENABLE_ANALYTICS`, and register-trees redirect from `next.config.js`
-- [ ] Remove `'registerTrees'` from filename union type in `getMessagesForPage.ts`
 - [ ] Uninstall unused npm packages
 
 ## Background
@@ -48,19 +50,19 @@ The `register-trees` feature was hidden earlier (nav entry commented out, redire
 
 ### Config changes
 
-- `next.config.js`: remove `ENABLE_ANALYTICS` env var + `DB_CONN_URL` destructure; remove `register-trees` redirect
+- `next.config.js`: remove `ENABLE_ANALYTICS` env var + `DB_CONN_URL` destructure
 - `src/utils/language/getMessagesForPage.ts`: remove `'registerTrees'` from filename union type
 - `src/features/common/Layout/UserLayout/UserLayout.tsx`: remove commented-out register-trees import and nav entry
 
 ### npm packages removed (only used by old TreeMapper feature)
 
-`@math.gl/web-mercator`, `apexcharts`, `react-apexcharts`, `d3-ease`, `file-saver`, `geojson-flatten`, `react-json-editor-ajrm`, `react-mapbox-gl`, `react-mapbox-gl-draw` (+ their `@types` companions)
+`@math.gl/web-mercator`, `apexcharts`, `react-apexcharts`, `d3-ease`, `file-saver`, `geojson-flatten`, `react-json-editor-ajrm`, `react-mapbox-gl`, `react-mapbox-gl-draw` (+ their `@types` companions), `serverless-postgres`, `connection-string`
 
 ## What is kept
 
 - `src/features/user/TreemapperMigration/` — active component
 - `pages/sites/[slug]/[locale]/treemapper/index.tsx` — active migration page
-- `next.config.js` redirects for `profile/treemapper/*` — needed for graceful migration of old bookmarks
+- `next.config.js` redirects for `profile/treemapper/*` and `profile/register-trees` — needed for graceful migration of old bookmarks
 - `TREEMAPPER_URL` env var — still used by `projectsV2/ProjectDetails` to fetch intervention data
 - `TreeMapperBrand` component and related icons — used in project intervention cards
 - `TreemapperApiResponse<T>` type — used by `projectsV2/ProjectDetails/index.tsx`
