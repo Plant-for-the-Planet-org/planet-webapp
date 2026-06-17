@@ -10,8 +10,7 @@ import styles from './ImpersonateUser.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import { APIError } from '@planet-sdk/common';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useAuthStore, useUserStore } from '../../../../stores';
-import { useTenant } from '../../../common/Layout/TenantContext';
+import { useAuthStore, useTenantStore, useUserStore } from '../../../../stores';
 
 export type ImpersonationData = {
   targetEmail: string;
@@ -22,10 +21,10 @@ const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Me');
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
   // store: state
   const token = useAuthStore((state) => state.token);
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
   const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
   const setIsImpersonationModeOn = useUserStore(
@@ -94,7 +93,7 @@ const ImpersonateUserForm = (): ReactElement => {
         const res = await fetchUserProfile({
           impersonationData: data,
           token,
-          tenantConfigId: tenantConfig.id,
+          tenantConfigId: tenantId,
           locale,
         });
         setIsInvalidEmail(false);

@@ -1,0 +1,77 @@
+@import '../../../../theme/theme';
+
+.imageSlideshowSection {
+  background-image: url('/tenants/salesforce/images/rectangle-35.png');
+  background-size: 1440px 100%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  position: relative;
+  z-index: 999;
+  padding-top: 80px;
+  padding-bottom: 150px;
+}
+
+.slideshowTitle {
+  font-family: $secondaryFontFamily;
+  font-style: normal;
+  font-weight: 500;
+  font-size: $sfFontLarge;
+  line-height: 28px;
+  text-align: center;
+  letter-spacing: -0.004em;
+  color: $sfBrandNavy;
+  margin-bottom: 40px;
+
+  @include lgLaptopView {
+    font-size: $fontXXLarge;
+    line-height: 100%;
+  }
+}
+
+.swiperWrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  overflow: hidden;
+
+  :global(.swiper) {
+    padding-bottom: 48px;
+    overflow: hidden;
+  }
+
+  :global(.swiper-pagination) {
+    bottom: 8px;
+  }
+
+  :global(.swiper-pagination-bullet) {
+    background-color: $sfBrandNavy;
+    opacity: 0.3;
+  }
+
+  :global(.swiper-pagination-bullet-active) {
+    background-color: $sfBrandBlue;
+    opacity: 1;
+  }
+}
+
+.slideImageContainer {
+  height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+
+  @include xsPhoneView {
+    height: 350px;
+  }
+
+  @include mdTabletView {
+    height: 500px;
+  }
+}
+
+.slideImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}

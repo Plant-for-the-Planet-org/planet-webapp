@@ -6,8 +6,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError } from '@planet-sdk/common';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { APIError, Tenant } from '@planet-sdk/common';
 import type { PaymentOptions } from '../../../../../../../src/features/user/BulkCodes/BulkCodesTypes';
 
 import { useEffect, useCallback } from 'react';
@@ -25,8 +24,6 @@ import {
   getTenantConfig,
 } from '../../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-import { useTenant } from '../../../../../../../src/features/common/Layout/TenantContext';
-import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../../src/hooks/useApi';
 import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
@@ -34,20 +31,15 @@ import {
   useAuthStore,
   useUserStore,
   useErrorHandlingStore,
+  useTenantStore,
+  useBulkCodeStore,
 } from '../../../../../../../src/stores';
-import { useBulkCodeStore } from '../../../../../../../src/stores/bulkCodeStore';
+import { defaultTenant } from '../../../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function BulkCodeIssueCodesPage({
-  pageProps,
-}: Props): ReactElement {
+export default function BulkCodeIssueCodesPage(): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Me');
-  const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
   //store: state
   const isAuthReady = useAuthStore((state) =>
@@ -62,6 +54,7 @@ export default function BulkCodeIssueCodesPage({
   const planetCashAccount = useBulkCodeStore(
     (state) => state.planetCashAccount
   );
+  const isInitialized = useTenantStore((state) => state.isInitialized);
   //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const setBulkMethod = useBulkCodeStore((state) => state.setBulkMethod);
@@ -125,24 +118,18 @@ export default function BulkCodeIssueCodesPage({
   }, [router.isReady, planetCashAccount, isAuthReady, projectList]);
 
   useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
-
-  useEffect(() => {
     checkContext();
   }, [checkContext]);
 
-  return pageProps.tenantConfig ? (
+  if (!isInitialized) return <></>;
+
+  return (
     <UserLayout>
       <Head>
         <title>{t('bulkCodesTitleStep3')}</title>
       </Head>
       <BulkCodes step={BulkCodeSteps.ISSUE_CODES} />
     </UserLayout>
-  ) : (
-    <></>
   );
 }
 
@@ -175,13 +162,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'bulkCodes'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

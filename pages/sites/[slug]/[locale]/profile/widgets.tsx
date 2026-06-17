@@ -6,7 +6,7 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common';
 
 import { useState, useEffect } from 'react';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
@@ -18,31 +18,19 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import { useUserStore } from '../../../../../src/stores';
+import { useUserStore, useTenantStore } from '../../../../../src/stores';
+import { defaultTenant } from '../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
+function ProfilePage(): ReactElement {
   const t = useTranslations('Me');
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
   // local state
   const [embedModalOpen, setEmbedModalOpen] = useState(false);
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
+  const isInitialized = useTenantStore((state) => state.isInitialized);
   const embedModalProps = { embedModalOpen, setEmbedModalOpen, userProfile };
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
 
   useEffect(() => {
     if (userProfile && userProfile.isPrivate) {
@@ -50,8 +38,9 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
     }
   }, [userProfile]);
 
+  if (!isInitialized) return <></>;
   // TO DO - change widget link
-  return tenantConfig ? (
+  return (
     <UserLayout>
       <Head>
         <title>{t('widgets')}</title>
@@ -61,7 +50,7 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
           {userProfile.isPrivate === false ? (
             <div className={styles.widgetsContainer}>
               <iframe
-                src={`${process.env.WIDGET_URL}?user=${userProfile.slug}&tenantkey=${tenantConfig.id}`}
+                src={`${process.env.WIDGET_URL}?user=${userProfile.slug}&tenantkey=${tenantId}`}
                 className={styles.widgetIFrame}
               />
             </div>
@@ -71,8 +60,6 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
         </>
       )}
     </UserLayout>
-  ) : (
-    <></>
   );
 }
 
@@ -105,13 +92,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'editProfile'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

@@ -5,6 +5,7 @@ import type {
   SingleTreeRegistration,
 } from '@planet-sdk/common';
 import type { ExtendedProject } from '../../common/types/projectv2';
+import type { TreemapperApiResponse } from '../../common/types/map';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -24,11 +25,11 @@ import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useApi } from '../../../hooks/useApi';
-import { useTenant } from '../../common/Layout/TenantContext';
 import {
   useProjectMapStore,
   useErrorHandlingStore,
   useCurrencyStore,
+  useTenantStore,
 } from '../../../stores';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
@@ -50,31 +51,29 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
-  const { tenantConfig } = useTenant();
   const { p: projectSlug } = router.query;
   //local state
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   // store: action
-  const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const setTimeTravelConfig = useProjectMapStore(
     (state) => state.setTimeTravelConfig
   );
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const fetchInterventions = async (projectId: string) => {
     setIsLoading(true);
     try {
-      const result = await getApi<Intervention[]>(
-        `/app/interventions/${projectId}`,
-        {
-          queryParams: {
-            // Fetches sampleInterventions within each intervention
-            _scope: 'extended',
-          },
-        }
+      // The TreeMapper API wraps its payload in a standard envelope
+      // ({ statusCode, message, error, data, code }); the interventions array
+      // lives in `data`, so we unwrap it before storing.
+      const response = await getApi<TreemapperApiResponse<Intervention[]>>(
+        // TODO: temporary TreeMapper API; revert to `/app/interventions/${projectId}` before merge
+        `${process.env.TREEMAPPER_URL}/api/server/external/project/${projectId}/interventions`
       );
-      setInterventions(result);
+      setInterventions(response.data ?? []);
     } catch (err) {
       setErrors(handleError(err as APIError | ClientError));
       setIsError(true);

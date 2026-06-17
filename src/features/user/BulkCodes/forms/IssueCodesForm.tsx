@@ -309,7 +309,7 @@ const IssueCodesForm = (): ReactElement | null => {
       <CenteredContainer>
         <StyledFormContainer className="IssueCodesForm" component={'section'}>
           <div className="inputContainer">
-            <ProjectSelector project={project} active={false} />
+            <ProjectSelector project={project} disabled={true} />
             <TextField
               onChange={(e) => setComment(e.target.value)}
               value={comment}

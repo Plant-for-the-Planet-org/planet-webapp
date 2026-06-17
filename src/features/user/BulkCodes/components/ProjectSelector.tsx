@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import type { PaymentOptions } from '../BulkCodesTypes';
 import type { APIError, CountryProject } from '@planet-sdk/common';
 
-import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
+import ProjectSelectAutocomplete from '../../../common/ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
@@ -12,17 +12,20 @@ import {
   useErrorHandlingStore,
 } from '../../../../stores';
 import { useBulkCodeStore } from '../../../../stores/bulkCodeStore';
+import { useTranslations } from 'next-intl';
 
 interface ProjectSelectorProps {
   project: CountryProject | null;
   setProject?: (project: CountryProject | null) => void;
   active?: boolean;
+  disabled?: boolean;
 }
 const ProjectSelector = ({
   project,
   setProject,
-  active = true,
+  disabled = false,
 }: ProjectSelectorProps): ReactElement | null => {
+  const tBulkCodes = useTranslations('BulkCodes');
   const { getApiAuthenticated } = useApi();
   //store: state
   const isAuthReady = useAuthStore(
@@ -77,7 +80,9 @@ const ProjectSelector = ({
         handleProjectChange={handleProjectChange}
         project={project}
         projectList={projectList || []}
-        active={active}
+        disabled={disabled}
+        showSearchIcon={true}
+        label={tBulkCodes('labelProject')}
       />
       <UnitCostDisplay
         unitCost={project ? project.unitCost : '-'}

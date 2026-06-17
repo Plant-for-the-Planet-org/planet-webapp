@@ -27,7 +27,7 @@
         "line3": "I nomi e le e-mail non possono essere associati al codice."
       }
     },
-    "projectName": "Nome del progetto",
+    "labelProject": "Nome del progetto",
     "costPerUnit": "Costo per unità",
     "labelComment": "Commento [Privato]",
     "unitOfMeasurement": "Unità di misura",

@@ -6,11 +6,14 @@ import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
-import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 import { clsx } from 'clsx';
-import { useErrorHandlingStore, useCurrencyStore } from '../../../../stores';
+import {
+  useErrorHandlingStore,
+  useCurrencyStore,
+  useTenantStore,
+} from '../../../../stores';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
@@ -32,17 +35,17 @@ const MANGROVE_PROJECTS = [
 // cspell:enable
 
 export default function ProjectGrid() {
-  const { tenantConfig } = useTenant();
   const locale = useLocale();
-  const { getApi } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const { getApi } = useApi();
   // local state
   const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
   // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
-  // store : action
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
