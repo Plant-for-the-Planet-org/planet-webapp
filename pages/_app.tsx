@@ -28,7 +28,6 @@ import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContex
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
-import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { NextIntlClientProvider } from 'next-intl';
 import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
@@ -191,17 +190,15 @@ const PlanetWeb = ({
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
                 <PlanetCashProvider>
-                  <PayoutsProvider>
-                    <Layout>
-                      <BulkCodeProvider>
-                        <AnalyticsProvider>
-                          <DonationReceiptProvider>
-                            {pageContent}
-                          </DonationReceiptProvider>
-                        </AnalyticsProvider>
-                      </BulkCodeProvider>
-                    </Layout>
-                  </PayoutsProvider>
+                  <Layout>
+                    <BulkCodeProvider>
+                      <AnalyticsProvider>
+                        <DonationReceiptProvider>
+                          {pageContent}
+                        </DonationReceiptProvider>
+                      </AnalyticsProvider>
+                    </BulkCodeProvider>
+                  </Layout>
                 </PlanetCashProvider>
               </MuiThemeProvider>
             </ThemeProvider>
