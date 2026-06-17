@@ -24,10 +24,8 @@ type TRANSLATION_FILE_NAMES =
   | 'projectDetails'
   | 'project'
   | 'redeem'
-  | 'registerTrees'
   | 'tenants'
-  | 'treemapper'
-  | 'treemapperAnalytics';
+  | 'treemapper';
 
 interface MessageConfig {
   /**

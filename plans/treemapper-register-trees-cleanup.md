@@ -12,11 +12,15 @@
 - [x] Remove `DB_CONN_URL` and `ENABLE_ANALYTICS` from `next.config.js`
 - [x] Delete `src/utils/connectDB.ts` (only used by the deleted data-explorer API routes)
 - [x] Remove `DB_CONN_URL` from `.env.local.example`
-- [ ] Remove `'registerTrees'` and `'treemapperAnalytics'` from filename union type in `getMessagesForPage.ts`
-- [ ] Delete `public/static/locales/*/treemapperAnalytics.json` (7 files)
-- [ ] Delete `public/static/locales/*/registerTrees.json` (7 files)
-- [ ] Trim `public/static/locales/*/treemapper.json` to 4 migration keys (7 files)
-- [ ] Remove `registerTrees` key from `public/static/locales/*/me.json` (7 files)
+- [x] Remove `'registerTrees'` and `'treemapperAnalytics'` from filename union type in `getMessagesForPage.ts`
+- [x] Remove `registerTrees` and `treemapperAnalytics` imports and spreads from `.storybook/i18n.js`
+- [x] Remove `registerTrees` and `treemapperAnalytics` imports from `i18n.ts`
+- [x] Remove `MessagesRegisterTrees` and `MessagesTreemapperAnalytics` from `global.d.ts`
+- [x] Remove dead `RegisterTrees` import and types from `src/features/common/types/map.d.ts`
+- [x] Delete `public/static/locales/*/treemapperAnalytics.json` (7 files)
+- [x] Delete `public/static/locales/*/registerTrees.json` (7 files)
+- [x] Trim `public/static/locales/*/treemapper.json` to 4 migration keys (7 files)
+- [x] Remove `registerTrees` key from `public/static/locales/*/me.json` (7 files)
 - [ ] Uninstall unused npm packages
 
 ## Background

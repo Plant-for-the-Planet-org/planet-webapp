@@ -15,10 +15,8 @@ import planetcash from '../public/static/locales/en/planetcash.json';
 import profile from '../public/static/locales/en/profile.json';
 import project from '../public/static/locales/en/project.json';
 import redeem from '../public/static/locales/en/redeem.json';
-import registerTrees from '../public/static/locales/en/registerTrees.json';
 import tenants from '../public/static/locales/en/tenants.json';
 import treemapper from '../public/static/locales/en/treemapper.json';
-import treemapperAnalytics from '../public/static/locales/en/treemapperAnalytics.json';
 import projectDetails from '../public/static/locales/en/projectDetails.json';
 import allProjects from '../public/static/locales/en/allProjects.json';
 
@@ -39,10 +37,8 @@ import planetcashDE from '../public/static/locales/de/planetcash.json';
 import profileDE from '../public/static/locales/de/profile.json';
 import projectDE from '../public/static/locales/de/project.json';
 import redeemDE from '../public/static/locales/de/redeem.json';
-import registerTreesDE from '../public/static/locales/de/registerTrees.json';
 import tenantsDE from '../public/static/locales/de/tenants.json';
 import treemapperDE from '../public/static/locales/de/treemapper.json';
-import treemapperAnalyticsDE from '../public/static/locales/de/treemapperAnalytics.json';
 import projectDetailsDE from '../public/static/locales/de/projectDetails.json';
 import allProjectsDE from '../public/static/locales/de/allProjects.json';
 
@@ -66,10 +62,8 @@ const messages_en = {
   ...profile,
   ...project,
   ...redeem,
-  ...registerTrees,
   ...tenants,
   ...treemapper,
-  ...treemapperAnalytics,
   ...projectDetails,
   ...allProjects,
 };
@@ -92,10 +86,8 @@ const messages_de = {
   ...profileDE,
   ...projectDE,
   ...redeemDE,
-  ...registerTreesDE,
   ...tenantsDE,
   ...treemapperDE,
-  ...treemapperAnalyticsDE,
   ...projectDetailsDE,
   ...allProjectsDE,
 };
