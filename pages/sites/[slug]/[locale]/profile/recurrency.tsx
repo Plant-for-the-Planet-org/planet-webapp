@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, Tenant } from '@planet-sdk/common';
 import type { Subscription } from '../../../../../src/features/common/types/payments';
 import type {
   GetStaticPaths,
@@ -8,7 +8,6 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { useEffect, useState } from 'react';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
@@ -22,39 +21,28 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
+import { defaultTenant } from '../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-function RecurrentDonations({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+function RecurrentDonations(): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setTenantConfig } = useTenant();
   const { token, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
-  //local state
+  // local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [recurrencies, setRecurrencies] = useState<Subscription[]>();
-  // store
+  //store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
 
   async function fetchRecurrentDonations(): Promise<void> {
     setIsDataLoading(true);
@@ -102,7 +90,9 @@ function RecurrentDonations({
     fetchRecurrentDonations,
   };
 
-  return tenantConfig ? (
+  if (!isInitialized) return <></>;
+
+  return (
     <>
       {progress > 0 && (
         <div className={'topLoader'}>
@@ -116,8 +106,6 @@ function RecurrentDonations({
         <RecurrentPayments {...RecurrencyProps} />
       </UserLayout>
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -150,13 +138,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

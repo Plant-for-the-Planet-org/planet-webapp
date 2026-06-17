@@ -18,7 +18,7 @@ import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { useApi } from '../../../hooks/useApi';
-import { useTenant } from '../../common/Layout/TenantContext';
+import { useTenantStore } from '../../../stores/tenantStore';
 import { useCurrencyStore } from '../../../stores/currencyStore';
 import { useInterventionStore, useSingleProjectStore } from '../../../stores';
 
@@ -26,7 +26,7 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const locale = useLocale();
   const router = useRouter();
   const { getApi } = useApi();
-  const { tenantConfig } = useTenant();
+
   const { p: projectSlug } = router.query;
   //local state
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
@@ -42,11 +42,11 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const selectedIntervention = useInterventionStore(
     (state) => state.selectedIntervention
   );
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+
   // store: action
   const fetchProjectData = useSingleProjectStore((state) => state.fetchProject);
-  const setSelectedSampleIntervention = useInterventionStore(
-    (state) => state.setSelectedSampleIntervention
-  );
+
   useEffect(() => {
     if (typeof projectSlug === 'string' && currencyCode && router.isReady) {
       const config = {

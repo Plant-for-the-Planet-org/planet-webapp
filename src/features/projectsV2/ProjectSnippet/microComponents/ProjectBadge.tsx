@@ -8,9 +8,8 @@ import TopProjectIcon from '../../../../../public/assets/images/icons/projectV2/
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import styles from '../styles/Badge.module.scss';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import { clsx } from 'clsx';
-import { useViewStore } from '../../../../stores';
+import { useViewStore, useTenantStore } from '../../../../stores';
 
 interface Props {
   isApproved: boolean;
@@ -56,7 +55,7 @@ const ProjectBadge = ({
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
   const currentPage = useViewStore((state) => state.page);
-  const { tenantConfig } = useTenant();
+  const tenantSlug = useTenantStore((state) => state.tenantConfig.config.slug);
 
   const badgeConfigurations: TitleAndIconReturnType | undefined =
     useMemo(() => {
@@ -98,7 +97,7 @@ const ProjectBadge = ({
     if (badgeType === 'notDonatable') {
       return (
         <div className={styles.tooltipContent}>
-          {tenantConfig.config.slug === 'salesforce'
+          {tenantSlug === 'salesforce'
             ? `${tCommon('salesforceDisabledDonateButtonText')}`
             : `${tCommon('disabledDonateButtonText')}`}
         </div>

@@ -6,7 +6,7 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common';
 
 import Head from 'next/head';
 import { useEffect } from 'react';
@@ -20,28 +20,17 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-function TreeMapperAnalytics({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+function TreeMapperAnalytics(): ReactElement {
   const t = useTranslations('TreemapperAnalytics');
   const { user } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setTenantConfig } = useTenant();
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  // store: action
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
   useEffect(() => {
     if (user) {
@@ -51,17 +40,15 @@ function TreeMapperAnalytics({
     }
   }, [user]);
 
-  return tenantConfig ? (
-    <>
-      <UserLayout>
-        <Head>
-          <title> {t('title')} </title>
-        </Head>
-        <Analytics />
-      </UserLayout>
-    </>
-  ) : (
-    <></>
+  if (!isInitialized) return <></>;
+
+  return (
+    <UserLayout>
+      <Head>
+        <title> {t('title')} </title>
+      </Head>
+      <Analytics />
+    </UserLayout>
   );
 }
 
@@ -94,13 +81,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'treemapperAnalytics'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

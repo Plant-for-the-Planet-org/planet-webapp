@@ -8,9 +8,7 @@ import { useTheme } from '../src/theme/themeContext';
 // import { ThemeProvider } from 'emotion-theming';
 import getMessages from './i18n';
 import { NextIntlClientProvider } from 'next-intl';
-import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
-import { defaultTenant } from '../tenant.config';
 
 /*
  * Global decorator to apply the styles to all stories
@@ -33,14 +31,12 @@ export const decorators = [
           style={{ backgroundColor: 'transparent' }}
         >
           <MUIThemeProvider theme={materialTheme}>
-            {/* TenantProvider and UserPropsProvider are added for ProfileCard storybook to function properly */}
-            <TenantProvider initialTenantConfig={defaultTenant}>
-              <UserPropsProvider>
-                <ThemeProvider theme={materialTheme}>
-                  <Story />
-                </ThemeProvider>
-              </UserPropsProvider>
-            </TenantProvider>
+            {/*  UserPropsProvider are added for ProfileCard storybook to function properly */}
+            <UserPropsProvider>
+              <ThemeProvider theme={materialTheme}>
+                <Story />
+              </ThemeProvider>
+            </UserPropsProvider>
           </MUIThemeProvider>
         </div>
       </NextIntlClientProvider>

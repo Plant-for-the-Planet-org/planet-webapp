@@ -65,36 +65,22 @@ export default function ContentSection() {
             <h3>How you can participate</h3>
             <ul>
               <li>
-                2025 challenge dates: April 1 - 30. All Salesforce employees
+                2026 challenge dates: April 1 - 30. All Salesforce employees
                 worldwide are welcome to participate in this inclusive, global
-                challenge.
+                challenge.{' '}
+                <strong>
+                  SO if you are seeing this after April 30th - the challenge is
+                  no longer in motion!
+                </strong>
               </li>
               <li>
-                To join, make a donation of $50 USD or more to a tree planting
-                project from the provided list <a href="#projects">below</a>.
-                You’ll receive a confirmation email from{' '}
-                <a
-                  href="https://www.plant-for-the-planet.org/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Plant-for-the-Planet
-                </a>{' '}
-                once your donation is processed.
+                To join, make a donation of $50 USD or more to{' '}
+                <a href="https://salesforce.benevity.org/campaigns/19403/">
+                  Plant-for-the-Planet On The Employee Impact Hub.
+                </a>
               </li>
               <li>
-                After donating, submit your Salesforce Donation Match Request
-                (navigate to{' '}
-                <a
-                  href="https://salesforce.benevity.org/cause/840-383940108"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Plant-for-the-Planet
-                </a>{' '}
-                and click ‘Request A Match’). Upload your Plant-for-the-Planet
-                receipt and submit your request. Email the pdf or screenshots of
-                your donation AND match request to{' '}
+                After donating, screenshot proof of donation and send to{' '}
                 <a href="mailto:abilityforceATL@gmail.com">
                   abilityforceATL@gmail.com
                 </a>{' '}
@@ -102,27 +88,8 @@ export default function ContentSection() {
               </li>
               <li>
                 Once verified, you’ll be added to a private Slack channel where
-                you can log your exercise minutes throughout April 2025.
-              </li>
-              <li>
-                Participants can earn two hours of VTO for simply joining the
-                challenge by donating and exercising for the cause. Participants
-                can also engage in climate-focused learning that will be posted
-                in the channel for additional VTO hours. A maximum of 15 hours
-                VTO will be offered for this month-long challenge.
-              </li>
-              <li>
-                You will log your daily exercise minutes via the slack channel
-                workflow and see where you stack up on the{' '}
-                <a
-                  href="https://docs.google.com/spreadsheets/d/1jfNNM636ng0QYrZWWEtbZwu77fxcyzevcpM09lD6Rx8/edit?gid=272653129#gid=272653129"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  challenge leaderboard
-                </a>
-                . Prizes will be offered for those who come out on top! Please
-                note, exercise minutes do not equal VTO hours.
+                you can log your exercise minutes and VTO hours throughout April
+                2026.
               </li>
               <li>
                 By participating, you’re contributing to a healthier, cleaner,

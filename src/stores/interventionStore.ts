@@ -6,6 +6,7 @@ import type {
 import type { ApiConfigBase } from '../hooks/useApi';
 import type { INTERVENTION_TYPE } from '../utils/constants/intervention';
 import type { NextRouter } from 'next/router';
+import type { TreemapperApiResponse } from '../features/common/types/map';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -92,16 +93,12 @@ export const useInterventionStore = create<InterventionStore>()(
           'interventionStore/intervention_fetch_start'
         );
         try {
-          const interventions = await getApi<Intervention[]>(
-            `/app/interventions/${projectId}`,
-            {
-              queryParams: {
-                _scope: 'extended',
-              },
-            }
+          const response = await getApi<TreemapperApiResponse<Intervention[]>>(
+            // TODO: temporary TreeMapper API; revert to `/app/interventions/${projectId}` before merge
+            `${process.env.TREEMAPPER_URL}/api/server/external/project/${projectId}/interventions`
           );
           set(
-            { interventions, isFetching: false },
+            { interventions: response.data, isFetching: false },
             undefined,
             'interventionStore/intervention_fetch_success'
           );

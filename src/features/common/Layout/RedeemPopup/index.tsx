@@ -3,17 +3,17 @@ import { useEffect, useRef, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './RedeemPopup.module.scss';
 import { useTranslations } from 'next-intl';
-import { useTenant } from '../TenantContext';
 import { useUserProps } from '../UserPropsContext';
 import themeProperties from '../../../../theme/themeProperties';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 export default function RedeemPopup() {
   const t = useTranslations('Common');
-  const { tenantConfig } = useTenant();
-
-  const [showRedeemPopup, setShowRedeemPopup] = useState(false);
-
   const { user, contextLoaded, loginWithRedirect } = useUserProps();
+  // local state
+  const [showRedeemPopup, setShowRedeemPopup] = useState(false);
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const sendUserToLogin = () => {
     if (typeof window !== 'undefined') {

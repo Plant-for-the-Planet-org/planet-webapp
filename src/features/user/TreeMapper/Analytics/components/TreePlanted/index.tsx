@@ -101,7 +101,7 @@ export const TreePlanted = () => {
     url: `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
     method: HTTP_METHOD.POST,
     body: {
-      projectId: project?.id,
+      projectId: project?.guid,
       startDate: fromDate,
       endDate: toDate,
     },

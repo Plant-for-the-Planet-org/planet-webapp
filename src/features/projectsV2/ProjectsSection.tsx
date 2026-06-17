@@ -6,9 +6,8 @@ import ProjectListControls, { type ProjectTabs } from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import ProjectList from './ProjectList';
 import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
-import { useTenant } from '../common/Layout/TenantContext';
 import { useProjectMapStore } from '../../stores/projectMapStore';
-import { useProjectStore } from '../../stores';
+import { useProjectStore, useTenantStore } from '../../stores';
 import { useFilteredProjects } from '../../hooks/useFilteredProjects';
 
 interface ProjectsSectionProps {
@@ -17,6 +16,9 @@ interface ProjectsSectionProps {
 
 const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   const { filteredProjectCount } = useFilteredProjects();
+
+  // local state
+  const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
   // store: state
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
   const showDonatableProjects = useProjectStore(
@@ -29,12 +31,11 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   const isClassificationSelected = useProjectStore(
     (state) => state.selectedClassification.length > 0
   );
-  const hasFilteredProjects = filteredProjectCount > 0;
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   // store: action
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
-  const { tenantConfig } = useTenant();
 
-  const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
+  const hasFilteredProjects = filteredProjectCount > 0;
 
   useEffect(() => {
     if (

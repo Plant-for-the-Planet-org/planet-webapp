@@ -11,8 +11,8 @@ import { handleError } from '@planet-sdk/common';
 import ProjectSnippet from '../../../../features/projectsV2/ProjectSnippet';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
-import { useTenant } from '../../../../features/common/Layout/TenantContext';
 import { clsx } from 'clsx';
+import { useTenantStore } from '../../../../stores/tenantStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
@@ -24,8 +24,9 @@ export default function ContentSection() {
   const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
-  // local state
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+
   const [project, setProject] = useState<
     TreeProjectExtended | ConservationProjectExtended | null
   >(null);

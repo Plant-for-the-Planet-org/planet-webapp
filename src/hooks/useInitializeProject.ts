@@ -1,15 +1,14 @@
 import { useLocale } from 'next-intl';
-import { useTenant } from '../features/common/Layout/TenantContext';
 import { useEffect } from 'react';
 import { useProjectStore, useViewStore } from '../stores';
 import { useApi } from './useApi';
-import { useCurrencyStore } from '../stores/currencyStore';
+import { useCurrencyStore, useTenantStore } from '../stores';
 import { useRouter } from 'next/router';
 import { isValidClassification } from '../utils/projectV2';
 
 export const useInitializeProject = () => {
   const locale = useLocale();
-  const { tenantConfig } = useTenant();
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
   const { getApi } = useApi();
   const router = useRouter();
   // store: state
@@ -47,11 +46,11 @@ export const useInitializeProject = () => {
         //passing locale/tenant as a query param to break cache when locale changes,
         //as the browser uses the cached response even though the x-locale header is different
         locale,
-        tenant: tenantConfig.id,
+        tenant: tenantId,
         'filter[purpose]': 'trees,conservation',
       },
     });
-  }, [currencyCode, locale, tenantConfig.id, currentPage]);
+  }, [currencyCode, locale, tenantId, currentPage]);
 
   useEffect(() => {
     if (router.isReady && currentPage === 'project-list') {
