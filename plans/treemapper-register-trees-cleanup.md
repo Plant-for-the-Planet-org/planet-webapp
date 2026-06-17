@@ -21,7 +21,7 @@
 - [x] Delete `public/static/locales/*/registerTrees.json` (7 files)
 - [x] Trim `public/static/locales/*/treemapper.json` to 4 migration keys (7 files)
 - [x] Remove `registerTrees` key from `public/static/locales/*/me.json` (7 files)
-- [ ] Uninstall unused npm packages
+- [x] Uninstall unused npm packages
 
 ## Background
 
