@@ -86,7 +86,6 @@
     "geocoder-arcgis": "^2.0.5",
     "geojson-validation": "^1.0.2",
     "jwt-decode": "^3.1.2",
-    "layer-manager": "^3.0.11",
     "luma.gl": "^7.3.2",
     "mapbox-gl": "^1.13.0",
     "mapbox-gl-compare": "^0.4.0",
@@ -120,7 +119,6 @@
     "superjson": "^1.12.3",
     "swiper": "^12.1.2",
     "uuid": "^14.0.0",
-    "vizzuality-components": "^3.0.3",
     "xlsx": "^0.18.5",
     "zod": "^3.25.76",
     "zustand": "^5.0.8"
