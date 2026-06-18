@@ -119,7 +119,7 @@
     "supercluster": "^8.0.1",
     "superjson": "^1.12.3",
     "swiper": "^12.1.2",
-    "uuid": "^8.3.2",
+    "uuid": "^14.0.0",
     "vizzuality-components": "^3.0.3",
     "xlsx": "^0.18.5",
     "zod": "^3.25.76",
