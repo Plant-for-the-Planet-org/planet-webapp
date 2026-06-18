@@ -25,7 +25,6 @@ import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserN
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
-import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
@@ -196,11 +195,9 @@ const PlanetWeb = ({
                     <PayoutsProvider>
                       <Layout>
                         <BulkCodeProvider>
-                          <AnalyticsProvider>
-                            <DonationReceiptProvider>
-                              {pageContent}
-                            </DonationReceiptProvider>
-                          </AnalyticsProvider>
+                          <DonationReceiptProvider>
+                            {pageContent}
+                          </DonationReceiptProvider>
                         </BulkCodeProvider>
                       </Layout>
                     </PayoutsProvider>
