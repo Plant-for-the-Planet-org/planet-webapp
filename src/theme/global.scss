@@ -1,5 +1,4 @@
 @import './theme';
-@import '~vizzuality-components/dist/bundle';
 
 .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
   padding-left: 20px;
@@ -440,15 +439,6 @@ button {
   margin-left: 6px;
   max-width: 320px;
   margin-bottom: -18px;
-}
-
-.vizzuality__legend-item-container {
-  background-color: $backgroundColor;
-}
-
-// cspell:ignore vizzuality__c-timestep
-.vizzuality__c-timestep .vizzuality__player-btn > svg {
-  fill: $primaryFontColor;
 }
 
 // .MuiSvgIcon-root {
