@@ -20,7 +20,8 @@
 - [x] Delete `public/static/locales/*/treemapperAnalytics.json` (7 files)
 - [x] Delete `public/static/locales/*/registerTrees.json` (7 files)
 - [x] Trim `public/static/locales/*/treemapper.json` to 4 migration keys (7 files)
-- [x] Remove `registerTrees` key from `public/static/locales/*/me.json` (7 files)
+- [x] Remove `registerTrees`, `registerTreesDescription`, `myForest`, `mySpecies`, and `dataExplorer` keys from `public/static/locales/*/me.json` (7 files)
+- [x] Delete `src/features/common/types/dataExplorer.d.ts` (types for the deleted data-explorer API routes)
 - [x] Uninstall unused npm packages
 
 ## Background
@@ -46,7 +47,8 @@ The `register-trees` feature was hidden earlier (nav entry commented out, redire
 - `public/static/locales/*/treemapperAnalytics.json` (7 locales)
 - `public/static/locales/*/registerTrees.json` (7 locales)
 - `public/static/locales/*/treemapper.json` — trimmed to 4 keys used by `TreemapperMigration` (`migrationTitle`, `migrationSubtitle`, `openDashboard`, `contactSupport`)
-- `registerTrees` key removed from `public/static/locales/*/me.json` (7 locales)
+- `registerTrees`, `registerTreesDescription`, `myForest`, `mySpecies`, and `dataExplorer` keys removed from `public/static/locales/*/me.json` (7 locales)
+- `src/features/common/types/dataExplorer.d.ts` — types file for the deleted data-explorer API routes
 
 ### Icons
 
