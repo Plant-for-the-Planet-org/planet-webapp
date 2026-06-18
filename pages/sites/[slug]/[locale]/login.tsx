@@ -57,9 +57,11 @@ export default function Login(): ReactElement {
         loadFunction();
       } else if (
         user === null &&
-        (isAuthenticated || auth0Error?.message === '401')
+        (isAuthenticated ||
+          auth0Error?.message === '401' ||
+          auth0Error?.message === 'email_not_verified')
       ) {
-        // wait for context to redirect to complete signup
+        // wait for context to redirect to complete signup / verify email
       } else {
         loginWithRedirect({
           redirectUri: `${window.location.origin}/login`,

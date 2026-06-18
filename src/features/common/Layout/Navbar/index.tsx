@@ -39,7 +39,7 @@ export default function Navbar() {
   if (auth0Error) {
     const { message } = auth0Error;
 
-    if (message === '401') {
+    if (message === '401' || message === 'email_not_verified') {
       if (typeof window !== 'undefined') {
         setUser(null);
         logoutUser(`${window.location.origin}/verify-email`);
