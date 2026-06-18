@@ -1,9 +1,3 @@
-import type {
-  OtherInterventions,
-  SampleTreeRegistration,
-} from '@planet-sdk/common';
-import type { SetState } from '../../../common/types/common';
-
 import { useMemo, Fragment } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../styles/InterventionInfo.module.scss';
@@ -15,20 +9,26 @@ import MobileInfoSwiper from '../../MobileInfoSwiper';
 import OtherInterventionMetadata from './microComponents/OtherInterventionMetadata';
 import OtherInterventionInfoHeader from './microComponents/OtherInterventionInfoHeader';
 import { prepareInterventionMetadata } from '../../../../utils/projectV2';
+import { useInterventionStore } from '../../../../stores';
 
 interface Props {
-  hoveredIntervention?: OtherInterventions | null;
-  selectedIntervention: OtherInterventions | null;
   isMobile: boolean;
-  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
-const OtherInterventionInfo = ({
-  isMobile,
-  setSelectedSampleTree,
-  selectedIntervention,
-  hoveredIntervention,
-}: Props) => {
+const OtherInterventionInfo = ({ isMobile }: Props) => {
+  const selectedIntervention = useInterventionStore((state) =>
+    state.selectedIntervention?.type !== 'single-tree-registration' &&
+    state.selectedIntervention?.type !== 'multi-tree-registration'
+      ? state.selectedIntervention
+      : null
+  );
+
+  const hoveredIntervention = useInterventionStore((state) =>
+    state.hoveredIntervention?.type !== 'single-tree-registration' &&
+    state.hoveredIntervention?.type !== 'multi-tree-registration'
+      ? state.hoveredIntervention
+      : null
+  );
   const interventionInfo = hoveredIntervention || selectedIntervention;
   if (!interventionInfo) return null;
   const tProjectDetails = useTranslations('ProjectDetails');
@@ -103,11 +103,7 @@ const OtherInterventionInfo = ({
       />
     ),
     hasSampleTrees && (
-      <SampleTreesInfo
-        key="sampleTrees"
-        sampleTrees={sampleTrees}
-        setSelectedSampleTree={setSelectedSampleTree}
-      />
+      <SampleTreesInfo key="sampleTrees" sampleTrees={sampleTrees} />
     ),
   ].filter(Boolean);
 

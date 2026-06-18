@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-type EmbeddablePages = 'project-list' | 'project-details';
+
 export type BooleanQueryParam = 'true' | 'false' | undefined;
 
 interface QueryParamStore {
@@ -11,7 +11,6 @@ interface QueryParamStore {
   showProjectDetails: BooleanQueryParam;
   showProjectList: BooleanQueryParam;
   isContextLoaded: boolean;
-  page: EmbeddablePages | null;
 
   initializeParams: (
     params: Partial<Omit<QueryParamStore, 'initializeParams'>>
@@ -26,7 +25,6 @@ export const useQueryParamStore = create<QueryParamStore>()(
       callbackUrl: undefined,
       showProjectDetails: undefined,
       showProjectList: undefined,
-      page: null,
       isContextLoaded: false,
 
       initializeParams: (params) =>

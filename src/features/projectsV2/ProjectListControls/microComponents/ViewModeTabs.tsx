@@ -8,12 +8,10 @@ import styles from '../styles/ProjectListControls.module.scss';
 import ListIcon from '../../../../../public/assets/images/icons/projectV2/ListIcon';
 import LocationIconOutline from '../../../../../public/assets/images/icons/projectV2/LocationIconOutline';
 import { clsx } from 'clsx';
+import { useProjectStore, useViewStore } from '../../../../stores';
 
 interface ViewModeTabsProps {
   setIsFilterOpen: SetState<boolean> | undefined;
-  isSearching: boolean | undefined;
-  setSelectedMode: SetState<ViewMode> | undefined;
-  selectedMode: ViewMode | undefined;
 }
 
 interface TabItemProps {
@@ -26,19 +24,19 @@ const getIconColor = (mode: ViewMode, selectMode: ViewMode) => {
   return mode === selectMode ? colors.white : colors.coreText;
 };
 
-const ViewModeTabs = ({
-  setIsFilterOpen,
-  isSearching,
-  setSelectedMode,
-  selectedMode,
-}: ViewModeTabsProps) => {
+const ViewModeTabs = ({ setIsFilterOpen }: ViewModeTabsProps) => {
   const t = useTranslations('AllProjects');
+  // store: state
+  const selectedMode = useViewStore((state) => state.selectedMode);
+  const isSearching = useProjectStore((state) => state.isSearching);
+  // store: action
+  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
 
   const selectTab = (tab: ViewMode) => {
     if (setIsFilterOpen) {
       setIsFilterOpen(false);
     }
-    if (setSelectedMode) setSelectedMode(tab);
+    setSelectedMode(tab);
   };
 
   const TabItem = ({ selectedTab, icon, label }: TabItemProps) => {
@@ -54,7 +52,9 @@ const ViewModeTabs = ({
     );
   };
 
-  return selectedMode ? (
+  if (!selectedMode) return null;
+
+  return (
     <div
       className={clsx({
         [styles.tabContainerSecondary]: isSearching,
@@ -80,7 +80,7 @@ const ViewModeTabs = ({
         label={isSearching ? undefined : t('map')}
       />
     </div>
-  ) : null;
+  );
 };
 
 export default ViewModeTabs;

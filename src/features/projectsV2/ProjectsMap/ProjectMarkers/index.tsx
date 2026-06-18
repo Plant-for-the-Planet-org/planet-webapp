@@ -14,7 +14,6 @@ export type CategorizedProjects = {
 };
 interface ProjectMarkersProps {
   categorizedProjects: CategorizedProjects | undefined;
-  page: 'project-list' | 'project-details';
 }
 
 type ClosedPopupState = {
@@ -28,7 +27,7 @@ type OpenPopupState = {
 
 type PopupState = ClosedPopupState | OpenPopupState;
 
-const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
+const ProjectMarkers = ({ categorizedProjects }: ProjectMarkersProps) => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -137,7 +136,6 @@ const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
           project={popupState.project}
           handlePopupLeave={initiatePopupClose}
           visitProject={visitProject}
-          page={page}
         />
       )}
     </>

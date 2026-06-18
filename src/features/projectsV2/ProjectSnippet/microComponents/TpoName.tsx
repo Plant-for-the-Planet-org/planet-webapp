@@ -6,10 +6,10 @@ import styles from '../styles/ProjectSnippet.module.scss';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { clsx } from 'clsx';
+import { useViewStore } from '../../../../stores';
 
 interface TpoNameProps {
   projectTpoName: string;
-  page: 'project-list' | 'project-details' | undefined;
   allowDonations: boolean;
   isTopProject: boolean;
   isApproved: boolean;
@@ -19,7 +19,6 @@ interface TpoNameProps {
 
 const TpoName = ({
   projectTpoName,
-  page,
   allowDonations,
   isTopProject,
   isApproved,
@@ -29,6 +28,7 @@ const TpoName = ({
   const tCommon = useTranslations('Common');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const currentPage = useViewStore((state) => state.page);
 
   const tpoNameBackgroundClass = useMemo(() => {
     if (!allowDonations) return `${styles.noDonation}`;
@@ -47,7 +47,7 @@ const TpoName = ({
   const tpoNameContainerClasses = clsx(
     styles.projectTpoName,
     tpoNameBackgroundClass,
-    { [styles.projectTpoNameSecondary]: page === 'project-details' }
+    { [styles.projectTpoNameSecondary]: currentPage === 'project-details' }
   );
   return (
     <div className={tpoNameContainerClasses} onClick={handleClick}>

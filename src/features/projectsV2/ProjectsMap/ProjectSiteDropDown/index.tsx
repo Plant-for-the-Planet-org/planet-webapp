@@ -1,7 +1,5 @@
 import type { SetState } from '../../../common/types/common';
-import type { ProjectSiteFeature } from '../../../common/types/map';
 import type { DropdownType } from '../../../common/types/projectv2';
-import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -16,33 +14,31 @@ import { truncateString } from '../../../../utils/getTruncatedString';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import themeProperties from '../../../../theme/themeProperties';
 import { clsx } from 'clsx';
+import {
+  useInterventionStore,
+  useSingleProjectStore,
+} from '../../../../stores';
 
 interface Props {
-  projectSites: ProjectSiteFeature[] | undefined | null;
-  selectedSite: number | null;
-  setSelectedSite: SetState<number | null>;
-  selectedIntervention: Intervention | null;
-  setSelectedIntervention: SetState<Intervention | null>;
-  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
   activeDropdown: DropdownType;
   setActiveDropdown: SetState<DropdownType>;
 }
 
-const ProjectSiteDropdown = ({
-  projectSites,
-  selectedSite,
-  setSelectedSite,
-  selectedIntervention,
-  setSelectedIntervention,
-  setSelectedSampleTree,
-  activeDropdown,
-  setActiveDropdown,
-}: Props) => {
+const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const tProjectDetails = useTranslations('ProjectDetails');
   const locale = useLocale();
   const router = useRouter();
   const { query } = router;
+  // store: state
+  const projectSites = useSingleProjectStore(
+    (state) => state.singleProject?.sites
+  );
+  const selectedSite = useSingleProjectStore((state) => state.selectedSite);
+  const selectedIntervention = useInterventionStore(
+    (state) => state.selectedIntervention
+  );
+
   const siteList = useMemo(() => {
     if (!projectSites) return [];
     return projectSites.map((site, index: number) => {
@@ -145,11 +141,8 @@ const ProjectSiteDropdown = ({
       {isMenuOpen && hasMultipleSites && (
         <ProjectSiteList
           siteList={siteList}
-          setSelectedSite={setSelectedSite}
           setIsMenuOpen={setIsMenuOpen}
           selectedSiteData={selectedSiteData}
-          setSelectedIntervention={setSelectedIntervention}
-          setSelectedSampleTree={setSelectedSampleTree}
         />
       )}
     </div>
