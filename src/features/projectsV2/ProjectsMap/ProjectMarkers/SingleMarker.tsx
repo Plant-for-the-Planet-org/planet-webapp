@@ -1,6 +1,6 @@
 import type { MapProject } from '../../../common/types/projectv2';
 
-import { Marker } from 'react-map-gl-v7';
+import { Marker } from 'react-map-gl-v7/maplibre';
 import ProjectMarkerIcon from './ProjectMarkerIcon';
 import styles from './ProjectMarkers.module.scss';
 
