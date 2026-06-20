@@ -153,6 +153,11 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
     };
   }, [mapInstance, byId, visitProject]);
 
+  const handlePopupEnter = useCallback(() => {
+    if (openTimer.current) clearTimeout(openTimer.current);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  }, []);
+
   const handlePopupLeave = useCallback(() => {
     closeTimer.current = setTimeout(() => setPopupProject(null), 200);
   }, []);
@@ -176,6 +181,7 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
       {popupProject && (
         <ProjectPopup
           project={popupProject}
+          handlePopupEnter={handlePopupEnter}
           handlePopupLeave={handlePopupLeave}
           visitProject={visitProject}
           page={page}
