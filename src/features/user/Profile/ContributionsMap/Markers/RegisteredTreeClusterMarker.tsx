@@ -1,6 +1,6 @@
 import type { ClusterProperties, PointFeature } from 'supercluster';
 
-import { Marker } from 'react-map-gl-v7';
+import { Marker } from 'react-map-gl-v7/maplibre';
 import { RegisteredTreeClusterMarkerIcon } from '../../../../../../public/assets/images/icons/myForestMapIcons/ClusterMarkerIcons';
 import styles from '../Common/common.module.scss';
 
