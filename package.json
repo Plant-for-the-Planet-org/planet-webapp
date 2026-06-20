@@ -106,6 +106,7 @@
     "react-map-gl-v7": "npm:react-map-gl@^7.1.7",
     "react-player": "^2.8.2",
     "react-slick": "^0.30.2",
+    "react-virtuoso": "^4.18.7",
     "sass": "^1.94.2",
     "slick-carousel": "^1.8.1",
     "styled-jsx": "^5.0.0",

@@ -5,6 +5,7 @@ import { useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../ProjectsSection.module.scss';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
+import { Virtuoso } from 'react-virtuoso';
 import { useProjects } from '../ProjectsContext';
 import ProjectSnippet from '../ProjectSnippet';
 
@@ -47,19 +48,31 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
   );
 
   const isProjectFound = !(projectsToDisplay?.length === 0);
-  return (
-    <div className={styles.projectList}>
-      {isProjectFound ? (
-        sortedProjects?.map(renderProjectSnippet)
-      ) : (
+
+  if (!isProjectFound) {
+    return (
+      <div className={styles.projectList}>
         <div className={styles.noProjectFoundContainer}>
           <NoDataFound />
           <p className={styles.noProjectFoundText}>
             {tAllProjects('noProjectFound')}
           </p>
         </div>
+      </div>
+    );
+  }
+
+  // Virtualized so only the cards near the viewport mount (was ~259 at once).
+  return (
+    <Virtuoso
+      className={styles.projectList}
+      data={sortedProjects ?? []}
+      computeItemKey={(_, project) => project.properties.id}
+      itemContent={(_, project) => (
+        <div style={{ paddingBottom: 12 }}>{renderProjectSnippet(project)}</div>
       )}
-    </div>
+      overscan={600}
+    />
   );
 };
 
