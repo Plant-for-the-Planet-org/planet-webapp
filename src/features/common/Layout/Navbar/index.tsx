@@ -39,7 +39,8 @@ export default function Navbar() {
   if (auth0Error) {
     const { message } = auth0Error;
 
-    if (message === '401') {
+    // TODO: Remove '401' case after July 31, 2026. Confirm whether safe to remove before then.
+    if (message === '401' || message === 'email_not_verified') {
       if (typeof window !== 'undefined') {
         setUser(null);
         logoutUser(`${window.location.origin}/verify-email`);
