@@ -1,12 +1,13 @@
 import type { MapProject } from '../../../common/types/projectv2';
 
+import { memo } from 'react';
 import { Marker } from 'react-map-gl-v7/maplibre';
 import ProjectMarkerIcon from './ProjectMarkerIcon';
 import styles from './ProjectMarkers.module.scss';
 
 type Props = {
   project: MapProject;
-  onMouseOver: () => void;
+  onMouseOver: (project: MapProject) => void;
   onMouseLeave: () => void;
   visitProject: (projectSlug: string) => void;
 };
@@ -33,7 +34,7 @@ const SingleMarker = ({
             role="button"
             tabIndex={0}
             onFocus={() => {}} //Do we want to allow keyboard navigation for the map? In that case, perhaps we should make it obvious that the marker is focused
-            onMouseOver={onMouseOver}
+            onMouseOver={() => onMouseOver(project)}
             onMouseLeave={onMouseLeave}
           >
             <ProjectMarkerIcon projectProperties={project.properties} />
@@ -44,4 +45,4 @@ const SingleMarker = ({
   );
 };
 
-export default SingleMarker;
+export default memo(SingleMarker);

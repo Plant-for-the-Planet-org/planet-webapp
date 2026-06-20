@@ -1,5 +1,6 @@
 import type { MapProjectProperties } from '../../../common/types/projectv2';
 
+import { memo } from 'react';
 import {
   Agroforestry,
   Conservation,
@@ -62,4 +63,4 @@ const ProjectMarkerIcon = ({ projectProperties }: Props) => {
   }
 };
 
-export default ProjectMarkerIcon;
+export default memo(ProjectMarkerIcon);

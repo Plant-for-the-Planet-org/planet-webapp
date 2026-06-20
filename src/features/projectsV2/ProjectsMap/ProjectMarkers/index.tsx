@@ -106,7 +106,7 @@ const ProjectMarkers = ({ categorizedProjects, page }: ProjectMarkersProps) => {
         <SingleMarker
           project={project}
           key={project.properties.id}
-          onMouseOver={() => initiatePopupOpen(project)}
+          onMouseOver={initiatePopupOpen}
           onMouseLeave={handleMarkerLeave}
           visitProject={visitProject}
         />
