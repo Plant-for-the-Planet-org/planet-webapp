@@ -48,7 +48,10 @@ type ShapeId = keyof typeof SHAPE_COMPONENTS;
 const shapeIdFor = (p: MapProjectProperties): ShapeId | null => {
   if (p.purpose === 'conservation') return 'conservation';
   const classification = (p as { classification?: string }).classification;
-  if (classification && classification in SHAPE_COMPONENTS) {
+  if (
+    classification &&
+    Object.prototype.hasOwnProperty.call(SHAPE_COMPONENTS, classification)
+  ) {
     return classification as ShapeId;
   }
   return null;
@@ -108,12 +111,7 @@ const withShadow = (img: HTMLImageElement): ImageData | HTMLImageElement => {
   return ctx.getImageData(0, 0, w, h);
 };
 
-/**
- * Registers every (shape x tier) pin as a maplibre image. Idempotent and safe to
- * call repeatedly (e.g. on load and on styleimagemissing). Resolves once all
- * images are added.
- */
-export const registerMarkerIcons = async (map: MaplibreMap): Promise<void> => {
+const rasterizeAllIcons = async (map: MaplibreMap): Promise<void> => {
   const tasks: Promise<void>[] = [];
   (Object.keys(SHAPE_COMPONENTS) as ShapeId[]).forEach((shape) => {
     (Object.keys(TIER_COLOR) as Tier[]).forEach((tier) => {
@@ -135,4 +133,24 @@ export const registerMarkerIcons = async (map: MaplibreMap): Promise<void> => {
     });
   });
   await Promise.all(tasks);
+};
+
+// Coalesce the concurrent calls that fire during initial load: the symbol layer
+// emits one `styleimagemissing` per missing icon (~24 at once), and rasterization
+// is async, so without this each call would re-rasterize the whole set. Callers
+// for the same map share one in-flight registration.
+const inFlightRegistrations = new WeakMap<MaplibreMap, Promise<void>>();
+
+/**
+ * Registers every (shape x tier) pin as a maplibre image. Idempotent and safe to
+ * call repeatedly (e.g. on load and on styleimagemissing).
+ */
+export const registerMarkerIcons = (map: MaplibreMap): Promise<void> => {
+  const existing = inFlightRegistrations.get(map);
+  if (existing) return existing;
+  const registration = rasterizeAllIcons(map).finally(() => {
+    inFlightRegistrations.delete(map);
+  });
+  inFlightRegistrations.set(map, registration);
+  return registration;
 };
