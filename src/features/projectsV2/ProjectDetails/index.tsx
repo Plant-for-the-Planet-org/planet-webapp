@@ -73,9 +73,12 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
       );
       setInterventions(response.data ?? []);
     } catch (err) {
-      setErrors(handleError(err as APIError | ClientError));
-      setIsError(true);
-      router.push(localizedPath('/'));
+      // Interventions are an optional map overlay. A failure here (including a
+      // missing TREEMAPPER_URL locally) must not surface a generic connectivity
+      // error or push the user off the project page — just log and render the
+      // project without the overlay.
+      console.error('Error fetching interventions:', err);
+      setInterventions([]);
     } finally {
       setIsLoading(false);
     }
