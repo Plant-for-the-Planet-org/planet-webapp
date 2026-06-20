@@ -70,6 +70,15 @@ const WIDTH = 30;
 const HEIGHT = 34;
 const RATIO = 2;
 
+// Transparent padding (display px) around the pin so the baked drop-shadow is
+// not clipped. The bottom pad doubles as the anchor offset (see MARKER_ICON_OFFSET_Y).
+const PAD = 8;
+
+// The pin tip sits PAD px above the padded image's bottom edge; with
+// icon-anchor 'bottom' the layer must offset the icon down by PAD so the tip
+// lands on the project coordinate (the shadow then falls below it).
+export const MARKER_ICON_OFFSET_Y = PAD;
+
 const svgToImage = (svg: string): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
     const sized = svg.replace(
@@ -81,6 +90,23 @@ const svgToImage = (svg: string): Promise<HTMLImageElement> =>
     img.onerror = reject;
     img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(sized)}`;
   });
+
+// Composite the pin onto a padded canvas with the original drop-shadow baked in
+// (matches the old `drop-shadow(0 4px 4px rgba(0,0,0,0.25))`).
+const withShadow = (img: HTMLImageElement): ImageData | HTMLImageElement => {
+  const w = (WIDTH + PAD * 2) * RATIO;
+  const h = (HEIGHT + PAD * 2) * RATIO;
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return img;
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
+  ctx.shadowBlur = 4 * RATIO;
+  ctx.shadowOffsetY = 4 * RATIO;
+  ctx.drawImage(img, PAD * RATIO, PAD * RATIO, WIDTH * RATIO, HEIGHT * RATIO);
+  return ctx.getImageData(0, 0, w, h);
+};
 
 /**
  * Registers every (shape x tier) pin as a maplibre image. Idempotent and safe to
@@ -98,7 +124,9 @@ export const registerMarkerIcons = async (map: MaplibreMap): Promise<void> => {
       tasks.push(
         svgToImage(svg)
           .then((img) => {
-            if (!map.hasImage(key)) map.addImage(key, img, { pixelRatio: RATIO });
+            if (!map.hasImage(key)) {
+              map.addImage(key, withShadow(img), { pixelRatio: RATIO });
+            }
           })
           .catch(() => {
             /* a single icon failing to rasterize must not break the map */

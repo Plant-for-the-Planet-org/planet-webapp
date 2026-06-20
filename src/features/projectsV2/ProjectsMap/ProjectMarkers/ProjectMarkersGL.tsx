@@ -6,7 +6,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Layer, Source, useMap } from 'react-map-gl-v7/maplibre';
 import { useRouter } from 'next/router';
 import ProjectPopup from '../ProjectPopup';
-import { getMarkerIconKey, registerMarkerIcons } from './markerImages';
+import {
+  getMarkerIconKey,
+  registerMarkerIcons,
+  MARKER_ICON_OFFSET_Y,
+} from './markerImages';
 import { getProjectCategory } from '../../../../utils/projectV2';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
@@ -163,6 +167,7 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
             'icon-image': ['get', 'iconKey'],
             'icon-size': 1,
             'icon-anchor': 'bottom',
+            'icon-offset': [0, MARKER_ICON_OFFSET_Y],
             'icon-allow-overlap': true,
             'symbol-sort-key': ['get', 'sortKey'],
           }}
