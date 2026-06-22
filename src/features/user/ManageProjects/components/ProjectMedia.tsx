@@ -7,7 +7,7 @@ import type {
 } from '../../../common/types/project';
 import type { ReactElement, FocusEvent } from 'react';
 
-import { useCallback, useEffect, useContext, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
@@ -16,7 +16,6 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
@@ -27,6 +26,9 @@ import { useApi } from '../../../../hooks/useApi';
 import themeProperties from '../../../../theme/themeProperties';
 import { validateYouTubeUrl } from '../../../../utils/youTubeValidation';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 type UploadImageApiPayload = {
   imageFile: string;
@@ -62,7 +64,8 @@ export default function ProjectMedia({
   projectGUID,
 }: ProjectMediaProps): ReactElement {
   const t = useTranslations('ManageProjects');
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const {
     getApiAuthenticated,
     deleteApiAuthenticated,
@@ -78,10 +81,12 @@ export default function ProjectMedia({
     defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
   });
   const { colors } = themeProperties.designSystem;
+  // local state
   const [uploadedImages, setUploadedImages] = useState<UploadImage[]>([]);
-
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>('');
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const fetchImages = async () => {
     try {
@@ -94,7 +99,7 @@ export default function ProjectMedia({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
+      router.push(localizedPath('/profile'));
     }
   };
 

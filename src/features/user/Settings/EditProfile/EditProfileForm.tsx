@@ -6,7 +6,7 @@ import type { User, UserType } from '@planet-sdk/common/build/types/user';
 import { TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
@@ -14,7 +14,6 @@ import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
@@ -32,6 +31,7 @@ import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/New
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 type ProfileFormData = {
   address: string;
@@ -64,17 +64,15 @@ type UpdateProfileApiPayload = Omit<ProfileFormData, 'isPublic'> & {
 };
 
 export default function EditProfileForm() {
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded } = useUserProps();
   const t = useTranslations('EditProfile');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { putApiAuthenticated } = useApi();
-
+  // local state
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [updatingPic, setUpdatingPic] = useState(false);
-  // the form values
   const [severity, setSeverity] = useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const [type, setAccountType] = useState(
@@ -85,6 +83,8 @@ export default function EditProfileForm() {
     title: t('individual'),
     value: 'individual',
   });
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const defaultProfileDetails = useMemo(() => {
     return {

@@ -6,7 +6,7 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { Tenant } from '@planet-sdk/common';
 
 import { useEffect, useState } from 'react';
 import TopProgressBar from '../../../../../../src/features/common/ContentLoaders/TopProgressBar';
@@ -20,29 +20,16 @@ import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-export default function PlanetCashCreatePage({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+export default function PlanetCashCreatePage(): ReactElement {
   const t = useTranslations('Me');
+  // local state
   const [progress, setProgress] = useState<number>(0);
-
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
   useEffect(() => {
     // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.
@@ -51,7 +38,9 @@ export default function PlanetCashCreatePage({
     };
   }, []);
 
-  return tenantConfig ? (
+  if (!isInitialized) return <></>;
+
+  return (
     <>
       {progress > 0 && (
         <div className={'topLoader'}>
@@ -68,8 +57,6 @@ export default function PlanetCashCreatePage({
         />
       </UserLayout>
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -100,13 +87,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'planetcash'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

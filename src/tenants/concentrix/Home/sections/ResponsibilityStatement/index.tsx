@@ -1,10 +1,11 @@
 import styles from './ResponsibilityStatement.module.scss';
 import commonStyles from '../../common.module.scss';
+import clsx from 'clsx';
 
 const ResponsibilityStatement = () => {
   return (
     <section className={styles.responsibilityStatement}>
-      <h2 className={`${commonStyles.heading2} ${styles.heading}`}>
+      <h2 className={clsx(commonStyles.heading2, styles.heading)}>
         Taking responsibility
       </h2>
       <p className={styles.content}>

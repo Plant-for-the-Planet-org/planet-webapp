@@ -1,8 +1,7 @@
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, Tenant } from '@planet-sdk/common';
 import type { ExtendedProfileProjectProperties } from '../../../../../../src/features/common/types/project';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -10,7 +9,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
 import GlobeContentLoader from '../../../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
@@ -20,43 +19,36 @@ import { useUserProps } from '../../../../../../src/features/common/Layout/UserP
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
-import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-import { defaultTenant } from '../../../../../../tenant.config';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
+import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
+import { defaultTenant } from '../../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-function ManageSingleProject({
-  pageProps: { tenantConfig },
-}: Props): ReactElement {
+function ManageSingleProject(): ReactElement {
   const t = useTranslations('Common');
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
+  const { getApiAuthenticated } = useApi();
+  const { user, contextLoaded, token } = useUserProps();
+  // local state
   const [projectGUID, setProjectGUID] = useState<string | null>(null);
   const [ready, setReady] = useState<boolean>(false);
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
-  const { getApiAuthenticated } = useApi();
   const [accessDenied, setAccessDenied] = useState<boolean>(false);
   const [setupAccess, setSetupAccess] = useState<boolean>(false);
   const [project, setProject] =
     useState<ExtendedProfileProjectProperties | null>(null);
-  const { user, contextLoaded, token } = useUserProps();
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (router.query.id && !Array.isArray(router.query.id)) {
@@ -77,7 +69,7 @@ function ManageSingleProject({
       } catch (err) {
         setAccessDenied(true);
         setErrors(handleError(err as APIError));
-        redirect('/profile');
+        router.push(localizedPath('/profile'));
       }
     }
 
@@ -87,7 +79,7 @@ function ManageSingleProject({
     }
   }, [ready, contextLoaded, user]);
 
-  if (tenantConfig && accessDenied && setupAccess) {
+  if (isInitialized && accessDenied && setupAccess) {
     return (
       <>
         <AccessDeniedLoader />
@@ -98,7 +90,7 @@ function ManageSingleProject({
 
   // Showing error to other TPOs is left
 
-  return tenantConfig ? (
+  return isInitialized ? (
     setupAccess ? (
       ready && token && !accessDenied && projectGUID && project ? (
         <UserLayout>
@@ -150,13 +142,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'maps', 'me', 'country', 'manageProjects'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

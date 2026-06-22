@@ -1,4 +1,3 @@
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -6,6 +5,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
 import { useTranslations } from 'next-intl';
 import {
@@ -13,20 +13,19 @@ import {
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import { defaultTenant } from '../../../../../tenant.config';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ProfileOuterContainer from '../../../../../src/features/user/Profile/ProfileOuterContainer';
 import ProfileLayout from '../../../../../src/features/user/Profile/ProfileLayout';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
+import { defaultTenant } from '../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
+const MyForestPage = () => {
   const t = useTranslations('Me');
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  if (!isInitialized) return <></>;
 
-  return tenantConfig ? (
+  return (
     <UserLayout>
       <Head>
         <title>{t('profile')}</title>
@@ -36,8 +35,6 @@ const MyForestPage = ({ pageProps: { tenantConfig } }: Props) => {
         <ProfileLayout />
       </ProfileOuterContainer>
     </UserLayout>
-  ) : (
-    <></>
   );
 };
 
@@ -70,9 +67,6 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -86,6 +80,9 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
       'project',
     ],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

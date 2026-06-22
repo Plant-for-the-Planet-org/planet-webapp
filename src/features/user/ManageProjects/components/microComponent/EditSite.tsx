@@ -10,12 +10,12 @@ import { Controller, useForm } from 'react-hook-form';
 import { useApi } from '../../../../../hooks/useApi';
 import { useContext, useState } from 'react';
 import { ThemeContext } from '../../../../../theme/themeContext';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { Button, Fade, MenuItem, Modal, TextField } from '@mui/material';
 import SiteGeometryEditor from '../SiteGeometryEditor';
 import BackArrow from '../../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../../stores/errorHandlingStore';
 
 function EditSite({
   openModal,
@@ -37,12 +37,14 @@ function EditSite({
     formState: { errors },
     control,
   } = useForm<ProjectSitesFormData>();
+  // local state
   const [geoJson, setGeoJson] = useState<ProjectSiteFeatureCollection | null>(
     geoJsonProp
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const MapProps = {
     geoJson,

@@ -32,13 +32,9 @@ type MessagesProjectDetails =
   typeof import('./public/static/locales/en/projectDetails.json');
 type MessagesProject = typeof import('./public/static/locales/en/project.json');
 type MessagesRedeem = typeof import('./public/static/locales/en/redeem.json');
-type MessagesRegisterTrees =
-  typeof import('./public/static/locales/en/registerTrees.json');
 type MessagesTenants = typeof import('./public/static/locales/en/tenants.json');
 type MessagesTreemapper =
   typeof import('./public/static/locales/en/treemapper.json');
-type MessagesTreemapperAnalytics =
-  typeof import('./public/static/locales/en/treemapperAnalytics.json');
 
 type Messages = MessagesAllProjects &
   MessagesBulkCodes &
@@ -60,9 +56,7 @@ type Messages = MessagesAllProjects &
   MessagesProjectDetails &
   MessagesProject &
   MessagesRedeem &
-  MessagesRegisterTrees &
   MessagesTenants &
-  MessagesTreemapper &
-  MessagesTreemapperAnalytics;
+  MessagesTreemapper;
 
 declare interface IntlMessages extends Messages {}

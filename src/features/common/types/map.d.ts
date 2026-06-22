@@ -6,7 +6,6 @@ import type {
 } from '@planet-sdk/common';
 import type { MutableRefObject } from 'react';
 import type { UserPublicProfile } from '@planet-sdk/common';
-import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import type { FlyToInterpolator } from 'react-map-gl';
 import type { SetState } from './common';
 import type {
@@ -142,14 +141,6 @@ export interface ViewportProps {
   transitionDuration?: number | undefined;
   transitionInterpolator?: FlyToInterpolator | undefined;
   transitionEasing?: (normalizedTime: number) => number;
-}
-
-export type RegisteredTreesGeometry = Point | Polygon;
-
-export interface RegisterTreesFormProps {
-  setContributionGUID: SetState<string>;
-  setContributionDetails: SetState<ContributionProps | null>;
-  setRegistered: SetState<boolean>;
 }
 
 // Map styling
@@ -308,6 +299,18 @@ export type InterventionFeature = Feature<
   InterventionGeometryType,
   InterventionProperties
 >;
+
+/**
+ * Standard envelope every TreeMapper API response is wrapped in. The actual
+ * payload always lives in `data`.
+ */
+export interface TreemapperApiResponse<T> {
+  statusCode: number;
+  message: string;
+  error: string | null;
+  data: T | null;
+  code?: string;
+}
 
 // Map
 export interface ExtendedMapLibreMap extends MapLibreMap {

@@ -5,7 +5,7 @@ import type {
   ProjectCertificatesProps,
 } from '../../../common/types/project';
 
-import { useEffect, useState, useContext, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -14,7 +14,6 @@ import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDF
 import { getPDFFile } from '../../../../utils/getImageURL';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -23,6 +22,9 @@ import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 type CertificateApiPayload = {
   issueDate: number;
@@ -36,8 +38,9 @@ function ProjectCertificates({
   setIsUploadingData,
   userLang,
 }: ProjectCertificatesProps): ReactElement {
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const t = useTranslations('ManageProjects');
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { postApiAuthenticated, getApiAuthenticated, deleteApiAuthenticated } =
     useApi();
   const {
@@ -47,8 +50,8 @@ function ProjectCertificates({
     watch,
     getValues,
   } = useForm({ mode: 'all' });
-
   const certifierName = watch('certifierName');
+  // local state
   const [uploadedFiles, setUploadedFiles] = useState<Certificate[]>([]);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
@@ -56,6 +59,8 @@ function ProjectCertificates({
   );
   const [isCertified, setIsCertified] = useState<boolean>(true);
   const [showToggle, setShowToggle] = useState<boolean>(true);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const onSubmit = async (pdf: string) => {
     const { issueDate, certifierName } = getValues();
@@ -121,7 +126,7 @@ function ProjectCertificates({
         setUploadedFiles(result.certificates);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/profile');
+        router.push(localizedPath('/profile'));
         setShowToggle(true);
         setIsCertified(false);
         setShowForm(true);

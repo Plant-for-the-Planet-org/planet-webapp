@@ -5,6 +5,7 @@
     "qrCodeDiscription": "Em vez do link, você também pode fornecer o QR-Code para acessar o projeto pretendido.",
     "labelCountry": "País",
     "labelLanguages": "Idioma",
+    "labelProject": "Nome do projeto",
     "countryLanguageTitle": "Definir o país e o idioma",
     "projectTitle": "Defina seu projeto",
     "treeCounterTitle": "Apoie meu TreeCounter",

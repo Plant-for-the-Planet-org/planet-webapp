@@ -35,14 +35,9 @@ export default getRequestConfig(async ({ locale }) => {
     ...(await import(`./public/static/locales/${locale}/projectDetails.json`))
       .default,
     ...(await import(`./public/static/locales/${locale}/redeem.json`)).default,
-    ...(await import(`./public/static/locales/${locale}/registerTrees.json`))
-      .default,
     ...(await import(`./public/static/locales/${locale}/tenants.json`)).default,
     ...(await import(`./public/static/locales/${locale}/treemapper.json`))
       .default,
-    ...(
-      await import(`./public/static/locales/${locale}/treemapperAnalytics.json`)
-    ).default,
   };
 
   const defaultMessages = {
@@ -67,11 +62,8 @@ export default getRequestConfig(async ({ locale }) => {
     ...(await import(`./public/static/locales/en/project.json`)).default,
     ...(await import(`./public/static/locales/en/projectDetails.json`)).default,
     ...(await import(`./public/static/locales/en/redeem.json`)).default,
-    ...(await import(`./public/static/locales/en/registerTrees.json`)).default,
     ...(await import(`./public/static/locales/en/tenants.json`)).default,
     ...(await import(`./public/static/locales/en/treemapper.json`)).default,
-    ...(await import(`./public/static/locales/en/treemapperAnalytics.json`))
-      .default,
   };
 
   const messages: IntlMessages = deepmerge(defaultMessages, userMessages);

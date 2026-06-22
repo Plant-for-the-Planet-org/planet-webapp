@@ -3,7 +3,7 @@ import type { APIError } from '@planet-sdk/common';
 import type { PlanetCashAccount } from '../../common/types/planetcash';
 import type { ReactElement } from 'react';
 
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
@@ -11,12 +11,12 @@ import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -40,10 +40,11 @@ export default function PlanetCash({
   const locale = useLocale();
   const { token, contextLoaded } = useUserProps();
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
-  const { setErrors } = useContext(ErrorHandlingContext);
-
+  // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const sortAccountsByActive = (
     accounts: PlanetCashAccount[]

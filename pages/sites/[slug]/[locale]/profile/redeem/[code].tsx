@@ -5,61 +5,54 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError, SerializedError } from '@planet-sdk/common';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { APIError, SerializedError, Tenant } from '@planet-sdk/common';
 import type { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
 
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
   EnterRedeemCode,
 } from '../../../../../../src/features/common/RedeemCode';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
-interface Props {
-  pageProps: PageProps;
-}
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
+import { defaultTenant } from '../../../../../../tenant.config';
 
 type RedeemCodeApiPayload = {
   code: string;
 };
 
-const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
+const RedeemCode = () => {
   const t = useTranslations('Redeem');
   const { user, contextLoaded } = useUserProps();
-  const { setErrors, errors } = useContext(ErrorHandlingContext);
-  const { setTenantConfig } = useTenant();
   const { postApiAuthenticated } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-
+  // local state
   const [code, setCode] = useState<string | undefined>(undefined);
   const [inputCode, setInputCode] = useState<string | undefined>(undefined);
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  //store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  const errors = useErrorHandlingStore((state) => state.errors);
+  //store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (contextLoaded) {
@@ -164,7 +157,7 @@ const RedeemCode = ({ pageProps: { tenantConfig } }: Props) => {
     }
   };
 
-  return tenantConfig && user ? (
+  return isInitialized && user ? (
     !errors && !redeemedCodeData ? (
       // to input  redeem code
       <LandingSection>
@@ -232,13 +225,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country', 'redeem'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {
