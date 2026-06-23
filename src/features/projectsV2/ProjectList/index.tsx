@@ -71,7 +71,10 @@ const ProjectList = ({ tabSelected }: { tabSelected: ProjectTabs }) => {
       itemContent={(_, project) => (
         <div style={{ paddingBottom: 12 }}>{renderProjectSnippet(project)}</div>
       )}
-      overscan={600}
+      overscan={600} // px; ~3 cards above and below viewport to avoid sudden appearance while scrolling
+      components={{
+        Footer: () => <div style={{ height: 53 }} />,
+      }}
     />
   );
 };
