@@ -1,8 +1,13 @@
 import { getRequestConfig } from 'next-intl/server';
 import deepmerge from 'deepmerge';
+import { i18nConfig } from './i18n-config';
 
 // IMP - Import any new translation file here in `userMessages` add `defaultMessages`, to enable translation auto complete.
-export default getRequestConfig(async ({ locale }) => {
+export default getRequestConfig(async ({ requestLocale }) => {
+  const resolvedLocale = (await requestLocale) ?? i18nConfig.defaultLocale;
+  const locale = i18nConfig.locales.includes(resolvedLocale)
+    ? resolvedLocale
+    : i18nConfig.defaultLocale;
   const userMessages = {
     ...(await import(`./public/static/locales/${locale}/allProjects.json`))
       .default,
@@ -66,10 +71,10 @@ export default getRequestConfig(async ({ locale }) => {
     ...(await import(`./public/static/locales/en/treemapper.json`)).default,
   };
 
-  const messages: IntlMessages = deepmerge(defaultMessages, userMessages);
+  const messages = deepmerge(defaultMessages, userMessages);
 
   // Single file, no fallback
   // messages: (await import(`./messages/${locale}.json`)).default,
 
-  return { messages };
+  return { locale, messages };
 });
