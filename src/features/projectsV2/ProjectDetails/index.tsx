@@ -62,21 +62,24 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const fetchInterventions = async (projectId: string) => {
+    if (!process.env.TREEMAPPER_URL) {
+      console.error('TREEMAPPER_URL is not set; skipping intervention fetch.');
+      setInterventions([]);
+      return;
+    }
     setIsLoading(true);
     try {
       // The TreeMapper API wraps its payload in a standard envelope
       // ({ statusCode, message, error, data, code }); the interventions array
       // lives in `data`, so we unwrap it before storing.
       const response = await getApi<TreemapperApiResponse<Intervention[]>>(
-        // TODO: temporary TreeMapper API; revert to `/app/interventions/${projectId}` before merge
         `${process.env.TREEMAPPER_URL}/api/server/external/project/${projectId}/interventions`
       );
       setInterventions(response.data ?? []);
     } catch (err) {
-      // Interventions are an optional map overlay. A failure here (including a
-      // missing TREEMAPPER_URL locally) must not surface a generic connectivity
-      // error or push the user off the project page — just log and render the
-      // project without the overlay.
+      // Interventions are an optional map overlay. A failure here must not
+      // surface a generic connectivity error or push the user off the project
+      // page — just log and render the project without the overlay.
       console.error('Error fetching interventions:', err);
       setInterventions([]);
     } finally {
