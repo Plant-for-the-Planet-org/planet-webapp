@@ -4,7 +4,10 @@ import { i18nConfig } from './i18n-config';
 
 // IMP - Import any new translation file here in `userMessages` add `defaultMessages`, to enable translation auto complete.
 export default getRequestConfig(async ({ requestLocale }) => {
-  const locale = (await requestLocale) ?? i18nConfig.defaultLocale;
+  const resolvedLocale = (await requestLocale) ?? i18nConfig.defaultLocale;
+  const locale = i18nConfig.locales.includes(resolvedLocale)
+    ? resolvedLocale
+    : i18nConfig.defaultLocale;
   const userMessages = {
     ...(await import(`./public/static/locales/${locale}/allProjects.json`))
       .default,
