@@ -31,8 +31,8 @@ const TIER_COLOR: Record<Tier, string> = {
   nonDonatableProject: colors.mediumGrey,
 };
 
-// Same shape selection ProjectMarkerIcon uses (purpose=conservation, else classification).
-const SHAPE_COMPONENTS = {
+// Maps project classification/purpose to its SVG icon component(purpose=conservation, else classification)
+const POINT_MARKER_MAP = {
   conservation: Conservation,
   'natural-regeneration': NaturalRegeneration,
   mangroves: Mangroves,
@@ -43,16 +43,16 @@ const SHAPE_COMPONENTS = {
   'other-planting': OtherPlanting,
 } as const;
 
-type ShapeId = keyof typeof SHAPE_COMPONENTS;
+type PointMarkerType = keyof typeof POINT_MARKER_MAP;
 
-const shapeIdFor = (p: MapProjectProperties): ShapeId | null => {
+const getPointMarkerType = (p: MapProjectProperties): PointMarkerType | null => {
   if (p.purpose === 'conservation') return 'conservation';
   const classification = (p as { classification?: string }).classification;
   if (
     classification &&
-    Object.prototype.hasOwnProperty.call(SHAPE_COMPONENTS, classification)
+    Object.prototype.hasOwnProperty.call(POINT_MARKER_MAP, classification)
   ) {
-    return classification as ShapeId;
+    return classification as PointMarkerType;
   }
   return null;
 };
@@ -61,10 +61,10 @@ const shapeIdFor = (p: MapProjectProperties): ShapeId | null => {
  * Data-driven `icon-image` key for a project. Returns '' when there is no icon
  * for the project's classification (matches the old behaviour of rendering no pin).
  */
-export const getMarkerIconKey = (p: MapProjectProperties): string => {
-  const shape = shapeIdFor(p);
-  if (!shape) return '';
-  return `pin-${shape}-${getProjectCategory(p)}`;
+export const getPointMarkerImageKey = (p: MapProjectProperties): string => {
+  const markerType = getPointMarkerType(p);
+  if (!markerType) return '';
+  return `pin-${markerType}-${getProjectCategory(p)}`;
 };
 
 // The old HTML marker was 30px wide (ProjectMarkers.module.scss .marker); the
@@ -81,6 +81,9 @@ const PAD = 8;
 // icon-anchor 'bottom' the layer must offset the icon down by PAD so the tip
 // lands on the project coordinate (the shadow then falls below it).
 export const MARKER_ICON_OFFSET_Y = PAD;
+
+// Total rendered pin height including shadow padding.
+export const MARKER_PIN_HEIGHT = HEIGHT + PAD;
 
 const svgToImage = (svg: string): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
@@ -113,12 +116,12 @@ const withShadow = (img: HTMLImageElement): ImageData | HTMLImageElement => {
 
 const rasterizeAllIcons = async (map: MaplibreMap): Promise<void> => {
   const tasks: Promise<void>[] = [];
-  (Object.keys(SHAPE_COMPONENTS) as ShapeId[]).forEach((shape) => {
+  (Object.keys(POINT_MARKER_MAP) as PointMarkerType[]).forEach((markerType) => {
     (Object.keys(TIER_COLOR) as Tier[]).forEach((tier) => {
-      const key = `pin-${shape}-${tier}`;
+      const key = `pin-${markerType}-${tier}`;
       if (map.hasImage(key)) return;
-      const Shape = SHAPE_COMPONENTS[shape];
-      const svg = renderToStaticMarkup(<Shape color={TIER_COLOR[tier]} />);
+      const IconComponent = POINT_MARKER_MAP[markerType];
+      const svg = renderToStaticMarkup(<IconComponent color={TIER_COLOR[tier]} />);
       tasks.push(
         svgToImage(svg)
           .then((img) => {

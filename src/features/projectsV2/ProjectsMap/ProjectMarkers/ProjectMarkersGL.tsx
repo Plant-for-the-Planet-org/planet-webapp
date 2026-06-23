@@ -7,10 +7,10 @@ import { Layer, Source, useMap } from 'react-map-gl-v7/maplibre';
 import { useRouter } from 'next/router';
 import ProjectPopup from '../ProjectPopup';
 import {
-  getMarkerIconKey,
+  getPointMarkerImageKey,
   registerMarkerIcons,
   MARKER_ICON_OFFSET_Y,
-} from './markerImages';
+} from './markerImageRegistry';
 import { getProjectCategory } from '../../../../utils/projectV2';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
@@ -22,14 +22,19 @@ interface Props {
 
 export const PROJECT_MARKERS_LAYER = 'project-markers-gl';
 
-// Lower sort key is drawn first (underneath); top projects must sit on top.
-const TIER_SORT: Record<string, number> = {
+// Draw order by tier: lower value renders first (underneath). Top projects on top, non donatable at bottom
+const TIER_DRAW_ORDER: Record<string, number> = {
   nonDonatableProject: 0,
   regularProject: 1,
   topProject: 2,
 };
 
-type MarkerProps = { id: string; slug: string; iconKey: string; sortKey: number };
+type ProjectMarkerProperties = {
+  id: string;
+  slug: string;
+  iconKey: string;
+  sortKey: number;
+};
 
 const ProjectMarkersGL = ({ projects, page }: Props) => {
   const { current: mapInstance } = useMap();
@@ -38,13 +43,13 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
 
-  const { featureCollection, byId } = useMemo(() => {
-    const lookup = new Map<string, MapProject>();
+  const { featureCollection, projectById } = useMemo(() => {
+    const projectById = new Map<string, MapProject>();
     const features = projects
       .map((project) => {
-        const iconKey = getMarkerIconKey(project.properties);
+        const iconKey = getPointMarkerImageKey(project.properties);
         if (!iconKey) return null;
-        lookup.set(project.properties.id, project);
+        projectById.set(project.properties.id, project);
         return {
           type: 'Feature' as const,
           geometry: project.geometry,
@@ -52,8 +57,9 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
             id: project.properties.id,
             slug: project.properties.slug,
             iconKey,
-            sortKey: TIER_SORT[getProjectCategory(project.properties)] ?? 0,
-          } as MarkerProps,
+            sortKey:
+              TIER_DRAW_ORDER[getProjectCategory(project.properties)] ?? 0,
+          } as ProjectMarkerProperties,
         };
       })
       .filter((f): f is NonNullable<typeof f> => f !== null);
@@ -61,8 +67,8 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
       featureCollection: {
         type: 'FeatureCollection',
         features,
-      } as FeatureCollection<Point, MarkerProps>,
-      byId: lookup,
+      } as FeatureCollection<Point, ProjectMarkerProperties>,
+      projectById,
     };
   }, [projects]);
 
@@ -87,16 +93,18 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
     const map = mapInstance?.getMap();
     if (!map) return;
     let cancelled = false;
-    const run = () => {
+    const registerIcons = () => {
       if (!cancelled) void registerMarkerIcons(map);
     };
-    if (map.isStyleLoaded()) run();
-    else map.once('load', run);
-    // Safety net: (re)register if maplibre reports a missing icon image.
-    map.on('styleimagemissing', run);
+    if (map.isStyleLoaded()) registerIcons();
+    else map.once('load', registerIcons);
+    // Safety net: re-register if an icon is missing (e.g. after a style reload).
+    // styleimagemissing fires once per missing image (~24 at initial load) - registerMarkerIcons coalesces concurrent calls so only one rasterization runs.
+    map.on('styleimagemissing', registerIcons);
     return () => {
       cancelled = true;
-      map.off('styleimagemissing', run);
+      map.off('load', registerIcons);
+      map.off('styleimagemissing', registerIcons);
     };
   }, [mapInstance]);
 
@@ -116,17 +124,18 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
     const map = mapInstance?.getMap();
     if (!map) return;
 
-    const featureProject = (
+    const getProjectFromFeature = (
       f: MapGeoJSONFeature | undefined
     ): MapProject | undefined =>
-      f ? byId.get((f.properties as MarkerProps).id) : undefined;
+      f
+        ? projectById.get((f.properties as ProjectMarkerProperties).id)
+        : undefined;
 
     const onMove = (e: MapLayerMouseEvent) => {
       map.getCanvas().style.cursor = 'pointer';
-      const project = featureProject(e.features?.[0]);
+      const project = getProjectFromFeature(e.features?.[0]);
       if (!project) return;
-      if (closeTimer.current) clearTimeout(closeTimer.current);
-      if (openTimer.current) clearTimeout(openTimer.current);
+      clearTimers();
       openTimer.current = setTimeout(() => {
         setPopupProject((prev) =>
           prev?.properties.id === project.properties.id ? prev : project
@@ -139,7 +148,7 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
       closeTimer.current = setTimeout(() => setPopupProject(null), 200);
     };
     const onClick = (e: MapLayerMouseEvent) => {
-      const project = featureProject(e.features?.[0]);
+      const project = getProjectFromFeature(e.features?.[0]);
       if (project) visitProject(project.properties.slug);
     };
 
@@ -151,12 +160,7 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
       map.off('mouseleave', PROJECT_MARKERS_LAYER, onLeave);
       map.off('click', PROJECT_MARKERS_LAYER, onClick);
     };
-  }, [mapInstance, byId, visitProject]);
-
-  const handlePopupEnter = useCallback(() => {
-    if (openTimer.current) clearTimeout(openTimer.current);
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-  }, []);
+  }, [mapInstance, projectById, visitProject, clearTimers]);
 
   const handlePopupLeave = useCallback(() => {
     closeTimer.current = setTimeout(() => setPopupProject(null), 200);
@@ -164,7 +168,11 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
 
   return (
     <>
-      <Source id="project-markers-source" type="geojson" data={featureCollection}>
+      <Source
+        id="project-markers-source"
+        type="geojson"
+        data={featureCollection}
+      >
         <Layer
           id={PROJECT_MARKERS_LAYER}
           type="symbol"
@@ -181,7 +189,7 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
       {popupProject && (
         <ProjectPopup
           project={popupProject}
-          handlePopupEnter={handlePopupEnter}
+          handlePopupEnter={clearTimers}
           handlePopupLeave={handlePopupLeave}
           visitProject={visitProject}
           page={page}
