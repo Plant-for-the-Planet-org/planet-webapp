@@ -8,8 +8,6 @@ import type { NextPage } from 'next';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '../src/createEmotionCache';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import { useEffect, useMemo, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
