@@ -1,12 +1,11 @@
 import type { Bound } from '../features/common/types/map';
 import type { ClusterProperties, PointFeature } from 'supercluster';
 import type { RefObject } from 'react';
-import type { MapRef } from 'react-map-gl';
 import type {
   DonationProperties,
   MyContributionsSingleRegistration,
 } from '../features/common/types/myForest';
-import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { MapRef, ViewState } from 'react-map-gl-v7/maplibre';
 
 import Supercluster from 'supercluster';
 

@@ -6,7 +6,6 @@ import type {
 } from '@planet-sdk/common';
 import type { MutableRefObject } from 'react';
 import type { UserPublicProfile } from '@planet-sdk/common';
-import type { FlyToInterpolator } from 'react-map-gl';
 import type { SetState } from './common';
 import type {
   Feature,
@@ -139,7 +138,7 @@ export interface ViewportProps {
   longitude?: number;
   center?: [number, number];
   transitionDuration?: number | undefined;
-  transitionInterpolator?: FlyToInterpolator | undefined;
+  transitionInterpolator?: unknown;
   transitionEasing?: (normalizedTime: number) => number;
 }
 
