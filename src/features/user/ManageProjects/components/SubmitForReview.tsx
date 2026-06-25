@@ -7,12 +7,13 @@ import SubmitForReviewImage from '../../../../../public/assets/images/icons/mana
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
 import { useTranslations } from 'next-intl';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
-import { Button, FormControlLabel } from '@mui/material';
+import { Alert, Button, FormControlLabel, Stack } from '@mui/material';
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 function SubmitForReview({
   submitForReview,
@@ -20,10 +21,17 @@ function SubmitForReview({
   isUploadingData,
   projectDetails,
   handlePublishChange,
+  isLocked,
+  sectionCompleteness,
 }: SubmitForReviewProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+
+  const showQuestionnaire = projectDetails?.acceptDonations === true;
+  const backTab = showQuestionnaire
+    ? ProjectCreationTabs.QUESTIONNAIRE
+    : ProjectCreationTabs.PROJECT_SPENDING;
 
   function UnderReviewComponent() {
     return (
@@ -50,11 +58,11 @@ function SubmitForReview({
 
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
-            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            onClick={() => handleBack(backTab)}
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t('backToSpending')}</p>
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
           </Button>
 
           <Button
@@ -67,6 +75,14 @@ function SubmitForReview({
       </CenteredContainer>
     );
   }
+
+  const daIncomplete = !sectionCompleteness.detailedAnalysis;
+  const qIncomplete =
+    sectionCompleteness.questionnaire !== null &&
+    !sectionCompleteness.questionnaire;
+  const mediaIncomplete = sectionCompleteness.media === false;
+  const sitesIncomplete = sectionCompleteness.sites === false;
+  const canSubmit = !daIncomplete && !qIncomplete && !mediaIncomplete && !sitesIncomplete;
 
   function NotSubmittedReview() {
     return (
@@ -101,22 +117,40 @@ function SubmitForReview({
           }
         />
 
-        <div>
-          <div className={styles.reviewImageContainer}>
-            <NotReviewed />
-          </div>
-          <p className={styles.reviewMessage}>{t('projectForReview')}</p>
+        <div className={styles.reviewImageContainer}>
+          <NotReviewed />
         </div>
+        <Stack spacing={1} sx={{ width: '100%', mb: 2 }}>
+          {canSubmit && (
+            <Alert severity="success">{t('projectForReview')}</Alert>
+          )}
+          {mediaIncomplete && (
+            <Alert severity="warning">{t('incompleteMedia')}</Alert>
+          )}
+          {sitesIncomplete && (
+            <Alert severity="warning">{t('incompleteSites')}</Alert>
+          )}
+          {daIncomplete && (
+            <Alert severity="warning">{t('incompleteDetailedAnalysis')}</Alert>
+          )}
+          {qIncomplete && (
+            <Alert severity="warning">{t('incompleteQuestionnaire')}</Alert>
+          )}
+        </Stack>
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
             variant="outlined"
-            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            onClick={() => handleBack(backTab)}
             startIcon={<BackArrow />}
           >
-            <p>{t('backToSpending')}</p>
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
           </Button>
 
-          <Button onClick={() => submitForReview()} variant="contained">
+          <Button
+            onClick={() => submitForReview()}
+            variant="contained"
+            disabled={!canSubmit}
+          >
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
@@ -146,11 +180,11 @@ function SubmitForReview({
         </div>
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
-            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            onClick={() => handleBack(backTab)}
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t('backToSpending')}</p>
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
           </Button>
           <Button
             variant="contained"
@@ -175,11 +209,153 @@ function SubmitForReview({
 
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
-            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            onClick={() => handleBack(backTab)}
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t('backToSpending')}</p>
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => router.push(localizedPath('/profile/projects'))}
+          >
+            <p>{t('exit')}</p>
+          </Button>
+        </div>
+      </CenteredContainer>
+    );
+  }
+
+  function LockedReviewComponent() {
+    const verificationStatus = projectDetails?.verificationStatus ?? '';
+    return (
+      <CenteredContainer>
+        <ProjectLockedBanner verificationStatus={verificationStatus} />
+        <FormControlLabel
+          label={
+            <span className={styles.toggleText}>{t('publishProject')}</span>
+          }
+          labelPlacement="end"
+          control={
+            <NewToggleSwitch
+              name="canPublish"
+              id="publish"
+              checked={projectDetails?.publish ?? false}
+              onChange={(e) => handlePublishChange(e.target.checked)}
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+              disabled
+            />
+          }
+        />
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            onClick={() => handleBack(backTab)}
+            variant="outlined"
+            startIcon={<BackArrow />}
+          >
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => router.push(localizedPath('/profile/projects'))}
+          >
+            <p>{t('exit')}</p>
+          </Button>
+        </div>
+      </CenteredContainer>
+    );
+  }
+
+  function RevisionRequestedComponent() {
+    const revisionRequest = projectDetails?.revisionRequest;
+    const annotations = revisionRequest?.annotations ?? {};
+
+    const sectionTabs: { key: string; label: string; tab: number }[] = [
+      { key: 'basic', label: t('basicDetails'), tab: ProjectCreationTabs.BASIC_DETAILS },
+      { key: 'metadata', label: t('detailedAnalysis'), tab: ProjectCreationTabs.DETAILED_ANALYSIS },
+      { key: 'questionnaire', label: t('questionnaire'), tab: ProjectCreationTabs.QUESTIONNAIRE },
+    ];
+
+    const affectedSections = sectionTabs.filter(({ key }) =>
+      Object.keys(annotations).some((path) => path.startsWith(`${key}.`))
+    );
+
+    return (
+      <CenteredContainer>
+        <Stack spacing={2} sx={{ width: '100%', mb: 2 }}>
+          <Alert severity="warning">{t('revisionRequestedMessage')}</Alert>
+          {revisionRequest?.globalAnnotation && (
+            <Alert severity="warning">
+              <strong>{t('globalAnnotationLabel')}:</strong>{' '}
+              {revisionRequest.globalAnnotation}
+            </Alert>
+          )}
+          {affectedSections.length > 0 && (
+            <Alert severity="info">
+              <strong>{t('sectionsRequiringRevision')}:</strong>
+              <Stack spacing={1} sx={{ mt: 1 }}>
+                {affectedSections.map(({ key, label, tab }) => {
+                  const fieldAnnotations = Object.entries(annotations).filter(
+                    ([path]) => path.startsWith(`${key}.`)
+                  );
+                  return (
+                    <div key={key}>
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        onClick={() => handleBack(tab)}
+                        sx={{ mr: 1, mb: 0.5 }}
+                      >
+                        {label}
+                      </Button>
+                      <Stack spacing={0.5} sx={{ mt: 0.5, pl: 1 }}>
+                        {fieldAnnotations.map(([path, note]) => (
+                          <div key={path}>
+                            <strong>{path.split('.').slice(1).join('.')}</strong>: {note}
+                          </div>
+                        ))}
+                      </Stack>
+                    </div>
+                  );
+                })}
+              </Stack>
+            </Alert>
+          )}
+          {mediaIncomplete && (
+            <Alert severity="warning">{t('incompleteMedia')}</Alert>
+          )}
+          {sitesIncomplete && (
+            <Alert severity="warning">{t('incompleteSites')}</Alert>
+          )}
+          {daIncomplete && (
+            <Alert severity="warning">{t('incompleteDetailedAnalysis')}</Alert>
+          )}
+          {qIncomplete && (
+            <Alert severity="warning">{t('incompleteQuestionnaire')}</Alert>
+          )}
+          {canSubmit && (
+            <Alert severity="success">{t('projectForReview')}</Alert>
+          )}
+        </Stack>
+
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            variant="outlined"
+            onClick={() => handleBack(backTab)}
+            startIcon={<BackArrow />}
+          >
+            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
+          </Button>
+          <Button
+            onClick={() => submitForReview()}
+            variant="contained"
+            disabled={!canSubmit}
+          >
+            {isUploadingData ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              t('resubmitForReview')
+            )}
           </Button>
           <Button
             variant="contained"
@@ -193,12 +369,18 @@ function SubmitForReview({
   }
 
   switch (projectDetails?.verificationStatus) {
+    case 'draft':
     case 'incomplete':
       return <NotSubmittedReview />;
+    case 'submitted':
+    case 'in_review':
+      return <LockedReviewComponent />;
     case 'pending':
       return <UnderReviewComponent />;
     case 'processing':
       return <UnderReviewComponent />;
+    case 'revision_requested':
+      return <RevisionRequestedComponent />;
     case 'accepted':
       return <AcceptedReview />;
     case 'denied':

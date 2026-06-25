@@ -25,14 +25,68 @@ export interface Site {
   id: string;
   name: string;
   status: string;
+  acquisitionYear?: Nullable<number>;
+  yearAbandoned?: Nullable<number>;
 }
 
 type VerificationStatus =
+  | 'draft'
   | 'incomplete'
   | 'accepted'
   | 'processing'
   | 'denied'
-  | 'pending';
+  | 'pending'
+  | 'submitted'
+  | 'in_review'
+  | 'revision_requested';
+
+export interface RevisionRequest {
+  snapshotAt: string;
+  globalAnnotation: string | null;
+  annotations: Record<string, string> | null;
+}
+
+// Questionnaire schema types (from GET /projects/questionnaire-schema/{purpose})
+export type QuestionnaireFieldType =
+  | 'text'
+  | 'number'
+  | 'integer'
+  | 'string'
+  | 'choice'
+  | 'multi_choice'
+  | 'boolean'
+  | 'row_list'
+  | 'matrix';
+
+export interface QuestionnaireFieldRow {
+  key: string;
+  label: string;
+}
+
+export interface QuestionnaireFieldColumn {
+  key: string;
+  label: string;
+  /** Column group header (e.g. "Direct beneficiaries"). Adjacent columns sharing the same group are merged. */
+  group?: string;
+}
+
+export interface QuestionnaireFieldSchema {
+  type: QuestionnaireFieldType;
+  label: string;
+  description: string | null;
+  classifications: string[] | null;
+  choices?: string[];
+  /** Used by row_list and matrix */
+  rows?: QuestionnaireFieldRow[];
+  /** Used by matrix only */
+  columns?: QuestionnaireFieldColumn[];
+}
+
+export interface QuestionnaireSchema {
+  version: string;
+  purposes: string[];
+  fields: Record<string, QuestionnaireFieldSchema>;
+}
 
 export interface ExtendedProfileProjectPropertiesTrees
   extends Omit<
@@ -65,6 +119,7 @@ export interface ExtendedProfileProjectPropertiesTrees
   geoLatitude: number;
   isVerified: boolean;
   intensity: Nullable<string>;
+  questionnaire: Nullable<Record<string, unknown>>;
   reviewRequested: boolean;
   revisionPeriodicityLevel: Nullable<string>;
   survivalRate: Nullable<number>;
@@ -73,6 +128,7 @@ export interface ExtendedProfileProjectPropertiesTrees
   verificationStatus: VerificationStatus;
   videoUrl: Nullable<string>;
   website: Nullable<string>;
+  revisionRequest: RevisionRequest | null;
 }
 
 export interface ExtendedProfileProjectPropertiesConservation
@@ -91,6 +147,7 @@ export interface ExtendedProfileProjectPropertiesConservation
   verificationStatus: VerificationStatus;
   videoUrl: Nullable<string>;
   website: Nullable<string>;
+  revisionRequest: RevisionRequest | null;
 }
 
 export type ExtendedProfileProjectProperties =
@@ -132,6 +189,7 @@ export interface BasicDetailsProps {
   setProjectGUID: SetState<string>;
   projectGUID: string;
   purpose: 'trees' | 'conservation';
+  isLocked: boolean;
 }
 
 export interface ViewPort {
@@ -153,6 +211,8 @@ export interface ProjectMediaProps {
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   projectGUID: string | unknown;
+  isLocked: boolean;
+  onCompletenessChange?: (complete: boolean) => void;
 }
 
 // Detail Analysis
@@ -166,6 +226,8 @@ export interface DetailedAnalysisProps {
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   projectGUID: string;
   purpose: string | string[] | undefined;
+  isLocked: boolean;
+  onCompletenessChange: (complete: boolean) => void;
 }
 
 export type InterventionOption = [InterventionTypes, boolean];
@@ -190,6 +252,8 @@ export interface ProjectSitesProps {
   handleNext: (arg: number) => void;
   projectGUID: string;
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
+  isLocked: boolean;
+  onCompletenessChange?: (complete: boolean) => void;
 }
 export interface SiteDetails {
   geometry: {};
@@ -223,6 +287,7 @@ interface EditSiteProps {
   setSiteList: SetState<Site[]>;
   setEditMode: SetState<boolean>;
   siteGUID: Nullable<string>;
+  purpose: 'trees' | 'conservation';
 }
 
 // project spending
@@ -232,9 +297,33 @@ export interface ProjectSpendingProps {
   handleNext: (arg: number) => void;
   userLang: string;
   projectGUID: string | unknown;
+  isLocked: boolean;
+  verificationStatus?: string;
+}
+
+// project questionnaire
+export interface QuestionnaireProps {
+  handleBack: (arg: number) => void;
+  handleNext: (arg: number) => void;
+  projectGUID: string;
+  projectDetails: Nullable<ExtendedProfileProjectProperties>;
+  setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
+  isLocked: boolean;
+  onCompletenessChange: (complete: boolean) => void;
+  /** Pre-fetched schema from the parent. When provided the component skips its own fetch. */
+  initialSchema?: QuestionnaireSchema | null;
+  /** Project purpose — passed explicitly so the cache lookup works even before projectDetails loads. */
+  purpose: 'trees' | 'conservation';
 }
 
 // project review
+
+export interface SectionCompleteness {
+  detailedAnalysis: boolean;
+  questionnaire: boolean | null;
+  media: boolean | null;
+  sites: boolean | null;
+}
 
 export interface SubmitForReviewProps {
   submitForReview: () => Promise<void>;
@@ -242,6 +331,8 @@ export interface SubmitForReviewProps {
   isUploadingData: Boolean;
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   handlePublishChange: (arg: boolean) => Promise<void>;
+  isLocked: boolean;
+  sectionCompleteness: SectionCompleteness;
 }
 
 // Project certificate

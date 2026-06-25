@@ -29,6 +29,7 @@ import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 type UploadImageApiPayload = {
   imageFile: string;
@@ -62,6 +63,8 @@ export default function ProjectMedia({
   projectDetails,
   setProjectDetails,
   projectGUID,
+  isLocked,
+  onCompletenessChange,
 }: ProjectMediaProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const router = useRouter();
@@ -106,6 +109,10 @@ export default function ProjectMedia({
   useEffect(() => {
     fetchImages();
   }, [projectGUID]);
+
+  useEffect(() => {
+    onCompletenessChange?.(uploadedImages.length > 0);
+  }, [uploadedImages]);
 
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
@@ -262,6 +269,11 @@ export default function ProjectMedia({
   return (
     <CenteredContainer>
       <StyledForm>
+        {projectDetails && (
+          <ProjectLockedBanner
+            verificationStatus={projectDetails.verificationStatus}
+          />
+        )}
         <div
           className={clsx('inputContainer', {
             [styles.shallowOpacity]: isUploadingData,
@@ -309,48 +321,50 @@ export default function ProjectMedia({
                       defaultValue=""
                     />
 
-                    <div className={styles.uploadedImageButtonContainer}>
-                      <IconButton
-                        id={'DelProjCert'}
-                        onClick={() => deleteProjectCertificate(image.id)}
-                        size="small"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      <IconButton
-                        id={'setDefaultImg'}
-                        onClick={() => setDefaultImage(image.id, index)}
-                        size="small"
-                      >
-                        <Star
-                          color={
-                            image.isDefault
-                              ? colors.goldenYellow
-                              : colors.coreText
-                          }
-                          className={clsx({
-                            selected: image.isDefault,
-                          })}
-                        />
-                      </IconButton>
-                    </div>
+                    {!isLocked && (
+                      <div className={styles.uploadedImageButtonContainer}>
+                        <IconButton
+                          id={'DelProjCert'}
+                          onClick={() => deleteProjectCertificate(image.id)}
+                          size="small"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          id={'setDefaultImg'}
+                          onClick={() => setDefaultImage(image.id, index)}
+                          size="small"
+                        >
+                          <Star
+                            color={
+                              image.isDefault
+                                ? colors.goldenYellow
+                                : colors.coreText
+                            }
+                            className={clsx({
+                              selected: image.isDefault,
+                            })}
+                          />
+                        </IconButton>
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </InlineFormDisplayGroup>
           ) : null}
 
-          <div {...getRootProps()}>
-            <label htmlFor="upload" className={styles.fileUploadContainer}>
-              <Button variant="contained">
-                <input {...getInputProps()} />
-                {t('uploadPhotos')}
-              </Button>
-              <p style={{ marginTop: '18px' }}>{t('dragIn')}</p>
-            </label>
-
-            {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
-          </div>
+          {!isLocked && (
+            <div {...getRootProps()}>
+              <label htmlFor="upload" className={styles.fileUploadContainer}>
+                <Button variant="contained">
+                  <input {...getInputProps()} />
+                  {t('uploadPhotos')}
+                </Button>
+                <p style={{ marginTop: '18px' }}>{t('dragIn')}</p>
+              </label>
+            </div>
+          )}
         </div>
 
         {errorMessage && errorMessage !== '' ? (
@@ -368,26 +382,32 @@ export default function ProjectMedia({
             <p>{t('backToBasic')}</p>
           </Button>
 
-          <Button
-            id={'SaveAndCont'}
-            onClick={handleSubmit(onSubmit)}
-            data-test-id="projMediaCont"
-            variant="contained"
-            className="formButton"
-          >
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              t('saveAndContinue')
-            )}
-          </Button>
-          <Button
-            onClick={() => handleNext(ProjectCreationTabs.DETAILED_ANALYSIS)}
-            variant="contained"
-            className="formButton"
-          >
-            {t('skip')}
-          </Button>
+          {!isLocked && (
+            <>
+              <Button
+                id={'SaveAndCont'}
+                onClick={handleSubmit(onSubmit)}
+                data-test-id="projMediaCont"
+                variant="contained"
+                className="formButton"
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('saveAndContinue')
+                )}
+              </Button>
+              <Button
+                onClick={() =>
+                  handleNext(ProjectCreationTabs.DETAILED_ANALYSIS)
+                }
+                variant="contained"
+                className="formButton"
+              >
+                {t('skip')}
+              </Button>
+            </>
+          )}
         </div>
       </StyledForm>
     </CenteredContainer>

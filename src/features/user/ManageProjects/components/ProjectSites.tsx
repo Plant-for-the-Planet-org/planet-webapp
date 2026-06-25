@@ -15,7 +15,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import { MenuItem, Button, TextField } from '@mui/material';
+import { MenuItem, Button, TextField, CircularProgress } from '@mui/material';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -33,6 +33,7 @@ import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import useRestorSync from '../hooks/useRestorSync';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 const defaultSiteDetails = {
   name: '',
@@ -47,12 +48,16 @@ const SiteGeometryEditor = dynamic(() => import('./SiteGeometryEditor'), {
 export type ProjectSitesFormData = {
   name: string;
   status: string;
+  acquisitionYear?: string;
+  yearAbandoned?: string;
 };
 
 export type SiteApiPayload = {
   name: string;
   geometry: ProjectSiteFeatureCollection;
   status: string;
+  acquisitionYear?: number | null;
+  yearAbandoned?: number | null;
 };
 
 export interface SiteInfo {
@@ -65,6 +70,8 @@ export default function ProjectSites({
   handleNext,
   projectGUID,
   projectDetails,
+  isLocked,
+  onCompletenessChange,
 }: ProjectSitesProps): ReactElement {
   const { deleteApiAuthenticated, postApiAuthenticated, getApiAuthenticated } = useApi();
   const { colors } = themeProperties.designSystem;
@@ -78,6 +85,7 @@ export default function ProjectSites({
     reset,
   } = useForm<ProjectSitesFormData>();
 
+  const [isLoadingSites, setIsLoadingSites] = useState<boolean>(true);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -135,12 +143,18 @@ export default function ProjectSites({
     } catch (err) {
       setErrors(handleError(err as APIError));
       router.push(localizedPath('/profile'));
+    } finally {
+      setIsLoadingSites(false);
     }
   }, [projectGUID]);
 
   useEffect(() => {
     fetchProjSites();
   }, [fetchProjSites]);
+
+  useEffect(() => {
+    onCompletenessChange?.(siteList.length > 0);
+  }, [siteList]);
 
   const uploadProjectSite = async (data: ProjectSitesFormData) => {
     if (!geoJson || geoJson.features.length === 0) {
@@ -151,10 +165,23 @@ export default function ProjectSites({
     try {
       const res = await postApiAuthenticated<Site, SiteApiPayload>(
         `/app/projects/${projectGUID}/sites`,
-        { payload: { name: data.name, geometry: geoJson, status: data.status } }
+        {
+          payload: {
+            name: data.name,
+            geometry: geoJson,
+            status: data.status,
+            acquisitionYear: data.acquisitionYear
+              ? Number(data.acquisitionYear)
+              : null,
+            yearAbandoned:
+              projectDetails?.purpose !== 'conservation' && data.yearAbandoned
+                ? Number(data.yearAbandoned)
+                : null,
+          },
+        }
       );
       setSiteList((prev) => [...prev, { id: res.id, name: res.name, geometry: res.geometry, status: res.status }]);
-      reset({ name: '', status: '' });
+      reset({ name: '', status: '', acquisitionYear: '', yearAbandoned: '' });
       setGeoJson(null);
       setShowForm(false);
       setErrorMessage(null);
@@ -215,6 +242,8 @@ export default function ProjectSites({
     },
   ];
 
+  const purpose = projectDetails?.purpose ?? 'trees';
+
   const EditProps = {
     openModal,
     handleModalClose,
@@ -227,6 +256,7 @@ export default function ProjectSites({
     setSiteList,
     setEditMode,
     siteGUID,
+    purpose,
   };
 
   return (
@@ -234,6 +264,16 @@ export default function ProjectSites({
       {editMode && <EditSite {...EditProps} />}
 
       <StyledForm>
+        {projectDetails && (
+          <ProjectLockedBanner
+            verificationStatus={projectDetails.verificationStatus}
+          />
+        )}
+
+        {isLoadingSites ? (
+          <CircularProgress size={32} />
+        ) : (
+        <>
         <InlineFormDisplayGroup>
           {siteList
             .filter((site) => site.geometry !== null)
@@ -254,56 +294,103 @@ export default function ProjectSites({
 
         {showForm ? (
           <div className={clsx({ [styles.shallowOpacity]: isUploadingData })} style={{ width: 'inherit' }}>
+            <div style={{ marginBottom: 16 }}>
+              <InlineFormDisplayGroup>
+                <Controller
+                  name="name"
+                  control={control}
+                  rules={{ required: t('siteNameValidation') }}
+                  defaultValue={siteDetails.name}
+                  render={({ field: { onChange, value, onBlur, name } }) => (
+                    <TextField
+                      label={t('siteName')}
+                      variant="outlined"
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        changeSiteDetails(e);
+                        onChange(e.target.value);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      name={name}
+                      error={errors.name !== undefined}
+                      helperText={errors.name !== undefined && errors.name.message}
+                    />
+                  )}
+                />
+                <Controller
+                  name="status"
+                  rules={{ required: t('selectProjectStatus') }}
+                  control={control}
+                  defaultValue={siteDetails.status ? siteDetails.status : ''}
+                  render={({ field: { onChange, onBlur, name, value } }) => (
+                    <TextField
+                      label={t('siteStatus')}
+                      variant="outlined"
+                      name={name}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        changeSiteDetails(e);
+                        onChange(e.target.value);
+                      }}
+                      onBlur={onBlur}
+                      select
+                      value={value}
+                      error={errors.status !== undefined}
+                      helperText={errors.status !== undefined && errors.status.message}
+                    >
+                      {statusOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
+              </InlineFormDisplayGroup>
+            </div>
+
             <InlineFormDisplayGroup>
               <Controller
-                name="name"
+                name="acquisitionYear"
                 control={control}
-                rules={{ required: t('siteNameValidation') }}
-                defaultValue={siteDetails.name}
-                render={({ field: { onChange, value, onBlur, name } }) => (
+                render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
-                    label={t('siteName')}
+                    label={t('acquisitionYear')}
                     variant="outlined"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      changeSiteDetails(e);
-                      onChange(e.target.value);
-                    }}
-                    value={value}
+                    type="number"
+                    onChange={onChange}
+                    value={value ?? ''}
                     onBlur={onBlur}
-                    name={name}
-                    error={errors.name !== undefined}
-                    helperText={errors.name !== undefined && errors.name.message}
+                    inputProps={{ min: 1900, max: 2100 }}
+                    error={errors.acquisitionYear !== undefined}
+                    helperText={
+                      errors.acquisitionYear !== undefined &&
+                      errors.acquisitionYear.message
+                    }
                   />
                 )}
               />
-              <Controller
-                name="status"
-                rules={{ required: t('selectProjectStatus') }}
-                control={control}
-                defaultValue={siteDetails.status ? siteDetails.status : ''}
-                render={({ field: { onChange, onBlur, name, value } }) => (
-                  <TextField
-                    label={t('siteStatus')}
-                    variant="outlined"
-                    name={name}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      changeSiteDetails(e);
-                      onChange(e.target.value);
-                    }}
-                    onBlur={onBlur}
-                    select
-                    value={value}
-                    error={errors.status !== undefined}
-                    helperText={errors.status !== undefined && errors.status.message}
-                  >
-                    {statusOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
-              />
+              {purpose !== 'conservation' && (
+                <Controller
+                  name="yearAbandoned"
+                  control={control}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      label={t('yearOfAbandonment')}
+                      variant="outlined"
+                      type="number"
+                      onChange={onChange}
+                      value={value ?? ''}
+                      onBlur={onBlur}
+                      inputProps={{ min: 1900, max: 2100 }}
+                      error={errors.yearAbandoned !== undefined}
+                      helperText={
+                        errors.yearAbandoned !== undefined &&
+                        errors.yearAbandoned.message
+                      }
+                    />
+                  )}
+                />
+              )}
             </InlineFormDisplayGroup>
 
             {geoLocation && <SiteGeometryEditor geoJson={geoJson} setGeoJson={setGeoJson} setErrorMessage={setErrorMessage} />}
@@ -368,16 +455,28 @@ export default function ProjectSites({
           >
             {t('backToAnalysis')}
           </Button>
-          <Button onClick={handleSubmit(uploadProjectSiteNext)} variant="contained" className="formButton">
-            {isUploadingData ? <div className={styles.spinner}></div> : t('saveAndContinue')}
-          </Button>
-          <Button
-            onClick={() => handleNext(ProjectCreationTabs.PROJECT_SPENDING)}
-            variant="contained"
-            className="formButton"
-          >
-            {t('skip')}
-          </Button>
+          {!isLocked && (
+            <>
+              <Button
+                onClick={handleSubmit(uploadProjectSiteNext)}
+                variant="contained"
+                className="formButton"
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('saveAndContinue')
+                )}
+              </Button>
+              <Button
+                onClick={() => handleNext(ProjectCreationTabs.PROJECT_SPENDING)}
+                variant="contained"
+                className="formButton"
+              >
+                {t('skip')}
+              </Button>
+            </>
+          )}
         </div>
 
         <CustomModal
@@ -391,6 +490,8 @@ export default function ProjectSites({
           continueButtonText={t('delete')}
           cancelButtonText={t('cancel')}
         />
+        </>
+        )}
       </StyledForm>
     </CenteredContainer>
   );

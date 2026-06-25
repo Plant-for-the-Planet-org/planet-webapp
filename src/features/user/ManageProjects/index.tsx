@@ -3,6 +3,10 @@ import type { APIError } from '@planet-sdk/common';
 import type {
   ManageProjectsProps,
   ExtendedProfileProjectProperties,
+  ExtendedProfileProjectPropertiesTrees,
+  QuestionnaireSchema,
+  ImagesScopeProjects,
+  SitesScopeProjects,
 } from '../../common/types/project';
 
 import { useEffect, useState } from 'react';
@@ -12,15 +16,48 @@ import ProjectSelection from './components/ProjectSelection';
 import DetailedAnalysis from './components/DetailedAnalysis';
 import ProjectSites from './components/ProjectSites';
 import ProjectSpending from './components/ProjectSpending';
+import ProjectQuestionnaire, { isFieldFilled } from './components/ProjectQuestionnaire';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
 import TabbedView from '../../common/Layout/TabbedView';
-import { handleError } from '@planet-sdk/common';
+import { parseApiError } from '../../../utils/parseApiError';
 import DashboardView from '../../common/Layout/DashboardView';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  getCachedSchema,
+  setCachedSchema,
+} from './utils/questionnaireSchemaCache';
+
+function isDetailedAnalysisComplete(
+  details: ExtendedProfileProjectProperties | null
+): boolean {
+  if (!details || !details.metadata) return false;
+  if (!details.metadata.mainChallenge) return false;
+  if (!details.metadata.motivation) return false;
+  if (!details.metadata.siteOwnerName) return false;
+  if (details.purpose === 'trees') {
+    const m = details.metadata;
+    if (!m.mainInterventions?.length) return false;
+    if (!m.employeesCount) return false;
+    if (!m.longTermPlan) return false;
+    if (!m.ecosystem) return false;
+    if (!m.plantingDensity) return false;
+    if (!m.degradationCause) return false;
+    if (!m.siteOwnerType?.length) return false;
+  } else {
+    const m = details.metadata;
+    if (!m.ecosystem) return false;
+    if (!m.areaProtected) return false;
+    if (!m.startingProtectionYear) return false;
+    if (!m.ownershipType) return false;
+    if (!m.landOwnershipType?.length) return false;
+    if (!m.actions) return false;
+  }
+  return true;
+}
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -29,12 +66,10 @@ export enum ProjectCreationTabs {
   DETAILED_ANALYSIS = 3,
   PROJECT_SITES = 4,
   PROJECT_SPENDING = 5,
-  REVIEW = 6,
+  QUESTIONNAIRE = 6,
+  REVIEW = 7,
 }
 
-type RequestReviewApiPayload = {
-  reviewRequested: boolean;
-};
 
 type PublishStatusApiPayload = {
   publish: boolean;
@@ -49,7 +84,7 @@ export default function ManageProjects({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { putApiAuthenticated, getApiAuthenticated } = useApi();
+  const { putApiAuthenticated, postApiAuthenticated, getApiAuthenticated } = useApi();
   // local state
   const [tabSelected, setTabSelected] = useState<number>(0);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
@@ -57,6 +92,12 @@ export default function ManageProjects({
   const [tablist, setTabList] = useState<TabItem[]>([]);
   const [projectDetails, setProjectDetails] =
     useState<ExtendedProfileProjectProperties | null>(null);
+  const [questionnaireComplete, setQuestionnaireComplete] = useState(false);
+  const [questionnaireSchema, setQuestionnaireSchema] =
+    useState<QuestionnaireSchema | null>(null);
+  // null = not yet loaded (grey disc), true/false = known
+  const [mediaComplete, setMediaComplete] = useState<boolean | null>(null);
+  const [sitesComplete, setSitesComplete] = useState<boolean | null>(null);
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -82,6 +123,9 @@ export default function ManageProjects({
         path = `/profile/projects/${projectGUID}?type=project-spending`;
         break;
       case 6:
+        path = `/profile/projects/${projectGUID}?type=questionnaire`;
+        break;
+      case 7:
         path = `/profile/projects/${projectGUID}?type=review`;
         break;
       default:
@@ -102,22 +146,16 @@ export default function ManageProjects({
 
   const submitForReview = async () => {
     setIsUploadingData(true);
-    const requestReviewPayload = {
-      reviewRequested: true,
-    };
-
     try {
-      const res = await putApiAuthenticated<
+      const res = await postApiAuthenticated<
         ExtendedProfileProjectProperties,
-        RequestReviewApiPayload
-      >(`/app/projects/${projectGUID}`, {
-        payload: requestReviewPayload,
-      });
+        Record<string, never>
+      >(`/app/projects/${projectGUID}/submit`, { payload: {} });
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(handleError(err as APIError));
+      setErrors(parseApiError(err as APIError));
     }
   };
 
@@ -138,7 +176,7 @@ export default function ManageProjects({
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(handleError(err as APIError));
+      setErrors(parseApiError(err as APIError));
     }
   };
 
@@ -151,7 +189,7 @@ export default function ManageProjects({
         );
         setProjectDetails(res);
       } catch (err) {
-        setErrors(handleError(err as APIError));
+        setErrors(parseApiError(err as APIError));
         router.push(localizedPath('/profile'));
       }
     };
@@ -160,6 +198,101 @@ export default function ManageProjects({
       fetchProjectDetails();
     }
   }, [GUID, projectGUID]);
+
+  // Kick off schema fetch immediately on mount using the SSR project prop,
+  // in parallel with the projectDetails API call. By the time the user can
+  // navigate to the Questionnaire tab, the schema will already be cached.
+  useEffect(() => {
+    const purpose = project?.purpose;
+    if (!purpose || !project?.acceptDonations) return;
+    if (getCachedSchema(purpose)) return; // already in cache
+
+    const prefetch = async () => {
+      try {
+        const schema = await getApiAuthenticated<QuestionnaireSchema>(
+          `/app/projects/questionnaire-schema/${purpose}`,
+          { additionalHeaders: { Accept: 'application/json' } }
+        );
+        setCachedSchema(purpose, schema);
+        setQuestionnaireSchema(schema);
+      } catch {
+        // silently fail
+      }
+    };
+    void prefetch();
+  }, []); // intentionally empty — project prop is stable (SSR data)
+
+  // Pre-compute questionnaire completeness as soon as projectDetails loads,
+  // so the menu indicator is correct before the Questionnaire tab is visited.
+  useEffect(() => {
+    if (!projectDetails?.acceptDonations) return;
+    const purpose = projectDetails.purpose ?? 'trees';
+    const classification =
+      (projectDetails as ExtendedProfileProjectPropertiesTrees).classification ?? '';
+    const existing =
+      (projectDetails as ExtendedProfileProjectPropertiesTrees).questionnaire ?? {};
+
+    const computeCompleteness = async () => {
+      try {
+        // Use module-level cache to avoid a redundant HTTP request when the
+        // Questionnaire component has already fetched (or vice-versa).
+        let schema = getCachedSchema(purpose);
+        if (!schema) {
+          schema = await getApiAuthenticated<QuestionnaireSchema>(
+            `/app/projects/questionnaire-schema/${purpose}`,
+            { additionalHeaders: { Accept: 'application/json' } }
+          );
+          setCachedSchema(purpose, schema);
+        }
+        setQuestionnaireSchema(schema);
+        const visibleFields = Object.entries(schema.fields).filter(
+          ([, field]) =>
+            field.classifications === null ||
+            field.classifications.includes(classification)
+        );
+        const allFilled = visibleFields.every(([name, field]) =>
+          isFieldFilled(field, (existing as Record<string, unknown>)[name])
+        );
+        setQuestionnaireComplete(allFilled);
+      } catch {
+        // silently fail — completeness defaults to false
+      }
+    };
+
+    void computeCompleteness();
+  }, [projectDetails]);
+
+  useEffect(() => {
+    if (!projectDetails || !projectGUID) return;
+    const fetchMediaCompleteness = async () => {
+      try {
+        const result = await getApiAuthenticated<ImagesScopeProjects>(
+          `/app/profile/projects/${projectGUID}?_scope=images`
+        );
+        setMediaComplete(result.images.length > 0);
+      } catch {
+        // silently fail — stays grey
+      }
+    };
+    void fetchMediaCompleteness();
+  }, [projectDetails]);
+
+  useEffect(() => {
+    if (!projectDetails || !projectGUID) return;
+    const fetchSitesCompleteness = async () => {
+      try {
+        const result = await getApiAuthenticated<SitesScopeProjects>(
+          `/app/profile/projects/${projectGUID}`,
+          { queryParams: { _scope: 'sites' } }
+        );
+        setSitesComplete(result.sites.length > 0);
+      } catch {
+        // silently fail — stays grey
+      }
+    };
+    void fetchSitesCompleteness();
+  }, [projectDetails]);
+
   const [userLang, setUserLang] = useState('en');
   useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -171,6 +304,7 @@ export default function ManageProjects({
   useEffect(() => {
     if (router.query.purpose) {
       setTabSelected(1);
+      return;
     }
 
     switch (router.query.type) {
@@ -189,48 +323,100 @@ export default function ManageProjects({
       case 'project-spending':
         setTabSelected(5);
         break;
-      case 'review':
+      case 'questionnaire':
         setTabSelected(6);
         break;
+      case 'review':
+        setTabSelected(7);
+        break;
       default:
-        null;
+        // No type and no purpose on a new-project URL → back to type selection
+        if (!GUID) setTabSelected(0);
+        break;
     }
-  }, [tabSelected, router.query.type]);
+  }, [tabSelected, router.query.type, router.query.purpose]);
+
+  const showQuestionnaire = projectDetails?.acceptDonations === true;
 
   useEffect(() => {
     if (router.query.type && project) {
-      setTabList([
+      const daComplete = projectDetails
+        ? isDetailedAnalysisComplete(projectDetails)
+        : null;
+
+      const qComplete = showQuestionnaire
+        ? (projectDetails ? questionnaireComplete : null)
+        : null; // null = not applicable, doesn't block Review
+
+      // Review is green when no tracked tab is explicitly red
+      const reviewReady =
+        projectDetails !== null &&
+        daComplete === true &&
+        mediaComplete !== false &&
+        sitesComplete !== false &&
+        (qComplete === null || qComplete === true);
+
+      const toStatus = (
+        v: boolean | null
+      ): 'complete' | 'incomplete' | undefined =>
+        v === true ? 'complete' : v === false ? 'incomplete' : undefined;
+
+      const tabs: TabItem[] = [
         {
           label: t('basicDetails'),
           link: `/profile/projects/${projectGUID}?type=basic-details`,
           step: ProjectCreationTabs.BASIC_DETAILS,
+          completionStatus: 'complete',
         },
         {
           label: t('projectMedia'),
           link: `/profile/projects/${projectGUID}?type=media`,
           step: ProjectCreationTabs.PROJECT_MEDIA,
+          completionStatus: toStatus(mediaComplete),
         },
         {
           label: t('detailedAnalysis'),
           link: `/profile/projects/${projectGUID}?type=detail-analysis`,
           step: ProjectCreationTabs.DETAILED_ANALYSIS,
+          completionStatus: toStatus(daComplete),
         },
         {
           label: t('projectSites'),
           link: `/profile/projects/${projectGUID}?type=project-sites`,
           step: ProjectCreationTabs.PROJECT_SITES,
+          completionStatus: toStatus(sitesComplete),
         },
         {
           label: t('projectSpending'),
           link: `/profile/projects/${projectGUID}?type=project-spending`,
           step: ProjectCreationTabs.PROJECT_SPENDING,
+          // always grey — no completeness rule
+          completionStatus: undefined,
         },
-        {
-          label: t('review'),
-          link: `/profile/projects/${projectGUID}?type=review`,
-          step: ProjectCreationTabs.REVIEW,
-        },
-      ]);
+      ];
+      if (showQuestionnaire) {
+        tabs.push({
+          label: t('questionnaire'),
+          link: `/profile/projects/${projectGUID}?type=questionnaire`,
+          step: ProjectCreationTabs.QUESTIONNAIRE,
+          completionStatus: projectDetails
+            ? questionnaireComplete
+              ? 'complete'
+              : 'incomplete'
+            : undefined,
+        });
+      }
+      tabs.push({
+        label: t('review'),
+        link: `/profile/projects/${projectGUID}?type=review`,
+        step: ProjectCreationTabs.REVIEW,
+        completionStatus: projectDetails
+          ? reviewReady
+            ? 'complete'
+            : 'incomplete'
+          : undefined,
+      });
+      setTabList(tabs);
     } else if (router.query.purpose === 'trees' && !project) {
       setTabList([
         {
@@ -256,7 +442,11 @@ export default function ManageProjects({
         },
       ]);
     }
-  }, [tabSelected, router.query.purpose, locale]);
+  }, [tabSelected, router.query.purpose, locale, projectDetails, questionnaireComplete, mediaComplete, sitesComplete]);
+
+  const isLocked =
+    projectDetails?.verificationStatus === 'submitted' ||
+    projectDetails?.verificationStatus === 'in_review';
 
   function getStepContent() {
     switch (tabSelected) {
@@ -277,6 +467,7 @@ export default function ManageProjects({
                 ? 'conservation'
                 : 'trees'
             }
+            isLocked={isLocked}
           />
         );
       case ProjectCreationTabs.PROJECT_MEDIA:
@@ -288,6 +479,8 @@ export default function ManageProjects({
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
             projectGUID={projectGUID}
+            isLocked={isLocked}
+            onCompletenessChange={setMediaComplete}
           />
         );
       case ProjectCreationTabs.DETAILED_ANALYSIS:
@@ -303,6 +496,8 @@ export default function ManageProjects({
             purpose={
               project?.purpose ? project?.purpose : router.query?.purpose
             }
+            isLocked={isLocked}
+            onCompletenessChange={() => {}}
           />
         );
       case ProjectCreationTabs.PROJECT_SITES:
@@ -312,6 +507,8 @@ export default function ManageProjects({
             handleBack={handleBack}
             projectGUID={projectGUID}
             projectDetails={projectDetails}
+            isLocked={isLocked}
+            onCompletenessChange={setSitesComplete}
           />
         );
       case ProjectCreationTabs.PROJECT_SPENDING:
@@ -322,6 +519,26 @@ export default function ManageProjects({
             token={token}
             handleBack={handleBack}
             projectGUID={projectGUID}
+            isLocked={isLocked}
+            verificationStatus={projectDetails?.verificationStatus}
+          />
+        );
+      case ProjectCreationTabs.QUESTIONNAIRE:
+        return (
+          <ProjectQuestionnaire
+            handleBack={handleBack}
+            handleNext={handleNext}
+            projectGUID={projectGUID}
+            projectDetails={projectDetails}
+            setProjectDetails={setProjectDetails}
+            isLocked={isLocked}
+            onCompletenessChange={setQuestionnaireComplete}
+            initialSchema={questionnaireSchema}
+            purpose={
+              (project?.purpose ??
+                (router.query.purpose as string | undefined) ??
+                'trees') as 'trees' | 'conservation'
+            }
           />
         );
       case ProjectCreationTabs.REVIEW:
@@ -333,6 +550,13 @@ export default function ManageProjects({
               submitForReview={submitForReview}
               isUploadingData={isUploadingData}
               handlePublishChange={handlePublishChange}
+              isLocked={isLocked}
+              sectionCompleteness={{
+                detailedAnalysis: isDetailedAnalysisComplete(projectDetails),
+                questionnaire: showQuestionnaire ? questionnaireComplete : null,
+                media: mediaComplete,
+                sites: sitesComplete,
+              }}
             />
           );
         break;
