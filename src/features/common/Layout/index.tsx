@@ -1,15 +1,21 @@
 import type { ReactNode } from 'react';
 
-import theme from '../../../theme/theme';
+import { useMemo } from 'react';
+import getGlobalStyles from '../../../theme/theme';
 import { useTheme } from '../../../theme/themeContext';
 import CookiePolicy from './CookiePolicy';
 import ErrorPopup from './ErrorPopup';
 import Header from './Header';
 import Navbar from './Navbar';
-import { useQueryParamStore } from '../../../stores';
+import { useQueryParamStore, useTenantStore } from '../../../stores';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { theme: themeType } = useTheme();
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const globalStyles = useMemo(
+    () => getGlobalStyles(tenantConfig?.config?.font),
+    [tenantConfig]
+  );
 
   const isEmbedMode = useQueryParamStore(
     (state) =>
@@ -20,7 +26,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Header />
-      <style>{theme}</style>
+      <style>{globalStyles}</style>
       <div className={themeType}>
         {!isEmbedMode && <Navbar />}
         <div>{children}</div>

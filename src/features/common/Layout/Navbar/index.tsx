@@ -48,9 +48,9 @@ export default function Navbar() {
     const isBrowser = typeof window !== 'undefined';
 
     setUserProfile(null);
-
-    if (message === '401' && isBrowser) {
-      logoutUser(`${window.location.origin}/verify-email`);
+    // TODO: Remove '401' case after July 31, 2026. Confirm whether safe to remove before then.
+    if (message === '401' || message === 'email_not_verified') {
+      if (isBrowser) logoutUser(`${window.location.origin}/verify-email`);
     } else if (message === 'Invalid state') {
       // Only clear user, no logout needed
     } else if (isBrowser) {

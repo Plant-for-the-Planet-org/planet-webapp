@@ -1,6 +1,5 @@
 import css from 'styled-jsx/css';
 import theme from './themeProperties';
-import { getTenantConfig, getTenantSlug } from '../utils/multiTenancy/helpers';
 
 const {
   light,
@@ -19,45 +18,25 @@ const {
   designSystem,
 } = theme;
 
-const getGlobalStyles = async () => {
-  const fetchConfig = async () => {
-    try {
-      let tenantConfig;
-      if (process.env.STORYBOOK_IS_STORYBOOK) {
-        return null;
-      }
-      if (typeof window !== 'undefined') {
-        // Check if tenantConfig is stored in local storage
-        const storedConfig = localStorage.getItem('tenantConfig');
+type TenantFont = {
+  primaryFontFamily?: string | null;
+  secondaryFontFamily?: string | null;
+};
 
-        if (storedConfig) {
-          tenantConfig = JSON.parse(storedConfig);
-        } else {
-          const slug = await getTenantSlug(window.location.host);
-          tenantConfig = await getTenantConfig(slug);
-
-          // Store tenantConfig in local storage for future use
-          localStorage.setItem('tenantConfig', JSON.stringify(tenantConfig));
-        }
-
-        return tenantConfig;
-      }
-    } catch (err) {
-      console.log('Error in fetchConfig for getGlobalStyles', err);
-      return null;
-    }
-  };
-
-  const tenantConfig = await fetchConfig();
+/**
+ * Builds the global CSS variables. Tenant fonts are passed in (the caller reads
+ * them from the tenant store) so this module is synchronous — it previously
+ * fetched the tenant config at module load via a top-level await, which made
+ * the whole theme module (and its importers) async.
+ */
+const getGlobalStyles = (font?: TenantFont) => {
+  const primaryFontFamily = font?.primaryFontFamily || defaultFontFamily;
+  const secondaryFontFamily = font?.secondaryFontFamily || defaultFontFamily;
 
   return css.global`
     :root {
-      --primary-font-family: ${tenantConfig
-        ? tenantConfig.config.font.primaryFontFamily
-        : defaultFontFamily};
-      --secondary-font-family: ${tenantConfig
-        ? tenantConfig.config.font.secondaryFontFamily
-        : defaultFontFamily};
+      --primary-font-family: ${primaryFontFamily};
+      --secondary-font-family: ${secondaryFontFamily};
       --font-xx-extra-small: ${fontSizes.fontXXSmall};
       --font-x-extra-small: ${fontSizes.fontXSmall};
       --font-small: ${fontSizes.fontSmall};
@@ -190,6 +169,4 @@ const getGlobalStyles = async () => {
   `;
 };
 
-const globalStyles = await getGlobalStyles();
-
-export default globalStyles;
+export default getGlobalStyles;

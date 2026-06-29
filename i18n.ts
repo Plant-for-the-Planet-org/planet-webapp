@@ -1,8 +1,13 @@
 import { getRequestConfig } from 'next-intl/server';
 import deepmerge from 'deepmerge';
+import { i18nConfig } from './i18n-config';
 
 // IMP - Import any new translation file here in `userMessages` add `defaultMessages`, to enable translation auto complete.
-export default getRequestConfig(async ({ locale }) => {
+export default getRequestConfig(async ({ requestLocale }) => {
+  const resolvedLocale = (await requestLocale) ?? i18nConfig.defaultLocale;
+  const locale = i18nConfig.locales.includes(resolvedLocale)
+    ? resolvedLocale
+    : i18nConfig.defaultLocale;
   const userMessages = {
     ...(await import(`./public/static/locales/${locale}/allProjects.json`))
       .default,
@@ -35,14 +40,9 @@ export default getRequestConfig(async ({ locale }) => {
     ...(await import(`./public/static/locales/${locale}/projectDetails.json`))
       .default,
     ...(await import(`./public/static/locales/${locale}/redeem.json`)).default,
-    ...(await import(`./public/static/locales/${locale}/registerTrees.json`))
-      .default,
     ...(await import(`./public/static/locales/${locale}/tenants.json`)).default,
     ...(await import(`./public/static/locales/${locale}/treemapper.json`))
       .default,
-    ...(
-      await import(`./public/static/locales/${locale}/treemapperAnalytics.json`)
-    ).default,
   };
 
   const defaultMessages = {
@@ -67,17 +67,14 @@ export default getRequestConfig(async ({ locale }) => {
     ...(await import(`./public/static/locales/en/project.json`)).default,
     ...(await import(`./public/static/locales/en/projectDetails.json`)).default,
     ...(await import(`./public/static/locales/en/redeem.json`)).default,
-    ...(await import(`./public/static/locales/en/registerTrees.json`)).default,
     ...(await import(`./public/static/locales/en/tenants.json`)).default,
     ...(await import(`./public/static/locales/en/treemapper.json`)).default,
-    ...(await import(`./public/static/locales/en/treemapperAnalytics.json`))
-      .default,
   };
 
-  const messages: IntlMessages = deepmerge(defaultMessages, userMessages);
+  const messages = deepmerge(defaultMessages, userMessages);
 
   // Single file, no fallback
   // messages: (await import(`./messages/${locale}.json`)).default,
 
-  return { messages };
+  return { locale, messages };
 });
