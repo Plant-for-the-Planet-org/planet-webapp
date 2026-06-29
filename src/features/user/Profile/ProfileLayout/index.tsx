@@ -1,31 +1,31 @@
-import type { User } from '@planet-sdk/common';
-
-import { useState } from 'react';
 import ContributionsMap from '../ContributionsMap';
 import styles from './ProfileLayout.module.scss';
 import { useEffect } from 'react';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import CommunityContributions from '../CommunityContributions';
-import { useMyForestStore } from '../../../../stores/myForestStore';
+import {
+  useAuthStore,
+  useMyForestStore,
+  useUserStore,
+} from '../../../../stores';
 import MyContributions from '../MyContributions';
 import { useApi } from '../../../../hooks/useApi';
 import { clsx } from 'clsx';
+import { transformProfileToForestUserInfo } from '../../../../utils/myForestUtils';
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 
 const ProfileLayout = () => {
-  const { user, contextLoaded } = useUserProps();
   const { getApi, getApiAuthenticated } = useApi();
-  // local state
-  const [profile, setProfile] = useState<null | User>(null);
   // store: state
   const isMyForestLoading = useMyForestStore(
     (state) => state.isMyForestLoading
   );
   const userSlug = useMyForestStore((state) => state.userInfo?.slug);
+  const userProfile = useUserStore((state) => state.userProfile);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   // store: action
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
   const fetchMyForest = useMyForestStore((state) => state.fetchMyForest);
@@ -37,42 +37,28 @@ const ProfileLayout = () => {
   );
 
   useEffect(() => {
-    if (contextLoaded) {
-      if (user) {
-        setProfile(user);
-        setIsPublicProfile(false);
-        const _userInfo = {
-          profileId: user.id,
-          slug: user.slug,
-          targets: {
-            treesDonated: user.scores.treesDonated.target ?? 0,
-            areaRestored: user.scores.areaRestored.target ?? 0,
-            areaConserved: user.scores.areaConserved.target ?? 0,
-          },
-        };
-        setUserInfo(_userInfo);
-      }
-    }
-  }, [contextLoaded, user]);
+    if (!isAuthResolved || !userProfile) return;
+
+    setIsPublicProfile(false);
+    setUserInfo(transformProfileToForestUserInfo(userProfile));
+  }, [isAuthResolved, userProfile]);
 
   useEffect(() => {
     if (userSlug) fetchMyForest(getApi, getApiAuthenticated);
   }, [userSlug, fetchMyForest]);
 
-  // my forest data is always fetched fresh; clear the store on unmount since persisting it provides no caching benefit
+  // My forest data is always fetched fresh; clear the store on unmount since persisting it provides no caching benefit
   useEffect(() => {
     return () => {
       resetMyForestStore();
     };
   }, []);
 
-  const isProfileLoaded = profile !== null && profile !== undefined;
-
   return (
     <article className={styles.profileLayout}>
       <section id="profile-container" className={styles.profileContainer}>
-        {isProfileLoaded ? (
-          <ProfileCard userProfile={profile} profilePageType="private" />
+        {userProfile ? (
+          <ProfileCard userProfile={userProfile} profilePageType="private" />
         ) : (
           <ProfileLoader height={450} />
         )}
@@ -83,7 +69,7 @@ const ProfileLayout = () => {
           [styles.loading]: isMyForestLoading,
         })}
       >
-        {!isMyForestLoading && isProfileLoaded ? (
+        {!isMyForestLoading && userProfile ? (
           <ContributionsMap profilePageType="private" />
         ) : (
           <ProfileLoader height={450} />
@@ -95,7 +81,7 @@ const ProfileLayout = () => {
           [styles.loading]: isMyForestLoading,
         })}
       >
-        {!isMyForestLoading && isProfileLoaded ? (
+        {!isMyForestLoading && userProfile ? (
           <ForestProgress profilePageType="private" />
         ) : (
           <ProfileLoader height={116} />
@@ -107,8 +93,11 @@ const ProfileLayout = () => {
           [styles.loading]: isMyForestLoading,
         })}
       >
-        {!isMyForestLoading && isProfileLoaded ? (
-          <MyContributions profilePageType="private" userProfile={profile} />
+        {!isMyForestLoading && userProfile ? (
+          <MyContributions
+            profilePageType="private"
+            userProfile={userProfile}
+          />
         ) : (
           <ProfileLoader height={350} />
         )}
@@ -119,9 +108,9 @@ const ProfileLayout = () => {
           [styles.loading]: isMyForestLoading,
         })}
       >
-        {!isMyForestLoading && isProfileLoaded ? (
+        {!isMyForestLoading && userProfile ? (
           <CommunityContributions
-            userProfile={profile}
+            userProfile={userProfile}
             profilePageType="private"
           />
         ) : (

@@ -8,71 +8,70 @@ import type {
 import type { AbstractIntlMessages } from 'next-intl';
 import type { Tenant } from '@planet-sdk/common';
 
-import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import { useEffect } from 'react';
 import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
-import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
-import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
+import {
+  constructPathsForTenantSlug,
+  getTenantConfig,
+} from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 import useLocalizedPath from '../../../../src/hooks/useLocalizedPath';
-import { useTenantStore } from '../../../../src/stores/tenantStore';
+import { useAuthSession } from '../../../../src/hooks/useAuthSession';
+import {
+  useAuthStore,
+  useUserStore,
+  useTenantStore,
+} from '../../../../src/stores';
 
 export default function Login(): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const { auth0Error, isAuthenticated, loginWithRedirect } = useAuthSession();
   // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   const isInitialized = useTenantStore((state) => state.isInitialized);
 
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
-  const {
-    user,
-    contextLoaded,
-    loginWithRedirect,
-    isAuthenticated,
-    auth0Error,
-  } = useUserProps();
-
   useEffect(() => {
-    if (!isInitialized) return;
+    if (!isInitialized || !isAuthResolved) return;
 
-    async function loadFunction() {
-      // redirect
-      if (user) {
-        if (localStorage.getItem('redirectLink')) {
-          const redirectLink = localStorage.getItem('redirectLink');
-          if (redirectLink) {
-            localStorage.removeItem('redirectLink');
-            router.push(localizedPath(redirectLink));
-          }
-        } else {
-          router.push(localizedPath('/profile'));
-        }
-      }
-    }
-    if (contextLoaded) {
-      if (user) {
-        loadFunction();
-      } else if (
-        user === null &&
-        (isAuthenticated ||
-          // TODO: Remove '401' case after July 31, 2026. Confirm whether safe to remove before then.
-          auth0Error?.message === '401' ||
-          auth0Error?.message === 'email_not_verified')
-      ) {
-        // Wait for
-        // Navbar to handle redirect to /verify-email OR
-        // UserPropsContext to handle redirect to /complete-signup (via 303)
+    // User profile exists → redirect
+    if (userProfile) {
+      const redirectLink = localStorage.getItem('redirectLink');
+
+      if (redirectLink) {
+        localStorage.removeItem('redirectLink');
+        router.push(localizedPath(redirectLink));
       } else {
-        loginWithRedirect({
-          redirectUri: `${window.location.origin}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
+        router.push(localizedPath('/profile'));
       }
+      return;
     }
-  }, [user, contextLoaded, isInitialized]);
+
+    // User profile is explicitly null and auth is resolved
+    // → wait for context to redirect to complete signup
+    if (
+      userProfile === null &&
+      (isAuthenticated ||
+        // TODO: Remove '401' case after July 31, 2026. Confirm whether safe to remove before then.
+        auth0Error?.message === '401' ||
+        auth0Error?.message === 'email_not_verified')
+    ) {
+      // Wait for
+      // Navbar to handle redirect to /verify-email OR
+      // UserPropsContext to handle redirect to /complete-signup (via 303)
+    }
+
+    // Not authenticated → login
+    loginWithRedirect({
+      redirectUri: `${window.location.origin}/login`,
+      ui_locales: localStorage.getItem('language') || 'en',
+    });
+  }, [userProfile, isAuthResolved, isInitialized]);
 
   if (!isInitialized) return <></>;
 

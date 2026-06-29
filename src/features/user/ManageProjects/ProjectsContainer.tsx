@@ -13,7 +13,6 @@ import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import getImageUrl from '../../../utils/getImageURL';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useLocale, useTranslations } from 'next-intl';
@@ -24,7 +23,11 @@ import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../stores';
 
 type ProjectProperties =
   | ProfileProjectPropertiesFund
@@ -122,16 +125,20 @@ export default function ProjectsContainer() {
   const tDonate = useTranslations('Donate');
   const tManageProjects = useTranslations('ManageProjects');
   const { getApiAuthenticated } = useApi();
-  const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
-  const { user, contextLoaded, token } = useUserProps();
   const { localizedPath } = useLocalizedPath();
   // local state
+  const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
   const [loader, setLoader] = useState(true);
-  // store
+  // store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function loadProjects() {
-    if (user) {
+    if (userProfile) {
       try {
         const projects = await getApiAuthenticated<ProfileProjectFeature[]>(
           '/app/profile/projects',
@@ -147,10 +154,10 @@ export default function ProjectsContainer() {
   }
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   useEffect(() => {
-    if (contextLoaded && token) {
+    if (isAuthReady) {
       loadProjects();
     }
-  }, [contextLoaded, token]);
+  }, [isAuthReady]);
 
   return (
     <DashboardView

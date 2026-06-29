@@ -7,8 +7,7 @@ import ProjectListControls, { type ProjectTabs } from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import ProjectList from './ProjectList';
 import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
-import { useProjectMapStore } from '../../stores/projectMapStore';
-import { useTenantStore } from '../../stores/tenantStore';
+import { useProjectMapStore, useTenantStore } from '../../stores';
 
 interface ProjectsSectionProps {
   isMobile: boolean;

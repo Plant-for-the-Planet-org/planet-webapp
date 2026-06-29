@@ -10,10 +10,13 @@ import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
 import { useBulkCode } from '../../common/Layout/BulkCodeContext';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../stores';
 
 export enum BulkCodeSteps {
   SELECT_METHOD = 'select_method',
@@ -38,10 +41,12 @@ export default function BulkCodes({
     bulkMethod,
     project,
   } = useBulkCode();
-  const { contextLoaded, user } = useUserProps();
   const { getApi } = useApi();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  // store
+  // store: state
+  const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
@@ -108,17 +113,16 @@ export default function BulkCodes({
   }, [fetchProjectList]);
 
   useEffect(() => {
-    if (contextLoaded && !planetCashAccount) {
-      const userPlanetCash = user?.planetCash;
-      if (userPlanetCash) {
-        setPlanetCashAccount({
-          guid: userPlanetCash.account,
-          country: userPlanetCash.country,
-          currency: userPlanetCash.currency,
-        });
-      }
+    if (!isAuthResolved && planetCashAccount) return;
+
+    if (userPlanetCash) {
+      setPlanetCashAccount({
+        guid: userPlanetCash.account,
+        country: userPlanetCash.country,
+        currency: userPlanetCash.currency,
+      });
     }
-  }, [contextLoaded, user]);
+  }, [isAuthResolved, userPlanetCash]);
 
   const renderStep = () => {
     switch (step) {

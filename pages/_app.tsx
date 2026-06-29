@@ -20,7 +20,6 @@ import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
-import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
@@ -184,23 +183,21 @@ const PlanetWeb = ({
             onRedirectCallback={onRedirectCallback}
             useRefreshTokens={true}
           >
+            <StoreInitializer tenantConfig={tenantConfig} />
             <ThemeProvider>
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
-                <UserPropsProvider>
-                  <StoreInitializer tenantConfig={tenantConfig} />
-                  <PlanetCashProvider>
-                    <PayoutsProvider>
-                      <Layout>
-                        <BulkCodeProvider>
-                          <DonationReceiptProvider>
-                            {pageContent}
-                          </DonationReceiptProvider>
-                        </BulkCodeProvider>
-                      </Layout>
-                    </PayoutsProvider>
-                  </PlanetCashProvider>
-                </UserPropsProvider>
+                <PlanetCashProvider>
+                  <PayoutsProvider>
+                    <Layout>
+                      <BulkCodeProvider>
+                        <DonationReceiptProvider>
+                          {pageContent}
+                        </DonationReceiptProvider>
+                      </BulkCodeProvider>
+                    </Layout>
+                  </PayoutsProvider>
+                </PlanetCashProvider>
               </MuiThemeProvider>
             </ThemeProvider>
           </Auth0Provider>

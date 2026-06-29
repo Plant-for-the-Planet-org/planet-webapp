@@ -25,11 +25,13 @@ import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
 import { getProjectTimeTravelConfig } from '../../../utils/mapsV2/timeTravel';
 import { useApi } from '../../../hooks/useApi';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  useProjectMapStore,
+  useErrorHandlingStore,
+  useCurrencyStore,
+  useTenantStore,
+} from '../../../stores';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { useTenantStore } from '../../../stores/tenantStore';
-import { useCurrencyStore } from '../../../stores/currencyStore';
 
 const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const {
@@ -45,16 +47,16 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
     setSelectedSampleTree,
     setPreventShallowPush,
   } = useProjects();
-  const { getApi } = useApi();
   const locale = useLocale();
   const router = useRouter();
-  const { p: projectSlug } = router.query;
   const { localizedPath } = useLocalizedPath();
-  // local state
+  const { getApi } = useApi();
+  const { p: projectSlug } = router.query;
+  //local state
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
   // store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
   // store: action
   const setTimeTravelConfig = useProjectMapStore(
     (state) => state.setTimeTravelConfig

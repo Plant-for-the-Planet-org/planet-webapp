@@ -9,7 +9,7 @@ import styles from '../styles/ProjectListControls.module.scss';
 import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { useQueryParamStore } from '../../../../stores';
 
 interface ActiveSearchFieldProps {
   setIsSearching: SetState<boolean>;

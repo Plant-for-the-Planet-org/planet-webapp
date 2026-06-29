@@ -8,13 +8,12 @@ import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import { useAuthStore, useErrorHandlingStore } from '../../../../stores';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -24,7 +23,6 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const t = useTranslations('Me');
-  const { token, contextLoaded } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { accounts } = usePlanetCash();
@@ -35,7 +33,11 @@ const Transactions = ({
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // store
+  // store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleRecordToggle = (index: number | undefined): void => {
@@ -99,9 +101,8 @@ const Transactions = ({
   );
 
   useEffect(() => {
-    if (contextLoaded && token && accounts && accounts.length > 0)
-      fetchTransactions();
-  }, [contextLoaded, token, accounts]);
+    if (isAuthReady && accounts && accounts.length > 0) fetchTransactions();
+  }, [isAuthReady, accounts]);
 
   useEffect(() => {
     // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.

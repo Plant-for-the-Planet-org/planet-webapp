@@ -14,19 +14,19 @@ import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../../../../src/features/user/ManagePayouts';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
-import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { useUserStore, useTenantStore } from '../../../../../../src/stores';
 import { defaultTenant } from '../../../../../../tenant.config';
 
 export default function AddBankDetailsPage(): ReactElement {
   const t = useTranslations('Me');
-  const { user } = useUserProps();
+  // store: state
+  const isTpo = useUserStore((state) => state.userProfile?.type === 'tpo');
 
   //store: state
   const isInitialized = useTenantStore((state) => state.isInitialized);
@@ -37,7 +37,7 @@ export default function AddBankDetailsPage(): ReactElement {
       <Head>
         <title>{t('managePayouts.titleAddBankDetails')}</title>
       </Head>
-      {user?.type === 'tpo' ? (
+      {isTpo ? (
         <ManagePayouts step={ManagePayoutTabs.ADD_BANK_DETAILS} />
       ) : (
         <AccessDeniedLoader />

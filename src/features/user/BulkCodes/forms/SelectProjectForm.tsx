@@ -8,10 +8,10 @@ import { Button } from '@mui/material';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import ProjectSelector from '../components/ProjectSelector';
 import BulkCodesError from '../components/BulkCodesError';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useUserStore } from '../../../../stores';
 
 const SelectProjectForm = (): ReactElement | null => {
   const router = useRouter();
@@ -19,10 +19,12 @@ const SelectProjectForm = (): ReactElement | null => {
   const tCommon = useTranslations('Common');
   const { method } = router.query;
   const { project, setProject, projectList, planetCashAccount } = useBulkCode();
-  const { user } = useUserProps();
+  // local state
   const [localProject, setLocalProject] = useState<CountryProject | null>(
     project
   );
+  const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+
   const handleFormSubmit = () => {
     if (localProject) {
       setProject(localProject);
@@ -53,8 +55,8 @@ const SelectProjectForm = (): ReactElement | null => {
           className="formButton"
           disabled={
             !(
-              user?.planetCash &&
-              !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+              userPlanetCash &&
+              !(userPlanetCash.balance + userPlanetCash.creditLimit <= 0)
             ) || localProject === null
           }
           onClick={handleFormSubmit}

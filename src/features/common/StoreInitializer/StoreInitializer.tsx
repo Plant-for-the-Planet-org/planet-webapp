@@ -1,7 +1,9 @@
 import type { Tenant } from '@planet-sdk/common';
 
+import { useInitializeAuth } from '../../../hooks/useInitializeAuth';
 import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
+import { useInitializeUser } from '../../../hooks/useInitializeUser';
 import { useInitializeTenant } from '../../../hooks/useInitializeTenant';
 
 interface StoreInitializerProps {
@@ -23,6 +25,8 @@ interface StoreInitializerProps {
 export const StoreInitializer = ({ tenantConfig }: StoreInitializerProps) => {
   useInitializeTenant(tenantConfig);
   useInitializeParams();
+  useInitializeAuth();
+  useInitializeUser();
   useInitializeCurrency();
   return null;
 };

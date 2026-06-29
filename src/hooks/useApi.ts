@@ -72,10 +72,10 @@ import apiClient from '../utils/apiRequests/apiClient';
 import getSessionId from '../utils/apiRequests/getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
-import { useUserProps } from '../features/common/Layout/UserPropsContext';
 import { validateToken } from '../utils/apiRequests/validateToken';
 import { useLocale } from 'next-intl';
-import { useTenantStore } from '../stores/tenantStore';
+import { useAuthStore, useTenantStore } from '../stores';
+import { useAuthSession } from './useAuthSession';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
@@ -101,10 +101,11 @@ type ApiConfig<
   : ApiConfigWithoutPayload;
 
 export const useApi = () => {
-  const { token, logoutUser } = useUserProps();
+  const { logoutUser } = useAuthSession();
   const locale = useLocale();
-  // store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  //store: state
+  const token = useAuthStore((state) => state.token);
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
 
   const callApi = async <T>({
     method,
@@ -119,7 +120,7 @@ export const useApi = () => {
   }): Promise<T> => {
     const headers: Record<string, string> = {
       'x-locale': locale,
-      'tenant-key': tenantConfig?.id || '',
+      'tenant-key': tenantId || '',
       'X-SESSION-ID': await getSessionId(),
       ...(additionalHeaders ? additionalHeaders : {}),
     };

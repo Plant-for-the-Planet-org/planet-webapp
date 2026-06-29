@@ -8,7 +8,7 @@ import {
   useEffect,
   useCallback,
 } from 'react';
-import { useUserProps } from './UserPropsContext';
+import { useUserStore } from '../../../stores';
 
 interface PlanetCashContextInterface {
   accounts: PlanetCashAccount[] | null;
@@ -22,9 +22,11 @@ export const PlanetCashContext =
   createContext<PlanetCashContextInterface | null>(null);
 
 export const PlanetCashProvider = ({ children }: { children: ReactNode }) => {
-  const { user } = useUserProps();
+  // local state
   const [accounts, setAccounts] = useState<PlanetCashAccount[] | null>(null);
   const [isPlanetCashActive, setIsPlanetCashActive] = useState<boolean>(false);
+  //store: state
+  const profileId = useUserStore((state) => state.userProfile?.id);
 
   const updateAccount = useCallback((updatedAccount: PlanetCashAccount) => {
     setAccounts((prevAccounts) => {
@@ -38,7 +40,7 @@ export const PlanetCashProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     setAccounts(null);
     setIsPlanetCashActive(false);
-  }, [user?.id]);
+  }, [profileId]);
 
   return (
     <PlanetCashContext.Provider

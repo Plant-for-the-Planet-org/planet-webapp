@@ -6,13 +6,13 @@ import { Button } from '@mui/material';
 import SelectorOption from '../components/SelectorOption';
 import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import { useTranslations } from 'next-intl';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useUserStore } from '../../../../stores';
 
 const CreationMethodForm = (): ReactElement | null => {
   const {
@@ -22,13 +22,14 @@ const CreationMethodForm = (): ReactElement | null => {
     setBulkGiftData,
     setTotalUnits,
   } = useBulkCode();
-  const [method, setMethod] = useState<BulkCodeMethods | null>(bulkMethod);
   const tCommon = useTranslations('Common');
   const tBulkCodes = useTranslations('BulkCodes');
-  const { user } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-
+  // local state
+  const [method, setMethod] = useState<BulkCodeMethods | null>(bulkMethod);
+  // store: state
+  const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
   const selectorOptions: SelectorOptionProps[] = [
     {
       method: BulkCodeMethods.IMPORT,
@@ -92,8 +93,8 @@ const CreationMethodForm = (): ReactElement | null => {
           className="formButton"
           disabled={
             !(
-              user?.planetCash &&
-              !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+              userPlanetCash &&
+              !(userPlanetCash.balance + userPlanetCash.creditLimit <= 0)
             ) || method === null
           }
           onClick={handleFormSubmit}

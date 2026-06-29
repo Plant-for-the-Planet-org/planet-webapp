@@ -11,7 +11,6 @@ import type {
 
 import { useEffect, useState } from 'react';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
@@ -23,8 +22,11 @@ import {
 } from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
-import { useTenantStore } from '../../../../../src/stores/tenantStore';
-import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useErrorHandlingStore,
+  useTenantStore,
+} from '../../../../../src/stores';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { defaultTenant } from '../../../../../tenant.config';
@@ -33,15 +35,17 @@ function RecurrentDonations(): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { token, contextLoaded } = useUserProps();
   const { getApiAuthenticated } = useApi();
   // local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [recurrencies, setRecurrencies] = useState<Subscription[]>();
-  //store: state
+  // store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
   const isInitialized = useTenantStore((state) => state.isInitialized);
-  //store: action
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function fetchRecurrentDonations(): Promise<void> {
@@ -81,8 +85,8 @@ function RecurrentDonations(): ReactElement {
   }
 
   useEffect(() => {
-    if (contextLoaded && token) fetchRecurrentDonations();
-  }, [contextLoaded, token]);
+    if (isAuthReady) fetchRecurrentDonations();
+  }, [isAuthReady]);
 
   const RecurrencyProps = {
     isDataLoading,

@@ -16,7 +16,6 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../../../../src/features/user/Account/History';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { handleError } from '@planet-sdk/common';
@@ -27,18 +26,20 @@ import {
 } from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
-import { useTenantStore } from '../../../../../src/stores/tenantStore';
-import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useErrorHandlingStore,
+  useTenantStore,
+} from '../../../../../src/stores';
 import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { defaultTenant } from '../../../../../tenant.config';
 
 function AccountHistory(): ReactElement {
   const t = useTranslations('Me');
-  const { token, contextLoaded } = useUserProps();
+  const router = useRouter();
   const { getApiAuthenticated } = useApi();
   const { localizedPath } = useLocalizedPath();
-  const router = useRouter();
   //local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -50,6 +51,9 @@ function AccountHistory(): ReactElement {
     null
   );
   //store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
   const isInitialized = useTenantStore((state) => state.isInitialized);
   //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
@@ -111,8 +115,8 @@ function AccountHistory(): ReactElement {
   }
 
   useEffect(() => {
-    if (contextLoaded && token) fetchPaymentHistory();
-  }, [filter, contextLoaded, token]);
+    if (isAuthReady) fetchPaymentHistory();
+  }, [filter, isAuthReady]);
 
   const HistoryProps = {
     filter,

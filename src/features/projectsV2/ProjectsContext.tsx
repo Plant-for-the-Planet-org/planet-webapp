@@ -27,9 +27,11 @@ import {
   isValidClassification,
 } from '../../utils/projectV2';
 import { useApi } from '../../hooks/useApi';
-import { useTenantStore } from '../../stores/tenantStore';
-import { useErrorHandlingStore } from '../../stores/errorHandlingStore';
-import { useCurrencyStore } from '../../stores/currencyStore';
+import {
+  useErrorHandlingStore,
+  useCurrencyStore,
+  useTenantStore,
+} from '../../stores';
 
 interface ProjectsState {
   projects: MapProject[] | null;

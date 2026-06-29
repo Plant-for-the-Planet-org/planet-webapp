@@ -17,7 +17,7 @@ import {
   extractAndClassifyProjectData,
 } from '../../../../../utils/myForestUtils';
 import styles from '../Common/common.module.scss';
-import { useMyForestStore } from '../../../../../stores/myForestStore';
+import { useMyForestStore } from '../../../../../stores';
 
 export interface DonationClusterMarkerProps {
   superclusterResponse: PointFeature<DonationSuperclusterProperties>;

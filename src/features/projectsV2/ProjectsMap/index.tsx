@@ -37,8 +37,7 @@ import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
 import WebGLGuard from '../../common/WebGLGuard';
 import { clsx } from 'clsx';
-import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
+import { useQueryParamStore, useProjectMapStore } from '../../../stores';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,

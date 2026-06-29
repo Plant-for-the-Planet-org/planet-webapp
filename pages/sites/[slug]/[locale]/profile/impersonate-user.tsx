@@ -6,26 +6,30 @@ import type {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import type { Tenant } from '@planet-sdk/common';
+import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import ImpersonateUser from '../../../../../src/features/user/Settings/ImpersonateUser';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import { defaultTenant } from '../../../../../tenant.config';
+import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { useUserStore, useTenantStore } from '../../../../../src/stores';
 
 const ImpersonateUserPage = (): ReactElement => {
-  const { user, isImpersonationModeOn } = useUserProps();
   const t = useTranslations('Me');
-  //store: action
+  // store: state
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
+  const hasImpersonationAccess = useUserStore(
+    (state) => state.userProfile?.allowedToSwitch
+  );
   const isInitialized = useTenantStore((state) => state.isInitialized);
 
   if (!isInitialized) return <></>;
@@ -35,7 +39,7 @@ const ImpersonateUserPage = (): ReactElement => {
       <Head>
         <title>{t('switchUser')}</title>
       </Head>
-      {user?.allowedToSwitch && !isImpersonationModeOn ? (
+      {hasImpersonationAccess && !isImpersonationModeOn ? (
         <ImpersonateUser />
       ) : (
         <AccessDeniedLoader />

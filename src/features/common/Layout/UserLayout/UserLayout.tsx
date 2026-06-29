@@ -14,7 +14,6 @@ import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/Sett
 import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
 import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
 import { UserProfileLoader } from '../../ContentLoaders/UserProfile/UserProfile';
-import { useUserProps } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
 import TreeMapperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
@@ -25,15 +24,25 @@ import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
+import { useAuthStore, useUserStore } from '../../../../stores';
 
 const UserLayout = ({ children }: { children: ReactNode }) => {
   const t = useTranslations('Me');
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-
-  const { user, logoutUser, contextLoaded, isImpersonationModeOn } =
-    useUserProps();
+  const { logoutUser } = useAuthSession();
+  // local state
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentMenuKey, setCurrentMenuKey] = useState<string>('profile');
+  const [currentSubMenuKey, setCurrentSubMenuKey] = useState('');
+  // store: state
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
+  const userProfile = useUserStore((state) => state.userProfile);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   // Navigation structure with keys, paths, and submenu configurations
   // Flags can be added to show labels on the right
   const navLinks: NavLinkType[] = useMemo(
@@ -70,7 +79,7 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
             key: 'payouts',
             title: t('managePayouts.menuText'),
             path: '/profile/payouts',
-            hideItem: !(user?.type === 'tpo'),
+            hideItem: !(userProfile?.type === 'tpo'),
             matchPattern: 'prefix', // Matches /profile/payouts and /profile/payouts/*
           },
         ],
@@ -115,9 +124,10 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
             path: '/profile/giftfund',
             //For an active PlanetCash account with an empty GiftFund array or if openUnits = 0 for all GiftFunds, it should be hidden
             hideItem:
-              !user?.planetCash ||
-              user?.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
-                .length == 0,
+              !userProfile?.planetCash ||
+              userProfile?.planetCash?.giftFunds.filter(
+                (gift) => gift.openUnits !== 0
+              ).length == 0,
           },
         ],
       },
@@ -153,7 +163,7 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
             key: 'switch-user',
             title: t('switchUser'),
             path: '/profile/impersonate-user',
-            hideItem: isImpersonationModeOn || !user?.allowedToSwitch,
+            hideItem: isImpersonationModeOn || !userProfile?.allowedToSwitch,
           },
           {
             key: 'api-key',
@@ -168,12 +178,8 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         ],
       },
     ],
-    [t, user, locale, isImpersonationModeOn]
+    [t, userProfile, locale, isImpersonationModeOn]
   );
-
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentMenuKey, setCurrentMenuKey] = useState<string>('profile');
-  const [currentSubMenuKey, setCurrentSubMenuKey] = useState('');
 
   useEffect(() => {
     // Determine which menu/submenu should be highlighted based on current route
@@ -262,16 +268,27 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
   }, [router.asPath, locale, navLinks]);
 
   useEffect(() => {
-    if (contextLoaded) {
-      // Redirect user to desired page after login
-      if (!user) {
-        if (router.asPath) localStorage.setItem('redirectLink', router.asPath);
-        router.push(localizedPath('/login'));
-      }
-    }
-  }, [contextLoaded, user]);
+    if (!isAuthResolved || userProfile) return;
 
-  return user ? (
+    // Redirect user to desired page after login
+    if (router.asPath) {
+      localStorage.setItem('redirectLink', router.asPath);
+    }
+
+    router.push(localizedPath('/login'));
+  }, [isAuthResolved, userProfile]);
+
+  // While auth state is resolving
+  if (!isAuthResolved) {
+    return <UserProfileLoader />;
+  }
+
+  //Auth resolved but no user (redirect in effect)
+  if (!userProfile) {
+    return null;
+  }
+
+  return (
     <div className={styles.profilePageContainer}>
       <div
         key={'hamburgerIcon'}
@@ -306,7 +323,7 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
                 currentMenuKey={currentMenuKey}
                 currentSubMenuKey={currentSubMenuKey}
                 setCurrentSubMenuKey={setCurrentSubMenuKey}
-                user={user}
+                user={userProfile}
                 key={index}
                 closeMenu={() => setIsMobileMenuOpen(false)}
               />
@@ -364,8 +381,6 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         {children}
       </div>
     </div>
-  ) : (
-    <UserProfileLoader />
   );
 };
 

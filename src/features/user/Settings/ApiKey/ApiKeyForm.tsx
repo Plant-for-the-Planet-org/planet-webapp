@@ -3,7 +3,6 @@ import type { APIError } from '@planet-sdk/common';
 
 import { useEffect, useState } from 'react';
 import styles from './ApiKey.module.scss';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import EyeIcon from '../../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../../public/assets/images/icons/EyeDisabled';
@@ -13,7 +12,7 @@ import { Button, InputAdornment, TextField } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useAuthStore, useErrorHandlingStore } from '../../../../stores';
 
 interface EyeButtonParams {
   isVisible: boolean;
@@ -32,14 +31,17 @@ const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
 };
 
 export default function ApiKey() {
-  const { token, contextLoaded } = useUserProps();
   const t = useTranslations('Me');
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
   // local state
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [apiKey, setApiKey] = useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = useState(false);
-  // store
+  // store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleVisibilityChange = () => {
@@ -79,10 +81,10 @@ export default function ApiKey() {
   };
 
   useEffect(() => {
-    if (token && contextLoaded) {
+    if (isAuthReady) {
       getApiKey();
     }
-  }, [token, contextLoaded]);
+  }, [isAuthReady]);
 
   return (
     <StyledForm>

@@ -18,7 +18,6 @@ import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
 import { v4 as uuidV4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
@@ -29,7 +28,7 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useUserStore, useErrorHandlingStore } from '../../../../stores';
 
 const IssueCodesForm = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
@@ -44,7 +43,6 @@ const IssueCodesForm = (): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
-  const { user, setRefetchUserData } = useUserProps();
   const { postApiAuthenticated } = useApi();
   // local state
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
@@ -57,7 +55,12 @@ const IssueCodesForm = (): ReactElement | null => {
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
   const [notificationLocale, setNotificationLocale] = useState('');
-  // store
+  // store: state
+  const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+  // store: action
+  const setShouldRefetchUserProfile = useUserStore(
+    (state) => state.setShouldRefetchUserProfile
+  );
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const notificationLocales = [
@@ -157,7 +160,7 @@ const IssueCodesForm = (): ReactElement | null => {
         if (res?.uid) {
           resetBulkContext();
           setIsSubmitted(true);
-          setRefetchUserData(true);
+          setShouldRefetchUserProfile(true);
           setTimeout(() => {
             router.push(localizedPath(`/profile/history?ref=${res.uid}`));
           }, 5000);
@@ -232,8 +235,8 @@ const IssueCodesForm = (): ReactElement | null => {
 
   const shouldDisableSubmission = useMemo(() => {
     const hasSufficientFunds =
-      user?.planetCash != null &&
-      user.planetCash.balance + user.planetCash.creditLimit > 0;
+      userPlanetCash != null &&
+      userPlanetCash.balance + userPlanetCash.creditLimit > 0;
     const hasEnteredRequiredData =
       localRecipients.length > 0 ||
       (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
@@ -246,7 +249,7 @@ const IssueCodesForm = (): ReactElement | null => {
       totalAmount <= 0
     );
   }, [
-    user,
+    userPlanetCash,
     localRecipients,
     codeQuantity,
     unitsPerCode,

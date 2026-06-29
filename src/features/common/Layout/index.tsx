@@ -7,8 +7,7 @@ import CookiePolicy from './CookiePolicy';
 import ErrorPopup from './ErrorPopup';
 import Header from './Header';
 import Navbar from './Navbar';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useTenantStore } from '../../../stores/tenantStore';
+import { useQueryParamStore, useTenantStore } from '../../../stores';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { theme: themeType } = useTheme();

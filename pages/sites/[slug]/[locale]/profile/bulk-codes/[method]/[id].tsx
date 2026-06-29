@@ -26,11 +26,14 @@ import {
 } from '../../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
-import { useUserProps } from '../../../../../../../src/features/common/Layout/UserPropsContext';
 import { useApi } from '../../../../../../../src/hooks/useApi';
 import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
-import { useTenantStore } from '../../../../../../../src/stores/tenantStore';
-import { useErrorHandlingStore } from '../../../../../../../src/stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+  useTenantStore,
+} from '../../../../../../../src/stores';
 import { defaultTenant } from '../../../../../../../tenant.config';
 
 export default function BulkCodeIssueCodesPage(): ReactElement {
@@ -46,15 +49,19 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
     planetCashAccount,
     projectList,
   } = useBulkCode();
-  const { token, user, contextLoaded } = useUserProps();
-  // store: action
+
+  //store: state
+  const isAuthReady = useAuthStore((state) =>
+    Boolean(state.token && state.isAuthResolved)
+  );
+  const userProfile = useUserStore((state) => state.userProfile);
   const isInitialized = useTenantStore((state) => state.isInitialized);
-  // store: state
+  //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {
-    if (planetCashAccount && token && contextLoaded && projectList) {
+    if (planetCashAccount && isAuthReady && projectList) {
       if (!project) {
         if (router.isReady) {
           try {
@@ -63,7 +70,9 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
               {
                 queryParams: {
                   country: planetCashAccount?.country ?? '',
-                  ...(user !== null && { legacyPriceFor: user.id }),
+                  ...(userProfile !== null && {
+                    legacyPriceFor: userProfile.id,
+                  }),
                 },
               }
             );
@@ -103,7 +112,7 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
         }
       }
     }
-  }, [router.isReady, planetCashAccount, token, contextLoaded, projectList]);
+  }, [router.isReady, planetCashAccount, isAuthReady, projectList]);
 
   useEffect(() => {
     checkContext();

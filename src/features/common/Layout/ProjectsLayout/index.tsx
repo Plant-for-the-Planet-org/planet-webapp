@@ -6,9 +6,11 @@ import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
-import { useUserProps } from '../UserPropsContext';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useProjectMapStore } from '../../../../stores/projectMapStore';
+import {
+  useProjectMapStore,
+  useQueryParamStore,
+  useUserStore,
+} from '../../../../stores';
 
 interface ProjectsLayoutProps {
   children: ReactNode;
@@ -23,10 +25,11 @@ const ProjectsLayoutContent = ({ children, page }: ProjectsLayoutProps) => {
   );
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
   // store: action
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
-
-  const { isImpersonationModeOn } = useUserProps();
 
   const showContentContainer = useMemo(() => {
     if (page === 'project-list') {
