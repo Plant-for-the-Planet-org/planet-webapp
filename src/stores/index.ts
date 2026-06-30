@@ -6,3 +6,8 @@ export { useProjectMapStore } from './projectMapStore';
 export { useMyForestStore } from './myForestStore';
 export { useCurrencyStore } from './currencyStore';
 export { useTenantStore } from './tenantStore';
+export {
+  useDonationReceiptStore,
+  selectReceiptData,
+  selectOperation,
+} from './donationReceiptStore';
