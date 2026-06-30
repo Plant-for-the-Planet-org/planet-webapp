@@ -1,7 +1,7 @@
 import type { IssuedReceiptDataApi } from './donationReceiptTypes';
 
 import { useEffect, useState } from 'react';
-import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
+import { useShallow } from 'zustand/react/shallow';
 import DonationReceipt from './microComponents/DonationReceipt';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -11,7 +11,12 @@ import { RECEIPT_STATUS } from './donationReceiptTypes';
 import { validateOwnership } from './DonationReceiptValidator';
 import { useTranslations } from 'next-intl';
 import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
-import { useUserStore } from '../../../stores';
+import {
+  useUserStore,
+  useDonationReceiptStore,
+  selectReceiptData,
+  selectOperation,
+} from '../../../stores';
 
 type ReceiptVerificationPayload = {
   dtn: string | null;
@@ -28,26 +33,33 @@ type ReceiptIssuancePayload = {
 };
 
 const DonationReceiptWrapper = () => {
-  const {
-    getReceiptData,
-    getOperation,
-    getDonor,
-    getAddress,
-    getAddressGuid,
-    getDonationUids,
-    initForVerification,
-    email,
-    isValid,
-    tinIsRequired,
-    clearSessionStorage,
-  } = useDonationReceiptContext();
   const { putApi, putApiAuthenticated, postApiAuthenticated } = useApi();
-  const receiptData = getReceiptData();
-  const operation = getOperation();
   const tReceipt = useTranslations('DonationReceipt');
   // local state
   const [isLoading, setIsLoading] = useState(false);
-  // store: state
+  // store: state (reactive)
+  const email = useDonationReceiptStore((state) => state.email);
+  const isValid = useDonationReceiptStore((state) => state.isValid);
+  const tinIsRequired = useDonationReceiptStore((state) => state.tinIsRequired);
+  const receiptData = useDonationReceiptStore(useShallow(selectReceiptData));
+  const operation = useDonationReceiptStore(selectOperation);
+  // store: imperative getters (read inside handlers)
+  const getDonor = useDonationReceiptStore((state) => state.getDonor);
+  const getAddress = useDonationReceiptStore((state) => state.getAddress);
+  const getAddressGuid = useDonationReceiptStore(
+    (state) => state.getAddressGuid
+  );
+  const getDonationUids = useDonationReceiptStore(
+    (state) => state.getDonationUids
+  );
+  // store: actions
+  const initForVerification = useDonationReceiptStore(
+    (state) => state.initForVerification
+  );
+  const clearSessionStorage = useDonationReceiptStore(
+    (state) => state.clearSessionStorage
+  );
+  // store: user state
   const userEmail = useUserStore((state) => state.userProfile?.email);
   const isOwner = validateOwnership(email, userEmail);
   useEffect(() => {
@@ -58,7 +70,7 @@ const DonationReceiptWrapper = () => {
   // It can only be done via the receipt list page.
   // The error component below is specifically dedicated to direct link access
 
-  if (!isOwner && getOperation() !== RECEIPT_STATUS.ISSUE)
+  if (!isOwner && operation !== RECEIPT_STATUS.ISSUE)
     return (
       <ReceiptVerificationErrors
         message={tReceipt.rich('errors.accessDeniedMessage', {

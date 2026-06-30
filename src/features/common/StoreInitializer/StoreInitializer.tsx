@@ -5,6 +5,7 @@ import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
 import { useInitializeUser } from '../../../hooks/useInitializeUser';
 import { useInitializeTenant } from '../../../hooks/useInitializeTenant';
+import { useInitializeDonationReceipt } from '../../../hooks/useInitializeDonationReceipt';
 
 interface StoreInitializerProps {
   tenantConfig?: Tenant;
@@ -28,5 +29,6 @@ export const StoreInitializer = ({ tenantConfig }: StoreInitializerProps) => {
   useInitializeAuth();
   useInitializeUser();
   useInitializeCurrency();
+  useInitializeDonationReceipt();
   return null;
 };
