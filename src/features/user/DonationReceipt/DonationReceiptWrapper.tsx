@@ -43,15 +43,6 @@ const DonationReceiptWrapper = () => {
   const tinIsRequired = useDonationReceiptStore((state) => state.tinIsRequired);
   const receiptData = useDonationReceiptStore(useShallow(selectReceiptData));
   const operation = useDonationReceiptStore(selectOperation);
-  // store: imperative getters (read inside handlers)
-  const getDonor = useDonationReceiptStore((state) => state.getDonor);
-  const getAddress = useDonationReceiptStore((state) => state.getAddress);
-  const getAddressGuid = useDonationReceiptStore(
-    (state) => state.getAddressGuid
-  );
-  const getDonationUids = useDonationReceiptStore(
-    (state) => state.getDonationUids
-  );
   // store: actions
   const initForVerification = useDonationReceiptStore(
     (state) => state.initForVerification
@@ -80,10 +71,8 @@ const DonationReceiptWrapper = () => {
     );
 
   const confirmReceiptData = async () => {
-    const donor = getDonor();
-    const address = getAddress();
-    const addressGuid = getAddressGuid();
-    const donationUids = getDonationUids();
+    const { donor, address, addressGuid, donationUids } =
+      useDonationReceiptStore.getState();
 
     if (!donor || !address || !receiptData) {
       console.error('❌ Missing required data for confirmation.');

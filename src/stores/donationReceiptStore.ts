@@ -53,12 +53,6 @@ interface DonationReceiptState {
 }
 
 interface DonationReceiptStore extends DonationReceiptState {
-  // getters (imperative reads for event handlers)
-  getDonor: () => DonorView | null;
-  getAddress: () => AddressView | null;
-  getAddressGuid: () => string | null;
-  getDonationUids: () => string[];
-
   // actions
   initForVerification: (data: IssuedReceiptDataApi, user: User | null) => void;
   initForIssuance: (
@@ -142,12 +136,6 @@ export const useDonationReceiptStore = create<DonationReceiptStore>()(
     (set, get) => ({
       //state
       ...defaultState,
-
-      //getters
-      getDonor: () => get().donor,
-      getAddress: () => get().address,
-      getAddressGuid: () => get().addressGuid,
-      getDonationUids: () => get().donationUids,
 
       //actions
       // Initialize state for verification
