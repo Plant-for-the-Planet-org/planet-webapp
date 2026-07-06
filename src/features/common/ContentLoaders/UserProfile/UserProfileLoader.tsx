@@ -20,8 +20,11 @@ export const UserProfileLoader = () => {
           (a wrapper would collapse the content width). */}
       <span className={styles.visuallyHidden}>{t('loadingProfile')}</span>
 
-      {/* Mobile burger placeholder (matches UserLayout .hamburgerIcon) */}
-      <Skeleton className={styles.hamburgerSkeleton} borderRadius={10} />
+      {/* Mobile burger placeholder. Wrapped in aria-hidden to avoid exposing
+    decorative loading UI to screen readers. */}
+      <span aria-hidden="true">
+        <Skeleton className={styles.hamburgerSkeleton} borderRadius={10} />
+      </span>
 
       {/* Sidebar placeholder (matches UserLayout .sidebar) */}
       <aside className={styles.sidebarSkeleton} aria-hidden="true">
