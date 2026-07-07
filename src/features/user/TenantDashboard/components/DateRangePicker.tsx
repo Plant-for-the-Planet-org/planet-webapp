@@ -29,7 +29,11 @@ const DateRangePicker = ({
   const { userLang } = useUserProps();
   const t = useTranslations('Profile.tenant');
   return (
-    <section className={styles.dateRangeContainer}>
+    <section
+      className={styles.dateRangeContainer}
+      role="group"
+      aria-label={t('dateRangeLabel')}
+    >
       <LocalizationProvider
         dateAdapter={AdapterDateFns}
         adapterLocale={

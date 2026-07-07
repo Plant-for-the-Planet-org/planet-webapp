@@ -58,7 +58,10 @@ const TenantStats = ({ tenantStats }: TenantStatsProp) => {
     },
   ];
   return (
-    <section className={styles.tenantStatsContainer}>
+    <section
+      className={styles.tenantStatsContainer}
+      aria-label={t('statsSummary')}
+    >
       {statConfig.map((stat) => (
         <StatCard key={stat.label} {...stat} />
       ))}

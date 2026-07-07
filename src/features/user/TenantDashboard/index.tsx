@@ -112,17 +112,19 @@ const TenantDashboard = () => {
         isEmptyResult={isEmptyResult}
         isFetching={isFetching}
       />
-      {isFetching ? (
-        <TenantDashboardSkeleton />
-      ) : isEmptyResult ? (
-        <EmptyStateInfo />
-      ) : (
-        <TenantReportContent
-          tenantStats={tenantStats}
-          countryLeaderboard={countryLeaderboard}
-          recentDonors={recentDonors}
-        />
-      )}
+      <div aria-live="polite" aria-busy={isFetching}>
+        {isFetching ? (
+          <TenantDashboardSkeleton />
+        ) : isEmptyResult ? (
+          <EmptyStateInfo />
+        ) : (
+          <TenantReportContent
+            tenantStats={tenantStats}
+            countryLeaderboard={countryLeaderboard}
+            recentDonors={recentDonors}
+          />
+        )}
+      </div>
     </section>
   );
 };

@@ -21,23 +21,34 @@ const LeaderboardRow = ({
     totalTreePlanted > 0
       ? Math.min(100, ((Number(treesPlanted) || 0) / totalTreePlanted) * 100)
       : 0;
+  const roundedPercentage = Math.round(percentage);
   const flagEmoji = countryToFlag(countryCode);
+  const countryName = tCountry(
+    countryCode.toLowerCase() as Lowercase<CountryCode>
+  );
 
   return (
     <li className={styles.leaderboardRow}>
       <div className={styles.leaderboardRowHeader}>
         <div className={styles.leaderboardCountry}>
-          <span className={styles.leaderboardFlag}>{flagEmoji}</span>
-          <span className={styles.leaderboardCountryName}>
-            {tCountry(countryCode.toLowerCase() as Lowercase<CountryCode>)}
+          <span className={styles.leaderboardFlag} aria-hidden="true">
+            {flagEmoji}
           </span>
+          <span className={styles.leaderboardCountryName}>{countryName}</span>
         </div>
         <span className={styles.leaderboardTreeCount}>
           {t('treePlantedCount', { count: treesPlanted })}
         </span>
       </div>
 
-      <div className={styles.progressBarTrack}>
+      <div
+        className={styles.progressBarTrack}
+        role="progressbar"
+        aria-valuenow={roundedPercentage}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={t('leaderboardShare', { country: countryName })}
+      >
         <div
           className={styles.progressBarFill}
           style={{ width: `${percentage}%` }}

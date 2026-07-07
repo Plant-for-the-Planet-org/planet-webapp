@@ -5,11 +5,21 @@ import { clsx } from 'clsx';
 
 const StatCard = ({ icon, value, label }: StatItem) => {
   return (
-    <section className={clsx(styles.statCardBase, styles.statCard)}>
-      <span className={styles.statCardIcon}>{icon}</span>
-      <span className={styles.statCardValue}>{value}</span>
-      <span className={styles.statCardLabel}>{label}</span>
-    </section>
+    <div
+      className={clsx(styles.statCardBase, styles.statCard)}
+      role="group"
+      aria-label={`${value} ${label}`}
+    >
+      <span className={styles.statCardIcon} aria-hidden="true">
+        {icon}
+      </span>
+      <span className={styles.statCardValue} aria-hidden="true">
+        {value}
+      </span>
+      <span className={styles.statCardLabel} aria-hidden="true">
+        {label}
+      </span>
+    </div>
   );
 };
 
