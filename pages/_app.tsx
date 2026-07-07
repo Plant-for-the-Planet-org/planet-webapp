@@ -8,8 +8,6 @@ import type { NextPage } from 'next';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '../src/createEmotionCache';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import { useEffect, useMemo, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
@@ -25,7 +23,6 @@ import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserN
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
-import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
@@ -196,11 +193,9 @@ const PlanetWeb = ({
                     <PayoutsProvider>
                       <Layout>
                         <BulkCodeProvider>
-                          <AnalyticsProvider>
-                            <DonationReceiptProvider>
-                              {pageContent}
-                            </DonationReceiptProvider>
-                          </AnalyticsProvider>
+                          <DonationReceiptProvider>
+                            {pageContent}
+                          </DonationReceiptProvider>
                         </BulkCodeProvider>
                       </Layout>
                     </PayoutsProvider>

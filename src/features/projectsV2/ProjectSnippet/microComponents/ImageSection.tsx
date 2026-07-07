@@ -147,6 +147,8 @@ const ImageSection = (props: ImageSectionProps) => {
         <img
           alt={'projectImage'}
           src={imageSource}
+          loading="lazy"
+          decoding="async"
           className={clsx(styles.projectImageFile, {
             [styles.hidden]: isImageLoading,
           })}

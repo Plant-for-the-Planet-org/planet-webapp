@@ -46,7 +46,7 @@ export default function Credits({ isMobile }: Props): ReactElement {
 
   return (
     <>
-      <div className={styles.lngSwitcher + ' mapboxgl-map'}>
+      <div className={styles.lngSwitcher}>
         {isEmbedMode ? null : (
           <div
             onClick={() => {

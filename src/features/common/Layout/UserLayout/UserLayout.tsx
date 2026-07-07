@@ -17,7 +17,6 @@ import { UserProfileLoader } from '../../ContentLoaders/UserProfile/UserProfile'
 import { useUserProps } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
 import TreeMapperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
-import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
@@ -56,12 +55,6 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         hideItem: !user?.tenantId,
       },
       {
-        key: 'register-trees',
-        title: t('registerTrees'),
-        path: '/profile/register-trees',
-        icon: <RegisterTreeIcon />,
-      },
-      {
         key: 'payments',
         title: t('payments'),
         icon: <DonateIcon />,
@@ -96,32 +89,8 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         key: 'treemapper',
         title: t('treemapper'),
         icon: <TreeMapperIcon />,
-        flag: t('beta'),
-        subMenu: [
-          {
-            key: 'plant-locations',
-            title: t('plantLocations'),
-            path: '/profile/treemapper',
-          },
-          {
-            key: 'my-species',
-            title: t('mySpecies'),
-            path: '/profile/treemapper/my-species',
-            hideItem: !(user?.type === 'tpo'),
-          },
-          {
-            key: 'import',
-            title: t('import'),
-            path: '/profile/treemapper/import',
-            hideItem: !(user?.type === 'tpo'),
-          },
-          {
-            key: 'data-explorer',
-            title: t('dataExplorer'),
-            path: '/profile/treemapper/data-explorer',
-            hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
-          },
-        ],
+        path: '/treemapper',
+        matchPattern: 'prefix',
       },
       {
         key: 'projects',

@@ -58,5 +58,9 @@ src/stories
 .env copy.local
 .idea
 
+# Claude Code — commit .claude/launch.json; keep per-user/local files out
+.claude/settings.local.json
+.claude/worktrees/
+
 # TypeScript incremental compilation file
 tsconfig.tsbuildinfo

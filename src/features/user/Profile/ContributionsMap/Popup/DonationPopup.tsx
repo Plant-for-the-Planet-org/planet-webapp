@@ -5,7 +5,7 @@ import type {
   DonationProperties,
 } from '../../../../common/types/myForest';
 
-import { Popup } from 'react-map-gl-v7';
+import { Popup } from 'react-map-gl-v7/maplibre';
 import styles from '../ContributionsMap.module.scss';
 import ProjectInfoSection from './ProjectInfoSection';
 import PopupImageSection from './PopupImageSection';

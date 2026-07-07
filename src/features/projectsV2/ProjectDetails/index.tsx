@@ -5,6 +5,7 @@ import type {
   SingleTreeRegistration,
 } from '@planet-sdk/common';
 import type { ExtendedProject } from '../../common/types/projectv2';
+import type { TreemapperApiResponse } from '../../common/types/map';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -61,22 +62,26 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const fetchInterventions = async (projectId: string) => {
+    if (!process.env.TREEMAPPER_URL) {
+      console.error('TREEMAPPER_URL is not set; skipping intervention fetch.');
+      setInterventions([]);
+      return;
+    }
     setIsLoading(true);
     try {
-      const result = await getApi<Intervention[]>(
-        `/app/interventions/${projectId}`,
-        {
-          queryParams: {
-            // Fetches sampleInterventions within each intervention
-            _scope: 'extended',
-          },
-        }
+      // The TreeMapper API wraps its payload in a standard envelope
+      // ({ statusCode, message, error, data, code }); the interventions array
+      // lives in `data`, so we unwrap it before storing.
+      const response = await getApi<TreemapperApiResponse<Intervention[]>>(
+        `${process.env.TREEMAPPER_URL}/api/server/external/project/${projectId}/interventions`
       );
-      setInterventions(result);
+      setInterventions(response.data ?? []);
     } catch (err) {
-      setErrors(handleError(err as APIError | ClientError));
-      setIsError(true);
-      router.push(localizedPath('/'));
+      // Interventions are an optional map overlay. A failure here must not
+      // surface a generic connectivity error or push the user off the project
+      // page — just log and render the project without the overlay.
+      console.error('Error fetching interventions:', err);
+      setInterventions([]);
     } finally {
       setIsLoading(false);
     }

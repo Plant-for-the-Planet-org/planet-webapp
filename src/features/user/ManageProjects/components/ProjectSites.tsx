@@ -15,8 +15,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
-import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import { MenuItem, Button, TextField } from '@mui/material';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
@@ -24,15 +22,17 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
-import SitePreviewMap from './microComponent/SitePreviewMap';
 import themeProperties from '../../../../theme/themeProperties';
 import CustomModal from '../../../common/Layout/CustomModal';
 import EditSite from './microComponent/EditSite';
 import SitesSyncActions from './microComponent/SitesSyncActions';
+import SiteCard from './microComponent/SiteCard';
+import SyncErrorPopover from './microComponent/SyncErrorPopover';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import useRestorSync from '../hooks/useRestorSync';
 
 const defaultSiteDetails = {
   name: '',
@@ -66,8 +66,7 @@ export default function ProjectSites({
   projectGUID,
   projectDetails,
 }: ProjectSitesProps): ReactElement {
-  const { deleteApiAuthenticated, postApiAuthenticated, getApiAuthenticated } =
-    useApi();
+  const { deleteApiAuthenticated, postApiAuthenticated, getApiAuthenticated } = useApi();
   const { colors } = themeProperties.designSystem;
   const t = useTranslations('ManageProjects');
   const router = useRouter();
@@ -78,24 +77,15 @@ export default function ProjectSites({
     control,
     reset,
   } = useForm<ProjectSitesFormData>();
-  // local state
+
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [isSyncingSites, setIsSyncingSites] = useState(false);
-  const [isSiteSyncModalOpen, setIsSiteSyncModalOpen] = useState(false);
-  const [isSiteSyncSuccessful, setIsSiteSyncSuccessful] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(
-    undefined
-  );
-  const [geoJson, setGeoJson] = useState<ProjectSiteFeatureCollection | null>(
-    null
-  );
-  const [siteDetails, setSiteDetails] =
-    useState<SiteDetails>(defaultSiteDetails);
+  const [geoLocation, setGeoLocation] = useState<GeoLocation | undefined>(undefined);
+  const [geoJson, setGeoJson] = useState<ProjectSiteFeatureCollection | null>(null);
+  const [siteDetails, setSiteDetails] = useState<SiteDetails>(defaultSiteDetails);
   const [siteList, setSiteList] = useState<Site[]>([]);
   const [siteGUID, setSiteGUID] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -103,9 +93,26 @@ export default function ProjectSites({
     siteId: null,
     siteName: null,
   });
-  // store
+
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
-  // Assigning defaultSiteDetails as default
+
+  const {
+    isSyncingSites,
+    isSiteSyncModalOpen,
+    setIsSiteSyncModalOpen,
+    isSiteSyncSuccessful,
+    snackbarOpen,
+    setSnackbarOpen,
+    syncErrors,
+    syncErrorAnchor,
+    setSyncErrorAnchor,
+    handleSyncSites,
+  } = useRestorSync({
+    projectDetails,
+    siteList,
+    onConfigError: (key) => setErrorMessage(t(key as Parameters<typeof t>[0])),
+  });
+
   const changeSiteDetails = (e: ChangeEvent<HTMLInputElement>): void => {
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
   };
@@ -115,74 +122,39 @@ export default function ProjectSites({
     setOpenModal(false);
   };
 
-  const MapProps = {
-    geoJson,
-    setGeoJson,
-    setErrorMessage,
-  };
-
-  const fetchProjSites = async () => {
+  const fetchProjSites = useCallback(async () => {
     try {
-      if (projectGUID) {
-        // Fetch sites of the project
-        const result = await getApiAuthenticated<SitesScopeProjects>(
-          `/app/profile/projects/${projectGUID}`,
-          {
-            queryParams: { _scope: 'sites' },
-          }
-        );
-        const geoLocation = {
-          geoLatitude: result.geoLatitude,
-          geoLongitude: result.geoLongitude,
-        };
-        setGeoLocation(geoLocation);
-
-        if (result?.sites.length > 0) {
-          setShowForm(false);
-        }
-        setSiteList(result.sites);
-      }
+      if (!projectGUID) return;
+      const result = await getApiAuthenticated<SitesScopeProjects>(
+        `/app/profile/projects/${projectGUID}`,
+        { queryParams: { _scope: 'sites' } }
+      );
+      setGeoLocation({ geoLatitude: result.geoLatitude, geoLongitude: result.geoLongitude });
+      if (result.sites.length > 0) setShowForm(false);
+      setSiteList(result.sites);
     } catch (err) {
       setErrors(handleError(err as APIError));
       router.push(localizedPath('/profile'));
     }
-  };
-  useEffect(() => {
-    fetchProjSites();
   }, [projectGUID]);
 
-  const uploadProjectSite = async (data: ProjectSitesFormData) => {
-    const hasGeo = geoJson !== null && geoJson.features.length !== 0;
+  useEffect(() => {
+    fetchProjSites();
+  }, [fetchProjSites]);
 
-    if (!hasGeo) {
+  const uploadProjectSite = async (data: ProjectSitesFormData) => {
+    if (!geoJson || geoJson.features.length === 0) {
       setErrorMessage(t('errors.polygon.required'));
       return false;
     }
-
     setIsUploadingData(true);
-    const newSitePayload: SiteApiPayload = {
-      name: data.name,
-      geometry: geoJson,
-      status: data.status,
-    };
     try {
       const res = await postApiAuthenticated<Site, SiteApiPayload>(
         `/app/projects/${projectGUID}/sites`,
-        {
-          payload: newSitePayload,
-        }
+        { payload: { name: data.name, geometry: geoJson, status: data.status } }
       );
-      const _submitData = {
-        id: res.id,
-        name: res.name,
-        geometry: res.geometry,
-        status: res.status,
-      };
-      setSiteList((prevSites) => [...prevSites, _submitData]);
-      reset({
-        name: '',
-        status: '',
-      });
+      setSiteList((prev) => [...prev, { id: res.id, name: res.name, geometry: res.geometry, status: res.status }]);
+      reset({ name: '', status: '' });
       setGeoJson(null);
       setShowForm(false);
       setErrorMessage(null);
@@ -199,8 +171,7 @@ export default function ProjectSites({
     try {
       setIsUploadingData(true);
       await deleteApiAuthenticated(`/app/projects/${projectGUID}/sites/${id}`);
-      const siteListTemp = siteList.filter((item) => item.id !== id);
-      setSiteList(siteListTemp);
+      setSiteList((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       setErrors(handleError(err as APIError));
     } finally {
@@ -214,96 +185,35 @@ export default function ProjectSites({
     if (success) handleNext(ProjectCreationTabs.PROJECT_SPENDING);
   };
 
-  const status = [
-    {
-      label:
-        projectDetails?.purpose === 'trees'
-          ? t('siteStatusPlanting')
-          : t('siteStatusNotYetProtected'),
-      value:
-        projectDetails?.purpose === 'trees' ? 'planting' : 'not yet protected',
-    },
-    {
-      label:
-        projectDetails?.purpose === 'trees'
-          ? t('siteStatusPlanted')
-          : t('siteStatusPartiallyProtected'),
-      value:
-        projectDetails?.purpose === 'trees' ? 'planted' : 'partially protected',
-    },
-    {
-      label:
-        projectDetails?.purpose === 'trees'
-          ? t('siteStatusBarren')
-          : t('siteStatusFullyProtected'),
-      value: projectDetails?.purpose === 'trees' ? 'barren' : 'fully protected',
-    },
-    {
-      label:
-        projectDetails?.purpose === 'trees' ? t('siteStatusReforestation') : '',
-      value: projectDetails?.purpose === 'trees' ? 'reforestation' : '',
-    },
-  ];
-
   const editSite = (site: Site) => {
-    const defaultSiteDetails = {
-      name: site.name,
-      status: site.status,
-      geometry: {},
-    };
-
-    const collection: ProjectSiteFeatureCollection = {
+    setGeoJson({
       type: 'FeatureCollection',
-      features: [
-        {
-          geometry: site.geometry,
-          properties: {},
-          type: 'Feature',
-        },
-      ],
-    };
-
-    setGeoJson(collection);
-    setSiteDetails(defaultSiteDetails);
+      features: [{ geometry: site.geometry, properties: {}, type: 'Feature' }],
+    });
+    setSiteDetails({ name: site.name, status: site.status, geometry: {} });
     setSiteGUID(site.id);
     setEditMode(true);
     setOpenModal(true);
   };
 
-  const handleSyncSites = useCallback(async () => {
-    // prevent multiple parallel syncs
-    if (isSyncingSites) return;
-
-    const webhookBase = process.env.WEBHOOK_URL;
-    if (!webhookBase) {
-      console.warn('WEBHOOK_URL is not defined');
-      return;
-    }
-    setIsSyncingSites(true);
-
-    try {
-      const modeParam =
-        process.env.NEXT_PUBLIC_APP_ENV === 'production' ? '' : '&mode=dev';
-      const webhookUrl = `${webhookBase}/33878023-ee47-44e1-8a62-34eb2d2b3246/?project=${projectGUID}${modeParam}`;
-      const response = await fetch(webhookUrl, {
-        method: 'GET',
-      });
-
-      if (!response.ok) {
-        throw new Error(`Webhook call failed with status ${response.status}`);
-      }
-
-      setIsSiteSyncSuccessful(true);
-      setSnackbarOpen(true);
-      setErrorMessage(null);
-    } catch (err) {
-      console.error('Sync error:', err);
-      setErrorMessage(t('syncSites.error'));
-    } finally {
-      setIsSyncingSites(false);
-      setIsSiteSyncModalOpen(false);
-    }
-  }, [isSyncingSites, projectGUID, t]);
+  const statusOptions = [
+    {
+      label: projectDetails?.purpose === 'trees' ? t('siteStatusPlanting') : t('siteStatusNotYetProtected'),
+      value: projectDetails?.purpose === 'trees' ? 'planting' : 'not yet protected',
+    },
+    {
+      label: projectDetails?.purpose === 'trees' ? t('siteStatusPlanted') : t('siteStatusPartiallyProtected'),
+      value: projectDetails?.purpose === 'trees' ? 'planted' : 'partially protected',
+    },
+    {
+      label: projectDetails?.purpose === 'trees' ? t('siteStatusBarren') : t('siteStatusFullyProtected'),
+      value: projectDetails?.purpose === 'trees' ? 'barren' : 'fully protected',
+    },
+    {
+      label: projectDetails?.purpose === 'trees' ? t('siteStatusReforestation') : '',
+      value: projectDetails?.purpose === 'trees' ? 'reforestation' : '',
+    },
+  ];
 
   const EditProps = {
     openModal,
@@ -311,7 +221,7 @@ export default function ProjectSites({
     changeSiteDetails,
     siteDetails,
     errorMessage,
-    status,
+    status: statusOptions,
     geoJsonProp: geoJson,
     projectGUID,
     setSiteList,
@@ -326,58 +236,24 @@ export default function ProjectSites({
       <StyledForm>
         <InlineFormDisplayGroup>
           {siteList
-            .filter((site) => {
-              return site.geometry !== null;
-            })
-            .map((site) => {
-              return (
-                <div key={site.id}>
-                  <div className={styles.mapboxContainer}>
-                    <div className={styles.uploadedMapName}>{site.name}</div>
-                    <div className={styles.uploadedMapStatus}>
-                      {status
-                        .find((e) => site.status == e.value)
-                        ?.label.toUpperCase()}
-                    </div>
-                    <div className={styles.siteActions}>
-                      <button
-                        type="button"
-                        aria-label={t('deleteSite')}
-                        onClick={() => {
-                          setSelectedSiteInfo({
-                            siteId: site.id,
-                            siteName: site.name,
-                          });
-                          setIsModalOpen(true);
-                        }}
-                        className={styles.controlButton}
-                      >
-                        <TrashIcon />
-                      </button>
-                      <button
-                        type="button"
-                        aria-label={t('editSite')}
-                        onClick={() => editSite(site)}
-                        className={styles.controlButton}
-                      >
-                        <EditIcon color={colors.coreText} />
-                      </button>
-                    </div>
-
-                    <SitePreviewMap
-                      siteId={site.id}
-                      siteGeometry={site.geometry}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+            .filter((site) => site.geometry !== null)
+            .map((site) => (
+              <SiteCard
+                key={site.id}
+                site={site}
+                statusOptions={statusOptions}
+                iconColor={colors.coreText}
+                onDeleteClick={(siteId, siteName) => {
+                  setSelectedSiteInfo({ siteId, siteName });
+                  setIsModalOpen(true);
+                }}
+                onEditClick={editSite}
+              />
+            ))}
         </InlineFormDisplayGroup>
+
         {showForm ? (
-          <div
-            className={clsx({ [styles.shallowOpacity]: isUploadingData })}
-            style={{ width: 'inherit' }}
-          >
+          <div className={clsx({ [styles.shallowOpacity]: isUploadingData })} style={{ width: 'inherit' }}>
             <InlineFormDisplayGroup>
               <Controller
                 name="name"
@@ -396,17 +272,13 @@ export default function ProjectSites({
                     onBlur={onBlur}
                     name={name}
                     error={errors.name !== undefined}
-                    helperText={
-                      errors.name !== undefined && errors.name.message
-                    }
+                    helperText={errors.name !== undefined && errors.name.message}
                   />
                 )}
               />
               <Controller
                 name="status"
-                rules={{
-                  required: t('selectProjectStatus'),
-                }}
+                rules={{ required: t('selectProjectStatus') }}
                 control={control}
                 defaultValue={siteDetails.status ? siteDetails.status : ''}
                 render={({ field: { onChange, onBlur, name, value } }) => (
@@ -422,11 +294,9 @@ export default function ProjectSites({
                     select
                     value={value}
                     error={errors.status !== undefined}
-                    helperText={
-                      errors.status !== undefined && errors.status.message
-                    }
+                    helperText={errors.status !== undefined && errors.status.message}
                   >
-                    {status.map((option) => (
+                    {statusOptions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -436,7 +306,7 @@ export default function ProjectSites({
               />
             </InlineFormDisplayGroup>
 
-            {geoLocation && <SiteGeometryEditor {...MapProps} />}
+            {geoLocation && <SiteGeometryEditor geoJson={geoJson} setGeoJson={setGeoJson} setErrorMessage={setErrorMessage} />}
 
             <Button
               id="projSiteSaveAndAdd"
@@ -479,6 +349,16 @@ export default function ProjectSites({
             <h4 className={styles.errorMessage}>{errorMessage}</h4>
           </div>
         )}
+
+        {syncErrors.length > 0 && (
+          <SyncErrorPopover
+            label={t('syncSites.partialError')}
+            syncErrors={syncErrors}
+            anchor={syncErrorAnchor}
+            setAnchor={setSyncErrorAnchor}
+          />
+        )}
+
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
             onClick={() => handleBack(ProjectCreationTabs.DETAILED_ANALYSIS)}
@@ -488,19 +368,9 @@ export default function ProjectSites({
           >
             {t('backToAnalysis')}
           </Button>
-
-          <Button
-            onClick={handleSubmit(uploadProjectSiteNext)}
-            variant="contained"
-            className="formButton"
-          >
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              t('saveAndContinue')
-            )}
+          <Button onClick={handleSubmit(uploadProjectSiteNext)} variant="contained" className="formButton">
+            {isUploadingData ? <div className={styles.spinner}></div> : t('saveAndContinue')}
           </Button>
-
           <Button
             onClick={() => handleNext(ProjectCreationTabs.PROJECT_SPENDING)}
             variant="contained"
@@ -509,18 +379,15 @@ export default function ProjectSites({
             {t('skip')}
           </Button>
         </div>
+
         <CustomModal
           isOpen={isModalOpen}
           handleContinue={() => {
-            if (selectedSiteInfo.siteId !== null) {
-              deleteProjectSite(selectedSiteInfo.siteId);
-            }
+            if (selectedSiteInfo.siteId !== null) deleteProjectSite(selectedSiteInfo.siteId);
           }}
           handleCancel={() => setIsModalOpen(false)}
           modalTitle={t('deleteSite')}
-          modalSubtitle={t('siteDeleteConfirmation', {
-            siteName: selectedSiteInfo.siteName ?? '',
-          })}
+          modalSubtitle={t('siteDeleteConfirmation', { siteName: selectedSiteInfo.siteName ?? '' })}
           continueButtonText={t('delete')}
           cancelButtonText={t('cancel')}
         />

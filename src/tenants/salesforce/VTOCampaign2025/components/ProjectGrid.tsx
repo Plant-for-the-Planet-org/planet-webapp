@@ -62,6 +62,7 @@ export default function ProjectGrid() {
               project={allowedProject.properties}
               showTooltipPopups={true}
               utmCampaign="251Y48Z1NR"
+              disableDonations={true}
             />
           </div>
         );
@@ -78,7 +79,7 @@ export default function ProjectGrid() {
           <div className={clsx(gridStyles.colMd8, gridStyles.col12)}>
             <h3>Projects</h3>
             <p className={styles.contentSectionSubhead}>
-              You can donate to these projects.
+              Explore these projects.
             </p>
           </div>
         </div>
