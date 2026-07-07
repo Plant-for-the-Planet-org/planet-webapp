@@ -51,7 +51,10 @@ const TenantDashboard = () => {
 
   const fetchTenantReport = async (since: Date | null, till: Date | null) => {
     const tenantId = user?.tenantId;
-    if (!tenantId) return;
+    if (!tenantId) {
+      setIsFetching(false);
+      return;
+    }
 
     setIsFetching(true);
     const dateParams = buildDateParams(since, till);
