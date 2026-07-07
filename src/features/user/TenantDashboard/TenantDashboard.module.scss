@@ -1,7 +1,7 @@
 @import '../../../theme/theme';
 
 .tenantDashboard {
-  min-width: 84%;
+  width: 100%;
 }
 
 .reportControls {
@@ -33,17 +33,10 @@
 // tenant stats styles
 
 .tenantStatsContainer {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
-  flex-wrap: wrap;
   margin-bottom: 24px;
-
-  .statCardBase {
-    flex: 0 0 205px;
-    @include xsPhoneView {
-      flex: 1 0 205px;
-    }
-  }
 
   .statCard {
     background: $dsWhite;
@@ -94,15 +87,21 @@
 
 .dashboardLayout {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: stretch;
   gap: 20px;
-  flex-wrap: wrap;
+
+  @include mdTabletView {
+    flex-direction: row;
+    align-items: flex-start;
+  }
 }
 
 // leaderboard styles
 
 .leaderboard {
-  flex: 2;
+  flex: 2 1 0;
+  min-width: 0;
 
   button {
     width: max-content;
@@ -129,6 +128,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
     }
   }
 }
@@ -136,6 +136,8 @@
 .leaderboardCountry {
   display: flex;
   gap: 12px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .leaderboardFlag {
@@ -149,10 +151,16 @@
 
 .leaderboardCountryName {
   font-size: $fontXSmall;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .leaderboardTreeCount {
   font-size: $fontXSmall;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .progressBarTrack {
@@ -171,23 +179,31 @@
 // Recent donors style
 
 .recentDonors {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .donorRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding: 12px 0;
   border-bottom: 1px solid $dsMediumGrey;
   font-size: $fontXSmall;
   font-weight: 500;
 
   .donorName {
+    flex: 1 1 auto;
+    min-width: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 200px;
+  }
+
+  & > span:last-child {
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   &:first-child {

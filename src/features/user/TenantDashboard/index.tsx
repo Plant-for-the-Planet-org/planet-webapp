@@ -93,12 +93,6 @@ const TenantDashboard = () => {
     fetchTenantReport(null, null);
   }, [user?.tenantId]);
 
-  const isInitialLoad = !fromDate && !toDate;
-
-  if (isFetching && isInitialLoad) {
-    return <TenantDashboardSkeleton />;
-  }
-
   return (
     <section className={styles.tenantDashboard}>
       {/* Only visible in print view */}

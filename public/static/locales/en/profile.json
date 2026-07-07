@@ -156,7 +156,8 @@
       "print": "Print",
       "dateRange": "{from} - {to}",
       "from": "From",
-      "to": "To"
+      "to": "To",
+      "loadingDashboard": "Loading dashboard"
     }
   }
 }
