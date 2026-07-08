@@ -18,7 +18,6 @@ const {
   SOURCE_VERSION,
   COMMIT_REF,
   SITE_IMAGERY_API_URL,
-  DB_CONN_URL,
 } = process.env;
 
 // allow source map uploads from Vercel, Heroku and Netlify deployments
@@ -119,7 +118,6 @@ const nextConfig = {
     SITE_IMAGERY_API_URL: SITE_IMAGERY_API_URL,
     WIDGET_URL: process.env.WIDGET_URL,
     CONFIG_URL: process.env.CONFIG_URL,
-    ENABLE_ANALYTICS: DB_CONN_URL ? 'true' : 'false',
     REDIS_URL: process.env.REDIS_URL,
     REDIS_TOKEN: process.env.REDIS_TOKEN,
     WEBHOOK_URL: process.env.WEBHOOK_URL,
@@ -137,6 +135,14 @@ const nextConfig = {
     // your project has type errors.
     // !! WARN !!
     ignoreBuildErrors: true,
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
+    ];
   },
   async redirects() {
     return [
