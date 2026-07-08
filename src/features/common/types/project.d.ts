@@ -12,7 +12,6 @@ import type {
 import type { ProjectSiteFeatureCollection } from './map';
 import type { SetState } from './common';
 import type { ChangeEvent } from 'react';
-import type { ViewportFlyToInterpolator } from 'react-map-gl/src/utils/transition/viewport-fly-to-interpolator';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { Polygon } from 'geojson';
 
@@ -142,7 +141,7 @@ export interface ViewPort {
   longitude: number;
   zoom: number;
   transitionDuration?: number;
-  transitionInterpolator?: ViewportFlyToInterpolator;
+  transitionInterpolator?: unknown;
   transitionEasing?: (normalizedTime: number) => number;
 }
 

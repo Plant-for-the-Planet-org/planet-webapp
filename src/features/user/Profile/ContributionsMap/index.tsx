@@ -1,7 +1,7 @@
 import type { MapStyle } from 'react-map-gl-v7/maplibre';
 import type { MutableRefObject } from 'react';
 import type { ProfilePageType } from '../../../common/types/myForest';
-import type { ViewState } from 'react-map-gl-v7';
+import type { ViewState } from 'react-map-gl-v7/maplibre';
 
 import { useEffect, useState } from 'react';
 import Map from 'react-map-gl-v7/maplibre';

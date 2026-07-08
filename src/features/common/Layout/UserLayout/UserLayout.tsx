@@ -16,7 +16,6 @@ import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget
 import { UserProfileLoader } from '../../ContentLoaders/UserProfile/UserProfile';
 import styles from './UserLayout.module.scss';
 import TreeMapperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
-// import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
 import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
 import FiberPinIcon from '@mui/icons-material/FiberPin';
@@ -54,13 +53,6 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         path: '/profile',
         icon: <UserIcon />,
       },
-      // The "Register Trees" section is currently hidden as per the requirements, but the code is left here for easy reactivation in the future.
-      // {
-      //   key: 'register-trees',
-      //   title: t('registerTrees'),
-      //   path: '/profile/register-trees',
-      //   icon: <RegisterTreeIcon />,
-      // },
       {
         key: 'payments',
         title: t('payments'),

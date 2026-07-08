@@ -6,8 +6,6 @@ import type {
 } from '@planet-sdk/common';
 import type { MutableRefObject } from 'react';
 import type { UserPublicProfile } from '@planet-sdk/common';
-import type { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
-import type { FlyToInterpolator } from 'react-map-gl';
 import type { SetState } from './common';
 import type {
   Feature,
@@ -140,16 +138,8 @@ export interface ViewportProps {
   longitude?: number;
   center?: [number, number];
   transitionDuration?: number | undefined;
-  transitionInterpolator?: FlyToInterpolator | undefined;
+  transitionInterpolator?: unknown;
   transitionEasing?: (normalizedTime: number) => number;
-}
-
-export type RegisteredTreesGeometry = Point | Polygon;
-
-export interface RegisterTreesFormProps {
-  setContributionGUID: SetState<string>;
-  setContributionDetails: SetState<ContributionProps | null>;
-  setRegistered: SetState<boolean>;
 }
 
 // Map styling
