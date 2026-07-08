@@ -56,9 +56,14 @@ export default function Login(): ReactElement {
     // → wait for context to redirect to complete signup
     if (
       userProfile === null &&
-      (isAuthenticated || auth0Error?.message === '401')
+      (isAuthenticated ||
+        // TODO: Remove '401' case after July 31, 2026. Confirm whether safe to remove before then.
+        auth0Error?.message === '401' ||
+        auth0Error?.message === 'email_not_verified')
     ) {
-      return;
+      // Wait for
+      // Navbar to handle redirect to /verify-email OR
+      // UserPropsContext to handle redirect to /complete-signup (via 303)
     }
 
     // Not authenticated → login

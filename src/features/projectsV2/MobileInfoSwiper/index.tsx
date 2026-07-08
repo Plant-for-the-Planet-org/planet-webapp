@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
-import 'swiper/scss';
-import 'swiper/scss/pagination';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 import TreeMapperBrand from '../ProjectDetails/components/microComponents/TreeMapperBrand';
 import styles from './MobileInfoSwiper.module.scss';
