@@ -176,21 +176,25 @@ export const ProjectsProvider = ({
         return [];
       }
 
-      const normalizedKeyword = keyword
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase();
+      // Normalize for search: strip diacritics, lowercase, and treat a hyphen as
+      // a space so search is hyphen-insensitive ("Baja-California" matches "baja
+      // california" and vice versa). Collapse repeated separators so the two
+      // forms compare equal.
+      const normalizedText = (text: string | undefined | null) => {
+        return text
+          ? text
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLowerCase()
+              .replace(/-/g, ' ')
+              .replace(/\s+/g, ' ')
+              .trim()
+          : '';
+      };
+
+      const normalizedKeyword = normalizedText(keyword);
 
       const filteredProjects = projects?.filter((project: MapProject) => {
-        const normalizedText = (text: string | undefined | null) => {
-          return text
-            ? text
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .toLowerCase()
-            : '';
-        };
-
         const projectName = normalizedText(project.properties.name);
         const projectLocation =
           project.properties.purpose === 'trees'
