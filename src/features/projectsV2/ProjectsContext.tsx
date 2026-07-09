@@ -31,6 +31,38 @@ import { useTenantStore } from '../../stores/tenantStore';
 import { useErrorHandlingStore } from '../../stores/errorHandlingStore';
 import { useCurrencyStore } from '../../stores/currencyStore';
 
+// Stroke / bar / ligature letters that Unicode NFD does NOT decompose, so the
+// combining-mark strip below can't fold them. Mapped explicitly so search is
+// accent-insensitive for these too (e.g. Łódź → lodz, Straße → strasse).
+const LATIN_FOLD: Record<string, string> = {
+  ø: 'o',
+  ł: 'l',
+  đ: 'd',
+  ð: 'd',
+  ß: 'ss',
+  æ: 'ae',
+  œ: 'oe',
+  þ: 'th',
+  ı: 'i',
+};
+
+// Normalize a string for project search: strip diacritics (NFD + combining-mark
+// removal), fold the stroke/ligature letters NFD leaves behind, lowercase, and
+// treat a hyphen as a space (collapsing repeated separators). This makes search
+// insensitive to accents and hyphens: "Plant for Ghana" matches "Plant-for-Ghana"
+// and "Yucatan" matches "Yucatán".
+const normalizeForSearch = (text: string | undefined | null): string =>
+  text
+    ? text
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .toLowerCase()
+        .replace(/[øłđðßæœþı]/g, (c) => LATIN_FOLD[c] ?? c)
+        .replace(/-/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+    : '';
+
 interface ProjectsState {
   projects: MapProject[] | null;
   singleProject: ExtendedProject | null;
@@ -176,32 +208,16 @@ export const ProjectsProvider = ({
         return [];
       }
 
-      // Normalize for search: strip diacritics, lowercase, and treat a hyphen as
-      // a space so search is hyphen-insensitive ("Baja-California" matches "baja
-      // california" and vice versa). Collapse repeated separators so the two
-      // forms compare equal.
-      const normalizedText = (text: string | undefined | null) => {
-        return text
-          ? text
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .toLowerCase()
-              .replace(/-/g, ' ')
-              .replace(/\s+/g, ' ')
-              .trim()
-          : '';
-      };
-
-      const normalizedKeyword = normalizedText(keyword);
+      const normalizedKeyword = normalizeForSearch(keyword);
 
       const filteredProjects = projects?.filter((project: MapProject) => {
-        const projectName = normalizedText(project.properties.name);
+        const projectName = normalizeForSearch(project.properties.name);
         const projectLocation =
           project.properties.purpose === 'trees'
-            ? normalizedText(project.properties.location)
+            ? normalizeForSearch(project.properties.location)
             : '';
-        const tpoName = normalizedText(project.properties.tpo.name);
-        const country = normalizedText(
+        const tpoName = normalizeForSearch(project.properties.tpo.name);
+        const country = normalizeForSearch(
           tCountry(
             project.properties.country.toLowerCase() as Lowercase<CountryCode>
           )
