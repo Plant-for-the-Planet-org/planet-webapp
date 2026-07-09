@@ -11,7 +11,6 @@ export default function Header() {
   return (
     <>
       <Head>
-        <meta name="robots" content="noindex, nofollow" />
         {tenantConfig.config.manifest && (
           <link rel="manifest" href={tenantConfig.config.manifest} />
         )}
