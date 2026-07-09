@@ -1,10 +1,10 @@
 import { useUserProps } from '../UserPropsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
-import { useTenant } from '../TenantContext';
 import NavbarBrandLogos from './microComponents/NavbarBrandLogos';
 import NavbarItems from './microComponents/NavbarItems';
 import styles from './Navbar.module.scss';
 import { clsx } from 'clsx';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 const ImpersonationBanner = () => {
   const { isImpersonationModeOn } = useUserProps();
@@ -31,15 +31,16 @@ const MainNavigationHeader = () => {
 };
 
 export default function Navbar() {
-  const { tenantConfig } = useTenant();
-  if (!tenantConfig) return null;
-
+  const isInitialized = useTenantStore((state) => state.isInitialized);
   const { setUser, logoutUser, auth0Error } = useUserProps();
+
+  if (!isInitialized) return null;
 
   if (auth0Error) {
     const { message } = auth0Error;
 
-    if (message === '401') {
+    // TODO: Remove '401' case after July 31, 2026. Confirm whether safe to remove before then.
+    if (message === '401' || message === 'email_not_verified') {
       if (typeof window !== 'undefined') {
         setUser(null);
         logoutUser(`${window.location.origin}/verify-email`);

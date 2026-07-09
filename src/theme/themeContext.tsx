@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import type { SetState } from '../features/common/types/common';
 
 import { useEffect, useState, createContext, useContext } from 'react';
-import { useTenant } from '../features/common/Layout/TenantContext';
+import { useTenantStore } from '../stores/tenantStore';
 
 type Theme = 'theme-light' | 'theme-dark';
 
@@ -15,8 +15,10 @@ export const ThemeContext = createContext<{
 });
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
+  // local state
   const [theme, setTheme] = useState<Theme>('theme-light');
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   useEffect(() => {
     if (tenantConfig.config.darkModeEnabled !== true) {

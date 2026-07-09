@@ -8,8 +8,8 @@ import TopProjectIcon from '../../../../../public/assets/images/icons/projectV2/
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import styles from '../styles/Badge.module.scss';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
-import { useTenant } from '../../../common/Layout/TenantContext';
 import { clsx } from 'clsx';
+import { useTenantStore } from '../../../../stores/tenantStore';
 
 interface Props {
   isApproved: boolean;
@@ -56,7 +56,8 @@ const ProjectBadge = ({
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const badgeConfigurations: TitleAndIconReturnType | undefined =
     useMemo(() => {

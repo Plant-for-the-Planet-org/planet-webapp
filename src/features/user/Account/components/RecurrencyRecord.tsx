@@ -129,9 +129,9 @@ export function RecordHeader({
 
     // Past Due
     if (record.status === 'past_due') {
-      return `${t('lastDuePaymentOn')} ${formatDate(
-        record.currentPeriodEnd
-      )} • ${t(record.frequency)}`;
+      return `${t('lastDueOn')} ${formatDate(record.currentPeriodEnd)} • ${t(
+        record.frequency
+      )}`;
     }
 
     // Canceled

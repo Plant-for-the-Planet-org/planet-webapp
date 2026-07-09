@@ -6,19 +6,19 @@ import type {
 import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { PlanetCashAccount } from '../../../common/types/planetcash';
 
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { useTranslations } from 'next-intl';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 interface Props {
   isPlanetCashActive: boolean;
@@ -36,14 +36,16 @@ const CreateAccountForm = ({
 }: Props): ReactElement | null => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const { postApiAuthenticated } = useApi();
   const tPlanetCash = useTranslations('PlanetCash');
   const tCountry = useTranslations('Country');
   const { setAccounts } = usePlanetCash();
+  // local state
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const { postApiAuthenticated } = useApi();
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -5,7 +5,7 @@ import type {
   ExpensesScopeProjects,
 } from '../../../common/types/project';
 
-import { useEffect, useState, useContext, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -15,7 +15,6 @@ import { getPDFFile } from '../../../../utils/getImageURL';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -27,6 +26,9 @@ import { handleError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import { clsx } from 'clsx';
+import { useRouter } from 'next/router';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 type ExpenseFormData = {
   year: Date;
@@ -48,7 +50,8 @@ export default function ProjectSpending({
 }: ProjectSpendingProps): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
   const {
     formState: { errors, isDirty },
     getValues,
@@ -57,11 +60,15 @@ export default function ProjectSpending({
   } = useForm<ExpenseFormData>({ mode: 'all' });
   const { postApiAuthenticated, deleteApiAuthenticated, getApiAuthenticated } =
     useApi();
+  // local state
   const [amount, setAmount] = useState<number | string>(0);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [uploadedFiles, setUploadedFiles] = useState<ProjectExpense[]>([]);
+
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const onSubmit = async (pdf: string | ArrayBuffer | null | undefined) => {
     setIsUploadingData(true);
@@ -158,7 +165,7 @@ export default function ProjectSpending({
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
+      router.push(localizedPath('/profile'));
     }
   };
 

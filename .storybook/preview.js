@@ -3,14 +3,12 @@ import './storybook.scss';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { ThemeProvider } from '@storybook/theming';
-import { lazy } from 'react';
 import { useTheme } from '../src/theme/themeContext';
 // import { ThemeProvider } from 'emotion-theming';
 import getMessages from './i18n';
 import { NextIntlClientProvider } from 'next-intl';
-import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
-import { defaultTenant } from '../tenant.config';
+import getGlobalStyles from '../src/theme/theme';
 
 /*
  * Global decorator to apply the styles to all stories
@@ -18,7 +16,9 @@ import { defaultTenant } from '../tenant.config';
  * https://storybook.js.org/docs/react/writing-stories/decorators#global-decorators
  */
 
-const globalStyles = lazy(() => import('../src/theme/theme'));
+// Called once at module level with no tenant font — Storybook has no tenant
+// store. In the app, Layout calls this inside useMemo with the tenant font.
+const globalStyles = getGlobalStyles();
 
 export const decorators = [
   (Story, context) => {
@@ -33,14 +33,12 @@ export const decorators = [
           style={{ backgroundColor: 'transparent' }}
         >
           <MUIThemeProvider theme={materialTheme}>
-            {/* TenantProvider and UserPropsProvider are added for ProfileCard storybook to function properly */}
-            <TenantProvider initialTenantConfig={defaultTenant}>
-              <UserPropsProvider>
-                <ThemeProvider theme={materialTheme}>
-                  <Story />
-                </ThemeProvider>
-              </UserPropsProvider>
-            </TenantProvider>
+            {/*  UserPropsProvider are added for ProfileCard storybook to function properly */}
+            <UserPropsProvider>
+              <ThemeProvider theme={materialTheme}>
+                <Story />
+              </ThemeProvider>
+            </UserPropsProvider>
           </MUIThemeProvider>
         </div>
       </NextIntlClientProvider>

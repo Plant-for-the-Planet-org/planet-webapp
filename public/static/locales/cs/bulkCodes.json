@@ -27,7 +27,7 @@
         "line3": "Jména a e-maily nelze s kódem asociovat."
       }
     },
-    "projectName": "Název projektu",
+    "labelProject": "Název projektu",
     "costPerUnit": "Cena za jednotku",
     "labelComment": "Komentář [Soukromé]",
     "unitOfMeasurement": "Měrná jednotka",

@@ -9,14 +9,13 @@ import type {
 } from '@planet-sdk/common';
 import type { SnackbarCloseReason } from '@mui/material';
 
-import { useState, useContext, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
 import { Snackbar, Alert, styled, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import { useForm } from 'react-hook-form';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
@@ -29,6 +28,7 @@ import CompleteSignupLayout from './components/CompleteSignupLayout';
 import FullNameInput from './components/FullNameInput';
 import OrganizationNameInput from './components/OrganizationNameInput';
 import AccountTypeSelector from './components/AccountTypeSelector';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 export const MuiTextField = styled(TextField)(() => {
   return {
@@ -60,16 +60,17 @@ export default function CompleteSignup(): ReactElement | null {
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('EditProfile');
   const { postApi } = useApi();
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
   const { user, setUser, auth0User, contextLoaded, token } = useUserProps();
-
+  // local state
   const [isProcessing, setIsProcessing] = useState(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [accountType, setAccountType] = useState<UserType>('individual');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
-  //  snack bars (for warnings, success messages, errors)
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false); //  snack bars (for warnings, success messages, errors)
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   const isPublic = watch('isPublic');
 
   useEffect(() => {
@@ -125,7 +126,7 @@ export default function CompleteSignup(): ReactElement | null {
       // Only redirect to login for authentication/authorization errors
       // For other errors (400, 500, etc.), stay on the page so user can fix and retry
       if (apiError.statusCode === 401 || apiError.statusCode === 403) {
-        redirect('/login');
+        router.push(localizedPath('/login'));
       }
       setIsProcessing(false);
     }

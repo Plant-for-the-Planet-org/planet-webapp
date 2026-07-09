@@ -2,7 +2,7 @@ import type { AddressAction } from '../../common/types/profile';
 import type { APIError, Address, User } from '@planet-sdk/common';
 import type { FormValues } from './microComponents/DonorContactForm';
 
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
@@ -16,11 +16,11 @@ import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
 import { useApi } from '../../../hooks/useApi';
 import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import DonorContactForm from './microComponents/DonorContactForm';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { transformProfileToDonorView } from './transformers'; // TODO: remove for production
 import { validateOwnership } from './DonationReceiptValidator';
 import EditPermissionDenied from './microComponents/EditPermissionDenied';
 import { RECEIPT_STATUS } from './donationReceiptTypes';
+import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
 type IndividualProfile = {
   firstname: string;
@@ -46,9 +46,8 @@ const DonorContactManagement = () => {
   if (!isOwner && getOperation() !== RECEIPT_STATUS.ISSUE)
     return <EditPermissionDenied />;
 
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
-
+  // local state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
@@ -58,6 +57,8 @@ const DonorContactManagement = () => {
   const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(
     null
   );
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   // Navigate back to the verification page
   const navigateToVerificationPage = useCallback(() => {

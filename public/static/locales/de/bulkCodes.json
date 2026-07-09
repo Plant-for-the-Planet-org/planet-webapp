@@ -27,7 +27,7 @@
         "line3": "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."
       }
     },
-    "projectName": "Projektname",
+    "labelProject": "Projektname",
     "costPerUnit": "Kosten pro Einheit",
     "labelComment": "Kommentar [Privat]",
     "unitOfMeasurement": "Maßeinheit",

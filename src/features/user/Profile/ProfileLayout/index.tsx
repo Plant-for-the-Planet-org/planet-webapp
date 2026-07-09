@@ -1,6 +1,6 @@
 import type { User } from '@planet-sdk/common';
 
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import ContributionsMap from '../ContributionsMap';
 import styles from './ProfileLayout.module.scss';
 import { useEffect } from 'react';
@@ -12,23 +12,22 @@ import CommunityContributions from '../CommunityContributions';
 import { useMyForestStore } from '../../../../stores/myForestStore';
 import MyContributions from '../MyContributions';
 import { useApi } from '../../../../hooks/useApi';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { clsx } from 'clsx';
+import { PROFILE_SECTION_HEIGHTS } from './ProfileGridSkeleton';
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 
 const ProfileLayout = () => {
   const { user, contextLoaded } = useUserProps();
   const { getApi, getApiAuthenticated } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [profile, setProfile] = useState<null | User>(null);
-
+  // store: state
   const isMyForestLoading = useMyForestStore(
     (state) => state.isMyForestLoading
   );
   const userSlug = useMyForestStore((state) => state.userInfo?.slug);
-  const errorMessage = useMyForestStore((state) => state.errorMessage);
-  // Actions
+  // store: action
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
   const fetchMyForest = useMyForestStore((state) => state.fetchMyForest);
   const setIsPublicProfile = useMyForestStore(
@@ -61,17 +60,12 @@ const ProfileLayout = () => {
     if (userSlug) fetchMyForest(getApi, getApiAuthenticated);
   }, [userSlug, fetchMyForest]);
 
-  // myForest data is always fetched fresh; clear the store on unmount since persisting it provides no caching benefit
+  // my forest data is always fetched fresh; clear the store on unmount since persisting it provides no caching benefit
   useEffect(() => {
     return () => {
       resetMyForestStore();
     };
   }, []);
-
-  //TODO: Remove once error handling is fully migrated from useContext to Zustand
-  useEffect(() => {
-    setErrors(errorMessage ? [{ message: errorMessage }] : null);
-  }, [errorMessage]);
 
   const isProfileLoaded = profile !== null && profile !== undefined;
 
@@ -81,7 +75,7 @@ const ProfileLayout = () => {
         {isProfileLoaded ? (
           <ProfileCard userProfile={profile} profilePageType="private" />
         ) : (
-          <ProfileLoader height={450} />
+          <ProfileLoader height={PROFILE_SECTION_HEIGHTS.profile} />
         )}
       </section>
       <section
@@ -93,7 +87,7 @@ const ProfileLayout = () => {
         {!isMyForestLoading && isProfileLoaded ? (
           <ContributionsMap profilePageType="private" />
         ) : (
-          <ProfileLoader height={450} />
+          <ProfileLoader height={PROFILE_SECTION_HEIGHTS.map} />
         )}
       </section>
       <section
@@ -105,7 +99,7 @@ const ProfileLayout = () => {
         {!isMyForestLoading && isProfileLoaded ? (
           <ForestProgress profilePageType="private" />
         ) : (
-          <ProfileLoader height={116} />
+          <ProfileLoader height={PROFILE_SECTION_HEIGHTS.progress} />
         )}
       </section>
       <section
@@ -117,7 +111,7 @@ const ProfileLayout = () => {
         {!isMyForestLoading && isProfileLoaded ? (
           <MyContributions profilePageType="private" userProfile={profile} />
         ) : (
-          <ProfileLoader height={350} />
+          <ProfileLoader height={PROFILE_SECTION_HEIGHTS.myContributions} />
         )}
       </section>
       <section
@@ -132,7 +126,7 @@ const ProfileLayout = () => {
             profilePageType="private"
           />
         ) : (
-          <ProfileLoader height={350} />
+          <ProfileLoader height={PROFILE_SECTION_HEIGHTS.community} />
         )}
       </section>
     </article>

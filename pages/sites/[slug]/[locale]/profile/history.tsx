@@ -1,48 +1,45 @@
 import type { ReactElement } from 'react';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError } from '@planet-sdk/common';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { APIError, Tenant } from '@planet-sdk/common';
 import type {
   Filters,
   PaymentHistory,
 } from '../../../../../src/features/common/types/payments';
-
-import { useEffect, useState, useContext } from 'react';
-import { useTranslations } from 'next-intl';
-import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
-import History from '../../../../../src/features/user/Account/History';
-import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
-import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import Head from 'next/head';
-import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
-import { handleError } from '@planet-sdk/common';
-import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
 import type {
   GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+
+import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
+import History from '../../../../../src/features/user/Account/History';
+import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
+import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import Head from 'next/head';
+import { handleError } from '@planet-sdk/common';
+import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../../tenant.config';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
+import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
+import { useRouter } from 'next/router';
+import { defaultTenant } from '../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-function AccountHistory({ pageProps }: Props): ReactElement {
+function AccountHistory(): ReactElement {
   const t = useTranslations('Me');
   const { token, contextLoaded } = useUserProps();
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
   const { getApiAuthenticated } = useApi();
+  const { localizedPath } = useLocalizedPath();
+  const router = useRouter();
+  //local state
   const [progress, setProgress] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [filter, setFilter] = useState<string | null>(null);
@@ -52,16 +49,10 @@ function AccountHistory({ pageProps }: Props): ReactElement {
   const [accountingFilters, setAccountingFilters] = useState<Filters | null>(
     null
   );
-
-  const { redirect, setErrors } = useContext(ErrorHandlingContext);
-
-  const { tenantConfig } = pageProps;
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  //store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  //store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function fetchPaymentHistory(next = false): Promise<void> {
     setIsDataLoading(true);
@@ -110,7 +101,7 @@ function AccountHistory({ pageProps }: Props): ReactElement {
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/profile');
+      router.push(localizedPath('/profile'));
     }
     setProgress(100);
     setTimeout(() => {
@@ -132,7 +123,9 @@ function AccountHistory({ pageProps }: Props): ReactElement {
     fetchPaymentHistory,
   };
 
-  return tenantConfig ? (
+  if (!isInitialized) return <></>;
+
+  return (
     <>
       {progress > 0 && (
         <div className={'topLoader'}>
@@ -154,8 +147,6 @@ function AccountHistory({ pageProps }: Props): ReactElement {
         {/* <UnderMaintenance/> */}
       </UserLayout>
     </>
-  ) : (
-    <></>
   );
 }
 
@@ -188,13 +179,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['common', 'me', 'country'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

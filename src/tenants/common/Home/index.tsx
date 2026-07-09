@@ -9,8 +9,8 @@ import LandingSection from '../../../features/common/Layout/LandingSection';
 import LeaderBoard from '../LeaderBoard';
 import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Layout/Footer';
-import { useTenant } from '../../../features/common/Layout/TenantContext';
 import { useTranslations } from 'next-intl';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 interface Props {
   leaderboard: LeaderBoardList | null;
@@ -18,8 +18,9 @@ interface Props {
 }
 
 export default function Home({ leaderboard, tenantScore }: Props) {
-  const { tenantConfig } = useTenant();
   const t = useTranslations('Tenants');
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => {

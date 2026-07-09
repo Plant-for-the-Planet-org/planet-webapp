@@ -6,58 +6,51 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
-import type { APIError, SerializedError } from '@planet-sdk/common';
+import type { APIError, SerializedError, Tenant } from '@planet-sdk/common';
 import type { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
 } from '../../../../../../src/features/common/RedeemCode';
 import { handleError } from '@planet-sdk/common';
-import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
-import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 import { useApi } from '../../../../../../src/hooks/useApi';
-
-interface Props {
-  pageProps: PageProps;
-}
+import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { useErrorHandlingStore } from '../../../../../../src/stores/errorHandlingStore';
+import { defaultTenant } from '../../../../../../tenant.config';
 
 type RedeemCodePayload = {
   code: string;
 };
 
-function ClaimDonation({ pageProps }: Props): ReactElement {
+function ClaimDonation(): ReactElement {
   const t = useTranslations('Redeem');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { setTenantConfig } = useTenant();
   const { user, contextLoaded, loginWithRedirect } = useUserProps();
   const { postApiAuthenticated } = useApi();
-  const { errors, setErrors } = useContext(ErrorHandlingContext);
+  // local state
   const [code, setCode] = useState<string>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
+  //store: action
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  const errors = useErrorHandlingStore((state) => state.errors);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     if (
@@ -162,7 +155,9 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     }
   }, [user, contextLoaded, router.query.type, router.query.code]);
 
-  return pageProps.tenantConfig && user ? (
+  if (!isInitialized || !user) return <></>;
+
+  return (
     <LandingSection>
       <>
         {redeemedCodeData ? (
@@ -182,8 +177,6 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
         )}
       </>
     </LandingSection>
-  ) : (
-    <></>
   );
 }
 
@@ -216,13 +209,13 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: ['redeem', 'common'],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

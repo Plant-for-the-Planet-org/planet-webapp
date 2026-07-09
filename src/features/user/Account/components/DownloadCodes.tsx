@@ -1,14 +1,14 @@
 import type { ReactElement } from 'react';
 import type { APIError } from '@planet-sdk/common';
 
-import { useContext, useState } from 'react';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { useState } from 'react';
 import { unparse } from 'papaparse';
 import styles from '../AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 interface DownloadCodesProps {
   codesUrl: string;
@@ -16,9 +16,11 @@ interface DownloadCodesProps {
 
 const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
   const t = useTranslations('Me');
-  const [isDownloading, setIsDownloading] = useState(false);
   const { getApi } = useApi();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // local state
+  const [isDownloading, setIsDownloading] = useState(false);
+  //store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   function downloadCSV(data: [], filename: string) {
     const csv = unparse(data);

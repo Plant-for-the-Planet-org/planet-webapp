@@ -1,5 +1,4 @@
 // This page will be moved to a different place in the future, as it is not a part of the user dashboard
-import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -7,42 +6,37 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
-import type { APIError, UserPublicProfile } from '@planet-sdk/common';
+import type { APIError, Tenant, UserPublicProfile } from '@planet-sdk/common';
 
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import { defaultTenant } from '../../../../../tenant.config';
 import PublicProfileOuterContainer from '../../../../../src/features/user/Profile/PublicProfileOuterContainer';
 import PublicProfileLayout from '../../../../../src/features/user/Profile/PublicProfileLayout';
 import { v4 } from 'uuid';
-import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
-import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
+import { useEffect, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 import GetPublicUserProfileMeta from '../../../../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import { ProjectsProvider } from '../../../../../src/features/projectsV2/ProjectsContext';
 import { useApi } from '../../../../../src/hooks/useApi';
+import { useTenantStore } from '../../../../../src/stores/tenantStore';
+import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
+import useLocalizedPath from '../../../../../src/hooks/useLocalizedPath';
+import { defaultTenant } from '../../../../../tenant.config';
 
-interface Props {
-  pageProps: PageProps;
-}
-
-const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
-  const { setTenantConfig } = useTenant();
-  const { setErrors, redirect } = useContext(ErrorHandlingContext);
+const PublicProfilePage = () => {
   const { getApi } = useApi();
-  const [profile, setProfile] = useState<null | UserPublicProfile>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(tenantConfig);
-    }
-  }, [router.isReady]);
+  const { localizedPath } = useLocalizedPath();
+  // local state
+  const [profile, setProfile] = useState<null | UserPublicProfile>(null);
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function loadPublicProfile(slug: string) {
     try {
@@ -52,7 +46,7 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
       setProfile(profileData);
     } catch (err) {
       setErrors(handleError(err as APIError));
-      redirect('/');
+      router.push(localizedPath('/'));
     }
   }
 
@@ -68,7 +62,9 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
     }
   }, [router.isReady, router.query.profile]);
 
-  return tenantConfig ? (
+  if (!isInitialized) return null;
+
+  return (
     <>
       <GetPublicUserProfileMeta userprofile={profile} />
       <PublicProfileOuterContainer>
@@ -80,8 +76,6 @@ const PublicProfilePage = ({ pageProps: { tenantConfig } }: Props) => {
         </ProjectsProvider>
       </PublicProfileOuterContainer>
     </>
-  ) : (
-    <></>
   );
 };
 
@@ -115,9 +109,6 @@ interface PageProps {
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -132,6 +123,9 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
       'allProjects',
     ],
   });
+
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {

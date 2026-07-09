@@ -22,14 +22,14 @@ import {
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
-import getStoredCurrency from '../../utils/countryCurrency/getStoredCurrency';
-import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 import {
   buildProjectDetailsQuery,
   isValidClassification,
 } from '../../utils/projectV2';
 import { useApi } from '../../hooks/useApi';
-import { useTenant } from '../common/Layout/TenantContext';
+import { useTenantStore } from '../../stores/tenantStore';
+import { useErrorHandlingStore } from '../../stores/errorHandlingStore';
+import { useCurrencyStore } from '../../stores/currencyStore';
 
 interface ProjectsState {
   projects: MapProject[] | null;
@@ -71,8 +71,6 @@ const ProjectsContext = createContext<ProjectsState | null>(null);
 type ProjectsProviderProps = {
   children: ReactNode;
   page?: 'project-list' | 'project-details';
-  currencyCode?: string;
-  setCurrencyCode?: SetState<string> | undefined;
   selectedMode?: ViewMode;
   setSelectedMode?: SetState<ViewMode>;
 };
@@ -80,11 +78,15 @@ type ProjectsProviderProps = {
 export const ProjectsProvider = ({
   children,
   page,
-  currencyCode,
-  setCurrencyCode,
   selectedMode,
   setSelectedMode,
 }: ProjectsProviderProps) => {
+  const locale = useLocale();
+  const tCountry = useTranslations('Country');
+  const router = useRouter();
+  const { getApi } = useApi();
+  const { ploc: requestedIntervention, site: requestedSite } = router.query;
+  // local state
   const [projects, setProjects] = useState<MapProject[] | null>(null);
   const [singleProject, setSingleProject] = useState<ExtendedProject | null>(
     null
@@ -112,13 +114,11 @@ export const ProjectsProvider = ({
   const [projectsLocale, setProjectsLocale] = useState('');
   const [projectsCurrencyCode, setProjectsCurrencyCode] = useState('');
   const [showDonatableProjects, setShowDonatableProjects] = useState(false);
-  const { setErrors } = useContext(ErrorHandlingContext);
-  const locale = useLocale();
-  const tCountry = useTranslations('Country');
-  const router = useRouter();
-  const { tenantConfig } = useTenant();
-  const { getApi } = useApi();
-  const { ploc: requestedIntervention, site: requestedSite } = router.query;
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  // store: action
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   // Read filter from URL only on initial load
   useEffect(() => {
@@ -268,13 +268,6 @@ export const ProjectsProvider = ({
     }
     loadProjects();
   }, [currencyCode, locale, tenantConfig.id, page]);
-
-  useEffect(() => {
-    if (!currencyCode && setCurrencyCode !== undefined) {
-      const currency = getStoredCurrency();
-      setCurrencyCode(currency);
-    }
-  }, [currencyCode, setCurrencyCode]);
 
   useEffect(() => {
     setDebouncedSearchValue('');

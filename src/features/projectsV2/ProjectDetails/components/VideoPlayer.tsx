@@ -5,6 +5,7 @@ import ReactPlayer from 'react-player/lazy';
 import { useTranslations } from 'next-intl';
 import WebappButton from '../../../common/WebappButton';
 import { isYouTubeDomain } from '../../../../utils/youTubeValidation';
+import clsx from 'clsx';
 
 const PlayButton = () => {
   return (
@@ -71,9 +72,9 @@ const VideoPlayer = ({
     return (
       <div className={styles.videoConsentContainer}>
         <div
-          className={`${styles.consentBackground} ${
-            backgroundImage ? styles.hasBackgroundImage : ''
-          }`}
+          className={clsx(styles.consentBackground, {
+            [styles.hasBackgroundImage]: backgroundImage,
+          })}
           style={
             backgroundImage
               ? { backgroundImage: `url(${backgroundImage})` }

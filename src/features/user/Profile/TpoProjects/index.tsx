@@ -1,7 +1,7 @@
 import type { APIError, UserPublicProfile } from '@planet-sdk/common';
 import type { MapProject } from '../../../common/types/projectv2';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../../public/assets/images/NotFound';
@@ -9,8 +9,8 @@ import ProjectLoader from '../../../common/ContentLoaders/Projects/ProjectLoader
 import { useLocale, useTranslations } from 'next-intl';
 import styles from './TpoProjects.module.scss';
 import { useApi } from '../../../../hooks/useApi';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 const ProjectSnippet = dynamic(
   () => import('../../../projectsV2/ProjectSnippet'),
@@ -28,7 +28,8 @@ export default function ProjectsContainer({ profile }: Props) {
   const t = useTranslations('Donate');
   const locale = useLocale();
   const [projects, setProjects] = useState<MapProject[]>();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   async function loadProjects() {
     try {

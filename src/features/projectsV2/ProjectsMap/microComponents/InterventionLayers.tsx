@@ -34,6 +34,20 @@ interface SampleTreeMarkerProps {
 
 const { colors } = themeProperties.designSystem;
 
+/**
+ * Guards against a single corrupt record poisoning the whole map. Maplibre
+ * validates the entire FeatureCollection as one unit, so one feature with a
+ * null/invalid geometry makes it reject every feature ("Input data is not a
+ * valid GeoJSON object"). We drop interventions whose geometry is not a
+ * structurally usable Point/Polygon before building features.
+ */
+const hasRenderableGeometry = (intervention: Intervention): boolean => {
+  const geometry = intervention.geometry;
+  if (!geometry || typeof geometry !== 'object') return false;
+  if (typeof geometry.type !== 'string') return false;
+  return Array.isArray(geometry.coordinates) && geometry.coordinates.length > 0;
+};
+
 const SampleTreeMarker = ({
   sampleTree,
   selectedSampleTree,
@@ -180,7 +194,9 @@ export default function InterventionLayers(): ReactElement {
   if (!interventions || interventions.length === 0) {
     return <></>;
   }
+  //TODO
   const features = interventions
+    .filter(hasRenderableGeometry)
     .filter(
       (intervention) =>
         selectedInterventionType === 'all' ||

@@ -1,8 +1,10 @@
-import { useTenant } from '../../TenantContext';
+import { useTenantStore } from '../../../../../stores/tenantStore';
+import clsx from 'clsx';
 import styles from '../Navbar.module.scss';
 
 const SecondaryLogo = ({ isMobile }: { isMobile: boolean }) => {
-  const { tenantConfig } = useTenant();
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const shouldNotRenderLogo = isMobile && tenantConfig.config.slug === 'ttc';
   const hasWideLogo = tenantConfig.config.slug === 'concentrix';
@@ -18,9 +20,9 @@ const SecondaryLogo = ({ isMobile }: { isMobile: boolean }) => {
           <a href={tenantConfig.config?.header?.tenantLogoLink}>
             <img
               src={tenantConfig.config?.header?.tenantLogoURL}
-              className={`${styles.tenantLogo} ${
-                hasWideLogo ? styles.wideLogo : ''
-              }`}
+              className={clsx(styles.tenantLogo, {
+                [styles.wideLogo]: hasWideLogo,
+              })}
             />
           </a>
           {!isMobile && <div className={styles.logoDivider} />}

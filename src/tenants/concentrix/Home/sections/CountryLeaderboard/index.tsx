@@ -6,6 +6,7 @@ import { countryToFlag } from '../../../../../utils/countryCurrency/countryToFla
 import WebappButton from '../../../../../features/common/WebappButton';
 import styles from './CountryLeaderboard.module.scss';
 import commonStyles from '../../common.module.scss';
+import clsx from 'clsx';
 
 export type CountryTreeDataItem = {
   country: CountryCode;
@@ -79,7 +80,7 @@ const CountryLeaderboard = ({ countryWiseTrees, isDataLoaded }: Props) => {
   return (
     <section className={styles.countryLeaderboard}>
       <div className={styles.contentContainer}>
-        <h2 className={`${commonStyles.heading3} ${styles.title}`}>
+        <h2 className={clsx(commonStyles.heading3, styles.title)}>
           Contributions by Country
         </h2>
         {!isDataLoaded ? (
@@ -124,7 +125,10 @@ const CountryLeaderboard = ({ countryWiseTrees, isDataLoaded }: Props) => {
                     elementType="button"
                     variant="primary"
                     text="< Previous 10"
-                    buttonClasses={`${commonStyles.buttonStyles} ${styles.buttonStyles}`}
+                    buttonClasses={clsx(
+                      commonStyles.buttonStyles,
+                      styles.buttonStyles
+                    )}
                     onClick={showPreviousPage}
                     disabled={!hasPrevious}
                   />
@@ -133,7 +137,10 @@ const CountryLeaderboard = ({ countryWiseTrees, isDataLoaded }: Props) => {
                     elementType="button"
                     variant="primary"
                     text="Next 10 >"
-                    buttonClasses={`${commonStyles.buttonStyles} ${styles.buttonStyles}`}
+                    buttonClasses={clsx(
+                      commonStyles.buttonStyles,
+                      styles.buttonStyles
+                    )}
                     onClick={showNextPage}
                     disabled={!hasNext}
                   />

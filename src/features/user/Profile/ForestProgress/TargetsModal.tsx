@@ -3,16 +3,16 @@ import type { SetState } from '../../../common/types/common';
 
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useMyForestStore } from '../../../../stores/myForestStore';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
 import { useApi } from '../../../../hooks/useApi';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 interface TargetsModalProps {
   open: boolean;
@@ -39,7 +39,6 @@ const TargetsModal = ({
 }: TargetsModalProps) => {
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
   const { contextLoaded, token, setRefetchUserData } = useUserProps();
-  const { setErrors } = useContext(ErrorHandlingContext);
   const { putApiAuthenticated } = useApi();
   const tProfile = useTranslations('Profile.progressBar');
   // states to manage modal
@@ -55,6 +54,8 @@ const TargetsModal = ({
   );
   const [isConservedAreaTargetActive, setIsConservedAreaTargetActive] =
     useState(conservationTarget > 0);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleClose = () => {
     setOpen(false);

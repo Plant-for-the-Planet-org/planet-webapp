@@ -5,7 +5,7 @@ import type { MapProject } from '../../common/types/projectv2';
 import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
 import type { MapOptions } from '../../common/types/map';
 
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from './styles/ProjectListControls.module.scss';
 import ProjectListTabForMobile from './microComponents/ProjectListTabForMobile';
@@ -15,8 +15,8 @@ import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
-import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { clsx } from 'clsx';
+import { useQueryParamStore } from '../../../stores/queryParamStore';
 
 interface ProjectListControlForMobileProps {
   projectCount: number | undefined;
@@ -64,7 +64,10 @@ const ProjectListControlForMobile = ({
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
   const { isImpersonationModeOn } = useUserProps();
-  const { embed, showProjectList, page } = useContext(ParamsContext);
+
+  const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
+  const showProjectList = useQueryParamStore((state) => state.showProjectList);
+  const page = useQueryParamStore((state) => state.page);
 
   const hasFilterApplied =
     selectedClassification.length > 0 || showDonatableProjects;
@@ -72,7 +75,7 @@ const ProjectListControlForMobile = ({
   const shouldDisplayProjectListTab =
     !hasFilterApplied && selectedMode !== 'map' && !shouldHideProjectTabs;
   const onlyMapModeAllowed =
-    embed === 'true' && page === 'project-list' && showProjectList === 'false';
+    isEmbedMode && page === 'project-list' && showProjectList === 'false';
   const shouldDisplayMapFeatureExplorer =
     selectedMode === 'map' && process.env.ENABLE_EXPLORE === 'true';
 

@@ -20,8 +20,8 @@ export default function ContentSection() {
               Salesforce, we’re leading the charge toward a nature positive
               future by reducing emissions and restoring the Earth’s most
               critical carbon sinks. From the Andes to the Outback, we’re
-              working to ensure that our only home doesn&apos;t just survive —
-              it thrives.
+              working to ensure that our only home doesn’t just survive — it
+              thrives.
             </p>
           </div>
         </div>

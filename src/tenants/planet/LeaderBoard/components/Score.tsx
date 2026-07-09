@@ -1,6 +1,6 @@
 import type { APIError } from '@planet-sdk/common';
 
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import styles from './LeaderBoard.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
@@ -10,12 +10,12 @@ import Link from 'next/link';
 import getImageUrl from '../../../../utils/getImageURL';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import getRandomImage from '../../../../utils/getRandomImage';
-import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import { handleError } from '@planet-sdk/common';
 import { MuiAutoComplete } from '../../../../features/common/InputTypes/MuiAutoComplete';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 interface Props {
   leaderboard: any;
@@ -36,15 +36,18 @@ type UserApiPayload = {
 };
 
 export default function LeaderBoardSection(leaderboard: Props) {
-  const [selectedTab, setSelectedTab] = useState('recent');
   const leaderboardData = leaderboard.leaderboard;
   const tLeaderboard = useTranslations('Leaderboard');
   const tCommon = useTranslations('Common');
   const locale = useLocale();
   const { postApi } = useApi();
   const { localizedPath } = useLocalizedPath();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // local state
+  const [selectedTab, setSelectedTab] = useState('recent');
   const [users, setUsers] = useState<LeaderboardUser[]>([]);
+  // store
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
   const fetchUsers = async (query: string) => {
     try {
       const res = await postApi<LeaderboardUser[], UserApiPayload>(

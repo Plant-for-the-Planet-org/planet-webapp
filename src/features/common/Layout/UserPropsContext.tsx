@@ -15,13 +15,13 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useTenant } from './TenantContext';
 import getsessionId from '../../../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../../../utils/apiRequests/setHeader';
 import { APIError } from '@planet-sdk/common';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { useLocale } from 'next-intl';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -62,7 +62,7 @@ export const UserPropsProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const locale = useLocale();
   const { localizedPath } = useLocalizedPath();
-  const { tenantConfig } = useTenant();
+  // local state
   const [contextLoaded, setContextLoaded] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [profile, setUser] = useState<User | null>(null);
@@ -70,6 +70,8 @@ export const UserPropsProvider = ({ children }: { children: ReactNode }) => {
   const [isImpersonationModeOn, setIsImpersonationModeOn] = useState(false);
   const [refetchUserData, setRefetchUserData] = useState(false);
   const [redirectCount, setRedirectCount] = useState(0);
+  // store: state
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   useEffect(() => {
     if (localStorage.getItem('language')) {

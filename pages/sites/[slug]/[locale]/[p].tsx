@@ -5,11 +5,9 @@ import type {
   GetStaticPropsResult,
 } from 'next/types';
 import type { ReactElement } from 'react';
-import type {
-  NextPageWithLayout,
-  PageComponentProps,
-  PageProps,
-} from '../../../_app';
+import type { NextPageWithLayout, PageComponentProps } from '../../../_app';
+import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
 import {
   constructPathsForTenantSlug,
@@ -17,29 +15,19 @@ import {
 } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
-import { useRouter } from 'next/router';
-import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import { useEffect } from 'react';
 import { v4 } from 'uuid';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectDetails from '../../../../src/features/projectsV2/ProjectDetails';
+import { useTenantStore } from '../../../../src/stores/tenantStore';
 
-const ProjectDetailsPage: NextPageWithLayout = ({
-  pageProps,
-  currencyCode,
-  isMobile,
-}) => {
-  const router = useRouter();
-  const { setTenantConfig } = useTenant();
+const ProjectDetailsPage: NextPageWithLayout = ({ isMobile }) => {
+  // store: state
+  const isInitialized = useTenantStore((state) => state.isInitialized);
 
-  useEffect(() => {
-    if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
-    }
-  }, [router.isReady]);
+  if (!isInitialized) return <></>;
 
-  return <ProjectDetails currencyCode={currencyCode} isMobile={isMobile} />;
+  return <ProjectDetails isMobile={isMobile} />;
 };
 
 ProjectDetailsPage.getLayout = function getLayout(
@@ -47,8 +35,6 @@ ProjectDetailsPage.getLayout = function getLayout(
   pageComponentProps: PageComponentProps
 ): ReactElement {
   const layoutProps = {
-    currencyCode: pageComponentProps.currencyCode,
-    setCurrencyCode: pageComponentProps.setCurrencyCode,
     page: 'project-details',
     isMobile: pageComponentProps.isMobile,
   } as const;
@@ -81,12 +67,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
+interface PageProps {
+  messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
+}
+
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<PageProps>> => {
-  const tenantConfig =
-    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
-
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
     filenames: [
@@ -100,6 +88,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
       'me',
     ],
   });
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {
