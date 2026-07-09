@@ -11,7 +11,7 @@ import type { Tenant } from '@planet-sdk/common';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import { useEffect } from 'react';
-import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfileLoader';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
 import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
