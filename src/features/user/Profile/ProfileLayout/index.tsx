@@ -13,6 +13,7 @@ import { useMyForestStore } from '../../../../stores/myForestStore';
 import MyContributions from '../MyContributions';
 import { useApi } from '../../../../hooks/useApi';
 import { clsx } from 'clsx';
+import { PROFILE_SECTION_HEIGHTS } from './ProfileGridSkeleton';
 
 // We may choose to accept the components for each section as props depending on how we choose to pass data. In that case, we would need to add an interface to accept the components as props.
 
@@ -74,7 +75,7 @@ const ProfileLayout = () => {
         {isProfileLoaded ? (
           <ProfileCard userProfile={profile} profilePageType="private" />
         ) : (
-          <ProfileLoader height={450} />
+          <ProfileLoader height={PROFILE_SECTION_HEIGHTS.profile} />
         )}
       </section>
       <section
@@ -86,7 +87,7 @@ const ProfileLayout = () => {
         {!isMyForestLoading && isProfileLoaded ? (
           <ContributionsMap profilePageType="private" />
         ) : (
-          <ProfileLoader height={450} />
+          <ProfileLoader height={PROFILE_SECTION_HEIGHTS.map} />
         )}
       </section>
       <section
@@ -98,7 +99,7 @@ const ProfileLayout = () => {
         {!isMyForestLoading && isProfileLoaded ? (
           <ForestProgress profilePageType="private" />
         ) : (
-          <ProfileLoader height={116} />
+          <ProfileLoader height={PROFILE_SECTION_HEIGHTS.progress} />
         )}
       </section>
       <section
@@ -110,7 +111,7 @@ const ProfileLayout = () => {
         {!isMyForestLoading && isProfileLoaded ? (
           <MyContributions profilePageType="private" userProfile={profile} />
         ) : (
-          <ProfileLoader height={350} />
+          <ProfileLoader height={PROFILE_SECTION_HEIGHTS.myContributions} />
         )}
       </section>
       <section
@@ -125,7 +126,7 @@ const ProfileLayout = () => {
             profilePageType="private"
           />
         ) : (
-          <ProfileLoader height={350} />
+          <ProfileLoader height={PROFILE_SECTION_HEIGHTS.community} />
         )}
       </section>
     </article>
