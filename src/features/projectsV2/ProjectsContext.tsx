@@ -63,6 +63,19 @@ const normalizeForSearch = (text: string | undefined | null): string =>
         .trim()
     : '';
 
+// German writes umlauts as digraphs too (ü→ue, ö→oe, ä→ae). Expanding them gives
+// a second normalized form so all spellings cross-match: "München", "Munchen"
+// (accent-stripped) and "Muenchen" (digraph) all find the same project. Only an
+// additional match path, so it never removes matches for other languages.
+const expandGermanDigraphs = (text: string): string =>
+  text
+    .replace(/[äÄ]/g, 'ae')
+    .replace(/[öÖ]/g, 'oe')
+    .replace(/[üÜ]/g, 'ue');
+
+const normalizeDigraph = (text: string | undefined | null): string =>
+  text ? normalizeForSearch(expandGermanDigraphs(text)) : '';
+
 interface ProjectsState {
   projects: MapProject[] | null;
   singleProject: ExtendedProject | null;
@@ -208,25 +221,28 @@ export const ProjectsProvider = ({
         return [];
       }
 
-      const normalizedKeyword = normalizeForSearch(keyword);
+      const keywordBase = normalizeForSearch(keyword);
+      const keywordDigraph = normalizeDigraph(keyword);
+
+      // A field matches if the keyword is found in either its accent-stripped or
+      // its German-digraph-expanded form (see normalizeDigraph).
+      const fieldMatches = (text: string | undefined | null): boolean =>
+        normalizeForSearch(text).includes(keywordBase) ||
+        normalizeDigraph(text).includes(keywordDigraph);
 
       const filteredProjects = projects?.filter((project: MapProject) => {
-        const projectName = normalizeForSearch(project.properties.name);
-        const projectLocation =
+        const location =
           project.properties.purpose === 'trees'
-            ? normalizeForSearch(project.properties.location)
+            ? project.properties.location
             : '';
-        const tpoName = normalizeForSearch(project.properties.tpo.name);
-        const country = normalizeForSearch(
-          tCountry(
-            project.properties.country.toLowerCase() as Lowercase<CountryCode>
-          )
+        const country = tCountry(
+          project.properties.country.toLowerCase() as Lowercase<CountryCode>
         );
         return (
-          projectName.includes(normalizedKeyword) ||
-          projectLocation.includes(normalizedKeyword) ||
-          tpoName.includes(normalizedKeyword) ||
-          country.includes(normalizedKeyword)
+          fieldMatches(project.properties.name) ||
+          fieldMatches(location) ||
+          fieldMatches(project.properties.tpo.name) ||
+          fieldMatches(country)
         );
       });
       return filteredProjects;
