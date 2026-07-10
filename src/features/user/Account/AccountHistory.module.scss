@@ -106,6 +106,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  font: inherit;
+  text-align: inherit;
   & .incoming {
     color: $dsPrimaryColor;
   }
@@ -140,6 +142,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  font: inherit;
+  text-align: inherit;
   > .left {
     display: flex;
     flex-direction: column;

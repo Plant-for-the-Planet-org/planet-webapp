@@ -7,9 +7,13 @@ interface LayerInfoTooltipProps {
 
 const LayerInfoTooltip = ({ showInfo }: LayerInfoTooltipProps) => {
   return (
-    <div className={styles.layerInfoTooltip} onClick={showInfo}>
+    <button
+      type="button"
+      className={styles.layerInfoTooltip}
+      onClick={showInfo}
+    >
       <InfoIcon width={12} />
-    </div>
+    </button>
   );
 };
 export default LayerInfoTooltip;

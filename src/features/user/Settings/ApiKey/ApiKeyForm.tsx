@@ -25,9 +25,14 @@ interface ApiKeyResponse {
 
 const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
   return (
-    <div className={styles.eyeButton} onClick={onClick}>
+    <button
+      type="button"
+      className={styles.eyeButton}
+      aria-pressed={isVisible}
+      onClick={onClick}
+    >
       {isVisible ? <EyeIcon /> : <EyeDisabled />}
-    </div>
+    </button>
   );
 };
 
