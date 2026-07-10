@@ -46,6 +46,9 @@ const LATIN_FOLD: Record<string, string> = {
   ı: 'i',
 };
 
+// Derived from LATIN_FOLD so the two can never drift out of sync.
+const LATIN_FOLD_REGEX = new RegExp(`[${Object.keys(LATIN_FOLD).join('')}]`, 'g');
+
 // Normalize a string for project search: strip diacritics (NFD + combining-mark
 // removal), fold the stroke/ligature letters NFD leaves behind, lowercase, and
 // treat a hyphen as a space (collapsing repeated separators). This makes search
@@ -57,7 +60,7 @@ const normalizeForSearch = (text: string | undefined | null): string =>
         .normalize('NFD')
         .replace(/[̀-ͯ]/g, '')
         .toLowerCase()
-        .replace(/[øłđðßæœþı]/g, (c) => LATIN_FOLD[c] ?? c)
+        .replace(LATIN_FOLD_REGEX, (c) => LATIN_FOLD[c] ?? c)
         .replace(/-/g, ' ')
         .replace(/\s+/g, ' ')
         .trim()
