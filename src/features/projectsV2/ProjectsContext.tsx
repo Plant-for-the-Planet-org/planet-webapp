@@ -63,10 +63,7 @@ const normalizeForSearch = (text: string | undefined | null): string =>
         .trim()
     : '';
 
-// German writes umlauts as digraphs too (ü→ue, ö→oe, ä→ae). Expanding them gives
-// a second normalized form so all spellings cross-match: "München", "Munchen"
-// (accent-stripped) and "Muenchen" (digraph) all find the same project. Only an
-// additional match path, so it never removes matches for other languages.
+// German writes umlauts as digraphs too (ü→ue, ö→oe, ä→ae). Expanding them gives a second normalized form so all spellings cross-match: "München", "Munchen" (accent-stripped) and "Muenchen" (digraph) all find the same project. Only an additional match path, so it never removes matches for other languages.
 const expandGermanDigraphs = (text: string): string =>
   text
     .replace(/[äÄ]/g, 'ae')
@@ -222,10 +219,12 @@ export const ProjectsProvider = ({
       }
 
       const keywordBase = normalizeForSearch(keyword);
+      if (!keywordBase) {
+        return [];
+      }
       const keywordDigraph = normalizeDigraph(keyword);
 
-      // A field matches if the keyword is found in either its accent-stripped or
-      // its German-digraph-expanded form (see normalizeDigraph).
+      // A field matches if the keyword is found in either its accent-stripped or its German-digraph-expanded form (see normalizeDigraph).
       const fieldMatches = (text: string | undefined | null): boolean =>
         normalizeForSearch(text).includes(keywordBase) ||
         normalizeDigraph(text).includes(keywordDigraph);
