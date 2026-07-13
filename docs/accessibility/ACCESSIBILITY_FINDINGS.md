@@ -453,13 +453,17 @@ Note: `DetailedAnalysis.tsx` multi-select "checkboxes" gate wizard submission, s
 <Html lang="en">
 ```
 
-**Recommended Fix:** Keep a default in `_document`, but set the real language per request in `_app.tsx` (or per page) via `next/head`.
+**Recommended Fix:** `next/head` cannot set attributes on the `<html>` element, so it can't update `lang`. Keep a sensible default (`<Html lang="en">`) in `_document.tsx`, then sync the real language on the client whenever the locale changes by writing directly to `document.documentElement.lang` from an effect in `_app.tsx`. This is the reliable approach for this app because the locale comes from a custom route param (`[locale]`) rather than Next.js built-in i18n routing, so `_document`'s SSR pass cannot read it per request.
 
 **Example Fix:**
 ```tsx
-// _app.tsx render()
+// _app.tsx
+const router = useRouter();
 const locale = (router.query?.locale as string) ?? 'en';
-<Head><html lang={locale} /></Head>
+
+useEffect(() => {
+  document.documentElement.lang = locale;
+}, [locale]);
 ```
 
 **Testing Steps:**
