@@ -553,10 +553,59 @@ export const filterByClassification = (
   });
 };
 
+// Stroke / bar / ligature letters that Unicode NFD does NOT decompose, so the
+// combining-mark strip below can't fold them. Mapped explicitly so search is
+// accent-insensitive for these too (e.g. Łódź → lodz, Straße → strasse).
+const LATIN_FOLD: Record<string, string> = {
+  ø: 'o',
+  ł: 'l',
+  đ: 'd',
+  ð: 'd',
+  ß: 'ss',
+  æ: 'ae',
+  œ: 'oe',
+  þ: 'th',
+  ı: 'i',
+};
+
+// Derived from LATIN_FOLD so the two can never drift out of sync.
+const LATIN_FOLD_REGEX = new RegExp(
+  `[${Object.keys(LATIN_FOLD).join('')}]`,
+  'g'
+);
+
+// Normalize a string for project search: strip diacritics (NFD + combining-mark
+// removal), fold the stroke/ligature letters NFD leaves behind, lowercase, and
+// treat a hyphen as a space (collapsing repeated separators). This makes search
+// insensitive to accents and hyphens: "Plant for Ghana" matches "Plant-for-Ghana"
+// and "Yucatan" matches "Yucatán".
+const normalizeForSearch = (text: string | undefined | null): string =>
+  text
+    ? text
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .toLowerCase()
+        .replace(LATIN_FOLD_REGEX, (c) => LATIN_FOLD[c] ?? c)
+        .replace(/-/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+    : '';
+
+// German writes umlauts as digraphs too (ü→ue, ö→oe, ä→ae). Expanding them gives a second normalized form so all spellings cross-match: "München", "Munchen" (accent-stripped) and "Muenchen" (digraph) all find the same project. Only an additional match path, so it never removes matches for other languages.
+const expandGermanDigraphs = (text: string): string =>
+  text.replace(/[äÄ]/g, 'ae').replace(/[öÖ]/g, 'oe').replace(/[üÜ]/g, 'ue');
+
+const normalizeDigraph = (text: string | undefined | null): string =>
+  text ? normalizeForSearch(expandGermanDigraphs(text)) : '';
+
 /**
  * Filters projects based on a search keyword.
  *
- * The search is case-insensitive and accent-insensitive and matches against:
+ * The search is case-insensitive and tolerant of common text variations,
+ * including accents/diacritics, German umlaut spellings (e.g. München ↔
+ * Muenchen), and hyphens (e.g. Plant-for-Ghana ↔ Plant for Ghana).
+ *
+ * Matches against:
  * - Project name
  * - Project location (only for tree projects)
  * - TPO name
@@ -576,35 +625,27 @@ export const filterBySearch = (
   if (!keyword?.trim()) {
     return [];
   }
+  const keywordBase = normalizeForSearch(keyword);
+  if (!keywordBase) {
+    return [];
+  }
+  const keywordDigraph = normalizeDigraph(keyword);
 
-  const normalizedKeyword = keyword
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
+  // A field matches if the keyword is found in either its accent-stripped or its German-digraph-expanded form (see normalizeDigraph).
+  const fieldMatches = (text: string | undefined | null): boolean =>
+    normalizeForSearch(text).includes(keywordBase) ||
+    normalizeDigraph(text).includes(keywordDigraph);
 
   const filteredProjects = projects?.filter((project: MapProject) => {
-    const normalizedText = (text: string | undefined | null) => {
-      return text
-        ? text
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLowerCase()
-        : '';
-    };
-
-    const projectName = normalizedText(project.properties.name);
-    const projectLocation =
-      project.properties.purpose === 'trees'
-        ? normalizedText(project.properties.location)
-        : '';
-    const tpoName = normalizedText(project.properties.tpo.name);
-    const country = normalizedText(getCountryLabel(project.properties.country));
+    const location =
+      project.properties.purpose === 'trees' ? project.properties.location : '';
+    const country = getCountryLabel(project.properties.country);
 
     return (
-      projectName.includes(normalizedKeyword) ||
-      projectLocation.includes(normalizedKeyword) ||
-      tpoName.includes(normalizedKeyword) ||
-      country.includes(normalizedKeyword)
+      fieldMatches(project.properties.name) ||
+      fieldMatches(location) ||
+      fieldMatches(project.properties.tpo.name) ||
+      fieldMatches(country)
     );
   });
   return filteredProjects;

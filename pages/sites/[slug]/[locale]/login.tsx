@@ -11,7 +11,7 @@ import type { Tenant } from '@planet-sdk/common';
 import { getTenantConfig } from '../../../../src/utils/multiTenancy/helpers';
 import { defaultTenant } from '../../../../tenant.config';
 import { useEffect } from 'react';
-import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfileLoader';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
 import { constructPathsForTenantSlug } from '../../../../src/utils/multiTenancy/helpers';
@@ -57,9 +57,14 @@ export default function Login(): ReactElement {
         loadFunction();
       } else if (
         user === null &&
-        (isAuthenticated || auth0Error?.message === '401')
+        (isAuthenticated ||
+          // TODO: Remove '401' case after July 31, 2026. Confirm whether safe to remove before then.
+          auth0Error?.message === '401' ||
+          auth0Error?.message === 'email_not_verified')
       ) {
-        // wait for context to redirect to complete signup
+        // Wait for
+        // Navbar to handle redirect to /verify-email OR
+        // UserPropsContext to handle redirect to /complete-signup (via 303)
       } else {
         loginWithRedirect({
           redirectUri: `${window.location.origin}/login`,

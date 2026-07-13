@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
-import theme from '../../../theme/theme';
+import { useMemo } from 'react';
+import getGlobalStyles from '../../../theme/theme';
 import { useTheme } from '../../../theme/themeContext';
 import CookiePolicy from './CookiePolicy';
 import ErrorPopup from './ErrorPopup';
@@ -8,21 +9,26 @@ import Header from './Header';
 import Navbar from './Navbar';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
 import { useViewStore } from '../../../stores/viewStore';
+import { useTenantStore } from '../../../stores/tenantStore';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { theme: themeType } = useTheme();
+  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const globalStyles = useMemo(
+    () => getGlobalStyles(tenantConfig?.config?.font),
+    [tenantConfig]
+  );
 
   const embed = useQueryParamStore((state) => state.embed);
   const EmbeddablePage = useViewStore((state) => state.page);
   const isEmbedMode =
-  embed === 'true' &&
-  (EmbeddablePage === 'project-list' || EmbeddablePage === 'project-details');
-
+    embed === 'true' &&
+    (EmbeddablePage === 'project-list' || EmbeddablePage === 'project-details');
 
   return (
     <>
       <Header />
-      <style>{theme}</style>
+      <style>{globalStyles}</style>
       <div className={themeType}>
         {!isEmbedMode && <Navbar />}
         <div>{children}</div>

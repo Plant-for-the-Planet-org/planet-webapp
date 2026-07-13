@@ -87,14 +87,32 @@ export const useInterventionStore = create<InterventionStore>()(
       fetchError: false,
 
       fetchInterventions: async (getApi, projectId) => {
+        if (!process.env.TREEMAPPER_URL) {
+          console.error(
+            'TREEMAPPER_URL is not set; skipping intervention fetch.'
+          );
+          set(
+            {
+              interventions: null,
+              isFetching: false,
+              fetchError: false,
+            },
+            undefined,
+            'interventionStore/intervention_fetch_skipped'
+          );
+
+          return;
+        }
         set(
           { isFetching: true, fetchError: false },
           undefined,
           'interventionStore/intervention_fetch_start'
         );
         try {
+          // The TreeMapper API wraps its payload in a standard envelope
+          // ({ statusCode, message, error, data, code }); the interventions array
+          // lives in `data`, so we unwrap it before storing.
           const response = await getApi<TreemapperApiResponse<Intervention[]>>(
-            // TODO: temporary TreeMapper API; revert to `/app/interventions/${projectId}` before merge
             `${process.env.TREEMAPPER_URL}/api/server/external/project/${projectId}/interventions`
           );
           set(
@@ -103,9 +121,10 @@ export const useInterventionStore = create<InterventionStore>()(
             'interventionStore/intervention_fetch_success'
           );
         } catch (error) {
-          useErrorHandlingStore
-            .getState()
-            .setErrors(handleError(error as APIError));
+          // Interventions are an optional map overlay. A failure here must not
+          // surface a generic connectivity error or push the user off the project
+          // page — just log and render the project without the overlay.
+          console.error('Error fetching interventions:', error);
           set(
             {
               fetchError: true,
