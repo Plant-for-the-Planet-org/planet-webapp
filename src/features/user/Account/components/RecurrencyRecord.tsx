@@ -314,10 +314,14 @@ export function ManageDonation({
     !record?.endsAt &&
     record.paymentGateway !== 'offline';
   const showEdit =
-    (record?.status === 'active' || record?.status === 'trialing') &&
+    (record?.status === 'active' ||
+      record?.status === 'trialing' ||
+      record?.status === 'past_due') &&
     record?.endsAt === null;
   const showCancel =
-    (record?.status === 'active' || record?.status === 'trialing') &&
+    (record?.status === 'active' ||
+      record?.status === 'trialing' ||
+      record?.status === 'past_due') &&
     !record?.endsAt;
   const showReactivate =
     record?.status === 'paused' || new Date(record?.endsAt || '') > new Date();
