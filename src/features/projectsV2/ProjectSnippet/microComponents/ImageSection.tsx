@@ -39,6 +39,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const [hasError, setHasError] = useState(false);
 
   const tProjectsCommon = useTranslations('Project');
+  const tCommon = useTranslations('Common');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
 
@@ -121,8 +122,15 @@ const ImageSection = (props: ImageSectionProps) => {
   return (
     <div className={imageContainerClasses}>
       {showBackButton && (
-        <button onClick={handleBackButton} className={styles.backButton}>
-          <BackButton />
+        <button
+          type="button"
+          aria-label={tCommon('goBack')}
+          onClick={handleBackButton}
+          className={styles.backButton}
+        >
+          <span aria-hidden="true" style={{ display: 'contents' }}>
+            <BackButton />
+          </span>
         </button>
       )}
       <ProjectBadge

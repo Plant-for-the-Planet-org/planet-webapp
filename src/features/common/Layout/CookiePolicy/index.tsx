@@ -46,10 +46,14 @@ export default function CookiePolicy() {
     <div className={styles.cookieContainer}>
       <button
         id={'cookieCloseButton'}
+        type="button"
+        aria-label={t('close')}
         className={styles.closeButton}
         onClick={() => setShowCookieNotice(false)}
       >
-        <CloseIcon color={themeProperties.designSystem.colors.primaryColor} />
+        <span aria-hidden="true">
+          <CloseIcon color={themeProperties.designSystem.colors.primaryColor} />
+        </span>
       </button>
       <div className={styles.cookieContent}>
         {t('privacyPolicyNotice')}{' '}

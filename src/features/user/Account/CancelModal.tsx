@@ -45,6 +45,7 @@ export const CancelModal = ({
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
   const t = useTranslations('Me');
+  const tCommon = useTranslations('Common');
   //local state
   const [option, setOption] = useState('cancelImmediately');
   const [showCalender, setShowCalender] = useState(false);
@@ -108,13 +109,17 @@ export const CancelModal = ({
             >
               <h4>{t('cancelDonationConfirmation')}</h4>
               <button
+                type="button"
+                aria-label={tCommon('close')}
                 onClick={handleCancelModalClose}
                 onKeyPress={handleCancelModalClose}
                 role="button"
                 tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <Close color={'#4d5153'} />
+                <span aria-hidden="true" style={{ display: 'contents' }}>
+                  <Close color={'#4d5153'} />
+                </span>
               </button>
             </div>
             <div className={styles.note}>

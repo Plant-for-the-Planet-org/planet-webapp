@@ -114,14 +114,16 @@ export default function Footer(): ReactElement | null {
                 </p>
               </button>
               <div className={styles.footer_social_container}>
-                <button id={'facebookIcon'}>
+                <button id={'facebookIcon'} type="button">
                   <a
                     className={styles.social_button}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label={t('followOn', { socialMedia: 'Facebook' })}
                     href="https://www.facebook.com/plantfortheplanet"
                   >
                     <svg
+                      aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="46"
                       height="46"
@@ -159,14 +161,16 @@ export default function Footer(): ReactElement | null {
                   </a>
                 </button>
 
-                <button id={'instagramIcon'}>
+                <button id={'instagramIcon'} type="button">
                   <a
                     className={styles.social_button}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label={t('followOn', { socialMedia: 'Instagram' })}
                     href="https://www.instagram.com/plantfortheplanet_official/"
                   >
                     <svg
+                      aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="46"
                       height="46"
@@ -204,14 +208,16 @@ export default function Footer(): ReactElement | null {
                   </a>
                 </button>
 
-                <button id={'linkedInIcon'}>
+                <button id={'linkedInIcon'} type="button">
                   <a
                     className={styles.social_button}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label={t('followOn', { socialMedia: 'LinkedIn' })}
                     href="https://www.linkedin.com/company/plant-for-the-planet/mycompany/"
                   >
                     <svg
+                      aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="46"
                       height="46"
@@ -240,14 +246,16 @@ export default function Footer(): ReactElement | null {
                   </a>
                 </button>
 
-                <button id={'youtubeIcon'}>
+                <button id={'youtubeIcon'} type="button">
                   <a
                     className={styles.social_button}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label={t('followOn', { socialMedia: 'YouTube' })}
                     href="https://www.youtube.com/user/PlantForThePlanet"
                   >
                     <svg
+                      aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="46"
                       height="46"
@@ -276,14 +284,16 @@ export default function Footer(): ReactElement | null {
                   </a>
                 </button>
 
-                <button id={'flickrIcon'}>
+                <button id={'flickrIcon'} type="button">
                   <a
                     className={styles.social_button}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label={t('followOn', { socialMedia: 'Flickr' })}
                     href="https://www.flickr.com/people/plant-for-the-planet/"
                   >
                     <svg
+                      aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="46"
                       height="46"
@@ -312,14 +322,16 @@ export default function Footer(): ReactElement | null {
                     </svg>
                   </a>
                 </button>
-                <button id={'tiktokIcon'}>
+                <button id={'tiktokIcon'} type="button">
                   <a
                     className={styles.social_button}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label={t('followOn', { socialMedia: 'TikTok' })}
                     href="https://www.tiktok.com/@plantfortheplanet.org"
                   >
                     <svg
+                      aria-hidden="true"
                       width="46"
                       height="46"
                       viewBox="0 0 46 46"
@@ -370,25 +382,38 @@ export default function Footer(): ReactElement | null {
           </div>
         </div>
         <div className={styles.logo_container}>
-          <button id={'pfpLogoIcon'} className={styles.pfp_logo_container}>
+          <button
+            id={'pfpLogoIcon'}
+            type="button"
+            className={styles.pfp_logo_container}
+          >
             <a
               href="http://www.plant-for-the-planet.org/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={t('plantForThePlanetWebsite')}
             >
-              <PlanetCJLogo />
+              <span aria-hidden="true" style={{ display: 'contents' }}>
+                <PlanetCJLogo />
+              </span>
             </a>
           </button>
 
           {tenantConfig.config.showUNEPLogo && (
-            <button id={'unepLogoIcon'} className={styles.unep_logo_container}>
+            <button
+              id={'unepLogoIcon'}
+              type="button"
+              className={styles.unep_logo_container}
+            >
               <a
                 href="https://www.unep.org/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <p className={styles.unep_logo_text}>{t('supportsUNEP')} </p>
-                <UNEPLogo />
+                <span aria-hidden="true" style={{ display: 'contents' }}>
+                  <UNEPLogo />
+                </span>
               </a>
             </button>
           )}
@@ -396,14 +421,18 @@ export default function Footer(): ReactElement | null {
           {tenantConfig.config.showUNDecadeLogo && (
             <button
               id={'unDecadeLogoIcon'}
+              type="button"
               className={styles.unDecade_logo_container}
             >
               <a
                 href="https://www.decadeonrestoration.org/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={t('unDecadeOnRestoration')}
               >
-                <UNDecadeLogo />
+                <span aria-hidden="true" style={{ display: 'contents' }}>
+                  <UNDecadeLogo />
+                </span>
               </a>
             </button>
           )}

@@ -54,6 +54,7 @@ export const EditModal = ({
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
   const t = useTranslations('Me');
+  const tCommon = useTranslations('Common');
   const locale = useLocale();
   const {
     handleSubmit,
@@ -151,13 +152,17 @@ export const EditModal = ({
                 {t('editDonationConfirmation')}
               </h4>
               <button
+                type="button"
+                aria-label={tCommon('close')}
                 onClick={handleEditModalClose}
                 onKeyPress={handleEditModalClose}
                 role="button"
                 tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <Close color={'#4d5153'} />
+                <span aria-hidden="true" style={{ display: 'contents' }}>
+                  <Close color={'#4d5153'} />
+                </span>
               </button>
             </div>
             <div className={styles.note}>
