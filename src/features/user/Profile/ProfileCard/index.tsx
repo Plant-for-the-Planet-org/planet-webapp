@@ -31,10 +31,11 @@ const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
       </div>
       <div className={styles.profileDetailsContainer}>
         {isPrivateAccount && (
-          <Link href={localizedPath('/profile/edit')}>
-            <button className={styles.editProfileIcon}>
-              <SettingsIcon />
-            </button>
+          <Link
+            href={localizedPath('/profile/edit')}
+            className={styles.editProfileIcon}
+          >
+            <SettingsIcon />
           </Link>
         )}
         <div className={styles.profileNameAndDescriptionContainer}>
