@@ -299,7 +299,10 @@ export default function ProjectMedia({
               {uploadedImages.map((image, index) => {
                 return (
                   <div className={styles.uploadedImageContainer} key={index}>
-                    <img src={getImageUrl('project', 'medium', image.image)} />
+                    <img
+                      src={getImageUrl('project', 'medium', image.image)}
+                      alt={image.description || projectDetails?.name || ''}
+                    />
                     <div className={styles.uploadedImageOverlay}></div>
 
                     <input
