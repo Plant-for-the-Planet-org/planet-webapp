@@ -136,7 +136,7 @@ const ImageSection = (props: ImageSectionProps) => {
       {/* Loading state */}
       {isImageLoading && (
         <img
-          alt="loading"
+          alt=""
           src="/assets/images/project-contribution-default-landscape.png"
           className={styles.projectImageFile}
         />
@@ -145,7 +145,7 @@ const ImageSection = (props: ImageSectionProps) => {
       {/* Main image */}
       {image && typeof image !== 'undefined' && (
         <img
-          alt={'projectImage'}
+          alt={projectName}
           src={imageSource}
           loading="lazy"
           decoding="async"
@@ -160,7 +160,7 @@ const ImageSection = (props: ImageSectionProps) => {
       {/* Error/fallback state */}
       {(hasError || !image) && (
         <img
-          alt="fallback"
+          alt=""
           src="/assets/images/project-contribution-default-landscape.png"
           className={styles.projectImageFile}
         />
