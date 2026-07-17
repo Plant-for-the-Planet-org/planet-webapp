@@ -80,12 +80,12 @@ const TimeTravelDropdown = ({
         aria-expanded={isMenuOpen}
         aria-label={tTimeTravel('timeTravelOptionsLabel')}
       >
-        <div className={styles.menuButtonTitle}>
+        <span className={styles.menuButtonTitle}>
           <CalendarIcon
             width={14}
             color={themeProperties.designSystem.colors.coreText}
           />
-          <p className={styles.menuButtonText}>
+          <span className={styles.menuButtonText}>
             {tTimeTravel.rich('sourceAttributionLabel', {
               year: selectedYear,
               source: SOURCE_LABELS[selectedSource],
@@ -93,8 +93,8 @@ const TimeTravelDropdown = ({
                 <span className={styles.highlighted}>{chunks}</span>
               ),
             })}
-          </p>
-        </div>
+          </span>
+        </span>
         {isMenuOpen ? (
           <DropdownUpArrow width={8} />
         ) : (
