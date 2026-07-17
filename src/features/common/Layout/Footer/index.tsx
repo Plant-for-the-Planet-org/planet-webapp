@@ -371,7 +371,9 @@ export default function Footer(): ReactElement | null {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <PlanetCJLogo />
+            <span aria-hidden="true" style={{ display: 'contents' }}>
+              <PlanetCJLogo />
+            </span>
           </a>
 
           {tenantConfig.config.showUNEPLogo && (
@@ -381,15 +383,19 @@ export default function Footer(): ReactElement | null {
               href="https://www.unep.org/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={t('plantForThePlanetWebsite')}
             >
               <p className={styles.unep_logo_text}>{t('supportsUNEP')} </p>
-              <UNEPLogo />
+              <span aria-hidden="true" style={{ display: 'contents' }}>
+                <UNEPLogo />
+              </span>
             </a>
           )}
 
           {tenantConfig.config.showUNDecadeLogo && (
             <a
               id={'unDecadeLogoIcon'}
+              type="button"
               className={styles.unDecade_logo_container}
               href="https://www.decadeonrestoration.org/"
               target="_blank"

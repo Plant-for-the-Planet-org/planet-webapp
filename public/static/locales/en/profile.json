@@ -72,7 +72,9 @@
       "textToShare": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis #StopTalkingStartPlanting #TrillionTrees",
       "shareVia": "Share via",
       "copyLink": "Copy Link",
-      "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis"
+      "textToShareLinkedin": "Join {name} and thousand of others to plant a trillion trees to tackle the climate crisis",
+      "shareOn": "Share on {socialMedia}",
+      "shareViaEmail": "Share via email"
     },
     "progressBar": {
       "treePlanted": "{count, plural, =1 {# tree planted} other {# trees planted}}",

@@ -55,10 +55,14 @@ export default function ErrorPopup(): ReactElement {
             <div key={`${index}`} className={styles.errorContainer}>
               <button
                 id={'errorCloseButton'}
+                type="button"
+                aria-label={t('close')}
                 className={styles.closeButton}
                 onClick={() => handleRemoveError(err.message)}
               >
-                <CloseIcon color={'#f44336'} width={'10'} height={'10'} />
+                <span aria-hidden="true">
+                  <CloseIcon color={'#f44336'} width={'10'} height={'10'} />
+                </span>
               </button>
               <div className={styles.errorContent}>
                 {processErrorMessage(err.message)}
