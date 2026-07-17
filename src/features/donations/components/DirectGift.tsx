@@ -19,6 +19,7 @@ interface Props {
 
 export default function DirectGift({ directGift, setShowDirectGift }: Props) {
   const t = useTranslations('Donate');
+  const tCommon = useTranslations('Common');
   const { localizedPath } = useLocalizedPath();
   return (
     <div className={styles.giftContainer}>
@@ -35,6 +36,8 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
       </div>
       <button
         id={'giftClose'}
+        type="button"
+        aria-label={`${tCommon('close')} ${t('directGift')}`}
         onClick={() => {
           directGift.show = false;
           localStorage.removeItem('directGift');
@@ -42,7 +45,9 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
         }}
         className={styles.closeButton}
       >
-        <CancelIcon />
+        <span aria-hidden="true" style={{ display: 'contents' }}>
+          <CancelIcon />
+        </span>
       </button>
     </div>
   );
