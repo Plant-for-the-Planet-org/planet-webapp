@@ -6,11 +6,13 @@ import styles from './ProfileCard.module.scss';
 import { SettingsIcon } from '../../../../../public/assets/images/icons/ProfilePageV2Icons';
 import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import ProfileActions from './ProfileActions';
 import DonorCircleMemberBadge from './MicroComponents/DonorCircleMemberBadge';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
+  const t = useTranslations('Profile');
   const isPrivateAccount = profilePageType === 'private';
   const userImageUrl = userProfile?.image
     ? getImageUrl('profile', 'thumb', userProfile.image)
@@ -34,8 +36,11 @@ const ProfileCard = ({ userProfile, profilePageType }: ProfileV2Props) => {
           <Link
             href={localizedPath('/profile/edit')}
             className={styles.editProfileIcon}
+            aria-label={t('editProfile')}
           >
-            <SettingsIcon />
+            <span aria-hidden="true" style={{ display: 'contents' }}>
+              <SettingsIcon />
+            </span>
           </Link>
         )}
         <div className={styles.profileNameAndDescriptionContainer}>

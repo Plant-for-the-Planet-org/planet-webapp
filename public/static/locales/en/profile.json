@@ -1,5 +1,6 @@
 {
   "Profile": {
+    "editProfile": "Edit profile",
     "myProfile": {
       "memberSince": "Member since {date}",
       "donorCircleMember": "Donor Circle-Member"
