@@ -36,7 +36,7 @@ export const EnterRedeemCode = ({
       <div className={styles.crossDiv}>
         <button
           type="button"
-          aria-label={tCommon('close')}
+          aria-label={`${tCommon('close')} ${t('redeem')}`}
           className={styles.crossWidth}
           onClick={closeRedeem}
         >

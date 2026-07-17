@@ -124,7 +124,7 @@ const TargetsModal = ({
       <div className={styles.targetModalMainContainer}>
         <button
           type="button"
-          aria-label={tCommon('close')}
+          aria-label={`${tCommon('close')} ${tProfile('setTargets')}`}
           className={styles.crossIconContainer}
           onClick={handleClose}
         >

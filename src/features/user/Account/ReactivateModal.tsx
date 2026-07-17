@@ -84,7 +84,7 @@ export const ReactivateModal = ({
               <h4>{t('reactivateDonationConfirmation')}</h4>
               <button
                 type="button"
-                aria-label={tCommon('close')}
+                aria-label={`${tCommon('close')} ${t('reactivateDonationConfirmation')}`}
                 onClick={handleReactivateModalClose}
                 onKeyPress={handleReactivateModalClose}
                 role="button"

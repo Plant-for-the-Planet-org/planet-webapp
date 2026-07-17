@@ -47,7 +47,7 @@ const DonationInfoPopover = ({
     >
       <button
         type="button"
-        aria-label={tCommon('close')}
+        aria-label={`${tCommon('close')} ${tReceipt('donationDetails.title')}`}
         className={styles.closeIconContainer}
         onClick={closePopover}
       >

@@ -118,7 +118,7 @@ export const PauseModal = ({
               <h4>{t('pauseDonationConfirmation')}</h4>
               <button
                 type="button"
-                aria-label={tCommon('close')}
+                aria-label={`${tCommon('close')} ${t('pauseDonationConfirmation')}`}
                 onClick={handlePauseModalClose}
                 onKeyPress={handlePauseModalClose}
                 role="button"

@@ -110,7 +110,7 @@ export const CancelModal = ({
               <h4>{t('cancelDonationConfirmation')}</h4>
               <button
                 type="button"
-                aria-label={tCommon('close')}
+                aria-label={`${tCommon('close')} ${t('cancelDonationConfirmation')}`}
                 onClick={handleCancelModalClose}
                 onKeyPress={handleCancelModalClose}
                 role="button"

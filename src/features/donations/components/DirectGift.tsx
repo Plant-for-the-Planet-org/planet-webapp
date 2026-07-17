@@ -37,7 +37,7 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
       <button
         id={'giftClose'}
         type="button"
-        aria-label={tCommon('close')}
+        aria-label={`${tCommon('close')} ${t('directGift')}`}
         onClick={() => {
           directGift.show = false;
           localStorage.removeItem('directGift');

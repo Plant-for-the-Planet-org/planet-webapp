@@ -153,7 +153,7 @@ export const EditModal = ({
               </h4>
               <button
                 type="button"
-                aria-label={tCommon('close')}
+                aria-label={`${tCommon('close')} ${t('editDonationConfirmation')}`}
                 onClick={handleEditModalClose}
                 onKeyPress={handleEditModalClose}
                 role="button"

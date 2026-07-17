@@ -25,7 +25,7 @@ export const SuccessfullyRedeemed = ({
       <div className={styles.crossDiv}>
         <button
           type="button"
-          aria-label={tCommon('close')}
+          aria-label={`${tCommon('close')} ${tRedeem('redeem')}`}
           className={styles.crossWidth}
           onClick={closeRedeem}
         >
