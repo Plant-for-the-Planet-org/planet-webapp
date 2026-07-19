@@ -280,11 +280,16 @@ function ProjectsMap(props: ProjectsMapProps) {
     [interventions, currentPage]
   );
   /**
-   * Map click handler invoked when user clicks on the map in 'project-details' or 'project-list' page (which results in an early return).
-   * Is not invoked while clicking on SampleTreeMarkers as propagation is stopped there.
-   * This onClick handler is responsible for:
-   * - Selecting: point intervention(single tree), polygon intervention(multi tree), or project sites
-   * - Deselecting: point intervention ,sample point intervention, other interventions(point geometry)
+   * Map click handler invoked when the user clicks on the map in
+   * 'project-details' ('project-list' results in an early return).
+   * Not invoked while clicking SampleTreeMarkers, as propagation is stopped there.
+   *
+   * Behavior:
+   * - Clicking a new intervention (point or polygon) selects it.
+   * - Clicking the already-selected point intervention again deselects it and
+   *   selects the site underneath again (or none when not over a site).
+   * - Clicking a site polygon selects that site.
+   * - Any click clears a selected sample intervention first.
    */
   const onClick = useCallback(
     (e) => {
@@ -303,12 +308,23 @@ function ProjectsMap(props: ProjectsMapProps) {
 
       if (isPlantFeature(features[0])) {
         const isSameIntervention =
-          features[0].properties?.id === selectedIntervention?.id;
-        if (isSameIntervention) return;
+          selectedIntervention !== null &&
+          features[0].properties?.id === selectedIntervention.id;
+
+        if (isSameIntervention) {
+          // Clicking a selected point intervention again deselects it and reselects
+          // the underlying site (if any). Polygon interventions remain selected.
+          if (selectedIntervention.geometry.type === 'Point') {
+            const underlyingSiteIndex =
+              siteIndex !== null && siteIndex >= 0 ? siteIndex : null;
+            selectSiteAndSyncUrl(underlyingSiteIndex, locale, router);
+          }
+          return;
+        }
 
         const newIntervention = getInterventionInfo(interventions, features[0]);
 
-        // Clicking an intervention → select it
+        // Clicking a different intervention → select it
         if (newIntervention) {
           selectInterventionSyncUrl(
             newIntervention,
