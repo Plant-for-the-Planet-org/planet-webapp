@@ -128,7 +128,7 @@ const ProjectInfo = ({
   }, [metadata]);
 
   const location = useMemo(() => {
-    if (!tpo) return '';
+    if (!tpo?.address) return '';
     const { address, zipCode, city, country } = tpo.address;
     return [
       address,
