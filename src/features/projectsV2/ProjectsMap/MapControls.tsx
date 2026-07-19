@@ -23,7 +23,7 @@ import {
 } from '../../../stores';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
-import { FIRST_SITE_INDEX } from '../../../utils/projectV2';
+import { FIRST_SITE_INDEX, hasNoSites } from '../../../utils/projectV2';
 
 interface MapControlsProps {
   isMobile: boolean;
@@ -49,10 +49,9 @@ const MapControls = ({
   const showProjectDetails = useQueryParamStore(
     (state) => state.showProjectDetails
   );
+  // A project has no sites if all site geometries are null.
   const hasProjectSites = useSingleProjectStore(
-    (state) =>
-      state.singleProject?.sites?.length !== undefined &&
-      state.singleProject?.sites?.length > 0
+    (state) => !hasNoSites(state.singleProject?.sites)
   );
   const isInterventionSelected = useInterventionStore(
     (state) =>

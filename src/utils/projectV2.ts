@@ -670,6 +670,22 @@ export const getSiteIdFromIndex = (
 export const FIRST_SITE_INDEX = 0;
 
 /**
+ * Returns `true` if a project has no selectable sites.
+ *
+ * A project has no selectable sites when the site list is empty or every site
+ * has `geometry === null`.
+ *
+ * @param sites - Project site features
+ * @returns Whether at least one site has valid geometry
+ */
+export const hasNoSites = (
+  sites: ProjectSiteFeature[] | null | undefined
+): boolean => {
+  if (!sites || sites.length === 0) return true;
+  return sites.every((site) => site.geometry === null);
+};
+
+/**
  * Checks whether the provided value is a string.
  *
  * Acts as a type guard to safely narrow an `unknown` value to `string`.

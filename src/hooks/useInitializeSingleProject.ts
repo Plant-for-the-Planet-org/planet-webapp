@@ -8,7 +8,7 @@ import {
   useViewStore,
 } from '../stores';
 import { useLocale } from 'next-intl';
-import { FIRST_SITE_INDEX, isString } from '../utils/projectV2';
+import { FIRST_SITE_INDEX, hasNoSites, isString } from '../utils/projectV2';
 
 const getSiteIndexById = (
   sites: ProjectSiteFeature[],
@@ -42,7 +42,8 @@ export const useInitializeSingleProject = () => {
   );
 
   const projectSites = singleProject?.sites ?? [];
-  const hasProjectSites = projectSites.length > 0;
+  // A project has no sites if all site geometries are null.
+  const hasProjectSites = !hasNoSites(projectSites);
 
   /**
    * Initialize site selection for project details page.
