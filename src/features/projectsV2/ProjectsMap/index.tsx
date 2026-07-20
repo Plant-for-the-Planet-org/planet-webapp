@@ -268,7 +268,19 @@ function ProjectsMap(props: ProjectsMapProps) {
       // Map libraries typically return features ordered by render stack,
       // where the first item represents the topmost visible layer at the point.
       if (!isPlantFeature(features[0])) return;
-      if (features[0].properties.id === lastHoveredIdRef.current) return;
+
+      const hoveredId = features[0].properties?.id ?? null;
+
+      // Don't layer a hover style over the already-selected intervention.
+      if (hoveredId !== null && hoveredId === selectedIntervention?.id) {
+        if (lastHoveredIdRef.current !== null) {
+          lastHoveredIdRef.current = null;
+          setHoveredIntervention(null);
+        }
+        return;
+      }
+
+      if (hoveredId === lastHoveredIdRef.current) return;
 
       const newIntervention = getInterventionInfo(interventions, features[0]);
       const newId = newIntervention?.id ?? null;
@@ -276,7 +288,7 @@ function ProjectsMap(props: ProjectsMapProps) {
       lastHoveredIdRef.current = newId;
       setHoveredIntervention(newIntervention ?? null);
     },
-    [interventions, currentPage]
+    [interventions, currentPage, selectedIntervention]
   );
   /**
    * Map click handler invoked when the user clicks on the map in
