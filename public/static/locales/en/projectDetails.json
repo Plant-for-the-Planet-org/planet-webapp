@@ -1,5 +1,6 @@
 {
   "ProjectDetails": {
+    "expandImages": "Expand images",
     "satelliteAnalysis": "Satellite Analysis",
     "diveIntoTheProject": "Dive into the project",
     "firePopupText": "We only display fires that occurred within the past 12 months.",

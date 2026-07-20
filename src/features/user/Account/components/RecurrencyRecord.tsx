@@ -154,14 +154,8 @@ export function RecordHeader({
     return null;
   }, [record, t]);
 
-  return (
-    <div
-      onClick={handleRecordToggle && (() => handleRecordToggle(index))}
-      className={styles.recurrencyRecordHeader}
-      style={{
-        cursor: record?.status === 'incomplete' ? 'default' : 'pointer',
-      }}
-    >
+  const headerContent = (
+    <>
       <div className={styles.left}>
         <p className={styles.top}>{recordName}</p>
         {dateDisplay && <p>{dateDisplay}</p>}
@@ -174,6 +168,29 @@ export function RecordHeader({
           {record?.status === 'trialing' ? 'active' : t(record?.status)}
         </p>
       </div>
+    </>
+  );
+
+  const headerCursor =
+    record?.status === 'incomplete' ? 'default' : 'pointer';
+
+  // Interactive (list) rows toggle expansion, so render a real <button>;
+  // in the modal view the header is not interactive, so keep a plain <div>.
+  return handleRecordToggle ? (
+    <button
+      type="button"
+      onClick={() => handleRecordToggle(index)}
+      className={styles.recurrencyRecordHeader}
+      style={{ cursor: headerCursor }}
+    >
+      {headerContent}
+    </button>
+  ) : (
+    <div
+      className={styles.recurrencyRecordHeader}
+      style={{ cursor: headerCursor }}
+    >
+      {headerContent}
     </div>
   );
 }
@@ -413,14 +430,15 @@ export default function RecurrencyRecord({
   return (
     <div className={outerDivClasses}>
       {isModal && (
-        <div
+        <button
+          type="button"
           onClick={() => {
             handleRecordToggle(index);
           }}
           className={styles.closeRecord}
         >
           <BackButton />
-        </div>
+        </button>
       )}
       {(!isModal || (isModal && selectedRecord !== null)) && (
         <>

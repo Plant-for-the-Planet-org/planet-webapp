@@ -148,6 +148,8 @@
 
 .projectTpoName {
   cursor: pointer;
+  display: block;
+  text-decoration: none;
   position: relative;
   text-align: center;
   color: $dsSoftText;

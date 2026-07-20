@@ -25,6 +25,7 @@ export const ReactivateModal = ({
   fetchRecurrentDonations,
 }: ReactivateModalProps) => {
   const t = useTranslations('Me');
+  const tCommon = useTranslations('Common');
   const { putApiAuthenticated } = useApi();
   const { theme } = useContext(ThemeContext);
   // local state
@@ -82,13 +83,17 @@ export const ReactivateModal = ({
             >
               <h4>{t('reactivateDonationConfirmation')}</h4>
               <button
+                type="button"
+                aria-label={`${tCommon('close')} ${t('reactivateDonationConfirmation')}`}
                 onClick={handleReactivateModalClose}
                 onKeyPress={handleReactivateModalClose}
                 role="button"
                 tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <Close color={'#4d5153'} />
+                <span aria-hidden="true" style={{ display: 'contents' }}>
+                  <Close color={'#4d5153'} />
+                </span>
               </button>
             </div>
             <div className={styles.note}>

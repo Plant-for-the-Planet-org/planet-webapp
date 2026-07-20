@@ -18,12 +18,20 @@ export const SuccessfullyRedeemed = ({
   closeRedeem,
 }: SuccessfullyRedeemedProps): ReactElement => {
   const tRedeem = useTranslations('Redeem');
+  const tCommon = useTranslations('Common');
 
   return (
     <div className={styles.routeRedeemModal}>
       <div className={styles.crossDiv}>
-        <button className={styles.crossWidth} onClick={closeRedeem}>
-          <CancelIcon />
+        <button
+          type="button"
+          aria-label={`${tCommon('close')} ${tRedeem('redeem')}`}
+          className={styles.crossWidth}
+          onClick={closeRedeem}
+        >
+          <span aria-hidden="true" style={{ display: 'contents' }}>
+            <CancelIcon />
+          </span>
         </button>
       </div>
 

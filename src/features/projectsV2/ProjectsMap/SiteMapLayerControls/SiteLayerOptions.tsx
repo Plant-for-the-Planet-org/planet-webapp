@@ -71,16 +71,17 @@ const SingleLayerOption = ({
   handleLayerSelection,
 }: SingleOptionProps) => {
   return (
-    <div
+    <button
+      type="button"
       className={clsx(styles.singleLayerOption, {
         [styles.selected]: isSelected,
       })}
+      aria-pressed={isSelected}
       onClick={() => handleLayerSelection(option)}
-      role="button"
     >
       <div className={styles.optionIcon}>{option.icon}</div>
       <p className={styles.optionLabel}>{option.label}</p>
-    </div>
+    </button>
   );
 };
 

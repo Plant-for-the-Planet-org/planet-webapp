@@ -13,11 +13,14 @@ const NoBankAccount = (): ReactElement | null => {
   return (
     <CenteredContainer>
       <p className="centered-text">{t('noBankAccountText')}</p>
-      <Link href={localizedPath('/profile/payouts/add-bank-details')}>
-        <Button variant="contained" color="primary">
-          {t('addBankDetailsButton')}
-        </Button>
-      </Link>
+      <Button
+        component={Link}
+        href={localizedPath('/profile/payouts/add-bank-details')}
+        variant="contained"
+        color="primary"
+      >
+        {t('addBankDetailsButton')}
+      </Button>
     </CenteredContainer>
   );
 };
