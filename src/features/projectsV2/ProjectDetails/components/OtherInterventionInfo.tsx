@@ -30,17 +30,12 @@ const OtherInterventionInfo = ({ isMobile }: Props) => {
       : null
   );
   const interventionInfo = hoveredIntervention || selectedIntervention;
-  if (!interventionInfo) return null;
   const tProjectDetails = useTranslations('ProjectDetails');
-  const interventionMetadata = prepareInterventionMetadata(interventionInfo);
 
-  const sampleTrees = interventionInfo.sampleInterventions || [];
-  const plantedSpecies = interventionInfo.plantedSpecies || [];
+  const sampleTrees = interventionInfo?.sampleInterventions || [];
+  const plantedSpecies = interventionInfo?.plantedSpecies || [];
   const hasSampleTrees = sampleTrees.length > 0;
   const hasPlantedSpecies = plantedSpecies.length > 0;
-  const hasInterventionMetadata = interventionMetadata.length > 0;
-  const plantDate =
-    interventionInfo.interventionStartDate || interventionInfo.plantDate;
 
   const { totalTreesCount } = useMemo(() => {
     const totalTreesCount = hasPlantedSpecies
@@ -50,7 +45,7 @@ const OtherInterventionInfo = ({ isMobile }: Props) => {
         )
       : 0;
     return { totalTreesCount };
-  }, [interventionInfo, interventionInfo.type]);
+  }, [interventionInfo]);
 
   const sampleInterventionSpeciesImages = useMemo(() => {
     if (hasSampleTrees) {
@@ -58,12 +53,19 @@ const OtherInterventionInfo = ({ isMobile }: Props) => {
         return {
           id: item.coordinates[0].id,
           image: item.coordinates[0].image ?? '',
-          description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
+          description: tProjectDetails('sampleTreeTag', { tag: item.tag ?? '' }),
         };
       });
       return result;
     }
   }, [interventionInfo]);
+
+  if (!interventionInfo) return null;
+
+  const interventionMetadata = prepareInterventionMetadata(interventionInfo);
+  const hasInterventionMetadata = interventionMetadata.length > 0;
+  const plantDate =
+    interventionInfo.interventionStartDate || interventionInfo.plantDate;
 
   const shouldDisplayImageCarousel =
     sampleInterventionSpeciesImages !== undefined &&

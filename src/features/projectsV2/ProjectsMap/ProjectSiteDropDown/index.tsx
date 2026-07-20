@@ -42,7 +42,7 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
   const siteList = useMemo(() => {
     if (!projectSites) return [];
     return projectSites.map((site, index: number) => {
-      const calculatedSiteAreaInM2 = area(site);
+      const calculatedSiteAreaInM2 = site.geometry ? area(site) : 0;
       return {
         siteName: site.properties.name,
         siteArea:

@@ -37,10 +37,18 @@ const ProjectList = ({ tabSelected }: ProjectListProps) => {
       showDonatableProjects;
     if (hasFilterOrSearchApplied) return filteredProjects;
     return tabSelected === 'topProjects' ? topProjects : projects;
-  }, [filteredProjects, tabSelected]);
+  }, [
+    filteredProjects,
+    tabSelected,
+    debouncedSearchValue,
+    isClassificationSelected,
+    showDonatableProjects,
+    projects,
+    topProjects,
+  ]);
 
   const sortedProjects = useMemo(() => {
-    return projectsToDisplay?.sort((a, b) => {
+    return [...(projectsToDisplay ?? [])].sort((a, b) => {
       if (a.properties.allowDonations === b.properties.allowDonations) return 0;
       return a.properties.allowDonations ? -1 : 1;
     });
