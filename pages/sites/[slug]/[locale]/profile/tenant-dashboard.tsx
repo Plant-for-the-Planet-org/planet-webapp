@@ -30,11 +30,7 @@ const TenantDashboardPage = () => {
         <title>{t('tenantDashboard')}</title>
       </Head>
       {user?.tenantId ? (
-        <DashboardView
-          title={t('tenantReport')}
-          subtitle={null}
-          multiColumn={true}
-        >
+        <DashboardView title={t('tenantReport')} multiColumn={true}>
           <TenantDashboard />
         </DashboardView>
       ) : (

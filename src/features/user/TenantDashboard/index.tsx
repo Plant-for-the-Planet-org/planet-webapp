@@ -5,7 +5,7 @@ import type {
   TenantStatsApi,
 } from './types';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
@@ -32,6 +32,7 @@ const TenantDashboard = () => {
   const [toDate, setToDate] = useState<Date | null>(null);
   const [isEmptyResult, setIsEmptyResult] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
+  const latestRequestIdRef = useRef(0);
 
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
@@ -56,6 +57,10 @@ const TenantDashboard = () => {
       return;
     }
 
+    // Bump request ID to track the latest API call
+    latestRequestIdRef.current++;
+    const currentRequestId = latestRequestIdRef.current;
+
     setIsFetching(true);
     const dateParams = buildDateParams(since, till);
 
@@ -72,15 +77,24 @@ const TenantDashboard = () => {
         ),
       ]);
 
+      // Only apply results if this is still the latest request
+      if (currentRequestId !== latestRequestIdRef.current) return;
+
       setTenantStats(stats);
       setIsEmptyResult(isDataEmpty(stats.global));
       setRecentDonors(donors);
       setCountryLeaderboard(leaderboard);
     } catch (error) {
+      // Prevent outdated error responses from affecting UI
+      if (currentRequestId !== latestRequestIdRef.current) return;
+
       setErrors(handleError(error as APIError));
       router.push(localizedPath('/profile'));
     } finally {
-      setIsFetching(false);
+      // Only the latest request may clear the loading state
+      if (currentRequestId === latestRequestIdRef.current) {
+        setIsFetching(false);
+      }
     }
   };
 
