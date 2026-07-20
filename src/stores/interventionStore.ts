@@ -1,8 +1,4 @@
-import type {
-  APIError,
-  Intervention,
-  SampleTreeRegistration,
-} from '@planet-sdk/common';
+import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
 import type { ApiConfigBase } from '../hooks/useApi';
 import type { INTERVENTION_TYPE } from '../utils/constants/intervention';
 import type { NextRouter } from 'next/router';
@@ -10,8 +6,6 @@ import type { TreemapperApiResponse } from '../features/common/types/map';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { useErrorHandlingStore } from './errorHandlingStore';
-import { handleError } from '@planet-sdk/common';
 import { buildProjectDetailsQuery } from '../utils/projectV2';
 import { useSingleProjectStore } from './singleProjectStore';
 
@@ -198,11 +192,13 @@ export const useInterventionStore = create<InterventionStore>()(
         const { setSelectedSite, updateProjectDetailsPath } =
           useSingleProjectStore.getState();
         setSelectedSite(null);
-
         set(
-          { selectedIntervention: intervention },
+          {
+            selectedIntervention: intervention,
+            selectedSampleIntervention: null,
+          },
           undefined,
-          'interventionStore/set_selected_intervention'
+          'interventionStore/select_intervention_and_sync_url'
         );
 
         const updatedQueryParams = buildProjectDetailsQuery(router.query, {

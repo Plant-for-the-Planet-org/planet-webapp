@@ -255,7 +255,6 @@ function ProjectsMap(props: ProjectsMapProps) {
   const onMouseMove = useCallback(
     (e) => {
       if (currentPage !== 'project-details') return;
-
       const features = getFeaturesAtPoint(mapRef, e.point);
       if (!features?.length) {
         // only clear hover if something was previously hovered

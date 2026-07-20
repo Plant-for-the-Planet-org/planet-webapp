@@ -43,8 +43,7 @@ export const useInitializeIntervention = () => {
     (state) => state.selectSiteAndSyncUrl
   );
   const projectSlug = singleProject?.slug ?? '';
-  const hasInterventions =
-    interventions?.length !== undefined && interventions?.length > 0;
+  const hasInterventions = Boolean(interventions?.length);
 
   /**
    * Initialize intervention selection for project details page.

@@ -20,10 +20,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
   );
 
   const embed = useQueryParamStore((state) => state.embed);
-  const EmbeddablePage = useViewStore((state) => state.page);
+  const embeddablePage = useViewStore((state) => state.page);
   const isEmbedMode =
     embed === 'true' &&
-    (EmbeddablePage === 'project-list' || EmbeddablePage === 'project-details');
+    (embeddablePage === 'project-list' || embeddablePage === 'project-details');
 
   return (
     <>

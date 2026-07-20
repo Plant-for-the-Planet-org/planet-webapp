@@ -199,11 +199,10 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
       },
 
       selectSiteAndSyncUrl: (index, locale, router) => {
-        useInterventionStore.getState().clearInterventionSelectionAndHover();
-
         const { singleProject, updateUrlWithSiteId } = get();
-
         if (!singleProject) return;
+
+        useInterventionStore.getState().clearInterventionSelectionAndHover();
 
         const sites = singleProject.sites ?? [];
         const siteId = index !== null ? getSiteIdFromIndex(sites, index) : null;
