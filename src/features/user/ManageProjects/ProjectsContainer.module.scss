@@ -121,6 +121,12 @@
 .headerCTAs {
   display: flex;
   gap: 8px;
+
+  .headerCTAButton {
+    width: 175px;
+    margin-top: 20px;
+    font-size: $fontSmall;
+  }
 }
 
 .projectNotFoundImage {

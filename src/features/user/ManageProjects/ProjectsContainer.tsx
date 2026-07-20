@@ -167,13 +167,13 @@ export default function ProjectsContainer() {
         <div className={styles.headerCTAs}>
           <Link
             href={localizedPath('/profile/projects/new-project')}
-            className="primaryButton"
+            className={`primaryButton ${styles.headerCTAButton}`}
           >
             {tManageProjects('addProject')}
           </Link>
           <Link
             href={localizedPath('/profile/payouts')}
-            className="primaryButton"
+            className={`primaryButton ${styles.headerCTAButton}`}
           >
             {tManageProjects('managePayoutsButton')}
           </Link>
