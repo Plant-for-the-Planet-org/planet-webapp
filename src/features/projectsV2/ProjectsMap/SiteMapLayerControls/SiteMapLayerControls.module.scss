@@ -52,7 +52,9 @@
   box-sizing: border-box;
   width: 100%;
   padding: 8px 10px 8px 6px;
+  border: none;
   border-radius: 4px;
+  font-family: inherit;
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -117,6 +119,12 @@
   gap: 6px;
   padding: 6px;
   border-radius: 4px;
+  width: 100%;
+  border: none;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
   &.selected {
     background-color: $dsMediumGreyTransparent30;
     font-weight: 700;
@@ -163,6 +171,8 @@
   bottom: 0px;
   right: 0px;
   padding: 10px;
+  border: none;
+  background: none;
   cursor: pointer;
 
   @include smTabletView {

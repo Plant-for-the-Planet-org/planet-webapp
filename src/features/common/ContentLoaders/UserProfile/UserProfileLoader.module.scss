@@ -1,20 +1,108 @@
 @import './../../../../theme/theme';
 
-.skeletonContainer {
-  padding-left: 200px;
-  padding-right: 50px;
-  padding-bottom: 20px;
+// Screen-reader-only label: removed from the visual flow so it reserves no
+// space, while remaining announced by assistive tech.
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.profileSkeleton {
-  margin-top: 132px;
-  height: 400px;
-  padding-right: 100px;
-  border-radius: 20px !important;
+// Mirrors UserLayout `.profilePageContainer` so the loader reserves the exact
+// same frame as the loaded layout (sidebar offset + content area).
+.loaderContainer {
+  margin-left: 55px;
+  position: relative;
+  display: flex;
+  padding-left: 60px;
+  min-height: 100vh;
+  background-color: $dsBackgroundBase;
+  font-family: $primaryFontFamily;
+
+  @include xsPhoneView {
+    padding-left: 0;
+    margin-left: 0;
+  }
 }
 
-// Possible change the name
-.myForestMapSkeleton {
-  margin-top: 42px;
-  border-radius: 20px;
+// Matches the UserLayout sidebar structure and dimensions.
+// Navigation is shown at the top, with controls pinned to the bottom.
+.sidebarSkeleton {
+  width: 109px;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  height: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: rgba(150, 150, 150, 0.2) 0px 0px 4px;
+  background-color: $dsWhite;
+  z-index: 100;
+
+  @include xsPhoneView {
+    display: none;
+  }
+}
+
+// Mirrors `.navLinksContainer` (top nav group).
+.sidebarNavGroup {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+// Bottom controls group.
+.sidebarBottomGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+// Mirrors a collapsed `.navLink` row: 20px icon centered with 16px vertical padding.
+.navRow {
+  padding: 16px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Mirrors UserLayout `.hamburgerIcon` (mobile only).
+.hamburgerSkeleton {
+  display: none;
+
+  @include xsPhoneView {
+    display: block;
+    position: fixed;
+    top: 110px;
+    left: 20px;
+    z-index: 10;
+    height: 42px;
+    width: 42px;
+  }
+}
+
+// Mirrors UserLayout `.profilePageWrapper`.
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  max-width: 1400px;
+}
+
+// Mirrors ProfileOuterContainer `.mainContainer` (the header offset + padding
+// that sits between the wrapper and the profile grid).
+.outerContainer {
+  margin-top: 80px;
+  padding: 20px 40px 40px;
+
+  @include xsPhoneView {
+    // Extra top space accommodates the mobile burger button.
+    margin-top: 142px;
+    padding: 20px 0;
+  }
 }

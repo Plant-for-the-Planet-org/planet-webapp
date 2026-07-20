@@ -70,15 +70,17 @@ export default function History({
           {accountingFilters &&
             Object.entries(accountingFilters).map((item) => {
               return (
-                <div
+                <button
+                  type="button"
                   key={item[0]}
                   className={clsx(styles.filterButton, {
                     [styles.selected]: filter === item[0],
                   })}
+                  aria-pressed={filter === item[0]}
                   onClick={() => handleSetFilter(item[0])}
                 >
                   {t(item[0])}
-                </div>
+                </button>
               );
             })}
         </div>
@@ -139,15 +141,17 @@ export default function History({
                 {accountingFilters &&
                   Object.entries(accountingFilters).map((item) => {
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={item[0]}
                         className={clsx(styles.filterButton, {
                           [styles.selected]: filter === item[0],
                         })}
+                        aria-pressed={filter === item[0]}
                         onClick={() => handleSetFilter(item[0])}
                       >
                         {t(item[0])}
-                      </div>
+                      </button>
                     );
                   })}
               </div>

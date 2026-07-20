@@ -80,12 +80,12 @@ const TimeTravelDropdown = ({
         aria-expanded={isMenuOpen}
         aria-label={tTimeTravel('timeTravelOptionsLabel')}
       >
-        <div className={styles.menuButtonTitle}>
+        <span className={styles.menuButtonTitle}>
           <CalendarIcon
             width={14}
             color={themeProperties.designSystem.colors.coreText}
           />
-          <p className={styles.menuButtonText}>
+          <span className={styles.menuButtonText}>
             {tTimeTravel.rich('sourceAttributionLabel', {
               year: selectedYear,
               source: SOURCE_LABELS[selectedSource],
@@ -93,8 +93,8 @@ const TimeTravelDropdown = ({
                 <span className={styles.highlighted}>{chunks}</span>
               ),
             })}
-          </p>
-        </div>
+          </span>
+        </span>
         {isMenuOpen ? (
           <DropdownUpArrow width={8} />
         ) : (
@@ -107,19 +107,19 @@ const TimeTravelDropdown = ({
             {availableYears?.map((year) => {
               const isSelected = isOptionSelected(year, selectedYear);
               return (
-                <time
-                  key={year}
-                  dateTime={`${year}`}
-                  role="button"
-                  aria-selected={isSelected}
-                  onClick={() => handleChangeYear(year)}
-                  className={clsx({
-                    [styles.selectedMenuItem]: isSelected,
-                    [styles.unselectedMenuItem]: !isSelected,
-                  })}
-                >
-                  {year}
-                </time>
+                <li key={year}>
+                  <button
+                    type="button"
+                    aria-pressed={isSelected}
+                    onClick={() => handleChangeYear(year)}
+                    className={clsx(styles.menuItemButton, {
+                      [styles.selectedMenuItem]: isSelected,
+                      [styles.unselectedMenuItem]: !isSelected,
+                    })}
+                  >
+                    <time dateTime={`${year}`}>{year}</time>
+                  </button>
+                </li>
               );
             })}
           </ul>
@@ -128,15 +128,18 @@ const TimeTravelDropdown = ({
             {availableSources?.map((source) => {
               const isSelected = isOptionSelected(source, selectedSource);
               return (
-                <li
-                  key={source}
-                  onClick={() => handleChangeSource(source)}
-                  className={clsx({
-                    [styles.selectedMenuItem]: isSelected,
-                    [styles.unselectedMenuItem]: !isSelected,
-                  })}
-                >
-                  {SOURCE_LABELS[source]}
+                <li key={source}>
+                  <button
+                    type="button"
+                    aria-pressed={isSelected}
+                    onClick={() => handleChangeSource(source)}
+                    className={clsx(styles.menuItemButton, {
+                      [styles.selectedMenuItem]: isSelected,
+                      [styles.unselectedMenuItem]: !isSelected,
+                    })}
+                  >
+                    {SOURCE_LABELS[source]}
+                  </button>
                 </li>
               );
             })}
