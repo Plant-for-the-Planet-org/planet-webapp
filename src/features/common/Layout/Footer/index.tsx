@@ -120,8 +120,10 @@ export default function Footer(): ReactElement | null {
                   target="_blank"
                   rel="noreferrer"
                   href="https://www.facebook.com/plantfortheplanet"
+                  aria-label={t('followOn', { socialMedia: 'Facebook' })}
                 >
                   <svg
+                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="46"
                     height="46"
@@ -164,8 +166,10 @@ export default function Footer(): ReactElement | null {
                   target="_blank"
                   rel="noreferrer"
                   href="https://www.instagram.com/plantfortheplanet_official/"
+                  aria-label={t('followOn', { socialMedia: 'Instagram' })}
                 >
                   <svg
+                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="46"
                     height="46"
@@ -208,8 +212,10 @@ export default function Footer(): ReactElement | null {
                   target="_blank"
                   rel="noreferrer"
                   href="https://www.linkedin.com/company/plant-for-the-planet/mycompany/"
+                  aria-label={t('followOn', { socialMedia: 'LinkedIn' })}
                 >
                   <svg
+                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="46"
                     height="46"
@@ -243,8 +249,10 @@ export default function Footer(): ReactElement | null {
                   target="_blank"
                   rel="noreferrer"
                   href="https://www.youtube.com/user/PlantForThePlanet"
+                  aria-label={t('followOn', { socialMedia: 'YouTube' })}
                 >
                   <svg
+                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="46"
                     height="46"
@@ -278,8 +286,10 @@ export default function Footer(): ReactElement | null {
                   target="_blank"
                   rel="noreferrer"
                   href="https://www.flickr.com/people/plant-for-the-planet/"
+                  aria-label={t('followOn', { socialMedia: 'Flickr' })}
                 >
                   <svg
+                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="46"
                     height="46"
@@ -313,8 +323,10 @@ export default function Footer(): ReactElement | null {
                   target="_blank"
                   rel="noreferrer"
                   href="https://www.tiktok.com/@plantfortheplanet.org"
+                  aria-label={t('followOn', { socialMedia: 'TikTok' })}
                 >
                   <svg
+                    aria-hidden="true"
                     width="46"
                     height="46"
                     viewBox="0 0 46 46"
@@ -370,6 +382,7 @@ export default function Footer(): ReactElement | null {
             href="http://www.plant-for-the-planet.org/"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={t('plantForThePlanetWebsite')}
           >
             <span aria-hidden="true" style={{ display: 'contents' }}>
               <PlanetCJLogo />
@@ -383,7 +396,6 @@ export default function Footer(): ReactElement | null {
               href="https://www.unep.org/"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={t('plantForThePlanetWebsite')}
             >
               <p className={styles.unep_logo_text}>{t('supportsUNEP')} </p>
               <span aria-hidden="true" style={{ display: 'contents' }}>
@@ -395,13 +407,15 @@ export default function Footer(): ReactElement | null {
           {tenantConfig.config.showUNDecadeLogo && (
             <a
               id={'unDecadeLogoIcon'}
-              type="button"
               className={styles.unDecade_logo_container}
               href="https://www.decadeonrestoration.org/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={t('unDecadeOnRestoration')}
             >
-              <UNDecadeLogo />
+              <span aria-hidden="true" style={{ display: 'contents' }}>
+                <UNDecadeLogo />
+              </span>
             </a>
           )}
         </div>
