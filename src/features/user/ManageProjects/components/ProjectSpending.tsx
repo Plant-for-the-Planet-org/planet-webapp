@@ -314,13 +314,14 @@ export default function ProjectSpending({
             )}
           </div>
         ) : (
-          <div
-            className={styles.formFieldLarge}
-            onClick={() => setShowForm(true)}
-          >
-            <p className={styles.inlineLinkButton}>
+          <div className={styles.formFieldLarge}>
+            <button
+              type="button"
+              className={styles.inlineLinkButton}
+              onClick={() => setShowForm(true)}
+            >
               {tManageProjects('addAnotherYear')}
-            </p>
+            </button>
           </div>
         )}
 

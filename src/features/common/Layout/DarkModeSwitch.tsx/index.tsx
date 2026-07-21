@@ -8,7 +8,7 @@ function DarkModeSwitch() {
   const { theme, setTheme } = useContext(ThemeContext);
 
   return (
-    <button style={{ position: 'relative' }}>
+    <div style={{ position: 'relative', display: 'inline-block' }}>
       <input
         onClick={() =>
           setTheme(theme === 'theme-light' ? 'theme-dark' : 'theme-light')
@@ -23,7 +23,7 @@ function DarkModeSwitch() {
         <SunIcon />
         <div className={styles.darkModeBall}></div>
       </label>
-    </button>
+    </div>
   );
 }
 

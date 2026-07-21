@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';
 import { useUserProps } from '../../UserPropsContext';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -22,6 +23,7 @@ const UserProfileButton = () => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { isAuthenticated, isLoading } = useAuth0();
+  const t = useTranslations('Common');
 
   if (isLoading) {
     return <ProfileIconSkeleton />;
@@ -37,6 +39,8 @@ const UserProfileButton = () => {
 
   return (
     <button
+      type="button"
+      aria-label={t('myProfile')}
       className={styles.profileImageButton}
       onClick={() => router.push(localizedPath('/profile'))}
     >
@@ -44,7 +48,9 @@ const UserProfileButton = () => {
         <img src={getImageUrl('profile', 'thumb', user.image)} alt="Profile" />
       ) : (
         <div className={styles.userDefaultIconContainer}>
-          <DefaultProfileImageIcon />
+          <span aria-hidden="true" style={{ display: 'contents' }}>
+            <DefaultProfileImageIcon />
+          </span>
         </div>
       )}
     </button>
