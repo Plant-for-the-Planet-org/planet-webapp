@@ -2,6 +2,7 @@ import type { SetState } from '../../../common/types/common';
 import { useTranslations } from 'next-intl';
 import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
 import FilterIcon from '../../../../../public/assets/images/icons/projectV2/FilterIcon';
+import IconButton from '../../../common/IconButton';
 import styles from '../styles/ProjectListControls.module.scss';
 import { clsx } from 'clsx';
 
@@ -34,26 +35,20 @@ export const SearchAndFilter = ({
         [styles.mapModeButtons]: isMobile && selectedMode === 'map',
       })}
     >
-      <button
-        type="button"
-        aria-label={t('searchProject')}
+      <IconButton
+        label={t('searchProject')}
         onClick={() => setIsSearching(!isSearching)}
       >
-        <span aria-hidden="true" style={{ display: 'contents' }}>
-          <SearchIcon />
-        </span>
-      </button>
+        <SearchIcon />
+      </IconButton>
       <div className={styles.buttonContainer}>
         {hasFilterApplied && <div className={styles.activeIndicator} />}
-        <button
-          type="button"
-          aria-label={t('filterProjects')}
+        <IconButton
+          label={t('filterProjects')}
           onClick={() => setIsFilterOpen(!isFilterOpen)}
         >
-          <span aria-hidden="true" style={{ display: 'contents' }}>
-            <FilterIcon width={'16px'} />
-          </span>
-        </button>
+          <FilterIcon width={'16px'} />
+        </IconButton>
       </div>
     </div>
   );

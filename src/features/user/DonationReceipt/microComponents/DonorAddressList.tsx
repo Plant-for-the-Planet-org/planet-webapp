@@ -16,6 +16,7 @@ import StyledCheckbox from './StyledCheckbox';
 import styles from '../DonationReceipt.module.scss';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import DonorAddressCheckIcon from '../../../../../public/assets/images/icons/DonorAddressCheckIcon';
+import IconButton from '../../../common/IconButton';
 
 type Props = {
   address: Address;
@@ -100,20 +101,17 @@ const DonorAddressList = ({
         </span>
       )}
 
-      <button
+      <IconButton
         onClick={(e) => {
           e.preventDefault();
           setSelectedAddress(address);
           setAddressAction(ADDRESS_ACTIONS.EDIT);
           setIsModalOpen(true);
         }}
-        type="button"
-        aria-label={tAddressManagement('addressForm.editAddress')}
+        label={tAddressManagement('addressForm.editAddress')}
       >
-        <span aria-hidden="true" style={{ display: 'contents' }}>
-          <EditIcon />
-        </span>
-      </button>
+        <EditIcon />
+      </IconButton>
     </section>
   );
 };
