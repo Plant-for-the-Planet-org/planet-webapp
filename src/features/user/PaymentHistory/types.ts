@@ -127,6 +127,8 @@ export interface PaymentGift {
  */
 export interface PaymentFundraiser {
   guid?: string;
+  /** Preferred for the public URL; falls back to guid. */
+  slug?: string;
   name?: string;
 }
 
@@ -154,6 +156,27 @@ export interface PaymentDetail {
   /** Present only once the backend exposes it (see PaymentFundraiser). */
   fundraiser?: PaymentFundraiser;
   lineItems: PaymentLineItem[];
+}
+
+/**
+ * A saved Stripe payment method (card or SEPA) for the profile, per country.
+ * @see UserProfileController::paymentMethods / formatPaymentMethods()
+ *   GET /app/profile/paymentMethods/{country}
+ */
+export interface SavedPaymentMethod {
+  /** Stripe payment method id (pm_…) — also the id passed to DELETE. */
+  id: string;
+  /** "card" | "sepa_debit". */
+  type: string;
+  isDefault: boolean;
+  /** "visa" | "mastercard" | "sepa" | … */
+  brand: string | null;
+  /** Card last4, or IBAN last4 for SEPA. */
+  last4: string | null;
+  /** SEPA: IBAN-derived bank country (ISO-2). */
+  country?: string | null;
+  /** Cards only: "MM/YYYY". */
+  expires?: string | null;
 }
 
 /** Query params accepted by GET /app/payments (see controller filter/order maps). */
