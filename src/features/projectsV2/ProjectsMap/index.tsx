@@ -1,4 +1,7 @@
-import type { ViewStateChangeEvent } from 'react-map-gl-v7/maplibre';
+import type {
+  MapLayerMouseEvent,
+  ViewStateChangeEvent,
+} from 'react-map-gl-v7/maplibre';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { SingleTreeRegistration } from '@planet-sdk/common';
 import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
@@ -253,30 +256,37 @@ function ProjectsMap(props: ProjectsMapProps) {
   );
 
   const onMouseMove = useCallback(
-    (e) => {
+    (e: MapLayerMouseEvent) => {
       if (currentPage !== 'project-details') return;
-      const features = getFeaturesAtPoint(mapRef, e.point);
-      if (!features?.length) {
-        // only clear hover if something was previously hovered
+
+      // Clear any existing hover highlight (no-op when nothing is hovered).
+      const clearHover = () => {
         if (lastHoveredIdRef.current !== null) {
           lastHoveredIdRef.current = null;
           setHoveredIntervention(null);
         }
+      };
+
+      const features = getFeaturesAtPoint(mapRef, e.point);
+      if (!features?.length) {
+        clearHover();
         return;
       }
 
       // Map libraries typically return features ordered by render stack,
       // where the first item represents the topmost visible layer at the point.
-      if (!isPlantFeature(features[0])) return;
+      // Moving onto a non-plant feature (e.g. a site polygon) must also clear
+      // any existing hover, otherwise the previous highlight stays stuck.
+      if (!isPlantFeature(features[0])) {
+        clearHover();
+        return;
+      }
 
       const hoveredId = features[0].properties?.id ?? null;
 
       // Don't layer a hover style over the already-selected intervention.
       if (hoveredId !== null && hoveredId === selectedIntervention?.id) {
-        if (lastHoveredIdRef.current !== null) {
-          lastHoveredIdRef.current = null;
-          setHoveredIntervention(null);
-        }
+        clearHover();
         return;
       }
 
@@ -303,7 +313,7 @@ function ProjectsMap(props: ProjectsMapProps) {
    * - Any click clears a selected sample intervention first.
    */
   const onClick = useCallback(
-    (e) => {
+    (e: MapLayerMouseEvent) => {
       if (currentPage !== 'project-details') return;
 
       const features = getFeaturesAtPoint(mapRef, e.point);
