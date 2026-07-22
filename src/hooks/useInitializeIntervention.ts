@@ -8,7 +8,7 @@ import {
 } from '../stores';
 import { useRouter } from 'next/router';
 import { useLocale } from 'next-intl';
-import { FIRST_SITE_INDEX, isString } from '../utils/projectV2';
+import { FIRST_SITE_INDEX, hasNoSites, isString } from '../utils/projectV2';
 
 const getInterventionByHid = (
   interventions: Intervention[] | null,
@@ -43,6 +43,7 @@ export const useInitializeIntervention = () => {
     (state) => state.selectSiteAndSyncUrl
   );
   const projectSlug = singleProject?.slug ?? '';
+  const projectSites = singleProject?.sites ?? [];
   const hasInterventions = Boolean(interventions?.length);
 
   /**
@@ -72,7 +73,13 @@ export const useInitializeIntervention = () => {
     if (intervention) {
       selectInterventionSyncUrl(intervention, locale, projectSlug, router);
     } else {
-      selectSiteAndSyncUrl(FIRST_SITE_INDEX, locale, router);
+      // Invalid ploc: fall back to the first site, or none when the project has
+      // no selectable sites (all geometries null), matching useInitializeSingleProject.
+      selectSiteAndSyncUrl(
+        hasNoSites(projectSites) ? null : FIRST_SITE_INDEX,
+        locale,
+        router
+      );
     }
   }, [
     router.isReady,
