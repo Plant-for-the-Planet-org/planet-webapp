@@ -71,7 +71,8 @@ export const useInitializeProject = () => {
         setShowDonatableProjects(true);
       }
     }
-  }, [router.isReady]);
+    // `currentPage` starts as `null` and is resolved by `useInitializeView` once the router is ready; include it so the URL filters initialize when the page becomes 'project-list' (not only on the initial `router.isReady`).
+  }, [router.isReady, currentPage]);
 
   useEffect(() => {
     if (currentPage === 'project-details') clearFilterStates();
