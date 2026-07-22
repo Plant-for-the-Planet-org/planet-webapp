@@ -55,13 +55,9 @@ const TimeTravel = dynamic(() => import('./TimeTravel'), {
   loading: () => <p>Loading comparison...</p>,
 });
 
-export type ProjectsMapDesktopProps = {
-  isMobile: false;
-};
-export type ProjectsMapMobileProps = {
-  isMobile: true;
-};
-export type ProjectsMapProps = ProjectsMapMobileProps | ProjectsMapDesktopProps;
+interface ProjectsMapProps {
+  isMobile: boolean;
+}
 
 function ProjectsMap(props: ProjectsMapProps) {
   // Fetch layers data

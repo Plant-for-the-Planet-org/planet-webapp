@@ -3,7 +3,6 @@ import type {
   Intervention,
   MultiTreeRegistration,
   SampleTreeRegistration,
-  SingleTreeRegistration,
 } from '@planet-sdk/common';
 import type {
   InterventionFeature,
@@ -92,16 +91,13 @@ export default function InterventionLayers(): ReactElement {
   const setSelectedSampleIntervention = useInterventionStore(
     (state) => state.setSelectedSampleIntervention
   );
-  const setSelectedIntervention = useInterventionStore(
-    (state) => state.setSelectedIntervention
-  );
 
   const t = useTranslations('Maps');
   const locale = useLocale();
 
   const togglePointIntervention = (
     e: MouseEvent<HTMLDivElement>,
-    tree: SingleTreeRegistration | SampleTreeRegistration
+    tree: SampleTreeRegistration
   ) => {
     e.stopPropagation();
     e.preventDefault();
@@ -112,9 +108,6 @@ export default function InterventionLayers(): ReactElement {
       switch (tree.type) {
         case 'sample-tree-registration':
           setSelectedSampleIntervention(tree);
-          break;
-        case 'single-tree-registration':
-          setSelectedIntervention(tree);
           break;
         default:
           break;
