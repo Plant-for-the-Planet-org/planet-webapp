@@ -164,7 +164,7 @@ export default function PaymentsView() {
       </div>
 
       {isDesktop ? (
-        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,400px)] items-start gap-6">
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,320px)] items-start gap-4">
           <div>{listContent}</div>
           <aside className="sticky top-24 flex max-h-[calc(100vh-8rem)] flex-col gap-4 overflow-y-auto">
             {selectedGuid ? (

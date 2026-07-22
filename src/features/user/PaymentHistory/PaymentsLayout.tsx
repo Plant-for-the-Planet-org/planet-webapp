@@ -7,7 +7,7 @@ import UserLayout from '@/features/common/Layout/UserLayout/UserLayout';
 import { useTenantStore } from '@/stores/tenantStore';
 
 import { PaymentsPageShell } from './PaymentsPageShell';
-import { PaymentsTabsNav } from './components/PaymentsTabsNav';
+import { PaymentsSideNav } from './components/PaymentsSideNav';
 
 /** A page that supplies its own layout via getLayout (Pages Router pattern). */
 export type NextPageWithPaymentsLayout<P = Record<string, unknown>> =
@@ -26,9 +26,9 @@ const PaymentsLayout = ({ children }: { children: ReactNode }) => {
   return (
     <UserLayout>
       <PaymentsPageShell title={t('payments')} subtitle={t('donationsSubTitle')}>
-        <div className="flex flex-col gap-4">
-          <PaymentsTabsNav />
-          {children}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-[150px_minmax(0,1fr)] md:gap-6">
+          <PaymentsSideNav />
+          <div className="min-w-0">{children}</div>
         </div>
       </PaymentsPageShell>
     </UserLayout>

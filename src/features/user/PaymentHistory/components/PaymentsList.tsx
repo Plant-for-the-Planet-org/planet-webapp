@@ -104,7 +104,7 @@ export const PaymentsList = ({
                   {date}
                 </span>
               )}
-              <span className="w-24 shrink-0 text-right tabular-nums text-foreground sm:w-28">
+              <span className="w-24 shrink-0 text-right tabular-nums text-foreground">
                 {formatAmount(item.amount, item.currency)}
               </span>
               <PaymentStatusBadge

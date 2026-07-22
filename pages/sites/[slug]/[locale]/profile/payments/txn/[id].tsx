@@ -8,15 +8,18 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
+import { Loader2 } from 'lucide-react';
 import { v4 } from 'uuid';
 
-import { PaymentTransactionDetail } from '../../../../../../../src/features/user/PaymentHistory/components/PaymentTransactionDetail';
 import {
   getPaymentsLayout,
   type NextPageWithPaymentsLayout,
 } from '../../../../../../../src/features/user/PaymentHistory/PaymentsLayout';
+import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -24,16 +27,37 @@ import {
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 import { defaultTenant } from '../../../../../../../tenant.config';
 
+/**
+ * Shareable single-transaction link. Rather than a details-only page, it opens
+ * the transactions master-detail (list + detail pane / mobile Sheet) with the
+ * transaction selected, by normalizing to /profile/payments?txn={id} — the same
+ * in-context view a row click produces. Keeping selection on ?txn= avoids
+ * remounting (and refetching) the list. The id is read from the route on the
+ * client (the auth token isn't available during static generation).
+ */
 const AccountPaymentTransaction: NextPageWithPaymentsLayout =
   (): ReactElement => {
     const t = useTranslations('Me');
+    const router = useRouter();
+    const { localizedPath } = useLocalizedPath();
+
+    useEffect(() => {
+      const id = router.query.id;
+      if (typeof id === 'string' && id) {
+        router.replace(
+          `${localizedPath('/profile/payments')}?txn=${encodeURIComponent(id)}`
+        );
+      }
+    }, [router.query.id, router, localizedPath]);
 
     return (
       <>
         <Head>
           <title>{t('payments')}</title>
         </Head>
-        <PaymentTransactionDetail />
+        <div className="flex justify-center py-10 text-muted-foreground">
+          <Loader2 className="size-6 animate-spin" aria-hidden />
+        </div>
       </>
     );
   };

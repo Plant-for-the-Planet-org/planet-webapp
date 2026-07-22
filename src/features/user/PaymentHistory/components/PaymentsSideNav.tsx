@@ -6,13 +6,13 @@ import { cn } from '@/lib/utils';
 import useLocalizedPath from '@/hooks/useLocalizedPath';
 
 /**
- * Section navigation for the Payments hub, rendered once in the shared layout
- * (getPaymentsLayout). Styled to match the shadcn TabsList/TabsTrigger look but
- * built from real <Link>s so each section is its own route. The active section
- * is derived from the URL; the single-transaction route
+ * Left section menu for the Payments hub, rendered once in the shared layout
+ * (getPaymentsLayout). A vertical list of real <Link>s on md+ (mirroring the
+ * app's TabbedView side menu), collapsing to a horizontal scroll row on mobile.
+ * The active section is derived from the URL; the single-transaction route
  * (/profile/payments/txn/[id]) keeps "Transactions" active as its parent.
  */
-export const PaymentsTabsNav = () => {
+export const PaymentsSideNav = () => {
   const t = useTranslations('Me');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -21,21 +21,14 @@ export const PaymentsTabsNav = () => {
   const txnBase = localizedPath('/profile/payments/txn');
 
   // Labels resolved with literal keys so next-intl's typed messages hold.
-  const sections = [
+  const items = [
+    { label: t('transactions'), path: '/profile/payments', isIndex: true },
     {
-      key: 'transactions',
-      label: t('transactions'),
-      path: '/profile/payments',
-      isIndex: true,
-    },
-    {
-      key: 'recurring',
       label: t('recurring'),
       path: '/profile/payments/recurring',
       isIndex: false,
     },
     {
-      key: 'methods',
       label: t('paymentMethods'),
       path: '/profile/payments/methods',
       isIndex: false,
@@ -53,23 +46,23 @@ export const PaymentsTabsNav = () => {
   return (
     <nav
       aria-label={t('payments')}
-      className="inline-flex h-10 w-fit items-center justify-center rounded-md bg-muted p-1 text-muted-foreground"
+      className="flex flex-row gap-1 overflow-x-auto md:flex-col md:gap-0.5 md:overflow-visible"
     >
-      {sections.map((section) => {
-        const active = isActive(section.path, section.isIndex);
+      {items.map((item) => {
+        const active = isActive(item.path, item.isIndex);
         return (
           <Link
-            key={section.key}
-            href={localizedPath(section.path)}
+            key={item.path}
+            href={localizedPath(item.path)}
             aria-current={active ? 'page' : undefined}
             className={cn(
-              'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+              'whitespace-nowrap rounded-md px-3 py-2 text-sm transition-colors',
               active
-                ? 'bg-background text-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-muted font-medium text-foreground'
+                : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
             )}
           >
-            {section.label}
+            {item.label}
           </Link>
         );
       })}
