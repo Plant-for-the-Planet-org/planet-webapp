@@ -8,6 +8,7 @@ import ErrorPopup from './ErrorPopup';
 import Header from './Header';
 import Navbar from './Navbar';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
+import { useViewStore, isEmbeddablePage } from '../../../stores/viewStore';
 import { useTenantStore } from '../../../stores/tenantStore';
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -18,11 +19,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
     [tenantConfig]
   );
 
-  const isEmbedMode = useQueryParamStore(
-    (state) =>
-      state.embed === 'true' &&
-      (state.page === 'project-list' || state.page === 'project-details')
-  );
+  const embed = useQueryParamStore((state) => state.embed);
+  const embeddablePage = useViewStore((state) => state.page);
+  const isEmbedMode = embed === 'true' && isEmbeddablePage(embeddablePage);
 
   return (
     <>

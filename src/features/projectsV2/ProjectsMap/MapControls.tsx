@@ -1,15 +1,13 @@
-import type { ViewMode } from '../../common/Layout/ProjectsLayout/MobileProjectsLayout';
-import type { SetState } from '../../common/types/common';
 import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { DropdownType } from '../../common/types/projectv2';
 import type { InterventionTypes } from '@planet-sdk/common';
+import type { Page } from '../../../stores/viewStore';
 
 import { useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
 import InterventionDropDown from './InterventionDropDown';
 import ProjectListControlForMobile from '../ProjectListControls/ProjectListControlForMobile';
-import { useProjects } from '../ProjectsContext';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIcon';
@@ -18,47 +16,26 @@ import { AllInterventions } from '../../../utils/constants/intervention';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../stores/queryParamStore';
 import { useProjectMapStore } from '../../../stores/projectMapStore';
+import {
+  useInterventionStore,
+  useSingleProjectStore,
+  useViewStore,
+} from '../../../stores';
+import { hasNoSites } from '../../../utils/projectV2';
 
 interface MapControlsProps {
   isMobile: boolean;
   selectedTab: SelectedTab | null;
-  selectedMode: ViewMode | undefined;
-  setSelectedMode: SetState<ViewMode> | undefined;
-  page: 'project-list' | 'project-details';
+  currentPage: Page;
   mobileOS: MobileOs;
 }
 
 const MapControls = ({
   isMobile,
-  selectedMode,
   selectedTab,
-  setSelectedMode,
-  page,
+  currentPage,
   mobileOS,
 }: MapControlsProps) => {
-  const {
-    projects,
-    topProjects,
-    selectedClassification,
-    filteredProjects,
-    setSelectedClassification,
-    debouncedSearchValue,
-    setDebouncedSearchValue,
-    isSearching,
-    setIsSearching,
-    singleProject,
-    selectedSite,
-    setSelectedSite,
-    selectedIntervention,
-    selectedSampleTree,
-    setSelectedIntervention,
-    setSelectedSampleTree,
-    selectedInterventionType,
-    setSelectedInterventionType,
-    interventions,
-    showDonatableProjects,
-    setShowDonatableProjects,
-  } = useProjects();
   // local state
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
   // store: state
@@ -68,11 +45,22 @@ const MapControls = ({
   const showProjectDetails = useQueryParamStore(
     (state) => state.showProjectDetails
   );
+  // A project has no sites if all site geometries are null.
+  const hasProjectSites = useSingleProjectStore(
+    (state) => !hasNoSites(state.singleProject?.sites)
+  );
+  const isInterventionSelected = useInterventionStore(
+    (state) =>
+      state.selectedSampleIntervention !== null ||
+      state.selectedIntervention !== null
+  );
+  const interventions = useInterventionStore((state) => state.interventions);
   // store: action
   const setIsSatelliteView = useProjectMapStore(
     (state) => state.setIsSatelliteView
   );
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
+  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
 
   const availableInterventionTypes = useMemo(() => {
     if (!interventions) return [];
@@ -84,15 +72,9 @@ const MapControls = ({
     return [...types];
   }, [interventions]);
 
-  const hasProjectSites =
-    singleProject?.sites?.length !== undefined &&
-    singleProject?.sites?.length > 0;
   const canShowSatelliteToggle =
-    !(
-      isMobile &&
-      (selectedIntervention !== null || selectedSampleTree !== null)
-    ) && selectedTab === 'field';
-  const isProjectDetailsPage = page === 'project-details';
+    !(isMobile && isInterventionSelected) && selectedTab === 'field';
+  const isProjectDetailsPage = currentPage === 'project-details';
   const canShowInterventionDropdown =
     isProjectDetailsPage &&
     selectedTab === 'field' &&
@@ -100,56 +82,24 @@ const MapControls = ({
   const onlyMapModeAllowed =
     isEmbedMode &&
     isMobile &&
-    page === 'project-details' &&
+    currentPage === 'project-details' &&
     showProjectDetails === 'false';
 
   const siteDropdownProps = {
-    selectedSite,
-    setSelectedSite,
-    projectSites: singleProject?.sites,
-    selectedIntervention,
-    setSelectedIntervention,
-    setSelectedSampleTree,
     activeDropdown,
     setActiveDropdown,
   };
 
   const interventionDropDownProps = {
-    selectedInterventionType,
-    setSelectedInterventionType,
     allInterventions: AllInterventions,
-    selectedIntervention,
-    setSelectedIntervention,
-    setSelectedSampleTree,
     activeDropdown,
     setActiveDropdown,
-    hasProjectSites,
     availableInterventionTypes,
   };
-  const projectListControlProps = {
-    ...siteDropdownProps,
-    projectCount: projects?.length,
-    topProjectCount: topProjects?.length,
-    filteredProjects,
-    selectedClassification,
-    setSelectedClassification,
-    debouncedSearchValue,
-    setDebouncedSearchValue,
-    selectedMode,
-    setSelectedMode,
-    isMobile,
-    isSearching,
-    setIsSearching,
-    page,
-    hasProjectSites,
-    mapOptions,
-    updateMapOption,
-    showDonatableProjects,
-    setShowDonatableProjects,
-  };
-
   const exitMapMode = () => {
-    setSelectedMode && setSelectedMode('list');
+    // Switching from map to list only changes the view mode. The current site
+    // selection and its URL state are preserved.
+    setSelectedMode('list');
   };
 
   const layerToggleClass = clsx(styles.layerToggle, {
@@ -169,9 +119,13 @@ const MapControls = ({
 
   return (
     <>
-      {isMobile && page === 'project-list' && (
+      {isMobile && currentPage === 'project-list' && (
         <div className={projectListControlsContainerStyles}>
-          <ProjectListControlForMobile {...projectListControlProps} />
+          <ProjectListControlForMobile
+            isMobile={isMobile}
+            mapOptions={mapOptions}
+            updateMapOption={updateMapOption}
+          />
         </div>
       )}
       {isProjectDetailsPage && (

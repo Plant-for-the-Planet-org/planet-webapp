@@ -1,15 +1,14 @@
+import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
+import { useProjectStore } from '../../../stores';
 import ProjectMarkersGL from './ProjectMarkers/ProjectMarkersGL';
-import { useProjects } from '../ProjectsContext';
 
-interface MultipleProjectsViewProps {
-  page: 'project-list' | 'project-details';
-}
+const MultipleProjectsView = () => {
+  const isProjectsError = useProjectStore((state) => state.isProjectsError);
+  const { filteredProjects } = useFilteredProjects();
 
-const MultipleProjectsView = ({ page }: MultipleProjectsViewProps) => {
-  const { isError, filteredProjects } = useProjects();
-  if (isError || !filteredProjects) return null;
+  if (isProjectsError) return null;
 
-  return <ProjectMarkersGL projects={filteredProjects} page={page} />;
+  return <ProjectMarkersGL projects={filteredProjects} />;
 };
 
 export default MultipleProjectsView;
