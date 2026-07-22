@@ -61,3 +61,45 @@ Responsibilities:
 ### References
 
 - Finding: `ACCESSIBILITY_FINDINGS.md` → A11Y-002.
+
+---
+
+## FU-002 — Unify the address autocomplete implementation
+
+**Status:** Proposed (not started)
+**Origin:** Surfaced during A11Y-006 (address suggestion listbox not keyboard operable).
+**Priority:** Medium — code-health / regression-prevention, not a user-facing defect.
+
+### Background
+
+A11Y-006 replaced the bespoke `role="listbox"` autocomplete in `SignupAddressField.tsx` with a MUI `Autocomplete`. That is the same accessible pattern already implemented in `AddressInput.tsx` and consumed by `AddressForm.tsx`. As a result two near-identical address autocompletes now exist, each carrying its own copy of the geocoder wiring:
+
+- `src/features/user/CompleteSignup/components/SignupAddressField.tsx`
+- `src/features/user/Settings/EditProfile/AddressManagement/microComponents/AddressInput.tsx` (+ `AddressForm.tsx`)
+
+Both duplicate the same logic: debounced `getAddressSuggestions`, a `latestRequestIdRef` race guard, and `getAddressDetailsFromText` selection parsing that fans the result into `address` / `city` / `zipCode`.
+
+### Proposal
+
+Extract a single shared address-autocomplete component (or hook) that both call sites use:
+
+- Component owns the MUI `Autocomplete` markup, `freeSolo`, `filterOptions` passthrough, and `getOptionLabel`.
+- A companion hook (e.g. `useAddressSuggestions`) owns the debounced fetch, request-ID race guard, and address-detail parsing.
+- Support a `fullWidth` / styling prop so the signup form (whose container uses `align-items: center`, so children do **not** stretch) and the settings form (flex-stretch layout) can share one component without a width regression.
+
+### Why deferred (not implemented in the A11Y-006 PR)
+
+- **Scope discipline** — A11Y-006 is a bounded, single-finding fix; extracting a shared component and migrating both call sites is a larger refactor than the finding warrants.
+- **Risk isolation** — `AddressForm.tsx` is out of scope for A11Y-006; the shared-component API (props, styling passthrough) should not destabilize a verified a11y fix.
+- **Sequencing** — best landed after A11Y-006 is verified, using both current implementations as the reference.
+
+### Suggested acceptance criteria
+
+- [ ] Shared address-autocomplete component + suggestions hook added.
+- [ ] `SignupAddressField.tsx` and `AddressForm.tsx` both migrated to it.
+- [ ] No behaviour or visual change at either call site (signup field stays full-width).
+- [ ] Keyboard/screen-reader combobox behaviour preserved (Arrow/Enter/Escape, `aria-activedescendant`).
+
+### References
+
+- Finding: `ACCESSIBILITY_FINDINGS.md` → A11Y-006.

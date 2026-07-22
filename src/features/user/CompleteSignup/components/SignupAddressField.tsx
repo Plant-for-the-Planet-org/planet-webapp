@@ -5,6 +5,7 @@ import type { SignupFormData } from '..';
 
 import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';
+import { Autocomplete } from '@mui/material';
 import { MuiTextField } from '..';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useCallback, useMemo, useRef, useState } from 'react';
@@ -109,46 +110,45 @@ const SignupAddressField = ({
             message: tSignup('validationErrors.addressInvalid'),
           },
         }}
-        render={({ field: { onChange, value, onBlur } }) => (
-          <MuiTextField
-            label={tSignup('fieldLabels.address')}
-            error={errors.address !== undefined}
-            helperText={errors.address !== undefined && errors.address.message}
-            onChange={(event) => {
-              setAddressInput(event.target.value);
-              onChange(event.target.value);
+        render={({ field: { onChange, value, onBlur, ref } }) => (
+          <Autocomplete
+            freeSolo
+            fullWidth
+            options={addressSuggestions}
+            // Suggestions are already relevant results from the geocoder, so
+            // keep them all instead of letting MUI filter against the input.
+            filterOptions={(options) => options}
+            getOptionLabel={(option) =>
+              typeof option === 'string' ? option : option.text
+            }
+            value={value ?? ''}
+            onInputChange={(_, newValue) => {
+              setAddressInput(newValue);
+              onChange(newValue);
             }}
-            onBlur={() => {
-              setAddressSuggestions([]);
-              onBlur();
+            onChange={(_, newValue) => {
+              const selected =
+                typeof newValue === 'string' ? newValue : newValue?.text ?? '';
+              onChange(selected);
+              if (selected) {
+                handleAddressSelection(selected);
+              }
             }}
-            value={value}
+            renderInput={(params) => (
+              <MuiTextField
+                {...params}
+                label={tSignup('fieldLabels.address')}
+                error={errors.address !== undefined}
+                helperText={
+                  errors.address !== undefined && errors.address.message
+                }
+                inputRef={ref}
+                onBlur={onBlur}
+              />
+            )}
           />
         )}
       />
-      {addressSuggestions
-        ? addressSuggestions.length > 0 && (
-            <div
-              role="listbox"
-              aria-label={tSignup('addressManagement.addressSuggestions')}
-            >
-              {addressSuggestions.map((suggestion, index) => {
-                return (
-                  <div
-                    key={index}
-                    onMouseDown={() => {
-                      handleAddressSelection(suggestion.text);
-                    }}
-                    role="option"
-                    aria-selected={false}
-                  >
-                    {suggestion.text}
-                  </div>
-                );
-              })}
-            </div>
-          )
-        : null}
       <InlineFormDisplayGroup>
         <Controller
           name="city"
