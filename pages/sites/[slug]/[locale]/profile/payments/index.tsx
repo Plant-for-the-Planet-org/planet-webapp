@@ -11,44 +11,32 @@ import type {
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 
-import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import Payments from '../../../../../src/features/user/PaymentHistory/PaymentsHub';
-import { PaymentsPageShell } from '../../../../../src/features/user/PaymentHistory/PaymentsPageShell';
-import { useTenantStore } from '../../../../../src/stores/tenantStore';
+import PaymentsView from '../../../../../../src/features/user/PaymentHistory/PaymentsView';
+import {
+  getPaymentsLayout,
+  type NextPageWithPaymentsLayout,
+} from '../../../../../../src/features/user/PaymentHistory/PaymentsLayout';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
-} from '../../../../../src/utils/multiTenancy/helpers';
-import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
-import { defaultTenant } from '../../../../../tenant.config';
+} from '../../../../../../src/utils/multiTenancy/helpers';
+import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
+import { defaultTenant } from '../../../../../../tenant.config';
 
-interface PageProps {
-  messages: AbstractIntlMessages;
-  tenantConfig: Tenant;
-}
-
-function AccountPayments(): ReactElement {
+const AccountPayments: NextPageWithPaymentsLayout = (): ReactElement => {
   const t = useTranslations('Me');
-  // store: state
-  const isInitialized = useTenantStore((state) => state.isInitialized);
-
-  // Gate rendering on tenant store init, matching every other profile page.
-  if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <>
       <Head>
         <title>{t('payments')}</title>
       </Head>
-      <PaymentsPageShell
-        title={t('payments')}
-        subtitle={t('donationsSubTitle')}
-      >
-        <Payments />
-      </PaymentsPageShell>
-    </UserLayout>
+      <PaymentsView />
+    </>
   );
-}
+};
+
+AccountPayments.getLayout = getPaymentsLayout;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
@@ -68,6 +56,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: 'blocking',
   };
 };
+
+interface PageProps {
+  messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
+}
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
