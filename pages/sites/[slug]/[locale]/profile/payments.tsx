@@ -12,8 +12,8 @@ import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
-import Payments from '../../../../../src/features/user/PaymentHistory/PaymentsView';
+import Payments from '../../../../../src/features/user/PaymentHistory/PaymentsHub';
+import { PaymentsPageShell } from '../../../../../src/features/user/PaymentHistory/PaymentsPageShell';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import {
   constructPathsForTenantSlug,
@@ -40,13 +40,12 @@ function AccountPayments(): ReactElement {
       <Head>
         <title>{t('payments')}</title>
       </Head>
-      <DashboardView
+      <PaymentsPageShell
         title={t('payments')}
         subtitle={t('donationsSubTitle')}
-        multiColumn={true}
       >
         <Payments />
-      </DashboardView>
+      </PaymentsPageShell>
     </UserLayout>
   );
 }
