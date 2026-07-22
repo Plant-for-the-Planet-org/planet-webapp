@@ -130,6 +130,7 @@
     "duplicate_account": "Account already exists",
     "token_expired": "Token Expired. Please login again",
     "project_not_available": "Project details are currently unavailable",
+    "project_not_found": "The requested project could not be found",
     "topProject": "Top Project",
     "viewReport": "View Report",
     "reviewInfo": "The project was inspected in a multiday field review in {reviewMonth} and fulfills our <standardsLink>standards.</standardsLink>",
