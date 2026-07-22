@@ -13,7 +13,6 @@ import formatDate from '@/utils/countryCurrency/getFormattedDate';
 import { usePayments } from './hooks/usePayments';
 import { useMediaQuery } from './hooks/useMediaQuery';
 import { useInfiniteScroll } from './hooks/useInfiniteScroll';
-import { useSubscriptions } from './hooks/useSubscriptions';
 import { MembershipCta } from './components/MembershipCta';
 import { PaymentDetailContent } from './components/PaymentDetailContent';
 import { PaymentDetailSheet } from './components/PaymentDetailSheet';
@@ -83,17 +82,11 @@ export default function PaymentsView() {
     hasMore && !isLoadingMore && !isLoading
   );
 
-  // Membership CTA: hide for existing Donor Circle members AND anyone who
-  // already has an active recurring donation (they're already a supporter).
-  // Only fetch subscriptions when the member flag alone hasn't ruled it out.
-  const { subscriptions, isLoading: subsLoading } = useSubscriptions(
-    !user?.isMember
-  );
-  const isRecurringSupporter = subscriptions.some(
-    (s) => s.status === 'active' || s.status === 'trialing'
-  );
-  const showMembershipCta =
-    !user?.isMember && !subsLoading && !isRecurringSupporter;
+  // Membership CTA is hidden for existing Donor Circle members. NOTE: recurring
+  // donations are not a reliable signal (they don't persist), so we intentionally
+  // do NOT check subscriptions here — a proper flag will come from the profile
+  // endpoint later; gate on that once available.
+  const showMembershipCta = !user?.isMember;
 
   const formatAmount = (amount: number, currency: string) =>
     getFormattedCurrency(locale, currency, amount);
