@@ -48,7 +48,7 @@
     --border: 0 0% 89.8%; /* neutral light grey */
     --input: 0 0% 89.8%;
     --ring: 94 57% 44%; /* #68B030 */
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* rounder corners to match the app's existing style */
   }
 
   .dark {

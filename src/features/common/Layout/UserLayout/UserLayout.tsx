@@ -51,6 +51,13 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         flag: t('new'),
         subMenu: [
           {
+            key: 'payments-redesign',
+            title: t('paymentsNew'),
+            path: '/profile/payments',
+            flag: t('new'),
+            matchPattern: 'prefix', // Matches /profile/payments and /profile/payments/*
+          },
+          {
             key: 'history',
             title: t('history'),
             path: '/profile/history',
