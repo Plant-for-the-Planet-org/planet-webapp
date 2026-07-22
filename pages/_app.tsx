@@ -12,6 +12,7 @@ import { useEffect, useMemo, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
 import { Auth0Provider } from '@auth0/auth0-react';
+import '../src/styles/globals.css';
 import '../src/theme/global.scss';
 import ThemeProvider from '../src/theme/themeContext';
 import * as Sentry from '@sentry/node';
