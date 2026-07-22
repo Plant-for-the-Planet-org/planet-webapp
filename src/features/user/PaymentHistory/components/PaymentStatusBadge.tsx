@@ -38,22 +38,54 @@ const TONE_CLASSES: Record<StatusTone, string> = {
   neutral: 'border-transparent bg-muted text-muted-foreground hover:bg-muted',
 };
 
+const DOT_CLASSES: Record<StatusTone, string> = {
+  success: 'bg-green-600 dark:bg-green-400',
+  warning: 'bg-amber-500 dark:bg-amber-400',
+  destructive: 'bg-red-600 dark:bg-red-400',
+  neutral: 'bg-muted-foreground',
+};
+
 interface PaymentStatusBadgeProps {
   status: PaymentStatus | null;
   /** Localized label; falls back to the raw status when omitted. */
   label?: string;
   className?: string;
+  /**
+   * 'badge' = filled pill (used in the detail).
+   * 'dot' = compact colored dot + label (used in the list, saves space).
+   */
+  variant?: 'badge' | 'dot';
 }
 
 export const PaymentStatusBadge = ({
   status,
   label,
   className,
+  variant = 'badge',
 }: PaymentStatusBadgeProps) => {
   const tone = getStatusTone(status);
+  const text = label ?? status ?? '—';
+
+  if (variant === 'dot') {
+    return (
+      <span
+        className={cn(
+          'flex items-center gap-1.5 text-sm text-muted-foreground',
+          className
+        )}
+      >
+        <span
+          className={cn('size-2 shrink-0 rounded-full', DOT_CLASSES[tone])}
+          aria-hidden
+        />
+        {text}
+      </span>
+    );
+  }
+
   return (
     <Badge className={cn('font-medium', TONE_CLASSES[tone], className)}>
-      {label ?? status ?? '—'}
+      {text}
     </Badge>
   );
 };

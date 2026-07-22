@@ -1,6 +1,6 @@
 import type { PaymentListItem, PaymentStatus } from '../types';
 
-import { ChevronRight, Heart } from 'lucide-react';
+import { ChevronRight, UserRound } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -17,6 +17,13 @@ interface PaymentsListProps {
   getTypeLabel: (item: PaymentListItem) => string;
   /** Accessible label for the trailing dedication marker (e.g. "Dedicated"). */
   dedicatedLabel: string;
+  /** Highlights the active row (desktop master-detail). */
+  selectedGuid?: string | null;
+  /**
+   * Compact rows for the narrow list column in the desktop master-detail split:
+   * date moves into the subline, and the date column + chevron are dropped.
+   */
+  compact?: boolean;
 }
 
 /**
@@ -35,7 +42,7 @@ const PaymentTypeLabel = ({
   <span className="flex items-center gap-1.5 truncate text-foreground">
     {label}
     {isDedicated && (
-      <Heart
+      <UserRound
         className="size-3.5 shrink-0 text-primary"
         aria-label={dedicatedLabel}
       />
@@ -56,46 +63,66 @@ export const PaymentsList = ({
   getStatusLabel,
   getTypeLabel,
   dedicatedLabel,
+  selectedGuid,
+  compact = false,
 }: PaymentsListProps) => (
-  <ul className="flex flex-col divide-y divide-border">
-    {payments.map((item) => {
-      const date = formatDate(item.paymentDate);
-      return (
-        <li key={item.guid}>
-          <button
-            type="button"
-            onClick={() => onSelect(item.guid)}
-            className={cn(
-              'flex w-full items-center gap-3 rounded-lg px-2 py-3 text-left',
-              'transition-colors hover:bg-accent/40'
-            )}
-          >
-            <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-              <PaymentTypeLabel
-                label={getTypeLabel(item)}
-                isDedicated={item.isGift}
-                dedicatedLabel={dedicatedLabel}
-              />
-              <span className="truncate text-xs text-muted-foreground">
-                {item.reference}
-                {date && ` · ${date}`}
+  <div className="overflow-hidden rounded-xl border border-border bg-card">
+    <ul className="divide-y divide-border">
+      {payments.map((item) => {
+        const date = formatDate(item.paymentDate);
+        return (
+          <li key={item.guid}>
+            <button
+              type="button"
+              onClick={() => onSelect(item.guid)}
+              aria-current={item.guid === selectedGuid}
+              className={cn(
+                'flex w-full items-center gap-4 px-4 py-3.5 text-left',
+                'transition-colors hover:bg-accent/40',
+                item.guid === selectedGuid && 'bg-accent/60'
+              )}
+            >
+              <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <PaymentTypeLabel
+                  label={getTypeLabel(item)}
+                  isDedicated={item.isGift}
+                  dedicatedLabel={dedicatedLabel}
+                />
+                {date && (
+                  <span
+                    className={cn(
+                      'truncate text-xs text-muted-foreground',
+                      !compact && 'sm:hidden'
+                    )}
+                  >
+                    {date}
+                  </span>
+                )}
+              </div>
+              {!compact && (
+                <span className="hidden w-32 shrink-0 whitespace-nowrap text-sm text-muted-foreground sm:block">
+                  {date}
+                </span>
+              )}
+              <span className="w-24 shrink-0 text-right tabular-nums text-foreground sm:w-28">
+                {formatAmount(item.amount, item.currency)}
               </span>
-            </div>
-            <span className="shrink-0 tabular-nums text-foreground">
-              {formatAmount(item.amount, item.currency)}
-            </span>
-            <PaymentStatusBadge
-              status={item.status}
-              label={getStatusLabel(item.status)}
-              className="shrink-0"
-            />
-            <ChevronRight
-              className="size-4 shrink-0 text-muted-foreground"
-              aria-hidden
-            />
-          </button>
-        </li>
-      );
-    })}
-  </ul>
+              <PaymentStatusBadge
+                status={item.status}
+                label={getStatusLabel(item.status)}
+                variant="dot"
+                className={cn('shrink-0', !compact && 'sm:w-28')}
+              />
+              {!compact && (
+                <ChevronRight
+                  className="hidden size-4 shrink-0 text-muted-foreground sm:block"
+                  aria-hidden
+                />
+              )}
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
 );

@@ -1,43 +1,75 @@
 import type { PaymentListItem, PaymentStatus } from './types';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
+import { Loader2, ReceiptText } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
+import { useUserProps } from '@/features/common/Layout/UserPropsContext';
 import getFormattedCurrency from '@/utils/countryCurrency/getFormattedCurrency';
 import formatDate from '@/utils/countryCurrency/getFormattedDate';
 
 import { usePayments } from './hooks/usePayments';
+import { useMediaQuery } from './hooks/useMediaQuery';
+import { useInfiniteScroll } from './hooks/useInfiniteScroll';
+import { useSubscriptions } from './hooks/useSubscriptions';
+import { MembershipCta } from './components/MembershipCta';
+import { PaymentDetailContent } from './components/PaymentDetailContent';
 import { PaymentDetailSheet } from './components/PaymentDetailSheet';
 import { PaymentsEmpty } from './components/PaymentsEmpty';
 import { PaymentsList } from './components/PaymentsList';
 import { PaymentsListSkeleton } from './components/PaymentsListSkeleton';
 
-type FilterKey = 'all' | 'completed' | 'pending';
+type FilterKey = 'all' | 'completed' | 'pending' | 'failed';
 
 const FILTERS: { key: FilterKey; status?: string }[] = [
   { key: 'all' },
   { key: 'completed', status: 'paid,complete' },
   { key: 'pending', status: 'pending' },
+  { key: 'failed', status: 'failed' },
 ];
 
 /**
- * Donor Payments view (outgoing). Redesigned list built on GET /app/payments.
- * Rendered inside DashboardView by the /profile/payments page.
+ * Donor Payments view (outgoing). On `lg`+ screens it's a master-detail split
+ * (list left, detail pane right); below that the list is full-width and a row
+ * opens the detail Sheet.
  */
 export default function PaymentsView() {
   const t = useTranslations('Me');
   const locale = useLocale();
+  const { user } = useUserProps();
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const router = useRouter();
 
   const [filter, setFilter] = useState<FilterKey>('all');
   const [selectedGuid, setSelectedGuid] = useState<string | null>(null);
+
+  // Deep link: /profile/payments?txn={guid} opens that payment's detail.
+  useEffect(() => {
+    const txn = router.query.txn;
+    if (typeof txn === 'string') {
+      setSelectedGuid((current) => (current === txn ? current : txn));
+    }
+  }, [router.query.txn]);
+
+  // Select a payment and reflect it in the URL so the link is shareable.
+  const selectPayment = (guid: string | null) => {
+    setSelectedGuid(guid);
+    const query = { ...router.query };
+    if (guid) query.txn = guid;
+    else delete query.txn;
+    router.replace({ pathname: router.pathname, query }, undefined, {
+      shallow: true,
+    });
+  };
 
   const status = FILTERS.find((f) => f.key === filter)?.status;
   const params = useMemo(() => ({ status, limit: 50 }), [status]);
 
   const {
     payments,
+    total,
     isLoading,
     isLoadingMore,
     error,
@@ -45,6 +77,23 @@ export default function PaymentsView() {
     loadMore,
     reload,
   } = usePayments(params);
+
+  const sentinelRef = useInfiniteScroll(
+    loadMore,
+    hasMore && !isLoadingMore && !isLoading
+  );
+
+  // Membership CTA: hide for existing Donor Circle members AND anyone who
+  // already has an active recurring donation (they're already a supporter).
+  // Only fetch subscriptions when the member flag alone hasn't ruled it out.
+  const { subscriptions, isLoading: subsLoading } = useSubscriptions(
+    !user?.isMember
+  );
+  const isRecurringSupporter = subscriptions.some(
+    (s) => s.status === 'active' || s.status === 'trialing'
+  );
+  const showMembershipCta =
+    !user?.isMember && !subsLoading && !isRecurringSupporter;
 
   const formatAmount = (amount: number, currency: string) =>
     getFormattedCurrency(locale, currency, amount);
@@ -65,60 +114,92 @@ export default function PaymentsView() {
   // marker in the list and the detail view.
   const getTypeLabel = (_item: PaymentListItem) => t('donation');
 
+  const listContent = isLoading ? (
+    <PaymentsListSkeleton />
+  ) : error ? (
+    <PaymentsEmpty
+      title={t('loadError')}
+      actionLabel={t('retry')}
+      onAction={reload}
+    />
+  ) : payments.length === 0 ? (
+    <PaymentsEmpty title={t('noRecords')} />
+  ) : (
+    <>
+      <PaymentsList
+        payments={payments}
+        onSelect={selectPayment}
+        formatAmount={formatAmount}
+        formatDate={formatDateLabel}
+        getStatusLabel={getStatusLabel}
+        getTypeLabel={getTypeLabel}
+        dedicatedLabel={t('dedicated')}
+        selectedGuid={selectedGuid}
+        compact={isDesktop}
+      />
+      <div ref={sentinelRef} aria-hidden />
+      {isLoadingMore && (
+        <div className="flex justify-center py-4 text-muted-foreground">
+          <Loader2 className="size-5 animate-spin" aria-hidden />
+        </div>
+      )}
+    </>
+  );
+
   return (
     <div className="flex flex-col gap-4">
-      <Tabs
-        value={filter}
-        onValueChange={(value) => setFilter(value as FilterKey)}
-      >
-        <TabsList>
-          {FILTERS.map((f) => (
-            <TabsTrigger key={f.key} value={f.key}>
-              {t(f.key)}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+      <div className="flex flex-wrap items-center gap-2">
+        {FILTERS.map((f) => (
+          <button
+            key={f.key}
+            type="button"
+            onClick={() => setFilter(f.key)}
+            aria-pressed={filter === f.key}
+            className={cn(
+              'rounded-md border px-3.5 py-1.5 text-sm font-medium transition-colors',
+              filter === f.key
+                ? 'border-foreground bg-foreground text-background'
+                : 'border-border bg-background text-foreground hover:border-foreground/50'
+            )}
+          >
+            {t(f.key)}
+          </button>
+        ))}
+        <span className="ml-auto text-sm text-muted-foreground">
+          {!isLoading && total > 0 ? `${total} ${t('payments')}` : ''}
+        </span>
+      </div>
 
-      {isLoading ? (
-        <PaymentsListSkeleton />
-      ) : error ? (
-        <PaymentsEmpty
-          title={t('loadError')}
-          actionLabel={t('retry')}
-          onAction={reload}
-        />
-      ) : payments.length === 0 ? (
-        <PaymentsEmpty title={t('noRecords')} />
+      {isDesktop ? (
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,400px)] items-start gap-6">
+          <div>{listContent}</div>
+          <aside className="sticky top-24 flex max-h-[calc(100vh-8rem)] flex-col gap-4 overflow-y-auto">
+            {selectedGuid ? (
+              <div className="rounded-xl border border-border bg-card p-5">
+                <PaymentDetailContent guid={selectedGuid} />
+              </div>
+            ) : (
+              <>
+                <div className="rounded-xl border border-border bg-card p-8">
+                  <div className="flex flex-col items-center justify-center gap-2 text-center text-muted-foreground">
+                    <ReceiptText className="size-8" aria-hidden />
+                    <p className="text-sm">{t('selectPayment')}</p>
+                  </div>
+                </div>
+                {showMembershipCta && <MembershipCta />}
+              </>
+            )}
+          </aside>
+        </div>
       ) : (
         <>
-          <PaymentsList
-            payments={payments}
-            onSelect={setSelectedGuid}
-            formatAmount={formatAmount}
-            formatDate={formatDateLabel}
-            getStatusLabel={getStatusLabel}
-            getTypeLabel={getTypeLabel}
-            dedicatedLabel={t('dedicated')}
+          {listContent}
+          <PaymentDetailSheet
+            guid={selectedGuid}
+            onClose={() => selectPayment(null)}
           />
-          {hasMore && (
-            <div className="flex justify-center pt-2">
-              <Button
-                variant="outline"
-                onClick={loadMore}
-                disabled={isLoadingMore}
-              >
-                {t('loadMore')}
-              </Button>
-            </div>
-          )}
         </>
       )}
-
-      <PaymentDetailSheet
-        guid={selectedGuid}
-        onClose={() => setSelectedGuid(null)}
-      />
     </div>
   );
 }
