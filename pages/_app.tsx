@@ -121,6 +121,7 @@ const PlanetWeb = ({
   const router = useRouter();
   const { tenantConfig } = pageProps;
   const [browserCompatible, setBrowserCompatible] = useState(false);
+  const locale = (router.query?.locale as string) ?? 'en';
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -144,6 +145,13 @@ const PlanetWeb = ({
     setBrowserCompatible(browserNotCompatible());
   }, []);
 
+  // Sync the document language with the active locale. `_document` renders a
+  // default `<Html lang="en">` at SSR and cannot read the custom `[locale]`
+  // route param per request, so keep `<html lang>` in step on the client.
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
   const isMobile = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return window.innerWidth < 481;
@@ -164,10 +172,7 @@ const PlanetWeb = ({
     return <BrowserNotSupported />;
   } else {
     return tenantConfig ? (
-      <NextIntlClientProvider
-        locale={(router.query?.locale as string) ?? 'en'}
-        messages={pageProps.messages}
-      >
+      <NextIntlClientProvider locale={locale} messages={pageProps.messages}>
         <CacheProvider value={emotionCache}>
           <Auth0Provider
             domain={process.env.AUTH0_CUSTOM_DOMAIN!}
