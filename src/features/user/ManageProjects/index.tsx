@@ -527,6 +527,7 @@ export default function ManageProjects({
             projectGUID={projectGUID}
             isLocked={isLocked}
             verificationStatus={projectDetails?.verificationStatus}
+            showQuestionnaire={showQuestionnaire}
           />
         );
       case ProjectCreationTabs.QUESTIONNAIRE:

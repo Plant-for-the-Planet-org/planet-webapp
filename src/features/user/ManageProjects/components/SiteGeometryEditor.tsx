@@ -85,6 +85,7 @@ export default function SiteGeometryEditor({
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [isSatelliteMode, setIsSatelliteMode] = useState(false);
   const [coordinates, setCoordinates] = useState<number[][]>([]);
+  const coordinatesRef = useRef<number[][]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isMapReady, setIsMapReady] = useState(false);
 
@@ -141,19 +142,29 @@ export default function SiteGeometryEditor({
       setErrorMessage(null);
       if (!isDrawing) return;
       const lngLat = [e.lngLat.lng, e.lngLat.lat];
-      setCoordinates((prev) => [...prev, lngLat]);
+      setCoordinates((prev) => {
+        const updated = [...prev, lngLat];
+        coordinatesRef.current = updated;
+        return updated;
+      });
     },
     [isDrawing]
   );
 
-  // Finish drawing (double click closes polygon)
+  // Finish drawing — double-click closes the polygon.
+  // Uses coordinatesRef instead of the coordinates state value to avoid
+  // reading stale state: the two onClick events that fire before onDblClick
+  // update coordinatesRef synchronously inside the setState updater, so by
+  // the time handleDoubleClick runs the ref already reflects those 2 points.
   const handleDoubleClick = useCallback(() => {
-    if (coordinates.length < 4) {
+    const coords = coordinatesRef.current;
+    if (coords.length < 4) {
       setErrorMessage(tManageProjects('errors.polygon.minimumPoints'));
       setCoordinates([]);
+      coordinatesRef.current = [];
       return;
     }
-    const closed = [...coordinates, coordinates[0]];
+    const closed = [...coords, coords[0]];
     const newFeature: ProjectSiteFeature = {
       type: 'Feature',
       properties: {},
@@ -177,7 +188,8 @@ export default function SiteGeometryEditor({
     });
 
     setCoordinates([]);
-  }, [coordinates]);
+    coordinatesRef.current = [];
+  }, [tManageProjects]);
 
   useEffect(() => {
     async function loadMapStyle() {
@@ -188,6 +200,19 @@ export default function SiteGeometryEditor({
     }
     loadMapStyle();
   }, []);
+
+  // Disable double-click zoom while drawing so the dblclick event can be
+  // used to close the polygon without the map zooming in at the same time.
+  useEffect(() => {
+    if (!isMapReady) return;
+    const map = mapRef.current;
+    if (!map) return;
+    if (isDrawing) {
+      map.doubleClickZoom.disable();
+    } else {
+      map.doubleClickZoom.enable();
+    }
+  }, [isDrawing, isMapReady]);
 
   const handleViewStateChange = useCallback(
     (newViewState: Partial<ViewState>) => {

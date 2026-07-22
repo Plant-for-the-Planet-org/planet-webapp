@@ -300,6 +300,7 @@ export interface ProjectSpendingProps {
   projectGUID: string | unknown;
   isLocked: boolean;
   verificationStatus?: string;
+  showQuestionnaire?: boolean;
 }
 
 // project questionnaire

@@ -50,9 +50,13 @@ export default function ProjectSpending({
   projectGUID,
   isLocked,
   verificationStatus,
+  showQuestionnaire = false,
 }: ProjectSpendingProps): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
+  const nextStep = showQuestionnaire
+    ? ProjectCreationTabs.QUESTIONNAIRE
+    : ProjectCreationTabs.REVIEW;
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const {
@@ -99,7 +103,7 @@ export default function ProjectSpending({
       setIsUploadingData(false);
       setShowForm(false);
       setErrorMessage('');
-      handleNext(ProjectCreationTabs.REVIEW);
+      handleNext(nextStep);
     } catch (err) {
       setIsUploadingData(false);
       setErrors(handleError(err as APIError));
@@ -351,7 +355,7 @@ export default function ProjectSpending({
               <Button
                 onClick={() => {
                   if (uploadedFiles && uploadedFiles.length > 0) {
-                    handleNext(ProjectCreationTabs.REVIEW);
+                    handleNext(nextStep);
                   } else {
                     setErrorMessage('Please upload  report');
                   }
@@ -369,7 +373,7 @@ export default function ProjectSpending({
               <Button
                 className="formButton"
                 variant="contained"
-                onClick={() => handleNext(ProjectCreationTabs.REVIEW)}
+                onClick={() => handleNext(nextStep)}
               >
                 {tManageProjects('skip')}
               </Button>
