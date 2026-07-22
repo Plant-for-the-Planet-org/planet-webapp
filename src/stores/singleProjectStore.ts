@@ -40,7 +40,7 @@ interface SingleProjectStore {
   ) => Promise<void>;
 
   // Use when only local state update is required (no routing)
-  setSelectedSite: (sideIndex: number | null) => void;
+  setSelectedSite: (siteIndex: number | null) => void;
 
   /**
    * Updates the project details route using shallow routing.
@@ -221,6 +221,7 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
           {
             singleProject: null,
             selectedSite: null,
+            fetchError: false,
           },
           undefined,
           'singleProjectStore/clear_project_state'
