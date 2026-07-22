@@ -2,12 +2,24 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 export type ViewMode = 'list' | 'map';
+
+/**
+ * Pages that support embed mode. Single source of truth for the `Page` type
+ * and the `isEmbeddablePage` check.
+ */
+export const EMBEDDABLE_PAGES = ['project-list', 'project-details'] as const;
+export type EmbeddablePage = (typeof EMBEDDABLE_PAGES)[number];
+
 /**
  * `null` means the current view hasn't been determined yet, or the route is
  * not a project page. The value is set by `useInitializeView` once the router
  * is ready.
  */
-export type Page = 'project-list' | 'project-details' | null;
+export type Page = EmbeddablePage | null;
+
+/** Whether the given page is one that supports embed mode. */
+export const isEmbeddablePage = (page: Page): page is EmbeddablePage =>
+  page !== null && (EMBEDDABLE_PAGES as readonly string[]).includes(page);
 interface ViewStore {
   page: Page;
   /**
