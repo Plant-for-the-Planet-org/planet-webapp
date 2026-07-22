@@ -39,6 +39,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const [mounted, setMounted] = useState(false);
 
   const tProjectsCommon = useTranslations('Project');
+  const tCommon = useTranslations('Common');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
 
@@ -126,8 +127,15 @@ const ImageSection = (props: ImageSectionProps) => {
   return (
     <div className={imageContainerClasses}>
       {showBackButton && (
-        <button onClick={handleBackButton} className={styles.backButton}>
-          <BackButton />
+        <button
+          type="button"
+          aria-label={tCommon('goBack')}
+          onClick={handleBackButton}
+          className={styles.backButton}
+        >
+          <span aria-hidden="true" style={{ display: 'contents' }}>
+            <BackButton />
+          </span>
         </button>
       )}
       <ProjectBadge
@@ -140,7 +148,7 @@ const ImageSection = (props: ImageSectionProps) => {
       {/* Loading state */}
       {isImageLoading && (
         <img
-          alt="loading"
+          alt=""
           src="/assets/images/project-contribution-default-landscape.png"
           className={styles.projectImageFile}
         />
@@ -149,7 +157,7 @@ const ImageSection = (props: ImageSectionProps) => {
       {/* Main image */}
       {image && typeof image !== 'undefined' && (
         <img
-          alt={'projectImage'}
+          alt={projectName}
           src={imageSource}
           loading="lazy"
           decoding="async"
@@ -164,7 +172,7 @@ const ImageSection = (props: ImageSectionProps) => {
       {/* Error/fallback state */}
       {(hasError || !image) && (
         <img
-          alt="fallback"
+          alt=""
           src="/assets/images/project-contribution-default-landscape.png"
           className={styles.projectImageFile}
         />

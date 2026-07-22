@@ -2,6 +2,7 @@ import type { SetState } from '../../../../common/types/common';
 import type { SliderImage } from './ImageCarousel';
 
 import { Modal } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import SliderButton from './SliderButton';
 import styles from '../../styles/Slider.module.scss';
 import CrossIcon from '../../../../../../public/assets/images/icons/projectV2/CrossIcon';
@@ -34,6 +35,7 @@ const ImageSliderModal = ({
   isMobile,
   type,
 }: ImageSliderModalProps) => {
+  const t = useTranslations('Common');
   const isFirstImage = currentIndex === 0;
   const isLastImage = currentIndex === images.length - 1;
 
@@ -59,10 +61,14 @@ const ImageSliderModal = ({
         {!isMobile && renderSliderButton('prev', styles.sliderButton)}
         <div className={styles.expandedImageSliderContainer}>
           <button
+            type="button"
+            aria-label={t('close')}
             onClick={() => setIsModalOpen(false)}
             className={styles.closeModalButton}
           >
-            <CrossIcon width={isMobile ? 10 : 18} />
+            <span aria-hidden="true" style={{ display: 'contents' }}>
+              <CrossIcon width={isMobile ? 10 : 18} />
+            </span>
           </button>
 
           {isMobile &&

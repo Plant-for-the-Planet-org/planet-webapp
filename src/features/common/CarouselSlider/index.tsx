@@ -3,6 +3,7 @@ import type { InnerSlider, Settings } from 'react-slick';
 import type { SetState } from '../types/common';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -25,23 +26,28 @@ const CarouselArrow = (props: {
   direction: string;
 }) => {
   const { onClick, disabled, direction } = props;
+  const t = useTranslations('Common');
   const disabledColor = themeProperties.designSystem.colors.mediumGrey;
   const activeColor = themeProperties.designSystem.colors.primaryColor;
   const iconColor = disabled ? disabledColor : activeColor;
 
   return (
     <button
+      type="button"
       onClick={onClick}
       disabled={disabled}
+      aria-label={direction === 'next' ? t('nextSlide') : t('previousSlide')}
       style={{
         cursor: disabled ? 'none' : 'pointer',
       }}
     >
-      {direction === 'next' ? (
-        <CarouselNextIcon color={iconColor} />
-      ) : (
-        <CarouselPrevIcon color={iconColor} />
-      )}
+      <span aria-hidden="true" style={{ display: 'contents' }}>
+        {direction === 'next' ? (
+          <CarouselNextIcon color={iconColor} />
+        ) : (
+          <CarouselPrevIcon color={iconColor} />
+        )}
+      </span>
     </button>
   );
 };

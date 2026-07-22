@@ -81,11 +81,8 @@ export function RecordHeader({
       ? 'incoming'
       : 'outgoing';
 
-  return (
-    <div
-      onClick={handleRecordToggle && (() => handleRecordToggle(index))}
-      className={styles.recordHeader}
-    >
+  const headerContent = (
+    <>
       <div className={styles.left}>
         {getRecordTitle()}
         <p>{formatDate(record.created)}</p>
@@ -99,7 +96,21 @@ export function RecordHeader({
           {tMe(record.status)}
         </p>
       </div>
-    </div>
+    </>
+  );
+
+  // Interactive (list) rows toggle expansion, so render a real <button>;
+  // in the modal view the header is not interactive, so keep a plain <div>.
+  return handleRecordToggle ? (
+    <button
+      type="button"
+      onClick={() => handleRecordToggle(index)}
+      className={styles.recordHeader}
+    >
+      {headerContent}
+    </button>
+  ) : (
+    <div className={styles.recordHeader}>{headerContent}</div>
   );
 }
 
@@ -458,14 +469,15 @@ export default function AccountRecord({
   return (
     <div className={outerDivClasses}>
       {isModal && (
-        <div
+        <button
+          type="button"
           onClick={() => {
             handleRecordToggle(index);
           }}
           className={styles.closeRecord}
         >
           <BackButton />
-        </div>
+        </button>
       )}
       {(!isModal || (isModal && selectedRecord !== null)) && (
         <>

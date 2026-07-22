@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl';
 import { SearchTextField } from './SearchTextField';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../styles/ProjectListControls.module.scss';
-import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
@@ -51,9 +50,6 @@ const ActiveSearchField = ({ setIsFilterOpen }: ActiveSearchFieldProps) => {
         [styles.onlyMapMode]: onlyMapModeAllowed,
       })}
     >
-      <button className={styles.activeSearchIcon}>
-        <SearchIcon />
-      </button>
       <SearchTextField
         id="standard-search"
         variant="standard"
@@ -65,8 +61,15 @@ const ActiveSearchField = ({ setIsFilterOpen }: ActiveSearchFieldProps) => {
         autoFocus
       />
 
-      <button onClick={resetSearch} className={styles.crossIcon}>
-        <CrossIcon />
+      <button
+        type="button"
+        aria-label={t('clearSearch')}
+        onClick={resetSearch}
+        className={styles.crossIcon}
+      >
+        <span aria-hidden="true" style={{ display: 'contents' }}>
+          <CrossIcon />
+        </span>
       </button>
     </div>
   );

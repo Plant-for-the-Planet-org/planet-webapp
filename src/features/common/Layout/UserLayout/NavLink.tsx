@@ -134,16 +134,21 @@ function NavLink({
           [styles.navLinkActive]: isCurrentMainMenu,
           [styles.navLinkOpen]: isSubMenuOpen,
         })}
-        onClick={handleMainMenuClick}
       >
         <IconContainer>{link.icon}</IconContainer>
-        <button className={styles.navLinkTitle}>
+        <button
+          type="button"
+          className={styles.navLinkTitle}
+          onClick={handleMainMenuClick}
+        >
           {link.title}
           {link.flag && <span className={styles.itemFlag}>{link.flag}</span>}
         </button>
         {link.subMenu && link.subMenu.length > 0 && !link.hideSubMenu && (
           <button
+            type="button"
             className={styles.subMenuArrow}
+            onClick={handleMainMenuClick}
             style={{
               transform: isSubMenuOpen ? 'rotate(-180deg)' : 'rotate(-90deg)',
             }}
@@ -159,7 +164,8 @@ function NavLink({
         link.subMenu.map((subLink) => {
           if (!subLink.hideItem) {
             return (
-              <div
+              <button
+                type="button"
                 className={clsx(styles.navLinkSubMenu, {
                   [styles.navLinkActiveSubMenu]:
                     currentSubMenuKey === subLink.key,
@@ -171,7 +177,7 @@ function NavLink({
                 {subLink.flag && (
                   <span className={styles.itemFlag}>{subLink.flag}</span>
                 )}
-              </div>
+              </button>
             );
           }
         })}

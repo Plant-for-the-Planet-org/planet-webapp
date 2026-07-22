@@ -9,6 +9,7 @@
       "address": "Address"
     },
     "donationDetails": {
+      "title": "Donation Details",
       "referenceNumber": "Reference Number",
       "reference": "Reference",
       "amountDonated": "Amount Donated",

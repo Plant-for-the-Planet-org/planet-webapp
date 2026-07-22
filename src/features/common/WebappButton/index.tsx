@@ -72,19 +72,17 @@ function WebappButton({
         <a
           href={otherProps.href}
           target={otherProps.target || '_self'}
-          className={styles.webappButtonLink}
+          className={clsx(styles.webappButtonLink, buttonClasses)}
           onClick={(e) => e.stopPropagation()}
           rel={
             otherProps.target === '_blank' ? 'noopener noreferrer' : undefined
           }
           onMouseEnter={handleMouseEnter}
         >
-          <button className={buttonClasses}>
-            {otherProps.icon !== undefined && (
-              <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
-            )}
-            <div className={styles.webappButtonLabel}>{otherProps.text}</div>
-          </button>
+          {otherProps.icon !== undefined && (
+            <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
+          )}
+          <div className={styles.webappButtonLabel}>{otherProps.text}</div>
         </a>
       );
     }
@@ -93,18 +91,16 @@ function WebappButton({
       <Link
         href={localizedPath(otherProps.href)}
         target={otherProps.target || '_self'}
-        className={styles.webappButtonLink}
+        className={clsx(styles.webappButtonLink, buttonClasses)}
         onClick={(e) => e.stopPropagation()}
         {...(otherProps.prefetch !== undefined && {
           prefetch: otherProps.prefetch,
         })}
       >
-        <button className={buttonClasses}>
-          {otherProps.icon !== undefined && (
-            <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
-          )}
-          <div className={styles.webappButtonLabel}>{otherProps.text}</div>
-        </button>
+        {otherProps.icon !== undefined && (
+          <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
+        )}
+        <div className={styles.webappButtonLabel}>{otherProps.text}</div>
       </Link>
     );
   }
