@@ -245,11 +245,11 @@ export const RecurringRecord = ({
               <p className="mb-2 text-xs text-muted-foreground">
                 {t('projects')}
               </p>
-              <div className="overflow-hidden rounded-lg border border-solid border-border">
+              <div className="overflow-hidden rounded-lg border border-solid border-border/60">
                 {dest.items.map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between gap-3 border-b border-solid border-border px-3 py-2 text-sm last:border-b-0"
+                    className="flex items-center justify-between gap-3 border-b border-solid border-border/60 px-3 py-2 text-sm last:border-b-0"
                   >
                     <span className="min-w-0 truncate text-foreground">
                       {item.name}
