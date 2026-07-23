@@ -11,10 +11,9 @@ import { useErrorHandlingStore } from '@/stores/errorHandlingStore';
 import { RecurringView } from './recurring/RecurringView';
 
 /**
- * Recurring-donations tab of the Payments hub. Reuses the existing
- * Account/Recurrency feature (GET /app/subscriptions), mirroring the fetch the
- * standalone /profile/recurrency page does, minus its DashboardView wrapper.
- * A shadcn redesign of this feature can come later.
+ * Recurring-donations tab of the Payments hub — a shadcn `RecurringView`
+ * (record card + Edit/Pause/Cancel/Reactivate dialogs) over GET /app/subscriptions.
+ * Replaced the legacy MUI Account/Recurrency page (now deleted).
  */
 export const RecurringTab = () => {
   const { getApiAuthenticated } = useApi();
