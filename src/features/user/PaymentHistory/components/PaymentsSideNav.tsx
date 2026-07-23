@@ -46,7 +46,7 @@ export const PaymentsSideNav = () => {
   return (
     <nav
       aria-label={t('payments')}
-      className="flex flex-row gap-1 overflow-x-auto md:flex-col md:gap-0.5 md:overflow-visible md:pr-6"
+      className="flex flex-row gap-1 overflow-x-auto md:flex-col md:gap-0.5 md:overflow-visible"
     >
       {items.map((item) => {
         const active = isActive(item.path, item.isIndex);
@@ -56,12 +56,18 @@ export const PaymentsSideNav = () => {
             href={localizedPath(item.path)}
             aria-current={active ? 'page' : undefined}
             className={cn(
-              'whitespace-nowrap rounded-md px-3 py-2 text-sm transition-colors',
+              'relative whitespace-nowrap rounded-md px-3 py-2 text-sm transition-colors',
               active
-                ? 'bg-muted font-medium text-foreground'
+                ? 'font-medium text-primary'
                 : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
             )}
           >
+            {active && (
+              <span
+                className="absolute inset-y-1 left-0 w-0.5 rounded-full bg-primary"
+                aria-hidden
+              />
+            )}
             {item.label}
           </Link>
         );
