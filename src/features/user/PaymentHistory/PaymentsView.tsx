@@ -167,10 +167,10 @@ export default function PaymentsView() {
   );
 
   return (
-    // Cap the transactions view so the master-detail list stays tight (a wide
-    // 1fr list leaves a lot of empty space in each row); the page container
-    // itself stays flexible.
-    <div className="flex max-w-[860px] flex-col gap-4">
+    // Cap the transactions view width; the master-detail keeps the list column
+    // tight (a wide 1fr list leaves empty space in each row) and lets the detail
+    // pane absorb the extra width instead. The page container stays flexible.
+    <div className="flex max-w-[1060px] flex-col gap-4">
       <div className="flex flex-wrap items-center gap-2">
         {FILTERS.map((f) => (
           <button
@@ -194,7 +194,7 @@ export default function PaymentsView() {
       </div>
 
       {isDesktop ? (
-        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,380px)] items-start gap-4">
+        <div className="grid grid-cols-[minmax(0,460px)_minmax(0,1fr)] items-start gap-4">
           <div>{listContent}</div>
           <aside className="sticky top-24 flex max-h-[calc(100vh-8rem)] flex-col gap-4 overflow-y-auto">
             {selectedGuid ? (
