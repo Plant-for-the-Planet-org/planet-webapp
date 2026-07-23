@@ -28,7 +28,13 @@ export const DialogActions = ({
 
   return (
     <DialogFooter>
-      <Button variant="outline" onClick={onClose} disabled={disabled}>
+      <Button
+        variant="ghost"
+        onClick={onClose}
+        disabled={disabled}
+        // Neutral gray — a close/cancel shouldn't read as the primary green.
+        className="text-muted-foreground hover:bg-muted hover:text-foreground"
+      >
         {tCommon('close')}
       </Button>
       <Button

@@ -31,8 +31,9 @@ const STATUS_BADGE: Record<string, string> = {
   incomplete: 'bg-muted text-muted-foreground',
   unpaid: 'bg-muted text-muted-foreground',
 };
-const STATUS_BADGE_ACTIVE =
-  'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300';
+// Active/success uses the webapp brand green (--primary #007A49), not a generic
+// Tailwind green.
+const STATUS_BADGE_ACTIVE = 'bg-primary/10 text-primary';
 
 const Detail = ({
   label,
@@ -119,7 +120,7 @@ export const RecurringRecord = ({
     dest?.type === 'planet-cash'
       ? t('planetCashPayment')
       : dest?.type === 'mixed'
-      ? t('composite-donation')
+      ? t('donation')
       : singleName ?? '';
 
   const endsAtFuture = record.endsAt
@@ -178,25 +179,25 @@ export const RecurringRecord = ({
           />
         )}
         <div className="min-w-0">
-          <p className="truncate font-medium text-foreground">{recordName}</p>
+          <div className="flex items-center gap-2">
+            <p className="truncate font-medium text-foreground">{recordName}</p>
+            <span
+              className={cn(
+                'shrink-0 rounded-full px-2 py-0.5 text-xs font-medium capitalize',
+                STATUS_BADGE[status] ?? STATUS_BADGE_ACTIVE
+              )}
+            >
+              {statusLabel()}
+            </span>
+          </div>
           {dateLine && (
             <p className="mt-0.5 text-sm text-muted-foreground">{dateLine}</p>
           )}
         </div>
       </div>
-      <div className="flex shrink-0 flex-col items-end gap-1.5">
-        <span className="text-lg font-medium tabular-nums text-foreground">
-          {money(record.amount)}
-        </span>
-        <span
-          className={cn(
-            'rounded-full px-2 py-0.5 text-xs font-medium capitalize',
-            STATUS_BADGE[status] ?? STATUS_BADGE_ACTIVE
-          )}
-        >
-          {statusLabel()}
-        </span>
-      </div>
+      <span className="shrink-0 text-lg font-medium tabular-nums text-foreground">
+        {money(record.amount)}
+      </span>
     </div>
   );
 

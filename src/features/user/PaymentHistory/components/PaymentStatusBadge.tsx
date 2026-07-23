@@ -29,8 +29,7 @@ export const getStatusTone = (status: PaymentStatus | null): StatusTone => {
 };
 
 const TONE_CLASSES: Record<StatusTone, string> = {
-  success:
-    'border-transparent bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-900/40 dark:text-green-300',
+  success: 'border-transparent bg-primary/10 text-primary hover:bg-primary/10',
   warning:
     'border-transparent bg-amber-100 text-amber-800 hover:bg-amber-100 dark:bg-amber-900/40 dark:text-amber-300',
   destructive:
@@ -39,7 +38,7 @@ const TONE_CLASSES: Record<StatusTone, string> = {
 };
 
 const DOT_CLASSES: Record<StatusTone, string> = {
-  success: 'bg-green-600 dark:bg-green-400',
+  success: 'bg-primary',
   warning: 'bg-amber-500 dark:bg-amber-400',
   destructive: 'bg-red-600 dark:bg-red-400',
   neutral: 'bg-muted-foreground',
