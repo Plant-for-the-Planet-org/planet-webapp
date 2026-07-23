@@ -8,7 +8,7 @@
  * dates. Returns '' for missing or invalid input.
  */
 export const formatPaymentDate = (
-  iso: string | null | undefined,
+  iso: string | Date | null | undefined,
   locale: string
 ): string => {
   if (!iso) return '';

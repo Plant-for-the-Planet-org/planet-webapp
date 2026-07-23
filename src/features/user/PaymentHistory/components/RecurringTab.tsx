@@ -4,10 +4,11 @@ import type { Subscription } from '@/features/common/types/payments';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 
-import Recurrency from '@/features/user/Account/Recurrency';
 import { useApi } from '@/hooks/useApi';
 import { useUserProps } from '@/features/common/Layout/UserPropsContext';
 import { useErrorHandlingStore } from '@/stores/errorHandlingStore';
+
+import { RecurringView } from './recurring/RecurringView';
 
 /**
  * Recurring-donations tab of the Payments hub. Reuses the existing
@@ -50,7 +51,7 @@ export const RecurringTab = () => {
   }, [contextLoaded, token, fetchRecurrentDonations]);
 
   return (
-    <Recurrency
+    <RecurringView
       isDataLoading={isDataLoading}
       recurrencies={recurrencies}
       fetchRecurrentDonations={fetchRecurrentDonations}
