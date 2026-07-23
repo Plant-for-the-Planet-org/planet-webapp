@@ -8,8 +8,9 @@ import { Loader2, ReceiptText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserProps } from '@/features/common/Layout/UserPropsContext';
 import getFormattedCurrency from '@/utils/countryCurrency/getFormattedCurrency';
-import formatDate from '@/utils/countryCurrency/getFormattedDate';
 import useLocalizedPath from '@/hooks/useLocalizedPath';
+
+import { formatPaymentDate } from './lib/formatPaymentDate';
 
 import { usePayments } from './hooks/usePayments';
 import { useMediaQuery } from './hooks/useMediaQuery';
@@ -119,7 +120,7 @@ export default function PaymentsView() {
     getFormattedCurrency(locale, currency, amount);
 
   // Empty string (not "—") so the list can omit the date entirely for pending.
-  const formatDateLabel = (iso: string | null) => (iso ? formatDate(iso) : '');
+  const formatDateLabel = (iso: string | null) => formatPaymentDate(iso, locale);
 
   const getStatusLabel = (paymentStatus: PaymentStatus | null) => {
     if (!paymentStatus) return '—';

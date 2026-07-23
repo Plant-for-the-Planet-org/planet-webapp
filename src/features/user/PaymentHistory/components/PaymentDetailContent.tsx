@@ -7,7 +7,8 @@ import { ExternalLink, UserRound } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import getFormattedCurrency from '@/utils/countryCurrency/getFormattedCurrency';
-import formatDate from '@/utils/countryCurrency/getFormattedDate';
+
+import { formatPaymentDate } from '../lib/formatPaymentDate';
 import { getFundraiserUrl } from '@/utils/constants/fundraiser';
 
 import { usePaymentDetail } from '../hooks/usePaymentDetail';
@@ -126,7 +127,7 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
       <div className="pt-2">
         <DetailRow
           label={t('paymentDate')}
-          value={detail.paymentDate ? formatDate(detail.paymentDate) : ''}
+          value={formatPaymentDate(detail.paymentDate, locale)}
         />
         <DetailRow label={tPayments('donationId')} value={detail.reference} />
         {detail.method && (
