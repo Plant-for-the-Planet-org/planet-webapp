@@ -48,6 +48,7 @@ const sum = (
  */
 export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
   const t = useTranslations('Me');
+  const tPayments = useTranslations('Payments');
   const locale = useLocale();
   const { detail, isLoading } = usePaymentDetail(guid);
 
@@ -127,14 +128,14 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
           label={t('paymentDate')}
           value={detail.paymentDate ? formatDate(detail.paymentDate) : ''}
         />
-        <DetailRow label={t('donationId')} value={detail.reference} />
+        <DetailRow label={tPayments('donationId')} value={detail.reference} />
         {detail.method && (
           <DetailRow label={t('method')} value={methodLabel(detail.method)} />
         )}
       </div>
 
       {fundraiser?.name && (
-        <Section title={t('fundraiser')}>
+        <Section title={tPayments('fundraiser')}>
           {fundraiserUrl ? (
             <a
               href={fundraiserUrl}
@@ -152,7 +153,7 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
       )}
 
       {projectLines.length === 1 && (
-        <Section title={t('supports')}>
+        <Section title={tPayments('supports')}>
           <p className="text-sm text-foreground">
             {projectLines[0].caption ?? t('project')}
           </p>
@@ -165,7 +166,7 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
       )}
 
       {projectLines.length > 1 && (
-        <Section title={t('supportedProjects')}>
+        <Section title={tPayments('supportedProjects')}>
           <div className="overflow-hidden rounded-lg border border-border">
             {projectLines.map((li, index) => (
               <div
@@ -196,19 +197,25 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
       {(supportTotal > 0 || feeCoveredTotal > 0 || taxTotal > 0) && (
         <div className="pt-2">
           {supportTotal > 0 && (
-            <DetailRow label={t('support')} value={money(supportTotal)} />
+            <DetailRow
+              label={tPayments('support')}
+              value={money(supportTotal)}
+            />
           )}
           {feeCoveredTotal > 0 && (
-            <DetailRow label={t('feeCovered')} value={money(feeCoveredTotal)} />
+            <DetailRow
+              label={tPayments('feeCovered')}
+              value={money(feeCoveredTotal)}
+            />
           )}
           {taxTotal > 0 && (
-            <DetailRow label={t('tax')} value={money(taxTotal)} />
+            <DetailRow label={tPayments('tax')} value={money(taxTotal)} />
           )}
         </div>
       )}
 
       {dedicatedTo && (
-        <Section title={t('dedicatedTo')}>
+        <Section title={tPayments('dedicatedTo')}>
           <div className="flex items-center gap-2">
             <UserRound className="size-4 shrink-0 text-primary" aria-hidden />
             <span className="text-sm text-foreground">{dedicatedTo}</span>

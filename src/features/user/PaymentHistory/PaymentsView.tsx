@@ -36,6 +36,7 @@ const FILTERS: { key: FilterKey; status?: string }[] = [
  */
 export default function PaymentsView() {
   const t = useTranslations('Me');
+  const tPayments = useTranslations('Payments');
   const locale = useLocale();
   const { user } = useUserProps();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
@@ -111,8 +112,8 @@ export default function PaymentsView() {
     <PaymentsListSkeleton />
   ) : error ? (
     <PaymentsEmpty
-      title={t('loadError')}
-      actionLabel={t('retry')}
+      title={tPayments('loadError')}
+      actionLabel={tPayments('retry')}
       onAction={reload}
     />
   ) : payments.length === 0 ? (
@@ -126,7 +127,7 @@ export default function PaymentsView() {
         formatDate={formatDateLabel}
         getStatusLabel={getStatusLabel}
         getTypeLabel={getTypeLabel}
-        dedicatedLabel={t('dedicated')}
+        dedicatedLabel={tPayments('dedicated')}
         selectedGuid={selectedGuid}
         compact={isDesktop}
       />
@@ -176,7 +177,7 @@ export default function PaymentsView() {
                 <div className="rounded-xl border border-border bg-card p-8">
                   <div className="flex flex-col items-center justify-center gap-2 text-center text-muted-foreground">
                     <ReceiptText className="size-8" aria-hidden />
-                    <p className="text-sm">{t('selectPayment')}</p>
+                    <p className="text-sm">{tPayments('selectPayment')}</p>
                   </div>
                 </div>
                 {showMembershipCta && <MembershipCta />}

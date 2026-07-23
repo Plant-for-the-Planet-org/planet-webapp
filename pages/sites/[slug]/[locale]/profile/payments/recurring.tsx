@@ -68,7 +68,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
 ): Promise<GetStaticPropsResult<PageProps>> => {
   const messages = await getMessagesForPage({
     locale: context.params?.locale as string,
-    filenames: ['common', 'me', 'country'],
+    filenames: ['common', 'me', 'payments', 'country'],
   });
 
   const tenantConfig =

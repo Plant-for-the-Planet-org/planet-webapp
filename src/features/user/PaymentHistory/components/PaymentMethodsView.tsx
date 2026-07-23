@@ -31,6 +31,7 @@ const methodLabel = (method: SavedPaymentMethod) => {
  */
 export const PaymentMethodsView = () => {
   const t = useTranslations('Me');
+  const tPayments = useTranslations('Payments');
   const { user } = useUserProps();
 
   const country =
@@ -46,7 +47,7 @@ export const PaymentMethodsView = () => {
 
   if (isLoading) return <PaymentsListSkeleton rows={3} />;
   if (methods.length === 0)
-    return <PaymentsEmpty title={t('noPaymentMethods')} />;
+    return <PaymentsEmpty title={tPayments('noPaymentMethods')} />;
 
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-card">
@@ -63,7 +64,7 @@ export const PaymentMethodsView = () => {
                 <span className="flex items-center gap-2 text-foreground">
                   {methodLabel(method)}
                   {method.isDefault && (
-                    <Badge variant="secondary">{t('default')}</Badge>
+                    <Badge variant="secondary">{tPayments('default')}</Badge>
                   )}
                 </span>
                 {method.expires && (
@@ -76,7 +77,7 @@ export const PaymentMethodsView = () => {
               {confirmingId === method.id ? (
                 <div className="flex items-center gap-2">
                   <span className="hidden text-sm text-muted-foreground sm:inline">
-                    {t('confirmRemoveMethod')}
+                    {tPayments('confirmRemoveMethod')}
                   </span>
                   <Button
                     size="sm"
@@ -86,7 +87,7 @@ export const PaymentMethodsView = () => {
                       removeMethod(method.id).then(() => setConfirmingId(null))
                     }
                   >
-                    {t('remove')}
+                    {tPayments('remove')}
                   </Button>
                   <Button
                     size="sm"
@@ -100,7 +101,7 @@ export const PaymentMethodsView = () => {
                 <Button
                   size="icon"
                   variant="ghost"
-                  aria-label={t('remove')}
+                  aria-label={tPayments('remove')}
                   onClick={() => setConfirmingId(method.id)}
                 >
                   <Trash2 className="size-4" />
