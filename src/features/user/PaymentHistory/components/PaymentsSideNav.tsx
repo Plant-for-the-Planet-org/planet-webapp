@@ -56,7 +56,7 @@ export const PaymentsSideNav = () => {
             href={localizedPath(item.path)}
             aria-current={active ? 'page' : undefined}
             className={cn(
-              'relative whitespace-nowrap rounded-md px-3 py-2 text-sm transition-colors',
+              'relative whitespace-nowrap rounded-md px-3 py-2 text-sm transition-colors md:pl-0',
               active
                 ? 'font-medium text-primary'
                 : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
@@ -64,7 +64,7 @@ export const PaymentsSideNav = () => {
           >
             {active && (
               <span
-                className="absolute inset-y-1 left-0 w-0.5 rounded-full bg-primary"
+                className="absolute inset-y-1 left-0 w-0.5 rounded-full bg-primary md:-left-2.5"
                 aria-hidden
               />
             )}
