@@ -167,7 +167,10 @@ export default function PaymentsView() {
   );
 
   return (
-    <div className="flex flex-col gap-4">
+    // Cap the transactions view so the master-detail list stays tight (a wide
+    // 1fr list leaves a lot of empty space in each row); the page container
+    // itself stays flexible.
+    <div className="flex max-w-[860px] flex-col gap-4">
       <div className="flex flex-wrap items-center gap-2">
         {FILTERS.map((f) => (
           <button
