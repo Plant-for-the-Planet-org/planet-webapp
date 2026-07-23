@@ -6,8 +6,10 @@ const DONOR_CIRCLE_URL_DE =
 const DONOR_CIRCLE_URL = 'https://www.plant-for-the-planet.org/donor-circle/';
 
 /**
- * Slim, text-based Donor Circle membership prompt (no image, no large block) —
- * a subtle primary-tinted banner shown to non-members in the empty detail pane.
+ * Slim, text-based Donor Circle membership prompt (no image, no large block).
+ * Uses the same neutral card style as its siblings (the "select a payment"
+ * prompt and the detail pane) so it blends into the pane; only the "JOIN NOW"
+ * link carries the primary accent. Shown to non-members in the empty detail pane.
  */
 export const MembershipCta = () => {
   const t = useTranslations('Me');
@@ -19,7 +21,7 @@ export const MembershipCta = () => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center justify-between gap-3 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-foreground transition-colors hover:bg-primary/10"
+      className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground transition-colors hover:bg-accent/40"
     >
       <span>
         {t.rich('membershipCtaCopy', {
