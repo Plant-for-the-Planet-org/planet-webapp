@@ -67,6 +67,13 @@ export interface PaymentListItem {
   status: PaymentStatus | null;
   paymentDate: ISODateString | null;
   /**
+   * Donation creation date. Used as the row date fallback for failed/pending
+   * payments (which have no paymentDate). Optional pending a backend addition
+   * to the list callback (`$donation->getCreated()`; PR raised) — the list
+   * degrades to no date until it ships.
+   */
+  created?: ISODateString | null;
+  /**
    * Whether this payment is a gift. Pending a backend addition to the list
    * callback (agreed 2026-07-22); treat as optional until it ships and derive
    * the Donation/Gift label defensively.

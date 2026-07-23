@@ -112,6 +112,8 @@ export const EditDialog = ({
               className={FIELD_CLASSES}
             >
               <option value="monthly">{t('monthly')}</option>
+              <option value="quarterly">{t('quarterly')}</option>
+              <option value="semiyearly">{t('semiyearly')}</option>
               <option value="yearly">{t('yearly')}</option>
             </select>
           </div>

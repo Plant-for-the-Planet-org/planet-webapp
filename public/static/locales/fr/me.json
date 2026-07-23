@@ -276,6 +276,8 @@
     "transactions": "Transactions",
     "recurring": "Récurrents",
     "paymentMethods": "Moyens de paiement",
-    "paymentsNew": "Paiements (nouveau)"
+    "paymentsNew": "Paiements (nouveau)",
+    "quarterly": "Trimestriel",
+    "semiyearly": "Semestriel"
   }
 }

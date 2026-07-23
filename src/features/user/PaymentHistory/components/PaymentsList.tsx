@@ -69,7 +69,8 @@ export const PaymentsList = ({
   <div className="overflow-hidden rounded-xl border border-border bg-card">
     <ul className="divide-y divide-border">
       {payments.map((item) => {
-        const date = formatDate(item.paymentDate);
+        // Fall back to the creation date for failed/pending rows (no paymentDate).
+        const date = formatDate(item.paymentDate ?? item.created ?? null);
         return (
           <li key={item.guid}>
             <button

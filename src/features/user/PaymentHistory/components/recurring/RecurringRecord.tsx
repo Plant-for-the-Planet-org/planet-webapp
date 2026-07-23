@@ -76,8 +76,18 @@ export const RecurringRecord = ({
   const singleName = dest && dest.type !== 'mixed' ? dest.name : undefined;
   const isOpen = !collapsible || expanded;
 
-  const frequencyLabel =
-    record.frequency === 'yearly' ? t('yearly') : t('monthly');
+  const frequencyLabel = (() => {
+    switch (record.frequency) {
+      case 'yearly':
+        return t('yearly');
+      case 'quarterly':
+        return t('quarterly');
+      case 'semiyearly':
+        return t('semiyearly');
+      default:
+        return t('monthly');
+    }
+  })();
 
   const statusLabel = () => {
     switch (status) {

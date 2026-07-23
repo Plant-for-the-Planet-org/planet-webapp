@@ -276,6 +276,8 @@
     "transactions": "Transakce",
     "recurring": "Opakované",
     "paymentMethods": "Platební metody",
-    "paymentsNew": "Platby (nové)"
+    "paymentsNew": "Platby (nové)",
+    "quarterly": "Čtvrtletně",
+    "semiyearly": "Pololetně"
   }
 }
