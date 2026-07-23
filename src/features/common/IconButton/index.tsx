@@ -3,10 +3,8 @@ import type {
   ButtonHTMLAttributes,
   ReactElement,
   ReactNode,
-  Ref,
 } from 'react';
 
-import { forwardRef } from 'react';
 import Link from 'next/link';
 import { clsx } from 'clsx';
 import styles from './IconButton.module.scss';
@@ -50,10 +48,7 @@ export type IconButtonProps = IconButtonAsButtonProps | IconButtonAsLinkProps;
  * Requires an accessible label, hides the icon from screen readers,
  * and forwards all native button/link props.
  */
-const IconButton = forwardRef<
-  HTMLButtonElement | HTMLAnchorElement,
-  IconButtonProps
->(function IconButton(props, ref): ReactElement {
+function IconButton(props: IconButtonProps): ReactElement {
   const { localizedPath } = useLocalizedPath();
 
   const hiddenIcon = (
@@ -87,18 +82,14 @@ const IconButton = forwardRef<
 
     if (isExternalUrl(href)) {
       return (
-        <a ref={ref as Ref<HTMLAnchorElement>} href={href} {...sharedProps}>
+        <a href={href} {...sharedProps}>
           {hiddenIcon}
         </a>
       );
     }
 
     return (
-      <Link
-        ref={ref as Ref<HTMLAnchorElement>}
-        href={localizedPath(href)}
-        {...sharedProps}
-      >
+      <Link href={localizedPath(href)} {...sharedProps}>
         {hiddenIcon}
       </Link>
     );
@@ -115,7 +106,6 @@ const IconButton = forwardRef<
 
   return (
     <button
-      ref={ref as Ref<HTMLButtonElement>}
       type={type ?? 'button'}
       aria-label={label}
       className={clsx(styles.iconButton, className)}
@@ -124,6 +114,6 @@ const IconButton = forwardRef<
       {hiddenIcon}
     </button>
   );
-});
+}
 
 export default IconButton;
