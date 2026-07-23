@@ -46,7 +46,7 @@ export const PaymentsSideNav = () => {
   return (
     <nav
       aria-label={t('payments')}
-      className="flex flex-row gap-1 overflow-x-auto md:flex-col md:gap-0.5 md:overflow-visible"
+      className="flex flex-row gap-1 overflow-x-auto md:flex-col md:gap-0.5 md:overflow-visible md:pr-6"
     >
       {items.map((item) => {
         const active = isActive(item.path, item.isIndex);

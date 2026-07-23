@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { useUserProps } from '@/features/common/Layout/UserPropsContext';
 import getFormattedCurrency from '@/utils/countryCurrency/getFormattedCurrency';
 import formatDate from '@/utils/countryCurrency/getFormattedDate';
+import useLocalizedPath from '@/hooks/useLocalizedPath';
 
 import { usePayments } from './hooks/usePayments';
 import { useMediaQuery } from './hooks/useMediaQuery';
@@ -41,6 +42,7 @@ export default function PaymentsView() {
   const { user } = useUserProps();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
 
   const [filter, setFilter] = useState<FilterKey>('all');
   const [selectedGuid, setSelectedGuid] = useState<string | null>(null);
@@ -53,13 +55,19 @@ export default function PaymentsView() {
     }
   }, [router.query.txn]);
 
-  // Select a payment and reflect it in the URL so the link is shareable.
+  // Select a payment and reflect it in the URL so the link is shareable. Pass a
+  // clean `as` path so the address bar shows /{locale}/profile/payments — not the
+  // internal /sites/{slug}/{locale}/... route pattern — while shallow routing
+  // keeps the list mounted (no refetch).
   const selectPayment = (guid: string | null) => {
     setSelectedGuid(guid);
     const query = { ...router.query };
     if (guid) query.txn = guid;
     else delete query.txn;
-    router.replace({ pathname: router.pathname, query }, undefined, {
+    const asPath = guid
+      ? `${localizedPath('/profile/payments')}?txn=${encodeURIComponent(guid)}`
+      : localizedPath('/profile/payments');
+    router.replace({ pathname: router.pathname, query }, asPath, {
       shallow: true,
     });
   };
@@ -165,7 +173,7 @@ export default function PaymentsView() {
       </div>
 
       {isDesktop ? (
-        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,320px)] items-start gap-4">
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,380px)] items-start gap-4">
           <div>{listContent}</div>
           <aside className="sticky top-24 flex max-h-[calc(100vh-8rem)] flex-col gap-4 overflow-y-auto">
             {selectedGuid ? (

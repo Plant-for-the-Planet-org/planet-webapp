@@ -26,9 +26,11 @@ const PaymentsLayout = ({ children }: { children: ReactNode }) => {
   return (
     <UserLayout>
       <PaymentsPageShell title={t('payments')} subtitle={t('donationsSubTitle')}>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-[150px_minmax(0,1fr)] md:gap-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-[160px_minmax(0,1fr)] md:gap-0">
           <PaymentsSideNav />
-          <div className="min-w-0">{children}</div>
+          <div className="min-w-0 md:border-l md:border-solid md:border-border md:pl-6">
+            {children}
+          </div>
         </div>
       </PaymentsPageShell>
     </UserLayout>
