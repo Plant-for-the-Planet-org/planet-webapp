@@ -188,7 +188,10 @@ const PlanetWeb = ({
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
                 <UserPropsProvider>
-                  <StoreInitializer tenantConfig={tenantConfig} />
+                  <StoreInitializer
+                    isMobile={isMobile}
+                    tenantConfig={tenantConfig}
+                  />
                   <PlanetCashProvider>
                     <PayoutsProvider>
                       <Layout>
