@@ -1,3 +1,20 @@
 {
-  "Payments": {}
+  "Payments": {
+    "loadError": "Não foi possível carregar seus pagamentos. Tente novamente.",
+    "retry": "Tentar novamente",
+    "selectPayment": "Selecione um pagamento para ver os detalhes",
+    "dedicated": "Dedicado",
+    "dedicatedTo": "Dedicado a",
+    "donationId": "ID da doação",
+    "fundraiser": "Arrecadação",
+    "supports": "Apoia",
+    "supportedProjects": "Projetos apoiados",
+    "support": "Apoio",
+    "feeCovered": "Você cobriu a taxa",
+    "tax": "Imposto",
+    "noPaymentMethods": "Nenhuma forma de pagamento salva",
+    "remove": "Remover",
+    "default": "Padrão",
+    "confirmRemoveMethod": "Remover esta forma de pagamento?"
+  }
 }

@@ -288,6 +288,10 @@
     "vplatform-payout": "Platform Payout",
     "bankDetails": "Bankverbindung",
     "refundAmount": "Erstatteter Betrag",
-    "polygonMinimumPoints": "Ein Polygon benötigt mindestens 3 Punkte. Bitte klicken Sie mindestens drei Punkte auf der Karte an."
+    "polygonMinimumPoints": "Ein Polygon benötigt mindestens 3 Punkte. Bitte klicken Sie mindestens drei Punkte auf der Karte an.",
+    "transactions": "Transaktionen",
+    "recurring": "Wiederkehrend",
+    "paymentMethods": "Zahlungsmethoden",
+    "paymentsNew": "Zahlungen (neu)"
   }
 }

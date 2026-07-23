@@ -271,6 +271,10 @@
     "membershipCtaButtonText": "ÚNETE AHORA",
     "membershipCtaCopy": "Apóyenos <highlight>HACIÉNDOSE SOCIO</highlight>",
     "shareUrl": "Compartir URL",
-    "treesOfTrees": "{count1} de {count2}"
+    "treesOfTrees": "{count1} de {count2}",
+    "transactions": "Transacciones",
+    "recurring": "Recurrentes",
+    "paymentMethods": "Métodos de pago",
+    "paymentsNew": "Pagos (nuevo)"
   }
 }

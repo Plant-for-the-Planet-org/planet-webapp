@@ -1,3 +1,20 @@
 {
-  "Payments": {}
+  "Payments": {
+    "loadError": "Zahlungen konnten nicht geladen werden. Bitte erneut versuchen.",
+    "retry": "Erneut versuchen",
+    "selectPayment": "Wähle eine Zahlung, um die Details zu sehen",
+    "dedicated": "Gewidmet",
+    "dedicatedTo": "Gewidmet an",
+    "donationId": "Spenden-ID",
+    "fundraiser": "Spendenaktion",
+    "supports": "Unterstützt",
+    "supportedProjects": "Unterstützte Projekte",
+    "support": "Unterstützung",
+    "feeCovered": "Du hast die Gebühr übernommen",
+    "tax": "Steuer",
+    "noPaymentMethods": "Keine gespeicherten Zahlungsmethoden",
+    "remove": "Entfernen",
+    "default": "Standard",
+    "confirmRemoveMethod": "Diese Zahlungsmethode entfernen?"
+  }
 }

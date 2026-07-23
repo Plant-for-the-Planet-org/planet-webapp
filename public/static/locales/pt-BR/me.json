@@ -272,6 +272,10 @@
     "membershipCtaCopy": "Apoie-nos <highlight>TORNANDO-SE MEMBRO</highlight>",
     "shareUrl": "Compartilhar URL",
     "treesOfTrees": "{count1} de {count2}",
-    "document": "Documentação da plataforma (EN)"
+    "document": "Documentação da plataforma (EN)",
+    "transactions": "Transações",
+    "recurring": "Recorrentes",
+    "paymentMethods": "Formas de pagamento",
+    "paymentsNew": "Pagamentos (novo)"
   }
 }
