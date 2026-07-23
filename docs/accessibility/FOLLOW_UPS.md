@@ -71,3 +71,40 @@ Responsibilities:
 ### References
 
 - Finding: `ACCESSIBILITY_FINDINGS.md` → A11Y-002.
+
+---
+
+## FU-002 — Fix conditional Hook call in `WebappButton`
+
+**Status:** Open.
+**Origin:** Surfaced while extracting the shared `isExternalUrl` helper into `src/utils/url.ts` (deduplicating URL detection shared with `IconButton`).
+**Priority:** Medium — code-health / correctness (Rules of Hooks violation), not user-facing today.
+
+### Background
+
+In `src/features/common/WebappButton/index.tsx`, the `link` branch calls `useCallback` inside an `if (isExternal)` block. React Hooks must be called unconditionally at the top level of a component; a conditional call breaks the Rules of Hooks and can cause subtle bugs if the branch a control takes changes between renders (e.g. a URL that flips between internal and external).
+
+```tsx
+if (otherProps.elementType === 'link') {
+  const isExternal = isExternalUrl(otherProps.href);
+  if (isExternal) {
+    const handleMouseEnter = useCallback(() => { ... }, [...]); // conditional Hook
+    ...
+  }
+}
+```
+
+### Proposal
+
+Hoist `handleMouseEnter` (and any other Hooks) above the conditional so they run on every render, or restructure the link branch so the Hook is not gated by `isExternal`. Keep the prefetch-on-hover behaviour unchanged.
+
+### Suggested acceptance criteria
+
+- [ ] No Hook is called conditionally; `react-hooks/rules-of-hooks` passes with no disable comment.
+- [ ] External-link hover prefetch behaviour is unchanged.
+- [ ] No behavioural/visual change for internal or button variants.
+
+### References
+
+- File: `src/features/common/WebappButton/index.tsx` (link branch).
+- Related: shared `isExternalUrl` helper in `src/utils/url.ts`.
