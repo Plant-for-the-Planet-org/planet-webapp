@@ -35,22 +35,9 @@ const STATUS_BADGE: Record<string, string> = {
 // Tailwind green.
 const STATUS_BADGE_ACTIVE = 'bg-primary/10 text-primary';
 
-const Detail = ({
-  label,
-  value,
-  wide,
-}: {
-  label: string;
-  value: ReactNode;
-  wide?: boolean;
-}) =>
+const Detail = ({ label, value }: { label: string; value: ReactNode }) =>
   value === null || value === undefined || value === '' ? null : (
-    <div
-      className={cn(
-        'flex flex-col gap-0.5',
-        wide && 'col-span-2 sm:col-span-3'
-      )}
-    >
+    <div className="flex flex-col gap-0.5">
       <dt className="text-xs text-muted-foreground">{label}</dt>
       <dd className="text-foreground">{value}</dd>
     </div>
@@ -244,28 +231,53 @@ export const RecurringRecord = ({
               label={t('firstDonation')}
               value={fmt(record.firstDonation?.created)}
             />
-            {dest?.type === 'mixed' ? (
-              <Detail
-                wide
-                label={t('projects')}
-                value={
-                  <ul className="space-y-0.5">
-                    {dest.items.map((item, index) => (
-                      <li key={index}>{item.name}</li>
-                    ))}
-                  </ul>
-                }
-              />
-            ) : dest?.type === 'planet-cash' ? (
-              <Detail label={t('planet-cash')} value={t('planetCashPayment')} />
-            ) : (
-              <Detail label={t('project')} value={singleName} />
-            )}
             <Detail
               label={t('reference')}
               value={record.firstDonation?.reference}
             />
           </dl>
+
+          {/* Destination stays last — a mixed subscription's project list can be
+              long. Mixed uses the transaction-detail row style (name + amount),
+              not bullets. */}
+          {dest?.type === 'mixed' ? (
+            <div className="mt-4">
+              <p className="mb-2 text-xs text-muted-foreground">
+                {t('projects')}
+              </p>
+              <div className="overflow-hidden rounded-lg border border-solid border-border">
+                {dest.items.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between gap-3 border-b border-solid border-border px-3 py-2 text-sm last:border-b-0"
+                  >
+                    <span className="min-w-0 truncate text-foreground">
+                      {item.name}
+                    </span>
+                    {item.amount != null && (
+                      <span className="shrink-0 tabular-nums text-muted-foreground">
+                        {money(item.amount)}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : dest?.type === 'planet-cash' ? (
+            <div className="mt-4">
+              <p className="mb-1 text-xs text-muted-foreground">
+                {t('planet-cash')}
+              </p>
+              <p className="text-sm text-foreground">{t('planetCashPayment')}</p>
+            </div>
+          ) : singleName ? (
+            <div className="mt-4">
+              <p className="mb-1 text-xs text-muted-foreground">
+                {t('project')}
+              </p>
+              <p className="text-sm text-foreground">{singleName}</p>
+            </div>
+          ) : null}
 
           {showActions && (
             <div className="mt-4 flex flex-wrap gap-2 border-t border-solid border-border pt-4">
