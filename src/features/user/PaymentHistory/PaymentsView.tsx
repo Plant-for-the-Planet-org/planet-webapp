@@ -59,21 +59,51 @@ export default function PaymentsView() {
     }
   }, [router.query.txn]);
 
-  // Select a payment and reflect it in the URL so the link is shareable. Pass a
-  // clean `as` path so the address bar shows /{locale}/profile/payments — not the
-  // internal /sites/{slug}/{locale}/... route pattern — while shallow routing
-  // keeps the list mounted (no refetch).
+  // Pre-apply a filter from the URL — e.g. /profile/payments?filter=planetCash,
+  // the entry point from the PlanetCash "Transactions" tab.
+  useEffect(() => {
+    const f = router.query.filter;
+    if (typeof f === 'string' && FILTERS.some((x) => x.key === f)) {
+      setFilter(f as FilterKey);
+    }
+  }, [router.query.filter]);
+
+  // Build the clean shareable `as` path (locale-prefixed, not the internal
+  // /sites/{slug}/{locale}/... route pattern) carrying the active filter + open
+  // txn.
+  const buildAsPath = (nextFilter: FilterKey, txn: string | null) => {
+    const params = new URLSearchParams();
+    if (nextFilter !== 'all') params.set('filter', nextFilter);
+    if (txn) params.set('txn', txn);
+    const qs = params.toString();
+    const base = localizedPath('/profile/payments');
+    return qs ? `${base}?${qs}` : base;
+  };
+
+  // Reflect selection/filter in the URL. Shallow routing keeps the list mounted
+  // (no refetch); usePayments refetches on mount only.
   const selectPayment = (guid: string | null) => {
     setSelectedGuid(guid);
     const query = { ...router.query };
     if (guid) query.txn = guid;
     else delete query.txn;
-    const asPath = guid
-      ? `${localizedPath('/profile/payments')}?txn=${encodeURIComponent(guid)}`
-      : localizedPath('/profile/payments');
-    router.replace({ pathname: router.pathname, query }, asPath, {
-      shallow: true,
-    });
+    router.replace(
+      { pathname: router.pathname, query },
+      buildAsPath(filter, guid),
+      { shallow: true }
+    );
+  };
+
+  const selectFilter = (key: FilterKey) => {
+    setFilter(key);
+    const query = { ...router.query };
+    if (key === 'all') delete query.filter;
+    else query.filter = key;
+    router.replace(
+      { pathname: router.pathname, query },
+      buildAsPath(key, selectedGuid),
+      { shallow: true }
+    );
   };
 
   const activeFilter = FILTERS.find((f) => f.key === filter);
@@ -177,7 +207,7 @@ export default function PaymentsView() {
           <button
             key={f.key}
             type="button"
-            onClick={() => setFilter(f.key)}
+            onClick={() => selectFilter(f.key)}
             aria-pressed={filter === f.key}
             className={cn(
               'rounded-md border px-3.5 py-1.5 text-sm font-medium transition-colors',
