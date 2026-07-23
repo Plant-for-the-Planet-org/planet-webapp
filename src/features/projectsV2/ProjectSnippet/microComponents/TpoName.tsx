@@ -6,10 +6,10 @@ import Link from 'next/link';
 import styles from '../styles/ProjectSnippet.module.scss';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
+import { useViewStore } from '../../../../stores';
 
 interface TpoNameProps {
   projectTpoName: string;
-  page: 'project-list' | 'project-details' | undefined;
   allowDonations: boolean;
   isTopProject: boolean;
   isApproved: boolean;
@@ -19,7 +19,6 @@ interface TpoNameProps {
 
 const TpoName = ({
   projectTpoName,
-  page,
   allowDonations,
   isTopProject,
   isApproved,
@@ -28,6 +27,7 @@ const TpoName = ({
 }: TpoNameProps) => {
   const tCommon = useTranslations('Common');
   const { localizedPath } = useLocalizedPath();
+  const currentPage = useViewStore((state) => state.page);
 
   const tpoNameBackgroundClass = useMemo(() => {
     if (!allowDonations) return `${styles.noDonation}`;
@@ -40,7 +40,7 @@ const TpoName = ({
   const tpoNameContainerClasses = clsx(
     styles.projectTpoName,
     tpoNameBackgroundClass,
-    { [styles.projectTpoNameSecondary]: page === 'project-details' }
+    { [styles.projectTpoNameSecondary]: currentPage === 'project-details' }
   );
   return (
     // Embedded widgets navigate the top browsing context to the non-localized

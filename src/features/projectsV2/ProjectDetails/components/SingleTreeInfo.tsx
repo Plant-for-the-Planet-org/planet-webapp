@@ -1,4 +1,3 @@
-import type { SetState } from '../../../common/types/common';
 import type {
   SampleTreeRegistration,
   SingleTreeRegistration,
@@ -13,14 +12,9 @@ import MobileInfoSwiper from '../../MobileInfoSwiper';
 interface Props {
   activeSingleTree: SingleTreeRegistration | SampleTreeRegistration | undefined;
   isMobile: boolean;
-  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
-const SingleTreeInfo = ({
-  activeSingleTree,
-  isMobile,
-  setSelectedSampleTree,
-}: Props) => {
+const SingleTreeInfo = ({ activeSingleTree, isMobile }: Props) => {
   if (!activeSingleTree) return null;
 
   const plantInfoProps = {
@@ -30,7 +24,6 @@ const SingleTreeInfo = ({
     scientificName: activeSingleTree.scientificName,
     measurements: activeSingleTree.measurements,
     type: activeSingleTree.type,
-    setSelectedSampleTree,
   };
 
   const content = [
