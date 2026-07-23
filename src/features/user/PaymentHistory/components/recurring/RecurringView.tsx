@@ -33,6 +33,11 @@ export const RecurringView = ({
   const t = useTranslations('Me');
   const [activeModal, setActiveModal] = useState<RecurringAction | null>(null);
   const [currentRecord, setCurrentRecord] = useState<Subscription | null>(null);
+  // `undefined` = untouched (first record open by default); a string/null once
+  // the user toggles. Accordion: one card open at a time, collapse-all allowed.
+  const [expandedId, setExpandedId] = useState<string | null | undefined>(
+    undefined
+  );
 
   const openModal = (action: RecurringAction, record: Subscription) => {
     setCurrentRecord(record);
@@ -52,6 +57,16 @@ export const RecurringView = ({
     return <PaymentsEmpty title={t('noRecords')} />;
   }
 
+  // Collapse cards only when there's more than one; a single one stays open.
+  const collapsible = (recurrencies?.length ?? 0) > 1;
+  const firstId = recurrencies?.[0]?.id;
+  const currentExpanded = expandedId === undefined ? firstId : expandedId;
+  const toggleExpanded = (id: string) =>
+    setExpandedId((current) => {
+      const effective = current === undefined ? firstId ?? null : current;
+      return effective === id ? null : id;
+    });
+
   return (
     <div className="flex max-w-2xl flex-col gap-4">
       {recurrencies?.map((record) => (
@@ -59,6 +74,9 @@ export const RecurringView = ({
           key={record.id}
           record={record}
           onAction={(action) => openModal(action, record)}
+          collapsible={collapsible}
+          expanded={currentExpanded === record.id}
+          onToggle={() => toggleExpanded(record.id)}
         />
       ))}
 

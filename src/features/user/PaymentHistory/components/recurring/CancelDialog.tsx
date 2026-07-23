@@ -7,15 +7,14 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
 import { useSubscriptionAction } from '../../hooks/useSubscriptionAction';
 import { toDateInputValue } from '../../lib/dateInput';
+import { DateField } from './DateField';
+import { DialogActions } from './DialogActions';
 
 interface CancelDialogProps {
   open: boolean;
@@ -86,26 +85,18 @@ export const CancelDialog = ({
             )}
 
             {option === 'cancelOnSelectedDate' && (
-              <Input
-                type="date"
-                min={minDate}
-                value={date}
-                onChange={(event) => setDate(event.target.value)}
-                className="w-full"
-              />
+              <DateField min={minDate} value={date} onChange={setDate} />
             )}
           </div>
         )}
 
-        <DialogFooter>
-          <Button
-            variant="destructive"
-            onClick={submit}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? t('cancellingDonation') : t('save')}
-          </Button>
-        </DialogFooter>
+        <DialogActions
+          onClose={onClose}
+          onSave={submit}
+          saveLabel={isSubmitting ? t('cancellingDonation') : t('save')}
+          disabled={isSubmitting}
+          destructive
+        />
       </DialogContent>
     </Dialog>
   );

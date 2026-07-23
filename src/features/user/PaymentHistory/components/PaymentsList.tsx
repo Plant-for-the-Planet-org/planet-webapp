@@ -110,8 +110,8 @@ export const PaymentsList = ({
               <PaymentStatusBadge
                 status={item.status}
                 label={getStatusLabel(item.status)}
-                variant="dot"
-                className={cn('shrink-0', !compact && 'sm:w-28')}
+                variant="dot-only"
+                className="shrink-0"
               />
               {!compact && (
                 <ChevronRight

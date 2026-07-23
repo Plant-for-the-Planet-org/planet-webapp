@@ -7,15 +7,14 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
 import { useSubscriptionAction } from '../../hooks/useSubscriptionAction';
 import { toDateInputValue } from '../../lib/dateInput';
+import { DateField } from './DateField';
+import { DialogActions } from './DialogActions';
 
 interface PauseDialogProps {
   open: boolean;
@@ -78,23 +77,18 @@ export const PauseDialog = ({
 
           {option === 'pauseUntilDate' && (
             <div className="flex flex-col gap-1.5">
-              <Input
-                type="date"
-                min={minDate}
-                value={date}
-                onChange={(event) => setDate(event.target.value)}
-                className="w-full"
-              />
+              <DateField min={minDate} value={date} onChange={setDate} />
               <p className="text-xs text-muted-foreground">{t('pauseNote')}</p>
             </div>
           )}
         </div>
 
-        <DialogFooter>
-          <Button onClick={submit} disabled={isSubmitting}>
-            {isSubmitting ? t('pausingDonation') : t('save')}
-          </Button>
-        </DialogFooter>
+        <DialogActions
+          onClose={onClose}
+          onSave={submit}
+          saveLabel={isSubmitting ? t('pausingDonation') : t('save')}
+          disabled={isSubmitting}
+        />
       </DialogContent>
     </Dialog>
   );

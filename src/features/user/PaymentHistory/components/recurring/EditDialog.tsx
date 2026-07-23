@@ -7,16 +7,16 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import getCurrencySymbolByCode from '@/utils/countryCurrency/getCurrencySymbolByCode';
 
 import { useSubscriptionAction } from '../../hooks/useSubscriptionAction';
 import { toDateInputValue } from '../../lib/dateInput';
+import { DateField } from './DateField';
+import { DialogActions } from './DialogActions';
 
 interface EditDialogProps {
   open: boolean;
@@ -121,15 +121,14 @@ export const EditDialog = ({
               <label htmlFor="edit-date" className="text-sm text-foreground">
                 {t('date')}
               </label>
-              <Input
+              <DateField
                 id="edit-date"
-                type="date"
                 min={currentPeriodEndDate}
                 max={
                   record.endsAt ? toDateInputValue(record.endsAt) : '2100-01-01'
                 }
                 value={date}
-                onChange={(event) => setDate(event.target.value)}
+                onChange={setDate}
               />
             </div>
           ) : (
@@ -137,11 +136,12 @@ export const EditDialog = ({
           )}
         </div>
 
-        <DialogFooter>
-          <Button onClick={submit} disabled={isSubmitting || !amount}>
-            {isSubmitting ? t('editingDonation') : t('save')}
-          </Button>
-        </DialogFooter>
+        <DialogActions
+          onClose={onClose}
+          onSave={submit}
+          saveLabel={isSubmitting ? t('editingDonation') : t('save')}
+          disabled={isSubmitting || !amount}
+        />
       </DialogContent>
     </Dialog>
   );

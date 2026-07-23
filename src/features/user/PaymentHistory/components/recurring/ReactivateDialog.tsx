@@ -6,14 +6,13 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 
 import { useSubscriptionAction } from '../../hooks/useSubscriptionAction';
 import { formatPaymentDate } from '../../lib/formatPaymentDate';
+import { DialogActions } from './DialogActions';
 
 interface ReactivateDialogProps {
   open: boolean;
@@ -49,14 +48,12 @@ export const ReactivateDialog = ({
             })}
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          <Button
-            onClick={() => run(record.id, 'reactivate', {})}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? t('reactivatingDonation') : t('save')}
-          </Button>
-        </DialogFooter>
+        <DialogActions
+          onClose={onClose}
+          onSave={() => run(record.id, 'reactivate', {})}
+          saveLabel={isSubmitting ? t('reactivatingDonation') : t('save')}
+          disabled={isSubmitting}
+        />
       </DialogContent>
     </Dialog>
   );

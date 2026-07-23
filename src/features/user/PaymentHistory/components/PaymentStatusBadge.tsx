@@ -52,9 +52,12 @@ interface PaymentStatusBadgeProps {
   className?: string;
   /**
    * 'badge' = filled pill (used in the detail).
-   * 'dot' = compact colored dot + label (used in the list, saves space).
+   * 'dot' = compact colored dot + label.
+   * 'dot-only' = just the colored dot (used in the list); the label is kept
+   *   available to assistive tech (sr-only) and on hover (title), since the full
+   *   status text is shown in the detail view.
    */
-  variant?: 'badge' | 'dot';
+  variant?: 'badge' | 'dot' | 'dot-only';
 }
 
 export const PaymentStatusBadge = ({
@@ -65,6 +68,18 @@ export const PaymentStatusBadge = ({
 }: PaymentStatusBadgeProps) => {
   const tone = getStatusTone(status);
   const text = label ?? status ?? '—';
+
+  if (variant === 'dot-only') {
+    return (
+      <span className={cn('inline-flex', className)} title={text}>
+        <span
+          className={cn('size-2.5 shrink-0 rounded-full', DOT_CLASSES[tone])}
+          aria-hidden
+        />
+        <span className="sr-only">{text}</span>
+      </span>
+    );
+  }
 
   if (variant === 'dot') {
     return (
