@@ -21,13 +21,16 @@ import { PaymentsEmpty } from './components/PaymentsEmpty';
 import { PaymentsList } from './components/PaymentsList';
 import { PaymentsListSkeleton } from './components/PaymentsListSkeleton';
 
-type FilterKey = 'all' | 'completed' | 'pending' | 'failed';
+type FilterKey = 'all' | 'completed' | 'pending' | 'failed' | 'planetCash';
 
-const FILTERS: { key: FilterKey; status?: string }[] = [
+// Status chips are mutually exclusive; PlanetCash is a payment-method quick
+// filter (method=planet-cash) that lives in the same single-select row.
+const FILTERS: { key: FilterKey; status?: string; method?: string }[] = [
   { key: 'all' },
   { key: 'completed', status: 'paid,complete' },
   { key: 'pending', status: 'pending' },
   { key: 'failed', status: 'failed' },
+  { key: 'planetCash', method: 'planet-cash' },
 ];
 
 /**
@@ -72,8 +75,23 @@ export default function PaymentsView() {
     });
   };
 
-  const status = FILTERS.find((f) => f.key === filter)?.status;
-  const params = useMemo(() => ({ status, limit: 50 }), [status]);
+  const activeFilter = FILTERS.find((f) => f.key === filter);
+  const status = activeFilter?.status;
+  const method = activeFilter?.method;
+  const params = useMemo(
+    () => ({ status, method, limit: 50 }),
+    [status, method]
+  );
+
+  // Chip labels via literal keys (all/completed/pending/failed + the PlanetCash
+  // method label live in Me), so next-intl's typed messages hold.
+  const filterLabels: Record<FilterKey, string> = {
+    all: t('all'),
+    completed: t('completed'),
+    pending: t('pending'),
+    failed: t('failed'),
+    planetCash: t('planet-cash'),
+  };
 
   const {
     payments,
@@ -164,7 +182,7 @@ export default function PaymentsView() {
                 : 'border-border bg-background text-foreground hover:border-foreground/50'
             )}
           >
-            {t(f.key)}
+            {filterLabels[f.key]}
           </button>
         ))}
         <span className="ml-auto text-sm text-muted-foreground">
