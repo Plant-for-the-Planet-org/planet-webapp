@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { clsx } from 'clsx';
 import styles from './IconButton.module.scss';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { isExternalUrl } from '../../../utils/url';
 
 interface CommonProps {
   /** Accessible name announced by screen readers. Applied as `aria-label`. */
@@ -43,9 +44,6 @@ export interface IconButtonAsLinkProps
 }
 
 export type IconButtonProps = IconButtonAsButtonProps | IconButtonAsLinkProps;
-
-const isExternalUrl = (url: string): boolean =>
-  /^[a-z][a-z\d+.-]*:/i.test(url) || url.startsWith('//');
 
 /**
  * Accessible icon-only button or link.
