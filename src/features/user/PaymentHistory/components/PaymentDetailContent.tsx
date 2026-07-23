@@ -56,23 +56,34 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
   const money = (amount: number) =>
     getFormattedCurrency(locale, detail?.currency ?? '', amount);
 
+  // Map backend codes to Me-namespace labels with LITERAL keys: next-intl's
+  // typed messages reject a dynamic t(code), and a missing message returns the
+  // key path (e.g. "Me.complete") instead of throwing — so an unmapped code
+  // must fall back to the raw string here, never to t().
   const statusLabel = (status: string | null) => {
     if (!status) return undefined;
-    try {
-      return t(status);
-    } catch {
-      return status;
-    }
+    const labels: Record<string, string> = {
+      paid: t('paid'),
+      complete: t('completed'),
+      pending: t('pending'),
+      failed: t('failed'),
+      refunded: t('refunded'),
+    };
+    return labels[status] ?? status;
   };
 
-  // Payment methods carry codes like "offline" / "planet-cash" / "stripe-card";
-  // the Me namespace maps them to human names ("Bank Transfer", "PlanetCash", …).
+  // Payment method codes ("offline" / "planet-cash" / "stripe-card" …) mapped
+  // to human names ("Bank Transfer", "PlanetCash", …); unmapped codes show raw.
   const methodLabel = (method: string) => {
-    try {
-      return t(method);
-    } catch {
-      return method;
-    }
+    const labels: Record<string, string> = {
+      offline: t('offline'),
+      card: t('card'),
+      sepa_debit: t('sepa_debit'),
+      'planet-cash': t('planet-cash'),
+      'stripe-card': t('stripe-card'),
+      'stripe-sepa_debit': t('stripe-sepa_debit'),
+    };
+    return labels[method] ?? method;
   };
 
   const unitLabel = (li: PaymentLineItem) => {

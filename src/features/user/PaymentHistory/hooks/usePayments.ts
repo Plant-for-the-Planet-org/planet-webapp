@@ -108,6 +108,7 @@ export const usePayments = (
   useEffect(() => {
     const requestId = ++requestIdRef.current;
     setIsLoading(true);
+    setIsLoadingMore(false);
     setError(null);
 
     apiRef

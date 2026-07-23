@@ -13,7 +13,7 @@ export interface UsePaymentMethodsResult {
   error: unknown;
   /** id of the method currently being removed, or null. */
   removingId: string | null;
-  removeMethod: (id: string) => Promise<void>;
+  removeMethod: (id: string) => Promise<boolean>;
   reload: () => void;
 }
 
@@ -67,16 +67,18 @@ export const usePaymentMethods = (
   }, [country, reloadToken]);
 
   const removeMethod = useCallback(
-    async (id: string) => {
-      if (!country) return;
+    async (id: string): Promise<boolean> => {
+      if (!country) return false;
       setRemovingId(id);
       try {
         await apiRef.current.deleteApiAuthenticated(
           `/app/profile/paymentMethods/${country}/${id}`
         );
         setMethods((prev) => prev.filter((method) => method.id !== id));
+        return true;
       } catch (err) {
         setErrorsRef.current(handleError(err as APIError));
+        return false;
       } finally {
         setRemovingId(null);
       }

@@ -11,6 +11,6 @@ export const toDateInputValue = (
   if (!iso) return '';
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return '';
-  date.setDate(date.getDate() + addDays);
+  date.setUTCDate(date.getUTCDate() + addDays);
   return date.toISOString().split('T')[0];
 };

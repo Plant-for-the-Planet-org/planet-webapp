@@ -96,12 +96,16 @@ export default function PaymentsView() {
 
   const selectFilter = (key: FilterKey) => {
     setFilter(key);
+    // Clear any open selection — the selected txn may not be in the newly
+    // filtered list, which would otherwise leave a stale detail pane/Sheet.
+    setSelectedGuid(null);
     const query = { ...router.query };
     if (key === 'all') delete query.filter;
     else query.filter = key;
+    delete query.txn;
     router.replace(
       { pathname: router.pathname, query },
-      buildAsPath(key, selectedGuid),
+      buildAsPath(key, null),
       { shallow: true }
     );
   };
@@ -154,11 +158,16 @@ export default function PaymentsView() {
 
   const getStatusLabel = (paymentStatus: PaymentStatus | null) => {
     if (!paymentStatus) return '—';
-    try {
-      return t(paymentStatus);
-    } catch {
-      return paymentStatus;
-    }
+    // Literal keys (a dynamic t(status) breaks typed messages, and a missing
+    // key returns "Me.<key>" rather than throwing); unmapped statuses show raw.
+    const labels: Record<string, string> = {
+      paid: t('paid'),
+      complete: t('completed'),
+      pending: t('pending'),
+      failed: t('failed'),
+      refunded: t('refunded'),
+    };
+    return labels[paymentStatus] ?? paymentStatus;
   };
 
   // Always "Donation"; dedication ("Dedicated to …") surfaces via the trailing

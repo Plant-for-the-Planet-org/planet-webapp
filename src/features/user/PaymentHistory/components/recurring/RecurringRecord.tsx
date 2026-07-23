@@ -222,6 +222,7 @@ export const RecurringRecord = ({
             <Detail
               label={t('totalDonated')}
               value={
+                record.totalDonated == null ||
                 Number.isNaN(record.totalDonated)
                   ? null
                   : money(record.totalDonated)

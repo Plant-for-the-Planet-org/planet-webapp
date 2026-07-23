@@ -50,12 +50,14 @@ export const EditDialog = ({
   const [amount, setAmount] = useState(String(record.amount));
   const [frequency, setFrequency] = useState(record.frequency);
   const [date, setDate] = useState(currentPeriodEndDate);
+  const amountNum = Number(amount);
+  const isAmountValid =
+    amount !== '' && Number.isFinite(amountNum) && amountNum > 0;
 
   const submit = () => {
     // PUT only the changed fields (a diff), matching the legacy modal; if
     // nothing changed, just close without a request.
     const payload: Record<string, unknown> = {};
-    const amountNum = Number(amount);
     if (!Number.isNaN(amountNum) && amountNum !== record.amount) {
       payload.centAmount = Math.round(amountNum * 100);
     }
@@ -142,7 +144,7 @@ export const EditDialog = ({
           onClose={onClose}
           onSave={submit}
           saveLabel={isSubmitting ? t('editingDonation') : t('save')}
-          disabled={isSubmitting || !amount}
+          disabled={isSubmitting || !isAmountValid}
         />
       </DialogContent>
     </Dialog>

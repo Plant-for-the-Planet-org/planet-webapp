@@ -84,7 +84,9 @@ export const PaymentMethodsView = () => {
                     variant="destructive"
                     disabled={removingId === method.id}
                     onClick={() =>
-                      removeMethod(method.id).then(() => setConfirmingId(null))
+                      removeMethod(method.id).then((removed) => {
+                        if (removed) setConfirmingId(null);
+                      })
                     }
                   >
                     {tPayments('remove')}
