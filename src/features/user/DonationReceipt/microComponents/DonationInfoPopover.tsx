@@ -26,6 +26,7 @@ const DonationInfoPopover = ({
   closePopover,
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
+  const tCommon = useTranslations('Common');
   const open = Boolean(popoverAnchor);
   const id = open ? 'donation-info-popOver' : undefined;
   return (
@@ -46,10 +47,13 @@ const DonationInfoPopover = ({
     >
       <button
         type="button"
+        aria-label={`${tCommon('close')} ${tReceipt('donationDetails.title')}`}
         className={styles.closeIconContainer}
         onClick={closePopover}
       >
-        <CrossIcon width={10} />
+        <span aria-hidden="true" style={{ display: 'contents' }}>
+          <CrossIcon width={10} />
+        </span>
       </button>
       <table className={styles.donationTable}>
         <thead>

@@ -73,6 +73,9 @@
   font-weight: bold;
   height: 34px;
   width: 130px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
     cursor: pointer;
   }
@@ -84,6 +87,9 @@
   font-weight: bold;
   height: 34px;
   width: 130px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
     cursor: pointer;
   }
@@ -113,10 +119,13 @@
 }
 
 .headerCTAs {
-  button {
+  display: flex;
+  gap: 8px;
+
+  .headerCTAButton {
     width: 175px;
     margin-top: 20px;
-    margin-left: 10px;
+    font-size: $fontSmall;
   }
 }
 
@@ -152,5 +161,11 @@
 
   .headerCTAs {
     display: flex;
+  }
+}
+@include xsPhoneView {
+  .headerCTAs {
+    display: flex;
+    flex-direction: column;
   }
 }

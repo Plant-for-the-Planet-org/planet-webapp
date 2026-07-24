@@ -273,6 +273,7 @@ export default function EditProfileForm() {
               <div className={styles.profilePic}>
                 <img
                   src={getImageUrl('profile', 'thumb', userProfile.image)}
+                  alt={userProfile.displayName}
                   className={styles.profilePicImg}
                 />
               </div>

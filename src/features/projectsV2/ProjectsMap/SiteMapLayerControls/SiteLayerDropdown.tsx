@@ -46,7 +46,11 @@ const SiteLayerDropdown = ({
 
   return (
     <div className={styles.siteLayerDropdown} ref={dropdownRef}>
-      <div className={styles.dropdownButton} onClick={toggleDropdown}>
+      <button
+        type="button"
+        className={styles.dropdownButton}
+        onClick={toggleDropdown}
+      >
         <div className={styles.dropdownButtonIcon}>{selectedLayer.icon}</div>
         <p className={styles.dropdownButtonText}>
           {selectedLayer.label}
@@ -61,7 +65,7 @@ const SiteLayerDropdown = ({
         >
           <DropdownDownArrow width={10} />
         </div>
-      </div>
+      </button>
       {isOpen && (
         <div className={styles.optionsWrapper}>
           <SiteLayerOptions

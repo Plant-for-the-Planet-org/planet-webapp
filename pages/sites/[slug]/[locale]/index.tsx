@@ -6,6 +6,7 @@ import type {
 } from 'next/types';
 import type { ReactElement } from 'react';
 import type { NextPageWithLayout, PageComponentProps } from '../../../_app';
+import type { DirectGiftI } from '../../../../src/features/donations/components/DirectGift';
 import type { AbstractIntlMessages } from 'next-intl';
 import type { Tenant } from '@planet-sdk/common';
 
@@ -14,17 +15,49 @@ import {
   getTenantConfig,
 } from '../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
+import { useEffect, useState } from 'react';
 import ProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout';
 import MobileProjectsLayout from '../../../../src/features/common/Layout/ProjectsLayout/MobileProjectsLayout';
 import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection';
+import DirectGift from '../../../../src/features/donations/components/DirectGift';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 import { defaultTenant } from '../../../../tenant.config';
 
 const ProjectListPage: NextPageWithLayout = ({ isMobile }) => {
   const isInitialized = useTenantStore((state) => state.isInitialized);
+
+  const [directGift, setDirectGift] = useState<DirectGiftI | null>(null);
+
+  useEffect(() => {
+    const storedDirectGift = localStorage.getItem('directGift');
+    if (!storedDirectGift) return;
+    try {
+      const parsedDirectGift = JSON.parse(storedDirectGift);
+      if (
+        parsedDirectGift &&
+        typeof parsedDirectGift.id === 'string' &&
+        typeof parsedDirectGift.displayName === 'string' &&
+        typeof parsedDirectGift.type === 'string'
+      ) {
+        setDirectGift(parsedDirectGift);
+      } else {
+        localStorage.removeItem('directGift');
+      }
+    } catch {
+      localStorage.removeItem('directGift');
+    }
+  }, []);
+
   if (!isInitialized) return <></>;
 
-  return <ProjectsSection isMobile={isMobile} />;
+  return (
+    <>
+      <ProjectsSection isMobile={isMobile} />
+      {directGift !== null && (
+        <DirectGift directGift={directGift} setDirectGift={setDirectGift} />
+      )}
+    </>
+  );
 };
 
 ProjectListPage.getLayout = function getLayout(
@@ -32,7 +65,6 @@ ProjectListPage.getLayout = function getLayout(
   pageComponentProps: PageComponentProps
 ): ReactElement {
   const layoutProps = {
-    page: 'project-list',
     isMobile: pageComponentProps.isMobile,
   } as const;
 

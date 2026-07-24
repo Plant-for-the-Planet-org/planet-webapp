@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';
 import DefaultProfileImageIcon from '../../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import SignInButton from './SignInButton';
@@ -21,6 +22,7 @@ const UserProfileButton = () => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { isAuthenticated, isAuthLoading } = useAuthSession();
+  const t = useTranslations('Common');
   //store: state
   const userProfile = useUserStore((state) => state.userProfile);
 
@@ -38,6 +40,8 @@ const UserProfileButton = () => {
 
   return (
     <button
+      type="button"
+      aria-label={t('myProfile')}
       className={styles.profileImageButton}
       onClick={() => router.push(localizedPath('/profile'))}
     >
@@ -48,7 +52,9 @@ const UserProfileButton = () => {
         />
       ) : (
         <div className={styles.userDefaultIconContainer}>
-          <DefaultProfileImageIcon />
+          <span aria-hidden="true" style={{ display: 'contents' }}>
+            <DefaultProfileImageIcon />
+          </span>
         </div>
       )}
     </button>

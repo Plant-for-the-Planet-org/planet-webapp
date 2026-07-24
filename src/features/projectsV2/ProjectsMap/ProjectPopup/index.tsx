@@ -13,7 +13,6 @@ type Props = {
   handlePopupLeave: () => void;
   handlePopupEnter: () => void;
   visitProject: (projectSlug: string) => void;
-  page: 'project-list' | 'project-details';
 };
 
 const ProjectPopup = ({
@@ -21,7 +20,6 @@ const ProjectPopup = ({
   handlePopupLeave,
   handlePopupEnter,
   visitProject,
-  page,
 }: Props) => {
   const { coordinates } = project.geometry;
 
@@ -43,7 +41,6 @@ const ProjectPopup = ({
         <ProjectSnippet
           project={project.properties}
           showTooltipPopups={false}
-          page={page}
         />
       </div>
     </Popup>
