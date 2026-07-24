@@ -13,47 +13,51 @@ type Props = {
 const DonationsTable = ({ donations, amount, currency }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
   return (
-    <div className={styles.donationsTable}>
-      <div className={styles.header} role="row">
-        <span role="columnheader">
-          {tReceipt('donationDetails.referenceNumber')}
-        </span>
-        <span className={styles.amountDonated} role="columnheader">
-          {tReceipt('donationDetails.amountDonated')}
-        </span>
-        <span className={styles.paymentDate} role="columnheader">
-          {tReceipt('donationDetails.paymentDate')}
-        </span>
-      </div>
-      <ul role="table">
+    <table className={styles.donationsTable}>
+      <thead>
+        <tr className={styles.header}>
+          <th scope="col" className={styles.reference}>
+            {tReceipt('donationDetails.referenceNumber')}
+          </th>
+          <th scope="col" className={styles.amountDonated}>
+            {tReceipt('donationDetails.amountDonated')}
+          </th>
+          <th scope="col" className={styles.paymentDate}>
+            {tReceipt('donationDetails.paymentDate')}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
         {donations?.map(({ reference, currency, amount, paymentDate }) => {
           return (
-            <li className={styles.record} key={reference} role="row">
-              <span className={styles.reference} role="cell">
-                {reference}
-              </span>
-              <span className={styles.amount} role="cell">
+            <tr className={styles.record} key={reference}>
+              <td className={styles.reference}>{reference}</td>
+              <td className={styles.amount}>
                 {tReceipt('donationDetails.donationAmount', {
                   currency,
                   amount: amount.toFixed(2),
                 })}
-              </span>
-              <time className={styles.date} dateTime={paymentDate} role="cell">
-                {formatDate(paymentDate)}
-              </time>
-            </li>
+              </td>
+              <td className={styles.date}>
+                <time dateTime={paymentDate}>{formatDate(paymentDate)}</time>
+              </td>
+            </tr>
           );
         })}
-      </ul>
-      {Boolean(amount) && (
-        <div className={styles.totalAmount}>
-          {tReceipt('donationDetails.donationAmount', {
-            currency,
-            amount,
-          })}
-        </div>
+      </tbody>
+      {amount !== null && currency !== null && (
+        <tfoot>
+          <tr>
+            <td colSpan={3} className={styles.totalAmount}>
+              {tReceipt('donationDetails.donationAmount', {
+                currency,
+                amount,
+              })}
+            </td>
+          </tr>
+        </tfoot>
       )}
-    </div>
+    </table>
   );
 };
 

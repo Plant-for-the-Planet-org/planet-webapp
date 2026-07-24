@@ -62,67 +62,53 @@
 .receiptDataSection {
   width: 100%;
   border-radius: 16px;
-  padding: 16px;
+  padding: 20px;
   background-color: $dsWhite;
 }
 
 .donationsTable {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
   width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
   padding: 6px 16px 16px;
 
   @include xsPhoneView {
     padding: 6px 6px 16px;
   }
 
-  .header {
-    display: flex;
-    justify-content: space-between;
+  .header th {
     font-weight: 700;
-  }
-}
-
-.paymentDate {
-  text-align: right;
-}
-
-.amountDonated {
-  text-align: center;
-}
-
-.record {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-
-  .amount {
-    flex: 1;
-    text-align: center;
+    padding-bottom: 12px;
   }
 
   .reference {
-    flex: 1;
     text-align: left;
   }
 
-  .date {
-    flex: 1;
+  .amount,
+  .amountDonated {
+    text-align: center;
+  }
+
+  .date,
+  .paymentDate {
     text-align: right;
   }
-}
 
-.record:not(:last-child) {
-  border-bottom: 1px solid $dsMediumGreyTransparent70;
-}
+  .record td {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
 
-.totalAmount {
-  width: 100%;
-  text-align: center;
-  font-weight: 700;
+  .record:not(:last-child) td {
+    border-bottom: 1px solid $dsMediumGreyTransparent70;
+  }
+
+  .totalAmount {
+    text-align: center;
+    font-weight: 700;
+    padding-top: 12px;
+  }
 }
 
 .donorDetails {
@@ -133,6 +119,7 @@
   width: 100%;
   border-radius: 9px;
   padding: 10px 15px;
+  margin-top: 20px;
 
   .errorMessageContainer {
     display: flex;
