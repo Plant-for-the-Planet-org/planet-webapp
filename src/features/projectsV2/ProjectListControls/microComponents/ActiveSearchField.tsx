@@ -6,30 +6,28 @@ import { useTranslations } from 'next-intl';
 import { SearchTextField } from './SearchTextField';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from '../styles/ProjectListControls.module.scss';
-import SearchIcon from '../../../../../public/assets/images/icons/projectV2/SearchIcon';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../../stores';
+import { useProjectStore, useQueryParamStore } from '../../../../stores';
 
 interface ActiveSearchFieldProps {
-  setIsSearching: SetState<boolean>;
   setIsFilterOpen: SetState<boolean>;
-  debouncedSearchValue: string;
-  setDebouncedSearchValue: SetState<string>;
 }
 
-const ActiveSearchField = ({
-  setIsSearching,
-  setIsFilterOpen,
-  debouncedSearchValue,
-  setDebouncedSearchValue,
-}: ActiveSearchFieldProps) => {
+const ActiveSearchField = ({ setIsFilterOpen }: ActiveSearchFieldProps) => {
   const t = useTranslations('AllProjects');
-
+  const debouncedSearchValue = useProjectStore(
+    (state) => state.debouncedSearchValue
+  );
   const [searchValue, setSearchValue] = useState(debouncedSearchValue);
 
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
+  // store: action
+  const setDebouncedSearchValue = useProjectStore(
+    (state) => state.setDebouncedSearchValue
+  );
+  const setIsSearching = useProjectStore((state) => state.setIsSearching);
 
   const onlyMapModeAllowed = isEmbedMode && showProjectList === 'false';
 
@@ -51,9 +49,6 @@ const ActiveSearchField = ({
         [styles.onlyMapMode]: onlyMapModeAllowed,
       })}
     >
-      <button className={styles.activeSearchIcon}>
-        <SearchIcon />
-      </button>
       <SearchTextField
         id="standard-search"
         variant="standard"
@@ -65,8 +60,15 @@ const ActiveSearchField = ({
         autoFocus
       />
 
-      <button onClick={resetSearch} className={styles.crossIcon}>
-        <CrossIcon />
+      <button
+        type="button"
+        aria-label={t('clearSearch')}
+        onClick={resetSearch}
+        className={styles.crossIcon}
+      >
+        <span aria-hidden="true" style={{ display: 'contents' }}>
+          <CrossIcon />
+        </span>
       </button>
     </div>
   );

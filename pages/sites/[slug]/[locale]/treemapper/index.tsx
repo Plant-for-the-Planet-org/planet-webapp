@@ -13,7 +13,7 @@ import Head from 'next/head';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import TreemapperMigration from '../../../../../src/features/user/TreemapperMigration';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
-import { UserProfileLoader } from '../../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import { UserProfileLoader } from '../../../../../src/features/common/ContentLoaders/UserProfile/UserProfileLoader';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import {

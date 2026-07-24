@@ -105,15 +105,17 @@ function SingleProject({ project }: { project: ProjectProperties }) {
       <div className={styles.projectLinksContainer}>
         <Link
           href={localizedPath(generateProjectLink(project.id, router.asPath))}
+          className={styles.secondaryLink}
         >
-          <button className={styles.secondaryLink}>{tCommon('view')}</button>
+          {tCommon('view')}
         </Link>
         <Link
           href={localizedPath(
             `/profile/projects/${project.id}?type=basic-details`
           )}
+          className={styles.primaryLink}
         >
-          <button className={styles.primaryLink}>{tCommon('edit')}</button>
+          {tCommon('edit')}
         </Link>
       </div>
     </div>
@@ -170,18 +172,17 @@ export default function ProjectsContainer() {
     >
       <SingleColumnView>
         <div className={styles.headerCTAs}>
-          <Link href={localizedPath('/profile/projects/new-project')}>
-            <button
-              // id={'addProjectBut'}
-              className="primaryButton"
-            >
-              {tManageProjects('addProject')}
-            </button>
+          <Link
+            href={localizedPath('/profile/projects/new-project')}
+            className={`primaryButton ${styles.headerCTAButton}`}
+          >
+            {tManageProjects('addProject')}
           </Link>
-          <Link href={localizedPath('/profile/payouts')}>
-            <button className="primaryButton">
-              {tManageProjects('managePayoutsButton')}
-            </button>
+          <Link
+            href={localizedPath('/profile/payouts')}
+            className={`primaryButton ${styles.headerCTAButton}`}
+          >
+            {tManageProjects('managePayoutsButton')}
           </Link>
         </div>
 

@@ -10,15 +10,16 @@ export interface DirectGiftI {
   id: string;
   displayName: string;
   type: string;
-  show: boolean;
-}
-interface Props {
-  directGift: DirectGiftI;
-  setShowDirectGift: SetState<boolean>;
 }
 
-export default function DirectGift({ directGift, setShowDirectGift }: Props) {
+interface Props {
+  directGift: DirectGiftI;
+  setDirectGift: SetState<DirectGiftI | null>;
+}
+
+export default function DirectGift({ directGift, setDirectGift }: Props) {
   const t = useTranslations('Donate');
+  const tCommon = useTranslations('Common');
   const { localizedPath } = useLocalizedPath();
   return (
     <div className={styles.giftContainer}>
@@ -35,14 +36,17 @@ export default function DirectGift({ directGift, setShowDirectGift }: Props) {
       </div>
       <button
         id={'giftClose'}
+        type="button"
+        aria-label={`${tCommon('close')} ${t('directGift')}`}
         onClick={() => {
-          directGift.show = false;
           localStorage.removeItem('directGift');
-          setShowDirectGift(false);
+          setDirectGift(null);
         }}
         className={styles.closeButton}
       >
-        <CancelIcon />
+        <span aria-hidden="true" style={{ display: 'contents' }}>
+          <CancelIcon />
+        </span>
       </button>
     </div>
   );

@@ -23,10 +23,17 @@ interface ApiKeyResponse {
 }
 
 const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
+  const t = useTranslations('Me');
   return (
-    <div className={styles.eyeButton} onClick={onClick}>
+    <button
+      type="button"
+      className={styles.eyeButton}
+      aria-pressed={isVisible}
+      aria-label={isVisible ? t('hideApiKey') : t('showApiKey')}
+      onClick={onClick}
+    >
       {isVisible ? <EyeIcon /> : <EyeDisabled />}
-    </div>
+    </button>
   );
 };
 

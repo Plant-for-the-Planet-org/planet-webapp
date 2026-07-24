@@ -322,11 +322,14 @@ function ProjectCertificates({
       )}
 
       {uploadedFiles && uploadedFiles.length > 0 && !showForm ? (
-        <div
-          className={styles.formFieldLarge}
-          onClick={() => setShowForm(true)}
-        >
-          <p className={styles.inlineLinkButton}>{t('addCertificate')}</p>
+        <div className={styles.formFieldLarge}>
+          <button
+            type="button"
+            className={styles.inlineLinkButton}
+            onClick={() => setShowForm(true)}
+          >
+            {t('addCertificate')}
+          </button>
         </div>
       ) : (
         <></>

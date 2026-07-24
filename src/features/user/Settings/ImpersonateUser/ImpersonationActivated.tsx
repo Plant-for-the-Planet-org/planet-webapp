@@ -42,7 +42,8 @@ const ImpersonationActivated = () => {
         {t('targetUser', { impersonatedEmail: `<${impersonatedUserEmail}>` })}
       </div>
 
-      <div
+      <button
+        type="button"
         onClick={exitImpersonation}
         className={styles.exitImpersonationContainer}
       >
@@ -50,7 +51,7 @@ const ImpersonationActivated = () => {
           <LogoutIcon />
         </div>
         <div className={styles.exit}>{t('exitImpersonation')}</div>
-      </div>
+      </button>
     </div>
   ) : null;
 };

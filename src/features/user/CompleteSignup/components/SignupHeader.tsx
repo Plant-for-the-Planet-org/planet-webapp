@@ -9,12 +9,13 @@ const SignupHeader = () => {
   const { logoutUser } = useAuthSession();
   return (
     <div className={styles.header}>
-      <div
+      <button
+        type="button"
         onClick={() => logoutUser(`${window.location.origin}/`)}
         className={styles.headerBackIcon}
       >
         <CancelIcon color={themeProperties.designSystem.colors.coreText} />
-      </div>
+      </button>
       <div className={styles.headerTitle}>{tSignup('signUpText')}</div>
     </div>
   );
