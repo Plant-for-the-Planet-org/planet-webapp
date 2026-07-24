@@ -48,17 +48,12 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         key: 'payments',
         title: t('payments'),
         icon: <DonateIcon />,
-        flag: t('new'),
         subMenu: [
           {
-            key: 'history',
-            title: t('history'),
-            path: '/profile/history',
-          },
-          {
-            key: 'recurrency',
-            title: t('recurrency'),
-            path: '/profile/recurrency',
+            key: 'payments-redesign',
+            title: t('payments'),
+            path: '/profile/payments',
+            matchPattern: 'prefix', // Matches /profile/payments and /profile/payments/*
           },
           {
             key: 'donation-receipts',

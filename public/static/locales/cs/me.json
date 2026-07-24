@@ -272,6 +272,11 @@
     "membershipCtaCopy": "Podpořte nás <highlight>tím, že se stanete členem</highlight>",
     "shareUrl": "Sdílet adresu URL",
     "treesOfTrees": "{count1} z {count2}",
-    "document": "Dokumentace platformy (EN)"
+    "document": "Dokumentace platformy (EN)",
+    "transactions": "Transakce",
+    "recurring": "Opakované",
+    "paymentMethods": "Platební metody",
+    "quarterly": "Čtvrtletně",
+    "semiyearly": "Pololetně"
   }
 }

@@ -159,7 +159,7 @@ const IssueCodesForm = (): ReactElement | null => {
           setIsSubmitted(true);
           setRefetchUserData(true);
           setTimeout(() => {
-            router.push(localizedPath(`/profile/history?ref=${res.uid}`));
+            router.push(localizedPath('/profile/payments'));
           }, 5000);
         }
       } catch (err) {

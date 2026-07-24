@@ -1,0 +1,20 @@
+{
+  "Payments": {
+    "loadError": "Platby se nepodařilo načíst. Zkuste to znovu.",
+    "retry": "Zkusit znovu",
+    "selectPayment": "Vyberte platbu pro zobrazení podrobností",
+    "dedicated": "Věnováno",
+    "dedicatedTo": "Věnováno",
+    "donationId": "ID daru",
+    "fundraiser": "Sbírka",
+    "supports": "Podporuje",
+    "supportedProjects": "Podpořené projekty",
+    "support": "Podpora",
+    "feeCovered": "Poplatek jste uhradili vy",
+    "tax": "Daň",
+    "noPaymentMethods": "Žádné uložené platební metody",
+    "remove": "Odebrat",
+    "default": "Výchozí",
+    "confirmRemoveMethod": "Odebrat tuto platební metodu?"
+  }
+}

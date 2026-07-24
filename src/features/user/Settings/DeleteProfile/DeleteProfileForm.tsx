@@ -58,7 +58,7 @@ export default function DeleteProfileForm() {
   };
   const handleSubscriptions = () => {
     setIsModalOpen(false);
-    router.push(localizedPath('/profile/recurrency'));
+    router.push(localizedPath('/profile/payments/recurring'));
   };
 
   const closeModal = () => {

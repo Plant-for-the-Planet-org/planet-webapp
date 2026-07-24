@@ -213,6 +213,9 @@
     "donationsSubTitle": "Manage all your donations and payments from one place.",
     "recurrencySubTitle": "Manage all your Recurrency Donations from one place.",
     "payments": "Payments",
+    "transactions": "Transactions",
+    "recurring": "Recurring",
+    "paymentMethods": "Payment methods",
     "stripe-sepa_debit": "SEPA (Stripe)",
     "sepa_debit": "SEPA (Stripe)",
     "offline": "Bank Transfer",
@@ -290,6 +293,8 @@
     "vplatform-payout": "Platform Payout",
     "bankDetails": "Bank Details",
     "refundAmount": "Refunded Amount",
-    "polygonMinimumPoints": "A polygon needs at least 3 points. Please click at least three locations on the map."
+    "polygonMinimumPoints": "A polygon needs at least 3 points. Please click at least three locations on the map.",
+    "quarterly": "Quarterly",
+    "semiyearly": "Half-yearly"
   }
 }
