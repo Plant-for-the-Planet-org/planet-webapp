@@ -13,7 +13,10 @@ type Props = {
 const DonationsTable = ({ donations, amount, currency }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
   return (
-    <table className={styles.donationsTable}>
+    <table
+      className={styles.donationsTable}
+      aria-label={tReceipt('donationDetails.title')}
+    >
       <thead>
         <tr className={styles.header}>
           <th scope="col" className={styles.reference}>
