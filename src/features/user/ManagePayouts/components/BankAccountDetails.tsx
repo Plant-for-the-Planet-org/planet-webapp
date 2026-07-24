@@ -141,13 +141,14 @@ const BankAccountDetails = ({
           <div className="detailInfo">{account.remarks || '-'}</div>
         </Grid>
         <Grid item xs={12}>
-          <Link
+          <Button
+            component={Link}
             href={localizedPath(
               `/profile/payouts/edit-bank-details/${account.id}`
             )}
           >
-            <Button>{tManagePayouts('editAccountButton')}</Button>
-          </Link>
+            {tManagePayouts('editAccountButton')}
+          </Button>
         </Grid>
       </Grid>
     </Grid>

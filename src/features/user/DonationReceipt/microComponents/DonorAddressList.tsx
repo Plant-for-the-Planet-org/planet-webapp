@@ -108,8 +108,11 @@ const DonorAddressList = ({
           setIsModalOpen(true);
         }}
         type="button"
+        aria-label={tAddressManagement('addressForm.editAddress')}
       >
-        <EditIcon />
+        <span aria-hidden="true" style={{ display: 'contents' }}>
+          <EditIcon />
+        </span>
       </button>
     </section>
   );

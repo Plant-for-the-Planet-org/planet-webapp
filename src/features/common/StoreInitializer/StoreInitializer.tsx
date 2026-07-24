@@ -4,10 +4,15 @@ import { useInitializeAuth } from '../../../hooks/useInitializeAuth';
 import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
 import { useInitializeUser } from '../../../hooks/useInitializeUser';
+import { useInitializeProject } from '../../../hooks/useInitializeProject';
+import { useInitializeIntervention } from '../../../hooks/useInitializeIntervention';
+import { useInitializeView } from '../../../hooks/useInitializeView';
+import { useInitializeSingleProject } from '../../../hooks/useInitializeSingleProject';
 import { useInitializeTenant } from '../../../hooks/useInitializeTenant';
 
 interface StoreInitializerProps {
   tenantConfig?: Tenant;
+  isMobile: boolean;
 }
 
 /**
@@ -22,11 +27,18 @@ interface StoreInitializerProps {
  * - Component:     src/features/common/StoreInitializer/StoreInitializer.tsx
  */
 
-export const StoreInitializer = ({ tenantConfig }: StoreInitializerProps) => {
+export const StoreInitializer = ({
+  tenantConfig,
+  isMobile,
+}: StoreInitializerProps) => {
   useInitializeTenant(tenantConfig);
   useInitializeParams();
   useInitializeAuth();
   useInitializeUser();
   useInitializeCurrency();
+  useInitializeView(isMobile);
+  useInitializeProject();
+  useInitializeSingleProject();
+  useInitializeIntervention();
   return null;
 };

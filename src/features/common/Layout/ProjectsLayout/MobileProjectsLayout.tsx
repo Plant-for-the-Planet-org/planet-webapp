@@ -1,27 +1,23 @@
 import type { ReactNode } from 'react';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
-import { ProjectsProvider } from '../../../projectsV2/ProjectsContext';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import { clsx } from 'clsx';
-import { useQueryParamStore, useUserStore } from '../../../../stores';
+import {
+  useQueryParamStore,
+  useUserStore,
+  useViewStore,
+} from '../../../../stores';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
   children: ReactNode;
-  page: 'project-list' | 'project-details';
   isMobile: boolean;
 }
 
-const MobileProjectsLayout = ({
-  children,
-  page,
-  isMobile,
-}: ProjectsLayoutProps) => {
-  // local state
-  const [selectedMode, setSelectedMode] = useState<ViewMode>('list');
+const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
   // store: state
   const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
@@ -32,19 +28,28 @@ const MobileProjectsLayout = ({
   const isImpersonationModeOn = useUserStore(
     (state) => state.isImpersonationModeOn
   );
+  const currentPage = useViewStore((state) => state.page);
+  const isMapMode = useViewStore((state) => state.selectedMode === 'map');
 
-  const isMapMode = selectedMode === 'map';
+  // store: action
+  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
 
   useEffect(() => {
     if (isEmbedded && isContextLoaded) {
-      if (page === 'project-details' && showProjectDetails === 'false') {
+      if (currentPage === 'project-details' && showProjectDetails === 'false') {
         setSelectedMode('map');
       }
-      if (page === 'project-list' && showProjectList === 'false') {
+      if (currentPage === 'project-list' && showProjectList === 'false') {
         setSelectedMode('map');
       }
     }
-  }, [page, isEmbedded, isContextLoaded, showProjectDetails, showProjectList]);
+  }, [
+    currentPage,
+    isEmbedded,
+    isContextLoaded,
+    showProjectDetails,
+    showProjectList,
+  ]);
 
   const mobileLayoutClass = clsx(styles.mobileProjectsLayout, {
     [styles.mapMode]: isMapMode,
@@ -53,20 +58,11 @@ const MobileProjectsLayout = ({
   });
 
   return (
-    <ProjectsProvider
-      page={page}
-      selectedMode={selectedMode}
-      setSelectedMode={setSelectedMode}
-    >
+    <>
       <main className={mobileLayoutClass}>
         {isMapMode ? (
           <section className={styles.mobileMapContainer}>
-            <ProjectsMap
-              selectedMode={selectedMode}
-              setSelectedMode={setSelectedMode}
-              isMobile={isMobile}
-              page={page}
-            />
+            <ProjectsMap isMobile={isMobile} />
           </section>
         ) : (
           <section className={styles.mobileContentContainer}>
@@ -75,7 +71,7 @@ const MobileProjectsLayout = ({
         )}
       </main>
       <Credits isMobile={isMobile} />
-    </ProjectsProvider>
+    </>
   );
 };
 

@@ -23,7 +23,7 @@ import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
 import { defaultTenant } from '../../../../../tenant.config';
 
-export default function DirectGift(): ReactElement {
+export default function DirectGiftCheckPage(): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { getApi } = useApi();
@@ -44,7 +44,6 @@ export default function DirectGift(): ReactElement {
             id: newProfile.slug,
             displayName: newProfile.displayName,
             type: newProfile.type,
-            show: true,
           })
         );
       }

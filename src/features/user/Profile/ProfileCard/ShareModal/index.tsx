@@ -79,6 +79,10 @@ const ShareModal = ({
             <h3>{t('shareFeature.shareVia')}</h3>
             <div>
               <button
+                type="button"
+                aria-label={t('shareFeature.shareOn', {
+                  socialMedia: 'Facebook',
+                })}
                 onClick={() =>
                   handleShare(
                     `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShareLinkedin}&hashtag=%23StopTalkingStartPlanting`
@@ -86,9 +90,15 @@ const ShareModal = ({
                 }
                 className={styles.socialMediaIcon}
               >
-                <FacebookCustomIcon />
+                <span aria-hidden="true" style={{ display: 'contents' }}>
+                  <FacebookCustomIcon />
+                </span>
               </button>
               <button
+                type="button"
+                aria-label={t('shareFeature.shareOn', {
+                  socialMedia: 'LinkedIn',
+                })}
                 onClick={() =>
                   handleShare(
                     `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`
@@ -96,19 +106,29 @@ const ShareModal = ({
                 }
                 className={styles.socialMediaIcon}
               >
-                <LinkedInCustomIcon />
+                <span aria-hidden="true" style={{ display: 'contents' }}>
+                  <LinkedInCustomIcon />
+                </span>
               </button>
 
               <button
+                type="button"
+                aria-label={t('shareFeature.shareOn', {
+                  socialMedia: 'WhatsApp',
+                })}
                 onClick={() =>
                   handleShare(`whatsapp://send?text=${linkToShare}`)
                 }
                 className={styles.socialMediaIcon}
               >
-                <WhatsappCustomIcon />
+                <span aria-hidden="true" style={{ display: 'contents' }}>
+                  <WhatsappCustomIcon />
+                </span>
               </button>
 
               <button
+                type="button"
+                aria-label={t('shareFeature.shareOn', { socialMedia: 'X' })}
                 onClick={() =>
                   handleShare(
                     `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`
@@ -116,13 +136,19 @@ const ShareModal = ({
                 }
                 className={styles.socialMediaIcon}
               >
-                <XCustomIcon />
+                <span aria-hidden="true" style={{ display: 'contents' }}>
+                  <XCustomIcon />
+                </span>
               </button>
               <button
+                type="button"
+                aria-label={t('shareFeature.shareViaEmail')}
                 onClick={handleMailShare}
                 className={styles.socialMediaIcon}
               >
-                <MailCustomIcon />
+                <span aria-hidden="true" style={{ display: 'contents' }}>
+                  <MailCustomIcon />
+                </span>
               </button>
             </div>
           </div>
