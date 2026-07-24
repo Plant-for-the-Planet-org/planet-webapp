@@ -38,16 +38,29 @@ export default function CopyToClipboard({
 
     setOpen(false);
   };
+  const containerClassName = clsx(styles.copyButtonContainer, {
+    [styles.button]: isButton,
+  });
+
   return (
     <>
-      <div
-        onClick={handleClick}
-        className={clsx(styles.copyButtonContainer, {
-          [styles.button]: isButton,
-        })}
-      >
-        {customCopyButton ? customCopyButton : <CopyIcon />}
-      </div>
+      {customCopyButton ? (
+        // `customCopyButton` already renders its own semantic <button>, so the
+        // wrapper stays a non-interactive <span>. onClick is kept only as a
+        // bubbling target for the child button's clicks (keyboard included);
+        // making the wrapper a <button> would nest interactive controls.
+        <span onClick={handleClick} className={containerClassName}>
+          {customCopyButton}
+        </span>
+      ) : (
+        <button
+          type="button"
+          onClick={handleClick}
+          className={containerClassName}
+        >
+          <CopyIcon />
+        </button>
+      )}
       <Snackbar
         open={open}
         autoHideDuration={6000}

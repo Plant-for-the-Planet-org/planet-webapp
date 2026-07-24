@@ -290,14 +290,15 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className={styles.profilePageContainer}>
-      <div
+      <button
+        type="button"
         key={'hamburgerIcon'}
         className={styles.hamburgerIcon}
         onClick={() => setIsMobileMenuOpen(true)}
         style={{ marginTop: isImpersonationModeOn ? '47px' : '' }}
       >
         <MenuIcon />
-      </div>
+      </button>
       <div
         className={clsx({
           [styles.sidebarModified]: isImpersonationModeOn,
@@ -308,12 +309,15 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         <div className={styles.navLinksContainer}>
           <>
             <div key={'closeMenu'} className={styles.closeMenu}>
-              <div
-                className={styles.navLink}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
+              <div className={styles.navLink}>
                 <BackArrow />
-                <button className={styles.navLinkTitle}>{t('close')}</button>
+                <button
+                  type="button"
+                  className={styles.navLinkTitle}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {t('close')}
+                </button>
               </div>
             </div>
             {navLinks.map((link: NavLinkType, index: number) => (
@@ -358,18 +362,21 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
               {t('document')}
             </button>
           </div>
-          <div
-            className={styles.navLink}
-            //Log out user and clear impersonation data
-            onClick={() => {
-              localStorage.removeItem('impersonationData');
-              logoutUser(`${window.location.origin}/`);
-            }}
-          >
+          <div className={styles.navLink}>
             <IconContainer>
               <LogoutIcon />
             </IconContainer>
-            <button className={styles.navLinkTitle}>{t('logout')}</button>
+            <button
+              type="button"
+              className={styles.navLinkTitle}
+              //Log out user and clear impersonation data
+              onClick={() => {
+                localStorage.removeItem('impersonationData');
+                logoutUser(`${window.location.origin}/`);
+              }}
+            >
+              {t('logout')}
+            </button>
           </div>
         </div>
       </div>

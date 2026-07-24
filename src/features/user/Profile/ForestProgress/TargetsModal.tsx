@@ -43,6 +43,7 @@ const TargetsModal = ({
 }: TargetsModalProps) => {
   const { putApiAuthenticated } = useApi();
   const tProfile = useTranslations('Profile.progressBar');
+  const tCommon = useTranslations('Common');
   // states to manage modal
   const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
   const [treesPlantedTargetLocal, setTreesPlantedTargetLocal] = useState(0);
@@ -125,8 +126,15 @@ const TargetsModal = ({
   return (
     <Modal open={open} onClose={handleClose}>
       <div className={styles.targetModalMainContainer}>
-        <button className={styles.crossIconContainer} onClick={handleClose}>
-          <CrossIcon />
+        <button
+          type="button"
+          aria-label={`${tCommon('close')} ${tProfile('setTargets')}`}
+          className={styles.crossIconContainer}
+          onClick={handleClose}
+        >
+          <span aria-hidden="true" style={{ display: 'contents' }}>
+            <CrossIcon />
+          </span>
         </button>
         <div className={styles.setTargetLabel}>{tProfile('setTargets')}</div>
 

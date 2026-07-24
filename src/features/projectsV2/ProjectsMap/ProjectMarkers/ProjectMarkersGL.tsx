@@ -17,7 +17,6 @@ import { useQueryParamStore } from '../../../../stores/queryParamStore';
 
 interface Props {
   projects: MapProject[];
-  page: 'project-list' | 'project-details';
 }
 
 export const PROJECT_MARKERS_LAYER = 'project-markers-gl';
@@ -36,7 +35,7 @@ type ProjectMarkerProperties = {
   sortKey: number;
 };
 
-const ProjectMarkersGL = ({ projects, page }: Props) => {
+const ProjectMarkersGL = ({ projects }: Props) => {
   const { current: mapInstance } = useMap();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -192,7 +191,6 @@ const ProjectMarkersGL = ({ projects, page }: Props) => {
           handlePopupEnter={clearTimers}
           handlePopupLeave={handlePopupLeave}
           visitProject={visitProject}
-          page={page}
         />
       )}
     </>

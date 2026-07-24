@@ -48,9 +48,12 @@ export const SignInButton = () => {
     <button
       className={styles.mobileSignInButton}
       type="button"
+      aria-label={t('signIn')}
       onClick={() => gotoUserPage()}
     >
-      <Me />
+      <span aria-hidden="true" style={{ display: 'contents' }}>
+        <Me />
+      </span>
     </button>
   ) : (
     <WebappButton

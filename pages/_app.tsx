@@ -183,7 +183,7 @@ const PlanetWeb = ({
             onRedirectCallback={onRedirectCallback}
             useRefreshTokens={true}
           >
-            <StoreInitializer tenantConfig={tenantConfig} />
+            <StoreInitializer isMobile={isMobile} tenantConfig={tenantConfig} />
             <ThemeProvider>
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
