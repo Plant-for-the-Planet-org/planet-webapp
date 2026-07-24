@@ -10,7 +10,7 @@ import type { Tenant } from '@planet-sdk/common';
 
 import { defaultTenant } from '../../../../tenant.config';
 import { useEffect } from 'react';
-import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfileLoader';
 import { useRouter } from 'next/router';
 import {
   constructPathsForTenantSlug,

@@ -1,19 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
-import type { ProjectSiteFeature } from '../../../common/types/map';
+import type {
+  DropdownType,
+  ExtendedProject,
+} from '../../../common/types/projectv2';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProjectSiteDropdown from '../ProjectSiteDropDown';
+import { useSingleProjectStore } from '../../../../stores';
 
-const meta: Meta<typeof ProjectSiteDropdown> = {
-  title: 'Projects/Details/ProjectSiteDropdown',
-  component: ProjectSiteDropdown,
-};
+type ProjectSites = NonNullable<ExtendedProject['sites']>;
 
-export default meta;
-type Story = StoryObj<typeof ProjectSiteDropdown>;
-
-const options: ProjectSiteFeature[] = [
+// cspell:disable
+const projectSites: ProjectSites = [
   {
     geometry: {
       coordinates: [
@@ -126,24 +124,44 @@ const options: ProjectSiteFeature[] = [
 ];
 // cspell:enable
 
+const meta: Meta<typeof ProjectSiteDropdown> = {
+  title: 'Projects/Details/ProjectSiteDropdown',
+  component: ProjectSiteDropdown,
+  decorators: [
+    (Story) => {
+      // The dropdown now reads sites and the selected site from the single
+      // project store. Only `sites` is consumed here, so we cast a minimal
+      // project shape. Reset on unmount so state doesn't leak into other
+      // stories.
+      useState(() => {
+        useSingleProjectStore.setState({
+          singleProject: { sites: projectSites } as ExtendedProject,
+          selectedSite: 0,
+        });
+        return null;
+      });
+      useEffect(
+        () => () => {
+          useSingleProjectStore.getState().clearProjectStates();
+        },
+        []
+      );
+      return <Story />;
+    },
+  ],
+};
+
+export default meta;
+type Story = StoryObj<typeof ProjectSiteDropdown>;
+
 export const Preview: Story = {
   render: () => {
-    const [selectedSite, setSelectedSite] = useState<null | number>(0);
-    const [selectedIntervention, setSelectedIntervention] =
-      useState<Intervention | null>(null);
-    const [_selectedSampleTree, setSelectedSampleTree] =
-      useState<SampleTreeRegistration | null>(null);
+    const [activeDropdown, setActiveDropdown] = useState<DropdownType>('site');
 
     return (
       <ProjectSiteDropdown
-        projectSites={options}
-        selectedSite={selectedSite}
-        setSelectedSite={(index) => {
-          setSelectedSite(index);
-        }}
-        selectedIntervention={selectedIntervention}
-        setSelectedIntervention={setSelectedIntervention}
-        setSelectedSampleTree={setSelectedSampleTree}
+        activeDropdown={activeDropdown}
+        setActiveDropdown={setActiveDropdown}
       />
     );
   },

@@ -78,7 +78,7 @@
   @include xsPhoneView {
     padding-right: 10px;
   }
-  > svg {
+  svg {
     width: 16px;
     @include xsPhoneView {
       width: 12px;

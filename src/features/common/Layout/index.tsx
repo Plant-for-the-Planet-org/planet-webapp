@@ -7,7 +7,12 @@ import CookiePolicy from './CookiePolicy';
 import ErrorPopup from './ErrorPopup';
 import Header from './Header';
 import Navbar from './Navbar';
-import { useQueryParamStore, useTenantStore } from '../../../stores';
+import {
+  useQueryParamStore,
+  useTenantStore,
+  useViewStore,
+} from '../../../stores';
+import { isEmbeddablePage } from '../../../stores/viewStore';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { theme: themeType } = useTheme();
@@ -17,11 +22,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
     [tenantConfig]
   );
 
-  const isEmbedMode = useQueryParamStore(
-    (state) =>
-      state.embed === 'true' &&
-      (state.page === 'project-list' || state.page === 'project-details')
-  );
+  const embed = useQueryParamStore((state) => state.embed);
+  const embeddablePage = useViewStore((state) => state.page);
+  const isEmbedMode = embed === 'true' && isEmbeddablePage(embeddablePage);
 
   return (
     <>
