@@ -4,7 +4,6 @@ import type { AddressAction } from '../../../common/types/profile';
 import type { FormValues } from './DonorContactForm';
 import type { UseFormSetValue } from 'react-hook-form';
 
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import { useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import {
@@ -15,7 +14,6 @@ import {
 import StyledRadio from './StyledRadio';
 import styles from '../DonationReceipt.module.scss';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
-import DonorAddressCheckIcon from '../../../../../public/assets/images/icons/DonorAddressCheckIcon';
 
 type Props = {
   address: Address;
@@ -64,8 +62,6 @@ const DonorAddressList = ({
       <div className={styles.addressInfoSubContainer}>
         <StyledRadio
           value={address.id}
-          icon={<CheckBoxOutlineBlankIcon />}
-          checkedIcon={<DonorAddressCheckIcon />}
           inputProps={{
             'aria-label': `${address.address}${
               address.address2 ? `, ${address.address2}` : ''
