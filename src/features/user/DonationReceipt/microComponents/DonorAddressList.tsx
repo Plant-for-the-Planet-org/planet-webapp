@@ -2,9 +2,9 @@ import type { Address, CountryCode } from '@planet-sdk/common';
 import type { SetState } from '../../../common/types/common';
 import type { AddressAction } from '../../../common/types/profile';
 import type { FormValues } from './DonorContactForm';
-import type { Control, UseFormSetValue } from 'react-hook-form';
+import type { UseFormSetValue } from 'react-hook-form';
 
-import { Controller } from 'react-hook-form';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import { useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import {
@@ -12,7 +12,7 @@ import {
   ADDRESS_TYPE,
   getFormattedAddress,
 } from '../../../../utils/addressManagement';
-import StyledCheckbox from './StyledCheckbox';
+import StyledRadio from './StyledRadio';
 import styles from '../DonationReceipt.module.scss';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import DonorAddressCheckIcon from '../../../../../public/assets/images/icons/DonorAddressCheckIcon';
@@ -24,7 +24,6 @@ type Props = {
   setIsModalOpen: SetState<boolean>;
   checkedAddressGuid: string | null;
   setCheckedAddressGuid: SetState<string | null>;
-  control: Control<FormValues>;
   setValue: UseFormSetValue<FormValues>;
 };
 
@@ -35,11 +34,9 @@ const DonorAddressList = ({
   setIsModalOpen,
   checkedAddressGuid,
   setCheckedAddressGuid,
-  control,
   setValue,
 }: Props) => {
   const tCountry = useTranslations('Country');
-  const t = useTranslations('DonationReceipt');
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const { zipCode, city, country } = address;
 
@@ -65,21 +62,13 @@ const DonorAddressList = ({
   return (
     <section className={styles.addressInfoContainer}>
       <div className={styles.addressInfoSubContainer}>
-        <Controller
-          name="addressGuid"
-          control={control}
-          rules={{ required: t('notifications.addressRequired') }}
-          render={({ field }) => (
-            <StyledCheckbox
-              {...field}
-              checked={checkedAddressGuid === address.id}
-              onChange={() => {
-                field.onChange(address.id);
-                setCheckedAddressGuid(address.id);
-              }}
-              checkedIcon={<DonorAddressCheckIcon />}
-            />
-          )}
+        <StyledRadio
+          value={address.id}
+          icon={<CheckBoxOutlineBlankIcon />}
+          checkedIcon={<DonorAddressCheckIcon />}
+          inputProps={{
+            'aria-label': `${address.address}, ${formattedAddress}`,
+          }}
         />
 
         <div>
