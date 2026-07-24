@@ -112,6 +112,7 @@ const SignupAddressField = ({
         render={({ field: { onChange, value, onBlur } }) => (
           <MuiTextField
             label={tSignup('fieldLabels.address')}
+            autoComplete="street-address"
             error={errors.address !== undefined}
             helperText={errors.address !== undefined && errors.address.message}
             onChange={(event) => {
@@ -164,6 +165,7 @@ const SignupAddressField = ({
           render={({ field: { onChange, value, onBlur } }) => (
             <MuiTextField
               label={tSignup('fieldLabels.city')}
+              autoComplete="address-level2"
               error={errors.city !== undefined}
               helperText={errors.city !== undefined && errors.city.message}
               onChange={onChange}
@@ -194,6 +196,7 @@ const SignupAddressField = ({
           render={({ field: { onChange, value, onBlur } }) => (
             <MuiTextField
               label={tSignup('fieldLabels.zipCode')}
+              autoComplete="postal-code"
               error={errors.zipCode !== undefined}
               helperText={
                 errors.zipCode !== undefined && errors.zipCode.message
