@@ -67,7 +67,9 @@ const DonorAddressList = ({
           icon={<CheckBoxOutlineBlankIcon />}
           checkedIcon={<DonorAddressCheckIcon />}
           inputProps={{
-            'aria-label': `${address.address}, ${formattedAddress}`,
+            'aria-label': `${address.address}${
+              address.address2 ? `, ${address.address2}` : ''
+            }, ${formattedAddress}`,
           }}
         />
 

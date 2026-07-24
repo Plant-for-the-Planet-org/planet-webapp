@@ -158,6 +158,10 @@ const DonorContactForm = ({
                 setCheckedAddressGuid(value);
               }}
               aria-label={tReceipt('donorInfo.selectAddress')}
+              aria-invalid={errors.addressGuid ? true : undefined}
+              aria-describedby={
+                errors.addressGuid ? 'addressGuid-error' : undefined
+              }
               sx={{ gap: '10px' }}
             >
               {user.addresses.map((address) => (
@@ -176,7 +180,7 @@ const DonorContactForm = ({
           )}
         />
         {errors.addressGuid?.message && (
-          <span className={styles.errorMessage}>
+          <span id="addressGuid-error" className={styles.errorMessage}>
             {errors.addressGuid.message}
           </span>
         )}
