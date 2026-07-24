@@ -410,6 +410,7 @@ export default function EditProfileForm() {
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 label={t('fieldLabels.website')}
+                autoComplete="url"
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
