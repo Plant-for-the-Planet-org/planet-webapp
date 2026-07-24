@@ -122,7 +122,10 @@ const SignupAddressField = ({
               typeof option === 'string' ? option : option.text
             }
             value={value ?? ''}
-            onInputChange={(_, newValue) => {
+            onInputChange={(_, newValue, reason) => {
+              if (reason === 'reset') {
+                return;
+              }
               setAddressInput(newValue);
               onChange(newValue);
             }}
@@ -130,8 +133,10 @@ const SignupAddressField = ({
               const selected =
                 typeof newValue === 'string' ? newValue : newValue?.text ?? '';
               onChange(selected);
-              if (selected) {
-                handleAddressSelection(selected);
+              // Only fetch address details when a real suggestion object is
+              // chosen, not when free text is committed via Enter.
+              if (newValue && typeof newValue !== 'string') {
+                handleAddressSelection(newValue.text);
               }
             }}
             renderInput={(params) => (
