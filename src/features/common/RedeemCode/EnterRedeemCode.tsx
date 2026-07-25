@@ -60,6 +60,7 @@ export const EnterRedeemCode = ({
               onBlur={onBlur}
               placeholder="XAD-1SA-5F1-A"
               label=""
+              inputProps={{ 'aria-label': t('redeemCode') }}
               variant="outlined"
               error={errors.code !== undefined}
               helperText={errors.code !== undefined && errors.code.message}

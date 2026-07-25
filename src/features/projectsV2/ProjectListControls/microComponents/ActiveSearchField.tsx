@@ -55,6 +55,7 @@ const ActiveSearchField = ({ setIsFilterOpen }: ActiveSearchFieldProps) => {
         id="standard-search"
         variant="standard"
         placeholder={t('searchProject')}
+        inputProps={{ 'aria-label': t('searchProject') }}
         value={searchValue}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setSearchValue(event.target.value);
