@@ -1,6 +1,7 @@
 import type { SourceName } from '../../../utils/mapsV2/timeTravel';
+import type { KeyboardEvent } from 'react';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import CalendarIcon from '../../../../public/assets/images/icons/projectV2/CalendarIcon';
 import DropdownUpArrow from '../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
@@ -34,6 +35,8 @@ const TimeTravelDropdown = ({
 }: TimeTravelDropdownProps) => {
   const tTimeTravel = useTranslations('ProjectDetails.timeTravel');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuId = useId();
 
   const [selectedYear, setSelectedYear] = useState(defaultYear);
   const [selectedSource, setSelectedSource] = useState(defaultSource);
@@ -69,15 +72,25 @@ const TimeTravelDropdown = ({
   const isOptionSelected = (option: string, selectedValue: string): boolean =>
     option.toLowerCase() === selectedValue.toLowerCase();
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Escape' && isMenuOpen) {
+      setIsMenuOpen(false);
+      triggerRef.current?.focus();
+    }
+  };
+
   return (
     <div
       ref={dropdownRef}
       className={clsx(styles.menuContainer, customClassName)}
+      onKeyDown={handleKeyDown}
     >
       <button
+        ref={triggerRef}
         className={styles.menuButton}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-expanded={isMenuOpen}
+        aria-controls={isMenuOpen ? menuId : undefined}
         aria-label={tTimeTravel('timeTravelOptionsLabel')}
       >
         <span className={styles.menuButtonTitle}>
@@ -102,7 +115,7 @@ const TimeTravelDropdown = ({
         )}
       </button>
       {isMenuOpen && (
-        <div className={styles.menuItems}>
+        <div id={menuId} className={styles.menuItems}>
           <ul className={styles.yearMenuContainer}>
             {availableYears?.map((year) => {
               const isSelected = isOptionSelected(year, selectedYear);

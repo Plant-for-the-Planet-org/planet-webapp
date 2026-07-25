@@ -1,9 +1,9 @@
-import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
 import { styled } from '@mui/material';
 
-const StyledCheckbox = styled(Checkbox)({
+const StyledRadio = styled(Radio)({
   padding: 0,
-  '&.MuiCheckbox-root': {
+  '&.MuiRadio-root': {
     width: 21,
     height: 21,
     marginRight: 8,
@@ -14,4 +14,4 @@ const StyledCheckbox = styled(Checkbox)({
   },
 });
 
-export default StyledCheckbox;
+export default StyledRadio;
