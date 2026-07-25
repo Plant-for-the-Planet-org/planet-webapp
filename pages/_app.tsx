@@ -145,12 +145,11 @@ const PlanetWeb = ({
     setBrowserCompatible(browserNotCompatible());
   }, []);
 
-  // Sync the document language with the active locale. `_document` renders a
-  // default `<Html lang="en">` at SSR and cannot read the custom `[locale]`
-  // route param per request, so keep `<html lang>` in step on the client.
+  // `_document` sets `<html lang>` at SSR and on every full load, including language switches. This effect is purely defensive: it would re-sync lang if the locale ever changed without a document render, which doesn't happen today. Its `router.isReady` guard avoids overwriting the SSR value in Next's static case where query can be empty pre-hydration.
   useEffect(() => {
+    if (!router.isReady) return;
     document.documentElement.lang = locale;
-  }, [locale]);
+  }, [locale, router.isReady]);
 
   const isMobile = useMemo(() => {
     if (typeof window === 'undefined') return false;
