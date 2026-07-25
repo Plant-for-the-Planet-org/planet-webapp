@@ -1,9 +1,3 @@
-import type {
-  OtherInterventions,
-  SampleTreeRegistration,
-} from '@planet-sdk/common';
-import type { SetState } from '../../../common/types/common';
-
 import { useMemo, Fragment } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../styles/InterventionInfo.module.scss';
@@ -15,32 +9,33 @@ import MobileInfoSwiper from '../../MobileInfoSwiper';
 import OtherInterventionMetadata from './microComponents/OtherInterventionMetadata';
 import OtherInterventionInfoHeader from './microComponents/OtherInterventionInfoHeader';
 import { prepareInterventionMetadata } from '../../../../utils/projectV2';
+import { useInterventionStore } from '../../../../stores';
 
 interface Props {
-  hoveredIntervention?: OtherInterventions | null;
-  selectedIntervention: OtherInterventions | null;
   isMobile: boolean;
-  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
-const OtherInterventionInfo = ({
-  isMobile,
-  setSelectedSampleTree,
-  selectedIntervention,
-  hoveredIntervention,
-}: Props) => {
-  const interventionInfo = hoveredIntervention || selectedIntervention;
-  if (!interventionInfo) return null;
-  const tProjectDetails = useTranslations('ProjectDetails');
-  const interventionMetadata = prepareInterventionMetadata(interventionInfo);
+const OtherInterventionInfo = ({ isMobile }: Props) => {
+  const selectedIntervention = useInterventionStore((state) =>
+    state.selectedIntervention?.type !== 'single-tree-registration' &&
+    state.selectedIntervention?.type !== 'multi-tree-registration'
+      ? state.selectedIntervention
+      : null
+  );
 
-  const sampleTrees = interventionInfo.sampleInterventions || [];
-  const plantedSpecies = interventionInfo.plantedSpecies || [];
+  const hoveredIntervention = useInterventionStore((state) =>
+    state.hoveredIntervention?.type !== 'single-tree-registration' &&
+    state.hoveredIntervention?.type !== 'multi-tree-registration'
+      ? state.hoveredIntervention
+      : null
+  );
+  const interventionInfo = hoveredIntervention || selectedIntervention;
+  const tProjectDetails = useTranslations('ProjectDetails');
+
+  const sampleTrees = interventionInfo?.sampleInterventions || [];
+  const plantedSpecies = interventionInfo?.plantedSpecies || [];
   const hasSampleTrees = sampleTrees.length > 0;
   const hasPlantedSpecies = plantedSpecies.length > 0;
-  const hasInterventionMetadata = interventionMetadata.length > 0;
-  const plantDate =
-    interventionInfo.interventionStartDate || interventionInfo.plantDate;
 
   const { totalTreesCount } = useMemo(() => {
     const totalTreesCount = hasPlantedSpecies
@@ -50,7 +45,7 @@ const OtherInterventionInfo = ({
         )
       : 0;
     return { totalTreesCount };
-  }, [interventionInfo, interventionInfo.type]);
+  }, [interventionInfo]);
 
   const sampleInterventionSpeciesImages = useMemo(() => {
     if (hasSampleTrees) {
@@ -58,12 +53,19 @@ const OtherInterventionInfo = ({
         return {
           id: item.coordinates[0].id,
           image: item.coordinates[0].image ?? '',
-          description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
+          description: tProjectDetails('sampleTreeTag', { tag: item.tag ?? '' }),
         };
       });
       return result;
     }
   }, [interventionInfo]);
+
+  if (!interventionInfo) return null;
+
+  const interventionMetadata = prepareInterventionMetadata(interventionInfo);
+  const hasInterventionMetadata = interventionMetadata.length > 0;
+  const plantDate =
+    interventionInfo.interventionStartDate || interventionInfo.plantDate;
 
   const shouldDisplayImageCarousel =
     sampleInterventionSpeciesImages !== undefined &&
@@ -103,11 +105,7 @@ const OtherInterventionInfo = ({
       />
     ),
     hasSampleTrees && (
-      <SampleTreesInfo
-        key="sampleTrees"
-        sampleTrees={sampleTrees}
-        setSelectedSampleTree={setSelectedSampleTree}
-      />
+      <SampleTreesInfo key="sampleTrees" sampleTrees={sampleTrees} />
     ),
   ].filter(Boolean);
 

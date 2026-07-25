@@ -174,6 +174,7 @@ export default function CompleteSignup(): ReactElement | null {
       <MuiTextField
         defaultValue={auth0User?.email}
         label={t('fieldLabels.email')}
+        autoComplete="email"
         disabled
       />
       <AutoCompleteCountry

@@ -47,6 +47,7 @@ const FullNameInput = ({ control, errors }: FullNameInputProps) => {
         render={({ field: { onChange, value, onBlur } }) => (
           <MuiTextField
             label={tSignup('fieldLabels.firstName')}
+            autoComplete="given-name"
             error={errors.firstname !== undefined}
             helperText={
               errors.firstname !== undefined && errors.firstname.message
@@ -69,6 +70,7 @@ const FullNameInput = ({ control, errors }: FullNameInputProps) => {
         render={({ field: { onChange, value, onBlur } }) => (
           <MuiTextField
             label={tSignup('fieldLabels.lastName')}
+            autoComplete="family-name"
             error={errors.lastname !== undefined}
             helperText={
               errors.lastname !== undefined && errors.lastname.message

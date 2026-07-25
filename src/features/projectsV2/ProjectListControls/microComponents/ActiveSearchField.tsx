@@ -9,26 +9,26 @@ import styles from '../styles/ProjectListControls.module.scss';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
 import { clsx } from 'clsx';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { useProjectStore } from '../../../../stores';
 
 interface ActiveSearchFieldProps {
-  setIsSearching: SetState<boolean>;
   setIsFilterOpen: SetState<boolean>;
-  debouncedSearchValue: string;
-  setDebouncedSearchValue: SetState<string>;
 }
 
-const ActiveSearchField = ({
-  setIsSearching,
-  setIsFilterOpen,
-  debouncedSearchValue,
-  setDebouncedSearchValue,
-}: ActiveSearchFieldProps) => {
+const ActiveSearchField = ({ setIsFilterOpen }: ActiveSearchFieldProps) => {
   const t = useTranslations('AllProjects');
-
+  const debouncedSearchValue = useProjectStore(
+    (state) => state.debouncedSearchValue
+  );
   const [searchValue, setSearchValue] = useState(debouncedSearchValue);
 
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
+  // store: action
+  const setDebouncedSearchValue = useProjectStore(
+    (state) => state.setDebouncedSearchValue
+  );
+  const setIsSearching = useProjectStore((state) => state.setIsSearching);
 
   const onlyMapModeAllowed = isEmbedMode && showProjectList === 'false';
 
