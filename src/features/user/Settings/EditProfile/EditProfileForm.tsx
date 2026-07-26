@@ -169,7 +169,7 @@ export default function EditProfileForm() {
         title: selectedProfile.title,
         value: selectedProfile.value,
       });
-  }, [type, profileTypes]);
+  }, [type]);
 
   useEffect(() => {
     // This will remove field values which do not exist for the new type

@@ -42,8 +42,8 @@ export default function AddProjectType(): ReactElement {
   useEffect(() => {
     if (!isAuthResolved) return;
 
-    // Auth resolved but missing token or profile → redirect to login
-    if (!token || !userProfile) {
+    // No token after auth resolution -> unauthenticated
+    if (!token) {
       localStorage.setItem(
         'redirectLink',
         '/profile/projects/add-project/restoration-project'
@@ -56,10 +56,11 @@ export default function AddProjectType(): ReactElement {
       return;
     }
 
-    // Auth resolved and user profile exists
-    const isTPO = userProfile.type === 'tpo';
-    setAccessDenied(!isTPO);
-  }, [isAuthResolved]);
+    // Signed in, profile pending or failed. useProfileErrorHandler owns this.
+    if (!userProfile) return;
+
+    setAccessDenied(userProfile.type !== 'tpo');
+  }, [isAuthResolved, token, userProfile, loginWithRedirect]);
 
   // User is not TPO
   if (isInitialized && accessDenied) {
