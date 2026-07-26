@@ -51,9 +51,8 @@ function AccountHistory(): ReactElement {
     null
   );
   //store: state
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
+  const token = useAuthStore((state) => state.token);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   const isInitialized = useTenantStore((state) => state.isInitialized);
   //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
@@ -115,8 +114,8 @@ function AccountHistory(): ReactElement {
   }
 
   useEffect(() => {
-    if (isAuthReady) fetchPaymentHistory();
-  }, [filter, isAuthReady]);
+    if (token !== null && isAuthResolved) fetchPaymentHistory();
+  }, [filter, token, isAuthResolved]);
 
   const HistoryProps = {
     filter,
