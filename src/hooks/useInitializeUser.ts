@@ -25,6 +25,7 @@ export const useInitializeUser = () => {
   const setIsImpersonationModeOn = useUserStore(
     (state) => state.setIsImpersonationModeOn
   );
+  const exitImpersonation = useUserStore((state) => state.exitImpersonation);
   const initializeLocale = useUserStore((state) => state.initializeLocale);
 
   useEffect(() => {
@@ -47,7 +48,8 @@ export const useInitializeUser = () => {
       !isAuthLoading &&
       (auth0User === undefined || auth0Error !== undefined || !isAuthenticated)
     ) {
-      localStorage.removeItem('impersonationData');
+      exitImpersonation();
+      return;
     }
     const impersonationData = localStorage.getItem('impersonationData');
     if (impersonationData !== null && !isImpersonationModeOn) {

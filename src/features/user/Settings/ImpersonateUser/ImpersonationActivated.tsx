@@ -21,13 +21,10 @@ const ImpersonationActivated = () => {
   const impersonatedUserEmail = useUserStore(
     (state) => state.userProfile?.email
   );
-  const setIsImpersonationModeOn = useUserStore(
-    (state) => state.setIsImpersonationModeOn
-  );
+  const exitImpersonation = useUserStore((state) => state.exitImpersonation);
 
-  const exitImpersonation = () => {
-    setIsImpersonationModeOn(false);
-    localStorage.removeItem('impersonationData');
+  const handleExitImpersonation = () => {
+    exitImpersonation();
     router.push(localizedPath(`/profile/impersonate-user`));
     fetchUserProfile({
       token,
@@ -44,7 +41,7 @@ const ImpersonationActivated = () => {
 
       <button
         type="button"
-        onClick={exitImpersonation}
+        onClick={handleExitImpersonation}
         className={styles.exitImpersonationContainer}
       >
         <div>

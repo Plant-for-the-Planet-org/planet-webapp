@@ -24,6 +24,8 @@ interface UserStore {
 
   setUserProfile: (profile: User | null) => void;
   setIsImpersonationModeOn: (isEnabled: boolean) => void;
+  enterImpersonation: (impersonationData: ImpersonationData) => void;
+  exitImpersonation: () => void;
   setShouldRefetchUserProfile: (shouldRefetch: boolean) => void;
   fetchUserProfile: (params: FetchUserProfileParams) => Promise<User>;
   initializeLocale: () => void;
@@ -49,6 +51,35 @@ export const useUserStore = create<UserStore>()(
           undefined,
           'userStore/set_is_impersonation_mode_on'
         ),
+
+      /**
+       * Enter impersonation by setting both the UI state and local storage.
+       * Keep them in sync to avoid inconsistent impersonation state.
+       */
+      enterImpersonation: (impersonationData) => {
+        localStorage.setItem(
+          'impersonationData',
+          JSON.stringify(impersonationData)
+        );
+        set(
+          { isImpersonationModeOn: true },
+          undefined,
+          'userStore/enter_impersonation'
+        );
+      },
+
+      /**
+       * Exit impersonation by clearing both the UI state and local storage.
+       * Keep them in sync to avoid inconsistent impersonation state.
+       */
+      exitImpersonation: () => {
+        localStorage.removeItem('impersonationData');
+        set(
+          { isImpersonationModeOn: false },
+          undefined,
+          'userStore/exit_impersonation'
+        );
+      },
 
       setShouldRefetchUserProfile: (shouldRefetch) =>
         set(

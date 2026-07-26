@@ -2,16 +2,22 @@ import type { APIError } from '@planet-sdk/common';
 
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { useAuthStore } from '../stores';
+import { useLocale } from 'next-intl';
+import { useAuthStore, useTenantStore, useUserStore } from '../stores';
 import useLocalizedPath from './useLocalizedPath';
 import { useAuthSession } from './useAuthSession';
 
 const useProfileErrorHandler = () => {
   const router = useRouter();
+  const locale = useLocale();
   const { loginWithRedirect } = useAuthSession();
   const { localizedPath } = useLocalizedPath();
+  // store: state
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
   const setToken = useAuthStore((state) => state.setToken);
+  const exitImpersonation = useUserStore((state) => state.exitImpersonation);
+  const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
 
   const handleProfileError = useCallback(
     (err: APIError) => {
@@ -28,9 +34,20 @@ const useProfileErrorHandler = () => {
           });
           break;
 
-        case 403:
-          localStorage.removeItem('impersonationData');
+        case 403: {
+          // Read the latest store state.
+          const { isImpersonationModeOn } = useUserStore.getState();
+          const { token } = useAuthStore.getState();
+          // Exit impersonation if it is active.
+          if (isImpersonationModeOn) {
+            exitImpersonation();
+            // Restore the real user's profile.
+            if (token) {
+              fetchUserProfile({ token, tenantConfigId: tenantId, locale });
+            }
+          }
           break;
+        }
 
         case 500:
           console.error('[Profile API] Internal Server Error:', err.message);
@@ -41,7 +58,16 @@ const useProfileErrorHandler = () => {
           break;
       }
     },
-    [router, loginWithRedirect, localizedPath]
+    [
+      router,
+      loginWithRedirect,
+      localizedPath,
+      setToken,
+      exitImpersonation,
+      fetchUserProfile,
+      tenantId,
+      locale,
+    ]
   );
 
   return { handleProfileError };

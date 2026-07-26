@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useUserStore } from '../stores/userStore';
 
 export const useAuthSession = () => {
   const {
@@ -14,7 +15,7 @@ export const useAuthSession = () => {
 
   const logoutUser = useCallback(
     (returnUrl: string | undefined = `${window.location.origin}/`) => {
-      localStorage.removeItem('impersonationData');
+      useUserStore.getState().exitImpersonation();
       localStorage.removeItem('redirectLink');
       sessionStorage.removeItem('donationReceiptContext');
       logoutFromAuth0({ returnTo: returnUrl });
