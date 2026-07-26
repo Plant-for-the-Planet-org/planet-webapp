@@ -11,9 +11,10 @@ interface Props {
 
 const RecipientHeader = ({ header }: Props) => {
   const { displayText, helpText } = header;
+  // MUI renders this TableCell as <th scope="col"> because it sits inside <TableHead>
   return (
     <TableCell>
-      <h3>
+      <span>
         {displayText}
         {helpText !== undefined && helpText.length > 0 && (
           <>
@@ -25,7 +26,7 @@ const RecipientHeader = ({ header }: Props) => {
             </Tooltip>
           </>
         )}
-      </h3>
+      </span>
     </TableCell>
   );
 };
