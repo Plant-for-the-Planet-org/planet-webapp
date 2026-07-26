@@ -17,6 +17,7 @@ export const useInitializeAuth = () => {
   const redirectToLogin = useCallback(() => {
     if (redirectCountRef.current >= 3) {
       console.error('Redirect limit reached, unable to authenticate user.');
+      setIsAuthResolved(true);
       return;
     }
 
@@ -26,7 +27,7 @@ export const useInitializeAuth = () => {
       redirectUri: `${window.location.origin}/login`,
       ui_locales: localStorage.getItem('language') || 'en',
     });
-  }, [loginWithRedirect]);
+  }, [loginWithRedirect, setIsAuthResolved]);
 
   const loadToken = useCallback(async () => {
     try {

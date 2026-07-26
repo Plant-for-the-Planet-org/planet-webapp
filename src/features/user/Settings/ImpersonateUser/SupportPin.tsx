@@ -10,12 +10,11 @@ interface SupportPin {
 
 const SupportPin = () => {
   const userProfile = useUserStore((state) => state.userProfile);
-  if (!userProfile) return null;
   // store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
   const t = useTranslations('Me');
   const { putApiAuthenticated } = useApi();
-
+  if (!userProfile) return null;
   const handleNewPin = async () => {
     try {
       const response = await putApiAuthenticated<SupportPin>(
