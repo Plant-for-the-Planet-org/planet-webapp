@@ -3,6 +3,7 @@ import NavbarBrandLogos from './microComponents/NavbarBrandLogos';
 import NavbarItems from './microComponents/NavbarItems';
 import styles from './Navbar.module.scss';
 import { clsx } from 'clsx';
+import { useEffect } from 'react';
 import { useAuthSession } from '../../../../hooks/useAuthSession';
 import { useUserStore, useTenantStore } from '../../../../stores';
 
@@ -41,23 +42,24 @@ export default function Navbar() {
   // store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
 
-  if (!isInitialized) return null;
+  useEffect(() => {
+    if (!auth0Error) return;
 
-  if (auth0Error) {
     const { message } = auth0Error;
-    const isBrowser = typeof window !== 'undefined';
 
     setUserProfile(null);
     // TODO: Remove '401' case after July 31, 2026. Confirm whether safe to remove before then.
     if (message === '401' || message === 'email_not_verified') {
-      if (isBrowser) logoutUser(`${window.location.origin}/verify-email`);
+      logoutUser(`${window.location.origin}/verify-email`);
     } else if (message === 'Invalid state') {
       // Only clear user, no logout needed
-    } else if (isBrowser) {
+    } else {
       if (message) alert(message);
       logoutUser(`${window.location.origin}/`);
     }
-  }
+  }, [auth0Error, logoutUser, setUserProfile]);
+
+  if (!isInitialized) return null;
 
   return (
     <div className={styles.navbar}>
