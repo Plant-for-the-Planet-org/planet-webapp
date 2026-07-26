@@ -51,13 +51,19 @@ const DonationLinkForm = ({
   const [qrCode, setQrCode] = useState<string | null>(null);
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
-  const [isSupport, setIsSupport] = useState<boolean>(!userProfile?.isPrivate);
+  const [isSupport, setIsSupport] = useState<boolean>(false);
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const getDonationORCode = async () => {
     const data = await QRCode.toDataURL(donationUrl);
     setQrCode(data);
   };
+
+  useEffect(() => {
+    if (userProfile) {
+      setIsSupport(!userProfile.isPrivate);
+    }
+  }, [userProfile?.isPrivate]);
 
   useEffect(() => {
     if (donationUrl) {
@@ -91,7 +97,15 @@ const DonationLinkForm = ({
 
   useEffect(() => {
     handleUrlChange();
-  }, [country, language, localProject, isSupport, isTesting]);
+  }, [
+    country,
+    language,
+    localProject,
+    isSupport,
+    isTesting,
+    tenantConfig?.id,
+    userProfile?.slug,
+  ]);
 
   useEffect(() => {
     const autoLanguage = {

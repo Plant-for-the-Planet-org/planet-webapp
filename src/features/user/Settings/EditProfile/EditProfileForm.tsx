@@ -90,9 +90,7 @@ export default function EditProfileForm() {
   const setUserProfile = useUserStore((state) => state.setUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
-  const [type, setAccountType] = useState(
-    userProfile?.type ? userProfile.type : 'individual'
-  );
+  const [type, setAccountType] = useState('individual');
 
   const defaultProfileDetails = useMemo(() => {
     return {
@@ -156,6 +154,12 @@ export default function EditProfileForm() {
       value: 'education',
     },
   ];
+  // Sync type with loaded profile
+  useEffect(() => {
+    if (userProfile?.type) {
+      setAccountType(userProfile.type);
+    }
+  }, [userProfile?.type]);
 
   useEffect(() => {
     const selectedProfile = profileTypes.find((p) => p.value === type);
@@ -165,7 +169,7 @@ export default function EditProfileForm() {
         title: selectedProfile.title,
         value: selectedProfile.value,
       });
-  }, []);
+  }, [type, profileTypes]);
 
   useEffect(() => {
     // This will remove field values which do not exist for the new type
