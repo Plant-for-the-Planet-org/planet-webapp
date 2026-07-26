@@ -30,6 +30,12 @@ const ImpersonationActivated = () => {
       token,
       tenantConfigId: tenantId,
       locale,
+    }).catch((error) => {
+      // Errors are surfaced through the global `profileApiError` flow.
+      console.error(
+        '[Profile API] Failed to restore the real user profile:',
+        error
+      );
     });
   };
 

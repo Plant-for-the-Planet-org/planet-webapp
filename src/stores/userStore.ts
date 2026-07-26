@@ -103,15 +103,17 @@ export const useUserStore = create<UserStore>()(
         const { setIsAuthResolved } = useAuthStore.getState();
         setIsAuthResolved(false);
 
-        const sessionId = await getsessionId();
-        const header = {
-          'tenant-key': `${tenantConfigId}`,
-          'X-SESSION-ID': sessionId,
-          Authorization: `Bearer ${token}`,
-          'x-locale': locale,
-        };
-
         try {
+          // Inside the try so a localStorage failure still resolves auth
+          // via the finally block below.
+          const sessionId = await getsessionId();
+          const header = {
+            'tenant-key': `${tenantConfigId}`,
+            'X-SESSION-ID': sessionId,
+            Authorization: `Bearer ${token}`,
+            'x-locale': locale,
+          };
+
           const response = await fetch(
             `${process.env.API_ENDPOINT}/app/profile`,
             {
@@ -125,16 +127,21 @@ export const useUserStore = create<UserStore>()(
           }
 
           const result = await response.json();
-          if (result) {
-            set(
-              {
-                userProfile: result,
-                profileApiError: null,
-              },
-              undefined,
-              'userStore/fetch_user_profile_success'
+          if (!result) {
+            throw new APIError(
+              response.status,
+              'User profile response was empty'
             );
           }
+
+          set(
+            {
+              userProfile: result,
+              profileApiError: null,
+            },
+            undefined,
+            'userStore/fetch_user_profile_success'
+          );
           return result;
         } catch (error) {
           // 🔹 Impersonation-specific 403: Handle ONLY in component
@@ -162,6 +169,11 @@ export const useUserStore = create<UserStore>()(
             undefined,
             'userStore/fetch_user_profile_error'
           );
+
+          // Rethrow so the promise never resolves with `undefined`.
+          // The global flow still runs via the `profileApiError` state above;
+          // callers that only rely on that state can ignore this rejection.
+          throw error;
         } finally {
           setIsAuthResolved(true);
         }

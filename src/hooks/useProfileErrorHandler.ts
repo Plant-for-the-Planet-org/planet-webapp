@@ -43,7 +43,15 @@ const useProfileErrorHandler = () => {
             exitImpersonation();
             // Restore the real user's profile.
             if (token) {
-              fetchUserProfile({ token, tenantConfigId: tenantId, locale });
+              fetchUserProfile({ token, tenantConfigId: tenantId, locale })
+                // The refetch runs without impersonation data, so a further
+                // failure is recorded in `profileApiError` and handled here again.
+                .catch((error) =>
+                  console.error(
+                    '[Profile API] Failed to restore the real user profile:',
+                    error
+                  )
+                );
             }
           }
           break;

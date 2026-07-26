@@ -35,6 +35,10 @@ export const useInitializeUser = () => {
       token,
       tenantConfigId: tenantId,
       locale,
+    }).catch((err) => {
+      // API errors are surfaced through `profileApiError` below.
+      // Catching here only prevents an unhandled promise rejection.
+      console.error('[Profile API] Failed to fetch user profile:', err);
     });
   }, [token, shouldRefetchUserProfile, fetchUserProfile]);
 
