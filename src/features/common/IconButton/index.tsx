@@ -72,7 +72,7 @@ function IconButton(props: IconButtonProps): ReactElement {
     const computedRel =
       rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined);
 
-    const sharedProps = {
+    const sharedLinkProps = {
       target,
       rel: computedRel,
       'aria-label': label,
@@ -82,14 +82,14 @@ function IconButton(props: IconButtonProps): ReactElement {
 
     if (isExternalUrl(href)) {
       return (
-        <a href={href} {...sharedProps}>
+        <a href={href} {...sharedLinkProps}>
           {hiddenIcon}
         </a>
       );
     }
 
     return (
-      <Link href={localizedPath(href)} {...sharedProps}>
+      <Link href={localizedPath(href)} {...sharedLinkProps}>
         {hiddenIcon}
       </Link>
     );
