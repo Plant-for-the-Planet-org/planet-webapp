@@ -17,8 +17,7 @@ const meta: Meta<typeof IconButton> = {
     docs: {
       description: {
         component: [
-          'Accessible icon-only button (or link). It bakes in the A11Y-002 pattern so',
-          'it cannot be forgotten on new icon controls:',
+          'Accessible icon-only button (or link). An icon control has no visible text, so without an accessible name a screen reader announces nothing useful. This component makes that name mandatory, so it cannot be omitted on new icon controls:',
           '',
           '- `label` is **required** and applied as `aria-label` — omitting it fails the type check.',
           '- `type="button"` is set by default (overridable).',

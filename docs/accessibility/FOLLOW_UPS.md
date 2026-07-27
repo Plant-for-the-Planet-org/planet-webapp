@@ -40,7 +40,7 @@ Responsibilities:
 - Sets `type="button"` (overridable).
 - Applies `aria-label={label}` (required prop — build fails if omitted).
 - Wraps children so the decorative icon is `aria-hidden` and layout-neutral (`display: contents`).
-- Forwards `className`, `onClick`, `ref`, and other button props.
+- Forwards `className`, `onClick`, and other button props.
 - A link variant (or `as`/`component` prop) for icon-only links that need the same guarantees.
 
 ### Why deferred (not implemented in the A11Y-002 PR)
@@ -60,7 +60,7 @@ Responsibilities:
 
 ### Implementation notes (FU-001)
 
-- **Component:** `src/features/common/IconButton/index.tsx` (+ `IconButton.module.scss`). Discriminated union on `elementType` (`'button'` default | `'link'`), mirroring `WebappButton`. Required `label` → `aria-label`; `type="button"` default (overridable); `children` auto-wrapped in `<span aria-hidden="true" style={{ display: 'contents' }}>`; extends `ButtonHTMLAttributes`/`AnchorHTMLAttributes` and forwards the rest; `forwardRef` to the underlying `<button>`/`<a>`. Link variant localizes internal `href` and renders a plain `<a target rel>` for external URLs.
+- **Component:** `src/features/common/IconButton/index.tsx` (+ `IconButton.module.scss`). Discriminated union on `elementType` (`'button'` default | `'link'`), mirroring `WebappButton`. Required `label` → `aria-label`; `type="button"` default (overridable); `children` auto-wrapped in `<span aria-hidden="true" style={{ display: 'contents' }}>`; extends `ButtonHTMLAttributes`/`AnchorHTMLAttributes` and forwards the rest. Link variant localizes internal `href` and renders a plain `<a target rel>` for external URLs.
 - **Base class is intentionally minimal** (`color`/`text-decoration`/`cursor` only): it imposes no `display` (a flex context can resize an unsized SVG) and no `border`/`padding`/`margin`/`background` (those come from the global `button` reset at a specificity that correctly loses to per-site classes). Per-site `className` owns all layout.
 - **Storybook:** `src/features/common/stories/IconButton.stories.tsx` (autodocs usage docs + button/link stories).
 - **Migrated sites:** ErrorPopup, CookiePolicy, SignInButton (mobile), CarouselSlider, RedeemCode (Enter/Successfully/Failed), DirectGift, ProjectSearchAndFilter (search + filter), ActiveSearchField, ProjectSnippet ImageSection (back), ImageSlider, ImageSliderModal, Account modals (Cancel/Edit/Pause/Reactivate — also dropped redundant `role`/`tabIndex`/`onKeyPress`), DonationInfoPopover, DonorAddressList (edit), TargetsModal, ShareModal (5 social buttons), Footer logo links (pfp, unDecade).
