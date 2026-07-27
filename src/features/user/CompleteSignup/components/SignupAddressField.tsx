@@ -1,7 +1,7 @@
 import type { ExtendedCountryCode } from '../../../common/types/country';
 import type { Control, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import type { SignupFormData } from '..';
-import type { ResolvedAddress } from '../../../../hooks/useAddressSuggestions';
+import type { ResolvedAddress } from '../../../common/types/geocoder';
 
 import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';

@@ -19,8 +19,10 @@ interface AddressAutocompleteProps<TFieldValues extends FieldValues> {
   required?: boolean;
   validationPattern?: RegExp;
   validationMessages: {
-    required: string;
-    invalid: string;
+    /** Shown when `required` is set and the field is left empty. */
+    required?: string;
+    /** Shown when `validationPattern` is set and the value does not match. */
+    invalid?: string;
   };
   /**
    * Stretch the input to its container's width. Needed where the surrounding
@@ -49,12 +51,14 @@ const AddressAutocomplete = <TFieldValues extends FieldValues>({
   fullWidth = false,
   autoComplete,
 }: AddressAutocompleteProps<TFieldValues>) => {
+  // A message is only needed for the rules actually in play, so fall back to
+  // enforcing the rule without custom text rather than dropping it.
   const validationRules = {
-    ...(required && { required: validationMessages.required }),
+    ...(required && { required: validationMessages.required ?? true }),
     ...(validationPattern && {
       pattern: {
         value: validationPattern,
-        message: validationMessages.invalid,
+        message: validationMessages.invalid ?? '',
       },
     }),
   };
@@ -77,6 +81,10 @@ const AddressAutocomplete = <TFieldValues extends FieldValues>({
           filterOptions={(options) => options}
           getOptionLabel={(option) =>
             typeof option === 'string' ? option : option.text
+          }
+          // Use `magicKey` as the React key since suggestion text may not be unique.
+          getOptionKey={(option) =>
+            typeof option === 'string' ? option : option.magicKey
           }
           value={value ?? ''}
           onInputChange={(_, newValue, reason) => {

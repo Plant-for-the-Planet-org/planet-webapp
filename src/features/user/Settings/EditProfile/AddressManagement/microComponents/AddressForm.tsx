@@ -2,7 +2,7 @@ import type { ExtendedCountryCode } from '../../../../../common/types/country';
 import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { AddressType } from '@planet-sdk/common';
-import type { ResolvedAddress } from '../../../../../../hooks/useAddressSuggestions';
+import type { ResolvedAddress } from '../../../../../common/types/geocoder';
 
 import { useCallback, useMemo } from 'react';
 import { CircularProgress, TextField } from '@mui/material';
@@ -110,7 +110,6 @@ const AddressForm = ({
         label={t('addressManagement.addressForm.address2')}
         validationPattern={validationPattern.address}
         validationMessages={{
-          required: t('validationErrors.addressRequired'),
           invalid: t('validationErrors.addressInvalid'),
         }}
         suggestions={suggestions}

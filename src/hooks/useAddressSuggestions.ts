@@ -1,4 +1,7 @@
-import type { AddressSuggestionsType } from '../features/common/types/geocoder';
+import type {
+  AddressSuggestionsType,
+  ResolvedAddress,
+} from '../features/common/types/geocoder';
 
 import { useCallback, useRef, useState } from 'react';
 import {
@@ -6,16 +9,6 @@ import {
   getAddressSuggestions,
 } from '../utils/geocoder';
 import { useDebouncedEffect } from '../utils/useDebouncedEffect';
-
-/**
- * Address parts the geocoder resolves for a picked suggestion. Consumers fan
- * these into their own form fields.
- */
-export interface ResolvedAddress {
-  address: string;
-  city: string;
-  zipCode: string;
-}
 
 interface UseAddressSuggestionsProps {
   /** Country code used to scope geocoder results. */
@@ -60,18 +53,12 @@ export const useAddressSuggestions = ({
       // Bump request ID to track the latest API call
       latestRequestIdRef.current++;
       const currentRequestId = latestRequestIdRef.current;
-      try {
-        const results = await getAddressSuggestions(value, country);
-        // Only update if this is still the latest request
-        if (currentRequestId === latestRequestIdRef.current) {
-          setSuggestions(results);
-        }
-      } catch (error) {
-        console.error('Failed to fetch address suggestions:', error);
-        // Prevent outdated error responses from affecting UI
-        if (currentRequestId === latestRequestIdRef.current) {
-          setSuggestions([]);
-        }
+      // `getAddressSuggestions` logs and swallows its own failures, resolving
+      // to an empty list, so there is nothing here left to catch.
+      const results = await getAddressSuggestions(value, country);
+      // Only update if this is still the latest request
+      if (currentRequestId === latestRequestIdRef.current) {
+        setSuggestions(results);
       }
     },
     [country]
@@ -87,7 +74,8 @@ export const useAddressSuggestions = ({
         return;
       }
 
-      // Fetch suggestions only if input is meaningful (e.g., length > 3)
+      // `getAddressSuggestions` skips the API call for inputs of 3 characters
+      // or fewer and resolves to an empty list.
       fetchSuggestions(trimmedInput);
     },
     debounceDelay,
@@ -100,15 +88,13 @@ export const useAddressSuggestions = ({
 
   const selectSuggestion = useCallback(
     async (value: string) => {
-      try {
-        const details = await getAddressDetailsFromText(value);
-        if (details) {
-          onAddressResolved(details);
-        }
-        setSuggestions([]);
-      } catch (error) {
-        console.error('Failed to fetch address details:', error);
+      // `getAddressDetailsFromText` logs and swallows its own failures,
+      // resolving to `null`, so there is nothing here left to catch.
+      const details = await getAddressDetailsFromText(value);
+      if (details) {
+        onAddressResolved(details);
       }
+      setSuggestions([]);
     },
     [onAddressResolved]
   );
