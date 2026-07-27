@@ -7,6 +7,7 @@ import styles from '../ProjectsSection.module.scss';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
 import { Virtuoso } from 'react-virtuoso';
 import ProjectSnippet from '../ProjectSnippet';
+import LiveRegion from '../../common/LiveRegion';
 import { useProjectStore } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
@@ -72,9 +73,15 @@ const ProjectList = ({ tabSelected }: ProjectListProps) => {
       <div className={styles.projectList}>
         <div className={styles.noProjectFoundContainer}>
           <NoDataFound />
-          <p className={styles.noProjectFoundText}>
+          {/* Polite: the empty state is the outcome of a search or filter the
+              user just changed, not an error. */}
+          <LiveRegion
+            politeness="polite"
+            as="p"
+            className={styles.noProjectFoundText}
+          >
             {tAllProjects('noProjectFound')}
-          </p>
+          </LiveRegion>
         </div>
       </div>
     );

@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import FileUploadIcon from '../../../../../public/assets/images/icons/FileUploadIcon';
 import FileProcessingIcon from '../../../../../public/assets/images/icons/FileProcessingIcon';
 import FileAttachedIcon from '../../../../../public/assets/images/icons/FileAttachedIcon';
+import LiveRegion from '../../../common/LiveRegion';
 import styles from '../BulkCodes.module.scss';
 import handleFileUpload from '../../../../utils/handleFileUpload';
 
@@ -136,10 +137,17 @@ const UploadWidget = ({
       default:
         return null;
     }
+    // An upload error is assertive (the action failed and needs a retry);
+    // success is polite. `key` remounts the region on a status change so the
+    // new message is a fresh insertion and is reliably announced.
     return (
-      <div className={styles[`uploadWidget__statusText--${status}`]}>
+      <LiveRegion
+        key={status}
+        politeness={status === 'error' ? 'assertive' : 'polite'}
+        className={styles[`uploadWidget__statusText--${status}`]}
+      >
         {statusText}
-      </div>
+      </LiveRegion>
     );
   };
 
@@ -155,6 +163,8 @@ const UploadWidget = ({
         className: `${styles.uploadWidget} ${
           status === 'error' ? styles[`uploadWidget--${status}`] : ''
         }`,
+        // Marks the widget as working while the file is parsed.
+        'aria-busy': status === 'processing',
       })}
     >
       <input {...getInputProps()} />

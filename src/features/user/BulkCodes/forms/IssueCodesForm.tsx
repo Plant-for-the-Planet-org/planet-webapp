@@ -17,6 +17,7 @@ import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
+import LiveRegion from '../../../common/LiveRegion';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
@@ -368,7 +369,7 @@ const IssueCodesForm = (): ReactElement | null => {
             />
           </div>
           <BulkCodesError />
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} aria-busy={isProcessing}>
             <Button
               type="submit"
               variant="contained"
@@ -391,10 +392,12 @@ const IssueCodesForm = (): ReactElement | null => {
   } else {
     return (
       <CenteredContainer className="CenteredContainer--small">
-        <div className={styles.successMessage}>
+        {/* Polite: the codes were issued successfully; the view then redirects
+            on its own, so nothing needs to interrupt the reader. */}
+        <LiveRegion politeness="polite" className={styles.successMessage}>
           {t('donationSuccess')}
-          <span className={styles.spinner}></span>
-        </div>
+          <span className={styles.spinner} aria-hidden="true"></span>
+        </LiveRegion>
       </CenteredContainer>
     );
   }

@@ -9,6 +9,7 @@ import { CircularProgress, RadioGroup, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import styles from '../DonationReceipt.module.scss';
 import WebappButton from '../../../common/WebappButton';
+import LiveRegion from '../../../common/LiveRegion';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import DonorAddressList from './DonorAddressList';
 import {
@@ -106,7 +107,7 @@ const DonorContactForm = ({
   };
   const hasReachedAddressLimit = user.addresses.length >= MAX_ADDRESS_LIMIT;
   return (
-    <form className={styles.donorContactForm}>
+    <form className={styles.donorContactForm} aria-busy={isLoading}>
       <InlineFormDisplayGroup>
         {user.type === 'individual' && (
           <>
@@ -179,15 +180,27 @@ const DonorContactForm = ({
             </RadioGroup>
           )}
         />
+        {/* Assertive: a validation error blocking submission. */}
         {errors.addressGuid?.message && (
-          <span id="addressGuid-error" className={styles.errorMessage}>
+          <LiveRegion
+            politeness="assertive"
+            as="span"
+            id="addressGuid-error"
+            className={styles.errorMessage}
+          >
             {errors.addressGuid.message}
-          </span>
+          </LiveRegion>
         )}
+        {/* Polite: informational, and appears as a result of adding an
+            address rather than of a failed action. */}
         {hasReachedAddressLimit && (
-          <span className={styles.addressLimitMessage}>
+          <LiveRegion
+            politeness="polite"
+            as="span"
+            className={styles.addressLimitMessage}
+          >
             {tReceipt('notifications.addressLimitReached')}
-          </span>
+          </LiveRegion>
         )}
       </section>
 
@@ -212,6 +225,10 @@ const DonorContactForm = ({
 
       {isLoading && (
         <div className={styles.donationReceiptSpinner}>
+          {/* The spinner carries no text, so the state is announced instead. */}
+          <LiveRegion politeness="polite" isVisuallyHidden>
+            {tReceipt('savingDonorInfo')}
+          </LiveRegion>
           <CircularProgress color="success" />
         </div>
       )}

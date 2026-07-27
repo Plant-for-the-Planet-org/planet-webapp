@@ -7,6 +7,7 @@ import ActiveSearchField from './microComponents/ActiveSearchField';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ProjectListTabLargeScreen from './microComponents/ProjectListTabLargeScreen';
 import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
+import LiveRegion from '../../common/LiveRegion';
 import { useProjectStore } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
@@ -36,11 +37,16 @@ const ProjectListControls = ({
   const renderTabContent = useMemo(() => {
     if (isFilterApplied) {
       return (
-        <div className={styles.filterResultContainer}>
+        // Polite: the result count changes as filters are toggled, so it is
+        // queued behind whatever the reader is saying rather than interrupting.
+        <LiveRegion
+          politeness="polite"
+          className={styles.filterResultContainer}
+        >
           {tAllProjects('filterResult', {
             count: filteredProjectCount,
           })}
-        </div>
+        </LiveRegion>
       );
     }
 

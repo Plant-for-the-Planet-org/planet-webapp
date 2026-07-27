@@ -10,6 +10,7 @@ import { Button, CircularProgress } from '@mui/material';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
+import LiveRegion from '../../../common/LiveRegion';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import { useRouter } from 'next/router';
@@ -114,6 +115,10 @@ const Transactions = ({
 
   return !transactionHistory && isDataLoading ? (
     <>
+      {/* The skeletons carry no text, so the loading state is announced. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {t('loadingTransactions')}
+      </LiveRegion>
       <TransactionListLoader />
       <TransactionListLoader />
       <TransactionListLoader />
@@ -133,19 +138,28 @@ const Transactions = ({
         );
       })}
       {transactionHistory._links.next && (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => fetchTransactions(true)}
-          disabled={isDataLoading}
-          className="loadingButton"
-        >
-          {isDataLoading ? (
-            <CircularProgress color="primary" size={24} />
-          ) : (
-            t('loadMore')
-          )}
-        </Button>
+        <>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => fetchTransactions(true)}
+            disabled={isDataLoading}
+            aria-busy={isDataLoading}
+            className="loadingButton"
+          >
+            {isDataLoading ? (
+              <CircularProgress color="primary" size={24} />
+            ) : (
+              t('loadMore')
+            )}
+          </Button>
+          {/* Loading "Load more" disables the button and swaps its label for a
+              spinner, so the state is announced here instead. The region stays
+              mounted so the text change is what triggers the announcement. */}
+          <LiveRegion politeness="polite" isVisuallyHidden>
+            {isDataLoading ? t('loadingTransactions') : ''}
+          </LiveRegion>
+        </>
       )}
       {isModalOpen && selectedRecord !== null && (
         <AccountRecord

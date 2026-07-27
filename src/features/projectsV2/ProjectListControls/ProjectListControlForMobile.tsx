@@ -10,6 +10,7 @@ import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
 import ViewModeTabs from './microComponents/ViewModeTabs';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
+import LiveRegion from '../../common/LiveRegion';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { clsx } from 'clsx';
@@ -83,11 +84,15 @@ const ProjectListControlForMobile = ({
       ) : (
         <div className={projectListControlsMobileClasses}>
           {shouldDisplayFilterResults && filteredProjectCount > 0 && (
-            <div className={styles.filterResultContainerMobile}>
+            /* Polite: same filter result count as the large-screen control. */
+            <LiveRegion
+              politeness="polite"
+              className={styles.filterResultContainerMobile}
+            >
               {tAllProjects('filterResult', {
                 count: filteredProjectCount,
               })}
-            </div>
+            </LiveRegion>
           )}
           {shouldDisplayProjectListTab && (
             <ProjectListTabForMobile

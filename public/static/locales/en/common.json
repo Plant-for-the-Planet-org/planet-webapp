@@ -8,6 +8,7 @@
     "nextSlide": "Next slide",
     "previousSlide": "Previous slide",
     "loadingProfile": "Loading your profile",
+    "loading": "Loading",
     "and": "and",
     "tree": "{count, plural, =1 {Tree} other {Trees}}",
     "m2": "m²",
