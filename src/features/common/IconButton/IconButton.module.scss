@@ -1,0 +1,10 @@
+// Minimal shared styles for icon-only controls.
+//
+// Layout and spacing are intentionally left to component-specific styles to
+// avoid changing existing appearances. The global button reset already handles
+// native button styling, so only shared non-layout styles are defined here.
+.iconButton {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
