@@ -1,33 +1,20 @@
+// Matches a URL that begins with an explicit scheme (RFC 3986): ALPHA *( ALPHA / DIGIT / "+" / "-" / "." ) followed by ":".
+const URL_SCHEME_PATTERN = /^[a-z][a-z\d+.-]*:/i;
+
 /**
  * Returns whether a URL should be treated as external.
  *
- * External URLs include:
- * - Protocol-relative URLs (`//example.com`)
- * - Non-HTTP(S) schemes (`mailto:`, `tel:`, etc.)
- * - HTTP(S) URLs pointing to a different host
+ * External URLs are any value with an explicit scheme (`http(s):`, `mailto:`,`tel:`, ...) or a protocol-relative URL (`//example.com`). A scheme-less value is a relative internal path.
  *
- * Same-host HTTP(S) URLs and relative paths are treated as internal.
+ * This is intentionally deterministic — it does not read `window`/the current host - so it returns the same result during SSR and on the client. Components that branch on it (e.g. `<a>` vs localized `<Link>`) therefore render the same markup on both, avoiding hydration mismatches. Internal links in this app are relative paths, so absolute URLs are always treated as external.
  *
  * @param url - URL to check
  * @returns `true` if the URL is external, otherwise `false`
  */
 export function isExternalUrl(url: string): boolean {
-  try {
-    // Protocol-relative URLs always resolve to another origin's scheme.
-    if (url.startsWith('//')) return true;
+  // Protocol-relative URLs resolve to another origin.
+  if (url.startsWith('//')) return true;
 
-    // Without an explicit scheme it is a relative path -> internal.
-    const hasScheme = /^[a-z][a-z\d+.-]*:/i.test(url);
-    if (!hasScheme) return false;
-
-    // http(s): same host is internal, a different host is external.
-    if (/^https?:\/\//i.test(url)) {
-      return new URL(url).host !== window.location.host;
-    }
-
-    // Any other scheme (mailto:, tel:, ...) is external.
-    return true;
-  } catch {
-    return false;
-  }
+  // Any explicit scheme (http(s), mailto, tel, ...) is external; a scheme-less value is a relative internal path.
+  return URL_SCHEME_PATTERN.test(url);
 }
