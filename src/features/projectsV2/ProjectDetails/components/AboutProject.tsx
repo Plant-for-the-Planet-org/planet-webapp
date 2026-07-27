@@ -24,7 +24,7 @@ const AboutProject = ({ description, wordCount = 60 }: Props) => {
   const endText = descriptionWords?.slice(wordCount - 1).join(' ');
   return (
     <div className={styles.projectDescription}>
-      <div className={styles.infoTitle}>{tDonate('aboutProject')}</div>
+      <h2 className={styles.infoTitle}>{tDonate('aboutProject')}</h2>
       <div className={styles.infoText}>
         {startingText} {hasOverflow && !isExpanded && <span>...</span>}
         {hasOverflow && (

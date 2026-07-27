@@ -6,7 +6,9 @@ import type {
 import type { AbstractIntlMessages } from 'next-intl';
 
 import Custom404Image from '../public/assets/images/Custom404Image';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useTranslations } from 'next-intl';
 import Footer from '../src/features/common/Layout/Footer';
 import getMessagesForPage from '../src/utils/language/getMessagesForPage';
 
@@ -25,15 +27,21 @@ export default function Custom404({ pageProps }: Props) {
     flexDirection: 'column',
   } as const;
   const router = useRouter();
+  const t = useTranslations('Common');
+  const error =
+    typeof router.query.error === 'string' ? router.query.error : undefined;
 
   return (
     <>
-      <div style={styles}>
-        <h2>{router.query.error}</h2>
+      <Head>
+        <title>{t('pageNotFound')}</title>
+      </Head>
+      <main style={styles}>
+        <h1>{error || t('pageNotFound')}</h1>
         <div style={{ width: '300px', height: '175px' }}>
           <Custom404Image />
         </div>
-      </div>
+      </main>
       <Footer />
     </>
   );

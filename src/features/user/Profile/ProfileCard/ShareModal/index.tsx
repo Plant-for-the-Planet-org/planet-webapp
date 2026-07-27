@@ -19,8 +19,8 @@ import { useTenantStore } from '../../../../../stores/tenantStore';
 const CustomCopyButton = () => {
   const t = useTranslations('Profile');
   return (
-    <button className={styles.copyButton}>
-      <label>{t('shareFeature.copyLink')}</label>
+    <button type="button" className={styles.copyButton}>
+      <span>{t('shareFeature.copyLink')}</span>
     </button>
   );
 };
