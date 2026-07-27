@@ -115,63 +115,88 @@ const UploadWidget = ({
     }
   };
 
-  const renderStatusText = (
+  const getStatusText = (
     status: UploadStates,
     error: FileImportError | null,
     hasIgnoredColumns: boolean
   ) => {
-    let statusText;
     switch (status) {
-      case 'success':
-        statusText = t(`statusUploadCSV.${status}`);
-        if (hasIgnoredColumns) {
-          statusText = statusText.concat(
-            ' - ',
-            t('successUploadCSV.ignoredColumns')
-          );
-        }
-        break;
+      case 'success': {
+        const successText = t(`statusUploadCSV.${status}`);
+        return hasIgnoredColumns
+          ? successText.concat(' - ', t('successUploadCSV.ignoredColumns'))
+          : successText;
+      }
       case 'error':
-        statusText = `${t(`statusUploadCSV.${status}`)} - ${error?.message}`;
-        break;
+        return `${t(`statusUploadCSV.${status}`)} - ${error?.message}`;
       default:
         return null;
     }
-    // An upload error is assertive (the action failed and needs a retry);
-    // success is polite. `key` remounts the region on a status change so the
-    // new message is a fresh insertion and is reliably announced.
-    return (
+  };
+
+  const statusText = getStatusText(status, error, hasIgnoredColumns);
+
+  const renderStatusText = () => {
+    if (statusText === null) return null;
+    // An upload error is assertive: the action failed and needs a retry. An
+    // alert inserted with its text is reliably announced, so this one carries
+    // the visible message directly. Success is handled by the persistent
+    // polite region below, so it renders as plain text here.
+    return status === 'error' ? (
       <LiveRegion
-        key={status}
-        politeness={status === 'error' ? 'assertive' : 'polite'}
+        politeness="assertive"
         className={styles[`uploadWidget__statusText--${status}`]}
       >
         {statusText}
       </LiveRegion>
+    ) : (
+      <div className={styles[`uploadWidget__statusText--${status}`]}>
+        {statusText}
+      </div>
     );
   };
 
   return (
-    <div
-      {...getRootProps({
-        onClick: (e) => {
-          if (shouldWarn) {
-            const shouldContinue = confirm(t('fileUploadWarning'));
-            if (!shouldContinue) e.stopPropagation();
-          }
-        },
-        className: `${styles.uploadWidget} ${
-          status === 'error' ? styles[`uploadWidget--${status}`] : ''
-        }`,
-        // Marks the widget as working while the file is parsed.
-        'aria-busy': status === 'processing',
-      })}
-    >
-      <input {...getInputProps()} />
-      {renderWidgetIcon(status)}
-      {renderStatusText(status, error, hasIgnoredColumns)}
-      <p>{t(`instructionsUploadCSV.${status}`)}</p>
-    </div>
+    <>
+      {/* This is a `polite` message because a successful upload is a result, not an
+    error.
+
+    Keep the live region outside the dropzone for two reasons. First, the
+    dropzone uses `aria-busy` while parsing, and screen readers may not
+    announce updates inside a busy element. Second, keeping the live region on
+    the page means screen readers announce the updated text more reliably than
+    if the live region is added with the message.
+
+    Separate live regions are used for success and error messages, so there is
+    no need to switch between `role="status"` and `role="alert"` on the same
+    element.
+
+    The live region is visually hidden, so it does not affect the widget's
+    layout. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {status === 'success' ? statusText : ''}
+      </LiveRegion>
+      <div
+        {...getRootProps({
+          onClick: (e) => {
+            if (shouldWarn) {
+              const shouldContinue = confirm(t('fileUploadWarning'));
+              if (!shouldContinue) e.stopPropagation();
+            }
+          },
+          className: `${styles.uploadWidget} ${
+            status === 'error' ? styles[`uploadWidget--${status}`] : ''
+          }`,
+          // Marks the widget as working while the file is parsed.
+          'aria-busy': status === 'processing',
+        })}
+      >
+        <input {...getInputProps()} />
+        {renderWidgetIcon(status)}
+        {renderStatusText()}
+        <p>{t(`instructionsUploadCSV.${status}`)}</p>
+      </div>
+    </>
   );
 };
 

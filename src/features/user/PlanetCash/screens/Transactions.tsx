@@ -113,66 +113,71 @@ const Transactions = ({
     };
   }, []);
 
-  return !transactionHistory && isDataLoading ? (
+  const isInitialLoading = !transactionHistory && isDataLoading;
+
+  return (
     <>
-      {/* The skeletons carry no text, so the loading state is announced. */}
+      {/* Neither loading state shows any text. The initial loading state displays
+    skeletons, and "Load more" replaces its label with a spinner, so the
+    loading message is announced here instead.
+
+    Keep the live region outside the loading branches so it stays on the page.
+    When the loading state changes, screen readers announce the updated text
+    more reliably than if the live region is added with the message. This also
+    lets the initial skeleton loading state be announced. */}
       <LiveRegion politeness="polite" isVisuallyHidden>
-        {t('loadingTransactions')}
+        {isDataLoading ? t('loadingTransactions') : ''}
       </LiveRegion>
-      <TransactionListLoader />
-      <TransactionListLoader />
-      <TransactionListLoader />
-    </>
-  ) : transactionHistory && transactionHistory.items.length > 0 ? (
-    <>
-      {transactionHistory.items.map((record, index) => {
-        return (
-          <AccountRecord
-            key={index}
-            handleRecordToggle={handleRecordToggle}
-            index={index}
-            selectedRecord={selectedRecord}
-            record={record}
-            isPlanetCash={true}
-          />
-        );
-      })}
-      {transactionHistory._links.next && (
+      {isInitialLoading ? (
         <>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => fetchTransactions(true)}
-            disabled={isDataLoading}
-            aria-busy={isDataLoading}
-            className="loadingButton"
-          >
-            {isDataLoading ? (
-              <CircularProgress color="primary" size={24} />
-            ) : (
-              t('loadMore')
-            )}
-          </Button>
-          {/* Loading "Load more" disables the button and swaps its label for a
-              spinner, so the state is announced here instead. The region stays
-              mounted so the text change is what triggers the announcement. */}
-          <LiveRegion politeness="polite" isVisuallyHidden>
-            {isDataLoading ? t('loadingTransactions') : ''}
-          </LiveRegion>
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
         </>
-      )}
-      {isModalOpen && selectedRecord !== null && (
-        <AccountRecord
-          isModal={true}
-          handleRecordToggle={handleRecordToggle}
-          selectedRecord={selectedRecord}
-          record={transactionHistory.items[selectedRecord]}
-          isPlanetCash={true}
-        />
+      ) : transactionHistory && transactionHistory.items.length > 0 ? (
+        <>
+          {transactionHistory.items.map((record, index) => {
+            return (
+              <AccountRecord
+                key={index}
+                handleRecordToggle={handleRecordToggle}
+                index={index}
+                selectedRecord={selectedRecord}
+                record={record}
+                isPlanetCash={true}
+              />
+            );
+          })}
+          {transactionHistory._links.next && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => fetchTransactions(true)}
+              disabled={isDataLoading}
+              aria-busy={isDataLoading}
+              className="loadingButton"
+            >
+              {isDataLoading ? (
+                <CircularProgress color="primary" size={24} />
+              ) : (
+                t('loadMore')
+              )}
+            </Button>
+          )}
+          {isModalOpen && selectedRecord !== null && (
+            <AccountRecord
+              isModal={true}
+              handleRecordToggle={handleRecordToggle}
+              selectedRecord={selectedRecord}
+              record={transactionHistory.items[selectedRecord]}
+              isPlanetCash={true}
+            />
+          )}
+        </>
+      ) : (
+        transactionHistory && <NoTransactionsFound />
       )}
     </>
-  ) : (
-    transactionHistory && <NoTransactionsFound />
   );
 };
 

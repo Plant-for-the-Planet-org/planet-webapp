@@ -74,6 +74,15 @@ const ProjectListControlForMobile = ({
 
   return (
     <>
+      {/*           Hoisted above the `isSearching` branch so it stays mounted while the
+          visible chip comes and goes, making each count change a text mutation
+          in an already-observed region rather than a fresh insertion.
+          Visually hidden and out of flow, so the control row is unaffected. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {shouldDisplayFilterResults && filteredProjectCount > 0
+          ? tAllProjects('filterResult', { count: filteredProjectCount })
+          : ''}
+      </LiveRegion>
       {isSearching ? (
         <div className={tabContainerClasses}>
           <ActiveSearchField setIsFilterOpen={setIsFilterOpen} />
@@ -84,15 +93,11 @@ const ProjectListControlForMobile = ({
       ) : (
         <div className={projectListControlsMobileClasses}>
           {shouldDisplayFilterResults && filteredProjectCount > 0 && (
-            /* Polite: same filter result count as the large-screen control. */
-            <LiveRegion
-              politeness="polite"
-              className={styles.filterResultContainerMobile}
-            >
+            <div className={styles.filterResultContainerMobile}>
               {tAllProjects('filterResult', {
                 count: filteredProjectCount,
               })}
-            </LiveRegion>
+            </div>
           )}
           {shouldDisplayProjectListTab && (
             <ProjectListTabForMobile

@@ -307,9 +307,21 @@ const IssueCodesForm = (): ReactElement | null => {
     );
   }, [locale, t]);
 
+  // The live region is rendered in both states, so it stays on the page while
+  // the form is submitted. When the success message appears, screen readers
+  // announce the updated text more reliably than if the live region is added
+  // with the message. The live region is visually hidden, so it does not affect
+  // the visible success message or the layout.
+  const statusRegion = (
+    <LiveRegion politeness="polite" isVisuallyHidden>
+      {isSubmitted ? t('donationSuccess') : ''}
+    </LiveRegion>
+  );
+
   if (!isSubmitted) {
     return (
       <CenteredContainer>
+        {statusRegion}
         <StyledFormContainer className="IssueCodesForm" component={'section'}>
           <div className="inputContainer">
             <ProjectSelector
@@ -392,12 +404,14 @@ const IssueCodesForm = (): ReactElement | null => {
   } else {
     return (
       <CenteredContainer className="CenteredContainer--small">
-        {/* Polite: the codes were issued successfully; the view then redirects
-            on its own, so nothing needs to interrupt the reader. */}
-        <LiveRegion politeness="polite" className={styles.successMessage}>
+        {statusRegion}
+        {/* Visible copy only. `CenteredContainer` is the same element type in
+            both branches and the region is the first child of each, so React
+            reconciles it to the same DOM node instead of remounting it. */}
+        <div className={styles.successMessage}>
           {t('donationSuccess')}
           <span className={styles.spinner} aria-hidden="true"></span>
-        </LiveRegion>
+        </div>
       </CenteredContainer>
     );
   }

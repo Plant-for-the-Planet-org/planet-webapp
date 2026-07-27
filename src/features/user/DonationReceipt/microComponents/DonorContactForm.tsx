@@ -107,132 +107,148 @@ const DonorContactForm = ({
   };
   const hasReachedAddressLimit = user.addresses.length >= MAX_ADDRESS_LIMIT;
   return (
-    <form className={styles.donorContactForm} aria-busy={isLoading}>
-      <InlineFormDisplayGroup>
-        {user.type === 'individual' && (
-          <>
-            <FormInput
-              name="firstName"
-              control={control}
-              rules={{ required: tReceipt('notifications.firstNameRequired') }}
-              label={tReceipt('donorInfo.firstName')}
-            />
-            <FormInput
-              name="lastName"
-              control={control}
-              rules={{ required: tReceipt('notifications.lastNameRequired') }}
-              label={tReceipt('donorInfo.lastName')}
-            />
-          </>
-        )}
-        {tinIsRequired && (
-          <FormInput
-            name="tin"
-            control={control}
-            rules={{
-              required: tReceipt('notifications.tinRequired'),
-            }}
-            label={tReceipt('donorInfo.tin')}
-          />
-        )}
-        {user.type !== 'individual' && (
-          <FormInput
-            name="companyName"
-            control={control}
-            label={tReceipt('donorInfo.companyName')}
-            rules={{ required: tReceipt('notifications.companyRequired') }}
-          />
-        )}
-      </InlineFormDisplayGroup>
+    <>
+      {/* Both `polite` live regions are placed outside the form on purpose. The
+    form uses `aria-busy` while saving, and screen readers may not announce
+    updates from a live region inside a busy element.
 
-      <section className={styles.donorAddressSection}>
-        <Controller
-          name="addressGuid"
-          control={control}
-          rules={{ required: tReceipt('notifications.addressRequired') }}
-          render={({ field }) => (
-            <RadioGroup
-              {...field}
-              value={checkedAddressGuid ?? ''}
-              onChange={(_, value) => {
-                field.onChange(value);
-                setCheckedAddressGuid(value);
+    The live regions stay on the page while the form is open, so screen
+    readers announce message updates more reliably than if the live region is
+    added with the message.
+
+    The live regions are visually hidden, so they do not affect the visible
+    UI or layout. This is important because the form uses a flex layout with a
+    10px gap, and an always-visible empty element would add extra spacing. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {isLoading ? tReceipt('savingDonorInfo') : ''}
+      </LiveRegion>
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {hasReachedAddressLimit
+          ? tReceipt('notifications.addressLimitReached')
+          : ''}
+      </LiveRegion>
+      <form className={styles.donorContactForm} aria-busy={isLoading}>
+        <InlineFormDisplayGroup>
+          {user.type === 'individual' && (
+            <>
+              <FormInput
+                name="firstName"
+                control={control}
+                rules={{
+                  required: tReceipt('notifications.firstNameRequired'),
+                }}
+                label={tReceipt('donorInfo.firstName')}
+              />
+              <FormInput
+                name="lastName"
+                control={control}
+                rules={{ required: tReceipt('notifications.lastNameRequired') }}
+                label={tReceipt('donorInfo.lastName')}
+              />
+            </>
+          )}
+          {tinIsRequired && (
+            <FormInput
+              name="tin"
+              control={control}
+              rules={{
+                required: tReceipt('notifications.tinRequired'),
               }}
-              aria-label={tReceipt('donorInfo.selectAddress')}
-              aria-invalid={errors.addressGuid ? true : undefined}
-              aria-describedby={
-                errors.addressGuid ? 'addressGuid-error' : undefined
-              }
-              sx={{ gap: '10px' }}
-            >
-              {user.addresses.map((address) => (
-                <DonorAddressList
-                  key={address.id}
-                  address={address}
-                  setSelectedAddress={setSelectedAddress}
-                  setAddressAction={setAddressAction}
-                  setIsModalOpen={setIsModalOpen}
-                  checkedAddressGuid={checkedAddressGuid}
-                  setCheckedAddressGuid={setCheckedAddressGuid}
-                  setValue={setValue}
-                />
-              ))}
-            </RadioGroup>
-          )}
-        />
-        {/* Assertive: a validation error blocking submission. */}
-        {errors.addressGuid?.message && (
-          <LiveRegion
-            politeness="assertive"
-            as="span"
-            id="addressGuid-error"
-            className={styles.errorMessage}
-          >
-            {errors.addressGuid.message}
-          </LiveRegion>
-        )}
-        {/* Polite: informational, and appears as a result of adding an
-            address rather than of a failed action. */}
-        {hasReachedAddressLimit && (
-          <LiveRegion
-            politeness="polite"
-            as="span"
-            className={styles.addressLimitMessage}
-          >
-            {tReceipt('notifications.addressLimitReached')}
-          </LiveRegion>
-        )}
-      </section>
-
-      {!isLoading && (
-        <div className={styles.donorContactFormAction}>
-          {!hasReachedAddressLimit && (
-            <WebappButton
-              text={tAddressManagement('actions.addAddress')}
-              elementType="button"
-              onClick={handleAddNewAddress}
-              variant="secondary"
+              label={tReceipt('donorInfo.tin')}
             />
           )}
-          <WebappButton
-            text={tReceipt('saveDataAndReturn')}
-            elementType="button"
-            onClick={handleSubmit(onSubmit)}
-            variant="primary"
-          />
-        </div>
-      )}
+          {user.type !== 'individual' && (
+            <FormInput
+              name="companyName"
+              control={control}
+              label={tReceipt('donorInfo.companyName')}
+              rules={{ required: tReceipt('notifications.companyRequired') }}
+            />
+          )}
+        </InlineFormDisplayGroup>
 
-      {isLoading && (
-        <div className={styles.donationReceiptSpinner}>
-          {/* The spinner carries no text, so the state is announced instead. */}
-          <LiveRegion politeness="polite" isVisuallyHidden>
-            {tReceipt('savingDonorInfo')}
-          </LiveRegion>
-          <CircularProgress color="success" />
-        </div>
-      )}
-    </form>
+        <section className={styles.donorAddressSection}>
+          <Controller
+            name="addressGuid"
+            control={control}
+            rules={{ required: tReceipt('notifications.addressRequired') }}
+            render={({ field }) => (
+              <RadioGroup
+                {...field}
+                value={checkedAddressGuid ?? ''}
+                onChange={(_, value) => {
+                  field.onChange(value);
+                  setCheckedAddressGuid(value);
+                }}
+                aria-label={tReceipt('donorInfo.selectAddress')}
+                aria-invalid={errors.addressGuid ? true : undefined}
+                aria-describedby={
+                  errors.addressGuid ? 'addressGuid-error' : undefined
+                }
+                sx={{ gap: '10px' }}
+              >
+                {user.addresses.map((address) => (
+                  <DonorAddressList
+                    key={address.id}
+                    address={address}
+                    setSelectedAddress={setSelectedAddress}
+                    setAddressAction={setAddressAction}
+                    setIsModalOpen={setIsModalOpen}
+                    checkedAddressGuid={checkedAddressGuid}
+                    setCheckedAddressGuid={setCheckedAddressGuid}
+                    setValue={setValue}
+                  />
+                ))}
+              </RadioGroup>
+            )}
+          />
+          {/* Assertive: a validation error blocking submission. */}
+          {errors.addressGuid?.message && (
+            <LiveRegion
+              politeness="assertive"
+              as="span"
+              id="addressGuid-error"
+              className={styles.errorMessage}
+            >
+              {errors.addressGuid.message}
+            </LiveRegion>
+          )}
+          {/* Visible copy only. Announced by the persistent polite region above. */}
+          {hasReachedAddressLimit && (
+            <span className={styles.addressLimitMessage}>
+              {tReceipt('notifications.addressLimitReached')}
+            </span>
+          )}
+        </section>
+
+        {!isLoading && (
+          <div className={styles.donorContactFormAction}>
+            {!hasReachedAddressLimit && (
+              <WebappButton
+                text={tAddressManagement('actions.addAddress')}
+                elementType="button"
+                onClick={handleAddNewAddress}
+                variant="secondary"
+              />
+            )}
+            <WebappButton
+              text={tReceipt('saveDataAndReturn')}
+              elementType="button"
+              onClick={handleSubmit(onSubmit)}
+              variant="primary"
+            />
+          </div>
+        )}
+
+        {/* The spinner carries no text; announced by the persistent polite
+          region above the form. */}
+        {isLoading && (
+          <div className={styles.donationReceiptSpinner}>
+            <CircularProgress color="success" />
+          </div>
+        )}
+      </form>
+    </>
   );
 };
 

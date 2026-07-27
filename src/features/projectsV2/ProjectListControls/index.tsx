@@ -37,16 +37,11 @@ const ProjectListControls = ({
   const renderTabContent = useMemo(() => {
     if (isFilterApplied) {
       return (
-        // Polite: the result count changes as filters are toggled, so it is
-        // queued behind whatever the reader is saying rather than interrupting.
-        <LiveRegion
-          politeness="polite"
-          className={styles.filterResultContainer}
-        >
+        <div className={styles.filterResultContainer}>
           {tAllProjects('filterResult', {
             count: filteredProjectCount,
           })}
-        </LiveRegion>
+        </div>
       );
     }
 
@@ -74,6 +69,18 @@ const ProjectListControls = ({
 
   return (
     <>
+      {/* 
+    Keep the live region outside the `isSearching` condition so it stays on the
+    page. When the result count changes, screen readers announce the updated
+    text more reliably than if the live region is added with the message.
+
+    The live region is visually hidden, so it does not affect the layout or the
+    control bar. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {isFilterApplied
+          ? tAllProjects('filterResult', { count: filteredProjectCount })
+          : ''}
+      </LiveRegion>
       {isSearching ? (
         <ActiveSearchField setIsFilterOpen={setIsFilterOpen} />
       ) : (
