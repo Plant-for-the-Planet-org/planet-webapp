@@ -56,6 +56,7 @@ const MapFeatureExplorer = ({
           }}
         >
           <MapSettings
+            id={panelId}
             mapOptions={mapOptions}
             updateMapOption={updateMapOption}
             isMobile={isMobile}
