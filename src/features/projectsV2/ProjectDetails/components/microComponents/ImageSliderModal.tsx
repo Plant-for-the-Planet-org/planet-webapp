@@ -19,14 +19,6 @@ interface ImageSliderModalProps {
   type: 'coordinate' | 'project';
 }
 
-const modalContainerStyles = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  overflow: 'hidden',
-  gap: '20px',
-};
-
 const ImageSliderModal = ({
   currentIndex,
   setCurrentIndex,
@@ -51,14 +43,23 @@ const ImageSliderModal = ({
     />
   );
 
+  // The dialog is a single element rather than a fragment, so the modal's focus
+  // trap can move focus into it on open and restore it to the trigger on close
   return (
     <Modal
       open={isModalOpen}
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
-      sx={modalContainerStyles}
+      // Only Escape closes: clicking the backdrop did nothing before
+      onClose={(_event, reason) => {
+        if (reason === 'escapeKeyDown') {
+          setIsModalOpen(false);
+        }
+      }}
     >
-      <>
+      <div
+        className={styles.imageSliderDialog}
+        role="dialog"
+        aria-label={t('imageGallery')}
+      >
         {!isMobile && renderSliderButton('prev', styles.sliderButton)}
         <div className={styles.expandedImageSliderContainer}>
           <IconButton
@@ -87,7 +88,7 @@ const ImageSliderModal = ({
             renderSliderButton('next', styles.nextMobileSliderButton)}
         </div>
         {!isMobile && renderSliderButton('next', styles.sliderButton)}
-      </>
+      </div>
     </Modal>
   );
 };

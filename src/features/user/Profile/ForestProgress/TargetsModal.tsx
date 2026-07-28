@@ -3,7 +3,7 @@ import type { SetState } from '../../../common/types/common';
 
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
-import { useEffect } from 'react';
+import { useEffect, useId } from 'react';
 import { useMyForestStore } from '../../../../stores/myForestStore';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
@@ -58,6 +58,8 @@ const TargetsModal = ({
     useState(conservationTarget > 0);
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  // Names the dialog using its visible title
+  const titleId = useId();
 
   const handleClose = () => {
     setOpen(false);
@@ -122,7 +124,11 @@ const TargetsModal = ({
   };
   return (
     <Modal open={open} onClose={handleClose}>
-      <div className={styles.targetModalMainContainer}>
+      <div
+        className={styles.targetModalMainContainer}
+        role="dialog"
+        aria-labelledby={titleId}
+      >
         <IconButton
           label={`${tCommon('close')} ${tProfile('setTargets')}`}
           className={styles.crossIconContainer}
@@ -130,7 +136,9 @@ const TargetsModal = ({
         >
           <CrossIcon />
         </IconButton>
-        <div className={styles.setTargetLabel}>{tProfile('setTargets')}</div>
+        <div className={styles.setTargetLabel} id={titleId}>
+          {tProfile('setTargets')}
+        </div>
 
         <div className={styles.targetModalSubContainer}>
           <TargetFormInput

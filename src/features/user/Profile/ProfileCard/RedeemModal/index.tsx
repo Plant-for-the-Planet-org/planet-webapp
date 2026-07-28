@@ -120,6 +120,9 @@ export default function RedeemModal({
     setRedeemedCodeData(undefined);
   };
   const { theme } = useContext(ThemeContext);
+  // The visible heading changes with the redeem state, so the dialog is named
+  // with aria-label instead of aria-labelledby
+  const dialogLabel = t('redeem');
 
   return (
     <Modal
@@ -127,11 +130,9 @@ export default function RedeemModal({
       open={redeemModalOpen}
       onClose={handleRedeemModalClose}
       closeAfterTransition
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
     >
       <Fade in={redeemModalOpen}>
-        <div>
+        <div role="dialog" aria-label={dialogLabel}>
           {redeemedCodeData === undefined && !errors && (
             <EnterRedeemCode
               isLoading={isLoading}
