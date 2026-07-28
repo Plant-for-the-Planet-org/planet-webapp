@@ -9,6 +9,7 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
+import IconButton from '../../../common/IconButton';
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
 import { useApi } from '../../../../hooks/useApi';
@@ -122,16 +123,13 @@ const TargetsModal = ({
   return (
     <Modal open={open} onClose={handleClose}>
       <div className={styles.targetModalMainContainer}>
-        <button
-          type="button"
-          aria-label={`${tCommon('close')} ${tProfile('setTargets')}`}
+        <IconButton
+          label={`${tCommon('close')} ${tProfile('setTargets')}`}
           className={styles.crossIconContainer}
           onClick={handleClose}
         >
-          <span aria-hidden="true" style={{ display: 'contents' }}>
-            <CrossIcon />
-          </span>
-        </button>
+          <CrossIcon />
+        </IconButton>
         <div className={styles.setTargetLabel}>{tProfile('setTargets')}</div>
 
         <div className={styles.targetModalSubContainer}>

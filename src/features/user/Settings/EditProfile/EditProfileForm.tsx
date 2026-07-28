@@ -349,6 +349,7 @@ export default function EditProfileForm() {
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 label={`${t('fieldLabels.firstName')}*`}
+                autoComplete="given-name"
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -376,6 +377,7 @@ export default function EditProfileForm() {
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 label={`${t('fieldLabels.lastName')}*`}
+                autoComplete="family-name"
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -391,6 +393,7 @@ export default function EditProfileForm() {
           <TextField
             label={t('fieldLabels.email')}
             name="email"
+            autoComplete="email"
             defaultValue={user?.email}
             disabled
           ></TextField>
@@ -407,6 +410,7 @@ export default function EditProfileForm() {
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 label={t('fieldLabels.website')}
+                autoComplete="url"
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}

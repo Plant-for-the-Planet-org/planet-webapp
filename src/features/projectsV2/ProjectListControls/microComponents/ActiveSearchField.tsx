@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { SearchTextField } from './SearchTextField';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
+import IconButton from '../../../common/IconButton';
 import styles from '../styles/ProjectListControls.module.scss';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
 import { clsx } from 'clsx';
@@ -54,6 +55,7 @@ const ActiveSearchField = ({ setIsFilterOpen }: ActiveSearchFieldProps) => {
         id="standard-search"
         variant="standard"
         placeholder={t('searchProject')}
+        inputProps={{ 'aria-label': t('searchProject') }}
         value={searchValue}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setSearchValue(event.target.value);
@@ -61,16 +63,13 @@ const ActiveSearchField = ({ setIsFilterOpen }: ActiveSearchFieldProps) => {
         autoFocus
       />
 
-      <button
-        type="button"
-        aria-label={t('clearSearch')}
+      <IconButton
+        label={t('clearSearch')}
         onClick={resetSearch}
         className={styles.crossIcon}
       >
-        <span aria-hidden="true" style={{ display: 'contents' }}>
-          <CrossIcon />
-        </span>
-      </button>
+        <CrossIcon />
+      </IconButton>
     </div>
   );
 };
