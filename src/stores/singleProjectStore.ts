@@ -126,11 +126,25 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
           currency: String(config.queryParams?.currency ?? ''),
           tenant: String(config.queryParams?.tenant ?? ''),
         };
-        // The same request is already in flight.
+        // Should this request start at all? An identical one is already running, so do not duplicate it.
         if (isSameFetchKey(pendingFetch, requested)) return;
-        // This exact project is already held.
+        // This exact project is already held, so there is nothing to fetch. The key alone is not enough, the data has to be there too.
         if (isSameFetchKey(lastFetch, requested) && singleProject !== null)
           return;
+
+        /**
+         * Should this request's outcome be applied? Asked after each `await`, so unlike the guards above it is about writing to singleProject, not about starting the fetch.
+         *
+         * - `pendingFetch` matches: still the request in flight
+         * - `lastFetch` matches: already wrote its own success and cleared its `pendingFetch`, and is now later in its own chain. Without this arm its own error would look superseded and be swallowed
+         */
+        const isCurrent = () => {
+          const state = get();
+          return (
+            isSameFetchKey(state.pendingFetch, requested) ||
+            isSameFetchKey(state.lastFetch, requested)
+          );
+        };
 
         set(
           { isFetching: true, fetchError: false, pendingFetch: requested },
@@ -142,6 +156,9 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
             `/app/projects/${projectSlug}`,
             config
           );
+
+          // Superseded while in flight. Otherwise the last response to arrive wins over the last request to start, and the stale key it records then blocks its own correction.
+          if (!isCurrent()) return;
 
           set(
             {
@@ -167,6 +184,9 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
               project.id,
               project.geoLocation
             );
+            // Second await, so check again before writing to the map store.
+            if (!isCurrent()) return;
+
             useProjectMapStore.getState().setTimeTravelConfig(timeTravelConfig);
           } else {
             throw new ClientError(404, {
@@ -175,6 +195,9 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
             });
           }
         } catch (error) {
+          // A superseded request must not raise an error or blank the project.
+          if (!isCurrent()) return;
+
           useErrorHandlingStore
             .getState()
             .setErrors(handleError(error as APIError));
@@ -183,9 +206,7 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
               fetchError: true,
               isFetching: false,
               singleProject: null,
-              // Reset so the same project can be retried. The purpose check
-              // sits below the success write, so `lastFetch` may already hold
-              // this key by the time we get here.
+              // Reset so a retry is possible. The purpose check throws below the success write, so this key may already be recorded.
               lastFetch: null,
               pendingFetch: null,
             },

@@ -92,6 +92,9 @@ export const useProjectStore = create<ProjectStore>()(
         try {
           const projects = await getApi<MapProject[]>('/app/projects', config);
 
+          // Superseded while in flight, so drop the response. Unlike `singleProjectStore`, nothing here throws after the success write, so comparing `pendingFetch` is enough on both settle paths.
+          if (!isSameFetchKey(get().pendingFetch, requested)) return;
+
           set(
             {
               projects,
@@ -105,6 +108,8 @@ export const useProjectStore = create<ProjectStore>()(
             'projectStore/projects_fetch_success'
           );
         } catch (error) {
+          if (!isSameFetchKey(get().pendingFetch, requested)) return;
+
           set(
             {
               isProjectsFetching: false,

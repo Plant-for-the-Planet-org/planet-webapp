@@ -39,6 +39,9 @@ export const useInitializeSingleProject = () => {
   // store: state
   const currentPage = useViewStore((state) => state.page);
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  const isCurrencyResolved = useCurrencyStore(
+    (state) => state.isCurrencyResolved
+  );
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
   const singleProject = useSingleProjectStore((state) => state.singleProject);
   const selectedSite = useSingleProjectStore((state) => state.selectedSite);
@@ -66,11 +69,16 @@ export const useInitializeSingleProject = () => {
    * `router.query.p` is used as the signal rather than `viewStore.page`, since
    * the page is derived from that same param but only after an effect, and this
    * fetch should not wait on it.
+   *
+   * It does wait on `isCurrencyResolved`, because `currencyCode` starts at a
+   * placeholder that would otherwise be fetched with and then immediately
+   * superseded. Waiting here cannot stall: `initializeCurrencyCode` runs
+   * unconditionally on mount in the browser and resolves in every path.
    */
   useEffect(() => {
     if (!router.isReady) return;
     if (!isString(projectSlug)) return;
-    if (!currencyCode) return;
+    if (!isCurrencyResolved || !currencyCode) return;
 
     fetchProject(
       getApi,
@@ -86,7 +94,14 @@ export const useInitializeSingleProject = () => {
       },
       projectSlug
     );
-  }, [router.isReady, projectSlug, locale, currencyCode, tenantId]);
+  }, [
+    router.isReady,
+    projectSlug,
+    locale,
+    currencyCode,
+    isCurrencyResolved,
+    tenantId,
+  ]);
 
   // Redirect home if the project fails to load. The store handles the error message, and this prevents an endless loading state.
   useEffect(() => {

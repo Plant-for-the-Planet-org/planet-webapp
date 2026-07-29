@@ -13,6 +13,9 @@ export const useInitializeProject = () => {
   const router = useRouter();
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  const isCurrencyResolved = useCurrencyStore(
+    (state) => state.isCurrencyResolved
+  );
   const currentPage = useViewStore((state) => state.page);
   // store: action
   const fetchProjects = useProjectStore((state) => state.fetchProjects);
@@ -25,7 +28,10 @@ export const useInitializeProject = () => {
   const clearFilterStates = useProjectStore((state) => state.clearFilterStates);
 
   useEffect(() => {
-    if (currentPage !== 'project-list' || !currencyCode) return;
+    if (currentPage !== 'project-list') return;
+    // Wait for the real currency. `currencyCode` starts at a placeholder, and
+    // fetching with it would only be superseded once `localStorage` is read.
+    if (!isCurrencyResolved || !currencyCode) return;
     // `fetchProjects` skips redundant requests itself, keyed on locale, currency
     // and tenant.
     fetchProjects(getApi, {
@@ -39,7 +45,7 @@ export const useInitializeProject = () => {
         'filter[purpose]': 'trees,conservation',
       },
     });
-  }, [currencyCode, locale, tenantId, currentPage]);
+  }, [currencyCode, isCurrencyResolved, locale, tenantId, currentPage]);
 
   useEffect(() => {
     if (router.isReady && currentPage === 'project-list') {

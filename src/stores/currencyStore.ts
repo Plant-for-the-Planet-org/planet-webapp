@@ -13,6 +13,16 @@ type CurrencyList = {
 interface CurrencyStore {
   supportedCurrencies: Set<CurrencyCode>;
   currencyCode: CurrencyCode;
+  /**
+   * Whether `currencyCode` has been resolved against `localStorage`.
+   *
+   * `currencyCode` starts at a placeholder `'EUR'`, which is indistinguishable
+   * from a real choice, so callers that key requests on currency must wait for
+   * this rather than reading the code straight away. `initializeCurrencyCode`
+   * sets it in every browser path, including when nothing is stored and the
+   * placeholder turns out to be the answer.
+   */
+  isCurrencyResolved: boolean;
   isFetching: boolean;
 
   fetchSupportedCurrencies: (
@@ -27,6 +37,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
     (set, get) => ({
       supportedCurrencies: new Set<CurrencyCode>(),
       currencyCode: 'EUR',
+      isCurrencyResolved: false,
       isFetching: false,
 
       fetchSupportedCurrencies: async (getApi) => {
@@ -65,10 +76,18 @@ export const useCurrencyStore = create<CurrencyStore>()(
           'currencyCode'
         ) as CurrencyCode | null;
 
-        if (!storedCurrency) return;
+        // Nothing stored, so the initial `'EUR'` stands. Still resolved.
+        if (!storedCurrency) {
+          set(
+            { isCurrencyResolved: true },
+            undefined,
+            'currencyStore/currency_code_resolved'
+          );
+          return;
+        }
 
         set(
-          { currencyCode: storedCurrency },
+          { currencyCode: storedCurrency, isCurrencyResolved: true },
           undefined,
           'currencyStore/initialize_currency_code'
         );
