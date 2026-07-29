@@ -803,36 +803,6 @@ export default function DetailedAnalysis({
             <InlineFormDisplayGroup>
               <div style={{ flex: 1, minWidth: 180 }}>
                 <Controller
-                  name="acquisitionYear"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <LocalizationProvider
-                      dateAdapter={AdapterDateFns}
-                      adapterLocale={
-                        localeMapForDate[userLang]
-                          ? localeMapForDate[userLang]
-                          : localeMapForDate['en']
-                      }
-                    >
-                      <MuiDatePicker
-                        label={tManageProjects('acquisitionYear')}
-                        value={value}
-                        onChange={onChange}
-                        renderInput={(props) => <TextField fullWidth {...props} />}
-                        disableFuture
-                        minDate={new Date(new Date().setFullYear(1950))}
-                        views={['year']}
-                        maxDate={new Date()}
-                      />
-                    </LocalizationProvider>
-                  )}
-                />
-                {metaAnnotation('acquisitionYear') && (
-                  <AnnotationCallout text={metaAnnotation('acquisitionYear')!} />
-                )}
-              </div>
-              <div style={{ flex: 1, minWidth: 180 }}>
-                <Controller
                   name="ownershipType"
                   control={control}
                   rules={{ required: tManageProjects('requiredField') }}
