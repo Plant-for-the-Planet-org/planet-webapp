@@ -14,9 +14,29 @@ import {
   buildProjectDetailsQuery,
   getSiteIdFromIndex,
 } from '../utils/projectV2';
+import { isSameFetchKey } from '../utils/fetchKey';
+
+/**
+ * Conditions a fetched project depends on. Includes the slug, since a session
+ * moves between projects. See `src/utils/fetchKey.ts`.
+ */
+type SingleProjectFetchKey = {
+  slug: string;
+  locale: string;
+  currency: string;
+  tenant: string;
+};
 
 interface SingleProjectStore {
   singleProject: ExtendedProject | null;
+  /**
+   * Conditions of the last successful fetch. `null` when nothing has been
+   * fetched yet, after a failure, or after `clearProjectStates`, so a failed
+   * request can always be retried.
+   */
+  lastFetch: SingleProjectFetchKey | null;
+  /** Conditions of the request in flight, `null` when idle. */
+  pendingFetch: SingleProjectFetchKey | null;
   /**
    * Index of the currently selected site in `singleProject.sites`.
    * `null` indicates no site is selected.
@@ -90,6 +110,8 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
   devtools(
     (set, get) => ({
       singleProject: null,
+      lastFetch: null,
+      pendingFetch: null,
       selectedSite: null,
 
       // status flags
@@ -97,8 +119,21 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
       fetchError: false,
 
       fetchProject: async (getApi, config, projectSlug) => {
+        const { lastFetch, pendingFetch, singleProject } = get();
+        const requested: SingleProjectFetchKey = {
+          slug: projectSlug,
+          locale: String(config.queryParams?.locale ?? ''),
+          currency: String(config.queryParams?.currency ?? ''),
+          tenant: String(config.queryParams?.tenant ?? ''),
+        };
+        // The same request is already in flight.
+        if (isSameFetchKey(pendingFetch, requested)) return;
+        // This exact project is already held.
+        if (isSameFetchKey(lastFetch, requested) && singleProject !== null)
+          return;
+
         set(
-          { isFetching: true, fetchError: false },
+          { isFetching: true, fetchError: false, pendingFetch: requested },
           undefined,
           'singleProjectStore/project_fetch_start'
         );
@@ -111,6 +146,8 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
           set(
             {
               singleProject: project,
+              lastFetch: requested,
+              pendingFetch: null,
               isFetching: false,
             },
             undefined,
@@ -146,6 +183,11 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
               fetchError: true,
               isFetching: false,
               singleProject: null,
+              // Reset so the same project can be retried. The purpose check
+              // sits below the success write, so `lastFetch` may already hold
+              // this key by the time we get here.
+              lastFetch: null,
+              pendingFetch: null,
             },
             undefined,
             'singleProjectStore/project_fetch_error'
@@ -220,6 +262,8 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
         set(
           {
             singleProject: null,
+            lastFetch: null,
+            pendingFetch: null,
             selectedSite: null,
             fetchError: false,
           },

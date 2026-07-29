@@ -14,11 +14,6 @@ export const useInitializeProject = () => {
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
   const currentPage = useViewStore((state) => state.page);
-  const projectsCurrencyCode = useProjectStore(
-    (state) => state.projectsCurrencyCode
-  );
-  const projectsLocale = useProjectStore((state) => state.projectsLocale);
-  const projects = useProjectStore((state) => state.projects);
   // store: action
   const fetchProjects = useProjectStore((state) => state.fetchProjects);
   const setSelectedClassification = useProjectStore(
@@ -31,14 +26,8 @@ export const useInitializeProject = () => {
 
   useEffect(() => {
     if (currentPage !== 'project-list' || !currencyCode) return;
-    // Avoid refetching if projects are already loaded for the same locale and currency
-    if (
-      projectsLocale === locale &&
-      projectsCurrencyCode === currencyCode &&
-      projects !== null
-    )
-      return;
-
+    // `fetchProjects` skips redundant requests itself, keyed on locale, currency
+    // and tenant.
     fetchProjects(getApi, {
       queryParams: {
         _scope: 'map',
