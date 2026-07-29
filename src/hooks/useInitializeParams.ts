@@ -23,6 +23,10 @@ export const useInitializeParams = () => {
   );
   const isContextLoaded = useQueryParamStore((state) => state.isContextLoaded);
 
+  /**
+   * Read the embed params once per full page load. The `isContextLoaded` latch means a client-side navigation that changes them is ignored, so these values do not track the URL.
+   * Link builders forward only `embed` and `callback` anyway, see #3014.
+   */
   useEffect(() => {
     if (!router.isReady || isContextLoaded) return;
     const { query } = router;
