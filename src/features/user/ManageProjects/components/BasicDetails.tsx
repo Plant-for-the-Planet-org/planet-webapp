@@ -171,6 +171,10 @@ export default function BasicDetails({
       value: 'managed-regeneration',
     },
     {
+      label: t('mangroves'),
+      value: 'mangroves',
+    },
+    {
       label: t('urbanPlanting'),
       value: 'urban-planting',
     },
