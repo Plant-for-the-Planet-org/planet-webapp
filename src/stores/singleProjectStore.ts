@@ -136,13 +136,14 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
          * Should this request's outcome be applied? Asked after each `await`, so unlike the guards above it is about writing to singleProject, not about starting the fetch.
          *
          * - `pendingFetch` matches: still the request in flight
-         * - `lastFetch` matches: already wrote its own success and cleared its `pendingFetch`, and is now later in its own chain. Without this arm its own error would look superseded and be swallowed
+         * - nothing pending and `lastFetch` matches: already wrote its own success and cleared its `pendingFetch`, and is now later in its own chain. Without this arm its own error would look superseded and be swallowed. The `null` check matters: a newer request can start during the time travel await, and this call must not write once it has
          */
         const isCurrent = () => {
           const state = get();
           return (
             isSameFetchKey(state.pendingFetch, requested) ||
-            isSameFetchKey(state.lastFetch, requested)
+            (state.pendingFetch === null &&
+              isSameFetchKey(state.lastFetch, requested))
           );
         };
 

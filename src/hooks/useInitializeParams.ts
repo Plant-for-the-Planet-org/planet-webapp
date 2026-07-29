@@ -49,9 +49,15 @@ export const useInitializeParams = () => {
     const { backNavigationUrl } = router.query;
     if (typeof backNavigationUrl !== 'string') return;
 
-    sessionStorage.setItem(
-      'backNavigationUrl',
-      decodeURIComponent(backNavigationUrl)
-    );
+    try {
+      sessionStorage.setItem(
+        'backNavigationUrl',
+        decodeURIComponent(backNavigationUrl)
+      );
+    } catch {
+      // Malformed percent-encoding, such as a bare `%`, throws a `URIError`.
+      // Session storage can also be blocked in a cross-origin embed.
+      // Neither is worth failing the page for, the back button just falls back to home.
+    }
   }, [router.query.backNavigationUrl]);
 };

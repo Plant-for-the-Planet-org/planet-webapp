@@ -72,22 +72,21 @@ export const useCurrencyStore = create<CurrencyStore>()(
       initializeCurrencyCode: () => {
         if (typeof window === 'undefined') return;
 
-        const storedCurrency = localStorage.getItem(
-          'currencyCode'
-        ) as CurrencyCode | null;
-
-        // Nothing stored, so the initial `'EUR'` stands. Still resolved.
-        if (!storedCurrency) {
-          set(
-            { isCurrencyResolved: true },
-            undefined,
-            'currencyStore/currency_code_resolved'
-          );
-          return;
+        let storedCurrency: CurrencyCode | null = null;
+        try {
+          storedCurrency = localStorage.getItem(
+            'currencyCode'
+          ) as CurrencyCode | null;
+        } catch {
+          // Storage can be blocked outright in a cross-origin embed, keep the default currency in this case
         }
 
+        // Resolve either way. Nothing stored, or no readable storage, means the initial `'EUR'` is the answer. Callers gate their fetches on this, so leaving it false would mean never fetching at all.
         set(
-          { currencyCode: storedCurrency, isCurrencyResolved: true },
+          {
+            isCurrencyResolved: true,
+            ...(storedCurrency ? { currencyCode: storedCurrency } : {}),
+          },
           undefined,
           'currencyStore/initialize_currency_code'
         );
