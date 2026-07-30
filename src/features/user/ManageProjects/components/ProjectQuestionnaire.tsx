@@ -340,6 +340,9 @@ export default function ProjectQuestionnaire({
     if (field.type === 'number' || field.type === 'integer') {
       return (
         <div key={name} className={styles.formFieldLarge}>
+          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+            {field.label}
+          </FormLabel>
           {field.description && (
             <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
           )}
@@ -349,7 +352,6 @@ export default function ProjectQuestionnaire({
             rules={{ required: true }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextField
-                label={field.label}
                 type="number"
                 fullWidth
                 onChange={onChange}
@@ -506,6 +508,9 @@ export default function ProjectQuestionnaire({
     // ── text / string / default ───────────────────────────────────────────
     return (
       <div key={name} className={styles.formFieldLarge}>
+        <FormLabel component="legend" sx={{ mb: 0.5 }}>
+          {field.label}
+        </FormLabel>
         {field.description && (
           <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
         )}
@@ -515,7 +520,6 @@ export default function ProjectQuestionnaire({
           rules={{ required: true }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
-              label={field.label}
               multiline
               minRows={3}
               fullWidth
