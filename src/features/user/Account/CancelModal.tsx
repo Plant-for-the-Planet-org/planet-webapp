@@ -7,6 +7,7 @@ import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
+import IconButton from '../../common/IconButton';
 import {
   CircularProgress,
   Modal,
@@ -108,19 +109,13 @@ export const CancelModal = ({
               }}
             >
               <h4>{t('cancelDonationConfirmation')}</h4>
-              <button
-                type="button"
-                aria-label={`${tCommon('close')} ${t('cancelDonationConfirmation')}`}
+              <IconButton
+                label={`${tCommon('close')} ${t('cancelDonationConfirmation')}`}
                 onClick={handleCancelModalClose}
-                onKeyPress={handleCancelModalClose}
-                role="button"
-                tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <span aria-hidden="true" style={{ display: 'contents' }}>
-                  <Close color={'#4d5153'} />
-                </span>
-              </button>
+                <Close color={'#4d5153'} />
+              </IconButton>
             </div>
             <div className={styles.note}>
               {record?.method === 'paypal' ? (

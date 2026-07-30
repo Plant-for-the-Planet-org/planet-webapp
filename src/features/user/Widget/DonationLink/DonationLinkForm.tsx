@@ -211,7 +211,7 @@ const DonationLinkForm = ({
               {tDonationLink('treeCounterTitle')}
             </div>
             <InlineFormDisplayGroup type="other">
-              <h6>{tDonationLink('treeCounterSubtitle')}</h6>
+              <p>{tDonationLink('treeCounterSubtitle')}</p>
               <NewToggleSwitch
                 id="treeCounter"
                 name="treeCounter"
@@ -223,7 +223,7 @@ const DonationLinkForm = ({
               />
             </InlineFormDisplayGroup>
             {isSupport && (
-              <h6>{tDonationLink('treeCounterPrivateAccountSubtitle')}</h6>
+              <p>{tDonationLink('treeCounterPrivateAccountSubtitle')}</p>
             )}
           </div>
           <InlineFormDisplayGroup type="other">
@@ -242,8 +242,8 @@ const DonationLinkForm = ({
           </InlineFormDisplayGroup>
           {isTesting && (
             <>
-              <h6> {tDonationLink('testingModeSubtitle1')}</h6>
-              <h6>
+              <p> {tDonationLink('testingModeSubtitle1')}</p>
+              <p>
                 {tDonationLink('testingModeSubtitle2')}{' '}
                 <a
                   className="planet-links"
@@ -253,7 +253,7 @@ const DonationLinkForm = ({
                 >
                   stripe
                 </a>{' '}
-              </h6>
+              </p>
             </>
           )}
           <div className={styles.formSection}>

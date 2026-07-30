@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
+import IconButton from '../../IconButton';
 import styles from './CookiePolicy.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
@@ -47,17 +48,14 @@ export default function CookiePolicy() {
 
   return showCookieNotice ? (
     <div className={styles.cookieContainer}>
-      <button
+      <IconButton
         id={'cookieCloseButton'}
-        type="button"
-        aria-label={t('close')}
+        label={t('close')}
         className={styles.closeButton}
         onClick={() => setShowCookieNotice(false)}
       >
-        <span aria-hidden="true">
-          <CloseIcon color={themeProperties.designSystem.colors.primaryColor} />
-        </span>
-      </button>
+        <CloseIcon color={themeProperties.designSystem.colors.primaryColor} />
+      </IconButton>
       <div className={styles.cookieContent}>
         {t('privacyPolicyNotice')}{' '}
         <a href={`https://pp.eco/legal/${locale}/privacy`}>

@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import WebappButton from '../../../WebappButton';
+import IconButton from '../../../IconButton';
 import { useEffect, useState } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
 import Me from '../../../../../../public/assets/images/icons/headerIcons/Me';
@@ -45,16 +46,13 @@ export const SignInButton = () => {
     }
   }
   return isMobile ? (
-    <button
+    <IconButton
       className={styles.mobileSignInButton}
-      type="button"
-      aria-label={t('signIn')}
+      label={t('signIn')}
       onClick={() => gotoUserPage()}
     >
-      <span aria-hidden="true" style={{ display: 'contents' }}>
-        <Me />
-      </span>
-    </button>
+      <Me />
+    </IconButton>
   ) : (
     <WebappButton
       text={t('signIn')}
