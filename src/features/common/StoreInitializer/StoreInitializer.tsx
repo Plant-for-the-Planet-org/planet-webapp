@@ -7,6 +7,7 @@ import { useInitializeIntervention } from '../../../hooks/useInitializeIntervent
 import { useInitializeView } from '../../../hooks/useInitializeView';
 import { useInitializeSingleProject } from '../../../hooks/useInitializeSingleProject';
 import { useInitializeTenant } from '../../../hooks/useInitializeTenant';
+import { useInitializeLanguage } from '../../../hooks/useInitializeLanguage';
 
 interface StoreInitializerProps {
   tenantConfig?: Tenant;
@@ -31,6 +32,7 @@ export const StoreInitializer = ({
 }: StoreInitializerProps) => {
   useInitializeTenant(tenantConfig);
   useInitializeParams();
+  useInitializeLanguage(); // Sync route locale to legacy localStorage readers.
   useInitializeCurrency();
   useInitializeView(isMobile);
   useInitializeProject();
