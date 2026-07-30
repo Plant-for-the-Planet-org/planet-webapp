@@ -31,6 +31,18 @@ type ProjectProperties =
   | ProfileProjectPropertiesTrees
   | ProfileProjectPropertiesConservation;
 
+const CLASSIFICATION_LABEL_KEYS: Record<string, string> = {
+  'restoration-tree-planting': 'largeScalePlanting',
+  'large-scale-planting': 'largeScalePlanting',
+  agroforestry: 'agroforestry',
+  'natural-regeneration': 'naturalRegeneration',
+  'managed-regeneration': 'managedRegeneration',
+  mangroves: 'mangroves',
+  'urban-planting': 'urbanPlanting',
+  'other-restoration': 'otherPlanting',
+  'other-planting': 'otherPlanting',
+};
+
 function SingleProject({ project }: { project: ProjectProperties }) {
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -38,6 +50,7 @@ function SingleProject({ project }: { project: ProjectProperties }) {
   const tDonate = useTranslations('Donate');
   const tCommon = useTranslations('Common');
   const tCountry = useTranslations('Country');
+  const tManageProjects = useTranslations('ManageProjects');
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -65,7 +78,14 @@ function SingleProject({ project }: { project: ProjectProperties }) {
         <p className={styles.projectClassification}>
           {project?.purpose === 'conservation'
             ? project?.metadata?.ecosystem
-            : (project as ProfileProjectPropertiesTrees)?.classification}{' '}
+            : (() => {
+                const cls = (project as ProfileProjectPropertiesTrees)
+                  ?.classification;
+                const key = CLASSIFICATION_LABEL_KEYS[cls];
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
+                return key ? tManageProjects(key) : cls;
+              })()}{' '}
           •{' '}
           {project.country === null ? (
             <></>

@@ -105,6 +105,7 @@
     "unauthorized": "Not Authorized",
     "validationError": "Validation Error",
     "internalServerError": "Internal Server Error - Please try again later!",
+    "internal_server_error": "Internal Server Error - Please try again later!",
     "serviceUnavailable": "App is undergoing maintenance, please check status.plant-for-the-planet.org for details",
     "account_duplicate": "Account already exists",
     "line_item_amount_deviation": "Amount Deviation",
