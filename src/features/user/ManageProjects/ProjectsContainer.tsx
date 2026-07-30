@@ -31,7 +31,12 @@ type ProjectProperties =
   | ProfileProjectPropertiesTrees
   | ProfileProjectPropertiesConservation;
 
-const CLASSIFICATION_LABEL_KEYS: Record<string, string> = {
+/**
+ * Maps API classification values to `ManageProjects` translation keys.
+ * Both the current and the pre-rename values are listed, since older projects
+ * still carry `large-scale-planting` / `other-planting` in the database.
+ */
+const CLASSIFICATION_LABEL_KEYS = {
   'restoration-tree-planting': 'largeScalePlanting',
   'large-scale-planting': 'largeScalePlanting',
   agroforestry: 'agroforestry',
@@ -41,7 +46,9 @@ const CLASSIFICATION_LABEL_KEYS: Record<string, string> = {
   'urban-planting': 'urbanPlanting',
   'other-restoration': 'otherPlanting',
   'other-planting': 'otherPlanting',
-};
+} as const;
+
+type ClassificationValue = keyof typeof CLASSIFICATION_LABEL_KEYS;
 
 function SingleProject({ project }: { project: ProjectProperties }) {
   const ImageSource = project.image
@@ -62,6 +69,14 @@ function SingleProject({ project }: { project: ProjectProperties }) {
     () => localizedAbbreviatedNumber(locale, Number(count), 1),
     [count]
   );
+  const classification = (project as ProfileProjectPropertiesTrees)
+    ?.classification as ClassificationValue | undefined;
+  const labelKey = classification
+    ? CLASSIFICATION_LABEL_KEYS[classification]
+    : undefined;
+  const classificationLabel = labelKey
+    ? tManageProjects(labelKey)
+    : classification;
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (
@@ -78,14 +93,7 @@ function SingleProject({ project }: { project: ProjectProperties }) {
         <p className={styles.projectClassification}>
           {project?.purpose === 'conservation'
             ? project?.metadata?.ecosystem
-            : (() => {
-                const cls = (project as ProfileProjectPropertiesTrees)
-                  ?.classification;
-                const key = CLASSIFICATION_LABEL_KEYS[cls];
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                return key ? tManageProjects(key) : cls;
-              })()}{' '}
+            : classificationLabel}{' '}
           •{' '}
           {project.country === null ? (
             <></>
