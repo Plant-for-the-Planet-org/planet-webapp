@@ -174,6 +174,10 @@ export default function ProjectQuestionnaire({
     () => initialSchema ?? getCachedSchema(purpose, locale) ?? null
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Set when the schema request fails, so the form can show a retryable error
+  // instead of spinning forever on a null schema.
+  const [schemaFailed, setSchemaFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const classification =
     (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
@@ -218,12 +222,14 @@ export default function ProjectQuestionnaire({
         );
         setCachedSchema(purpose, locale, result);
         setSchema(result);
+        setSchemaFailed(false);
       } catch (err) {
+        setSchemaFailed(true);
         setErrors(parseApiError(err as APIError));
       }
     };
     void fetchSchema();
-  }, [purpose]);
+  }, [purpose, retryCount]);
 
   useEffect(() => {
     if (visibleFields.length === 0) return;
@@ -537,7 +543,8 @@ export default function ProjectQuestionnaire({
   // Show spinner until BOTH schema and projectDetails are available.
   // Deriving directly from the data avoids any intermediate flag that could
   // be false before the data actually arrives.
-  const isLoading = schema === null || projectDetails === null;
+  const isLoading =
+    !schemaFailed && (schema === null || projectDetails === null);
 
   const allFieldsFilled =
     visibleFields.length > 0 &&
@@ -567,6 +574,24 @@ export default function ProjectQuestionnaire({
         <div className="inputContainer">
           {isLoading ? (
             <CircularProgress size={32} />
+          ) : schemaFailed ? (
+            <Alert
+              severity="error"
+              action={
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setSchemaFailed(false);
+                    setRetryCount((count) => count + 1);
+                  }}
+                >
+                  {t('tryAgain')}
+                </Button>
+              }
+            >
+              {t('questionnaireLoadFailed')}
+            </Alert>
           ) : visibleFields.length === 0 ? (
             <p>{t('noQuestionnaire')}</p>
           ) : (

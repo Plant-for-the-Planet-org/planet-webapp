@@ -160,12 +160,12 @@
     "projectSpendingFinancial": "Financial Project Spending",
     "issueDate": "Date issued",
     "acquisitionYear": "Acquisition Year",
-    "largeScalePlanting": "Large Scale Planting",
+    "largeScalePlanting": "Large Scale Restoration",
     "agroforestry": "Agroforestry",
     "naturalRegeneration": "Natural Regeneration",
     "managedRegeneration": "Managed Regeneration",
-    "urbanPlanting": "Urban Planting",
-    "otherPlanting": "Other Planting",
+    "urbanPlanting": "Urban Restoration",
+    "otherPlanting": "Other Restoration",
     "projectType": "Project Type",
     "protectionSeasons": "Protection Seasons",
     "fileSizeLimit": "File is larger than 10 mb",
@@ -250,9 +250,8 @@
     "actionInfo": "The actions your organization is taking to conserve the ecosystem.",
     "mainChallengeInfo": "The biggest challenge this project is facing. Maximum 300 characters allowed.",
     "degradationCauseInfo": "Main causes of degradation of the site. Maximum 300 characters allowed.",
-    "motivationInfo": "Reasons for site selection. Maximum 300 characters allowed.",
-    "longTermPlanTooltip": "Long term protection plan for the site. Maximum 300 characters allowed.",
     "motivationInfo": "The motivation behind protecting this specific ecosystem.",
+    "longTermPlanTooltip": "Long term protection plan for the site. Maximum 300 characters allowed.",
     "validation": "{fieldName} is Invalid",
     "date": "Date",
     "plantingDensityValidation": "Please enter Planting Density",
@@ -323,6 +322,8 @@
       "success": "Your sites have been synced successfully with Restor.eco!",
       "error": "Failed to sync site data. Please try again later.",
       "partialError": "Error uploading some sites"
-    }
+    },
+    "questionnaireLoadFailed": "We couldn't load the questionnaire. Please try again.",
+    "tryAgain": "Try again"
   }
 }
