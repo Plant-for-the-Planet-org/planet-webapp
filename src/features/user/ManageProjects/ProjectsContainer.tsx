@@ -77,6 +77,16 @@ function SingleProject({ project }: { project: ProjectProperties }) {
   const classificationLabel = labelKey
     ? tManageProjects(labelKey)
     : classification;
+  const typeLabel =
+    project?.purpose === 'conservation'
+      ? project?.metadata?.ecosystem
+      : classificationLabel;
+  const countryLabel = project.country
+    ? tCountry(project.country.toLowerCase() as Lowercase<CountryCode>)
+    : undefined;
+  // Joined rather than hardcoding the separator, so a project without a
+  // classification (e.g. a funds project) doesn't render a dangling "• ".
+  const subtitleParts = [typeLabel, countryLabel].filter(Boolean);
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (
@@ -91,17 +101,7 @@ function SingleProject({ project }: { project: ProjectProperties }) {
       <div className={styles.projectInformation}>
         <p className={styles.projectName}>{project.name}</p>
         <p className={styles.projectClassification}>
-          {project?.purpose === 'conservation'
-            ? project?.metadata?.ecosystem
-            : classificationLabel}{' '}
-          •{' '}
-          {project.country === null ? (
-            <></>
-          ) : (
-            tCountry(
-              (project.country || '').toLowerCase() as Lowercase<CountryCode>
-            )
-          )}
+          {subtitleParts.join(' • ')}
         </p>
         <p className={styles.projectUnitsAchieved}>
           {count !== undefined &&
