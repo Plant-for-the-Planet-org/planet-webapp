@@ -7,7 +7,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
 import ProjectInfo from './components/ProjectInfo';
-import { useLocale } from 'next-intl';
 import styles from './ProjectDetails.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -17,25 +16,16 @@ import { getActiveSingleTree } from '../../../utils/projectV2';
 import ProjectDetailsMeta from '../../../utils/getMetaTags/ProjectDetailsMeta';
 import OtherInterventionInfo from './components/OtherInterventionInfo';
 import { isNonPlantationType } from '../../../utils/constants/intervention';
-import { useApi } from '../../../hooks/useApi';
-import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useTenantStore } from '../../../stores/tenantStore';
-import { useCurrencyStore } from '../../../stores/currencyStore';
 import { useInterventionStore, useSingleProjectStore } from '../../../stores';
 
 const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
-  const locale = useLocale();
   const router = useRouter();
-  const { getApi } = useApi();
-  const { localizedPath } = useLocalizedPath();
 
   const { p: projectSlug } = router.query;
   //local state
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
   // store: state
-  const currencyCode = useCurrencyStore((state) => state.currencyCode);
   const singleProject = useSingleProjectStore((state) => state.singleProject);
-  const fetchError = useSingleProjectStore((state) => state.fetchError);
   const selectedSampleIntervention = useInterventionStore(
     (state) => state.selectedSampleIntervention
   );
@@ -45,34 +35,6 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const selectedIntervention = useInterventionStore(
     (state) => state.selectedIntervention
   );
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
-
-  // store: action
-  const fetchProjectData = useSingleProjectStore((state) => state.fetchProject);
-
-  useEffect(() => {
-    if (typeof projectSlug === 'string' && currencyCode && router.isReady) {
-      const config = {
-        queryParams: {
-          _scope: 'extended',
-          currency: currencyCode,
-          //passing locale/tenant as a query param to break cache when locale changes,
-          //as the browser uses the cached response even though the x-locale header is different
-          locale: locale,
-          tenant: tenantConfig.id,
-        },
-      };
-      fetchProjectData(getApi, config, projectSlug);
-    }
-  }, [router.isReady, projectSlug, locale, currencyCode, tenantConfig?.id]);
-
-  // Redirect home if the project fails to load. The store handles the error
-  // message, and this prevents an endless loading state.
-  useEffect(() => {
-    if (fetchError) {
-      router.push(localizedPath('/'));
-    }
-  }, [fetchError]);
 
   useEffect(() => {
     setHasVideoConsent(false);
