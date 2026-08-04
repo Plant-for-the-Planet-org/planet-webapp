@@ -6,6 +6,7 @@ import type {
 import type { SpeciesSuggestionType } from '../../../TreeMapper/Treemapper';
 
 import { useEffect, useMemo, useState } from 'react';
+
 import {
   Autocomplete,
   Button,
@@ -39,6 +40,26 @@ function blankRow(columns: QuestionnaireFieldColumn[]): QuestionnaireSpeciesRow 
   const row: QuestionnaireSpeciesRow = {};
   for (const column of columns) row[column.key] = '';
   return row;
+}
+
+/** True when every cell in the row is empty, i.e. the row carries no answer. */
+function isBlankRow(row: QuestionnaireSpeciesRow): boolean {
+  return Object.values(row).every(
+    (cell) => cell === '' || cell === null || cell === undefined
+  );
+}
+
+/** Answers followed by enough blank rows to reach `minRows`. */
+function padRows(
+  answers: QuestionnaireSpeciesRow[],
+  minRows: number,
+  columns: QuestionnaireFieldColumn[]
+): QuestionnaireSpeciesRow[] {
+  const padding = Math.max(0, minRows - answers.length);
+  return [
+    ...answers,
+    ...Array.from({ length: padding }, () => blankRow(columns)),
+  ];
 }
 
 /**
@@ -127,30 +148,40 @@ export default function SpeciesListTable({
 }: Props) {
   const t = useTranslations('ManageProjects');
 
-  // Always render at least `minRows` rows so the table reads as a form to fill
-  // in rather than an empty box, without persisting those blanks.
-  const rows = useMemo(() => {
-    const filled = value?.length ? value : [];
-    const padding = Math.max(0, minRows - filled.length);
-    return [
-      ...filled,
-      ...Array.from({ length: padding }, () => blankRow(columns)),
-    ];
-  }, [value, minRows, columns]);
+  // The blank rows exist only to make the table read as a form to fill in, so
+  // they are held here rather than pushed up to the form. `rows` is the visible
+  // grid (answers + blanks); only non-blank rows are ever emitted, so an
+  // untouched table saves nothing and a partly filled one saves no empties.
+  //
+  // Editing keeps row positions stable: filtering on the way out rather than
+  // in place means filling row 3 first does not shift it up to row 1.
+  const [rows, setRows] = useState<QuestionnaireSpeciesRow[]>(() =>
+    padRows(value ?? [], minRows, columns)
+  );
+
+  // Adopt the saved answer once it arrives (the schema and the project load
+  // independently, so `value` can be empty on first render).
+  useEffect(() => {
+    if (value?.length) setRows(padRows(value, minRows, columns));
+  }, [value]);
+
+  const commit = (next: QuestionnaireSpeciesRow[]): void => {
+    setRows(next);
+    onChange(next.filter((row) => !isBlankRow(row)));
+  };
 
   const updateCell = (
     rowIndex: number,
     key: string,
     cell: string | number
   ): void => {
-    const next = rows.map((row, i) =>
-      i === rowIndex ? { ...row, [key]: cell } : row
+    commit(
+      rows.map((row, i) => (i === rowIndex ? { ...row, [key]: cell } : row))
     );
-    onChange(next);
   };
 
   const removeRow = (rowIndex: number): void => {
-    onChange(rows.filter((_row, i) => i !== rowIndex));
+    commit(rows.filter((_row, i) => i !== rowIndex));
   };
 
   return (
@@ -229,7 +260,7 @@ export default function SpeciesListTable({
       {!disabled && (
         <Button
           size="small"
-          onClick={() => onChange([...rows, blankRow(columns)])}
+          onClick={() => setRows([...rows, blankRow(columns)])}
           sx={{ mt: 1 }}
         >
           {t('addSpeciesRow')}
