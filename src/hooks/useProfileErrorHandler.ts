@@ -27,6 +27,9 @@ const useProfileErrorHandler = () => {
           break;
 
         case 401:
+          // Clear impersonation so a leftover session does not silently
+          // resume impersonating this user after the next login.
+          exitImpersonation();
           setToken(null);
           loginWithRedirect({
             redirectUri: `${window.location.origin}/login`,
