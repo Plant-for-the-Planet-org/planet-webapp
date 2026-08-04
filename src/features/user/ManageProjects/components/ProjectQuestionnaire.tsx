@@ -6,6 +6,7 @@ import type {
   QuestionnaireFieldSchema,
   ExtendedProfileProjectProperties,
   ExtendedProfileProjectPropertiesTrees,
+  QuestionnaireSpeciesRow,
 } from '../../../common/types/project';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -37,6 +38,7 @@ import { parseApiError } from '../../../../utils/parseApiError';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import AnnotationCallout from './microComponent/AnnotationCallout';
+import SpeciesListTable from './microComponent/SpeciesListTable';
 import {
   getCachedSchema,
   setCachedSchema,
@@ -61,6 +63,20 @@ export function isFieldFilled(
     if (!val || typeof val !== 'object') return false;
     return Object.values(val as Record<string, unknown>).some(
       (v) => v !== '' && v !== null && v !== undefined
+    );
+  }
+
+  if (field.type === 'species_list') {
+    if (!Array.isArray(val)) return false;
+    // A row of only blanks does not count, so padding rows never mark the
+    // field complete.
+    return val.some(
+      (row) =>
+        typeof row === 'object' &&
+        row !== null &&
+        Object.values(row as Record<string, unknown>).some(
+          (v) => v !== '' && v !== null && v !== undefined
+        )
     );
   }
 
@@ -122,6 +138,10 @@ function buildDefaults(
         }
       }
       defaults[name] = matrixDefaults;
+    } else if (field.type === 'species_list') {
+      // Blank padding rows are added at render time, so an unanswered field
+      // stays an empty array and never persists placeholder rows.
+      defaults[name] = Array.isArray(val) ? val : [];
     } else {
       defaults[name] = typeof val === 'string' ? val : '';
     }
@@ -413,6 +433,36 @@ export default function ProjectQuestionnaire({
               ))}
             </TableBody>
           </Table>
+          {annotation && <AnnotationCallout text={annotation} />}
+        </div>
+      );
+    }
+
+    // ── species_list ──────────────────────────────────────────────────────
+    if (field.type === 'species_list' && field.columns) {
+      const columns = field.columns;
+      return (
+        <div key={name} className={styles.formFieldLarge}>
+          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+            {field.label}
+          </FormLabel>
+          {field.description && (
+            <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+          )}
+          <Controller
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            name={name as any}
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <SpeciesListTable
+                columns={columns}
+                minRows={field.minRows ?? 5}
+                value={(value as QuestionnaireSpeciesRow[]) ?? []}
+                onChange={onChange}
+                disabled={isLocked}
+              />
+            )}
+          />
           {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );

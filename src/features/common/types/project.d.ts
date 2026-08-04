@@ -57,19 +57,30 @@ export type QuestionnaireFieldType =
   | 'multi_choice'
   | 'boolean'
   | 'row_list'
-  | 'matrix';
+  | 'matrix'
+  | 'species_list';
 
 export interface QuestionnaireFieldRow {
   key: string;
   label: string;
 }
 
+/** Per-column input type, sent for species_list columns only. */
+export type QuestionnaireColumnType = 'species' | 'number' | 'choice';
+
 export interface QuestionnaireFieldColumn {
   key: string;
   label: string;
   /** Column group header (e.g. "Direct beneficiaries"). Adjacent columns sharing the same group are merged. */
   group?: string;
+  /** species_list only: which input to render for this column. */
+  type?: QuestionnaireColumnType;
+  /** species_list only: allowed values when type is 'choice'. */
+  choices?: string[];
 }
+
+/** One row of a species_list answer. Values are keyed by column key. */
+export type QuestionnaireSpeciesRow = Record<string, string | number | null>;
 
 export interface QuestionnaireFieldSchema {
   type: QuestionnaireFieldType;
@@ -79,8 +90,10 @@ export interface QuestionnaireFieldSchema {
   choices?: string[];
   /** Used by row_list and matrix */
   rows?: QuestionnaireFieldRow[];
-  /** Used by matrix only */
+  /** Used by matrix and species_list */
   columns?: QuestionnaireFieldColumn[];
+  /** species_list only: how many blank rows to seed the table with. No maximum. */
+  minRows?: number;
 }
 
 export interface QuestionnaireSchema {
