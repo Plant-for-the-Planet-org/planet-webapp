@@ -85,7 +85,9 @@ const DonationLinkForm = ({
 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
       localProject == null ? '' : `to=${localProject.slug}&`
-    }tenant=${tenantConfig?.id}${isSupport ? `&s=${userProfile?.slug}` : ''}
+    }tenant=${tenantConfig?.id}${
+      isSupport && !userProfile?.isPrivate ? `&s=${userProfile?.slug}` : ''
+    }
     `;
     if (donationUrl.length > 0) setIsLinkUpdated(true);
     setDonationUrl(url);
@@ -105,6 +107,7 @@ const DonationLinkForm = ({
     isTesting,
     tenantConfig?.id,
     userProfile?.slug,
+    userProfile?.isPrivate,
   ]);
 
   useEffect(() => {
@@ -219,10 +222,10 @@ const DonationLinkForm = ({
                 onChange={() => {
                   setIsSupport(!isSupport);
                 }}
-                disabled={isSupport}
+                disabled={userProfile.isPrivate}
               />
             </InlineFormDisplayGroup>
-            {isSupport && (
+            {userProfile.isPrivate && (
               <p>{tDonationLink('treeCounterPrivateAccountSubtitle')}</p>
             )}
           </div>
