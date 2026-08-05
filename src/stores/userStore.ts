@@ -8,6 +8,11 @@ import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
 import { APIError } from '@planet-sdk/common';
 import { useAuthStore } from './authStore';
 
+// No real HTTP response was involved (network failure, JSON parsing, a
+// session-id/localStorage failure, ...). Mirrors the INVALID_TOKEN_STATUS_CODE
+// convention in useApi.ts for a synthetic, non-server status code.
+const NON_HTTP_ERROR_STATUS_CODE = 0;
+
 type FetchUserProfileParams = {
   token: string | null;
   impersonationData?: ImpersonationData;
@@ -29,6 +34,7 @@ interface UserStore {
   setShouldRefetchUserProfile: (shouldRefetch: boolean) => void;
   fetchUserProfile: (params: FetchUserProfileParams) => Promise<User>;
   initializeLocale: () => void;
+  clearProfileApiError: () => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -161,14 +167,31 @@ export const useUserStore = create<UserStore>()(
             throw error; // handled by component
           }
           // 🔹 All other errors → global handling
-          set(
-            {
-              userProfile: null,
-              profileApiError: error instanceof APIError ? error : null,
-            },
-            undefined,
-            'userStore/fetch_user_profile_error'
-          );
+
+          // Convert non-API errors into APIError so the global error handler can handle them.
+          // Keep the original error details for debugging.
+          let apiError: APIError;
+          if (error instanceof APIError) {
+            apiError = error;
+          } else {
+            const originalMessage =
+              error instanceof Error ? error.message : String(error);
+            apiError = new APIError(NON_HTTP_ERROR_STATUS_CODE, {
+              message: originalMessage,
+            });
+            apiError.cause = error;
+          }
+
+          // Clear the profile only when the user must sign up again (303)
+          // or the session is no longer valid (401).
+          // For temporary errors like 500 or network failures,
+          // keep the existing profile so the user is not sent to /login.
+          const patch: Partial<UserStore> = { profileApiError: apiError };
+          if (apiError.statusCode === 303 || apiError.statusCode === 401) {
+            patch.userProfile = null;
+          }
+
+          set(patch, undefined, 'userStore/fetch_user_profile_error');
 
           // Rethrow so the promise never resolves with `undefined`.
           // The global flow still runs via the `profileApiError` state above;
@@ -178,6 +201,13 @@ export const useUserStore = create<UserStore>()(
           setIsAuthResolved(true);
         }
       },
+
+      clearProfileApiError: () =>
+        set(
+          { profileApiError: null },
+          undefined,
+          'userStore/clear_profile_api_error'
+        ),
 
       initializeLocale: () => {
         const storedLocale = localStorage.getItem('language');

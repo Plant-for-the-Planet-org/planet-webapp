@@ -27,6 +27,9 @@ export const useInitializeUser = () => {
   );
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
   const initializeLocale = useUserStore((state) => state.initializeLocale);
+  const clearProfileApiError = useUserStore(
+    (state) => state.clearProfileApiError
+  );
 
   useEffect(() => {
     if (!token) return;
@@ -45,7 +48,9 @@ export const useInitializeUser = () => {
   useEffect(() => {
     if (!profileApiError) return;
     handleProfileError(profileApiError);
-  }, [profileApiError, handleProfileError]);
+    // Clear the error after handling it so it does not run again later.
+    clearProfileApiError();
+  }, [profileApiError, handleProfileError, clearProfileApiError]);
 
   useEffect(() => {
     if (
