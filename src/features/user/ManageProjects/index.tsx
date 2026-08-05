@@ -510,7 +510,7 @@ export default function ManageProjects({
         },
       ]);
     }
-  }, [tabSelected, router.query.purpose, locale, projectDetails, questionnaireComplete, mediaComplete, sitesComplete]);
+  }, [tabSelected, router.query.purpose, locale, projectDetails, questionnaireComplete, mediaComplete, sitesComplete, spendingComplete]);
 
   const isLocked =
     projectDetails?.verificationStatus === 'submitted' ||

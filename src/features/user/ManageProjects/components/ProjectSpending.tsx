@@ -6,6 +6,7 @@ import type {
 } from '../../../common/types/project';
 
 import { useEffect, useState, useCallback } from 'react';
+import { dedupeInFlight } from '../utils/dedupeInFlight';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -162,9 +163,13 @@ export default function ProjectSpending({
     try {
       // Fetch spending of the project
       if (projectGUID && token) {
-        const result = await getApiAuthenticated<ExpensesScopeProjects>(
-          `/app/profile/projects/${projectGUID}`,
-          { queryParams: { _scope: 'expenses' } }
+        // Shares the key with the completeness fetch in ManageProjects so the
+        // two do not both request the same payload on mount.
+        const result = await dedupeInFlight(`expenses-${projectGUID}`, () =>
+          getApiAuthenticated<ExpensesScopeProjects>(
+            `/app/profile/projects/${projectGUID}`,
+            { queryParams: { _scope: 'expenses' } }
+          )
         );
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);
