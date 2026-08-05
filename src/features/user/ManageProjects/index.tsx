@@ -91,8 +91,12 @@ export default function ManageProjects({
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [projectGUID, setProjectGUID] = useState<string>(GUID ? GUID : '');
   const [tablist, setTabList] = useState<TabItem[]>([]);
+  // Seeded from the `project` prop: the page has already fetched exactly this
+  // payload from the same endpoint and only renders this component once it
+  // resolves. Starting at null meant a second, identical request ran before
+  // anything could display, so the loader stayed up for two serial round trips.
   const [projectDetails, setProjectDetails] =
-    useState<ExtendedProfileProjectProperties | null>(null);
+    useState<ExtendedProfileProjectProperties | null>(project ?? null);
   const [questionnaireComplete, setQuestionnaireComplete] = useState(false);
   const [questionnaireSchema, setQuestionnaireSchema] =
     useState<QuestionnaireSchema | null>(null);
@@ -185,7 +189,7 @@ export default function ManageProjects({
   // value, so listing both as dependencies ran this twice on load and every
   // downstream projectDetails effect with it. Guarded to one fetch per project;
   // creating a project changes projectGUID, which still triggers a fresh load.
-  const detailsFetchedFor = useRef<string | null>(null);
+  const detailsFetchedFor = useRef<string | null>(project ? GUID ?? null : null);
 
   useEffect(() => {
     if (!projectGUID || !token) return;

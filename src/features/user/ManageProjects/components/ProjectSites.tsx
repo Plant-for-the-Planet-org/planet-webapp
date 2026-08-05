@@ -10,6 +10,7 @@ import type {
 import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
 import { useEffect, useState, useCallback } from 'react';
+import { dedupeInFlight } from '../utils/dedupeInFlight';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -133,9 +134,14 @@ export default function ProjectSites({
   const fetchProjSites = useCallback(async () => {
     try {
       if (!projectGUID) return;
-      const result = await getApiAuthenticated<SitesScopeProjects>(
-        `/app/profile/projects/${projectGUID}`,
-        { queryParams: { _scope: 'sites' } }
+      // Shares the key with the completeness fetch in ManageProjects: both want
+      // the same payload and both start on mount, so they collapse into one
+      // request. Not cached, so a save still reloads the real site list.
+      const result = await dedupeInFlight(`sites-${projectGUID}`, () =>
+        getApiAuthenticated<SitesScopeProjects>(
+          `/app/profile/projects/${projectGUID}`,
+          { queryParams: { _scope: 'sites' } }
+        )
       );
       setGeoLocation({ geoLatitude: result.geoLatitude, geoLongitude: result.geoLongitude });
       if (result.sites.length > 0) setShowForm(false);
