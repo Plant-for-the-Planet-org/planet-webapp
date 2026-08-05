@@ -58,8 +58,8 @@ const IssueCodesForm = (): ReactElement | null => {
   // store: state
   const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
   // store: action
-  const setShouldRefetchUserProfile = useUserStore(
-    (state) => state.setShouldRefetchUserProfile
+  const refetchUserProfile = useUserStore(
+    (state) => state.refetchUserProfile
   );
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -160,7 +160,7 @@ const IssueCodesForm = (): ReactElement | null => {
         if (res?.uid) {
           resetBulkContext();
           setIsSubmitted(true);
-          setShouldRefetchUserProfile(true);
+          refetchUserProfile();
           setTimeout(() => {
             router.push(localizedPath(`/profile/history?ref=${res.uid}`));
           }, 5000);

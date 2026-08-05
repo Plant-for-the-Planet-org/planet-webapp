@@ -13,8 +13,8 @@ export const useInitializeUser = () => {
   // store: state
   const profileApiError = useUserStore((state) => state.profileApiError);
   const token = useAuthStore((state) => state.token);
-  const shouldRefetchUserProfile = useUserStore(
-    (state) => state.shouldRefetchUserProfile
+  const profileRefetchNonce = useUserStore(
+    (state) => state.profileRefetchNonce
   );
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
@@ -39,7 +39,7 @@ export const useInitializeUser = () => {
       // Catching here only prevents an unhandled promise rejection.
       console.error('[Profile API] Failed to fetch user profile:', err);
     });
-  }, [token, shouldRefetchUserProfile, fetchUserProfile]);
+  }, [token, profileRefetchNonce, fetchUserProfile]);
 
   useEffect(() => {
     if (!profileApiError) return;

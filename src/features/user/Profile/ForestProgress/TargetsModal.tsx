@@ -64,8 +64,8 @@ const TargetsModal = ({
   );
   //store: action
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
-  const setShouldRefetchUserProfile = useUserStore(
-    (state) => state.setShouldRefetchUserProfile
+  const refetchUserProfile = useUserStore(
+    (state) => state.refetchUserProfile
   );
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -106,7 +106,7 @@ const TargetsModal = ({
           payload,
         });
         const forestUserInfo = transformProfileToForestUserInfo(res);
-        setShouldRefetchUserProfile(true);
+        refetchUserProfile();
         if (forestUserInfo !== undefined) {
           setUserInfo(forestUserInfo);
           setTreesPlantedTargetLocal(forestUserInfo.targets.treesDonated ?? 0);

@@ -22,7 +22,8 @@ type FetchUserProfileParams = {
 
 interface UserStore {
   userProfile: User | null;
-  shouldRefetchUserProfile: boolean;
+  // Incremented on each refetch request so the fetch effect runs every time.
+  profileRefetchNonce: number;
   isImpersonationModeOn: boolean;
   profileApiError: APIError | null;
 
@@ -30,7 +31,7 @@ interface UserStore {
   setIsImpersonationModeOn: (isEnabled: boolean) => void;
   enterImpersonation: (impersonationData: ImpersonationData) => void;
   exitImpersonation: () => void;
-  setShouldRefetchUserProfile: (shouldRefetch: boolean) => void;
+  refetchUserProfile: () => void;
   fetchUserProfile: (params: FetchUserProfileParams) => Promise<User>;
   clearProfileApiError: () => void;
 }
@@ -40,7 +41,7 @@ export const useUserStore = create<UserStore>()(
     (set) => ({
       //states
       userProfile: null,
-      shouldRefetchUserProfile: false,
+      profileRefetchNonce: 0,
       isImpersonationModeOn: false,
       profileApiError: null,
 
@@ -84,11 +85,11 @@ export const useUserStore = create<UserStore>()(
         );
       },
 
-      setShouldRefetchUserProfile: (shouldRefetch) =>
+      refetchUserProfile: () =>
         set(
-          { shouldRefetchUserProfile: shouldRefetch },
+          (state) => ({ profileRefetchNonce: state.profileRefetchNonce + 1 }),
           undefined,
-          'userStore/set_should_refetch_user_profile'
+          'userStore/refetch_user_profile'
         ),
 
       fetchUserProfile: async ({
