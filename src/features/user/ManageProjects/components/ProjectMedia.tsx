@@ -130,13 +130,11 @@ export default function ProjectMedia({
       >(`/app/projects/${projectGUID}/images`, {
         payload: imagePayload,
       });
-      let newUploadedImages = [...uploadedImages];
-
-      if (!newUploadedImages) {
-        newUploadedImages = [];
-      }
-      newUploadedImages.push(res);
-      setUploadedImages(newUploadedImages);
+      // Functional update, because onDrop uploads every dropped file in
+      // parallel and each call would otherwise append to the same stale
+      // snapshot of uploadedImages — leaving only the last upload visible even
+      // though all of them reached the server.
+      setUploadedImages((prev) => [...prev, res]);
       setIsUploadingData(false);
       setErrorMessage('');
     } catch (err) {
@@ -181,8 +179,7 @@ export default function ProjectMedia({
   const deleteProjectCertificate = async (id: string) => {
     try {
       await deleteApiAuthenticated(`/app/projects/${projectGUID}/images/${id}`);
-      const uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);
-      setUploadedImages(uploadedFilesTemp);
+      setUploadedImages((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       setErrors(handleError(err as APIError));
     }
@@ -224,12 +221,12 @@ export default function ProjectMedia({
           payload: defaultImagePayload,
         }
       );
-      const tempUploadedData = uploadedImages;
-      tempUploadedData.forEach((image) => {
-        image.isDefault = false;
-      });
-      tempUploadedData[index].isDefault = true;
-      setUploadedImages(tempUploadedData);
+      // Rebuild the list rather than mutating it. The previous version reassigned
+      // fields on the existing objects and handed the same array reference back,
+      // so React saw no change and the star could fail to move.
+      setUploadedImages((prev) =>
+        prev.map((image, i) => ({ ...image, isDefault: i === index }))
+      );
       setIsUploadingData(false);
       setErrorMessage('');
     } catch (err) {
@@ -255,9 +252,11 @@ export default function ProjectMedia({
       >(`/app/projects/${projectGUID}/images/${id}`, {
         payload: uploadCaptionPayload,
       });
-      const tempUploadedData = uploadedImages;
-      tempUploadedData[index].description = res.description;
-      setUploadedImages(tempUploadedData);
+      setUploadedImages((prev) =>
+        prev.map((image, i) =>
+          i === index ? { ...image, description: res.description } : image
+        )
+      );
       setIsUploadingData(false);
       setErrorMessage('');
     } catch (err) {
