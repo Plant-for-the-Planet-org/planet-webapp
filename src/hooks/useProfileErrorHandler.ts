@@ -22,13 +22,15 @@ const useProfileErrorHandler = () => {
   const handleProfileError = useCallback(
     (err: APIError) => {
       switch (err.statusCode) {
+        // 303: signup not finished yet, send them to complete it
         case 303:
           router.push(localizedPath('/complete-signup'));
           break;
 
+        // 401: token rejected (expired, invalid, or revoked), clear it and get a fresh one
+        // Clear impersonation so a leftover session does not silently
+        // resume impersonating this user after the next login.
         case 401:
-          // Clear impersonation so a leftover session does not silently
-          // resume impersonating this user after the next login.
           exitImpersonation();
           setToken(null);
           loginWithRedirect({
@@ -37,8 +39,9 @@ const useProfileErrorHandler = () => {
           });
           break;
 
+        // 403: access forbidden. If impersonating, stop and reload the real user
+        // Read the latest store state.
         case 403: {
-          // Read the latest store state.
           const { isImpersonationModeOn } = useUserStore.getState();
           const { token } = useAuthStore.getState();
           // Exit impersonation if it is active.
@@ -59,11 +62,12 @@ const useProfileErrorHandler = () => {
           }
           break;
         }
-
+        // 500: server error, nothing the client can do, just log it
         case 500:
           console.error('[Profile API] Internal Server Error:', err.message);
           break;
 
+        // Any other status, log it for debugging
         default:
           console.error('[Profile API] Error:', err.message);
           break;
