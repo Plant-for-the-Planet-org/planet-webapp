@@ -151,6 +151,15 @@ export const useUserStore = create<UserStore>()(
           return result;
         } catch (error) {
           // 🔹 Impersonation-specific 403: Handle ONLY in component
+
+          // This runs only when `impersonationData` is passed to this function.
+          // Currently, only ImpersonateUserForm passes it when starting impersonation,
+          // so a 403 is handled by that component instead of the global handler.
+          //
+          // If another caller passes `impersonationData`, its 403 will also be handled locally.
+          // If ImpersonateUserForm stops passing it, the impersonation header will be missing
+          // and the API may return the support agent's profile instead of showing an error.
+
           if (
             error instanceof APIError &&
             error.statusCode === 403 &&
