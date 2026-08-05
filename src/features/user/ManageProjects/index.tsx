@@ -6,6 +6,7 @@ import type {
   ExtendedProfileProjectPropertiesTrees,
   QuestionnaireSchema,
   ImagesScopeProjects,
+  ExpensesScopeProjects,
   SitesScopeProjects,
 } from '../../common/types/project';
 
@@ -103,6 +104,9 @@ export default function ManageProjects({
   // null = not yet loaded (grey disc), true/false = known
   const [mediaComplete, setMediaComplete] = useState<boolean | null>(null);
   const [sitesComplete, setSitesComplete] = useState<boolean | null>(null);
+  const [spendingComplete, setSpendingComplete] = useState<boolean | null>(
+    null
+  );
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -312,6 +316,30 @@ export default function ManageProjects({
     void fetchMediaCompleteness();
   }, [projectDetails, projectGUID]);
 
+  const spendingCompletenessFetchedFor = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!projectDetails || !projectGUID) return;
+    if (spendingCompletenessFetchedFor.current === projectGUID) return;
+    spendingCompletenessFetchedFor.current = projectGUID;
+
+    const fetchSpendingCompleteness = async () => {
+      try {
+        const result = await dedupeInFlight(`expenses-${projectGUID}`, () =>
+          getApiAuthenticated<ExpensesScopeProjects>(
+            `/app/profile/projects/${projectGUID}`,
+            { queryParams: { _scope: 'expenses' } }
+          )
+        );
+        setSpendingComplete(result.expenses.length > 0);
+      } catch {
+        // silently fail — stays grey
+        spendingCompletenessFetchedFor.current = null;
+      }
+    };
+    void fetchSpendingCompleteness();
+  }, [projectDetails, projectGUID]);
+
   useEffect(() => {
     if (!projectDetails || !projectGUID) return;
     if (sitesCompletenessFetchedFor.current === projectGUID) return;
@@ -431,8 +459,7 @@ export default function ManageProjects({
           label: t('projectSpending'),
           link: `/profile/projects/${projectGUID}?type=project-spending`,
           step: ProjectCreationTabs.PROJECT_SPENDING,
-          // always grey — no completeness rule
-          completionStatus: undefined,
+          completionStatus: toStatus(spendingComplete),
         },
       ];
       if (showQuestionnaire) {
@@ -562,6 +589,7 @@ export default function ManageProjects({
             projectGUID={projectGUID}
             isLocked={isLocked}
             verificationStatus={projectDetails?.verificationStatus}
+            onCompletenessChange={setSpendingComplete}
             showQuestionnaire={showQuestionnaire}
           />
         );

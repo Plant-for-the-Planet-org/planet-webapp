@@ -51,6 +51,7 @@ export default function ProjectSpending({
   isLocked,
   verificationStatus,
   showQuestionnaire = false,
+  onCompletenessChange,
 }: ProjectSpendingProps): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
@@ -175,6 +176,10 @@ export default function ProjectSpending({
       router.push(localizedPath('/profile'));
     }
   };
+
+  useEffect(() => {
+    onCompletenessChange?.(uploadedFiles.length > 0);
+  }, [uploadedFiles]);
 
   useEffect(() => {
     fetchProjSpending();

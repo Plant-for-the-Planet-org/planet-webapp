@@ -314,6 +314,8 @@ export interface ProjectSpendingProps {
   isLocked: boolean;
   verificationStatus?: string;
   showQuestionnaire?: boolean;
+  /** Reports whether any spending has been recorded, for the menu status dot. */
+  onCompletenessChange?: (isComplete: boolean) => void;
 }
 
 // project questionnaire
