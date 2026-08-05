@@ -205,8 +205,13 @@ export default function SiteGeometryEditor({
   // used to close the polygon without the map zooming in at the same time.
   useEffect(() => {
     if (!isMapReady) return;
-    const map = mapRef.current;
-    if (!map) return;
+    // react-map-gl hands back a wrapper, and the interaction handlers live on
+    // the underlying MapLibre instance. Reading doubleClickZoom off the wrapper
+    // gives undefined and throws, which took the whole page down rather than
+    // just losing the zoom tweak.
+    const wrapper = mapRef.current;
+    const map = wrapper?.getMap ? wrapper.getMap() : wrapper;
+    if (!map?.doubleClickZoom) return;
     if (isDrawing) {
       map.doubleClickZoom.disable();
     } else {

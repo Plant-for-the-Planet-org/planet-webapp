@@ -173,6 +173,7 @@
         "vtoChallenge": "VTO Challenge",
         "mangroves": "Mangroves"
       }
-    }
+    },
+    "not_resource_owner": "You do not have permission to access this project."
   }
 }
