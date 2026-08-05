@@ -30,6 +30,7 @@ import {
   getCachedSchema,
   getOrFetchSchema,
 } from './utils/questionnaireSchemaCache';
+import { dedupeInFlight } from './utils/dedupeInFlight';
 
 function isDetailedAnalysisComplete(
   details: ExtendedProfileProjectProperties | null
@@ -193,8 +194,10 @@ export default function ManageProjects({
 
     const fetchProjectDetails = async () => {
       try {
-        const res = await getApiAuthenticated<ExtendedProfileProjectProperties>(
-          `/app/profile/projects/${projectGUID}`
+        const res = await dedupeInFlight(`details-${projectGUID}`, () =>
+          getApiAuthenticated<ExtendedProfileProjectProperties>(
+            `/app/profile/projects/${projectGUID}`
+          )
         );
         setProjectDetails(res);
       } catch (err) {
@@ -291,8 +294,10 @@ export default function ManageProjects({
 
     const fetchMediaCompleteness = async () => {
       try {
-        const result = await getApiAuthenticated<ImagesScopeProjects>(
-          `/app/profile/projects/${projectGUID}?_scope=images`
+        const result = await dedupeInFlight(`images-${projectGUID}`, () =>
+          getApiAuthenticated<ImagesScopeProjects>(
+            `/app/profile/projects/${projectGUID}?_scope=images`
+          )
         );
         setMediaComplete(result.images.length > 0);
       } catch {
@@ -310,9 +315,11 @@ export default function ManageProjects({
 
     const fetchSitesCompleteness = async () => {
       try {
-        const result = await getApiAuthenticated<SitesScopeProjects>(
-          `/app/profile/projects/${projectGUID}`,
-          { queryParams: { _scope: 'sites' } }
+        const result = await dedupeInFlight(`sites-${projectGUID}`, () =>
+          getApiAuthenticated<SitesScopeProjects>(
+            `/app/profile/projects/${projectGUID}`,
+            { queryParams: { _scope: 'sites' } }
+          )
         );
         setSitesComplete(result.sites.length > 0);
       } catch {
