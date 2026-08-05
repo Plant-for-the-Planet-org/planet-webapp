@@ -13,6 +13,14 @@ import { useAuthStore } from './authStore';
 // convention in useApi.ts for a synthetic, non-server status code.
 const NON_HTTP_ERROR_STATUS_CODE = 0;
 
+// fetchUserProfile has no single owner - the token effect, the 403 handler,
+// and the impersonation enter/exit screens can all call it around the same
+// time, with no cancellation. This id lets a call detect it has been
+// superseded by a later one, so a slow, stale response cannot overwrite the
+// store with the wrong identity. It is a cheap guard, not real request
+// sequencing (no AbortController, no cancellation) - see review item #14/A3.
+let latestFetchUserProfileRequestId = 0;
+
 type FetchUserProfileParams = {
   token: string;
   impersonationData?: ImpersonationData;
@@ -104,6 +112,9 @@ export const useUserStore = create<UserStore>()(
           );
         }
 
+        const requestId = ++latestFetchUserProfileRequestId;
+        const isStale = () => requestId !== latestFetchUserProfileRequestId;
+
         const { setIsAuthResolved } = useAuthStore.getState();
         setIsAuthResolved(false);
 
@@ -138,14 +149,18 @@ export const useUserStore = create<UserStore>()(
             );
           }
 
-          set(
-            {
-              userProfile: result,
-              profileApiError: null,
-            },
-            undefined,
-            'userStore/fetch_user_profile_success'
-          );
+          // A newer call already committed its result; do not let this
+          // stale response overwrite it with an older identity.
+          if (!isStale()) {
+            set(
+              {
+                userProfile: result,
+                profileApiError: null,
+              },
+              undefined,
+              'userStore/fetch_user_profile_success'
+            );
+          }
           return result;
         } catch (error) {
           // Impersonation-specific 403: Handle ONLY in component
@@ -163,13 +178,15 @@ export const useUserStore = create<UserStore>()(
             error.statusCode === 403 &&
             impersonationData
           ) {
-            set(
-              {
-                profileApiError: null, // do NOT trigger global handler
-              },
-              undefined,
-              'userStore/fetch_user_profile_impersonation_error'
-            );
+            if (!isStale()) {
+              set(
+                {
+                  profileApiError: null, // do NOT trigger global handler
+                },
+                undefined,
+                'userStore/fetch_user_profile_impersonation_error'
+              );
+            }
 
             throw error; // handled by component
           }
@@ -198,7 +215,9 @@ export const useUserStore = create<UserStore>()(
             patch.userProfile = null;
           }
 
-          set(patch, undefined, 'userStore/fetch_user_profile_error');
+          if (!isStale()) {
+            set(patch, undefined, 'userStore/fetch_user_profile_error');
+          }
 
           // Rethrow so the promise never resolves with `undefined`.
           // The global flow still runs via the `profileApiError` state above;
