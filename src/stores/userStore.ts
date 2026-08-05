@@ -147,7 +147,7 @@ export const useUserStore = create<UserStore>()(
           );
           return result;
         } catch (error) {
-          // 🔹 Impersonation-specific 403: Handle ONLY in component
+          // Impersonation-specific 403: Handle ONLY in component
 
           // This runs only when `impersonationData` is passed to this function.
           // Currently, only ImpersonateUserForm passes it when starting impersonation,
@@ -164,7 +164,7 @@ export const useUserStore = create<UserStore>()(
           ) {
             set(
               {
-                profileApiError: null, // ❌ do NOT trigger global handler
+                profileApiError: null, // do NOT trigger global handler
               },
               undefined,
               'userStore/fetch_user_profile_impersonation_error'
@@ -172,7 +172,7 @@ export const useUserStore = create<UserStore>()(
 
             throw error; // handled by component
           }
-          // 🔹 All other errors → global handling
+          // All other errors → global handling
 
           // Convert non-API errors into APIError so the global error handler can handle them.
           // Keep the original error details for debugging.
