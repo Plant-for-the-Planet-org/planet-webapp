@@ -22,7 +22,6 @@ type FetchUserProfileParams = {
 
 interface UserStore {
   userProfile: User | null;
-  userLanguage: string;
   shouldRefetchUserProfile: boolean;
   isImpersonationModeOn: boolean;
   profileApiError: APIError | null;
@@ -33,7 +32,6 @@ interface UserStore {
   exitImpersonation: () => void;
   setShouldRefetchUserProfile: (shouldRefetch: boolean) => void;
   fetchUserProfile: (params: FetchUserProfileParams) => Promise<User>;
-  initializeLocale: () => void;
   clearProfileApiError: () => void;
 }
 
@@ -42,7 +40,6 @@ export const useUserStore = create<UserStore>()(
     (set) => ({
       //states
       userProfile: null,
-      userLanguage: 'en',
       shouldRefetchUserProfile: false,
       isImpersonationModeOn: false,
       profileApiError: null,
@@ -217,17 +214,6 @@ export const useUserStore = create<UserStore>()(
           undefined,
           'userStore/clear_profile_api_error'
         ),
-
-      initializeLocale: () => {
-        const storedLocale = localStorage.getItem('language');
-        if (storedLocale) {
-          set(
-            { userLanguage: storedLocale },
-            undefined,
-            'userStore/init_locale'
-          );
-        }
-      },
     }),
     {
       name: 'UserStore',

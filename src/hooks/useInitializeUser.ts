@@ -16,9 +16,6 @@ export const useInitializeUser = () => {
   const shouldRefetchUserProfile = useUserStore(
     (state) => state.shouldRefetchUserProfile
   );
-  const isImpersonationModeOn = useUserStore(
-    (state) => state.isImpersonationModeOn
-  );
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
   const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
@@ -26,7 +23,6 @@ export const useInitializeUser = () => {
     (state) => state.setIsImpersonationModeOn
   );
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
-  const initializeLocale = useUserStore((state) => state.initializeLocale);
   const clearProfileApiError = useUserStore(
     (state) => state.clearProfileApiError
   );
@@ -60,15 +56,6 @@ export const useInitializeUser = () => {
       exitImpersonation();
       return;
     }
-    const impersonationData = localStorage.getItem('impersonationData');
-    if (impersonationData !== null && !isImpersonationModeOn) {
-      setIsImpersonationModeOn(true);
-    } else if (impersonationData === null && isImpersonationModeOn) {
-      setIsImpersonationModeOn(false);
-    }
+    setIsImpersonationModeOn(localStorage.getItem('impersonationData') !== null);
   }, [auth0User, isAuthLoading, auth0Error, isAuthenticated]);
-
-  useEffect(() => {
-    initializeLocale();
-  }, []);
 };
