@@ -28,7 +28,7 @@ const ImpersonationActivated = () => {
     router.push(localizedPath(`/profile/impersonate-user`));
     fetchUserProfile({
       token,
-      tenantConfigId: tenantId,
+      tenantId,
       locale,
     }).catch((error) => {
       // Errors are surfaced through the global `profileApiError` flow.

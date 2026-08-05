@@ -32,7 +32,7 @@ export const useInitializeUser = () => {
     // Note: Intentionally not refetching on locale/tenant changes
     fetchUserProfile({
       token,
-      tenantConfigId: tenantId,
+      tenantId,
       locale,
     }).catch((err) => {
       // API errors are surfaced through `profileApiError` below.

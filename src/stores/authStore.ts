@@ -14,9 +14,13 @@ export const useAuthStore = create<AuthStore>()(
       token: null,
       isAuthResolved: false,
 
-      setToken: (token) => set({ token }),
+      setToken: (token) => set({ token }, undefined, 'authStore/set_token'),
       setIsAuthResolved: (resolved: boolean) =>
-        set({ isAuthResolved: resolved }),
+        set(
+          { isAuthResolved: resolved },
+          undefined,
+          'authStore/set_is_auth_resolved'
+        ),
     }),
     {
       name: 'AuthStore',

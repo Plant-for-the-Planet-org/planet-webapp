@@ -87,7 +87,7 @@ const ImpersonateUserForm = (): ReactElement => {
         const res = await fetchUserProfile({
           impersonationData: data,
           token,
-          tenantConfigId: tenantId,
+          tenantId,
           locale,
         });
         setIsInvalidEmail(false);

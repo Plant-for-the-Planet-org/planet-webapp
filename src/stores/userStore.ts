@@ -16,7 +16,7 @@ const NON_HTTP_ERROR_STATUS_CODE = 0;
 type FetchUserProfileParams = {
   token: string | null;
   impersonationData?: ImpersonationData;
-  tenantConfigId: string;
+  tenantId: string;
   locale: string;
 };
 
@@ -88,13 +88,13 @@ export const useUserStore = create<UserStore>()(
         set(
           { shouldRefetchUserProfile: shouldRefetch },
           undefined,
-          'set_should_refetch_user_profile'
+          'userStore/set_should_refetch_user_profile'
         ),
 
       fetchUserProfile: async ({
         token,
         impersonationData,
-        tenantConfigId,
+        tenantId,
         locale,
       }) => {
         if (!process.env.API_ENDPOINT) {
@@ -111,7 +111,7 @@ export const useUserStore = create<UserStore>()(
           // via the finally block below.
           const sessionId = await getsessionId();
           const header = {
-            'tenant-key': `${tenantConfigId}`,
+            'tenant-key': `${tenantId}`,
             'X-SESSION-ID': sessionId,
             Authorization: `Bearer ${token}`,
             'x-locale': locale,
