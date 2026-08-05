@@ -52,7 +52,6 @@ type TreeFormData = BaseFormData & {
 
 type ConservationFormData = BaseFormData & {
   purpose: 'conservation';
-  acquisitionYear: Date | null;
   areaProtected: string;
   startingProtectionYear: Date | null;
   ownershipType: string;
@@ -81,7 +80,6 @@ type TreeMetadata = BaseProjectMetadata & {
 
 type ConservationMetadata = BaseProjectMetadata & {
   ecosystem: string;
-  acquisitionYear: number | null;
   activitySeasons: number[];
   areaProtected: string;
   startingProtectionYear: number | null;
@@ -287,7 +285,6 @@ export default function DetailedAnalysis({
           actions: '',
           benefits: '',
           employeesCount: '',
-          acquisitionYear: null,
           startingProtectionYear: null,
           areaProtected: '',
           ownershipType: '',
@@ -370,9 +367,6 @@ export default function DetailedAnalysis({
             metadata: {
               ...commonFields,
               ecosystem: (data as ConservationFormData).ecosystem,
-              acquisitionYear: (data as ConservationFormData).acquisitionYear
-                ? (data as ConservationFormData).acquisitionYear!.getFullYear()
-                : null,
               activitySeasons: months,
               areaProtected: (data as ConservationFormData).areaProtected,
               startingProtectionYear: (data as ConservationFormData)
@@ -431,9 +425,6 @@ export default function DetailedAnalysis({
               actions: metadata.actions || '',
               benefits: metadata.benefits || '',
               employeesCount: metadata.employeesCount?.toString() || '',
-              acquisitionYear: metadata.acquisitionYear
-                ? new Date(new Date().setFullYear(metadata.acquisitionYear))
-                : null,
               startingProtectionYear: metadata.startingProtectionYear
                 ? new Date(
                     new Date().setFullYear(metadata.startingProtectionYear)
