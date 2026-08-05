@@ -81,7 +81,10 @@ export const useAddressOperations = () => {
       >('/app/addresses', { payload });
       if (addAddressResponse) {
         setUserProfile(
-          updateAddressesAfterAdd(userProfile, addAddressResponse)
+          updateAddressesAfterAdd(
+            useUserStore.getState().userProfile,
+            addAddressResponse
+          )
         );
       }
     });
@@ -95,7 +98,10 @@ export const useAddressOperations = () => {
       >(`/app/addresses/${id}`, { payload });
       if (editAddressResponse) {
         setUserProfile(
-          updateAddressesAfterEdit(userProfile, editAddressResponse)
+          updateAddressesAfterEdit(
+            useUserStore.getState().userProfile,
+            editAddressResponse
+          )
         );
       }
     });
@@ -111,7 +117,7 @@ export const useAddressOperations = () => {
       if (updateAddressResponse)
         setUserProfile(
           updateAddressesAfterTypeChange(
-            userProfile,
+            useUserStore.getState().userProfile,
             updateAddressResponse,
             addressType
           )
@@ -129,7 +135,7 @@ export const useAddressOperations = () => {
       if (updateAddressResponse) {
         setUserProfile(
           updateAddressesAfterTypeChange(
-            userProfile,
+            useUserStore.getState().userProfile,
             updateAddressResponse,
             'other'
           )
@@ -141,7 +147,9 @@ export const useAddressOperations = () => {
   const deleteAddress = async (id: string) => {
     await safeExecute(async () => {
       await deleteApiAuthenticated(`/app/addresses/${id}`);
-      setUserProfile(updateAddressesAfterDelete(userProfile, id));
+      setUserProfile(
+        updateAddressesAfterDelete(useUserStore.getState().userProfile, id)
+      );
     });
   };
 
