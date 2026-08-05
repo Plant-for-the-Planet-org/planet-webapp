@@ -9,7 +9,7 @@ import type {
   SitesScopeProjects,
 } from '../../common/types/project';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import BasicDetails from './components/BasicDetails';
 import ProjectMedia from './components/ProjectMedia';
 import ProjectSelection from './components/ProjectSelection';
@@ -28,7 +28,7 @@ import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 import {
   getCachedSchema,
-  setCachedSchema,
+  getOrFetchSchema,
 } from './utils/questionnaireSchemaCache';
 
 function isDetailedAnalysisComplete(
@@ -180,8 +180,17 @@ export default function ManageProjects({
     }
   };
 
+  // GUID (the SSR prop) and projectGUID (state seeded from it) hold the same
+  // value, so listing both as dependencies ran this twice on load and every
+  // downstream projectDetails effect with it. Guarded to one fetch per project;
+  // creating a project changes projectGUID, which still triggers a fresh load.
+  const detailsFetchedFor = useRef<string | null>(null);
+
   useEffect(() => {
-    // Fetch details of the project
+    if (!projectGUID || !token) return;
+    if (detailsFetchedFor.current === projectGUID) return;
+    detailsFetchedFor.current = projectGUID;
+
     const fetchProjectDetails = async () => {
       try {
         const res = await getApiAuthenticated<ExtendedProfileProjectProperties>(
@@ -189,15 +198,14 @@ export default function ManageProjects({
         );
         setProjectDetails(res);
       } catch (err) {
+        detailsFetchedFor.current = null;
         setErrors(parseApiError(err as APIError));
         router.push(localizedPath('/profile'));
       }
     };
 
-    if (projectGUID && token) {
-      fetchProjectDetails();
-    }
-  }, [GUID, projectGUID]);
+    void fetchProjectDetails();
+  }, [projectGUID, token]);
 
   // Kick off schema fetch immediately on mount using the SSR project prop,
   // in parallel with the projectDetails API call. By the time the user can
@@ -209,14 +217,15 @@ export default function ManageProjects({
 
     const prefetch = async () => {
       try {
-        const schema = await getApiAuthenticated<QuestionnaireSchema>(
-          `/app/projects/questionnaire-schema/${purpose}`,
-          {
-            additionalHeaders: { Accept: 'application/json' },
-            queryParams: { locale },
-          }
+        const schema = await getOrFetchSchema(purpose, locale, () =>
+          getApiAuthenticated<QuestionnaireSchema>(
+            `/app/projects/questionnaire-schema/${purpose}`,
+            {
+              additionalHeaders: { Accept: 'application/json' },
+              queryParams: { locale },
+            }
+          )
         );
-        setCachedSchema(purpose, locale, schema);
         setQuestionnaireSchema(schema);
       } catch {
         // silently fail
@@ -237,19 +246,18 @@ export default function ManageProjects({
 
     const computeCompleteness = async () => {
       try {
-        // Use module-level cache to avoid a redundant HTTP request when the
-        // Questionnaire component has already fetched (or vice-versa).
-        let schema = getCachedSchema(purpose, locale);
-        if (!schema) {
-          schema = await getApiAuthenticated<QuestionnaireSchema>(
+        // Shares the cache *and* any in-flight request with the prefetch above
+        // and with the Questionnaire component, so this never adds a second
+        // call for the same purpose/locale.
+        const schema = await getOrFetchSchema(purpose, locale, () =>
+          getApiAuthenticated<QuestionnaireSchema>(
             `/app/projects/questionnaire-schema/${purpose}`,
             {
               additionalHeaders: { Accept: 'application/json' },
               queryParams: { locale },
             }
-          );
-          setCachedSchema(purpose, locale, schema);
-        }
+          )
+        );
         setQuestionnaireSchema(schema);
         const visibleFields = Object.entries(schema.fields).filter(
           ([, field]) =>
@@ -268,8 +276,19 @@ export default function ManageProjects({
     void computeCompleteness();
   }, [projectDetails]);
 
+  // These two only feed the menu completeness dots. They key off projectDetails
+  // so they run once it is available, but projectDetails is reassigned whenever
+  // a section saves — which fired the same two requests again every time. The
+  // refs pin them to one call per project; the dots are updated directly by the
+  // section callbacks (setMediaComplete / setSitesComplete) after that.
+  const mediaCompletenessFetchedFor = useRef<string | null>(null);
+  const sitesCompletenessFetchedFor = useRef<string | null>(null);
+
   useEffect(() => {
     if (!projectDetails || !projectGUID) return;
+    if (mediaCompletenessFetchedFor.current === projectGUID) return;
+    mediaCompletenessFetchedFor.current = projectGUID;
+
     const fetchMediaCompleteness = async () => {
       try {
         const result = await getApiAuthenticated<ImagesScopeProjects>(
@@ -278,13 +297,17 @@ export default function ManageProjects({
         setMediaComplete(result.images.length > 0);
       } catch {
         // silently fail — stays grey
+        mediaCompletenessFetchedFor.current = null;
       }
     };
     void fetchMediaCompleteness();
-  }, [projectDetails]);
+  }, [projectDetails, projectGUID]);
 
   useEffect(() => {
     if (!projectDetails || !projectGUID) return;
+    if (sitesCompletenessFetchedFor.current === projectGUID) return;
+    sitesCompletenessFetchedFor.current = projectGUID;
+
     const fetchSitesCompleteness = async () => {
       try {
         const result = await getApiAuthenticated<SitesScopeProjects>(
@@ -294,10 +317,11 @@ export default function ManageProjects({
         setSitesComplete(result.sites.length > 0);
       } catch {
         // silently fail — stays grey
+        sitesCompletenessFetchedFor.current = null;
       }
     };
     void fetchSitesCompleteness();
-  }, [projectDetails]);
+  }, [projectDetails, projectGUID]);
 
   const [userLang, setUserLang] = useState('en');
   useEffect(() => {

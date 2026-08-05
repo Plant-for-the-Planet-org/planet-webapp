@@ -41,7 +41,7 @@ import AnnotationCallout from './microComponent/AnnotationCallout';
 import SpeciesListTable from './microComponent/SpeciesListTable';
 import {
   getCachedSchema,
-  setCachedSchema,
+  getOrFetchSchema,
 } from '../utils/questionnaireSchemaCache';
 
 // Widened to support nested row_list / matrix values
@@ -233,14 +233,15 @@ export default function ProjectQuestionnaire({
 
     const fetchSchema = async () => {
       try {
-        const result = await getApiAuthenticated<QuestionnaireSchema>(
-          `/app/projects/questionnaire-schema/${purpose}`,
-          {
-            additionalHeaders: { Accept: 'application/json' },
-            queryParams: { locale },
-          }
+        const result = await getOrFetchSchema(purpose, locale, () =>
+          getApiAuthenticated<QuestionnaireSchema>(
+            `/app/projects/questionnaire-schema/${purpose}`,
+            {
+              additionalHeaders: { Accept: 'application/json' },
+              queryParams: { locale },
+            }
+          )
         );
-        setCachedSchema(purpose, locale, result);
         setSchema(result);
         setSchemaFailed(false);
       } catch (err) {
