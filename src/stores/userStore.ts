@@ -14,7 +14,7 @@ import { useAuthStore } from './authStore';
 const NON_HTTP_ERROR_STATUS_CODE = 0;
 
 type FetchUserProfileParams = {
-  token: string | null;
+  token: string;
   impersonationData?: ImpersonationData;
   tenantId: string;
   locale: string;

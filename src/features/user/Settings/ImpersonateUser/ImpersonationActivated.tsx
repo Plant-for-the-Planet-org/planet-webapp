@@ -24,6 +24,7 @@ const ImpersonationActivated = () => {
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
 
   const handleExitImpersonation = () => {
+    if (!token) return;
     exitImpersonation();
     router.push(localizedPath(`/profile/impersonate-user`));
     fetchUserProfile({

@@ -81,6 +81,7 @@ const ImpersonateUserForm = (): ReactElement => {
   const handleImpersonation = async (
     data: ImpersonationData
   ): Promise<void> => {
+    if (!token) return;
     if (data.targetEmail && data.supportPin) {
       setIsProcessing(true);
       try {
