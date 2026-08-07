@@ -17,6 +17,7 @@ import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
+import LiveRegion from '../../../common/LiveRegion';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
@@ -306,9 +307,21 @@ const IssueCodesForm = (): ReactElement | null => {
     );
   }, [locale, t]);
 
+  // The live region is rendered in both states, so it stays on the page while
+  // the form is submitted. When the success message appears, screen readers
+  // announce the updated text more reliably than if the live region is added
+  // with the message. The live region is visually hidden, so it does not affect
+  // the visible success message or the layout.
+  const statusRegion = (
+    <LiveRegion politeness="polite" isVisuallyHidden>
+      {isSubmitted ? t('donationSuccess') : ''}
+    </LiveRegion>
+  );
+
   if (!isSubmitted) {
     return (
       <CenteredContainer>
+        {statusRegion}
         <StyledFormContainer className="IssueCodesForm" component={'section'}>
           <div className="inputContainer">
             <ProjectSelector
@@ -368,7 +381,7 @@ const IssueCodesForm = (): ReactElement | null => {
             />
           </div>
           <BulkCodesError />
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} aria-busy={isProcessing}>
             <Button
               type="submit"
               variant="contained"
@@ -391,9 +404,13 @@ const IssueCodesForm = (): ReactElement | null => {
   } else {
     return (
       <CenteredContainer className="CenteredContainer--small">
+        {statusRegion}
+        {/* Visible copy only. `CenteredContainer` is the same element type in
+            both branches and the region is the first child of each, so React
+            reconciles it to the same DOM node instead of remounting it. */}
         <div className={styles.successMessage}>
           {t('donationSuccess')}
-          <span className={styles.spinner}></span>
+          <span className={styles.spinner} aria-hidden="true"></span>
         </div>
       </CenteredContainer>
     );

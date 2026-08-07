@@ -10,6 +10,7 @@ import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
 import ViewModeTabs from './microComponents/ViewModeTabs';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
+import LiveRegion from '../../common/LiveRegion';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { clsx } from 'clsx';
@@ -73,6 +74,15 @@ const ProjectListControlForMobile = ({
 
   return (
     <>
+      {/*           Hoisted above the `isSearching` branch so it stays mounted while the
+          visible chip comes and goes, making each count change a text mutation
+          in an already-observed region rather than a fresh insertion.
+          Visually hidden and out of flow, so the control row is unaffected. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {shouldDisplayFilterResults && filteredProjectCount > 0
+          ? tAllProjects('filterResult', { count: filteredProjectCount })
+          : ''}
+      </LiveRegion>
       {isSearching ? (
         <div className={tabContainerClasses}>
           <ActiveSearchField setIsFilterOpen={setIsFilterOpen} />

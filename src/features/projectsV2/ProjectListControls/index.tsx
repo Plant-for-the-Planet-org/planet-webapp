@@ -7,6 +7,7 @@ import ActiveSearchField from './microComponents/ActiveSearchField';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ProjectListTabLargeScreen from './microComponents/ProjectListTabLargeScreen';
 import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
+import LiveRegion from '../../common/LiveRegion';
 import { useProjectStore } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
@@ -68,6 +69,18 @@ const ProjectListControls = ({
 
   return (
     <>
+      {/* 
+    Keep the live region outside the `isSearching` condition so it stays on the
+    page. When the result count changes, screen readers announce the updated
+    text more reliably than if the live region is added with the message.
+
+    The live region is visually hidden, so it does not affect the layout or the
+    control bar. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {isFilterApplied
+          ? tAllProjects('filterResult', { count: filteredProjectCount })
+          : ''}
+      </LiveRegion>
       {isSearching ? (
         <ActiveSearchField setIsFilterOpen={setIsFilterOpen} />
       ) : (

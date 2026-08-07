@@ -7,6 +7,7 @@ import styles from '../ProjectsSection.module.scss';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
 import { Virtuoso } from 'react-virtuoso';
 import ProjectSnippet from '../ProjectSnippet';
+import LiveRegion from '../../common/LiveRegion';
 import { useProjectStore } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
@@ -67,33 +68,48 @@ const ProjectList = ({ tabSelected }: ProjectListProps) => {
 
   const isProjectFound = !(projectsToDisplay?.length === 0);
 
-  if (!isProjectFound) {
-    return (
-      <div className={styles.projectList}>
-        <div className={styles.noProjectFoundContainer}>
-          <NoDataFound />
-          <p className={styles.noProjectFoundText}>
-            {tAllProjects('noProjectFound')}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Virtualized so only the cards near the viewport mount (was ~259 at once).
   return (
-    <Virtuoso
-      className={styles.projectList}
-      data={sortedProjects ?? []}
-      computeItemKey={(_, project) => project.properties.id}
-      itemContent={(_, project) => (
-        <div style={{ paddingBottom: 12 }}>{renderProjectSnippet(project)}</div>
+    <>
+      {/* This is a `polite` message because "No projects found" is the result of the
+    user's search or filter, not an error.
+
+    Keep the live region outside the conditional rendering so it stays on the
+    page. When the text changes from empty to "No projects found", screen
+    readers announce it more reliably than if the live region is added together
+    with the message.
+
+    The live region is visually hidden, so it doesn't affect the visible layout
+    or the empty state UI. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {isProjectFound ? '' : tAllProjects('noProjectFound')}
+      </LiveRegion>
+      {!isProjectFound ? (
+        <div className={styles.projectList}>
+          <div className={styles.noProjectFoundContainer}>
+            <NoDataFound />
+            <p className={styles.noProjectFoundText}>
+              {tAllProjects('noProjectFound')}
+            </p>
+          </div>
+        </div>
+      ) : (
+        // Virtualized so only the cards near the viewport mount (was ~259 at once).
+        <Virtuoso
+          className={styles.projectList}
+          data={sortedProjects ?? []}
+          computeItemKey={(_, project) => project.properties.id}
+          itemContent={(_, project) => (
+            <div style={{ paddingBottom: 12 }}>
+              {renderProjectSnippet(project)}
+            </div>
+          )}
+          overscan={600} // px; ~3 cards above and below viewport to avoid sudden appearance while scrolling
+          components={{
+            Footer: () => <div style={{ height: 53 }} />,
+          }}
+        />
       )}
-      overscan={600} // px; ~3 cards above and below viewport to avoid sudden appearance while scrolling
-      components={{
-        Footer: () => <div style={{ height: 53 }} />,
-      }}
-    />
+    </>
   );
 };
 

@@ -1550,13 +1550,17 @@ These patterns recur across the codebase and should be fixed once (component/sou
 
 ### Recommended Fix Order
 
-1. **Critical blockers:** A11Y-001, A11Y-002 (build the `Clickable` and `IconButton` primitives first).
-2. **Keyboard navigation:** A11Y-006, A11Y-007, A11Y-009, A11Y-015, A11Y-020, A11Y-021, A11Y-033.
-3. **Screen reader support:** A11Y-004, A11Y-008, A11Y-010, A11Y-012, A11Y-013, A11Y-014, A11Y-024, A11Y-026, A11Y-030, A11Y-034.
-4. **Forms:** A11Y-005, A11Y-016, A11Y-019, A11Y-029.
+1. **Critical blockers:** A11Y-001 (completed), A11Y-002 (completed) — build the `Clickable` and `IconButton` primitives first.
+2. **Keyboard navigation:** A11Y-006 (completed), A11Y-007, A11Y-009, A11Y-015, A11Y-020 (completed), A11Y-021 (completed), A11Y-033.
+3. **Screen reader support:** A11Y-004 (completed), A11Y-008 (completed), A11Y-010 (completed), A11Y-012, A11Y-013, A11Y-014, A11Y-024, A11Y-026, A11Y-030, A11Y-034.
+4. **Forms:** A11Y-005 (completed), A11Y-016 (completed), A11Y-019 (completed), A11Y-029.
 5. **Dialogs & focus management:** A11Y-011, A11Y-017, A11Y-023 (build `AppModal`).
-6. **Semantic HTML improvements:** A11Y-003, A11Y-018, A11Y-028, A11Y-031, A11Y-035.
+6. **Semantic HTML improvements:** A11Y-003 (completed), A11Y-018 (completed), A11Y-028 (completed), A11Y-031, A11Y-035 (completed).
 7. **Remaining low-priority items:** A11Y-022, A11Y-025, A11Y-027, A11Y-032.
+
+> "(completed)" means the fix is merged into `develop`. 15 of 35 findings are done: A11Y-001, 002, 003, 004, 005, 006, 008, 010, 016, 018, 019, 020, 021, 028, 035.
+>
+> Partially covered: A11Y-005 — one control is still unlabeled, tracked as FU-004 in `FOLLOW_UPS.md`. A11Y-032 was in scope of the semantic-HTML branch but was not fixed; `RedeemPopup` still uses `<a onClick>` with no `href`.
 
 ---
 

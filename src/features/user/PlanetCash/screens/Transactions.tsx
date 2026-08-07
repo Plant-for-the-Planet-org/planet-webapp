@@ -10,6 +10,7 @@ import { Button, CircularProgress } from '@mui/material';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
+import LiveRegion from '../../../common/LiveRegion';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import { useRouter } from 'next/router';
@@ -112,53 +113,71 @@ const Transactions = ({
     };
   }, []);
 
-  return !transactionHistory && isDataLoading ? (
+  const isInitialLoading = !transactionHistory && isDataLoading;
+
+  return (
     <>
-      <TransactionListLoader />
-      <TransactionListLoader />
-      <TransactionListLoader />
-    </>
-  ) : transactionHistory && transactionHistory.items.length > 0 ? (
-    <>
-      {transactionHistory.items.map((record, index) => {
-        return (
-          <AccountRecord
-            key={index}
-            handleRecordToggle={handleRecordToggle}
-            index={index}
-            selectedRecord={selectedRecord}
-            record={record}
-            isPlanetCash={true}
-          />
-        );
-      })}
-      {transactionHistory._links.next && (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => fetchTransactions(true)}
-          disabled={isDataLoading}
-          className="loadingButton"
-        >
-          {isDataLoading ? (
-            <CircularProgress color="primary" size={24} />
-          ) : (
-            t('loadMore')
+      {/* Neither loading state shows any text. The initial loading state displays
+    skeletons, and "Load more" replaces its label with a spinner, so the
+    loading message is announced here instead.
+
+    Keep the live region outside the loading branches so it stays on the page.
+    When the loading state changes, screen readers announce the updated text
+    more reliably than if the live region is added with the message. This also
+    lets the initial skeleton loading state be announced. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {isDataLoading ? t('loadingTransactions') : ''}
+      </LiveRegion>
+      {isInitialLoading ? (
+        <>
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+        </>
+      ) : transactionHistory && transactionHistory.items.length > 0 ? (
+        <>
+          {transactionHistory.items.map((record, index) => {
+            return (
+              <AccountRecord
+                key={index}
+                handleRecordToggle={handleRecordToggle}
+                index={index}
+                selectedRecord={selectedRecord}
+                record={record}
+                isPlanetCash={true}
+              />
+            );
+          })}
+          {transactionHistory._links.next && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => fetchTransactions(true)}
+              disabled={isDataLoading}
+              aria-busy={isDataLoading}
+              className="loadingButton"
+            >
+              {isDataLoading ? (
+                <CircularProgress color="primary" size={24} />
+              ) : (
+                t('loadMore')
+              )}
+            </Button>
           )}
-        </Button>
-      )}
-      {isModalOpen && selectedRecord !== null && (
-        <AccountRecord
-          isModal={true}
-          handleRecordToggle={handleRecordToggle}
-          selectedRecord={selectedRecord}
-          record={transactionHistory.items[selectedRecord]}
-          isPlanetCash={true}
-        />
+          {isModalOpen && selectedRecord !== null && (
+            <AccountRecord
+              isModal={true}
+              handleRecordToggle={handleRecordToggle}
+              selectedRecord={selectedRecord}
+              record={transactionHistory.items[selectedRecord]}
+              isPlanetCash={true}
+            />
+          )}
+        </>
+      ) : (
+        transactionHistory && <NoTransactionsFound />
       )}
     </>
-  ) : (
-    transactionHistory && <NoTransactionsFound />
   );
 };
 
