@@ -18,6 +18,7 @@ import { useUserProps } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
 import TreeMapperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
 import FiberPinIcon from '@mui/icons-material/FiberPin';
 import IconContainer from './IconContainer';
@@ -43,6 +44,15 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         title: t('profile'),
         path: '/profile',
         icon: <UserIcon />,
+      },
+      {
+        key: 'tenantDashboard',
+        title: t('tenantDashboard'),
+        path: '/profile/tenant-dashboard',
+        // TODO: Replace AssessmentOutlined with a proper tenant dashboard icon
+        icon: <AssessmentOutlinedIcon />,
+        // TODO: Update the @planet-sdk type for user to include tenantId key
+        hideItem: !user?.tenantId,
       },
       {
         key: 'payments',
@@ -272,7 +282,7 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
   }, [contextLoaded, user]);
 
   return user ? (
-    <div className={styles.profilePageContainer}>
+    <div className={clsx(styles.profilePageContainer, 'profilePageContainer')}>
       <button
         type="button"
         key={'hamburgerIcon'}
@@ -283,7 +293,7 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         <MenuIcon />
       </button>
       <div
-        className={clsx({
+        className={clsx('hideInPrint', {
           [styles.sidebarModified]: isImpersonationModeOn,
           [styles.sidebar]: !isImpersonationModeOn,
           [styles.menuClosed]: !isMobileMenuOpen,
@@ -303,18 +313,20 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
                 </button>
               </div>
             </div>
-            {navLinks.map((link: NavLinkType, index: number) => (
-              <NavLink
-                link={link}
-                setCurrentMenuKey={setCurrentMenuKey}
-                currentMenuKey={currentMenuKey}
-                currentSubMenuKey={currentSubMenuKey}
-                setCurrentSubMenuKey={setCurrentSubMenuKey}
-                user={user}
-                key={index}
-                closeMenu={() => setIsMobileMenuOpen(false)}
-              />
-            ))}
+            {navLinks
+              .filter((link) => !link.hideItem)
+              .map((link: NavLinkType, index: number) => (
+                <NavLink
+                  link={link}
+                  setCurrentMenuKey={setCurrentMenuKey}
+                  currentMenuKey={currentMenuKey}
+                  currentSubMenuKey={currentSubMenuKey}
+                  setCurrentSubMenuKey={setCurrentSubMenuKey}
+                  user={user}
+                  key={index}
+                  closeMenu={() => setIsMobileMenuOpen(false)}
+                />
+              ))}
           </>
         </div>
 
