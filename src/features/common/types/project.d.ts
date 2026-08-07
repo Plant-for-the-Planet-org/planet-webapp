@@ -30,12 +30,18 @@ export interface Site {
   yearAbandoned?: Nullable<number>;
 }
 
-type VerificationStatus =
+/**
+ * The backend workflow uses six statuses: draft, submitted, in_review,
+ * revision_requested, accepted and rejected. The rest are their pre-rename
+ * predecessors, still carried by older projects in the database.
+ */
+export type VerificationStatus =
   | 'draft'
   | 'incomplete'
   | 'accepted'
   | 'processing'
   | 'denied'
+  | 'rejected'
   | 'pending'
   | 'submitted'
   | 'in_review'

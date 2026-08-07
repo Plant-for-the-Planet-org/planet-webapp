@@ -6,6 +6,7 @@ import type {
   ProfileProjectPropertiesFund,
   ProfileProjectPropertiesTrees,
 } from '@planet-sdk/common';
+import type { VerificationStatus } from '../../common/types/project';
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
@@ -26,10 +27,41 @@ import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
 
-type ProjectProperties =
+type ProjectProperties = (
   | ProfileProjectPropertiesFund
   | ProfileProjectPropertiesTrees
-  | ProfileProjectPropertiesConservation;
+  | ProfileProjectPropertiesConservation
+) & {
+  /**
+   * Sent by `/app/profile/projects` for the owner's own projects. Optional
+   * because the SDK types describe the public listing, which omits it.
+   */
+  verificationStatus?: VerificationStatus;
+};
+
+/**
+ * Label and colour for the review status shown on each card. Pre-rename statuses
+ * map onto the same badge as the value that replaced them, so older projects read
+ * the same as new ones.
+ */
+const VERIFICATION_STATUS_BADGES = {
+  draft: { labelKey: 'statusDraft', tone: 'statusNeutral' },
+  incomplete: { labelKey: 'statusDraft', tone: 'statusNeutral' },
+  submitted: { labelKey: 'statusSubmitted', tone: 'statusInfo' },
+  pending: { labelKey: 'statusSubmitted', tone: 'statusInfo' },
+  in_review: { labelKey: 'statusInReview', tone: 'statusInfo' },
+  processing: { labelKey: 'statusInReview', tone: 'statusInfo' },
+  revision_requested: {
+    labelKey: 'statusRevisionRequested',
+    tone: 'statusWarning',
+  },
+  accepted: { labelKey: 'statusAccepted', tone: 'statusSuccess' },
+  denied: { labelKey: 'statusRejected', tone: 'statusDanger' },
+  rejected: { labelKey: 'statusRejected', tone: 'statusDanger' },
+} as const satisfies Record<
+  VerificationStatus,
+  { labelKey: string; tone: string }
+>;
 
 /**
  * Maps API classification values to `ManageProjects` translation keys.
@@ -87,6 +119,9 @@ function SingleProject({ project }: { project: ProjectProperties }) {
   // Joined rather than hardcoding the separator, so a project without a
   // classification (e.g. a funds project) doesn't render a dangling "• ".
   const subtitleParts = [typeLabel, countryLabel].filter(Boolean);
+  const statusBadge = project.verificationStatus
+    ? VERIFICATION_STATUS_BADGES[project.verificationStatus]
+    : undefined;
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (
@@ -99,7 +134,16 @@ function SingleProject({ project }: { project: ProjectProperties }) {
         <div className={styles.noProjectImage}></div>
       )}
       <div className={styles.projectInformation}>
-        <p className={styles.projectName}>{project.name}</p>
+        <div className={styles.projectHeader}>
+          <p className={styles.projectName}>{project.name}</p>
+          {statusBadge && (
+            <span
+              className={`${styles.statusChip} ${styles[statusBadge.tone]}`}
+            >
+              {tManageProjects(statusBadge.labelKey)}
+            </span>
+          )}
+        </div>
         <p className={styles.projectClassification}>
           {subtitleParts.join(' • ')}
         </p>
