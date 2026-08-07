@@ -112,7 +112,8 @@ export default function BasicDetails({
 
   const canChangeUnitType =
     !projectDetails ||
-    (projectDetails.verificationStatus === 'incomplete' &&
+    ((projectDetails.verificationStatus === 'draft' ||
+      projectDetails.verificationStatus === 'incomplete') &&
       projectDetails.reviewRequested === false);
 
   const changeLatitude = (e: ChangeEvent<HTMLInputElement>) => {

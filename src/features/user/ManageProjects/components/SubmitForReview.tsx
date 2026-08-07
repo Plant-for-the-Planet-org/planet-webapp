@@ -383,6 +383,7 @@ function SubmitForReview({
       return <RevisionRequestedComponent />;
     case 'accepted':
       return <AcceptedReview />;
+    case 'rejected':
     case 'denied':
       return <DeniedReview />;
     default:
