@@ -1,7 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../common/types/payments';
 
-import { useState, useContext, useEffect } from 'react';
+import { useId, useState, useContext, useEffect } from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
@@ -34,6 +34,9 @@ export const ReactivateModal = ({
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const payload = {};
+  // Names and describes the dialog using its visible title and note
+  const titleId = useId();
+  const descriptionId = useId();
 
   useEffect(() => {
     setDisabled(false);
@@ -65,14 +68,17 @@ export const ReactivateModal = ({
       open={reactivateModalOpen}
       onClose={handleReactivateModalClose}
       closeAfterTransition
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
       BackdropProps={{
         timeout: 500,
       }}
     >
       <Fade in={reactivateModalOpen}>
-        <div className={styles.manageDonationModal}>
+        <div
+          className={styles.manageDonationModal}
+          role="dialog"
+          aria-labelledby={titleId}
+          aria-describedby={descriptionId}
+        >
           <div className={styles.modalTexts}>
             <div
               style={{
@@ -82,16 +88,18 @@ export const ReactivateModal = ({
                 width: '100%',
               }}
             >
-              <h4>{t('reactivateDonationConfirmation')}</h4>
+              <h4 id={titleId}>{t('reactivateDonationConfirmation')}</h4>
               <IconButton
-                label={`${tCommon('close')} ${t('reactivateDonationConfirmation')}`}
+                label={`${tCommon('close')} ${t(
+                  'reactivateDonationConfirmation'
+                )}`}
                 onClick={handleReactivateModalClose}
                 className={styles.headerCloseIcon}
               >
                 <Close color={'#4d5153'} />
               </IconButton>
             </div>
-            <div className={styles.note}>
+            <div className={styles.note} id={descriptionId}>
               <p>
                 {t('reactivateDonationDescription', {
                   currentPeriodEnds: record?.currentPeriodEnd,
