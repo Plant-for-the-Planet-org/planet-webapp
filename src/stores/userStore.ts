@@ -149,18 +149,20 @@ export const useUserStore = create<UserStore>()(
             );
           }
 
-          // A newer call already committed its result; do not let this
-          // stale response overwrite it with an older identity.
-          if (!isStale()) {
-            set(
-              {
-                userProfile: result,
-                profileApiError: null,
-              },
-              undefined,
-              'userStore/fetch_user_profile_success'
-            );
+          // Superseded by a newer fetch: do not commit to store, and do not return a stale identity back to the caller (e.g. ImpersonateUserForm enters impersonation from this return value).
+          if (isStale()) {
+            throw new APIError(NON_HTTP_ERROR_STATUS_CODE, {
+              message: 'Profile fetch superseded by a newer request',
+            });
           }
+          set(
+            {
+              userProfile: result,
+              profileApiError: null,
+            },
+            undefined,
+            'userStore/fetch_user_profile_success'
+          );
           return result;
         } catch (error) {
           // Impersonation-specific 403: Handle ONLY in component
