@@ -7,9 +7,34 @@ import { useAuthSession } from './useAuthSession';
 const REDIRECT_COUNT_STORAGE_KEY = 'authRedirectCount';
 const MAX_REDIRECT_ATTEMPTS = 3;
 
+// In-memory fallback for contexts where storage access throws (private mode, blocked storage). The persistent count is best-effort; what matters is that a storage failure never stops the auth flow from redirecting or resolving.
+let inMemoryRedirectCount = 0;
+
 const getRedirectCount = (): number => {
-  const stored = Number(sessionStorage.getItem(REDIRECT_COUNT_STORAGE_KEY));
-  return Number.isFinite(stored) && stored > 0 ? stored : 0;
+  try {
+    const stored = Number(sessionStorage.getItem(REDIRECT_COUNT_STORAGE_KEY));
+    return Number.isFinite(stored) && stored > 0 ? stored : 0;
+  } catch {
+    return inMemoryRedirectCount;
+  }
+};
+
+const setRedirectCount = (count: number): void => {
+  inMemoryRedirectCount = count;
+  try {
+    sessionStorage.setItem(REDIRECT_COUNT_STORAGE_KEY, String(count));
+  } catch {
+    // Storage blocked; the in-memory value above is the fallback.
+  }
+};
+
+const clearRedirectCount = (): void => {
+  inMemoryRedirectCount = 0;
+  try {
+    sessionStorage.removeItem(REDIRECT_COUNT_STORAGE_KEY);
+  } catch {
+    // Storage blocked; the in-memory reset above is the fallback.
+  }
 };
 
 export const useInitializeAuth = () => {
@@ -31,10 +56,7 @@ export const useInitializeAuth = () => {
       return;
     }
 
-    sessionStorage.setItem(
-      REDIRECT_COUNT_STORAGE_KEY,
-      String(redirectCount + 1)
-    );
+    setRedirectCount(redirectCount + 1);
 
     loginWithRedirect({
       redirectUri: `${window.location.origin}/login`,
@@ -48,7 +70,7 @@ export const useInitializeAuth = () => {
       setToken(accessToken);
       // A successful auth means the loop (if any) is over; do not let a
       // stale count block a legitimate future re-login.
-      sessionStorage.removeItem(REDIRECT_COUNT_STORAGE_KEY);
+      clearRedirectCount();
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('Error fetching access token:', error);
