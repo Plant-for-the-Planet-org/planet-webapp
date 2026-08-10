@@ -82,6 +82,17 @@ const CLASSIFICATION_LABEL_KEYS = {
 
 type ClassificationValue = keyof typeof CLASSIFICATION_LABEL_KEYS;
 
+/**
+ * Fallback label for the type slot in the card subtitle. Only tree projects carry
+ * a `classification`, so conservation and funds projects fall back to their
+ * purpose and would otherwise leave the subtitle showing a bare country.
+ */
+const PURPOSE_LABEL_KEYS = {
+  conservation: 'purposeConservation',
+  funds: 'purposeFunds',
+  trees: 'purposeRestoration',
+} as const;
+
 function SingleProject({ project }: { project: ProjectProperties }) {
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -109,10 +120,12 @@ function SingleProject({ project }: { project: ProjectProperties }) {
   const classificationLabel = labelKey
     ? tManageProjects(labelKey)
     : classification;
+  // Falls back to the purpose so the subtitle never starts with a bare country.
+  // Only tree projects carry a `classification`. This slot used to read
+  // `metadata.ecosystem` for conservation, which is nullable, is an ecosystem
+  // rather than a project type, and rendered as a raw slug when it was set.
   const typeLabel =
-    project?.purpose === 'conservation'
-      ? project?.metadata?.ecosystem
-      : classificationLabel;
+    classificationLabel ?? tManageProjects(PURPOSE_LABEL_KEYS[project.purpose]);
   const countryLabel = project.country
     ? tCountry(project.country.toLowerCase() as Lowercase<CountryCode>)
     : undefined;
@@ -135,7 +148,6 @@ function SingleProject({ project }: { project: ProjectProperties }) {
       )}
       <div className={styles.projectInformation}>
         <div className={styles.projectHeader}>
-          <p className={styles.projectName}>{project.name}</p>
           {statusBadge && (
             <span
               className={`${styles.statusChip} ${styles[statusBadge.tone]}`}
@@ -143,6 +155,7 @@ function SingleProject({ project }: { project: ProjectProperties }) {
               {tManageProjects(statusBadge.labelKey)}
             </span>
           )}
+          <p className={styles.projectName}>{project.name}</p>
         </div>
         <p className={styles.projectClassification}>
           {subtitleParts.join(' • ')}

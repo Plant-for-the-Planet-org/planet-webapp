@@ -48,10 +48,10 @@
 }
 .projectHeader {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  // Keeps the chip hugging its label instead of stretching to the card width.
+  align-items: flex-start;
+  gap: 4px;
 }
 .projectName {
   font-weight: bold;
