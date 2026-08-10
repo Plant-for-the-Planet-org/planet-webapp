@@ -9,8 +9,7 @@ import IconButton from '../../../common/IconButton';
 import styles from '../styles/ProjectListControls.module.scss';
 import { useDebouncedEffect } from '../../../../utils/useDebouncedEffect';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useProjectStore } from '../../../../stores';
+import { useProjectStore, useQueryParamStore } from '../../../../stores';
 
 interface ActiveSearchFieldProps {
   setIsFilterOpen: SetState<boolean>;

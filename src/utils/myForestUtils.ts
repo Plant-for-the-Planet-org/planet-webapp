@@ -1,4 +1,9 @@
-import type { ProjectPurposeTypes, UnitTypes } from '@planet-sdk/common';
+import type {
+  ProjectPurposeTypes,
+  UnitTypes,
+  User,
+  UserPublicProfile,
+} from '@planet-sdk/common';
 import type { ExtractedProjectData } from '../features/user/Profile/ContributionsMap/Markers/DonationClusterMarker';
 import type { PointFeature } from 'supercluster';
 import type {
@@ -434,3 +439,25 @@ export const generateContributionsGeojson = (
 
   return { registrationGeojson, donationGeojson };
 };
+
+type ForestUserInfo = {
+  profileId: string;
+  slug: string;
+  targets: {
+    treesDonated: number;
+    areaRestored: number;
+    areaConserved: number;
+  };
+};
+
+export const transformProfileToForestUserInfo = (
+  profile: User | UserPublicProfile
+): ForestUserInfo => ({
+  profileId: profile.id,
+  slug: profile.slug,
+  targets: {
+    treesDonated: profile.scores.treesDonated.target ?? 0,
+    areaRestored: profile.scores.areaRestored.target ?? 0,
+    areaConserved: profile.scores.areaConserved.target ?? 0,
+  },
+});

@@ -28,7 +28,8 @@ for the whole page lifetime no matter what the layout renders. It calls one hook
 per concern:
 
 ```
-useInitializeTenant, useInitializeParams, useInitializeCurrency,
+useInitializeTenant, useInitializeParams, useInitializeLanguage,
+useInitializeAuth, useInitializeUser, useInitializeCurrency,
 useInitializeView, useInitializeProject, useInitializeSingleProject,
 useInitializeIntervention
 ```

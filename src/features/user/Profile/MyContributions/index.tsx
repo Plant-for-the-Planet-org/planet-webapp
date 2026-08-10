@@ -4,7 +4,7 @@ import type { RegistrationItemCardProps } from './RegistrationItemCard';
 import type { ProfileV2Props } from '../../../common/types/profile';
 
 import { useEffect, useState } from 'react';
-import { useMyForestStore } from '../../../../stores/myForestStore';
+import { useMyForestStore } from '../../../../stores';
 import ListHeader from './ListHeader';
 import styles from './MyContributions.module.scss';
 import ProjectItemCard from './ProjectItemCard';

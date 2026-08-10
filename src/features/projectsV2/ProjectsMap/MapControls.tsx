@@ -14,12 +14,12 @@ import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIco
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
 import { AllInterventions } from '../../../utils/constants/intervention';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useProjectMapStore } from '../../../stores/projectMapStore';
 import {
   useInterventionStore,
   useSingleProjectStore,
   useViewStore,
+  useProjectMapStore,
+  useQueryParamStore,
 } from '../../../stores';
 import { hasNoSites } from '../../../utils/projectV2';
 
