@@ -16,7 +16,7 @@ import DonationClusterMarker from './DonationClusterMarker';
 import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
 import center from '@turf/center';
-import { useMyForestStore } from '../../../../../stores/myForestStore';
+import { useMyForestStore } from '../../../../../stores';
 
 interface MarkersProps {
   mapRef: MutableRefObject<null>;

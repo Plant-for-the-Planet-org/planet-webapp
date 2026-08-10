@@ -1,8 +1,6 @@
-import type { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
+import type { ImpersonationData } from './impersonation';
 
-const isValidImpersonationData = (
-  data: unknown
-): data is ImpersonationData => {
+const isValidImpersonationData = (data: unknown): data is ImpersonationData => {
   return (
     typeof data === 'object' &&
     data !== null &&
@@ -20,9 +18,7 @@ export const setHeaderForImpersonation = (
 ) => {
   let impersonationDataFromLocal: ImpersonationData | undefined;
   try {
-    const parsed = JSON.parse(
-      `${localStorage.getItem('impersonationData')}`
-    );
+    const parsed = JSON.parse(`${localStorage.getItem('impersonationData')}`);
     impersonationDataFromLocal = isValidImpersonationData(parsed)
       ? parsed
       : undefined;
