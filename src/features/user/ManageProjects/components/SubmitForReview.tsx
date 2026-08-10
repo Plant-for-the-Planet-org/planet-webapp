@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import type { SubmitForReviewProps } from '../../../common/types/project';
 
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -14,6 +14,20 @@ import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
+
+const richTags = {
+  bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+  italic: (chunks: ReactNode) => <em>{chunks}</em>,
+};
+
+const requiredDocumentKeys = [
+  'reviewDocuments.legalAccreditation',
+  'reviewDocuments.organizationBylaws',
+  'reviewDocuments.annualReport',
+  'reviewDocuments.financialReport',
+  'reviewDocuments.landTenureAgreements',
+  'reviewDocuments.projectPlan',
+] as const;
 
 function SubmitForReview({
   submitForReview,
@@ -88,18 +102,15 @@ function SubmitForReview({
     return (
       <CenteredContainer>
         <div>
-          <div>
-            {t.rich('reviewNote', {
-              bold: (chunks) => <strong>{chunks}</strong>,
-            })}
-          </div>
+          <div>{t.rich('dataReviewNote', richTags)}</div>
           <ul className={styles.listOfReport}>
-            <li>{t('legalAccreditation')}</li>
-            <li>{t('taxExemption')}</li>
-            <li>{t('annualReport')}</li>
-            <li>{t('financialReport')}</li>
-            <li>{t('PlantingReport')}</li>
+            {requiredDocumentKeys.map((key) => (
+              <li key={key}>{t.rich(key, richTags)}</li>
+            ))}
           </ul>
+          <div className={styles.checkInboxNote}>
+            {t.rich('checkYourInbox', richTags)}
+          </div>
         </div>
         <FormControlLabel
           label={
