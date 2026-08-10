@@ -28,6 +28,25 @@
 @tailwind utilities;
 
 @layer base {
+  /**
+   * Preflight is off, so nothing sets a default `border-style`. Tailwind's
+   * `border` utility only sets a width, which means every shadcn border
+   * (outline Button, Card, Input, Table, Select, Dialog) renders invisible:
+   * divs default to `border-style: none`, and global.scss resets buttons with
+   * the `border: 0px` shorthand, which does the same.
+   *
+   * Keyed on the border utility classes rather than `*` on purpose: an
+   * attribute selector matches class specificity, so it beats the `button`
+   * element rule in global.scss. A universal selector would lose to it.
+   * Existing SCSS and MUI styles are untouched, since they use no `border-*`
+   * utility classes.
+   */
+  [class~='border'],
+  [class*='border-'] {
+    border-style: solid;
+    border-color: hsl(var(--border));
+  }
+
   :root {
     --background: 0 0% 100%; /* #FFFFFF */
     --foreground: 0 0% 20%; /* #333333 coreText */
@@ -51,7 +70,9 @@
     --radius: 0.5rem;
   }
 
-  .dark {
+  /* Matches the class ThemeProvider puts on the layout wrapper, see
+     src/theme/themeContext.tsx and src/features/common/Layout/index.tsx. */
+  .theme-dark {
     --background: 160 30% 6%; /* deep green-tinted dark */
     --foreground: 0 0% 98%;
     --card: 160 30% 6%;

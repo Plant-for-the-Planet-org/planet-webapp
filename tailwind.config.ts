@@ -7,16 +7,13 @@ import type { Config } from 'tailwindcss';
  * - `preflight` is DISABLED so Tailwind's global reset does not restyle the
  *   113 existing MUI pages. shadcn/ui components only need the CSS variables
  *   and a handful of base tokens, which we define in src/styles/globals.css.
- * - `darkMode: 'class'` so we control theme via a `.dark` class, independent
- *   of MUI's own theming.
+ * - dark mode is keyed on `.theme-dark`, the class ThemeProvider already puts
+ *   on the layout wrapper (src/theme/themeContext.tsx). Tailwind's default
+ *   `.dark` selector never appears in this app.
  */
 const config: Config = {
-  darkMode: 'class',
-  content: [
-    './pages/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-  ],
+  darkMode: ['class', '.theme-dark'],
+  content: ['./pages/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   corePlugins: {
     preflight: false,
   },
