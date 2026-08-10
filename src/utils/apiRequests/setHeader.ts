@@ -1,4 +1,16 @@
 import type { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
+
+const isValidImpersonationData = (
+  data: unknown
+): data is ImpersonationData => {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    typeof (data as ImpersonationData).targetEmail === 'string' &&
+    typeof (data as ImpersonationData).supportPin === 'string'
+  );
+};
+
 /**
  * Sets keys for header in impersonation mode
  */
@@ -8,9 +20,12 @@ export const setHeaderForImpersonation = (
 ) => {
   let impersonationDataFromLocal: ImpersonationData | undefined;
   try {
-    impersonationDataFromLocal = JSON.parse(
+    const parsed = JSON.parse(
       `${localStorage.getItem('impersonationData')}`
     );
+    impersonationDataFromLocal = isValidImpersonationData(parsed)
+      ? parsed
+      : undefined;
   } catch {
     impersonationDataFromLocal = undefined;
   }
