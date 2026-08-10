@@ -1,0 +1,35 @@
+import { useCallback } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useUserStore } from '../stores/userStore';
+
+export const useAuthSession = () => {
+  const {
+    isLoading: isAuthLoading,
+    isAuthenticated,
+    loginWithRedirect,
+    getAccessTokenSilently,
+    logout: logoutFromAuth0,
+    user: auth0User,
+    error: auth0Error,
+  } = useAuth0();
+
+  const logoutUser = useCallback(
+    (returnUrl: string | undefined = `${window.location.origin}/`) => {
+      useUserStore.getState().exitImpersonation();
+      localStorage.removeItem('redirectLink');
+      sessionStorage.removeItem('donationReceiptContext');
+      logoutFromAuth0({ returnTo: returnUrl });
+    },
+    [logoutFromAuth0]
+  );
+
+  return {
+    isAuthLoading,
+    isAuthenticated,
+    loginWithRedirect,
+    getAccessTokenSilently,
+    logoutUser,
+    auth0User,
+    auth0Error,
+  };
+};

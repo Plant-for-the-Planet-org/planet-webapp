@@ -3,17 +3,21 @@ import { useEffect, useRef, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './RedeemPopup.module.scss';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../UserPropsContext';
 import themeProperties from '../../../../theme/themeProperties';
-import { useTenantStore } from '../../../../stores/tenantStore';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
+import { useAuthStore, useUserStore, useTenantStore } from '../../../../stores';
 
 export default function RedeemPopup() {
   const t = useTranslations('Common');
-  const { user, contextLoaded, loginWithRedirect } = useUserProps();
+  const { loginWithRedirect } = useAuthSession();
   // local state
   const [showRedeemPopup, setShowRedeemPopup] = useState(false);
-  // store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  //store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const showRedeemHint = useTenantStore(
+    (state) => state.tenantConfig.config.showRedeemHint ?? false
+  );
 
   const sendUserToLogin = () => {
     if (typeof window !== 'undefined') {
@@ -25,10 +29,10 @@ export default function RedeemPopup() {
   };
 
   useEffect(() => {
-    if (contextLoaded && user) {
+    if (isAuthResolved && userProfile) {
       setShowRedeemPopup(false);
     }
-  }, [contextLoaded && user]);
+  }, [isAuthResolved && userProfile]);
 
   const isMountedRef = useRef(false);
 
@@ -37,7 +41,7 @@ export default function RedeemPopup() {
     if (isMountedRef.current) {
       return;
     }
-    if (tenantConfig.config.showRedeemHint) {
+    if (showRedeemHint) {
       const prev = localStorage.getItem('redeemPopup');
       if (!prev) {
         setShowRedeemPopup(true);

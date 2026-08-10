@@ -19,8 +19,7 @@ import { FillColor } from '../../../../utils/constants/intervention';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 import { clsx } from 'clsx';
-import { useProjectMapStore } from '../../../../stores/projectMapStore';
-import { useInterventionStore } from '../../../../stores';
+import { useProjectMapStore, useInterventionStore } from '../../../../stores';
 
 interface SampleInterventionMarkerProps {
   sampleIntervention: SampleTreeRegistration;

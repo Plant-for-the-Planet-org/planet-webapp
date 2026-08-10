@@ -1,7 +1,9 @@
 import type { Tenant } from '@planet-sdk/common';
 
+import { useInitializeAuth } from '../../../hooks/useInitializeAuth';
 import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
+import { useInitializeUser } from '../../../hooks/useInitializeUser';
 import { useInitializeProject } from '../../../hooks/useInitializeProject';
 import { useInitializeIntervention } from '../../../hooks/useInitializeIntervention';
 import { useInitializeView } from '../../../hooks/useInitializeView';
@@ -33,6 +35,8 @@ export const StoreInitializer = ({
   useInitializeTenant(tenantConfig);
   useInitializeParams();
   useInitializeLanguage(); // Sync route locale to legacy localStorage readers.
+  useInitializeAuth();
+  useInitializeUser();
   useInitializeCurrency();
   useInitializeView(isMobile);
   useInitializeProject();

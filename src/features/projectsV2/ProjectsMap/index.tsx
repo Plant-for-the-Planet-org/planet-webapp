@@ -38,13 +38,13 @@ import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
 import WebGLGuard from '../../common/WebGLGuard';
 import { clsx } from 'clsx';
-import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
 import {
   useInterventionStore,
   useProjectStore,
   useSingleProjectStore,
   useViewStore,
+  useQueryParamStore,
+  useProjectMapStore,
 } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 import { useLocale } from 'next-intl';

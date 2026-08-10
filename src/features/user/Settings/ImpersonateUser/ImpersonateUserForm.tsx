@@ -1,28 +1,30 @@
 import type { ReactElement } from 'react';
+import type { ImpersonationData } from '../../../../utils/apiRequests/impersonation';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import { TextField, Button } from '@mui/material';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import StyledForm from '../../../common/Layout/StyledForm';
 import styles from './ImpersonateUser.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import { APIError } from '@planet-sdk/common';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-
-export type ImpersonationData = {
-  targetEmail: string;
-  supportPin: string;
-};
+import { useAuthStore, useTenantStore, useUserStore } from '../../../../stores';
 
 const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Me');
-  const { setUser, setIsImpersonationModeOn, fetchUserProfile } =
-    useUserProps();
+  const locale = useLocale();
+  // store: state
+  const token = useAuthStore((state) => state.token);
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
+  // store: action
+  const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
+  const enterImpersonation = useUserStore((state) => state.enterImpersonation);
+
   const {
     control,
     handleSubmit,
@@ -79,22 +81,21 @@ const ImpersonateUserForm = (): ReactElement => {
   const handleImpersonation = async (
     data: ImpersonationData
   ): Promise<void> => {
+    if (!token) return;
     if (data.targetEmail && data.supportPin) {
       setIsProcessing(true);
       try {
-        const res = await fetchUserProfile(data);
+        const res = await fetchUserProfile({
+          impersonationData: data,
+          token,
+          tenantId,
+          locale,
+        });
         setIsInvalidEmail(false);
-        setIsImpersonationModeOn(true);
-        const impersonationData: ImpersonationData = {
+        enterImpersonation({
           targetEmail: res.email,
           supportPin: res.supportPin,
-        };
-
-        localStorage.setItem(
-          'impersonationData',
-          JSON.stringify(impersonationData)
-        );
-        setUser(res);
+        });
         router.push(localizedPath('/profile'));
       } catch (err) {
         if (err instanceof APIError) {
