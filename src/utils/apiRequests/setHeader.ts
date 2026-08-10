@@ -6,29 +6,25 @@ export const setHeaderForImpersonation = (
   header: Record<string, string>,
   impersonationData?: ImpersonationData
 ) => {
-  const impersonationDataFromLocal: ImpersonationData = JSON.parse(
-    `${localStorage.getItem('impersonationData')}`
-  );
-  if (impersonationDataFromLocal || impersonationData) {
-    if (
-      impersonationData?.targetEmail ||
-      impersonationDataFromLocal?.targetEmail
-    ) {
-      header['X-SWITCH-USER'] =
-        impersonationData?.targetEmail ||
-        impersonationDataFromLocal?.targetEmail;
-    }
-
-    if (
-      impersonationData?.supportPin ||
-      impersonationDataFromLocal?.supportPin
-    ) {
-      header['X-USER-SUPPORT-PIN'] =
-        impersonationData?.supportPin || impersonationDataFromLocal?.supportPin;
-    }
-    const impersonationHeader = header;
-    return impersonationHeader;
-  } else {
-    return header;
+  let impersonationDataFromLocal: ImpersonationData | undefined;
+  try {
+    impersonationDataFromLocal = JSON.parse(
+      `${localStorage.getItem('impersonationData')}`
+    );
+  } catch {
+    impersonationDataFromLocal = undefined;
   }
+
+  const targetEmail =
+    impersonationData?.targetEmail || impersonationDataFromLocal?.targetEmail;
+  const supportPin =
+    impersonationData?.supportPin || impersonationDataFromLocal?.supportPin;
+
+  if (targetEmail) {
+    header['X-SWITCH-USER'] = targetEmail;
+  }
+  if (supportPin) {
+    header['X-USER-SUPPORT-PIN'] = supportPin;
+  }
+  return header;
 };
