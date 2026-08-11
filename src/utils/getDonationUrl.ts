@@ -17,17 +17,25 @@ export const getDonationUrl = (
 
   const callback_url = embed === 'true' ? callbackUrl : window.location.href;
 
-  const sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${id}${
-    callback_url !== undefined ? '&callback_url=' + callback_url : ''
-  }&country=${country}&locale=${language}${token ? '&token=' + token : ''}${
-    tenant !== undefined ? '&tenant=' + tenant : ''
+  const sourceUrl = `${
+    process.env.NEXT_PUBLIC_DONATION_URL
+  }/?to=${encodeURIComponent(id)}${
+    callback_url !== undefined
+      ? '&callback_url=' + encodeURIComponent(String(callback_url))
+      : ''
+  }&country=${encodeURIComponent(String(country))}&locale=${encodeURIComponent(
+    String(language)
+  )}${token ? '&token=' + encodeURIComponent(token) : ''}${
+    tenant !== undefined ? '&tenant=' + encodeURIComponent(tenant) : ''
   }${
     directGift && directGift.id !== undefined
-      ? '&s=' + directGift.id
+      ? '&s=' + encodeURIComponent(directGift.id)
       : slug !== undefined
-      ? '&s=' + slug
+      ? '&s=' + encodeURIComponent(slug)
       : ''
-  }${utmCampaign ? '&utm_campaign=' + utmCampaign : ''}`;
+  }${
+    utmCampaign ? '&utm_campaign=' + encodeURIComponent(utmCampaign) : ''
+  }`;
 
   return sourceUrl;
 };
