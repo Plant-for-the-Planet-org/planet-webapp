@@ -1,4 +1,6 @@
 import '../src/theme/global.scss';
+// Same order as pages/_app.tsx, so shadcn components render in Storybook too.
+import '../src/styles/globals.css';
 import './storybook.scss';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';

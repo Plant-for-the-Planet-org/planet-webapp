@@ -13,6 +13,9 @@ import TagManager from 'react-gtm-module';
 import Router from 'next/router';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/theme/global.scss';
+// After global.scss on purpose: on equal specificity the later sheet wins, so
+// Tailwind utilities take precedence over the legacy global styles.
+import '../src/styles/globals.css';
 import ThemeProvider from '../src/theme/themeContext';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';

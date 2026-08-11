@@ -1,0 +1,96 @@
+/**
+ * Tailwind + shadcn/ui global stylesheet.
+ *
+ * Imported once from pages/_app.tsx. Preflight is disabled in
+ * tailwind.config.ts, so this file intentionally does NOT restyle <body>
+ * or global typography — existing MUI/SCSS pages must stay untouched.
+ * Only the shadcn design tokens live here; components opt in via utilities
+ * such as `bg-background` and `text-foreground`.
+ *
+ * The token values are Plant-for-the-Planet's color CI, sourced from
+ * src/theme/themeProperties.ts (designSystem palette). HSL channel format
+ * is required by the `hsl(var(--token))` setup in tailwind.config.ts.
+ *
+ * Values mirror the webapp's own CSS custom properties (--primary-color etc.)
+ * so shadcn components match the existing app, not the broader PftP CI.
+ *
+ * Reference (hex -> token):
+ *   #68B030 webapp --primary-color (warm green) -> --primary
+ *   #007A49 webapp --primary-dark-color         -> --primary hover / green text on light
+ *   #F0FAF4 soft green                          -> --accent / --secondary
+ *   #F0F6F5 background base                     -> --muted
+ *   #333333 core text                           -> --foreground
+ *   #828282 soft text                           -> --muted-foreground
+ *   #EB5757 fire red                            -> --destructive
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /**
+   * Preflight is off, so nothing sets a default `border-style`. Tailwind's
+   * `border` utility only sets a width, which means every shadcn border
+   * (outline Button, Card, Input, Table, Select, Dialog) renders invisible:
+   * divs default to `border-style: none`, and global.scss resets buttons with
+   * the `border: 0px` shorthand, which does the same.
+   *
+   * Keyed on the border utility classes rather than `*` on purpose: an
+   * attribute selector matches class specificity, so it beats the `button`
+   * element rule in global.scss. A universal selector would lose to it.
+   * Existing SCSS and MUI styles are untouched, since they use no `border-*`
+   * utility classes.
+   */
+  [class~='border'],
+  [class*='border-'] {
+    border-style: solid;
+    border-color: hsl(var(--border));
+  }
+
+  :root {
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 0 0% 20%; /* #333333 coreText */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 20%;
+    --primary: 94 57% 44%; /* #68B030 webapp --primary-color */
+    --primary-foreground: 0 0% 100%; /* white */
+    --secondary: 145 50% 96%; /* #F0FAF4 softGreen */
+    --secondary-foreground: 156 100% 24%; /* #007A49 dark green text */
+    --muted: 170 25% 95%; /* #F0F6F5 backgroundBase */
+    --muted-foreground: 0 0% 51%; /* #828282 softText2 */
+    --accent: 145 50% 96%; /* #F0FAF4 softGreen */
+    --accent-foreground: 156 100% 24%; /* #007A49 dark green text */
+    --destructive: 0 79% 63%; /* #EB5757 fireRed */
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 89.8%; /* neutral light grey */
+    --input: 0 0% 89.8%;
+    --ring: 94 57% 44%; /* #68B030 */
+    --radius: 0.5rem;
+  }
+
+  /* Matches the class ThemeProvider puts on the layout wrapper, see
+     src/theme/themeContext.tsx and src/features/common/Layout/index.tsx. */
+  .theme-dark {
+    --background: 160 30% 6%; /* deep green-tinted dark */
+    --foreground: 0 0% 98%;
+    --card: 160 30% 6%;
+    --card-foreground: 0 0% 98%;
+    --popover: 160 30% 6%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 94 57% 44%; /* #68B030 webapp --primary-color */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 160 15% 14%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 160 15% 14%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 160 15% 14%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 160 15% 16%;
+    --input: 160 15% 16%;
+    --ring: 94 57% 44%; /* #68B030 */
+  }
+}
