@@ -6,6 +6,10 @@ import { useLocale } from 'next-intl';
 import { useAuthStore, useTenantStore, useUserStore } from '../stores';
 import useLocalizedPath from './useLocalizedPath';
 import { useAuthSession } from './useAuthSession';
+import {
+  hasExceededRedirectLimit,
+  registerRedirectAttempt,
+} from '../utils/authRedirectGuard';
 
 const useProfileErrorHandler = () => {
   const router = useRouter();
@@ -33,6 +37,22 @@ const useProfileErrorHandler = () => {
         case 401:
           exitImpersonation();
           setToken(null);
+
+          // Use the same redirect counter as token failures.
+          // If the token keeps working but the profile keeps returning 401,
+          // the counter will eventually stop the repeated login redirects.
+          //
+          // Once the limit is reached, stay on the current page instead of
+          // redirecting again. `login.tsx` will keep the app stable there
+          // when no profile is available.
+          if (hasExceededRedirectLimit()) {
+            console.error(
+              '[Profile API] Redirect limit reached after repeated 401s, stopping login redirects.'
+            );
+            break;
+          }
+          registerRedirectAttempt();
+
           loginWithRedirect({
             redirectUri: `${window.location.origin}/login`,
             ui_locales: localStorage.getItem('language') || 'en',
