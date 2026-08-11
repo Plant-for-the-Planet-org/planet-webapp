@@ -8,6 +8,16 @@ module.exports = {
     [
       'postcss-preset-env',
       {
+        // Matches Next.js 14's own MODERN_BROWSERSLIST_TARGET (used when no
+        // browserslist config exists), so autoprefixer output for existing
+        // SCSS/CSS is unchanged from before this file was introduced.
+        browsers: [
+          'chrome 64',
+          'edge 79',
+          'firefox 67',
+          'opera 51',
+          'safari 12',
+        ],
         autoprefixer: {
           flexbox: 'no-2009',
         },
