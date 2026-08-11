@@ -5,7 +5,7 @@ automated tests today (the Cypress suite is broken and needs migration or retire
 a separate, larger track. It supports the review process in
 [review-process-roadmap.md](./review-process-roadmap.md). It can start small.
 
-> Status: roadmap. Nothing here is built yet; start with the quick wins.
+> Status: in progress since 2026-08-11. The runner, the first pure-logic tests, and a non-required CI job are in place. See the task list at the bottom for what is done and what is next.
 
 ## Why this exists
 
@@ -95,11 +95,11 @@ retire it) so the CI signal is honest.
 Ordered. Items marked "needs 2837" depend on the migration (PR 2837) landing first, since they
 target files that PR creates. See the sections above for detail.
 
-- [ ] Stand up the runner: vitest + jsdom, `test` / `test:watch` / `typecheck` scripts,
-      `vitest.config.ts`, one passing test.
-- [ ] Pure-logic tests: `validateToken.ts`, then `setHeader.ts`.
-- [ ] CI job: run typecheck + tests. Keep typecheck non-blocking until the existing `tsc`
-      errors are baselined or fixed.
+- [x] Stand up the runner: vitest + jsdom, `test` / `test:watch` / `test:verbose` / `typecheck` scripts, `vitest.config.mts`, one passing test. The config is `.mts` because the repo has no `"type": "module"`, so a `.ts` config loads as CommonJS and Vite warns about it.
+- [x] Pure-logic tests: `validateToken.ts`, then `setHeader.ts`.
+- [x] CI job for tests: `.github/workflows/test.yml` runs `npm run test` on every pull request, and on pushes to `develop` so merges are covered too. Not a required check yet, see below.
+- [ ] Make the test job a required check. Blocked: six `setHeader` tests assert the behaviour we want and fail on purpose until #3041 and #3056 land.
+- [ ] Typecheck in CI. Deferred on purpose: `tsc --noEmit` reports 131 pre-existing errors, measured on 2026-08-11. Fix those first, or baseline the count, otherwise the gate is noise.
 - [ ] Store tests (needs 2837): `userStore` actions, `authStore`.
 - [ ] Add `@testing-library/react`; init-hook tests (needs 2837): `useInitializeUser`,
       `useInitializeAuth`, `useProfileErrorHandler`.
