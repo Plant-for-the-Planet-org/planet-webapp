@@ -40,6 +40,11 @@ describe('validateToken', () => {
     expect(validateToken(makeToken({ exp: 0 }))).toBe(false);
   });
 
+  // RFC 7519 requires exp to be a number, and comparing a string against the clock silently yields NaN.
+  it('rejects a token with a non-numeric exp claim', () => {
+    expect(validateToken(makeToken({ exp: 'tomorrow' }))).toBe(false);
+  });
+
   // validateToken must return false, not throw. Otherwise the caller needs to catch the error.
   it('returns false when the token is not JWT-shaped', () => {
     expect(validateToken('not-a-jwt')).toBe(false);

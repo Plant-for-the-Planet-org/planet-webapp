@@ -79,6 +79,30 @@ describe('setHeaderForImpersonation', () => {
     });
   });
 
+  // Fails until #3056 is fixed. Half a pair from the argument is as unusable as half from localStorage.
+  it('sets no headers when the argument has no pin', () => {
+    expect(
+      setHeaderForImpersonation(
+        { 'x-locale': 'en' },
+        { ...ARGUMENT, supportPin: '' }
+      )
+    ).toEqual({
+      'x-locale': 'en',
+    });
+  });
+
+  // Fails until #3056 is fixed.
+  it('sets no headers when the argument has no email', () => {
+    expect(
+      setHeaderForImpersonation(
+        { 'x-locale': 'en' },
+        { ...ARGUMENT, targetEmail: '' }
+      )
+    ).toEqual({
+      'x-locale': 'en',
+    });
+  });
+
   it('keeps existing header keys alongside the impersonation ones', () => {
     initStoredImpersonationData(STORED);
 
