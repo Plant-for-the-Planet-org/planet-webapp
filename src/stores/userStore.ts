@@ -5,7 +5,10 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import getsessionId from '../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
-import { IMPERSONATION_STORAGE_KEY } from '../utils/impersonation';
+import {
+  clearImpersonationData,
+  storeImpersonationData,
+} from '../utils/impersonation';
 import { APIError } from '@planet-sdk/common';
 import { useAuthStore } from './authStore';
 
@@ -70,10 +73,7 @@ export const useUserStore = create<UserStore>()(
        * Keep them in sync to avoid inconsistent impersonation state.
        */
       enterImpersonation: (impersonationData) => {
-        localStorage.setItem(
-          IMPERSONATION_STORAGE_KEY,
-          JSON.stringify(impersonationData)
-        );
+        storeImpersonationData(impersonationData);
         set(
           { isImpersonationModeOn: true },
           undefined,
@@ -86,7 +86,7 @@ export const useUserStore = create<UserStore>()(
        * Keep them in sync to avoid inconsistent impersonation state.
        */
       exitImpersonation: () => {
-        localStorage.removeItem(IMPERSONATION_STORAGE_KEY);
+        clearImpersonationData();
         set(
           { isImpersonationModeOn: false },
           undefined,

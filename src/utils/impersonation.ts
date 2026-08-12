@@ -8,18 +8,18 @@ export type ImpersonationData = {
   supportPin: string;
 };
 
-export const IMPERSONATION_STORAGE_KEY = 'impersonationData';
+const IMPERSONATION_STORAGE_KEY = 'impersonationData';
 
 export const isValidImpersonationData = (
   data: unknown
 ): data is ImpersonationData => {
+  if (typeof data !== 'object' || data === null) return false;
+  const { targetEmail, supportPin } = data as Partial<ImpersonationData>;
   return (
-    typeof data === 'object' &&
-    data !== null &&
-    typeof (data as ImpersonationData).targetEmail === 'string' &&
-    (data as ImpersonationData).targetEmail !== '' &&
-    typeof (data as ImpersonationData).supportPin === 'string' &&
-    (data as ImpersonationData).supportPin !== ''
+    typeof targetEmail === 'string' &&
+    targetEmail !== '' &&
+    typeof supportPin === 'string' &&
+    supportPin !== ''
   );
 };
 
@@ -39,4 +39,18 @@ export const readStoredImpersonationData = ():
   } catch {
     return undefined;
   }
+};
+
+/**
+ * Starts an impersonation session by writing the credentials to localStorage.
+ */
+export const storeImpersonationData = (data: ImpersonationData): void => {
+  localStorage.setItem(IMPERSONATION_STORAGE_KEY, JSON.stringify(data));
+};
+
+/**
+ * Ends an impersonation session by removing the stored credentials.
+ */
+export const clearImpersonationData = (): void => {
+  localStorage.removeItem(IMPERSONATION_STORAGE_KEY);
 };
