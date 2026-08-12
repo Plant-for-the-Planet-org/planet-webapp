@@ -1,0 +1,169 @@
+name: 'PR review labels'
+
+# Keeps exactly one "PR: *" label on each pull request, matching its review state.
+# Replaces the pr-triage[bot] GitHub App, which stopped working in mid-2023.
+
+on:
+  # pull_request_target, not pull_request, so this file is always read from the default branch.
+  # That means pull requests opened before it existed get labelled without a rebase.
+  # Safe because the job never checks out pull request code.
+  # Every trigger below only fires once this file is on the default branch, so nothing runs
+  # until it is merged. See "Events that trigger workflows" in the GitHub Actions docs.
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+      - converted_to_draft
+      - closed
+      - review_requested
+      - review_request_removed
+  # "synchronize" is deliberately absent: pushing new commits must not change the label.
+  pull_request_review:
+    types:
+      - submitted
+      - dismissed
+  # Backfills every open pull request, and doubles as a manual re-sync button.
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Log the computed label without applying it'
+        type: boolean
+        default: true
+
+permissions:
+  pull-requests: write
+
+concurrency:
+  group: pr-review-labels-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  label:
+    name: 'Sync review-state label'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Apply the review-state label'
+        uses: actions/github-script@v7
+        env:
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+        with:
+          script: |
+            const LABELS = {
+              draft: 'PR: draft',
+              unreviewed: 'PR: unreviewed',
+              partiallyApproved: 'PR: partially-approved',
+              approved: 'PR: reviewed-approved',
+              changesRequested: 'PR: reviewed-changes-requested',
+              merged: 'PR: merged',
+            };
+            const PREFIX = 'PR: ';
+            const COUNTED = ['APPROVED', 'CHANGES_REQUESTED', 'DISMISSED'];
+            // Parked on purpose, so a review state would be misleading. Left completely untouched.
+            // "blocked" is not here: those still need review, they just must not be merged yet.
+            const OPT_OUT = ['reference-only', 'postponed'];
+            const dryRun = process.env.DRY_RUN === 'true';
+
+            async function targets() {
+              if (context.eventName !== 'workflow_dispatch') {
+                return [context.payload.pull_request.number];
+              }
+              const open = await github.paginate(github.rest.pulls.list, {
+                ...context.repo,
+                state: 'open',
+                per_page: 100,
+              });
+              return open.map((pr) => pr.number);
+            }
+
+            async function desiredLabel(pr) {
+              if (pr.merged) return LABELS.merged;
+              if (pr.state === 'closed') return null;
+              if (pr.draft) return LABELS.draft;
+
+              const reviews = await github.paginate(github.rest.pulls.listReviews, {
+                ...context.repo,
+                pull_number: pr.number,
+                per_page: 100,
+              });
+
+              // Reviews come back oldest first, so setting by login leaves each reviewer's latest verdict.
+              // Ignoring COMMENTED is what stops a plain comment from wiping that reviewer's earlier approval.
+              const latest = new Map();
+              for (const review of reviews) {
+                const login = review.user?.login;
+                if (!login || login === pr.user.login) continue;
+                if (!COUNTED.includes(review.state)) continue;
+                latest.set(login, review.state);
+              }
+
+              const verdicts = [...latest.values()].filter((state) => state !== 'DISMISSED');
+              const approvals = verdicts.filter((state) => state === 'APPROVED').length;
+              const changesRequested = verdicts.includes('CHANGES_REQUESTED');
+              const pending =
+                (pr.requested_reviewers ?? []).length + (pr.requested_teams ?? []).length;
+
+              core.info(
+                `#${pr.number}: approvals=${approvals} changesRequested=${changesRequested} pendingReviewers=${pending}`
+              );
+
+              if (changesRequested) return LABELS.changesRequested;
+              if (approvals > 0 && pending > 0) return LABELS.partiallyApproved;
+              if (approvals > 0) return LABELS.approved;
+              return LABELS.unreviewed;
+            }
+
+            async function apply(pr, desired) {
+              const current = pr.labels.map((label) => label.name);
+              const mine = current.filter((name) => name.startsWith(PREFIX));
+              const stale = mine.filter((name) => name !== desired);
+              const missing = desired && !current.includes(desired);
+
+              if (!stale.length && !missing) {
+                core.info(`#${pr.number}: already correct (${desired ?? 'no label'})`);
+                return;
+              }
+
+              core.info(
+                `#${pr.number}: ${mine.join(', ') || 'none'} -> ${desired ?? 'none'}${dryRun ? ' [dry run]' : ''}`
+              );
+              if (dryRun) return;
+
+              for (const name of stale) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    ...context.repo,
+                    issue_number: pr.number,
+                    name,
+                  });
+                } catch (error) {
+                  // Someone removed it by hand between our read and write.
+                  if (error.status !== 404) throw error;
+                }
+              }
+              if (missing) {
+                await github.rest.issues.addLabels({
+                  ...context.repo,
+                  issue_number: pr.number,
+                  labels: [desired],
+                });
+              }
+            }
+
+            for (const number of await targets()) {
+              // Re-read rather than trusting the event payload, which can be stale.
+              const { data: pr } = await github.rest.pulls.get({
+                ...context.repo,
+                pull_number: number,
+              });
+              // Skip before the merged/closed/draft ladder, so a parked pull request is never
+              // touched in either direction. Clearing its label would destroy truthful history.
+              const parked = pr.labels
+                .map((label) => label.name)
+                .filter((name) => OPT_OUT.includes(name));
+              if (parked.length) {
+                core.info(`#${pr.number}: skipped, parked via ${parked.join(', ')}`);
+                continue;
+              }
+              await apply(pr, await desiredLabel(pr));
+            }
