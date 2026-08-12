@@ -29,6 +29,7 @@ import {
 import { useLocale, useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import styles from '../StepForm.module.scss';
+import themeProperties from '../../../../theme/themeProperties';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { ProjectCreationTabs } from '..';
@@ -183,6 +184,7 @@ export default function ProjectQuestionnaire({
   initialSchema = null,
   purpose,
 }: QuestionnaireProps): ReactElement {
+  const coreText = themeProperties.designSystem.colors.coreText;
   const t = useTranslations('ManageProjects');
   const locale = useLocale();
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
@@ -302,7 +304,7 @@ export default function ProjectQuestionnaire({
     if (field.type === 'multi_choice' && field.choices) {
       return (
         <div key={name} className={styles.formFieldLarge}>
-          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+          <FormLabel component="legend" sx={{ mb: 0.5, color: coreText }}>
             {field.label}
           </FormLabel>
           {field.description && (
@@ -367,7 +369,7 @@ export default function ProjectQuestionnaire({
     if (field.type === 'number' || field.type === 'integer') {
       return (
         <div key={name} className={styles.formFieldLarge}>
-          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+          <FormLabel component="legend" sx={{ mb: 0.5, color: coreText }}>
             {field.label}
           </FormLabel>
           {field.description && (
@@ -396,7 +398,7 @@ export default function ProjectQuestionnaire({
     if (field.type === 'row_list' && field.rows) {
       return (
         <div key={name} className={styles.formFieldLarge}>
-          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+          <FormLabel component="legend" sx={{ mb: 0.5, color: coreText }}>
             {field.label}
           </FormLabel>
           {field.description && (
@@ -444,7 +446,7 @@ export default function ProjectQuestionnaire({
       const columns = field.columns;
       return (
         <div key={name} className={styles.formFieldLarge}>
-          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+          <FormLabel component="legend" sx={{ mb: 0.5, color: coreText }}>
             {field.label}
           </FormLabel>
           {field.description && (
@@ -480,7 +482,7 @@ export default function ProjectQuestionnaire({
           className={styles.formFieldLarge}
           style={{ overflowX: 'auto' }}
         >
-          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+          <FormLabel component="legend" sx={{ mb: 0.5, color: coreText }}>
             {field.label}
           </FormLabel>
           {field.description && (
@@ -565,7 +567,7 @@ export default function ProjectQuestionnaire({
     // ── text / string / default ───────────────────────────────────────────
     return (
       <div key={name} className={styles.formFieldLarge}>
-        <FormLabel component="legend" sx={{ mb: 0.5 }}>
+        <FormLabel component="legend" sx={{ mb: 0.5, color: coreText }}>
           {field.label}
         </FormLabel>
         {field.description && (
