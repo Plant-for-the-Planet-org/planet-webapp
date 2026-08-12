@@ -18,7 +18,6 @@ import {
   CircularProgress,
   FormControlLabel,
   FormGroup,
-  FormHelperText,
   FormLabel,
   Table,
   TableBody,
@@ -39,6 +38,7 @@ import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import AnnotationCallout from './microComponent/AnnotationCallout';
 import SpeciesListTable from './microComponent/SpeciesListTable';
+import FieldDescription from './microComponent/FieldDescription';
 import {
   getCachedSchema,
   getOrFetchSchema,
@@ -306,7 +306,7 @@ export default function ProjectQuestionnaire({
             {field.label}
           </FormLabel>
           {field.description && (
-            <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+            <FieldDescription>{field.description}</FieldDescription>
           )}
           <Controller
             name={name}
@@ -371,7 +371,7 @@ export default function ProjectQuestionnaire({
             {field.label}
           </FormLabel>
           {field.description && (
-            <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+            <FieldDescription>{field.description}</FieldDescription>
           )}
           <Controller
             name={name}
@@ -400,7 +400,7 @@ export default function ProjectQuestionnaire({
             {field.label}
           </FormLabel>
           {field.description && (
-            <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+            <FieldDescription>{field.description}</FieldDescription>
           )}
           <Table
             size="small"
@@ -448,7 +448,7 @@ export default function ProjectQuestionnaire({
             {field.label}
           </FormLabel>
           {field.description && (
-            <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+            <FieldDescription>{field.description}</FieldDescription>
           )}
           <Controller
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -484,7 +484,7 @@ export default function ProjectQuestionnaire({
             {field.label}
           </FormLabel>
           {field.description && (
-            <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+            <FieldDescription>{field.description}</FieldDescription>
           )}
           <Table
             size="small"
@@ -569,7 +569,7 @@ export default function ProjectQuestionnaire({
           {field.label}
         </FormLabel>
         {field.description && (
-          <FormHelperText sx={{ mb: 1 }}>{field.description}</FormHelperText>
+          <FieldDescription>{field.description}</FieldDescription>
         )}
         <Controller
           name={name}
