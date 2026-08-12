@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 
 import { FormHelperText } from '@mui/material';
-import themeProperties from '../../../../../theme/themeProperties';
 
 interface Props {
   children: ReactNode;
@@ -22,7 +21,7 @@ export default function FieldDescription({ children }: Props) {
         ml: 0,
         mr: 0,
         mb: 1,
-        color: themeProperties.designSystem.colors.coreText,
+        color: '#333333',
       }}
     >
       {children}
