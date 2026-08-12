@@ -12,6 +12,7 @@ import { useContext, useState } from 'react';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import { handleError } from '@planet-sdk/common';
 import { Button, Fade, MenuItem, Modal, TextField } from '@mui/material';
+import { getSiteYearOptions } from '../../utils/yearOptions';
 import SiteGeometryEditor from '../SiteGeometryEditor';
 import BackArrow from '../../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { clsx } from 'clsx';
@@ -37,7 +38,21 @@ function EditSite({
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<ProjectSitesFormData>();
+  } = useForm<ProjectSitesFormData>({
+    // Seeded from the site being edited. Previously the form started empty, so
+    // saving sent null for both years and erased the stored values.
+    defaultValues: {
+      name: siteDetails.name ?? '',
+      // `status` the prop is the list of options; the current value is on the site
+      status: siteDetails.status ?? '',
+      acquisitionYear: siteDetails.acquisitionYear
+        ? String(siteDetails.acquisitionYear)
+        : '',
+      yearAbandoned: siteDetails.yearAbandoned
+        ? String(siteDetails.yearAbandoned)
+        : '',
+    },
+  });
   // local state
   const [geoJson, setGeoJson] = useState<ProjectSiteFeatureCollection | null>(
     geoJsonProp
@@ -183,17 +198,22 @@ function EditSite({
                     <TextField
                       label={t('acquisitionYear')}
                       variant="outlined"
-                      type="number"
+                      select
                       onChange={onChange}
                       value={value ?? ''}
                       onBlur={onBlur}
-                      inputProps={{ min: 1900, max: 2100 }}
                       error={errors.acquisitionYear !== undefined}
                       helperText={
                         errors.acquisitionYear !== undefined &&
                         errors.acquisitionYear.message
                       }
-                    />
+                    >
+                      {getSiteYearOptions().map((year) => (
+                        <MenuItem key={year} value={year}>
+                          {year}
+                        </MenuItem>
+                      ))}
+                    </TextField>
                   )}
                 />
               </div>
@@ -206,17 +226,22 @@ function EditSite({
                       <TextField
                         label={t('yearOfAbandonment')}
                         variant="outlined"
-                        type="number"
+                        select
                         onChange={onChange}
                         value={value ?? ''}
                         onBlur={onBlur}
-                        inputProps={{ min: 1900, max: 2100 }}
                         error={errors.yearAbandoned !== undefined}
                         helperText={
                           errors.yearAbandoned !== undefined &&
                           errors.yearAbandoned.message
                         }
-                      />
+                      >
+                        {getSiteYearOptions().map((year) => (
+                          <MenuItem key={year} value={year}>
+                            {year}
+                          </MenuItem>
+                        ))}
+                      </TextField>
                     )}
                   />
                 </div>

@@ -11,6 +11,7 @@ import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
 import { useEffect, useState, useCallback } from 'react';
 import { dedupeInFlight } from '../utils/dedupeInFlight';
+import { getSiteYearOptions } from '../utils/yearOptions';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -186,7 +187,18 @@ export default function ProjectSites({
           },
         }
       );
-      setSiteList((prev) => [...prev, { id: res.id, name: res.name, geometry: res.geometry, status: res.status }]);
+      setSiteList((prev) => [
+        ...prev,
+        {
+          id: res.id,
+          name: res.name,
+          geometry: res.geometry,
+          status: res.status,
+          // Kept so reopening the edit form shows what was just entered
+          acquisitionYear: res.acquisitionYear,
+          yearAbandoned: res.yearAbandoned,
+        },
+      ]);
       reset({ name: '', status: '', acquisitionYear: '', yearAbandoned: '' });
       setGeoJson(null);
       setShowForm(false);
@@ -223,7 +235,13 @@ export default function ProjectSites({
       type: 'FeatureCollection',
       features: [{ geometry: site.geometry, properties: {}, type: 'Feature' }],
     });
-    setSiteDetails({ name: site.name, status: site.status, geometry: {} });
+    setSiteDetails({
+      name: site.name,
+      status: site.status,
+      geometry: {},
+      acquisitionYear: site.acquisitionYear,
+      yearAbandoned: site.yearAbandoned,
+    });
     setSiteGUID(site.id);
     setEditMode(true);
     setOpenModal(true);
@@ -362,17 +380,22 @@ export default function ProjectSites({
                   <TextField
                     label={t('acquisitionYear')}
                     variant="outlined"
-                    type="number"
+                    select
                     onChange={onChange}
                     value={value ?? ''}
                     onBlur={onBlur}
-                    inputProps={{ min: 1900, max: 2100 }}
                     error={errors.acquisitionYear !== undefined}
                     helperText={
                       errors.acquisitionYear !== undefined &&
                       errors.acquisitionYear.message
                     }
-                  />
+                  >
+                    {getSiteYearOptions().map((year) => (
+                      <MenuItem key={year} value={year}>
+                        {year}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 )}
               />
               {purpose !== 'conservation' && (
@@ -383,17 +406,22 @@ export default function ProjectSites({
                     <TextField
                       label={t('yearOfAbandonment')}
                       variant="outlined"
-                      type="number"
+                      select
                       onChange={onChange}
                       value={value ?? ''}
                       onBlur={onBlur}
-                      inputProps={{ min: 1900, max: 2100 }}
                       error={errors.yearAbandoned !== undefined}
                       helperText={
                         errors.yearAbandoned !== undefined &&
                         errors.yearAbandoned.message
                       }
-                    />
+                    >
+                      {getSiteYearOptions().map((year) => (
+                        <MenuItem key={year} value={year}>
+                          {year}
+                        </MenuItem>
+                      ))}
+                    </TextField>
                   )}
                 />
               )}

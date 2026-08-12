@@ -279,6 +279,13 @@ export interface SiteDetails {
   geometry: {};
   name: string;
   status: string;
+  /**
+   * Carried so the edit form can be seeded with the stored values. Without them
+   * the year inputs open empty and saving writes null back, erasing whatever
+   * was captured when the site was created.
+   */
+  acquisitionYear?: Nullable<number>;
+  yearAbandoned?: Nullable<number>;
 }
 export interface Viewport {
   height: number;
