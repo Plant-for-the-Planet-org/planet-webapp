@@ -21,7 +21,6 @@ export default function FieldDescription({ children }: Props) {
         ml: 0,
         mr: 0,
         mb: 1,
-        color: '#333333',
       }}
     >
       {children}
