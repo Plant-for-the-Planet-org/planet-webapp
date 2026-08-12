@@ -1,11 +1,15 @@
 import type { ImpersonationData } from './impersonation';
 
-const isValidImpersonationData = (data: unknown): data is ImpersonationData => {
+export const isValidImpersonationData = (
+  data: unknown
+): data is ImpersonationData => {
   return (
     typeof data === 'object' &&
     data !== null &&
     typeof (data as ImpersonationData).targetEmail === 'string' &&
-    typeof (data as ImpersonationData).supportPin === 'string'
+    (data as ImpersonationData).targetEmail !== '' &&
+    typeof (data as ImpersonationData).supportPin === 'string' &&
+    (data as ImpersonationData).supportPin !== ''
   );
 };
 
