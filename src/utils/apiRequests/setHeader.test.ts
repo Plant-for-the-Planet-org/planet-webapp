@@ -31,7 +31,6 @@ describe('setHeaderForImpersonation', () => {
     });
   });
 
-  // Fails until #3056 is fixed. The backend needs both headers, so half a pair is unusable.
   it('sets no headers when the stored data has no pin', () => {
     initStoredImpersonationData({ targetEmail: 'stored@example.org' });
 
@@ -40,9 +39,16 @@ describe('setHeaderForImpersonation', () => {
     });
   });
 
-  // Fails until #3056 is fixed. A pin alone is ignored by the backend.
   it('sets no headers when the stored data has no email', () => {
     initStoredImpersonationData({ supportPin: '1111' });
+
+    expect(setHeaderForImpersonation({ 'x-locale': 'en' })).toEqual({
+      'x-locale': 'en',
+    });
+  });
+
+  it('sets no headers when a stored field is not a string', () => {
+    initStoredImpersonationData({ ...STORED, supportPin: 1111 });
 
     expect(setHeaderForImpersonation({ 'x-locale': 'en' })).toEqual({
       'x-locale': 'en',
@@ -58,7 +64,6 @@ describe('setHeaderForImpersonation', () => {
     });
   });
 
-  // Fails until #3056 is fixed. Mixing sources lets a stale stored pin travel with a new email.
   it('does not combine fields from the argument and localStorage', () => {
     initStoredImpersonationData(STORED);
 
@@ -79,7 +84,6 @@ describe('setHeaderForImpersonation', () => {
     });
   });
 
-  // Fails until #3056 is fixed. Half a pair from the argument is as unusable as half from localStorage.
   it('sets no headers when the argument has no pin', () => {
     expect(
       setHeaderForImpersonation(
@@ -91,7 +95,6 @@ describe('setHeaderForImpersonation', () => {
     });
   });
 
-  // Fails until #3056 is fixed.
   it('sets no headers when the argument has no email', () => {
     expect(
       setHeaderForImpersonation(
@@ -119,7 +122,6 @@ describe('setHeaderForImpersonation', () => {
     });
   });
 
-  // Fails until PR #3050 lands. Today the parse throws, and useApi calls this on every request, so one bad value blocks every API call with no way to recover.
   it('sets no headers when the stored data is not valid JSON', () => {
     // Set directly rather than via the helper, which stringifies and so cannot produce invalid JSON.
     localStorage.setItem('impersonationData', 'not json');
