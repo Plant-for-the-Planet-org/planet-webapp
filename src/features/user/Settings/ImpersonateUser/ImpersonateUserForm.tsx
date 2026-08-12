@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { ImpersonationData } from '../../../../utils/apiRequests/impersonation';
+import type { ImpersonationData } from '../../../../utils/impersonation';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';

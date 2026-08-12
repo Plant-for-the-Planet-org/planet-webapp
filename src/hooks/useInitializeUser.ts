@@ -4,7 +4,7 @@ import { useAuthStore, useTenantStore, useUserStore } from '../stores';
 import { useLocale } from 'next-intl';
 import useProfileErrorHandler from './useProfileErrorHandler';
 import { useAuthSession } from './useAuthSession';
-import { readStoredImpersonationData } from '../utils/apiRequests/setHeader';
+import { readStoredImpersonationData } from '../utils/impersonation';
 
 export const useInitializeUser = () => {
   const locale = useLocale();

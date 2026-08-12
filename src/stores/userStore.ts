@@ -1,10 +1,11 @@
 import type { User } from '@planet-sdk/common';
-import type { ImpersonationData } from '../utils/apiRequests/impersonation';
+import type { ImpersonationData } from '../utils/impersonation';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import getsessionId from '../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
+import { IMPERSONATION_STORAGE_KEY } from '../utils/impersonation';
 import { APIError } from '@planet-sdk/common';
 import { useAuthStore } from './authStore';
 
@@ -70,7 +71,7 @@ export const useUserStore = create<UserStore>()(
        */
       enterImpersonation: (impersonationData) => {
         localStorage.setItem(
-          'impersonationData',
+          IMPERSONATION_STORAGE_KEY,
           JSON.stringify(impersonationData)
         );
         set(
@@ -85,7 +86,7 @@ export const useUserStore = create<UserStore>()(
        * Keep them in sync to avoid inconsistent impersonation state.
        */
       exitImpersonation: () => {
-        localStorage.removeItem('impersonationData');
+        localStorage.removeItem(IMPERSONATION_STORAGE_KEY);
         set(
           { isImpersonationModeOn: false },
           undefined,
