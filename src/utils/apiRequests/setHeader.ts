@@ -11,9 +11,13 @@ export const setHeaderForImpersonation = (
   header: Record<string, string>,
   impersonationData?: ImpersonationData
 ) => {
-  const validImpersonationData = isValidImpersonationData(impersonationData)
-    ? impersonationData
-    : readStoredImpersonationData();
+  let validImpersonationData: ImpersonationData | undefined;
+
+  if (impersonationData === undefined) {
+    validImpersonationData = readStoredImpersonationData();
+  } else if (isValidImpersonationData(impersonationData)) {
+    validImpersonationData = impersonationData;
+  }
 
   if (validImpersonationData) {
     header['X-SWITCH-USER'] = validImpersonationData.targetEmail;
