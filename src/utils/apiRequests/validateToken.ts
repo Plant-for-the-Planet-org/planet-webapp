@@ -10,7 +10,11 @@ export const validateToken = (token: string): boolean => {
   try {
     const decoded: JwtPayload = jwt_decode(token);
     const currentTime = Date.now() / 1000;
-    if (typeof decoded.exp !== 'number' || decoded.exp < currentTime) {
+    if (
+      typeof decoded.exp !== 'number' ||
+      !Number.isFinite(decoded.exp) ||
+      decoded.exp < currentTime
+    ) {
       return false;
     }
     return true;
