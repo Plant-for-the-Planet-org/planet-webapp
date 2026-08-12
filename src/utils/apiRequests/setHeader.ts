@@ -14,25 +14,29 @@ export const isValidImpersonationData = (
 };
 
 /**
+ * Reads 'impersonationData' from localStorage, returning it only if it
+ * parses as valid ImpersonationData. Malformed JSON or incomplete data
+ * yields undefined.
+ */
+export const readStoredImpersonationData = (): ImpersonationData | undefined => {
+  try {
+    const parsed = JSON.parse(`${localStorage.getItem('impersonationData')}`);
+    return isValidImpersonationData(parsed) ? parsed : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+/**
  * Sets keys for header in impersonation mode
  */
 export const setHeaderForImpersonation = (
   header: Record<string, string>,
   impersonationData?: ImpersonationData
 ) => {
-  let impersonationDataFromLocal: ImpersonationData | undefined;
-  try {
-    const parsed = JSON.parse(`${localStorage.getItem('impersonationData')}`);
-    impersonationDataFromLocal = isValidImpersonationData(parsed)
-      ? parsed
-      : undefined;
-  } catch {
-    impersonationDataFromLocal = undefined;
-  }
-
   const validImpersonationData = isValidImpersonationData(impersonationData)
     ? impersonationData
-    : impersonationDataFromLocal;
+    : readStoredImpersonationData();
 
   if (validImpersonationData) {
     header['X-SWITCH-USER'] = validImpersonationData.targetEmail;
