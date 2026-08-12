@@ -30,16 +30,13 @@ export const setHeaderForImpersonation = (
     impersonationDataFromLocal = undefined;
   }
 
-  const targetEmail =
-    impersonationData?.targetEmail || impersonationDataFromLocal?.targetEmail;
-  const supportPin =
-    impersonationData?.supportPin || impersonationDataFromLocal?.supportPin;
+  const validImpersonationData = isValidImpersonationData(impersonationData)
+    ? impersonationData
+    : impersonationDataFromLocal;
 
-  if (targetEmail) {
-    header['X-SWITCH-USER'] = targetEmail;
-  }
-  if (supportPin) {
-    header['X-USER-SUPPORT-PIN'] = supportPin;
+  if (validImpersonationData) {
+    header['X-SWITCH-USER'] = validImpersonationData.targetEmail;
+    header['X-USER-SUPPORT-PIN'] = validImpersonationData.supportPin;
   }
   return header;
 };
