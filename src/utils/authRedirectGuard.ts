@@ -77,3 +77,8 @@ export const beginAuthExpiryHandling = (): boolean => {
 export const resetAuthExpiryHandling = (): void => {
   isAuthExpiryHandlingInFlight = false;
 };
+
+// Check whether auth expiry is already being handled.
+// Page-level redirects should wait to avoid overwriting redirectLink or redirecting twice.
+export const isAuthExpiryHandlingActive = (): boolean =>
+  isAuthExpiryHandlingInFlight;

@@ -8,6 +8,7 @@ import {
   beginAuthExpiryHandling,
   hasExceededRedirectLimit,
   registerRedirectAttempt,
+  resetAuthExpiryHandling,
 } from '../utils/authRedirectGuard';
 
 export const useAuthSession = () => {
@@ -54,19 +55,22 @@ export const useAuthSession = () => {
     const currentPath = router.asPath;
     const isOnLoginPage =
       removeLocaleFromPath(currentPath.split('?')[0]) === '/login';
-    // Already on /login: nothing to preserve, and redirecting again would
-    // just loop.
-    if (isOnLoginPage) return;
+    // Already on /login, so there is nothing to preserve or redirect.
+    // Release the lock since no auth recovery is running.
+    if (isOnLoginPage) {
+      resetAuthExpiryHandling();
+      return;
+    }
 
     localStorage.setItem('redirectLink', currentPath);
 
-    // Same brake used for persistent profile 401s: if the login redirect
-    // keeps firing without ever reaching a healthy session, stop instead of
-    // looping.
+    // Stop redirecting if repeated 401s hit the redirect limit.
+    // Release the lock so future auth expiry can still be handled.
     if (hasExceededRedirectLimit()) {
       console.error(
         '[Auth] Redirect limit reached after repeated auth failures, stopping login redirects.'
       );
+      resetAuthExpiryHandling();
       return;
     }
     registerRedirectAttempt();
