@@ -12,7 +12,6 @@ import type {
 import type { ProjectSiteFeatureCollection } from './map';
 import type { SetState } from './common';
 import type { ChangeEvent } from 'react';
-import type { ViewportFlyToInterpolator } from 'react-map-gl/src/utils/transition/viewport-fly-to-interpolator';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { Polygon } from 'geojson';
 
@@ -87,6 +86,13 @@ export interface QuestionnaireFieldColumn {
 
 /** One row of a species_list answer. Values are keyed by column key. */
 export type QuestionnaireSpeciesRow = Record<string, string | number | null>;
+
+/** A scientific-name suggestion from `/suggest.php`. */
+export interface SpeciesSuggestionType {
+  id: string;
+  name: string;
+  scientificName: string;
+}
 
 export interface QuestionnaireFieldSchema {
   type: QuestionnaireFieldType;
@@ -219,7 +225,7 @@ export interface ViewPort {
   longitude: number;
   zoom: number;
   transitionDuration?: number;
-  transitionInterpolator?: ViewportFlyToInterpolator;
+  transitionInterpolator?: unknown;
   transitionEasing?: (normalizedTime: number) => number;
 }
 

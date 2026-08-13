@@ -6,6 +6,7 @@ import type {
 import { Popover } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
+import IconButton from '../../../common/IconButton';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../DonationReceipt.module.scss';
 
@@ -26,6 +27,7 @@ const DonationInfoPopover = ({
   closePopover,
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
+  const tCommon = useTranslations('Common');
   const open = Boolean(popoverAnchor);
   const id = open ? 'donation-info-popOver' : undefined;
   return (
@@ -44,13 +46,13 @@ const DonationInfoPopover = ({
         },
       }}
     >
-      <button
-        type="button"
+      <IconButton
+        label={`${tCommon('close')} ${tReceipt('donationDetails.title')}`}
         className={styles.closeIconContainer}
         onClick={closePopover}
       >
         <CrossIcon width={10} />
-      </button>
+      </IconButton>
       <table className={styles.donationTable}>
         <thead>
           <tr>

@@ -1,8 +1,4 @@
-import type { SetState } from '../../../common/types/common';
-import type {
-  MultiTreeRegistration,
-  SampleTreeRegistration,
-} from '@planet-sdk/common';
+import type { MultiTreeRegistration } from '@planet-sdk/common';
 
 import { Fragment, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
@@ -19,14 +15,9 @@ import MobileInfoSwiper from '../../MobileInfoSwiper';
 interface Props {
   activeMultiTree: MultiTreeRegistration;
   isMobile: boolean;
-  setSelectedSampleTree: SetState<SampleTreeRegistration | null>;
 }
 
-const MultiTreeInfo = ({
-  activeMultiTree,
-  isMobile,
-  setSelectedSampleTree,
-}: Props) => {
+const MultiTreeInfo = ({ activeMultiTree, isMobile }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
 
   const { totalTreesCount, hectaresCovered } = useMemo(() => {
@@ -99,7 +90,6 @@ const MultiTreeInfo = ({
       <SampleTreesInfo
         key="sampleTrees"
         sampleTrees={activeMultiTree.sampleInterventions}
-        setSelectedSampleTree={setSelectedSampleTree}
       />
     ),
   ].filter(Boolean);

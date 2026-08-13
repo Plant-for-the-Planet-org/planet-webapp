@@ -835,7 +835,10 @@ export default function DetailedAnalysis({
               </p>
               {interventionOptions.map(([intervention, isSet]) => {
                 return (
-                  <div
+                  <button
+                    type="button"
+                    role="checkbox"
+                    aria-checked={isSet}
                     className={styles.multiSelectInput}
                     key={intervention}
                     onClick={() => updateMainInterventions(intervention)}
@@ -862,7 +865,7 @@ export default function DetailedAnalysis({
                     <p>
                       {tManageProjects(`interventionTypes.${intervention}`)}
                     </p>
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -884,7 +887,10 @@ export default function DetailedAnalysis({
             </p>
             {plantingSeasons.map((month) => {
               return (
-                <div
+                <button
+                  type="button"
+                  role="checkbox"
+                  aria-checked={month.isSet}
                   className={styles.multiSelectInput}
                   key={month.id}
                   onClick={() => {
@@ -911,7 +917,7 @@ export default function DetailedAnalysis({
                     </svg>
                   </div>
                   <p>{month.title}</p>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -1245,7 +1251,10 @@ export default function DetailedAnalysis({
             </p>
             {siteOwners.map((owner) => {
               return (
-                <div
+                <button
+                  type="button"
+                  role="checkbox"
+                  aria-checked={owner.isSet}
                   className={styles.multiSelectInput}
                   style={{ width: 'fit-content' }}
                   key={owner.id}
@@ -1271,7 +1280,7 @@ export default function DetailedAnalysis({
                     </svg>
                   </div>
                   <p>{owner.title}</p>
-                </div>
+                </button>
               );
             })}
             {isSiteOwnerMissing === true && (

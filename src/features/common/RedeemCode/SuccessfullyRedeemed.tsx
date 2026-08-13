@@ -4,6 +4,7 @@ import type { RedeemedCodeData } from '../types/redeem';
 import { useTranslations } from 'next-intl';
 import styles from '../../../../src/features/common/RedeemCode/style/RedeemModal.module.scss';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
+import IconButton from '../IconButton';
 import Button from '@mui/material/Button';
 
 export interface SuccessfullyRedeemedProps {
@@ -18,13 +19,18 @@ export const SuccessfullyRedeemed = ({
   closeRedeem,
 }: SuccessfullyRedeemedProps): ReactElement => {
   const tRedeem = useTranslations('Redeem');
+  const tCommon = useTranslations('Common');
 
   return (
     <div className={styles.routeRedeemModal}>
       <div className={styles.crossDiv}>
-        <button className={styles.crossWidth} onClick={closeRedeem}>
+        <IconButton
+          label={`${tCommon('close')} ${tRedeem('redeem')}`}
+          className={styles.crossWidth}
+          onClick={closeRedeem}
+        >
           <CancelIcon />
-        </button>
+        </IconButton>
       </div>
 
       <div className={styles.successMessage}>

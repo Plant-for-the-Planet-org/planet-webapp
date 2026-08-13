@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import type { SetState } from '../../types/common';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import IconContainer from './IconContainer';
 import styles from './UserLayout.module.scss';
@@ -74,11 +75,18 @@ function NavLink({
   user,
   closeMenu,
 }: NavLinkProps) {
+  const t = useTranslations('Me');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   // Determine if this is the current menu item (based on route)
   const isCurrentMainMenu = currentMenuKey === link.key;
+  // Whether this menu item acts as a disclosure control for a submenu
+  const hasSubMenu = Boolean(
+    link.subMenu && link.subMenu.length > 0 && !link.hideSubMenu
+  );
+  // Associates both toggles with the submenu they expand/collapse
+  const subMenuId = `user-nav-submenu-${link.key}`;
 
   useEffect(() => {
     if (link.subMenu && link.subMenu.length > 0 && currentSubMenuKey) {
@@ -105,8 +113,7 @@ function NavLink({
     }
 
     // Check if this menu item should navigate directly (no submenu interaction)
-    const shouldNavigateDirectly =
-      !link.subMenu || link.subMenu.length <= 0 || link.hideSubMenu;
+    const shouldNavigateDirectly = !hasSubMenu;
 
     if (shouldNavigateDirectly && link.path) {
       router.push(localizedPath(link.path));
@@ -134,16 +141,26 @@ function NavLink({
           [styles.navLinkActive]: isCurrentMainMenu,
           [styles.navLinkOpen]: isSubMenuOpen,
         })}
-        onClick={handleMainMenuClick}
       >
         <IconContainer>{link.icon}</IconContainer>
-        <button className={styles.navLinkTitle}>
+        <button
+          type="button"
+          className={styles.navLinkTitle}
+          onClick={handleMainMenuClick}
+          aria-expanded={hasSubMenu ? isSubMenuOpen : undefined}
+          aria-controls={hasSubMenu && isSubMenuOpen ? subMenuId : undefined}
+        >
           {link.title}
           {link.flag && <span className={styles.itemFlag}>{link.flag}</span>}
         </button>
-        {link.subMenu && link.subMenu.length > 0 && !link.hideSubMenu && (
+        {hasSubMenu && (
           <button
+            type="button"
             className={styles.subMenuArrow}
+            onClick={handleMainMenuClick}
+            aria-label={t('toggleSubMenu', { menuTitle: link.title })}
+            aria-expanded={isSubMenuOpen}
+            aria-controls={isSubMenuOpen ? subMenuId : undefined}
             style={{
               transform: isSubMenuOpen ? 'rotate(-180deg)' : 'rotate(-90deg)',
             }}
@@ -152,29 +169,30 @@ function NavLink({
           </button>
         )}
       </div>
-      {isSubMenuOpen &&
-        link.subMenu &&
-        link.subMenu.length > 0 &&
-        !link.hideSubMenu &&
-        link.subMenu.map((subLink) => {
-          if (!subLink.hideItem) {
-            return (
-              <div
-                className={clsx(styles.navLinkSubMenu, {
-                  [styles.navLinkActiveSubMenu]:
-                    currentSubMenuKey === subLink.key,
-                })}
-                key={subLink.title}
-                onClick={() => handleSubMenuClick(subLink)}
-              >
-                {subLink.title}
-                {subLink.flag && (
-                  <span className={styles.itemFlag}>{subLink.flag}</span>
-                )}
-              </div>
-            );
-          }
-        })}
+      {isSubMenuOpen && hasSubMenu && link.subMenu && (
+        <div id={subMenuId}>
+          {link.subMenu.map((subLink) => {
+            if (!subLink.hideItem) {
+              return (
+                <button
+                  type="button"
+                  className={clsx(styles.navLinkSubMenu, {
+                    [styles.navLinkActiveSubMenu]:
+                      currentSubMenuKey === subLink.key,
+                  })}
+                  key={subLink.title}
+                  onClick={() => handleSubMenuClick(subLink)}
+                >
+                  {subLink.title}
+                  {subLink.flag && (
+                    <span className={styles.itemFlag}>{subLink.flag}</span>
+                  )}
+                </button>
+              );
+            }
+          })}
+        </div>
+      )}
     </div>
   );
 }

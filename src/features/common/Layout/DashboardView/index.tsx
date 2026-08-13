@@ -6,7 +6,7 @@ import themeProperties from '../../../../theme/themeProperties';
 
 interface DashboardViewProps {
   title: string;
-  subtitle: string | ReactElement | null;
+  subtitle?: string | ReactElement;
   children: ReactNode;
   variant?: 'full-width' | 'compact';
   multiColumn?: boolean;
@@ -70,12 +70,19 @@ export default function DashboardView({
             xs={12}
             md={10}
           >
-            <Grid item component="h1" className="dashboardTitle">
+            {/* Avoid rendering an empty <h1>; use a <div> when there is no title. */}
+            <Grid
+              item
+              component={title ? 'h1' : 'div'}
+              className="dashboardTitle"
+            >
               {title}
             </Grid>
-            <Grid item className="dashboardSubtitle">
-              {subtitle}
-            </Grid>
+            {subtitle !== undefined && (
+              <Grid item className="dashboardSubtitle">
+                {subtitle}
+              </Grid>
+            )}
           </Grid>
           {!multiColumn ? (
             <Grid

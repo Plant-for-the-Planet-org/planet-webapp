@@ -2,8 +2,8 @@ import type { APIError } from '@planet-sdk/common';
 import type {
   QuestionnaireFieldColumn,
   QuestionnaireSpeciesRow,
+  SpeciesSuggestionType,
 } from '../../../../common/types/project';
-import type { SpeciesSuggestionType } from '../../../TreeMapper/Treemapper';
 
 import { useEffect, useMemo, useState } from 'react';
 

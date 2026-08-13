@@ -20,6 +20,7 @@ const SecondaryLogo = ({ isMobile }: { isMobile: boolean }) => {
           <a href={tenantConfig.config?.header?.tenantLogoLink}>
             <img
               src={tenantConfig.config?.header?.tenantLogoURL}
+              alt={tenantConfig.name}
               className={clsx(styles.tenantLogo, {
                 [styles.wideLogo]: hasWideLogo,
               })}

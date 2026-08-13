@@ -9,14 +9,13 @@ import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/New
 import styles from '../styles/Badge.module.scss';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { clsx } from 'clsx';
-import { useTenantStore } from '../../../../stores/tenantStore';
+import { useViewStore, useTenantStore } from '../../../../stores';
 
 interface Props {
   isApproved: boolean;
   isTopProject: boolean;
   allowDonations: boolean;
   showTooltipPopups: boolean;
-  page: 'project-list' | 'project-details' | undefined;
 }
 interface TitleAndIconReturnType {
   icon: ReactElement;
@@ -52,12 +51,11 @@ const ProjectBadge = ({
   isTopProject,
   allowDonations,
   showTooltipPopups,
-  page,
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
-  // store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const currentPage = useViewStore((state) => state.page);
+  const tenantSlug = useTenantStore((state) => state.tenantConfig.config.slug);
 
   const badgeConfigurations: TitleAndIconReturnType | undefined =
     useMemo(() => {
@@ -99,7 +97,7 @@ const ProjectBadge = ({
     if (badgeType === 'notDonatable') {
       return (
         <div className={styles.tooltipContent}>
-          {tenantConfig.config.slug === 'salesforce'
+          {tenantSlug === 'salesforce'
             ? `${tCommon('salesforceDisabledDonateButtonText')}`
             : `${tCommon('disabledDonateButtonText')}`}
         </div>
@@ -131,13 +129,13 @@ const ProjectBadge = ({
   const { icon, title, displayPopup, badgeType } = badgeConfigurations;
 
   const shouldShowPopup =
-    showTooltipPopups && displayPopup && page !== 'project-details';
+    showTooltipPopups && displayPopup && currentPage !== 'project-details';
 
   const badgeContent = (
     <BadgeLabel
       icon={icon}
       title={title}
-      isInteractive={page !== 'project-details'}
+      isInteractive={currentPage !== 'project-details'}
     />
   );
 

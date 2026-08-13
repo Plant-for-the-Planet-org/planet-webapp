@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import type { SerializedError } from '@planet-sdk/common';
 
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
+import IconButton from '../IconButton';
 import styles from '../../../../src/features/common/RedeemCode/style/RedeemModal.module.scss';
 import { useTranslations } from 'next-intl';
 import Button from '@mui/material/Button';
@@ -20,13 +21,18 @@ export const RedeemFailed = ({
   closeRedeem,
 }: RedeemFailedProps): ReactElement => {
   const t = useTranslations('Redeem');
+  const tCommon = useTranslations('Common');
 
   return (
     <div className={styles.routeRedeemModal}>
       <div className={styles.crossDiv}>
-        <button className={styles.crossWidth} onClick={closeRedeem}>
+        <IconButton
+          label={`${tCommon('close')} ${t('redeem')}`}
+          className={styles.crossWidth}
+          onClick={closeRedeem}
+        >
           <CancelIcon />
-        </button>
+        </IconButton>
       </div>
 
       <div className={styles.redeemTitle}>{inputCode}</div>

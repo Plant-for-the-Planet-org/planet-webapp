@@ -4,10 +4,9 @@ import type { ProjectTabs } from '..';
 import { useTranslations } from 'next-intl';
 import StarIcon from '../../../../../public/assets/images/icons/projectV2/StarIcon';
 import styles from '../styles/ProjectListControls.module.scss';
+import { useProjectStore } from '../../../../stores';
 
 interface ProjectListTabForMobileProps {
-  projectCount: number | undefined;
-  topProjectCount: number | undefined;
   tabSelected?: ProjectTabs;
   setTabSelected?: (value: ProjectTabs) => void;
   setIsFilterOpen: (value: boolean) => void;
@@ -18,13 +17,13 @@ interface TabItemProps {
   label: ReactNode;
 }
 const ProjectListTabForMobile = ({
-  projectCount,
-  topProjectCount,
   tabSelected,
   setTabSelected,
   setIsFilterOpen,
 }: ProjectListTabForMobileProps) => {
   const t = useTranslations('AllProjects');
+  const projectCount = useProjectStore((state) => state.projects?.length);
+  const topProjectCount = useProjectStore((state) => state.topProjects?.length);
 
   const selectTab = (tab: ProjectTabs) => {
     if (setTabSelected) {

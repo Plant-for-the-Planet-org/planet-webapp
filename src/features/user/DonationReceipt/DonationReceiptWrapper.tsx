@@ -8,10 +8,10 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './DonationReceipt.module.scss';
 import { useApi } from '../../../hooks/useApi';
 import { RECEIPT_STATUS } from './donationReceiptTypes';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { validateOwnership } from './DonationReceiptValidator';
 import { useTranslations } from 'next-intl';
 import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
+import { useUserStore } from '../../../stores';
 
 type ReceiptVerificationPayload = {
   dtn: string | null;
@@ -41,15 +41,15 @@ const DonationReceiptWrapper = () => {
     tinIsRequired,
     clearSessionStorage,
   } = useDonationReceiptContext();
-
-  const { user } = useUserProps();
   const { putApi, putApiAuthenticated, postApiAuthenticated } = useApi();
-  const [isLoading, setIsLoading] = useState(false);
   const receiptData = getReceiptData();
   const operation = getOperation();
-  const isOwner = validateOwnership(email, user);
   const tReceipt = useTranslations('DonationReceipt');
-
+  // local state
+  const [isLoading, setIsLoading] = useState(false);
+  // store: state
+  const userEmail = useUserStore((state) => state.userProfile?.email);
+  const isOwner = validateOwnership(email, userEmail);
   useEffect(() => {
     if (!isOwner) clearSessionStorage();
   }, [isOwner]);

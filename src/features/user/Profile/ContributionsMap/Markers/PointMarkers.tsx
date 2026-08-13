@@ -5,7 +5,7 @@ import type {
   ProfilePageType,
 } from '../../../../common/types/myForest';
 
-import { Marker } from 'react-map-gl-v7';
+import { Marker } from 'react-map-gl-v7/maplibre';
 import styles from '../Common/common.module.scss';
 import ProjectTypeIcon from './ProjectTypeIcon';
 import { useState } from 'react';

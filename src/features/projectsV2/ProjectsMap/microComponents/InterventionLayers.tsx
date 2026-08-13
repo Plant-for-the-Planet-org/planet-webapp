@@ -3,7 +3,6 @@ import type {
   Intervention,
   MultiTreeRegistration,
   SampleTreeRegistration,
-  SingleTreeRegistration,
 } from '@planet-sdk/common';
 import type {
   InterventionFeature,
@@ -16,78 +15,98 @@ import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
 import area from '@turf/area';
 import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
-import { useProjects } from '../../ProjectsContext';
 import { FillColor } from '../../../../utils/constants/intervention';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 import { clsx } from 'clsx';
-import { useProjectMapStore } from '../../../../stores/projectMapStore';
+import { useProjectMapStore, useInterventionStore } from '../../../../stores';
 
-interface SampleTreeMarkerProps {
-  sampleTree: SampleTreeRegistration;
-  selectedSampleTree: SampleTreeRegistration | null;
-  toggleSampleTree: (
+interface SampleInterventionMarkerProps {
+  sampleIntervention: SampleTreeRegistration;
+  selectedSampleIntervention: SampleTreeRegistration | null;
+  togglePointIntervention: (
     e: MouseEvent<HTMLDivElement>,
-    sampleTree: SampleTreeRegistration
+    sampleIntervention: SampleTreeRegistration
   ) => void;
 }
 
 const { colors } = themeProperties.designSystem;
+/**
+ * Guards against a single corrupt record poisoning the whole map. Maplibre
+ * validates the entire FeatureCollection as one unit, so one feature with a
+ * null/invalid geometry makes it reject every feature ("Input data is not a
+ * valid GeoJSON object"). We drop interventions whose geometry is not a
+ * structurally usable Point/Polygon before building features.
+ */
+const hasRenderableGeometry = (intervention: Intervention): boolean => {
+  const geometry = intervention.geometry;
+  if (!geometry || typeof geometry !== 'object') return false;
+  if (typeof geometry.type !== 'string') return false;
+  return Array.isArray(geometry.coordinates) && geometry.coordinates.length > 0;
+};
 
-const SampleTreeMarker = ({
-  sampleTree,
-  selectedSampleTree,
-  toggleSampleTree,
-}: SampleTreeMarkerProps) => (
+const SampleInterventionMarker = ({
+  sampleIntervention,
+  selectedSampleIntervention,
+  togglePointIntervention,
+}: SampleInterventionMarkerProps) => (
   <Marker
-    key={`${sampleTree.id}-sample`}
-    latitude={sampleTree.geometry.coordinates[1]}
-    longitude={sampleTree.geometry.coordinates[0]}
+    key={`${sampleIntervention.id}-sample`}
+    latitude={sampleIntervention.geometry.coordinates[1]}
+    longitude={sampleIntervention.geometry.coordinates[0]}
     anchor="center"
   >
     <div
-      key={`${sampleTree.id}-marker`}
+      key={`${sampleIntervention.id}-marker`}
       className={clsx(styles.single, {
-        [styles.singleSelected]: sampleTree.hid === selectedSampleTree?.hid,
+        [styles.singleSelected]:
+          sampleIntervention.hid === selectedSampleIntervention?.hid,
       })}
       role="button"
       tabIndex={0}
-      onClick={(e) => toggleSampleTree(e, sampleTree)}
+      onClick={(e) => togglePointIntervention(e, sampleIntervention)}
     />
   </Marker>
 );
 
 export default function InterventionLayers(): ReactElement {
-  const {
-    interventions,
-    hoveredIntervention,
-    selectedIntervention,
-    setSelectedIntervention,
-    setSelectedSampleTree,
-    selectedSampleTree,
-    selectedInterventionType,
-  } = useProjects();
+  // store: state
+  const interventions = useInterventionStore((state) => state.interventions);
+  const hoveredIntervention = useInterventionStore(
+    (state) => state.hoveredIntervention
+  );
+  const selectedIntervention = useInterventionStore(
+    (state) => state.selectedIntervention
+  );
+  const selectedInterventionType = useInterventionStore(
+    (state) => state.selectedInterventionType
+  );
+  const selectedSampleIntervention = useInterventionStore(
+    (state) => state.selectedSampleIntervention
+  );
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
   const mainMapZoom = useProjectMapStore((state) => state.viewState.zoom);
+  // store: action
+  const setSelectedSampleIntervention = useInterventionStore(
+    (state) => state.setSelectedSampleIntervention
+  );
+
   const t = useTranslations('Maps');
   const locale = useLocale();
 
-  const toggleSampleTree = (
+  const togglePointIntervention = (
     e: MouseEvent<HTMLDivElement>,
-    tree: SingleTreeRegistration | SampleTreeRegistration
+    tree: SampleTreeRegistration
   ) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (selectedSampleTree?.hid === tree.hid) {
-      setSelectedSampleTree(null);
+    if (selectedSampleIntervention?.hid === tree.hid) {
+      setSelectedSampleIntervention(null);
     } else {
       switch (tree.type) {
         case 'sample-tree-registration':
-          setSelectedSampleTree(tree);
-          break;
-        case 'single-tree-registration':
-          setSelectedIntervention(tree);
+          setSelectedSampleIntervention(tree);
           break;
         default:
           break;
@@ -180,7 +199,9 @@ export default function InterventionLayers(): ReactElement {
   if (!interventions || interventions.length === 0) {
     return <></>;
   }
+  //TODO
   const features = interventions
+    .filter(hasRenderableGeometry)
     .filter(
       (intervention) =>
         selectedInterventionType === 'all' ||
@@ -287,14 +308,16 @@ export default function InterventionLayers(): ReactElement {
           filter={['!=', ['get', 'dateDiff'], '']}
         />
         {shouldRenderMarkers
-          ? selectedIntervention.sampleInterventions.map((sampleTree) => (
-              <SampleTreeMarker
-                key={sampleTree.id}
-                sampleTree={sampleTree}
-                selectedSampleTree={selectedSampleTree}
-                toggleSampleTree={toggleSampleTree}
-              />
-            ))
+          ? selectedIntervention.sampleInterventions.map(
+              (sampleIntervention) => (
+                <SampleInterventionMarker
+                  key={sampleIntervention.id}
+                  sampleIntervention={sampleIntervention}
+                  selectedSampleIntervention={selectedSampleIntervention}
+                  togglePointIntervention={togglePointIntervention}
+                />
+              )
+            )
           : null}
       </Source>
     </>

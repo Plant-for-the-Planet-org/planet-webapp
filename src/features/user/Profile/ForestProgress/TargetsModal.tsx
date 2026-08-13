@@ -4,15 +4,20 @@ import type { SetState } from '../../../common/types/common';
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
 import { useEffect } from 'react';
-import { useMyForestStore } from '../../../../stores/myForestStore';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError } from '@planet-sdk/common';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
+import IconButton from '../../../common/IconButton';
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
 import { useApi } from '../../../../hooks/useApi';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useMyForestStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../../stores';
+import { transformProfileToForestUserInfo } from '../../../../utils/myForestUtils';
 
 interface TargetsModalProps {
   open: boolean;
@@ -37,10 +42,9 @@ const TargetsModal = ({
   restorationTarget,
   conservationTarget,
 }: TargetsModalProps) => {
-  const setUserInfo = useMyForestStore((state) => state.setUserInfo);
-  const { contextLoaded, token, setRefetchUserData } = useUserProps();
   const { putApiAuthenticated } = useApi();
   const tProfile = useTranslations('Profile.progressBar');
+  const tCommon = useTranslations('Common');
   // states to manage modal
   const [isTargetModalLoading, setIsTargetModalLoading] = useState(false);
   const [treesPlantedTargetLocal, setTreesPlantedTargetLocal] = useState(0);
@@ -54,7 +58,15 @@ const TargetsModal = ({
   );
   const [isConservedAreaTargetActive, setIsConservedAreaTargetActive] =
     useState(conservationTarget > 0);
-  // store
+  //store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  //store: action
+  const setUserInfo = useMyForestStore((state) => state.setUserInfo);
+  const refetchUserProfile = useUserStore(
+    (state) => state.refetchUserProfile
+  );
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleClose = () => {
@@ -72,7 +84,7 @@ const TargetsModal = ({
 
   const handleTargets = async () => {
     setIsTargetModalLoading(true);
-    if (contextLoaded && token && open && !isTargetModalLoading) {
+    if (isAuthReady && open && !isTargetModalLoading) {
       const payload: ForestProgressTargetApiPayload = {
         targets: {
           treesDonated: isTreesPlantedTargetActive
@@ -93,21 +105,15 @@ const TargetsModal = ({
         >('/app/profile', {
           payload,
         });
-        const newUserInfo = {
-          profileId: res.id,
-          slug: res.slug,
-          targets: {
-            treesDonated: res.scores.treesDonated.target ?? 0,
-            areaConserved: res.scores.areaConserved.target ?? 0,
-            areaRestored: res.scores.areaRestored.target ?? 0,
-          },
-        };
-        setRefetchUserData(true);
-        if (newUserInfo !== undefined) {
-          setUserInfo(newUserInfo);
-          setTreesPlantedTargetLocal(newUserInfo.targets.treesDonated ?? 0);
-          setAreaRestoredTargetLocal(newUserInfo.targets.areaRestored ?? 0);
-          setAreaConservedTargetLocal(newUserInfo.targets.areaConserved ?? 0);
+        const forestUserInfo = transformProfileToForestUserInfo(res);
+        refetchUserProfile();
+        if (forestUserInfo !== undefined) {
+          setUserInfo(forestUserInfo);
+          setTreesPlantedTargetLocal(forestUserInfo.targets.treesDonated ?? 0);
+          setAreaRestoredTargetLocal(forestUserInfo.targets.areaRestored ?? 0);
+          setAreaConservedTargetLocal(
+            forestUserInfo.targets.areaConserved ?? 0
+          );
           setIsTargetModalLoading(false);
           handleClose();
         }
@@ -121,9 +127,13 @@ const TargetsModal = ({
   return (
     <Modal open={open} onClose={handleClose}>
       <div className={styles.targetModalMainContainer}>
-        <button className={styles.crossIconContainer} onClick={handleClose}>
+        <IconButton
+          label={`${tCommon('close')} ${tProfile('setTargets')}`}
+          className={styles.crossIconContainer}
+          onClick={handleClose}
+        >
           <CrossIcon />
-        </button>
+        </IconButton>
         <div className={styles.setTargetLabel}>{tProfile('setTargets')}</div>
 
         <div className={styles.targetModalSubContainer}>

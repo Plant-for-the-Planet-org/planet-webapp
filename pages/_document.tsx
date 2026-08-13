@@ -7,7 +7,7 @@ import Document, { Head, Html, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from '../src/createEmotionCache';
 
-class MyDocument extends Document {
+class MyDocument extends Document<{ locale: string }> {
   static async getInitialProps(
     ctx: DocumentContext
   ): Promise<DocumentInitialProps> {
@@ -17,7 +17,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="en">
+      <Html lang={this.props.locale}>
         <Head>
           <link
             rel="dns-prefetch"
@@ -65,6 +65,9 @@ MyDocument.getInitialProps = async (ctx) => {
 
   const initialProps = await Document.getInitialProps(ctx);
 
+  // Set `<html lang>` from the active locale so each page declares its language. The locale is the `[locale]` route segment, read here via `ctx.query`. This runs on every full document render.
+  const locale = (ctx.query?.locale as string) ?? 'en';
+
   // This is important. It prevents Emotion to render invalid HTML.
   // See https://github.com/mui/material-ui/issues/26561#issuecomment-855286153
   const emotionStyles = extractCriticalToChunks(initialProps.html);
@@ -79,6 +82,7 @@ MyDocument.getInitialProps = async (ctx) => {
 
   return {
     ...initialProps,
+    locale,
     // Styles fragment is rendered after the app and page rendering finish.
     styles: (
       <>

@@ -2,14 +2,14 @@ import type { BooleanQueryParam } from '../../../../stores/queryParamStore';
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import styles from '../styles/ProjectSnippet.module.scss';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useRouter } from 'next/router';
 import { clsx } from 'clsx';
+import { useViewStore } from '../../../../stores';
 
 interface TpoNameProps {
   projectTpoName: string;
-  page: 'project-list' | 'project-details' | undefined;
   allowDonations: boolean;
   isTopProject: boolean;
   isApproved: boolean;
@@ -19,7 +19,6 @@ interface TpoNameProps {
 
 const TpoName = ({
   projectTpoName,
-  page,
   allowDonations,
   isTopProject,
   isApproved,
@@ -27,8 +26,8 @@ const TpoName = ({
   embed,
 }: TpoNameProps) => {
   const tCommon = useTranslations('Common');
-  const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const currentPage = useViewStore((state) => state.page);
 
   const tpoNameBackgroundClass = useMemo(() => {
     if (!allowDonations) return `${styles.noDonation}`;
@@ -36,23 +35,24 @@ const TpoName = ({
     return '';
   }, [isTopProject, isApproved, allowDonations]);
 
-  const handleClick = () => {
-    const url = `/t/${tpoSlug}`;
-    if (embed === 'true') {
-      window.open(url, '_top');
-    } else {
-      router.push(localizedPath(url));
-    }
-  };
+  const url = `/t/${tpoSlug}`;
+  const isEmbed = embed === 'true';
   const tpoNameContainerClasses = clsx(
     styles.projectTpoName,
     tpoNameBackgroundClass,
-    { [styles.projectTpoNameSecondary]: page === 'project-details' }
+    { [styles.projectTpoNameSecondary]: currentPage === 'project-details' }
   );
   return (
-    <div className={tpoNameContainerClasses} onClick={handleClick}>
+    // Embedded widgets navigate the top browsing context to the non-localized
+    // URL (previously window.open(url, '_top')); otherwise a normal localized
+    // client-side navigation (previously router.push).
+    <Link
+      href={isEmbed ? url : localizedPath(url)}
+      target={isEmbed ? '_top' : undefined}
+      className={tpoNameContainerClasses}
+    >
       {tCommon('by', { tpoName: projectTpoName })}
-    </div>
+    </Link>
   );
 };
 

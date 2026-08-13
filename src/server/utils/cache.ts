@@ -13,8 +13,8 @@ export async function getCachedData<T>(
   }
 
   if (!redisClient) {
-    console.error(
-      'Redis client not initialized. If this is not a Storybook environment, please ensure Redis is properly configured and connected.'
+    console.warn(
+      'Redis client not available; falling back to uncached fetch. Expected in Storybook — otherwise set REDIS_URL and REDIS_TOKEN.'
     );
     return await fetchFn();
   }

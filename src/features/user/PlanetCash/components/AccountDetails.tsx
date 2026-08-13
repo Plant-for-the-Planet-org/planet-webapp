@@ -6,10 +6,9 @@ import { useLocale, useTranslations } from 'next-intl';
 import TopUpManagement from './TopUpManagement';
 import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { clsx } from 'clsx';
-import { useTenantStore } from '../../../../stores/tenantStore';
+import { useAuthStore, useTenantStore } from '../../../../stores';
 
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -70,11 +69,11 @@ interface AccountDetailsProps {
 const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
   const t = useTranslations('PlanetCash');
   const locale = useLocale();
-  const { token } = useUserProps();
-  // store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  //store: state
+  const token = useAuthStore((state) => state.token);
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
 
-  const addBalanceLink = getDonationUrl(tenantConfig.id, 'planetcash', token);
+  const addBalanceLink = getDonationUrl(tenantId, 'planetcash', token);
 
   return (
     <Grid

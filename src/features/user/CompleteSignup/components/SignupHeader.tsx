@@ -2,19 +2,20 @@ import { useTranslations } from 'next-intl';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import styles from '../CompleteSignup.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
 
 const SignupHeader = () => {
   const tSignup = useTranslations('EditProfile');
-  const { logoutUser } = useUserProps();
+  const { logoutUser } = useAuthSession();
   return (
     <div className={styles.header}>
-      <div
+      <button
+        type="button"
         onClick={() => logoutUser(`${window.location.origin}/`)}
         className={styles.headerBackIcon}
       >
         <CancelIcon color={themeProperties.designSystem.colors.coreText} />
-      </div>
+      </button>
       <div className={styles.headerTitle}>{tSignup('signUpText')}</div>
     </div>
   );

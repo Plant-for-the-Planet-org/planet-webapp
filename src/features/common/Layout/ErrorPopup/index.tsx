@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 
 import { useEffect } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
+import IconButton from '../../IconButton';
 import styles from './ErrorPopup.module.scss';
 import { useTranslations } from 'next-intl';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
@@ -53,13 +54,14 @@ export default function ErrorPopup(): ReactElement {
         errors.map((err, index) => {
           return (
             <div key={`${index}`} className={styles.errorContainer}>
-              <button
+              <IconButton
                 id={'errorCloseButton'}
+                label={t('close')}
                 className={styles.closeButton}
                 onClick={() => handleRemoveError(err.message)}
               >
                 <CloseIcon color={'#f44336'} width={'10'} height={'10'} />
-              </button>
+              </IconButton>
               <div className={styles.errorContent}>
                 {processErrorMessage(err.message)}
               </div>

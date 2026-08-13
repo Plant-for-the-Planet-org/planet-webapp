@@ -1,18 +1,22 @@
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../UserPropsContext';
 import WebappButton from '../../../WebappButton';
+import IconButton from '../../../IconButton';
 import { useEffect, useState } from 'react';
 import { useMobileDetection } from '../../../../../utils/navbarUtils';
 import Me from '../../../../../../public/assets/images/icons/headerIcons/Me';
 import styles from '../Navbar.module.scss';
 import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useAuthSession } from '../../../../../hooks/useAuthSession';
+import { useUserStore } from '../../../../../stores';
 
 export const SignInButton = () => {
-  const { user, loginWithRedirect } = useUserProps();
+  const { loginWithRedirect } = useAuthSession();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Common');
+  //store: state
+  const userProfile = useUserStore((state) => state.userProfile);
 
   const [isMobile, setIsMobile] = useState(
     window !== undefined && window.matchMedia('(max-width: 481px)').matches
@@ -30,7 +34,7 @@ export const SignInButton = () => {
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
-    if (user) {
+    if (userProfile) {
       if (typeof window !== 'undefined') {
         router.push(localizedPath('/profile'));
       }
@@ -42,13 +46,13 @@ export const SignInButton = () => {
     }
   }
   return isMobile ? (
-    <button
+    <IconButton
       className={styles.mobileSignInButton}
-      type="button"
+      label={t('signIn')}
       onClick={() => gotoUserPage()}
     >
       <Me />
-    </button>
+    </IconButton>
   ) : (
     <WebappButton
       text={t('signIn')}

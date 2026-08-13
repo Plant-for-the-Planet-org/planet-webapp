@@ -7,6 +7,7 @@ import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
+import IconButton from '../../common/IconButton';
 import {
   CircularProgress,
   RadioGroup,
@@ -43,6 +44,7 @@ export const PauseModal = ({
   const { theme } = useContext(ThemeContext);
   const { putApiAuthenticated } = useApi();
   const t = useTranslations('Me');
+  const tCommon = useTranslations('Common');
   // local state
   const [option, setOption] = useState<string>();
   const [showCalender, setShowCalender] = useState(false);
@@ -115,15 +117,13 @@ export const PauseModal = ({
               }}
             >
               <h4>{t('pauseDonationConfirmation')}</h4>
-              <button
+              <IconButton
+                label={`${tCommon('close')} ${t('pauseDonationConfirmation')}`}
                 onClick={handlePauseModalClose}
-                onKeyPress={handlePauseModalClose}
-                role="button"
-                tabIndex={0}
                 className={styles.headerCloseIcon}
               >
                 <Close color={'#4d5153'} />
-              </button>
+              </IconButton>
             </div>
             <div className={styles.note}>
               <p>{t('pauseDonationDescription')}</p>

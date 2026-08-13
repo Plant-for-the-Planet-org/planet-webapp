@@ -6,9 +6,11 @@
       "tin": "Tax Identification Number (TIN)",
       "companyName": "Company Name",
       "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
-      "address": "Address"
+      "address": "Address",
+      "selectAddress": "Select an address for the receipt"
     },
     "donationDetails": {
+      "title": "Donation Details",
       "referenceNumber": "Reference Number",
       "reference": "Reference",
       "amountDonated": "Amount Donated",

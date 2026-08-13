@@ -277,7 +277,11 @@
   padding: 6px;
   padding-right: 12px;
   background-color: $dsWhite;
+  border: none;
   border-radius: 6px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
   transition-duration: 0.4;
   transition-timing-function: ease-in;
   margin-right: 12px;

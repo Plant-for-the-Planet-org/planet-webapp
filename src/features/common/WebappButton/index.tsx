@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { prefetchManager } from '../../../utils/prefetchManager';
 import styles from './WebappButton.module.scss';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { isExternalUrl } from '../../../utils/url';
 import { clsx } from 'clsx';
 
 interface CommonProps {
@@ -42,20 +43,9 @@ function WebappButton({
     otherProps.buttonClasses
   );
   const { localizedPath } = useLocalizedPath();
-  const isExternalURL = (url: string) => {
-    try {
-      if (url.match(/^https?:\/\//)) {
-        const urlObj = new URL(url);
-        return urlObj.host !== window.location.host;
-      }
-      return url.startsWith('//') || url.includes(':');
-    } catch {
-      return false;
-    }
-  };
 
   if (otherProps.elementType === 'link') {
-    const isExternal = isExternalURL(otherProps.href);
+    const isExternal = isExternalUrl(otherProps.href);
 
     if (isExternal) {
       const handleMouseEnter = useCallback(() => {
@@ -72,19 +62,17 @@ function WebappButton({
         <a
           href={otherProps.href}
           target={otherProps.target || '_self'}
-          className={styles.webappButtonLink}
+          className={clsx(styles.webappButtonLink, buttonClasses)}
           onClick={(e) => e.stopPropagation()}
           rel={
             otherProps.target === '_blank' ? 'noopener noreferrer' : undefined
           }
           onMouseEnter={handleMouseEnter}
         >
-          <button className={buttonClasses}>
-            {otherProps.icon !== undefined && (
-              <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
-            )}
-            <div className={styles.webappButtonLabel}>{otherProps.text}</div>
-          </button>
+          {otherProps.icon !== undefined && (
+            <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
+          )}
+          <div className={styles.webappButtonLabel}>{otherProps.text}</div>
         </a>
       );
     }
@@ -93,18 +81,16 @@ function WebappButton({
       <Link
         href={localizedPath(otherProps.href)}
         target={otherProps.target || '_self'}
-        className={styles.webappButtonLink}
+        className={clsx(styles.webappButtonLink, buttonClasses)}
         onClick={(e) => e.stopPropagation()}
         {...(otherProps.prefetch !== undefined && {
           prefetch: otherProps.prefetch,
         })}
       >
-        <button className={buttonClasses}>
-          {otherProps.icon !== undefined && (
-            <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
-          )}
-          <div className={styles.webappButtonLabel}>{otherProps.text}</div>
-        </button>
+        {otherProps.icon !== undefined && (
+          <div className={styles.webappButtonIcon}>{otherProps.icon}</div>
+        )}
+        <div className={styles.webappButtonLabel}>{otherProps.text}</div>
       </Link>
     );
   }

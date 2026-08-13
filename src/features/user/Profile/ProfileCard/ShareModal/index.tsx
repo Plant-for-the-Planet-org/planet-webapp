@@ -5,6 +5,7 @@ import styles from './ShareModal.module.scss';
 import { Modal, Fade, TextField } from '@mui/material';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import CopyToClipboard from '../../../../common/CopyToClipboard';
+import IconButton from '../../../../common/IconButton';
 import {
   FacebookCustomIcon,
   LinkedInCustomIcon,
@@ -18,8 +19,8 @@ import { useTenantStore } from '../../../../../stores/tenantStore';
 const CustomCopyButton = () => {
   const t = useTranslations('Profile');
   return (
-    <button className={styles.copyButton}>
-      <label>{t('shareFeature.copyLink')}</label>
+    <button type="button" className={styles.copyButton}>
+      <span>{t('shareFeature.copyLink')}</span>
     </button>
   );
 };
@@ -78,7 +79,10 @@ const ShareModal = ({
           <div className={styles.socialMediaIconContainer}>
             <h3>{t('shareFeature.shareVia')}</h3>
             <div>
-              <button
+              <IconButton
+                label={t('shareFeature.shareOn', {
+                  socialMedia: 'Facebook',
+                })}
                 onClick={() =>
                   handleShare(
                     `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShareLinkedin}&hashtag=%23StopTalkingStartPlanting`
@@ -87,8 +91,11 @@ const ShareModal = ({
                 className={styles.socialMediaIcon}
               >
                 <FacebookCustomIcon />
-              </button>
-              <button
+              </IconButton>
+              <IconButton
+                label={t('shareFeature.shareOn', {
+                  socialMedia: 'LinkedIn',
+                })}
                 onClick={() =>
                   handleShare(
                     `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`
@@ -97,18 +104,22 @@ const ShareModal = ({
                 className={styles.socialMediaIcon}
               >
                 <LinkedInCustomIcon />
-              </button>
+              </IconButton>
 
-              <button
+              <IconButton
+                label={t('shareFeature.shareOn', {
+                  socialMedia: 'WhatsApp',
+                })}
                 onClick={() =>
                   handleShare(`whatsapp://send?text=${linkToShare}`)
                 }
                 className={styles.socialMediaIcon}
               >
                 <WhatsappCustomIcon />
-              </button>
+              </IconButton>
 
-              <button
+              <IconButton
+                label={t('shareFeature.shareOn', { socialMedia: 'X' })}
                 onClick={() =>
                   handleShare(
                     `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`
@@ -117,13 +128,14 @@ const ShareModal = ({
                 className={styles.socialMediaIcon}
               >
                 <XCustomIcon />
-              </button>
-              <button
+              </IconButton>
+              <IconButton
+                label={t('shareFeature.shareViaEmail')}
                 onClick={handleMailShare}
                 className={styles.socialMediaIcon}
               >
                 <MailCustomIcon />
-              </button>
+              </IconButton>
             </div>
           </div>
           <div className={styles.shareLinkContainer}>

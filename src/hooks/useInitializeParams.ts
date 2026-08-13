@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useQueryParamStore } from '../stores/queryParamStore';
+import { useQueryParamStore } from '../stores';
 
 const getFirstQueryValue = (value?: string | string[]): string | undefined => {
   if (!value) return undefined;
@@ -23,15 +23,13 @@ export const useInitializeParams = () => {
   );
   const isContextLoaded = useQueryParamStore((state) => state.isContextLoaded);
 
+  /**
+   * Read the embed params once per full page load. The `isContextLoaded` latch means a client-side navigation that changes them is ignored, so these values do not track the URL.
+   * Link builders forward only `embed` and `callback` anyway, see #3014.
+   */
   useEffect(() => {
     if (!router.isReady || isContextLoaded) return;
-    const { query, pathname } = router;
-    const page =
-      pathname === '/sites/[slug]/[locale]'
-        ? 'project-list'
-        : query.p !== undefined
-        ? 'project-details'
-        : null;
+    const { query } = router;
 
     initializeParams({
       embed: getBooleanQuery(query.embed),
@@ -39,8 +37,31 @@ export const useInitializeParams = () => {
       callbackUrl: getFirstQueryValue(query.callback),
       showProjectDetails: getBooleanQuery(query.project_details),
       showProjectList: getBooleanQuery(query.project_list),
-      page,
       isContextLoaded: true,
     });
-  }, [router.isReady, router.pathname, router.query, isContextLoaded]);
+  }, [router.isReady, router.query, isContextLoaded]);
+
+  /**
+   * Remember where to return to, for the back button on project details.
+   *
+   * Kept out of the latched effect above so a client-side navigation carrying a
+   * new `backNavigationUrl` still updates it. It lives here rather than in
+   * `ProjectSnippet` because that component is not rendered when the details
+   * pane is hidden in embed mode.
+   */
+  useEffect(() => {
+    const { backNavigationUrl } = router.query;
+    if (typeof backNavigationUrl !== 'string') return;
+
+    try {
+      sessionStorage.setItem(
+        'backNavigationUrl',
+        decodeURIComponent(backNavigationUrl)
+      );
+    } catch {
+      // Malformed percent-encoding, such as a bare `%`, throws a `URIError`.
+      // Session storage can also be blocked in a cross-origin embed.
+      // Neither is worth failing the page for, the back button just falls back to home.
+    }
+  }, [router.query.backNavigationUrl]);
 };

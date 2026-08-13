@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
 import ProjectSelectAutocomplete from '../../../common/ProjectSelectAutocomplete';
@@ -21,7 +20,7 @@ import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import QRCode from 'qrcode';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
-import { useTenantStore } from '../../../../stores/tenantStore';
+import { useUserStore, useTenantStore } from '../../../../stores';
 
 interface DonationLinkFormProps {
   projectsList: ProjectOption[] | null;
@@ -35,7 +34,9 @@ interface LanguageType {
 const DonationLinkForm = ({
   projectsList,
 }: DonationLinkFormProps): ReactElement | null => {
-  const { user } = useUserProps();
+  const tDonationLink = useTranslations('DonationLink');
+  const tCountry = useTranslations('Country');
+  const tMe = useTranslations('Me');
   // local state
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('auto');
   const [language, setLanguage] = useState<LanguageType>({
@@ -43,22 +44,26 @@ const DonationLinkForm = ({
     languageName: 'Automatic Selection',
   });
   const [donationUrl, setDonationUrl] = useState<string>('');
-  const tDonationLink = useTranslations('DonationLink');
-  const tCountry = useTranslations('Country');
-  const tMe = useTranslations('Me');
   const [localProject, setLocalProject] = useState<ProjectOption | null>(null);
-  const [isSupport, setIsSupport] = useState<boolean>(!user?.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
   const [isArrayUpdated, setIsArrayUpdated] = useState<boolean>(false);
   const [isLinkUpdated, setIsLinkUpdated] = useState<boolean>(false);
   const [qrCode, setQrCode] = useState<string | null>(null);
   // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const [isSupport, setIsSupport] = useState<boolean>(false);
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const getDonationORCode = async () => {
     const data = await QRCode.toDataURL(donationUrl);
     setQrCode(data);
   };
+
+  useEffect(() => {
+    if (userProfile) {
+      setIsSupport(!userProfile.isPrivate);
+    }
+  }, [userProfile?.isPrivate]);
 
   useEffect(() => {
     if (donationUrl) {
@@ -80,7 +85,9 @@ const DonationLinkForm = ({
 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
       localProject == null ? '' : `to=${localProject.slug}&`
-    }tenant=${tenantConfig?.id}${isSupport ? `&s=${user?.slug}` : ''}
+    }tenant=${tenantConfig?.id}${
+      isSupport && !userProfile?.isPrivate ? `&s=${userProfile?.slug}` : ''
+    }
     `;
     if (donationUrl.length > 0) setIsLinkUpdated(true);
     setDonationUrl(url);
@@ -92,7 +99,16 @@ const DonationLinkForm = ({
 
   useEffect(() => {
     handleUrlChange();
-  }, [country, language, localProject, isSupport, isTesting]);
+  }, [
+    country,
+    language,
+    localProject,
+    isSupport,
+    isTesting,
+    tenantConfig?.id,
+    userProfile?.slug,
+    userProfile?.isPrivate,
+  ]);
 
   useEffect(() => {
     const autoLanguage = {
@@ -127,7 +143,7 @@ const DonationLinkForm = ({
     }
   };
 
-  if (isArrayUpdated && user) {
+  if (isArrayUpdated && userProfile) {
     return (
       <StyledForm>
         <div className="inputContainer">
@@ -198,7 +214,7 @@ const DonationLinkForm = ({
               {tDonationLink('treeCounterTitle')}
             </div>
             <InlineFormDisplayGroup type="other">
-              <h6>{tDonationLink('treeCounterSubtitle')}</h6>
+              <p>{tDonationLink('treeCounterSubtitle')}</p>
               <NewToggleSwitch
                 id="treeCounter"
                 name="treeCounter"
@@ -206,11 +222,11 @@ const DonationLinkForm = ({
                 onChange={() => {
                   setIsSupport(!isSupport);
                 }}
-                disabled={user.isPrivate}
+                disabled={userProfile.isPrivate}
               />
             </InlineFormDisplayGroup>
-            {user.isPrivate && (
-              <h6>{tDonationLink('treeCounterPrivateAccountSubtitle')}</h6>
+            {userProfile.isPrivate && (
+              <p>{tDonationLink('treeCounterPrivateAccountSubtitle')}</p>
             )}
           </div>
           <InlineFormDisplayGroup type="other">
@@ -229,8 +245,8 @@ const DonationLinkForm = ({
           </InlineFormDisplayGroup>
           {isTesting && (
             <>
-              <h6> {tDonationLink('testingModeSubtitle1')}</h6>
-              <h6>
+              <p> {tDonationLink('testingModeSubtitle1')}</p>
+              <p>
                 {tDonationLink('testingModeSubtitle2')}{' '}
                 <a
                   className="planet-links"
@@ -240,7 +256,7 @@ const DonationLinkForm = ({
                 >
                   stripe
                 </a>{' '}
-              </h6>
+              </p>
             </>
           )}
           <div className={styles.formSection}>
@@ -277,6 +293,7 @@ const DonationLinkForm = ({
                 className={styles.qrContainer}
                 id="base64image"
                 src={qrCode}
+                alt={tDonationLink('qrCodeTitle')}
               />
               <div>
                 <Button

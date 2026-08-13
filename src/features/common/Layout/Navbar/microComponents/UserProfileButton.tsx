@@ -1,6 +1,5 @@
+import { useTranslations } from 'next-intl';
 import getImageUrl from '../../../../../utils/getImageURL';
-import { useUserProps } from '../../UserPropsContext';
-import { useAuth0 } from '@auth0/auth0-react';
 import DefaultProfileImageIcon from '../../../../../../public/assets/images/icons/headerIcons/DefaultProfileImageIcon';
 import SignInButton from './SignInButton';
 import Skeleton from 'react-loading-skeleton';
@@ -8,6 +7,8 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import styles from '../Navbar.module.scss';
 import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useAuthSession } from '../../../../../hooks/useAuthSession';
+import { useUserStore } from '../../../../../stores';
 
 const ProfileIconSkeleton = () => {
   return (
@@ -18,12 +19,14 @@ const ProfileIconSkeleton = () => {
 };
 
 const UserProfileButton = () => {
-  const { user } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isAuthLoading } = useAuthSession();
+  const t = useTranslations('Common');
+  //store: state
+  const userProfile = useUserStore((state) => state.userProfile);
 
-  if (isLoading) {
+  if (isAuthLoading) {
     return <ProfileIconSkeleton />;
   }
 
@@ -31,20 +34,27 @@ const UserProfileButton = () => {
     return <SignInButton />;
   }
 
-  if (!user) {
+  if (!userProfile) {
     return null;
   }
 
   return (
     <button
+      type="button"
+      aria-label={t('myProfile')}
       className={styles.profileImageButton}
       onClick={() => router.push(localizedPath('/profile'))}
     >
-      {user.image ? (
-        <img src={getImageUrl('profile', 'thumb', user.image)} alt="Profile" />
+      {userProfile.image ? (
+        <img
+          src={getImageUrl('profile', 'thumb', userProfile.image)}
+          alt="Profile"
+        />
       ) : (
         <div className={styles.userDefaultIconContainer}>
-          <DefaultProfileImageIcon />
+          <span aria-hidden="true" style={{ display: 'contents' }}>
+            <DefaultProfileImageIcon />
+          </span>
         </div>
       )}
     </button>

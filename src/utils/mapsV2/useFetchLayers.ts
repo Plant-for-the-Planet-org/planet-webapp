@@ -5,7 +5,7 @@ import type {
 
 import { useEffect, useRef } from 'react';
 import { mapSettingsConfig } from './mapSettings.config';
-import { useProjectMapStore } from '../../stores/projectMapStore';
+import { useProjectMapStore } from '../../stores';
 
 export const useFetchLayers = () => {
   const exploreLayersData = useProjectMapStore(

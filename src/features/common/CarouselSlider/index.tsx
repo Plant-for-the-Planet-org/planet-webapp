@@ -3,6 +3,7 @@ import type { InnerSlider, Settings } from 'react-slick';
 import type { SetState } from '../types/common';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -11,6 +12,7 @@ import {
   CarouselPrevIcon,
 } from '../../../../public/assets/images/icons/ProfilePageV2Icons';
 import themeProperties from '../../../theme/themeProperties';
+import IconButton from '../IconButton';
 import styles from './CarouselSlider.module.scss';
 
 interface ExtendedInnerSlider extends InnerSlider {
@@ -25,14 +27,16 @@ const CarouselArrow = (props: {
   direction: string;
 }) => {
   const { onClick, disabled, direction } = props;
+  const t = useTranslations('Common');
   const disabledColor = themeProperties.designSystem.colors.mediumGrey;
   const activeColor = themeProperties.designSystem.colors.primaryColor;
   const iconColor = disabled ? disabledColor : activeColor;
 
   return (
-    <button
+    <IconButton
       onClick={onClick}
       disabled={disabled}
+      label={direction === 'next' ? t('nextSlide') : t('previousSlide')}
       style={{
         cursor: disabled ? 'none' : 'pointer',
       }}
@@ -42,7 +46,7 @@ const CarouselArrow = (props: {
       ) : (
         <CarouselPrevIcon color={iconColor} />
       )}
-    </button>
+    </IconButton>
   );
 };
 
