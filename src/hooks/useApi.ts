@@ -102,7 +102,7 @@ type ApiConfig<
   : ApiConfigWithoutPayload;
 
 export const useApi = () => {
-  const { logoutUser } = useAuthSession();
+  const { handleAuthExpiry } = useAuthSession();
   const locale = useLocale();
   //store: state
   const token = useAuthStore((state) => state.token);
@@ -133,7 +133,7 @@ export const useApi = () => {
 
     if (authRequired) {
       if (!token || !validateToken(token)) {
-        logoutUser?.();
+        handleAuthExpiry();
         throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
           error_type: 'token_expired',
           error_code: 'token_expired',
@@ -151,6 +151,12 @@ export const useApi = () => {
       return await apiClient<T>(requestOptions);
     } catch (err) {
       if (err instanceof APIError || err instanceof ClientError) {
+        // A 401 means the server no longer accepts the current auth token.
+        // Handle it the same way as an expired token, then rethrow the error
+        // so the caller can still handle it if needed.
+        if (authRequired && err instanceof APIError && err.statusCode === 401) {
+          handleAuthExpiry();
+        }
         throw err;
       }
       console.error('Unexpected error:', err);
