@@ -1,9 +1,6 @@
 name: 'Unit tests'
 on:
   pull_request:
-  push:
-    branches:
-      - develop
 jobs:
   vitest:
     name: 'Vitest on Ubuntu'

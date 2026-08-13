@@ -122,6 +122,16 @@ describe('setHeaderForImpersonation', () => {
     });
   });
 
+  it('does not mutate the header it is given', () => {
+    initStoredImpersonationData(STORED);
+
+    const header = { 'x-locale': 'en' };
+    const result = setHeaderForImpersonation(header);
+
+    expect(header).toEqual({ 'x-locale': 'en' });
+    expect(result).not.toBe(header);
+  });
+
   it('sets no headers when the stored data is not valid JSON', () => {
     // Set directly rather than via the helper, which stringifies and so cannot produce invalid JSON.
     localStorage.setItem('impersonationData', 'not json');

@@ -5,7 +5,8 @@ import {
 } from '../impersonation';
 
 /**
- * Sets keys for header in impersonation mode
+ * Returns a new header with the impersonation keys added when there is valid impersonation data.
+ * Does not mutate the header passed in.
  */
 export const setHeaderForImpersonation = (
   header: Record<string, string>,
@@ -19,9 +20,11 @@ export const setHeaderForImpersonation = (
     validImpersonationData = impersonationData;
   }
 
+  const finalHeader = { ...header };
+
   if (validImpersonationData) {
-    header['X-SWITCH-USER'] = validImpersonationData.targetEmail;
-    header['X-USER-SUPPORT-PIN'] = validImpersonationData.supportPin;
+    finalHeader['X-SWITCH-USER'] = validImpersonationData.targetEmail;
+    finalHeader['X-USER-SUPPORT-PIN'] = validImpersonationData.supportPin;
   }
-  return header;
+  return finalHeader;
 };
