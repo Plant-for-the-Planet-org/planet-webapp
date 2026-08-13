@@ -6,20 +6,15 @@ import { useLocale } from 'next-intl';
 import { useAuthStore, useTenantStore, useUserStore } from '../stores';
 import useLocalizedPath from './useLocalizedPath';
 import { useAuthSession } from './useAuthSession';
-import {
-  hasExceededRedirectLimit,
-  registerRedirectAttempt,
-} from '../utils/authRedirectGuard';
 
 const useProfileErrorHandler = () => {
   const router = useRouter();
   const locale = useLocale();
-  const { loginWithRedirect } = useAuthSession();
+  const { handleAuthExpiry } = useAuthSession();
   const { localizedPath } = useLocalizedPath();
   // store: state
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
-  const setToken = useAuthStore((state) => state.setToken);
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
   const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
 
@@ -31,32 +26,12 @@ const useProfileErrorHandler = () => {
           router.push(localizedPath('/complete-signup'));
           break;
 
-        // 401: token rejected (expired, invalid, or revoked), clear it and get a fresh one
-        // Clear impersonation so a leftover session does not silently
-        // resume impersonating this user after the next login.
+        // 401: token rejected (expired, invalid, or revoked). Recover through
+        // the same shared path as every other authenticated request: clear
+        // the token and impersonation, preserve the current route, and
+        // redirect to /login.
         case 401:
-          exitImpersonation();
-          setToken(null);
-
-          // Use the same redirect counter as token failures.
-          // If the token keeps working but the profile keeps returning 401,
-          // the counter will eventually stop the repeated login redirects.
-          //
-          // Once the limit is reached, stay on the current page instead of
-          // redirecting again. `login.tsx` will keep the app stable there
-          // when no profile is available.
-          if (hasExceededRedirectLimit()) {
-            console.error(
-              '[Profile API] Redirect limit reached after repeated 401s, stopping login redirects.'
-            );
-            break;
-          }
-          registerRedirectAttempt();
-
-          loginWithRedirect({
-            redirectUri: `${window.location.origin}/login`,
-            ui_locales: localStorage.getItem('language') || 'en',
-          });
+          handleAuthExpiry();
           break;
 
         // 403: access forbidden. If impersonating, stop and reload the real user
@@ -95,9 +70,8 @@ const useProfileErrorHandler = () => {
     },
     [
       router,
-      loginWithRedirect,
+      handleAuthExpiry,
       localizedPath,
-      setToken,
       exitImpersonation,
       fetchUserProfile,
       tenantId,
