@@ -495,6 +495,9 @@ export default function BasicDetails({
               />
             </InlineFormDisplayGroup>
           )}
+          {basicAnnotation('unitType') && (
+            <AnnotationCallout text={basicAnnotation('unitType')!} />
+          )}
           {basicAnnotation('countTarget') && (
             <AnnotationCallout text={basicAnnotation('countTarget')!} />
           )}
@@ -666,6 +669,9 @@ export default function BasicDetails({
               />
             )}
           </InlineFormDisplayGroup>
+          {basicAnnotation('unitCost') && (
+            <AnnotationCallout text={basicAnnotation('unitCost')!} />
+          )}
           <div
             className={clsx(styles.formFieldLarge, styles.mapboxContainer)}
             style={{ width: '100%' }}
