@@ -99,6 +99,12 @@ export interface QuestionnaireFieldSchema {
   label: string;
   description: string | null;
   classifications: string[] | null;
+  /**
+   * The project owner may leave this question blank. Optional questions never
+   * count towards completeness, so they cannot block a review submission.
+   * Older schema payloads omit the flag, so absent means required.
+   */
+  optional?: boolean;
   choices?: string[];
   /** Used by row_list and matrix */
   rows?: QuestionnaireFieldRow[];

@@ -51,11 +51,17 @@ function humanizeLabel(value: string): string {
   return value.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 }
 
-/** Returns true when the given field value counts as "filled" (at least one cell non-empty). */
+/**
+ * Returns true when the given field value counts as "filled" (at least one cell
+ * non-empty). Optional questions always count as filled — leaving one blank is
+ * a valid answer, so it must never hold back a review submission.
+ */
 export function isFieldFilled(
   field: QuestionnaireFieldSchema,
   val: unknown
 ): boolean {
+  if (field.optional) return true;
+
   if (field.type === 'multi_choice')
     return Array.isArray(val) && val.length > 0;
 
@@ -297,13 +303,19 @@ export default function ProjectQuestionnaire({
     field: QuestionnaireFieldSchema
   ): ReactElement {
     const annotation = questionnaireAnnotations[`questionnaire.${name}`];
+    const fieldClassName = `${styles.formFieldLarge} ${styles.questionnaireField}`;
+    // The schema carries the hint as a flag, so the suffix is translated here
+    // rather than baked into the label the API returns.
+    const labelText = field.optional
+      ? `${field.label} ${t('optionalFieldSuffix')}`
+      : field.label;
 
     // ── multi_choice ─────────────────────────────────────────────────────
     if (field.type === 'multi_choice' && field.choices) {
       return (
-        <div key={name} className={styles.formFieldLarge}>
+        <div key={name} className={fieldClassName}>
           <FormLabel component="legend" sx={{ mb: 0.5 }}>
-            {field.label}
+            {labelText}
           </FormLabel>
           {field.description && (
             <FieldDescription>{field.description}</FieldDescription>
@@ -311,7 +323,11 @@ export default function ProjectQuestionnaire({
           <Controller
             name={name}
             control={control}
-            rules={{ validate: (v) => (Array.isArray(v) ? v.length > 0 : !!v) }}
+            rules={
+              field.optional
+                ? undefined
+                : { validate: (v) => (Array.isArray(v) ? v.length > 0 : !!v) }
+            }
             render={({ field: { value, onChange } }) => {
               const current = Array.isArray(value) ? (value as string[]) : [];
               return (
@@ -366,9 +382,9 @@ export default function ProjectQuestionnaire({
     // ── number / integer ──────────────────────────────────────────────────
     if (field.type === 'number' || field.type === 'integer') {
       return (
-        <div key={name} className={styles.formFieldLarge}>
+        <div key={name} className={fieldClassName}>
           <FormLabel component="legend" sx={{ mb: 0.5 }}>
-            {field.label}
+            {labelText}
           </FormLabel>
           {field.description && (
             <FieldDescription>{field.description}</FieldDescription>
@@ -376,7 +392,7 @@ export default function ProjectQuestionnaire({
           <Controller
             name={name}
             control={control}
-            rules={{ required: true }}
+            rules={field.optional ? undefined : { required: true }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextField
                 type="number"
@@ -395,9 +411,9 @@ export default function ProjectQuestionnaire({
     // ── row_list ──────────────────────────────────────────────────────────
     if (field.type === 'row_list' && field.rows) {
       return (
-        <div key={name} className={styles.formFieldLarge}>
+        <div key={name} className={fieldClassName}>
           <FormLabel component="legend" sx={{ mb: 0.5 }}>
-            {field.label}
+            {labelText}
           </FormLabel>
           {field.description && (
             <FieldDescription>{field.description}</FieldDescription>
@@ -443,9 +459,9 @@ export default function ProjectQuestionnaire({
     if (field.type === 'species_list' && field.columns) {
       const columns = field.columns;
       return (
-        <div key={name} className={styles.formFieldLarge}>
+        <div key={name} className={fieldClassName}>
           <FormLabel component="legend" sx={{ mb: 0.5 }}>
-            {field.label}
+            {labelText}
           </FormLabel>
           {field.description && (
             <FieldDescription>{field.description}</FieldDescription>
@@ -477,11 +493,11 @@ export default function ProjectQuestionnaire({
       return (
         <div
           key={name}
-          className={styles.formFieldLarge}
+          className={fieldClassName}
           style={{ overflowX: 'auto' }}
         >
           <FormLabel component="legend" sx={{ mb: 0.5 }}>
-            {field.label}
+            {labelText}
           </FormLabel>
           {field.description && (
             <FieldDescription>{field.description}</FieldDescription>
@@ -564,9 +580,9 @@ export default function ProjectQuestionnaire({
 
     // ── text / string / default ───────────────────────────────────────────
     return (
-      <div key={name} className={styles.formFieldLarge}>
+      <div key={name} className={fieldClassName}>
         <FormLabel component="legend" sx={{ mb: 0.5 }}>
-          {field.label}
+          {labelText}
         </FormLabel>
         {field.description && (
           <FieldDescription>{field.description}</FieldDescription>
@@ -574,7 +590,7 @@ export default function ProjectQuestionnaire({
         <Controller
           name={name}
           control={control}
-          rules={{ required: true }}
+          rules={field.optional ? undefined : { required: true }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
               multiline

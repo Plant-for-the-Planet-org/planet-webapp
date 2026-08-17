@@ -134,6 +134,7 @@
     "questionnaireDescription": "Please answer the following questions about your project. These help us evaluate your project for donations.",
     "noQuestionnaire": "No questionnaire questions are required for this project type.",
     "backToProjectSpending": "Back to Project Spending",
+    "optionalFieldSuffix": "(optional)",
     "requiredField": "This field is required",
     "incompleteFieldsBanner": "You have not filled in all fields. You can come back later to provide the missing information.",
     "incompleteMedia": "Project Media is incomplete. Please upload at least one image before submitting.",
