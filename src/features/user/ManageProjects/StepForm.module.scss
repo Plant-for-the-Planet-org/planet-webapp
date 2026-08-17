@@ -115,6 +115,15 @@
   min-width: 320px;
 }
 
+// Questionnaire fields stack their label, help text and control vertically.
+// .formFieldLarge is a row, which put a field's description beside its label
+// whenever the label was short enough to leave room on the line. Applied on top
+// of .formFieldLarge, so the widths and spacing above still hold.
+.questionnaireField {
+  flex-direction: column;
+  align-items: stretch;
+}
+
 .formFieldFix {
   position: relative;
 }
