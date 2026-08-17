@@ -5,9 +5,10 @@ import { useLocale } from 'next-intl';
 import useProfileErrorHandler from './useProfileErrorHandler';
 import { useAuthSession } from './useAuthSession';
 import {
-  clearRedirectCount,
   resetAuthExpiryHandling,
+  clearRedirectCount,
 } from '../utils/authRedirectGuard';
+import { readStoredImpersonationData } from '../utils/impersonation';
 
 export const useInitializeUser = () => {
   const locale = useLocale();
@@ -86,8 +87,6 @@ export const useInitializeUser = () => {
       exitImpersonation();
       return;
     }
-    setIsImpersonationModeOn(
-      localStorage.getItem('impersonationData') !== null
-    );
+    setIsImpersonationModeOn(readStoredImpersonationData() !== undefined);
   }, [auth0User, isAuthLoading, auth0Error, isAuthenticated]);
 };
