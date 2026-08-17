@@ -3,6 +3,7 @@ import type { ImpersonationData } from '../utils/impersonation';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import apiClient from '../utils/apiRequests/apiClient';
 import getsessionId from '../utils/apiRequests/getSessionId';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
 import {
@@ -130,25 +131,14 @@ export const useUserStore = create<UserStore>()(
             'x-locale': locale,
           };
 
-          const response = await fetch(
-            `${process.env.API_ENDPOINT}/app/profile`,
-            {
-              method: 'GET',
-              headers: setHeaderForImpersonation(header, impersonationData),
-            }
-          );
-
-          if (!response.ok) {
-            throw new APIError(response.status, 'Failed to fetch user profile');
-          }
-
-          const result = await response.json();
-          if (!result) {
-            throw new APIError(
-              response.status,
-              'User profile response was empty'
-            );
-          }
+          const result = await apiClient<User>({
+            method: 'GET',
+            url: '/app/profile',
+            additionalHeaders: setHeaderForImpersonation(
+              header,
+              impersonationData
+            ),
+          });
 
           // Superseded by a newer fetch: do not commit to store, and do not return a stale identity back to the caller (e.g. ImpersonateUserForm enters impersonation from this return value).
           if (isStale()) {
