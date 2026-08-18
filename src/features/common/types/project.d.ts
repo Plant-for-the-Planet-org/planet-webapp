@@ -46,6 +46,14 @@ export type VerificationStatus =
   | 'in_review'
   | 'revision_requested';
 
+/** One field a form still needs, used by the missing-fields summaries. */
+export interface MissingField {
+  /** Field key. Also builds the jump anchor via fieldAnchorId(). */
+  key: string;
+  /** Human label, always the same text the field itself is labelled with. */
+  label: string;
+}
+
 export interface RevisionRequest {
   snapshotAt: string;
   globalAnnotation: string | null;
@@ -101,7 +109,8 @@ export interface QuestionnaireFieldSchema {
   classifications: string[] | null;
   /**
    * The project owner may leave this question blank. Optional questions never
-   * count towards completeness, so they cannot block a review submission.
+   * count towards completeness, so they cannot block a review submission,
+   * unless a reviewer has annotated the field and asked for the value.
    * Older schema payloads omit the flag, so absent means required.
    */
   optional?: boolean;
@@ -351,7 +360,7 @@ export interface QuestionnaireProps {
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   isLocked: boolean;
-  onCompletenessChange: (complete: boolean) => void;
+  onCompletenessChange: (missing: MissingField[]) => void;
   /** Pre-fetched schema from the parent. When provided the component skips its own fetch. */
   initialSchema?: QuestionnaireSchema | null;
   /** Project purpose — passed explicitly so the cache lookup works even before projectDetails loads. */
@@ -361,13 +370,15 @@ export interface QuestionnaireProps {
 // project review
 
 export interface SectionCompleteness {
-  detailedAnalysis: boolean;
-  questionnaire: boolean | null;
+  detailedAnalysis: MissingField[];
+  /** Null when the questionnaire does not apply, or has not loaded yet. */
+  questionnaire: MissingField[] | null;
   media: boolean | null;
   sites: boolean | null;
 }
 
 export interface SubmitForReviewProps {
+  projectGUID: string;
   submitForReview: () => Promise<void>;
   handleBack: (arg: number) => void;
   isUploadingData: Boolean;

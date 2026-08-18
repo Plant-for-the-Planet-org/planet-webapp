@@ -14,6 +14,8 @@ import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
+import MissingFieldsSummary from './microComponent/MissingFieldsSummary';
+import { fieldAnchorId } from '../utils/completeness';
 
 const richTags = {
   bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
@@ -37,6 +39,7 @@ function SubmitForReview({
   handlePublishChange,
   isLocked,
   sectionCompleteness,
+  projectGUID,
 }: SubmitForReviewProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const router = useRouter();
@@ -76,7 +79,9 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
+            <p>
+              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
+            </p>
           </Button>
 
           <Button
@@ -90,13 +95,50 @@ function SubmitForReview({
     );
   }
 
-  const daIncomplete = !sectionCompleteness.detailedAnalysis;
-  const qIncomplete =
-    sectionCompleteness.questionnaire !== null &&
-    !sectionCompleteness.questionnaire;
+  const daMissing = sectionCompleteness.detailedAnalysis;
+  const questionnaireMissing = sectionCompleteness.questionnaire ?? [];
   const mediaIncomplete = sectionCompleteness.media === false;
   const sitesIncomplete = sectionCompleteness.sites === false;
-  const canSubmit = !daIncomplete && !qIncomplete && !mediaIncomplete && !sitesIncomplete;
+  const canSubmit =
+    daMissing.length === 0 &&
+    questionnaireMissing.length === 0 &&
+    !mediaIncomplete &&
+    !sitesIncomplete;
+
+  /** Deep link straight to the field, not just to the tab holding it. */
+  const linkToTab = (tab: string) => (key: string) =>
+    localizedPath(
+      `/profile/projects/${projectGUID}?type=${tab}#${fieldAnchorId(key)}`
+    );
+
+  function IncompleteSections() {
+    return (
+      <>
+        {mediaIncomplete && (
+          <Alert severity="warning">{t('incompleteMedia')}</Alert>
+        )}
+        {sitesIncomplete && (
+          <Alert severity="warning">{t('incompleteSites')}</Alert>
+        )}
+        <MissingFieldsSummary
+          fields={daMissing}
+          title={t('incompleteDetailedAnalysisCount', {
+            count: daMissing.length,
+          })}
+          hrefFor={linkToTab('detail-analysis')}
+          sx={{}}
+        />
+        <MissingFieldsSummary
+          fields={questionnaireMissing}
+          title={t('incompleteQuestionnaireCount', {
+            count: questionnaireMissing.length,
+          })}
+          hrefFor={linkToTab('questionnaire')}
+          sx={{}}
+        />
+      </>
+    );
+  }
 
   function NotSubmittedReview() {
     return (
@@ -135,18 +177,7 @@ function SubmitForReview({
           {canSubmit && (
             <Alert severity="success">{t('projectForReview')}</Alert>
           )}
-          {mediaIncomplete && (
-            <Alert severity="warning">{t('incompleteMedia')}</Alert>
-          )}
-          {sitesIncomplete && (
-            <Alert severity="warning">{t('incompleteSites')}</Alert>
-          )}
-          {daIncomplete && (
-            <Alert severity="warning">{t('incompleteDetailedAnalysis')}</Alert>
-          )}
-          {qIncomplete && (
-            <Alert severity="warning">{t('incompleteQuestionnaire')}</Alert>
-          )}
+          <IncompleteSections />
         </Stack>
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
@@ -154,7 +185,9 @@ function SubmitForReview({
             onClick={() => handleBack(backTab)}
             startIcon={<BackArrow />}
           >
-            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
+            <p>
+              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
+            </p>
           </Button>
 
           <Button
@@ -195,7 +228,9 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
+            <p>
+              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
+            </p>
           </Button>
           <Button
             variant="contained"
@@ -224,7 +259,9 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
+            <p>
+              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
+            </p>
           </Button>
           <Button
             variant="contained"
@@ -264,7 +301,9 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
+            <p>
+              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
+            </p>
           </Button>
           <Button
             variant="contained"
@@ -282,9 +321,21 @@ function SubmitForReview({
     const annotations = revisionRequest?.annotations ?? {};
 
     const sectionTabs: { key: string; label: string; tab: number }[] = [
-      { key: 'basic', label: t('basicDetails'), tab: ProjectCreationTabs.BASIC_DETAILS },
-      { key: 'metadata', label: t('detailedAnalysis'), tab: ProjectCreationTabs.DETAILED_ANALYSIS },
-      { key: 'questionnaire', label: t('questionnaire'), tab: ProjectCreationTabs.QUESTIONNAIRE },
+      {
+        key: 'basic',
+        label: t('basicDetails'),
+        tab: ProjectCreationTabs.BASIC_DETAILS,
+      },
+      {
+        key: 'metadata',
+        label: t('detailedAnalysis'),
+        tab: ProjectCreationTabs.DETAILED_ANALYSIS,
+      },
+      {
+        key: 'questionnaire',
+        label: t('questionnaire'),
+        tab: ProjectCreationTabs.QUESTIONNAIRE,
+      },
     ];
 
     const affectedSections = sectionTabs.filter(({ key }) =>
@@ -322,7 +373,10 @@ function SubmitForReview({
                       <Stack spacing={0.5} sx={{ mt: 0.5, pl: 1 }}>
                         {fieldAnnotations.map(([path, note]) => (
                           <div key={path}>
-                            <strong>{path.split('.').slice(1).join('.')}</strong>: {note}
+                            <strong>
+                              {path.split('.').slice(1).join('.')}
+                            </strong>
+                            : {note}
                           </div>
                         ))}
                       </Stack>
@@ -332,18 +386,7 @@ function SubmitForReview({
               </Stack>
             </Alert>
           )}
-          {mediaIncomplete && (
-            <Alert severity="warning">{t('incompleteMedia')}</Alert>
-          )}
-          {sitesIncomplete && (
-            <Alert severity="warning">{t('incompleteSites')}</Alert>
-          )}
-          {daIncomplete && (
-            <Alert severity="warning">{t('incompleteDetailedAnalysis')}</Alert>
-          )}
-          {qIncomplete && (
-            <Alert severity="warning">{t('incompleteQuestionnaire')}</Alert>
-          )}
+          <IncompleteSections />
           {canSubmit && (
             <Alert severity="success">{t('projectForReview')}</Alert>
           )}
@@ -355,7 +398,9 @@ function SubmitForReview({
             onClick={() => handleBack(backTab)}
             startIcon={<BackArrow />}
           >
-            <p>{t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}</p>
+            <p>
+              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
+            </p>
           </Button>
           <Button
             onClick={() => submitForReview()}

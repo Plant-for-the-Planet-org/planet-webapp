@@ -18,6 +18,7 @@ import {
   CircularProgress,
   FormControlLabel,
   FormGroup,
+  FormHelperText,
   FormLabel,
   Table,
   TableBody,
@@ -37,68 +38,25 @@ import { parseApiError } from '../../../../utils/parseApiError';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import AnnotationCallout from './microComponent/AnnotationCallout';
+import MissingFieldsSummary from './microComponent/MissingFieldsSummary';
 import SpeciesListTable from './microComponent/SpeciesListTable';
 import FieldDescription from './microComponent/FieldDescription';
 import {
   getCachedSchema,
   getOrFetchSchema,
 } from '../utils/questionnaireSchemaCache';
+import useFieldAnchorScroll from '../utils/useFieldAnchorScroll';
+import {
+  fieldAnchorId,
+  getQuestionnaireMissing,
+  isQuestionnaireFieldRequired,
+} from '../utils/completeness';
 
 // Widened to support nested row_list / matrix values
 type QuestionnaireFormData = Record<string, unknown>;
 
 function humanizeLabel(value: string): string {
   return value.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
-}
-
-/**
- * Returns true when the given field value counts as "filled" (at least one cell
- * non-empty). Optional questions always count as filled — leaving one blank is
- * a valid answer, so it must never hold back a review submission.
- */
-export function isFieldFilled(
-  field: QuestionnaireFieldSchema,
-  val: unknown
-): boolean {
-  if (field.optional) return true;
-
-  if (field.type === 'multi_choice')
-    return Array.isArray(val) && val.length > 0;
-
-  if (field.type === 'row_list') {
-    if (!val || typeof val !== 'object') return false;
-    return Object.values(val as Record<string, unknown>).some(
-      (v) => v !== '' && v !== null && v !== undefined
-    );
-  }
-
-  if (field.type === 'species_list') {
-    if (!Array.isArray(val)) return false;
-    // A row of only blanks does not count, so padding rows never mark the
-    // field complete.
-    return val.some(
-      (row) =>
-        typeof row === 'object' &&
-        row !== null &&
-        Object.values(row as Record<string, unknown>).some(
-          (v) => v !== '' && v !== null && v !== undefined
-        )
-    );
-  }
-
-  if (field.type === 'matrix') {
-    if (!val || typeof val !== 'object') return false;
-    return Object.values(val as Record<string, unknown>).some(
-      (r) =>
-        typeof r === 'object' &&
-        r !== null &&
-        Object.values(r as Record<string, unknown>).some(
-          (v) => v !== '' && v !== null && v !== undefined
-        )
-    );
-  }
-
-  return val !== undefined && val !== '' && val !== null;
 }
 
 function buildDefaults(
@@ -133,8 +91,10 @@ function buildDefaults(
       const existingMatrix = val as
         | Record<string, Record<string, unknown>>
         | undefined;
-      const matrixDefaults: Record<string, Record<string, string | number>> =
-        {};
+      const matrixDefaults: Record<
+        string,
+        Record<string, string | number>
+      > = {};
       for (const row of field.rows) {
         matrixDefaults[row.key] = {};
         for (const col of field.columns) {
@@ -218,13 +178,42 @@ export default function ProjectQuestionnaire({
     );
   }, [schema, classification]);
 
-  const { control, reset, trigger, getValues } =
-    useForm<QuestionnaireFormData>({
-      mode: 'onBlur',
-      defaultValues: {},
-    });
+  const {
+    control,
+    reset,
+    trigger,
+    getValues,
+    formState: { errors },
+  } = useForm<QuestionnaireFormData>({
+    mode: 'onBlur',
+    defaultValues: {},
+  });
 
   const watchedValues = useWatch({ control });
+
+  // Read here rather than at render time because annotations also decide
+  // requiredness: an optional field a reviewer asked about has to be answered.
+  const questionnaireAnnotations = useMemo(
+    () =>
+      projectDetails?.verificationStatus === 'revision_requested'
+        ? projectDetails.revisionRequest?.annotations ?? {}
+        : {},
+    [projectDetails]
+  );
+
+  const missingFields = useMemo(
+    () =>
+      getQuestionnaireMissing(
+        visibleFields,
+        watchedValues as Record<string, unknown>,
+        questionnaireAnnotations
+      ),
+    [visibleFields, watchedValues, questionnaireAnnotations]
+  );
+
+  // Keyed on the field names so the parent hears about a real change, not
+  // about every keystroke.
+  const missingKey = missingFields.map((field) => field.key).join('|');
 
   // Sync if parent provides (or updates) the schema after mount
   useEffect(() => {
@@ -264,16 +253,16 @@ export default function ProjectQuestionnaire({
       (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
         ?.questionnaire ?? null;
     reset(buildDefaults(visibleFields, existing));
-    if (existing) trigger();
+    // Deliberately no trigger() here. Validating on load painted every blank
+    // required field red before the user had touched anything. The summary at
+    // the top carries that message instead, and fields turn red on blur or on
+    // save.
   }, [schema, projectDetails]);
 
   useEffect(() => {
     if (visibleFields.length === 0) return;
-    const allFilled = visibleFields.every(([name, field]) =>
-      isFieldFilled(field, watchedValues[name])
-    );
-    onCompletenessChange(allFilled);
-  }, [watchedValues, visibleFields.length]);
+    onCompletenessChange(missingFields);
+  }, [missingKey, visibleFields.length]);
 
   const onSubmit = async (data: QuestionnaireFormData) => {
     setIsSubmitting(true);
@@ -293,28 +282,26 @@ export default function ProjectQuestionnaire({
     }
   };
 
-  const questionnaireAnnotations =
-    projectDetails?.verificationStatus === 'revision_requested'
-      ? (projectDetails.revisionRequest?.annotations ?? {})
-      : {};
-
   function renderField(
     name: string,
     field: QuestionnaireFieldSchema
   ): ReactElement {
     const annotation = questionnaireAnnotations[`questionnaire.${name}`];
+    const isRequired = isQuestionnaireFieldRequired(field, annotation);
+    const hasError = Boolean(errors[name]);
     const fieldClassName = `${styles.formFieldLarge} ${styles.questionnaireField}`;
     // The schema carries the hint as a flag, so the suffix is translated here
-    // rather than baked into the label the API returns.
-    const labelText = field.optional
-      ? `${field.label} ${t('optionalFieldSuffix')}`
-      : field.label;
+    // rather than baked into the label the API returns. An annotated optional
+    // field drops the hint, because the reviewer has now asked for it.
+    const labelText = isRequired
+      ? field.label
+      : `${field.label} ${t('optionalFieldSuffix')}`;
 
     // ── multi_choice ─────────────────────────────────────────────────────
     if (field.type === 'multi_choice' && field.choices) {
       return (
-        <div key={name} className={fieldClassName}>
-          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+        <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+          <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
             {labelText}
           </FormLabel>
           {field.description && (
@@ -323,11 +310,10 @@ export default function ProjectQuestionnaire({
           <Controller
             name={name}
             control={control}
-            rules={
-              field.optional
-                ? undefined
-                : { validate: (v) => (Array.isArray(v) ? v.length > 0 : !!v) }
-            }
+            rules={{
+              validate: (v) =>
+                !isRequired || (Array.isArray(v) ? v.length > 0 : !!v),
+            }}
             render={({ field: { value, onChange } }) => {
               const current = Array.isArray(value) ? (value as string[]) : [];
               return (
@@ -374,6 +360,9 @@ export default function ProjectQuestionnaire({
                 )}
               />
             )}
+          {hasError && (
+            <FormHelperText error>{t('requiredField')}</FormHelperText>
+          )}
           {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );
@@ -382,8 +371,8 @@ export default function ProjectQuestionnaire({
     // ── number / integer ──────────────────────────────────────────────────
     if (field.type === 'number' || field.type === 'integer') {
       return (
-        <div key={name} className={fieldClassName}>
-          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+        <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+          <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
             {labelText}
           </FormLabel>
           {field.description && (
@@ -392,7 +381,7 @@ export default function ProjectQuestionnaire({
           <Controller
             name={name}
             control={control}
-            rules={field.optional ? undefined : { required: true }}
+            rules={{ required: isRequired }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextField
                 type="number"
@@ -400,6 +389,8 @@ export default function ProjectQuestionnaire({
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
+                error={hasError}
+                helperText={hasError ? t('requiredField') : undefined}
               />
             )}
           />
@@ -411,8 +402,8 @@ export default function ProjectQuestionnaire({
     // ── row_list ──────────────────────────────────────────────────────────
     if (field.type === 'row_list' && field.rows) {
       return (
-        <div key={name} className={fieldClassName}>
-          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+        <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+          <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
             {labelText}
           </FormLabel>
           {field.description && (
@@ -459,8 +450,8 @@ export default function ProjectQuestionnaire({
     if (field.type === 'species_list' && field.columns) {
       const columns = field.columns;
       return (
-        <div key={name} className={fieldClassName}>
-          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+        <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+          <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
             {labelText}
           </FormLabel>
           {field.description && (
@@ -493,10 +484,11 @@ export default function ProjectQuestionnaire({
       return (
         <div
           key={name}
+          id={fieldAnchorId(name)}
           className={fieldClassName}
           style={{ overflowX: 'auto' }}
         >
-          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+          <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
             {labelText}
           </FormLabel>
           {field.description && (
@@ -580,8 +572,8 @@ export default function ProjectQuestionnaire({
 
     // ── text / string / default ───────────────────────────────────────────
     return (
-      <div key={name} className={fieldClassName}>
-        <FormLabel component="legend" sx={{ mb: 0.5 }}>
+      <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+        <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
           {labelText}
         </FormLabel>
         {field.description && (
@@ -590,7 +582,7 @@ export default function ProjectQuestionnaire({
         <Controller
           name={name}
           control={control}
-          rules={field.optional ? undefined : { required: true }}
+          rules={{ required: isRequired }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
               multiline
@@ -599,6 +591,8 @@ export default function ProjectQuestionnaire({
               onChange={onChange}
               onBlur={onBlur}
               value={value}
+              error={hasError}
+              helperText={hasError ? t('requiredField') : undefined}
             />
           )}
         />
@@ -613,11 +607,7 @@ export default function ProjectQuestionnaire({
   const isLoading =
     !schemaFailed && (schema === null || projectDetails === null);
 
-  const allFieldsFilled =
-    visibleFields.length > 0 &&
-    visibleFields.every(([name, field]) =>
-      isFieldFilled(field, watchedValues[name])
-    );
+  useFieldAnchorScroll(!isLoading && visibleFields.length > 0);
 
   return (
     <CenteredContainer>
@@ -631,11 +621,11 @@ export default function ProjectQuestionnaire({
           !isLocked &&
           visibleFields.length > 0 &&
           (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
-            ?.questionnaire != null &&
-          !allFieldsFilled && (
-            <Alert severity="info" sx={{ mb: 2 }}>
-              {t('incompleteFieldsBanner')}
-            </Alert>
+            ?.questionnaire != null && (
+            <MissingFieldsSummary
+              fields={missingFields}
+              title={t('missingFieldsCount', { count: missingFields.length })}
+            />
           )}
 
         <div className="inputContainer">

@@ -8,6 +8,7 @@ import type {
   ImagesScopeProjects,
   ExpensesScopeProjects,
   SitesScopeProjects,
+  MissingField,
 } from '../../common/types/project';
 
 import { useEffect, useRef, useState } from 'react';
@@ -17,7 +18,7 @@ import ProjectSelection from './components/ProjectSelection';
 import DetailedAnalysis from './components/DetailedAnalysis';
 import ProjectSites from './components/ProjectSites';
 import ProjectSpending from './components/ProjectSpending';
-import ProjectQuestionnaire, { isFieldFilled } from './components/ProjectQuestionnaire';
+import ProjectQuestionnaire from './components/ProjectQuestionnaire';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
@@ -32,34 +33,10 @@ import {
   getOrFetchSchema,
 } from './utils/questionnaireSchemaCache';
 import { dedupeInFlight } from './utils/dedupeInFlight';
-
-function isDetailedAnalysisComplete(
-  details: ExtendedProfileProjectProperties | null
-): boolean {
-  if (!details || !details.metadata) return false;
-  if (!details.metadata.mainChallenge) return false;
-  if (!details.metadata.motivation) return false;
-  if (!details.metadata.siteOwnerName) return false;
-  if (details.purpose === 'trees') {
-    const m = details.metadata;
-    if (!m.mainInterventions?.length) return false;
-    if (!m.employeesCount) return false;
-    if (!m.longTermPlan) return false;
-    if (!m.ecosystem) return false;
-    if (!m.plantingDensity) return false;
-    if (!m.degradationCause) return false;
-    if (!m.siteOwnerType?.length) return false;
-  } else {
-    const m = details.metadata;
-    if (!m.ecosystem) return false;
-    if (!m.areaProtected) return false;
-    if (!m.startingProtectionYear) return false;
-    if (!m.ownershipType) return false;
-    if (!m.landOwnershipType?.length) return false;
-    if (!m.actions) return false;
-  }
-  return true;
-}
+import {
+  getDetailedAnalysisMissing,
+  getQuestionnaireMissing,
+} from './utils/completeness';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -71,7 +48,6 @@ export enum ProjectCreationTabs {
   QUESTIONNAIRE = 6,
   REVIEW = 7,
 }
-
 
 type PublishStatusApiPayload = {
   publish: boolean;
@@ -86,7 +62,8 @@ export default function ManageProjects({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { putApiAuthenticated, postApiAuthenticated, getApiAuthenticated } = useApi();
+  const { putApiAuthenticated, postApiAuthenticated, getApiAuthenticated } =
+    useApi();
   // local state
   const [tabSelected, setTabSelected] = useState<number>(0);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
@@ -98,7 +75,11 @@ export default function ManageProjects({
   // anything could display, so the loader stayed up for two serial round trips.
   const [projectDetails, setProjectDetails] =
     useState<ExtendedProfileProjectProperties | null>(project ?? null);
-  const [questionnaireComplete, setQuestionnaireComplete] = useState(false);
+  // Null until the schema and project data have both landed, so the dot can
+  // stay grey rather than claiming the tab is incomplete.
+  const [questionnaireMissing, setQuestionnaireMissing] = useState<
+    MissingField[] | null
+  >(null);
   const [questionnaireSchema, setQuestionnaireSchema] =
     useState<QuestionnaireSchema | null>(null);
   // null = not yet loaded (grey disc), true/false = known
@@ -193,7 +174,9 @@ export default function ManageProjects({
   // value, so listing both as dependencies ran this twice on load and every
   // downstream projectDetails effect with it. Guarded to one fetch per project;
   // creating a project changes projectGUID, which still triggers a fresh load.
-  const detailsFetchedFor = useRef<string | null>(project ? GUID ?? null : null);
+  const detailsFetchedFor = useRef<string | null>(
+    project ? GUID ?? null : null
+  );
 
   useEffect(() => {
     if (!projectGUID || !token) return;
@@ -251,9 +234,11 @@ export default function ManageProjects({
     if (!projectDetails?.acceptDonations) return;
     const purpose = projectDetails.purpose ?? 'trees';
     const classification =
-      (projectDetails as ExtendedProfileProjectPropertiesTrees).classification ?? '';
+      (projectDetails as ExtendedProfileProjectPropertiesTrees)
+        .classification ?? '';
     const existing =
-      (projectDetails as ExtendedProfileProjectPropertiesTrees).questionnaire ?? {};
+      (projectDetails as ExtendedProfileProjectPropertiesTrees).questionnaire ??
+      {};
 
     const computeCompleteness = async () => {
       try {
@@ -275,12 +260,17 @@ export default function ManageProjects({
             field.classifications === null ||
             field.classifications.includes(classification)
         );
-        const allFilled = visibleFields.every(([name, field]) =>
-          isFieldFilled(field, (existing as Record<string, unknown>)[name])
+        setQuestionnaireMissing(
+          getQuestionnaireMissing(
+            visibleFields,
+            existing as Record<string, unknown>,
+            projectDetails.verificationStatus === 'revision_requested'
+              ? projectDetails.revisionRequest?.annotations ?? {}
+              : {}
+          )
         );
-        setQuestionnaireComplete(allFilled);
       } catch {
-        // silently fail — completeness defaults to false
+        // silently fail — the dot stays grey
       }
     };
 
@@ -407,14 +397,18 @@ export default function ManageProjects({
 
   const showQuestionnaire = projectDetails?.acceptDonations === true;
 
+  const detailedAnalysisMissing = getDetailedAnalysisMissing(projectDetails, t);
+
   useEffect(() => {
     if (router.query.type && project) {
       const daComplete = projectDetails
-        ? isDetailedAnalysisComplete(projectDetails)
+        ? detailedAnalysisMissing.length === 0
         : null;
 
       const qComplete = showQuestionnaire
-        ? (projectDetails ? questionnaireComplete : null)
+        ? questionnaireMissing
+          ? questionnaireMissing.length === 0
+          : null
         : null; // null = not applicable, doesn't block Review
 
       // Review is green when no tracked tab is explicitly red
@@ -467,11 +461,9 @@ export default function ManageProjects({
           label: t('questionnaire'),
           link: `/profile/projects/${projectGUID}?type=questionnaire`,
           step: ProjectCreationTabs.QUESTIONNAIRE,
-          completionStatus: projectDetails
-            ? questionnaireComplete
-              ? 'complete'
-              : 'incomplete'
-            : undefined,
+          completionStatus: toStatus(
+            questionnaireMissing ? questionnaireMissing.length === 0 : null
+          ),
         });
       }
       tabs.push({
@@ -510,7 +502,16 @@ export default function ManageProjects({
         },
       ]);
     }
-  }, [tabSelected, router.query.purpose, locale, projectDetails, questionnaireComplete, mediaComplete, sitesComplete, spendingComplete]);
+  }, [
+    tabSelected,
+    router.query.purpose,
+    locale,
+    projectDetails,
+    questionnaireMissing,
+    mediaComplete,
+    sitesComplete,
+    spendingComplete,
+  ]);
 
   const isLocked =
     projectDetails?.verificationStatus === 'submitted' ||
@@ -602,7 +603,7 @@ export default function ManageProjects({
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
             isLocked={isLocked}
-            onCompletenessChange={setQuestionnaireComplete}
+            onCompletenessChange={setQuestionnaireMissing}
             initialSchema={questionnaireSchema}
             purpose={
               (project?.purpose ??
@@ -615,6 +616,7 @@ export default function ManageProjects({
         if (projectDetails && projectGUID)
           return (
             <SubmitForReview
+              projectGUID={projectGUID}
               handleBack={handleBack}
               projectDetails={projectDetails}
               submitForReview={submitForReview}
@@ -622,8 +624,8 @@ export default function ManageProjects({
               handlePublishChange={handlePublishChange}
               isLocked={isLocked}
               sectionCompleteness={{
-                detailedAnalysis: isDetailedAnalysisComplete(projectDetails),
-                questionnaire: showQuestionnaire ? questionnaireComplete : null,
+                detailedAnalysis: detailedAnalysisMissing,
+                questionnaire: showQuestionnaire ? questionnaireMissing : null,
                 media: mediaComplete,
                 sites: sitesComplete,
               }}

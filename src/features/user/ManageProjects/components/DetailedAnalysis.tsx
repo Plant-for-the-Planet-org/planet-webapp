@@ -18,7 +18,7 @@ import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/I
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
-import { Alert, TextField, Button, MenuItem, Tooltip } from '@mui/material';
+import { TextField, Button, MenuItem, Tooltip } from '@mui/material';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -32,6 +32,12 @@ import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import AnnotationCallout from './microComponent/AnnotationCallout';
+import MissingFieldsSummary from './microComponent/MissingFieldsSummary';
+import {
+  fieldAnchorId,
+  getDetailedAnalysisMissing,
+} from '../utils/completeness';
+import useFieldAnchorScroll from '../utils/useFieldAnchorScroll';
 
 type BaseFormData = {
   ecosystem: string;
@@ -539,25 +545,18 @@ export default function DetailedAnalysis({
     }
   }, [projectDetails]);
 
-  const savedDataIncomplete = (() => {
-    if (!projectDetails || isLocked) return false;
-    if (!projectDetails.metadata) return true;
-    const { metadata: m } = projectDetails;
-    if (!m.mainChallenge || !m.motivation || !m.siteOwnerName) return true;
-    if (projectDetails.purpose === 'trees') {
-      const tm = projectDetails.metadata;
-      return !tm.mainInterventions?.length || !tm.employeesCount || !tm.longTermPlan
-        || !tm.ecosystem || !tm.plantingDensity || !tm.degradationCause
-        || !tm.siteOwnerType?.length;
-    }
-    const cm = projectDetails.metadata;
-    return !cm.ecosystem || !cm.areaProtected || !cm.startingProtectionYear
-      || !cm.ownershipType || !cm.landOwnershipType?.length || !cm.actions;
-  })();
+  useFieldAnchorScroll(projectDetails !== null);
+
+  // Same list the tab dot and the Review page read, so the three can never
+  // disagree about what is still missing.
+  const missingFields =
+    projectDetails && !isLocked
+      ? getDetailedAnalysisMissing(projectDetails, tManageProjects)
+      : [];
 
   const revisionAnnotations =
     projectDetails?.verificationStatus === 'revision_requested'
-      ? (projectDetails.revisionRequest?.annotations ?? {})
+      ? projectDetails.revisionRequest?.annotations ?? {}
       : {};
   const metaAnnotation = (field: string) =>
     revisionAnnotations[`metadata.${field}`];
@@ -570,11 +569,12 @@ export default function DetailedAnalysis({
             verificationStatus={projectDetails.verificationStatus}
           />
         )}
-        {savedDataIncomplete && (
-          <Alert severity="info" sx={{ mb: 2 }}>
-            {tManageProjects('incompleteFieldsBanner')}
-          </Alert>
-        )}
+        <MissingFieldsSummary
+          fields={missingFields}
+          title={tManageProjects('missingFieldsCount', {
+            count: missingFields.length,
+          })}
+        />
         <div className="inputContainer">
           {purpose === 'trees' ? (
             <>
@@ -594,9 +594,7 @@ export default function DetailedAnalysis({
                       label={tManageProjects('labelRestorationStarted')}
                       value={value}
                       onChange={onChange}
-                      renderInput={(props) => (
-                        <TextField {...props} required />
-                      )}
+                      renderInput={(props) => <TextField {...props} required />}
                       disableFuture
                       minDate={new Date(new Date().setFullYear(1950))}
                       inputFormat="d MMMM yyyy"
@@ -616,11 +614,13 @@ export default function DetailedAnalysis({
                     required: tManageProjects('validation', {
                       fieldName: tManageProjects('areaProtected'),
                     }),
-                    validate: (value) => (value ? parseInt(value, 10) > 0 : true),
+                    validate: (value) =>
+                      value ? parseInt(value, 10) > 0 : true,
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
                       required
+                      id={fieldAnchorId('areaProtected')}
                       label={tManageProjects('areaProtected')}
                       variant="outlined"
                       type="number"
@@ -683,6 +683,7 @@ export default function DetailedAnalysis({
                             required
                             fullWidth
                             {...props}
+                            id={fieldAnchorId('startingProtectionYear')}
                             error={
                               'startingProtectionYear' in errors &&
                               errors.startingProtectionYear !== undefined
@@ -703,7 +704,9 @@ export default function DetailedAnalysis({
                   />
                 </LocalizationProvider>
                 {metaAnnotation('startingProtectionYear') && (
-                  <AnnotationCallout text={metaAnnotation('startingProtectionYear')!} />
+                  <AnnotationCallout
+                    text={metaAnnotation('startingProtectionYear')!}
+                  />
                 )}
               </div>
             </InlineFormDisplayGroup>
@@ -714,14 +717,18 @@ export default function DetailedAnalysis({
                 name="employeesCount"
                 control={control}
                 rules={{
-                  required: purpose === 'trees'
-                    ? tManageProjects('validation', { fieldName: tManageProjects('employeeCount') })
-                    : false,
+                  required:
+                    purpose === 'trees'
+                      ? tManageProjects('validation', {
+                          fieldName: tManageProjects('employeeCount'),
+                        })
+                      : false,
                   validate: (value) => !value || parseInt(value, 10) > 0,
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
                     required={purpose === 'trees'}
+                    id={fieldAnchorId('employeesCount')}
                     label={tManageProjects('employeeCount')}
                     variant="outlined"
                     fullWidth
@@ -765,6 +772,7 @@ export default function DetailedAnalysis({
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
                     required
+                    id={fieldAnchorId('ecosystem')}
                     label={tManageProjects('ecosystem')}
                     variant="outlined"
                     select
@@ -800,6 +808,7 @@ export default function DetailedAnalysis({
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
                       required
+                      id={fieldAnchorId('ownershipType')}
                       label={tManageProjects('ownershipType')}
                       variant="outlined"
                       select
@@ -817,8 +826,12 @@ export default function DetailedAnalysis({
                         errors.ownershipType.message
                       }
                     >
-                      <MenuItem value="tenure">{tManageProjects('tenure')}</MenuItem>
-                      <MenuItem value="rent">{tManageProjects('rent')}</MenuItem>
+                      <MenuItem value="tenure">
+                        {tManageProjects('tenure')}
+                      </MenuItem>
+                      <MenuItem value="rent">
+                        {tManageProjects('rent')}
+                      </MenuItem>
                     </TextField>
                   )}
                 />
@@ -829,9 +842,13 @@ export default function DetailedAnalysis({
             </InlineFormDisplayGroup>
           )}
           <div className={styles.multiSelectContainer}>
-            <div className={styles.multiSelectField}>
+            <div
+              id={fieldAnchorId('mainInterventions')}
+              className={styles.multiSelectField}
+            >
               <p className={styles.multiSelectLabel}>
-                {tManageProjects('labelMainInterventions') + (purpose === 'trees' ? '*' : '')}
+                {tManageProjects('labelMainInterventions') +
+                  (purpose === 'trees' ? '*' : '')}
               </p>
               {interventionOptions.map(([intervention, isSet]) => {
                 return (
@@ -930,11 +947,11 @@ export default function DetailedAnalysis({
                     control={control}
                     rules={{
                       required: tManageProjects('requiredField'),
-                      validate: (value) =>
-                        !value || parseInt(value, 10) > 1,
+                      validate: (value) => !value || parseInt(value, 10) > 1,
                     }}
                     render={({ field: { onChange, value, onBlur } }) => (
                       <TextField
+                        id={fieldAnchorId('plantingDensity')}
                         label={tManageProjects('plantingDensity')}
                         variant="outlined"
                         fullWidth
@@ -947,7 +964,10 @@ export default function DetailedAnalysis({
                         }}
                         onChange={(e) => {
                           setMinDensity(Number(e.target.value));
-                          e.target.value = e.target.value.replace(/[^0-9]./g, '');
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]./g,
+                            ''
+                          );
                           onChange(e.target.value);
                         }}
                         value={value}
@@ -965,7 +985,9 @@ export default function DetailedAnalysis({
                     )}
                   />
                   {metaAnnotation('plantingDensity') && (
-                    <AnnotationCallout text={metaAnnotation('plantingDensity')!} />
+                    <AnnotationCallout
+                      text={metaAnnotation('plantingDensity')!}
+                    />
                   )}
                 </div>
                 <p className={styles.hyphen}>-</p>
@@ -1008,7 +1030,6 @@ export default function DetailedAnalysis({
                   )}
                 />
               </InlineFormDisplayGroup>
-
             </>
           ) : (
             <Controller
@@ -1023,6 +1044,7 @@ export default function DetailedAnalysis({
               }}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
+                  id={fieldAnchorId('actions')}
                   label={tManageProjects('forestProtectionType')}
                   variant="outlined"
                   multiline
@@ -1055,6 +1077,7 @@ export default function DetailedAnalysis({
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
+                    id={fieldAnchorId('degradationCause')}
                     label={tManageProjects('causeOfDegradation')}
                     variant="outlined"
                     multiline
@@ -1074,7 +1097,10 @@ export default function DetailedAnalysis({
                     }
                     InputProps={{
                       endAdornment: (
-                        <Tooltip title={tManageProjects('degradationCauseInfo')} arrow>
+                        <Tooltip
+                          title={tManageProjects('degradationCauseInfo')}
+                          arrow
+                        >
                           <span className={styles.tooltipIcon}>
                             <InfoIcon />
                           </span>
@@ -1137,6 +1163,7 @@ export default function DetailedAnalysis({
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
+                id={fieldAnchorId('mainChallenge')}
                 label={tManageProjects('mainChallenge')}
                 variant="outlined"
                 multiline
@@ -1178,6 +1205,7 @@ export default function DetailedAnalysis({
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
+                id={fieldAnchorId('motivation')}
                 label={tManageProjects('whyThisSite')}
                 variant="outlined"
                 multiline
@@ -1209,7 +1237,8 @@ export default function DetailedAnalysis({
             name="longTermPlan"
             control={control}
             rules={{
-              required: purpose === 'trees' ? tManageProjects('requiredField') : false,
+              required:
+                purpose === 'trees' ? tManageProjects('requiredField') : false,
               maxLength: {
                 value: 300,
                 message: tManageProjects('max300Chars'),
@@ -1217,6 +1246,7 @@ export default function DetailedAnalysis({
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
+                id={fieldAnchorId('longTermPlan')}
                 label={tManageProjects('longTermPlan')}
                 variant="outlined"
                 multiline
@@ -1232,7 +1262,10 @@ export default function DetailedAnalysis({
                 }
                 InputProps={{
                   endAdornment: (
-                    <Tooltip title={tManageProjects('longTermPlanTooltip')} arrow>
+                    <Tooltip
+                      title={tManageProjects('longTermPlanTooltip')}
+                      arrow
+                    >
                       <span className={styles.tooltipIcon}>
                         <InfoIcon />
                       </span>
@@ -1245,7 +1278,12 @@ export default function DetailedAnalysis({
           {metaAnnotation('longTermPlan') && (
             <AnnotationCallout text={metaAnnotation('longTermPlan')!} />
           )}
-          <div className={styles.multiSelectField}>
+          <div
+            id={fieldAnchorId(
+              purpose === 'trees' ? 'siteOwnerType' : 'landOwnershipType'
+            )}
+            className={styles.multiSelectField}
+          >
             <p className={styles.multiSelectLabel}>
               {tManageProjects('siteOwner')}
             </p>
@@ -1288,9 +1326,13 @@ export default function DetailedAnalysis({
                 {tManageProjects('missingSiteOwnerError')}
               </span>
             )}
-            {(metaAnnotation('siteOwnerType') || metaAnnotation('landOwnershipType')) && (
+            {(metaAnnotation('siteOwnerType') ||
+              metaAnnotation('landOwnershipType')) && (
               <AnnotationCallout
-                text={(metaAnnotation('siteOwnerType') || metaAnnotation('landOwnershipType'))!}
+                text={
+                  (metaAnnotation('siteOwnerType') ||
+                    metaAnnotation('landOwnershipType'))!
+                }
               />
             )}
           </div>
@@ -1301,6 +1343,7 @@ export default function DetailedAnalysis({
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 required
+                id={fieldAnchorId('siteOwnerName')}
                 label={tManageProjects('ownerName')}
                 variant="outlined"
                 onChange={onChange}
@@ -1337,7 +1380,9 @@ export default function DetailedAnalysis({
               <Button
                 onClick={() => {
                   trigger();
-                  void onSubmit(getValues() as TreeFormData | ConservationFormData);
+                  void onSubmit(
+                    getValues() as TreeFormData | ConservationFormData
+                  );
                 }}
                 className="formButton"
                 data-test-id="detailAnalysisCont"
