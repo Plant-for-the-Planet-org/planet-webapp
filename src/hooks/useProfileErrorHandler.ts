@@ -20,6 +20,7 @@ const useProfileErrorHandler = () => {
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
   const setToken = useAuthStore((state) => state.setToken);
+  const setHasAuthFailed = useAuthStore((state) => state.setHasAuthFailed);
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
   const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
 
@@ -42,13 +43,12 @@ const useProfileErrorHandler = () => {
           // If the token keeps working but the profile keeps returning 401,
           // the counter will eventually stop the repeated login redirects.
           //
-          // Once the limit is reached, stay on the current page instead of
-          // redirecting again. `login.tsx` will keep the app stable there
-          // when no profile is available.
+          // Once the limit is reached, show the failed-sign-in screen instead of redirecting again.
           if (hasExceededRedirectLimit()) {
             console.error(
               '[Profile API] Redirect limit reached after repeated 401s, stopping login redirects.'
             );
+            setHasAuthFailed(true);
             break;
           }
           registerRedirectAttempt();
@@ -98,6 +98,7 @@ const useProfileErrorHandler = () => {
       loginWithRedirect,
       localizedPath,
       setToken,
+      setHasAuthFailed,
       exitImpersonation,
       fetchUserProfile,
       tenantId,
