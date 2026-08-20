@@ -77,7 +77,10 @@ export function getQuestionnaireMissing(
   for (const [name, field] of visibleFields) {
     const annotation = annotations[`questionnaire.${name}`];
     if (!isQuestionnaireFieldRequired(field, annotation)) continue;
-    if (isFieldFilled(field, values[name])) continue;
+    // A reviewer annotation means the field needs attention even if it
+    // already holds a value, so an answered field skips the blank check
+    // only when there is no annotation asking about it.
+    if (!annotation && isFieldFilled(field, values[name])) continue;
     missing.push({ key: name, label: field.label });
   }
   return missing;
@@ -121,17 +124,26 @@ const CONSERVATION_REQUIRED = [
  * disagree about what is still missing.
  */
 /**
+ * `benefits` (shown as "Conservation Impacts") is optional and left out of
+ * CONSERVATION_REQUIRED on purpose, but a reviewer can still annotate it.
+ */
+const BENEFITS_KEY = 'benefits';
+const BENEFITS_LABEL_KEY = 'conservationImpacts';
+
+/**
  * The translation keys the two lists above use. Typing the translator against
  * this union keeps it compatible with next-intl's typed `t`, which rejects a
  * plain `(key: string) => string`.
  */
 type LabelKey =
   | (typeof TREE_REQUIRED)[number][1]
-  | (typeof CONSERVATION_REQUIRED)[number][1];
+  | (typeof CONSERVATION_REQUIRED)[number][1]
+  | typeof BENEFITS_LABEL_KEY;
 
 export function getDetailedAnalysisMissing(
   details: ExtendedProfileProjectProperties | null,
-  t: (key: LabelKey) => string
+  t: (key: LabelKey) => string,
+  annotations: Record<string, string> = {}
 ): MissingField[] {
   if (!details) return [];
   const required: readonly (readonly [string, LabelKey])[] =
@@ -141,11 +153,24 @@ export function getDetailedAnalysisMissing(
     unknown
   >;
 
-  return required
+  const missing = required
     .filter(([key]) => {
+      // Same rule as the questionnaire: an annotation means the field needs
+      // attention even if it is already filled in.
+      if (annotations[`metadata.${key}`]) return true;
       const value = metadata[key];
       if (Array.isArray(value)) return value.length === 0;
       return value === undefined || value === null || value === '';
     })
     .map(([key, labelKey]) => ({ key, label: t(labelKey) }));
+
+  if (
+    details.purpose !== 'trees' &&
+    annotations[`metadata.${BENEFITS_KEY}`] &&
+    !missing.some((field) => field.key === BENEFITS_KEY)
+  ) {
+    missing.push({ key: BENEFITS_KEY, label: t(BENEFITS_LABEL_KEY) });
+  }
+
+  return missing;
 }

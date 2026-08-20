@@ -547,19 +547,23 @@ export default function DetailedAnalysis({
 
   useFieldAnchorScroll(projectDetails !== null);
 
-  // Same list the tab dot and the Review page read, so the three can never
-  // disagree about what is still missing.
-  const missingFields =
-    projectDetails && !isLocked
-      ? getDetailedAnalysisMissing(projectDetails, tManageProjects)
-      : [];
-
   const revisionAnnotations =
     projectDetails?.verificationStatus === 'revision_requested'
       ? projectDetails.revisionRequest?.annotations ?? {}
       : {};
   const metaAnnotation = (field: string) =>
     revisionAnnotations[`metadata.${field}`];
+
+  // Same list the tab dot and the Review page read, so the three can never
+  // disagree about what is still missing.
+  const missingFields =
+    projectDetails && !isLocked
+      ? getDetailedAnalysisMissing(
+          projectDetails,
+          tManageProjects,
+          revisionAnnotations
+        )
+      : [];
 
   return (
     <CenteredContainer>
