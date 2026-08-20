@@ -1,10 +1,7 @@
 import type { QuestionnaireFieldSchema } from '../../../common/types/project';
 
-import type { ExtendedProfileProjectProperties } from '../../../common/types/project';
-
 import { describe, expect, it } from 'vitest';
 import {
-  getDetailedAnalysisMissing,
   getQuestionnaireMissing,
   isQuestionnaireFieldRequired,
 } from './completeness';
@@ -79,53 +76,16 @@ describe('getQuestionnaireMissing', () => {
     ]);
   });
 
-  it('keeps an already-answered required field listed once a reviewer annotates it', () => {
+  it('does not re-list an already-answered field just because a reviewer commented on it', () => {
+    // A comment on a filled field is a request to revise it, not proof it is
+    // blank. Nothing clears the annotation client-side, so counting it as
+    // missing would block resubmission forever.
     expect(
       getQuestionnaireMissing(
         fields,
         { projectGoals: 'a description written before review' },
         { 'questionnaire.projectGoals': 'Please clarify the timeline' }
       )
-    ).toEqual([{ key: 'projectGoals', label: 'Project Goals' }]);
-  });
-});
-
-describe('getDetailedAnalysisMissing', () => {
-  const baseDetails = {
-    purpose: 'conservation',
-    metadata: {
-      areaProtected: '10',
-      startingProtectionYear: '2020',
-      ecosystem: 'wetland',
-      ownershipType: 'private',
-      landOwnershipType: ['individual'],
-      actions: 'patrols',
-      mainChallenge: 'poaching',
-      motivation: 'protect habitat',
-      siteOwnerName: 'Jane Doe',
-      benefits: 'more biodiversity',
-    },
-  } as unknown as ExtendedProfileProjectProperties;
-
-  const t = (key: string) => key;
-
-  it('is empty once every required field is answered', () => {
-    expect(getDetailedAnalysisMissing(baseDetails, t)).toEqual([]);
-  });
-
-  it('keeps an already-answered required field listed once a reviewer annotates it', () => {
-    expect(
-      getDetailedAnalysisMissing(baseDetails, t, {
-        'metadata.mainChallenge': 'Please give more detail',
-      })
-    ).toEqual([{ key: 'mainChallenge', label: 'mainChallenge' }]);
-  });
-
-  it('pulls in the optional benefits field a reviewer asked about', () => {
-    expect(
-      getDetailedAnalysisMissing(baseDetails, t, {
-        'metadata.benefits': 'Please expand on this',
-      })
-    ).toEqual([{ key: 'benefits', label: 'conservationImpacts' }]);
+    ).toEqual([]);
   });
 });

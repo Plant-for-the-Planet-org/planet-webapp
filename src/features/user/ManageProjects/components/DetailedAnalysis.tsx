@@ -558,11 +558,7 @@ export default function DetailedAnalysis({
   // disagree about what is still missing.
   const missingFields =
     projectDetails && !isLocked
-      ? getDetailedAnalysisMissing(
-          projectDetails,
-          tManageProjects,
-          revisionAnnotations
-        )
+      ? getDetailedAnalysisMissing(projectDetails, tManageProjects)
       : [];
 
   return (

@@ -397,13 +397,7 @@ export default function ManageProjects({
 
   const showQuestionnaire = projectDetails?.acceptDonations === true;
 
-  const detailedAnalysisMissing = getDetailedAnalysisMissing(
-    projectDetails,
-    t,
-    projectDetails?.verificationStatus === 'revision_requested'
-      ? projectDetails.revisionRequest?.annotations ?? {}
-      : {}
-  );
+  const detailedAnalysisMissing = getDetailedAnalysisMissing(projectDetails, t);
 
   useEffect(() => {
     if (router.query.type && project) {
