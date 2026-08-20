@@ -48,6 +48,7 @@ import {
 import useFieldAnchorScroll from '../utils/useFieldAnchorScroll';
 import {
   fieldAnchorId,
+  getQuestionnaireFlagged,
   getQuestionnaireMissing,
   isQuestionnaireFieldRequired,
 } from '../utils/completeness';
@@ -204,6 +205,18 @@ export default function ProjectQuestionnaire({
   const missingFields = useMemo(
     () =>
       getQuestionnaireMissing(
+        visibleFields,
+        watchedValues as Record<string, unknown>,
+        questionnaireAnnotations
+      ),
+    [visibleFields, watchedValues, questionnaireAnnotations]
+  );
+
+  // Answered fields a reviewer commented on. Purely informational, so it
+  // never feeds into onCompletenessChange and never blocks resubmission.
+  const flaggedFields = useMemo(
+    () =>
+      getQuestionnaireFlagged(
         visibleFields,
         watchedValues as Record<string, unknown>,
         questionnaireAnnotations
@@ -622,10 +635,21 @@ export default function ProjectQuestionnaire({
           visibleFields.length > 0 &&
           (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
             ?.questionnaire != null && (
-            <MissingFieldsSummary
-              fields={missingFields}
-              title={t('missingFieldsCount', { count: missingFields.length })}
-            />
+            <>
+              <MissingFieldsSummary
+                fields={missingFields}
+                title={t('missingFieldsCount', {
+                  count: missingFields.length,
+                })}
+              />
+              <MissingFieldsSummary
+                fields={flaggedFields}
+                title={t('flaggedFieldsCount', {
+                  count: flaggedFields.length,
+                })}
+                severity="info"
+              />
+            </>
           )}
 
         <div className="inputContainer">

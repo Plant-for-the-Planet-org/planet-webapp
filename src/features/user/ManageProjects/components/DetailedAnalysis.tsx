@@ -35,6 +35,7 @@ import AnnotationCallout from './microComponent/AnnotationCallout';
 import MissingFieldsSummary from './microComponent/MissingFieldsSummary';
 import {
   fieldAnchorId,
+  getDetailedAnalysisFlagged,
   getDetailedAnalysisMissing,
 } from '../utils/completeness';
 import useFieldAnchorScroll from '../utils/useFieldAnchorScroll';
@@ -561,6 +562,17 @@ export default function DetailedAnalysis({
       ? getDetailedAnalysisMissing(projectDetails, tManageProjects)
       : [];
 
+  // Answered fields a reviewer commented on. Purely informational, so it
+  // never feeds into the tab dot and never blocks resubmission.
+  const flaggedFields =
+    projectDetails && !isLocked
+      ? getDetailedAnalysisFlagged(
+          projectDetails,
+          tManageProjects,
+          revisionAnnotations
+        )
+      : [];
+
   return (
     <CenteredContainer>
       <StyledForm>
@@ -574,6 +586,13 @@ export default function DetailedAnalysis({
           title={tManageProjects('missingFieldsCount', {
             count: missingFields.length,
           })}
+        />
+        <MissingFieldsSummary
+          fields={flaggedFields}
+          title={tManageProjects('flaggedFieldsCount', {
+            count: flaggedFields.length,
+          })}
+          severity="info"
         />
         <div className="inputContainer">
           {purpose === 'trees' ? (

@@ -1,7 +1,12 @@
-import type { QuestionnaireFieldSchema } from '../../../common/types/project';
+import type {
+  ExtendedProfileProjectProperties,
+  QuestionnaireFieldSchema,
+} from '../../../common/types/project';
 
 import { describe, expect, it } from 'vitest';
 import {
+  getDetailedAnalysisFlagged,
+  getQuestionnaireFlagged,
   getQuestionnaireMissing,
   isQuestionnaireFieldRequired,
 } from './completeness';
@@ -86,6 +91,83 @@ describe('getQuestionnaireMissing', () => {
         { projectGoals: 'a description written before review' },
         { 'questionnaire.projectGoals': 'Please clarify the timeline' }
       )
+    ).toEqual([]);
+  });
+});
+
+describe('getQuestionnaireFlagged', () => {
+  const fields: [string, QuestionnaireFieldSchema][] = [
+    ['projectGoals', textField({ label: 'Project Goals' })],
+    [
+      'priceCompositionExplanation',
+      textField({ label: 'Cost composition explanation', optional: true }),
+    ],
+  ];
+
+  it('is empty with no annotations', () => {
+    expect(
+      getQuestionnaireFlagged(fields, { projectGoals: 'done' })
+    ).toEqual([]);
+  });
+
+  it('lists an answered field a reviewer commented on', () => {
+    expect(
+      getQuestionnaireFlagged(
+        fields,
+        { projectGoals: 'a description written before review' },
+        { 'questionnaire.projectGoals': 'Please clarify the timeline' }
+      )
+    ).toEqual([{ key: 'projectGoals', label: 'Project Goals' }]);
+  });
+
+  it('leaves out a blank annotated field, since that already shows as missing', () => {
+    expect(
+      getQuestionnaireFlagged(
+        fields,
+        { projectGoals: 'done' },
+        { 'questionnaire.priceCompositionExplanation': 'Please explain' }
+      )
+    ).toEqual([]);
+  });
+});
+
+describe('getDetailedAnalysisFlagged', () => {
+  const details = {
+    purpose: 'conservation',
+    metadata: {
+      areaProtected: '10',
+      mainChallenge: 'poaching',
+      benefits: 'more biodiversity',
+    },
+  } as unknown as ExtendedProfileProjectProperties;
+
+  const t = (key: string) => key;
+
+  it('is empty with no annotations', () => {
+    expect(getDetailedAnalysisFlagged(details, t)).toEqual([]);
+  });
+
+  it('lists an answered required field a reviewer commented on', () => {
+    expect(
+      getDetailedAnalysisFlagged(details, t, {
+        'metadata.mainChallenge': 'Please give more detail',
+      })
+    ).toEqual([{ key: 'mainChallenge', label: 'mainChallenge' }]);
+  });
+
+  it('lists the answered optional benefits field a reviewer commented on', () => {
+    expect(
+      getDetailedAnalysisFlagged(details, t, {
+        'metadata.benefits': 'Please expand on this',
+      })
+    ).toEqual([{ key: 'benefits', label: 'conservationImpacts' }]);
+  });
+
+  it('leaves out a blank annotated field', () => {
+    expect(
+      getDetailedAnalysisFlagged(details, t, {
+        'metadata.startingProtectionYear': 'When did this start?',
+      })
     ).toEqual([]);
   });
 });

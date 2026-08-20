@@ -88,6 +88,28 @@ export function getQuestionnaireMissing(
 }
 
 /**
+ * Answered questionnaire fields a reviewer left a comment on. These are
+ * already filled in, so `getQuestionnaireMissing` leaves them alone and
+ * resubmission is never blocked by them. This list is purely informational,
+ * so the owner notices the feedback on the Questionnaire tab itself instead
+ * of only inline on the field or in the Review tab's revision summary.
+ */
+export function getQuestionnaireFlagged(
+  visibleFields: [string, QuestionnaireFieldSchema][],
+  values: Record<string, unknown>,
+  annotations: Record<string, string> = {}
+): MissingField[] {
+  const flagged: MissingField[] = [];
+  for (const [name, field] of visibleFields) {
+    const annotation = annotations[`questionnaire.${name}`];
+    if (!annotation) continue;
+    if (!isFieldFilled(field, values[name])) continue;
+    flagged.push({ key: name, label: field.label });
+  }
+  return flagged;
+}
+
+/**
  * Required Detailed Analysis fields, listed in the order the form renders them
  * so the summary reads top to bottom. The second entry of each pair is the
  * translation key the form itself labels the field with, so the summary and the
@@ -125,13 +147,22 @@ const CONSERVATION_REQUIRED = [
  * disagree about what is still missing.
  */
 /**
+ * `benefits` (shown as "Conservation Impacts") is optional and left out of
+ * CONSERVATION_REQUIRED on purpose, but a reviewer can still annotate it, so
+ * it also needs a label for the flagged-fields list below.
+ */
+const BENEFITS_KEY = 'benefits';
+const BENEFITS_LABEL_KEY = 'conservationImpacts';
+
+/**
  * The translation keys the two lists above use. Typing the translator against
  * this union keeps it compatible with next-intl's typed `t`, which rejects a
  * plain `(key: string) => string`.
  */
 type LabelKey =
   | (typeof TREE_REQUIRED)[number][1]
-  | (typeof CONSERVATION_REQUIRED)[number][1];
+  | (typeof CONSERVATION_REQUIRED)[number][1]
+  | typeof BENEFITS_LABEL_KEY;
 
 export function getDetailedAnalysisMissing(
   details: ExtendedProfileProjectProperties | null,
@@ -150,6 +181,39 @@ export function getDetailedAnalysisMissing(
       const value = metadata[key];
       if (Array.isArray(value)) return value.length === 0;
       return value === undefined || value === null || value === '';
+    })
+    .map(([key, labelKey]) => ({ key, label: t(labelKey) }));
+}
+
+/**
+ * Answered Detailed Analysis fields a reviewer left a comment on. Same idea
+ * as `getQuestionnaireFlagged`: purely informational, never blocks
+ * resubmission. Covers `benefits` too, since it is annotatable even though
+ * it sits outside the required-fields list.
+ */
+export function getDetailedAnalysisFlagged(
+  details: ExtendedProfileProjectProperties | null,
+  t: (key: LabelKey) => string,
+  annotations: Record<string, string> = {}
+): MissingField[] {
+  if (!details) return [];
+  const required: readonly (readonly [string, LabelKey])[] =
+    details.purpose === 'trees' ? TREE_REQUIRED : CONSERVATION_REQUIRED;
+  const annotatable: readonly (readonly [string, LabelKey])[] =
+    details.purpose === 'trees'
+      ? required
+      : [...required, [BENEFITS_KEY, BENEFITS_LABEL_KEY] as const];
+  const metadata = (details.metadata ?? {}) as unknown as Record<
+    string,
+    unknown
+  >;
+
+  return annotatable
+    .filter(([key]) => {
+      if (!annotations[`metadata.${key}`]) return false;
+      const value = metadata[key];
+      if (Array.isArray(value)) return value.length > 0;
+      return value !== undefined && value !== null && value !== '';
     })
     .map(([key, labelKey]) => ({ key, label: t(labelKey) }));
 }

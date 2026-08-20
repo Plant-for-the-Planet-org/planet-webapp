@@ -142,6 +142,7 @@
     "incompleteDetailedAnalysis": "Detailed Analysis is incomplete. Please fill in all required fields before submitting.",
     "incompleteQuestionnaire": "Questionnaire is incomplete. Please fill in all required fields before submitting.",
     "missingFieldsCount": "{count, plural, =1 {One answer is still missing. Select it to jump straight there.} other {# answers are still missing. Select one to jump straight there.}}",
+    "flaggedFieldsCount": "{count, plural, =1 {One answer has a reviewer comment. Select it to see the note.} other {# answers have reviewer comments. Select one to see the note.}}",
     "incompleteDetailedAnalysisCount": "{count, plural, =1 {Detailed Analysis is missing one answer:} other {Detailed Analysis is missing # answers:}}",
     "incompleteQuestionnaireCount": "{count, plural, =1 {Questionnaire is missing one answer:} other {Questionnaire is missing # answers:}}",
     "projectForReview": "You can now submit the project for review.",

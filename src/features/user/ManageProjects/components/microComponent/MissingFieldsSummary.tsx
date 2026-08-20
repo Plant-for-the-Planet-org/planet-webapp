@@ -16,6 +16,12 @@ interface Props {
    * to the field on the current page instead.
    */
   hrefFor?: (key: string) => string;
+  /**
+   * 'warning' (default) is for fields blocking resubmission. 'info' is for a
+   * purely informational list, such as answered fields a reviewer commented
+   * on, that do not block anything.
+   */
+  severity?: 'warning' | 'info';
   sx?: SxProps;
 }
 
@@ -36,12 +42,13 @@ export default function MissingFieldsSummary({
   fields,
   title,
   hrefFor,
+  severity = 'warning',
   sx = { mb: 2 },
 }: Props): ReactElement | null {
   if (fields.length === 0) return null;
 
   return (
-    <Alert severity="warning" sx={sx}>
+    <Alert severity={severity} sx={sx}>
       {title}
       <Box
         component="ul"
