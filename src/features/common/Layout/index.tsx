@@ -41,12 +41,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
         <div>
           <div className="notificationContainer">
-            {!isEmbedMode && (
-              <>
-                <CookiePolicy />
-                {/* <RedeemPopup /> */}
-              </>
-            )}
+            {!isEmbedMode && <CookiePolicy />}
 
             <ErrorPopup />
           </div>
