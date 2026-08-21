@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { handleError } from '@planet-sdk/common';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
+import IconButton from '../../../common/IconButton';
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
 import { useApi } from '../../../../hooks/useApi';
@@ -63,8 +64,8 @@ const TargetsModal = ({
   );
   //store: action
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
-  const setShouldRefetchUserProfile = useUserStore(
-    (state) => state.setShouldRefetchUserProfile
+  const refetchUserProfile = useUserStore(
+    (state) => state.refetchUserProfile
   );
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -105,7 +106,7 @@ const TargetsModal = ({
           payload,
         });
         const forestUserInfo = transformProfileToForestUserInfo(res);
-        setShouldRefetchUserProfile(true);
+        refetchUserProfile();
         if (forestUserInfo !== undefined) {
           setUserInfo(forestUserInfo);
           setTreesPlantedTargetLocal(forestUserInfo.targets.treesDonated ?? 0);
@@ -126,16 +127,13 @@ const TargetsModal = ({
   return (
     <Modal open={open} onClose={handleClose}>
       <div className={styles.targetModalMainContainer}>
-        <button
-          type="button"
-          aria-label={`${tCommon('close')} ${tProfile('setTargets')}`}
+        <IconButton
+          label={`${tCommon('close')} ${tProfile('setTargets')}`}
           className={styles.crossIconContainer}
           onClick={handleClose}
         >
-          <span aria-hidden="true" style={{ display: 'contents' }}>
-            <CrossIcon />
-          </span>
-        </button>
+          <CrossIcon />
+        </IconButton>
         <div className={styles.setTargetLabel}>{tProfile('setTargets')}</div>
 
         <div className={styles.targetModalSubContainer}>

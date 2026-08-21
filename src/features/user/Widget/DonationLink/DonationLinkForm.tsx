@@ -51,13 +51,19 @@ const DonationLinkForm = ({
   const [qrCode, setQrCode] = useState<string | null>(null);
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
-  const [isSupport, setIsSupport] = useState<boolean>(!userProfile?.isPrivate);
+  const [isSupport, setIsSupport] = useState<boolean>(false);
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
 
   const getDonationORCode = async () => {
     const data = await QRCode.toDataURL(donationUrl);
     setQrCode(data);
   };
+
+  useEffect(() => {
+    if (userProfile) {
+      setIsSupport(!userProfile.isPrivate);
+    }
+  }, [userProfile?.isPrivate]);
 
   useEffect(() => {
     if (donationUrl) {
@@ -79,7 +85,9 @@ const DonationLinkForm = ({
 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
       localProject == null ? '' : `to=${localProject.slug}&`
-    }tenant=${tenantConfig?.id}${isSupport ? `&s=${userProfile?.slug}` : ''}
+    }tenant=${tenantConfig?.id}${
+      isSupport && !userProfile?.isPrivate ? `&s=${userProfile?.slug}` : ''
+    }
     `;
     if (donationUrl.length > 0) setIsLinkUpdated(true);
     setDonationUrl(url);
@@ -91,7 +99,16 @@ const DonationLinkForm = ({
 
   useEffect(() => {
     handleUrlChange();
-  }, [country, language, localProject, isSupport, isTesting]);
+  }, [
+    country,
+    language,
+    localProject,
+    isSupport,
+    isTesting,
+    tenantConfig?.id,
+    userProfile?.slug,
+    userProfile?.isPrivate,
+  ]);
 
   useEffect(() => {
     const autoLanguage = {
@@ -197,7 +214,7 @@ const DonationLinkForm = ({
               {tDonationLink('treeCounterTitle')}
             </div>
             <InlineFormDisplayGroup type="other">
-              <h6>{tDonationLink('treeCounterSubtitle')}</h6>
+              <p>{tDonationLink('treeCounterSubtitle')}</p>
               <NewToggleSwitch
                 id="treeCounter"
                 name="treeCounter"
@@ -205,11 +222,11 @@ const DonationLinkForm = ({
                 onChange={() => {
                   setIsSupport(!isSupport);
                 }}
-                disabled={isSupport}
+                disabled={userProfile.isPrivate}
               />
             </InlineFormDisplayGroup>
-            {isSupport && (
-              <h6>{tDonationLink('treeCounterPrivateAccountSubtitle')}</h6>
+            {userProfile.isPrivate && (
+              <p>{tDonationLink('treeCounterPrivateAccountSubtitle')}</p>
             )}
           </div>
           <InlineFormDisplayGroup type="other">
@@ -228,8 +245,8 @@ const DonationLinkForm = ({
           </InlineFormDisplayGroup>
           {isTesting && (
             <>
-              <h6> {tDonationLink('testingModeSubtitle1')}</h6>
-              <h6>
+              <p> {tDonationLink('testingModeSubtitle1')}</p>
+              <p>
                 {tDonationLink('testingModeSubtitle2')}{' '}
                 <a
                   className="planet-links"
@@ -239,7 +256,7 @@ const DonationLinkForm = ({
                 >
                   stripe
                 </a>{' '}
-              </h6>
+              </p>
             </>
           )}
           <div className={styles.formSection}>

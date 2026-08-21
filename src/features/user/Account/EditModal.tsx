@@ -17,6 +17,7 @@ import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
+import IconButton from '../../common/IconButton';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -151,19 +152,13 @@ export const EditModal = ({
               <h4 style={{ marginRight: '64px' }}>
                 {t('editDonationConfirmation')}
               </h4>
-              <button
-                type="button"
-                aria-label={`${tCommon('close')} ${t('editDonationConfirmation')}`}
+              <IconButton
+                label={`${tCommon('close')} ${t('editDonationConfirmation')}`}
                 onClick={handleEditModalClose}
-                onKeyPress={handleEditModalClose}
-                role="button"
-                tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <span aria-hidden="true" style={{ display: 'contents' }}>
-                  <Close color={'#4d5153'} />
-                </span>
-              </button>
+                <Close color={'#4d5153'} />
+              </IconButton>
             </div>
             <div className={styles.note}>
               <p>{t('editDonationDescription')}</p>
