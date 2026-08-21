@@ -54,7 +54,7 @@ export default function BulkCodeSelectProjectPage(): ReactElement {
         ? setBulkMethod(method)
         : router.push(localizedPath('/profile/bulk-codes'));
     }
-  }, []);
+  }, [router.isReady]);
 
   if (!isInitialized) return <></>;
 

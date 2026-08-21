@@ -74,9 +74,7 @@ export const useBulkCodeStore = create<BulkCodeStore>()(
             planetCashAccount.currency
           );
 
-          if (filteredProjects.length > 0) {
-            set({ projectList: filteredProjects });
-          }
+          set({ projectList: filteredProjects });
         } catch (error) {
           useErrorHandlingStore
             .getState()

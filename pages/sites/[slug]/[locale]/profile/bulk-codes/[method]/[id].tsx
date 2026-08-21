@@ -62,14 +62,8 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
 
   // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {
+    if (!router.isReady) return;
     if (!planetCashAccount || !isAuthReady || !projectList) return;
-
-    if (!project) {
-      if (!router.isReady) {
-        router.push(localizedPath('/profile/bulk-codes'));
-        return;
-      }
-    }
 
     try {
       const paymentOptions = await getApiAuthenticated<PaymentOptions>(
