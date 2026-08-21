@@ -364,11 +364,8 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
             <button
               type="button"
               className={styles.navLinkTitle}
-              //Log out user and clear impersonation data
-              onClick={() => {
-                localStorage.removeItem('impersonationData');
-                logoutUser(`${window.location.origin}/`);
-              }}
+              //logoutUser also exits impersonation
+              onClick={() => logoutUser(`${window.location.origin}/`)}
             >
               {t('logout')}
             </button>

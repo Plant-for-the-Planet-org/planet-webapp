@@ -119,6 +119,7 @@ const PlanetWeb = ({
   const router = useRouter();
   const { tenantConfig } = pageProps;
   const [browserCompatible, setBrowserCompatible] = useState(false);
+  const locale = (router.query?.locale as string) ?? 'en';
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -142,6 +143,12 @@ const PlanetWeb = ({
     setBrowserCompatible(browserNotCompatible());
   }, []);
 
+  // `_document` sets `<html lang>` at SSR and on every full load, including language switches. This effect is purely defensive: it would re-sync lang if the locale ever changed without a document render, which doesn't happen today. Its `router.isReady` guard avoids overwriting the SSR value in Next's static case where query can be empty pre-hydration.
+  useEffect(() => {
+    if (!router.isReady) return;
+    document.documentElement.lang = locale;
+  }, [locale, router.isReady]);
+
   const isMobile = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return window.innerWidth < 481;
@@ -162,10 +169,7 @@ const PlanetWeb = ({
     return <BrowserNotSupported />;
   } else {
     return tenantConfig ? (
-      <NextIntlClientProvider
-        locale={(router.query?.locale as string) ?? 'en'}
-        messages={pageProps.messages}
-      >
+      <NextIntlClientProvider locale={locale} messages={pageProps.messages}>
         <CacheProvider value={emotionCache}>
           <Auth0Provider
             domain={process.env.AUTH0_CUSTOM_DOMAIN!}

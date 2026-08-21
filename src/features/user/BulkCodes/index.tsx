@@ -73,8 +73,7 @@ export default function BulkCodes({
   }, [fetchProjectList, getApi]);
 
   useEffect(() => {
-    if (!isAuthResolved) return;
-    if (planetCashAccount) return;
+    if (!isAuthResolved || planetCashAccount) return;
 
     if (userPlanetCash) {
       setPlanetCashAccount({
