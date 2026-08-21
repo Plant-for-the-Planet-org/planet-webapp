@@ -90,9 +90,7 @@ export default function EditProfileForm() {
   const setUserProfile = useUserStore((state) => state.setUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
-  const [type, setAccountType] = useState(
-    userProfile?.type ? userProfile.type : 'individual'
-  );
+  const [type, setAccountType] = useState('individual');
 
   const defaultProfileDetails = useMemo(() => {
     return {
@@ -156,6 +154,12 @@ export default function EditProfileForm() {
       value: 'education',
     },
   ];
+  // Sync type with loaded profile
+  useEffect(() => {
+    if (userProfile?.type) {
+      setAccountType(userProfile.type);
+    }
+  }, [userProfile?.type]);
 
   useEffect(() => {
     const selectedProfile = profileTypes.find((p) => p.value === type);
@@ -165,7 +169,7 @@ export default function EditProfileForm() {
         title: selectedProfile.title,
         value: selectedProfile.value,
       });
-  }, []);
+  }, [type]);
 
   useEffect(() => {
     // This will remove field values which do not exist for the new type
@@ -358,6 +362,7 @@ export default function EditProfileForm() {
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 label={`${t('fieldLabels.firstName')}*`}
+                autoComplete="given-name"
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -385,6 +390,7 @@ export default function EditProfileForm() {
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 label={`${t('fieldLabels.lastName')}*`}
+                autoComplete="family-name"
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -401,6 +407,7 @@ export default function EditProfileForm() {
             label={t('fieldLabels.email')}
             name="email"
             defaultValue={userProfile?.email}
+            autoComplete="email"
             disabled
           ></TextField>
           <Controller
@@ -416,6 +423,7 @@ export default function EditProfileForm() {
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 label={t('fieldLabels.website')}
+                autoComplete="url"
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}

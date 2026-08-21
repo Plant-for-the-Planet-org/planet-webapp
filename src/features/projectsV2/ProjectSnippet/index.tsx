@@ -11,7 +11,7 @@ import type {
   CurrencyCode,
 } from '@planet-sdk/common';
 
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
@@ -203,19 +203,6 @@ export default function ProjectSnippet({
     return path;
   }, [project.slug, embed, callbackUrl, router.asPath]);
 
-  // The useEffect hook checks if the backNavigationUrl query parameter exists and is a string, and if so,
-  // it decodes this value and stores it in session storage
-  useEffect(() => {
-    if (
-      router.query.backNavigationUrl &&
-      typeof router.query.backNavigationUrl === 'string'
-    ) {
-      sessionStorage.setItem(
-        'backNavigationUrl',
-        decodeURIComponent(router.query.backNavigationUrl)
-      );
-    }
-  }, [router.query]);
   return (
     <>
       <div className={projectSnippetContainerClasses}>

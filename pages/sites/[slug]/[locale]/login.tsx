@@ -63,7 +63,13 @@ export default function Login(): ReactElement {
     ) {
       // Wait for
       // Navbar to handle redirect to /verify-email OR
-      // UserPropsContext to handle redirect to /complete-signup (via 303)
+      // useProfileErrorHandler to handle redirect to /complete-signup (via 303)
+      //
+
+      // Stop here if fetching the profile fails but the Auth0 session is still valid.
+      // Redirecting to login would cause an endless login loop.
+
+      return;
     }
 
     // Not authenticated → login

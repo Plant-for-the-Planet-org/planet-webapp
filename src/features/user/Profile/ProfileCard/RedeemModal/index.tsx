@@ -47,8 +47,8 @@ export default function RedeemModal({
   const errors = useErrorHandlingStore((state) => state.errors);
   // store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
-  const setShouldRefetchUserProfile = useUserStore(
-    (state) => state.setShouldRefetchUserProfile
+  const refetchUserProfile = useUserStore(
+    (state) => state.refetchUserProfile
   );
   const refetchMyForest = useMyForestStore((state) => state.fetchMyForest);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
@@ -67,7 +67,7 @@ export default function RedeemModal({
           payload,
         });
         setRedeemedCodeData(res);
-        setShouldRefetchUserProfile(true);
+        refetchUserProfile();
         setIsLoading(false);
         if (res.units > 0) {
           const cloneUser = { ...userProfile };

@@ -992,6 +992,9 @@ useEffect(() => {
 | **Component / Feature** | AboutProject, MapFeatureExplorer, UserLayout submenu |
 | **Effort** | Small |
 | **Priority Score** | 50 / 100 |
+| **Status** | 🟡 Remediated in code (2026-07-26) — pending verification |
+
+**Remediation:** All three toggles now expose `aria-expanded` bound directly to their React state, plus `aria-controls` pointing at the region they toggle. Panel ids come from `useId()` (AboutProject, MapFeatureExplorer) or the stable `link.key` (NavLink); `aria-controls` is omitted while a region is unmounted so the IDREF is never dangling. The MapFeatureExplorer `<h3>` inside the button became a styled `<span>` (`.exploreTitle`), removing the heading from inside the control. In NavLink both the title button and the arrow button toggle the same submenu, so both carry the state; the arrow button gained an `aria-label` (`Me.toggleSubMenu`), and the submenu items are now wrapped in a container div that owns the `aria-controls` target. No visual or behavioural change. Line numbers below reflect the pre-fix code.
 
 **File(s) & Line(s):**
 - `src/features/projectsV2/ProjectDetails/components/AboutProject.tsx:40` (Read more/less)

@@ -12,9 +12,10 @@
  * @dependencies
  *  - State / Stores:
  *   - `useTenantStore`: Retrieves tenant-specific configuration (e.g. tenant key).
- * - React Contexts:
- *   - `useUserProps`: To access the current user's token and handle logout on invalid tokens.
- *   - `useLocale` : To get the current locale for setting the `x-locale` header.
+ *   - `useAuthStore`: Retrieves the current auth token.
+ * - Hooks:
+ *   - `useAuthSession`: To handle logout on invalid tokens.
+ *   - `useLocale`: To get the current locale for setting the `x-locale` header.
  * - Utilities:
  *   - `apiClient`: A utility to make HTTP requests.
  *   - `validateToken`: To check if the provided token is valid.
@@ -63,7 +64,7 @@
  * - `deleteApiAuthenticated`: Makes a DELETE request with authentication.
  *
  * @notes
- * - Ensure that `useUserProps` contexts are properly configured in your application.
+ * - Auth token is sourced from `useAuthStore`; no React Context is required.
  * - Tenant configuration is sourced from `useTenantStore`; no Tenant React Context is required.
  */
 import type { RequestOptions } from '../utils/apiRequests/apiClient';

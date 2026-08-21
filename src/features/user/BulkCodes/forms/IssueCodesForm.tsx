@@ -30,6 +30,8 @@ import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { useUserStore, useErrorHandlingStore } from '../../../../stores';
 
+type SubmissionStatus = 'idle' | 'submitting' | 'success';
+
 const IssueCodesForm = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
   const locale = useLocale();
@@ -50,17 +52,14 @@ const IssueCodesForm = (): ReactElement | null => {
   const [occasion, setOccasion] = useState('');
   const [codeQuantity, setCodeQuantity] = useState('');
   const [unitsPerCode, setUnitsPerCode] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState<SubmissionStatus>('idle');
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
   const [notificationLocale, setNotificationLocale] = useState('');
   // store: state
   const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
   // store: action
-  const setShouldRefetchUserProfile = useUserStore(
-    (state) => state.setShouldRefetchUserProfile
-  );
+  const refetchUserProfile = useUserStore((state) => state.refetchUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const notificationLocales = [
@@ -112,12 +111,13 @@ const IssueCodesForm = (): ReactElement | null => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    if (status !== 'idle') return;
     if (isAddingRecipient || isEditingRecipient) {
       const shouldSubmit = confirm(t('unsavedDataWarning'));
       if (!shouldSubmit) return;
     }
 
-    setIsProcessing(true);
+    setStatus('submitting');
     if (project) {
       const donationData: PrepaidDonationRequest = {
         purpose: project.purpose,
@@ -158,15 +158,24 @@ const IssueCodesForm = (): ReactElement | null => {
         });
         // if request is successful, it will have a uid
         if (res?.uid) {
-          resetBulkContext();
-          setIsSubmitted(true);
-          setShouldRefetchUserProfile(true);
-          setTimeout(() => {
-            router.push(localizedPath(`/profile/history?ref=${res.uid}`));
+          setStatus('success');
+          // The delay lets the user read the confirmation message.
+
+          // Reset and profile refresh happen after navigation because
+          // refreshing the profile here temporarily unmounts this page,
+          // which resets the form state and shows the empty form again
+          // before the redirect.
+          setTimeout(async () => {
+            await router.push(localizedPath(`/profile/history?ref=${res.uid}`));
+            resetBulkContext();
+            refetchUserProfile();
           }, 5000);
+        } else {
+          setStatus('idle');
+          setErrors([{ message: t('donationError.default') }]);
         }
       } catch (err) {
-        setIsProcessing(false);
+        setStatus('idle');
         const serializedErrors = handleError(err as APIError);
         const _serializedErrors: SerializedError[] = [];
 
@@ -207,7 +216,7 @@ const IssueCodesForm = (): ReactElement | null => {
         setErrors(_serializedErrors);
       }
     } else {
-      setIsProcessing(false);
+      setStatus('idle');
       setErrors([{ message: t('projectRequired') }]);
     }
   };
@@ -243,17 +252,17 @@ const IssueCodesForm = (): ReactElement | null => {
 
     return (
       !hasSufficientFunds ||
-      isProcessing ||
+      status === 'submitting' ||
       !hasEnteredRequiredData ||
       !totalAmount ||
       totalAmount <= 0
     );
   }, [
     userPlanetCash,
+    status,
     localRecipients,
     codeQuantity,
     unitsPerCode,
-    isProcessing,
     totalAmount,
   ]);
 
@@ -309,7 +318,7 @@ const IssueCodesForm = (): ReactElement | null => {
     );
   }, [locale, t]);
 
-  if (!isSubmitted) {
+  if (status !== 'success') {
     return (
       <CenteredContainer>
         <StyledFormContainer className="IssueCodesForm" component={'section'}>
@@ -379,7 +388,7 @@ const IssueCodesForm = (): ReactElement | null => {
               className="formButton"
               disabled={shouldDisableSubmission}
             >
-              {isProcessing ? t('issuingCodes') : t('issueCodes')}
+              {status === 'submitting' ? t('issuingCodes') : t('issueCodes')}
             </Button>
           </form>
           <div className={styles.issueCodeTermsAndWarnings}>
@@ -391,16 +400,16 @@ const IssueCodesForm = (): ReactElement | null => {
         </StyledFormContainer>
       </CenteredContainer>
     );
-  } else {
-    return (
-      <CenteredContainer className="CenteredContainer--small">
-        <div className={styles.successMessage}>
-          {t('donationSuccess')}
-          <span className={styles.spinner}></span>
-        </div>
-      </CenteredContainer>
-    );
   }
+
+  return (
+    <CenteredContainer className="CenteredContainer--small">
+      <div className={styles.successMessage}>
+        {t('donationSuccess')}
+        <span className={styles.spinner}></span>
+      </div>
+    </CenteredContainer>
+  );
 };
 
 export default IssueCodesForm;
