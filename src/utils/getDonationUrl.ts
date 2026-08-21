@@ -3,13 +3,13 @@ export const getDonationUrl = (
   tenant: string | undefined,
   id: string,
   token: string | null,
-  embed?: string | undefined | string[],
-  callbackUrl?: string | undefined | string[],
-  slug?: string | undefined,
+  embed?: string,
+  callbackUrl?: string,
+  slug?: string,
   utmCampaign?: string
 ): string => {
-  const country = localStorage.getItem('countryCode');
-  const language = localStorage.getItem('language');
+  const country = localStorage.getItem('countryCode') || 'DE';
+  const language = localStorage.getItem('language') || 'en';
 
   const storedDirectGift = localStorage.getItem('directGift');
   let directGift: { id?: string } | null = null;
@@ -31,16 +31,14 @@ export const getDonationUrl = (
   const queryParams = [
     `to=${encodeURIComponent(id)}`,
     callbackUrlValue !== undefined
-      ? `callback_url=${encodeURIComponent(String(callbackUrlValue))}`
+      ? `callback_url=${encodeURIComponent(callbackUrlValue)}`
       : undefined,
-    `country=${encodeURIComponent(String(country))}`,
-    `locale=${encodeURIComponent(String(language))}`,
+    `country=${encodeURIComponent(country)}`,
+    `locale=${encodeURIComponent(language)}`,
     token ? `token=${encodeURIComponent(token)}` : undefined,
     tenant !== undefined ? `tenant=${encodeURIComponent(tenant)}` : undefined,
     giftSlug !== undefined ? `s=${encodeURIComponent(giftSlug)}` : undefined,
-    utmCampaign
-      ? `utm_campaign=${encodeURIComponent(utmCampaign)}`
-      : undefined,
+    utmCampaign ? `utm_campaign=${encodeURIComponent(utmCampaign)}` : undefined,
   ].filter((param): param is string => param !== undefined);
 
   return `${process.env.NEXT_PUBLIC_DONATION_URL}/?${queryParams.join('&')}`;
