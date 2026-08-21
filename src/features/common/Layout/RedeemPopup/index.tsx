@@ -32,7 +32,7 @@ export default function RedeemPopup() {
     if (isAuthResolved && userProfile) {
       setShowRedeemPopup(false);
     }
-  }, [isAuthResolved && userProfile]);
+  }, [isAuthResolved, userProfile]);
 
   const isMountedRef = useRef(false);
 
