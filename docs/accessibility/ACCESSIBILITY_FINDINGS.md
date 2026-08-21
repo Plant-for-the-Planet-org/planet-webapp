@@ -992,6 +992,9 @@ useEffect(() => {
 | **Component / Feature** | AboutProject, MapFeatureExplorer, UserLayout submenu |
 | **Effort** | Small |
 | **Priority Score** | 50 / 100 |
+| **Status** | 🟡 Remediated in code (2026-07-26) — pending verification |
+
+**Remediation:** All three toggles now expose `aria-expanded` bound directly to their React state, plus `aria-controls` pointing at the region they toggle. Panel ids come from `useId()` (AboutProject, MapFeatureExplorer) or the stable `link.key` (NavLink); `aria-controls` is omitted while a region is unmounted so the IDREF is never dangling. The MapFeatureExplorer `<h3>` inside the button became a styled `<span>` (`.exploreTitle`), removing the heading from inside the control. In NavLink both the title button and the arrow button toggle the same submenu, so both carry the state; the arrow button gained an `aria-label` (`Me.toggleSubMenu`), and the submenu items are now wrapped in a container div that owns the `aria-controls` target. No visual or behavioural change. Line numbers below reflect the pre-fix code.
 
 **File(s) & Line(s):**
 - `src/features/projectsV2/ProjectDetails/components/AboutProject.tsx:40` (Read more/less)
@@ -1324,8 +1327,11 @@ Good existing patterns to mirror: `ContentLoaders/ButtonLoader.tsx` and `Content
 | **Category** | Links & Buttons |
 | **Effort** | Small |
 | **Priority Score** | 12 / 100 |
+| **Status** | 🟢 Verified (2026-08-21) — dead component deleted |
 
-**File(s) & Line(s):** `src/features/common/Layout/RedeemPopup/index.tsx:69` (`<a onClick>` with no `href`, not focusable), `:61` (unlabeled close). File is annotated "unused" and commented out in `Layout/index.tsx:40`.
+**Remediation:** The recommended fix "delete the dead component" was taken. `RedeemPopup/index.tsx` and `RedeemPopup.module.scss` were removed, along with the commented-out usage in `Layout/index.tsx`. Nothing imported the component, so there was no behaviour change. Both inaccessible controls are gone, so there is nothing left to verify with assistive tech.
+
+**File(s) & Line(s):** `src/features/common/Layout/RedeemPopup/index.tsx:69` (`<a onClick>` with no `href`, not focusable), `:61` (unlabeled close). File is annotated "unused" and commented out in `Layout/index.tsx:40`. Line numbers reflect the pre-deletion code.
 
 **Issue Description:** A login trigger is an `<a>` without `href` (not keyboard focusable, not a real link); the close button is unlabeled. Impact is latent because the component is currently unused.
 

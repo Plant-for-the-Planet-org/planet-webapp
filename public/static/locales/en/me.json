@@ -33,6 +33,7 @@
     "accountHistory": "Account History",
     "logout": "Logout",
     "close": "Close",
+    "toggleSubMenu": "Toggle {menuTitle} submenu",
     "addTarget": "Add Target",
     "noOfTrees": "How many trees?",
     "datePlanted": "Date Planted",

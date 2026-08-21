@@ -309,6 +309,7 @@ export default function ProjectMedia({
                       onBlur={(e) => uploadCaption(image.id, index, e)}
                       type="text"
                       placeholder={t('addCaption')}
+                      aria-label={t('addCaption')}
                       defaultValue=""
                     />
 
