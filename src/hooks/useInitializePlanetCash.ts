@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { usePlanetCashStore, useUserStore } from '../stores';
 
 /**
- * Hook to handle PlanetCash store lifecycle.
- * Resets PlanetCash state when the user profile changes.
+ * PlanetCash data belongs to a single user profile, so the store is re-initialized whenever that profile changes.
+ * `profileId` changes on first load, on login, on logout, and when entering or leaving impersonation.
  */
 export const useInitializePlanetCash = () => {
   const profileId = useUserStore((state) => state.userProfile?.id);
@@ -12,7 +12,6 @@ export const useInitializePlanetCash = () => {
   );
 
   useEffect(() => {
-    // Reset PlanetCash store on impersonation mode active
     resetPlanetCashStore();
   }, [profileId, resetPlanetCashStore]);
 };

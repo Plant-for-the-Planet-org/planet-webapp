@@ -95,7 +95,7 @@ export default function PlanetCash({
   );
 
   const fetchAccounts = async () => {
-    // If accounts already exist, just handle redirects
+    // If accounts were already fetched, just handle redirects
     if (planetCashAccounts) {
       redirectIfNeeded(planetCashAccounts);
       return;
