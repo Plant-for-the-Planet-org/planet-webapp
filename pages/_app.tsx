@@ -24,7 +24,6 @@ import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { NextIntlClientProvider } from 'next-intl';
 import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
@@ -191,17 +190,15 @@ const PlanetWeb = ({
             <ThemeProvider>
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
-                <PlanetCashProvider>
-                  <PayoutsProvider>
-                    <Layout>
-                      <BulkCodeProvider>
-                        <DonationReceiptProvider>
-                          {pageContent}
-                        </DonationReceiptProvider>
-                      </BulkCodeProvider>
-                    </Layout>
-                  </PayoutsProvider>
-                </PlanetCashProvider>
+                <PayoutsProvider>
+                  <Layout>
+                    <BulkCodeProvider>
+                      <DonationReceiptProvider>
+                        {pageContent}
+                      </DonationReceiptProvider>
+                    </BulkCodeProvider>
+                  </Layout>
+                </PayoutsProvider>
               </MuiThemeProvider>
             </ThemeProvider>
           </Auth0Provider>
