@@ -6,9 +6,13 @@ import type {
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
+export type AccountsFetchStatus = 'idle' | 'loading' | 'ready' | 'error';
+
 interface ManagePayoutStore {
   accounts: BankAccount[] | null;
+  accountsStatus: AccountsFetchStatus;
   setAccounts: (accounts: BankAccount[] | null) => void;
+  setAccountsStatus: (status: AccountsFetchStatus) => void;
   payoutMinAmounts: PayoutMinAmounts | null;
   setPayoutMinAmounts: (payoutMinAmounts: PayoutMinAmounts | null) => void;
   resetManagePayoutStore: () => void;
@@ -16,6 +20,7 @@ interface ManagePayoutStore {
 
 const initialState = {
   accounts: null,
+  accountsStatus: 'idle' as AccountsFetchStatus,
   payoutMinAmounts: null,
 };
 
@@ -26,6 +31,9 @@ export const useManagePayoutStore = create<ManagePayoutStore>()(
 
       setAccounts: (accounts) =>
         set({ accounts }, undefined, 'managePayout/set_accounts'),
+
+      setAccountsStatus: (accountsStatus) =>
+        set({ accountsStatus }, undefined, 'managePayout/set_accounts_status'),
 
       setPayoutMinAmounts: (payoutMinAmounts) =>
         set(
