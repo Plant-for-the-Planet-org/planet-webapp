@@ -5,7 +5,7 @@ import type { CountryProject } from '@planet-sdk/common';
  *
  * Rules:
  * - Project must have a unitCost greater than 0
- * - Project classification must not be 'membership' or 'endowment'
+ * - Project purpose must be 'trees' or 'conservation' (see PR #2888)
  * - If currency is CHF, only projects listed in allowedCHFProjects are allowed
  *
  * @param projects - List of country projects fetched from API
@@ -25,13 +25,12 @@ export const filterEligibleProjects = (
 
   return projects.filter((project) => {
     const isValidUnitCost = project.unitCost > 0;
-    const isAllowedClassification =
-      project.classification !== 'membership' &&
-      project.classification !== 'endowment';
+    const isAllowedPurpose =
+      project.purpose === 'trees' || project.purpose === 'conservation';
 
     const isAllowedForCurrency =
       currency !== 'CHF' || allowedCHFProjects.includes(project.slug);
 
-    return isValidUnitCost && isAllowedClassification && isAllowedForCurrency;
+    return isValidUnitCost && isAllowedPurpose && isAllowedForCurrency;
   });
 };
