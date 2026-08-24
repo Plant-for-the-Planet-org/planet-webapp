@@ -146,6 +146,7 @@ const EditBankAccount = (): ReactElement | null => {
         <h2 className="formTitle">{t('editBankAccountTitle')}</h2>
       </FormHeader>
       <BankDetailsForm
+        key={accountToEdit.id}
         account={accountToEdit}
         isProcessing={isProcessing}
         handleSave={handleSaveAccount}
