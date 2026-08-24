@@ -11,13 +11,18 @@ interface ManagePayoutStore {
   setAccounts: (accounts: BankAccount[] | null) => void;
   payoutMinAmounts: PayoutMinAmounts | null;
   setPayoutMinAmounts: (payoutMinAmounts: PayoutMinAmounts | null) => void;
+  resetManagePayoutStore: () => void;
 }
+
+const initialState = {
+  accounts: null,
+  payoutMinAmounts: null,
+};
 
 export const useManagePayoutStore = create<ManagePayoutStore>()(
   devtools(
     (set) => ({
-      accounts: null,
-      payoutMinAmounts: null,
+      ...initialState,
 
       setAccounts: (accounts) =>
         set({ accounts }, undefined, 'managePayout/set_accounts'),
@@ -28,6 +33,9 @@ export const useManagePayoutStore = create<ManagePayoutStore>()(
           undefined,
           'managePayout/set_minimum_amounts'
         ),
+
+      resetManagePayoutStore: () =>
+        set(initialState, undefined, 'managePayout/reset_store'),
     }),
     {
       name: 'ManagePayoutStore',

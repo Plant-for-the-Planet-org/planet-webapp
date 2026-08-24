@@ -58,8 +58,8 @@ export default function ManagePayouts({
       isTpo: state.userProfile?.type === 'tpo',
     }))
   );
-  const hasAccounts = useManagePayoutStore(
-    (state) => state.accounts !== null && state.accounts?.length > 0
+  const hasFetchedAccounts = useManagePayoutStore(
+    (state) => state.accounts !== null
   );
   const hasPayoutMinAmounts = useManagePayoutStore(
     (state) => state.payoutMinAmounts !== null
@@ -87,7 +87,7 @@ export default function ManagePayouts({
   }, [step, userId]);
 
   const fetchAccounts = async () => {
-    if (hasAccounts) return;
+    if (hasFetchedAccounts) return;
 
     setIsDataLoading(true);
     setProgress && setProgress(70);
@@ -111,7 +111,7 @@ export default function ManagePayouts({
     }
 
     if (isAuthReady) fetchAccounts();
-  }, [isAuthReady, userId]);
+  }, [isAuthReady, userId, hasFetchedAccounts]);
 
   useEffect(() => {
     if (isTpo) {
