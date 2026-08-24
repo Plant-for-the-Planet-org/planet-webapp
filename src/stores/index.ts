@@ -5,7 +5,7 @@ export { useQueryParamStore } from './queryParamStore';
 export { useProjectMapStore } from './projectMapStore';
 export { useMyForestStore } from './myForestStore';
 export { useCurrencyStore } from './currencyStore';
-export { useManagePayoutStore } from './useManagePayout';
+export { useManagePayoutStore } from './managePayoutStore';
 export { usePlanetCashStore } from './planetCashStore';
 export { useProjectStore } from './projectStore';
 export { useSingleProjectStore } from './singleProjectStore';
