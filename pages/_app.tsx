@@ -23,8 +23,6 @@ import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserN
 import dynamic from 'next/dynamic';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
-import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { NextIntlClientProvider } from 'next-intl';
 import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
@@ -190,15 +188,11 @@ const PlanetWeb = ({
             <ThemeProvider>
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
-                <PlanetCashProvider>
-                  <PayoutsProvider>
-                    <Layout>
-                      <DonationReceiptProvider>
-                        {pageContent}
-                      </DonationReceiptProvider>
-                    </Layout>
-                  </PayoutsProvider>
-                </PlanetCashProvider>
+                <Layout>
+                  <DonationReceiptProvider>
+                    {pageContent}
+                  </DonationReceiptProvider>
+                </Layout>
               </MuiThemeProvider>
             </ThemeProvider>
           </Auth0Provider>
