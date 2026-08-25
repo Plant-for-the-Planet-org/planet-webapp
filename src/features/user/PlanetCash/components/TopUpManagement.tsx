@@ -18,11 +18,10 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import WebappButton from '../../../common/WebappButton';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import { useApi } from '../../../../hooks/useApi';
-import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import CustomModal from '../../../common/Layout/CustomModal';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import getFormattedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useErrorHandlingStore, usePlanetCashStore } from '../../../../stores';
 
 type TopUpFormData = {
   isAutoRefillEnabled: boolean;
@@ -43,15 +42,15 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
   const tTopUp = useTranslations('PlanetCash.topUpManagement');
   const locale = useLocale();
   const { putApiAuthenticated, deleteApiAuthenticated } = useApi();
-  const { updateAccount } = usePlanetCash();
   // local state
   const [isProcessingDelete, setIsProcessingDelete] = useState(false);
   const [isProcessingSave, setIsProcessingSave] = useState(false);
   const [isDisableConfirmationOpen, setIsDisableConfirmationOpen] =
     useState(false);
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
-  // store
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const updateAccount = usePlanetCashStore((state) => state.updateAccount);
 
   const defaultTopUpDetails = useMemo(() => {
     const hasExistingTopUp =

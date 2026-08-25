@@ -3,6 +3,8 @@ import type { Tenant } from '@planet-sdk/common';
 import { useInitializeAuth } from '../../../hooks/useInitializeAuth';
 import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
+import { useInitializePlanetCash } from '../../../hooks/useInitializePlanetCash';
+import { useInitializePayout } from '../../../hooks/useInitializePayout';
 import { useInitializeUser } from '../../../hooks/useInitializeUser';
 import { useInitializeProject } from '../../../hooks/useInitializeProject';
 import { useInitializeIntervention } from '../../../hooks/useInitializeIntervention';
@@ -39,6 +41,8 @@ export const StoreInitializer = ({
   useInitializeAuth();
   useInitializeUser();
   useInitializeCurrency();
+  useInitializePlanetCash();
+  useInitializePayout();
   useInitializeDonationReceipt();
   useInitializeView(isMobile);
   useInitializeProject();
