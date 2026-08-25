@@ -112,11 +112,7 @@ export const useBulkCodeStore = create<BulkCodeStore>()(
         ),
 
       resetBulkCodeStore: () =>
-        set(
-          { bulkMethod: null, project: null },
-          undefined,
-          'bulkCode/reset_store'
-        ),
+        set(initialState, undefined, 'bulkCode/reset_store'),
     }),
     {
       name: 'BulkCodeStore',
