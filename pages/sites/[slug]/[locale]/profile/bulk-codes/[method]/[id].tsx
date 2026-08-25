@@ -46,9 +46,7 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
     Boolean(state.token && state.isAuthResolved)
   );
   const userProfile = useUserStore((state) => state.userProfile);
-  const isBulkMethodSet = useBulkCodeStore(
-    (state) => state.bulkMethod !== null
-  );
+  const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
   const projectList = useBulkCodeStore((state) => state.projectList);
   const project = useBulkCodeStore((state) => state.project);
   const planetCashAccount = useBulkCodeStore(
@@ -60,7 +58,13 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
   const setBulkMethod = useBulkCodeStore((state) => state.setBulkMethod);
   const setProject = useBulkCodeStore((state) => state.setProject);
 
-  // Checks context and sets project, bulk method if not already set within context
+  const { method } = router.query;
+  const isValidMethod =
+    method === BulkCodeMethods.GENERIC || method === BulkCodeMethods.IMPORT;
+
+  // Checks context and sets project; keeps the store's bulk method in sync
+  // with the route method, so navigating between methods doesn't leave a
+  // stale value.
   const checkContext = useCallback(async () => {
     if (!router.isReady) return;
     if (!planetCashAccount || !isAuthReady || !projectList) return;
@@ -101,17 +105,21 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
       }
     }
 
-    if (!isBulkMethodSet && router.isReady) {
-      const { method } = router.query;
-
-      const isValidMethod =
-        method === BulkCodeMethods.GENERIC || method === BulkCodeMethods.IMPORT;
-
-      isValidMethod
-        ? setBulkMethod(method)
-        : router.push(localizedPath('/profile/bulk-codes'));
+    if (!isValidMethod) {
+      router.push(localizedPath('/profile/bulk-codes'));
+      return;
     }
-  }, [router.isReady, planetCashAccount, isAuthReady, projectList, project]);
+    if (bulkMethod !== method) setBulkMethod(method);
+  }, [
+    router.isReady,
+    planetCashAccount,
+    isAuthReady,
+    projectList,
+    project,
+    isValidMethod,
+    method,
+    bulkMethod,
+  ]);
 
   useEffect(() => {
     checkContext();

@@ -35,9 +35,7 @@ export default function BulkCodeSelectProjectPage(): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   // store: state
-  const isBulkMethodSet = useBulkCodeStore(
-    (state) => state.bulkMethod !== null
-  );
+  const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
   const isInitialized = useTenantStore((state) => state.isInitialized);
   // store: action
   const setBulkMethod = useBulkCodeStore((state) => state.setBulkMethod);
@@ -46,15 +44,16 @@ export default function BulkCodeSelectProjectPage(): ReactElement {
   const isValidMethod =
     method === BulkCodeMethods.GENERIC || method === BulkCodeMethods.IMPORT;
 
-  // Sets bulk method if not already set within context when page is loaded
+  // Keeps the store in sync with the route method, so navigating between
+  // methods (e.g. via browser back/forward) doesn't leave a stale value.
   useEffect(() => {
     if (!router.isReady) return;
     if (!isValidMethod) {
       router.push(localizedPath('/profile/bulk-codes'));
       return;
     }
-    if (!isBulkMethodSet) setBulkMethod(method);
-  }, [router.isReady, isValidMethod, method]);
+    if (bulkMethod !== method) setBulkMethod(method);
+  }, [router.isReady, isValidMethod, method, bulkMethod]);
 
   if (!isInitialized || !router.isReady || !isValidMethod) return <></>;
 
