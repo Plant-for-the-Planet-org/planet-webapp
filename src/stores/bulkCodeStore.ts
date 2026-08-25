@@ -33,12 +33,6 @@ export interface Recipient {
   // occasion: string;
 }
 
-export interface BulkGiftImportData {
-  comment?: string;
-  occasion: string;
-  recipients: Recipient[];
-}
-
 interface BulkCodeStore {
   bulkMethod: BulkCodeMethods | null;
   planetCashAccount: PlanetCashAccount | null;
