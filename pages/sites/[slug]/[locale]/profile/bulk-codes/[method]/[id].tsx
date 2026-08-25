@@ -65,38 +65,40 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
     if (!router.isReady) return;
     if (!planetCashAccount || !isAuthReady || !projectList) return;
 
-    try {
-      const paymentOptions = await getApiAuthenticated<PaymentOptions>(
-        `/app/paymentOptions/${router.query.id}`,
-        {
-          queryParams: {
-            country: planetCashAccount?.country ?? '',
-            ...(userProfile !== null && {
-              legacyPriceFor: userProfile.id,
-            }),
-          },
-        }
-      );
+    if (!project) {
+      try {
+        const paymentOptions = await getApiAuthenticated<PaymentOptions>(
+          `/app/paymentOptions/${router.query.id}`,
+          {
+            queryParams: {
+              country: planetCashAccount?.country ?? '',
+              ...(userProfile !== null && {
+                legacyPriceFor: userProfile.id,
+              }),
+            },
+          }
+        );
 
-      if (!paymentOptions) return;
+        if (!paymentOptions) return;
 
-      const retrievedProject = projectList.find(
-        (project) => project.guid === paymentOptions.id
-      );
+        const retrievedProject = projectList.find(
+          (project) => project.guid === paymentOptions.id
+        );
 
-      if (!retrievedProject) throw new Error('Project not found');
+        if (!retrievedProject) throw new Error('Project not found');
 
-      Object.assign(retrievedProject, {
-        currency: paymentOptions.currency,
-        unitCost: paymentOptions.unitCost,
-        unitType: paymentOptions.unitType,
-        purpose: paymentOptions.purpose,
-      });
+        Object.assign(retrievedProject, {
+          currency: paymentOptions.currency,
+          unitCost: paymentOptions.unitCost,
+          unitType: paymentOptions.unitType,
+          purpose: paymentOptions.purpose,
+        });
 
-      setProject(retrievedProject);
-    } catch (err) {
-      setErrors(handleError(err as APIError));
-      router.push(localizedPath('/'));
+        setProject(retrievedProject);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        router.push(localizedPath('/'));
+      }
     }
 
     if (!isBulkMethodSet && router.isReady) {
@@ -109,7 +111,7 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
         ? setBulkMethod(method)
         : router.push(localizedPath('/profile/bulk-codes'));
     }
-  }, [router.isReady, planetCashAccount, isAuthReady, projectList]);
+  }, [router.isReady, planetCashAccount, isAuthReady, projectList, project]);
 
   useEffect(() => {
     checkContext();
