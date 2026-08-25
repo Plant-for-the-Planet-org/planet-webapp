@@ -5,18 +5,13 @@ import type {
   CurrencyCode,
 } from '@planet-sdk/common';
 import type { BulkCodeMethods } from '../utils/constants/bulkCodeConstants';
-import type { ApiConfigBase } from '../hooks/useApi';
+import type { ApiRequestFn } from '../hooks/useApi';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { useErrorHandlingStore } from './errorHandlingStore';
 import { handleError } from '@planet-sdk/common';
 import { filterEligibleProjects } from '../features/user/BulkCodes/utils';
-
-export type ApiRequestFn = <T>(
-  url: string,
-  config?: ApiConfigBase
-) => Promise<T>;
 
 export interface PlanetCashAccount {
   guid: string;
