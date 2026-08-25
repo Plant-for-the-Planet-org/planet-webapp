@@ -70,7 +70,7 @@ export default function BulkCodes({
 
   useEffect(() => {
     fetchProjectList(getApi);
-  }, [fetchProjectList, getApi]);
+  }, [fetchProjectList, getApi, planetCashAccount]);
 
   useEffect(() => {
     if (!isAuthResolved || planetCashAccount) return;

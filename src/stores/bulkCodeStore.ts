@@ -33,6 +33,7 @@ interface BulkCodeStore {
   planetCashAccount: PlanetCashAccount | null;
   project: CountryProject | null;
   projectList: CountryProject[] | null;
+  isFetchingProjectList: boolean;
 
   fetchProjectList: (getApi: ApiRequestFn) => Promise<void>;
   setBulkMethod: (bulkMethod: BulkCodeMethods | null) => void;
@@ -46,6 +47,7 @@ const initialState = {
   planetCashAccount: null,
   project: null,
   projectList: null,
+  isFetchingProjectList: false,
 };
 
 export const useBulkCodeStore = create<BulkCodeStore>()(
@@ -54,10 +56,21 @@ export const useBulkCodeStore = create<BulkCodeStore>()(
       ...initialState,
 
       fetchProjectList: async (getApi) => {
-        const { planetCashAccount, projectList } = get();
+        const { planetCashAccount, projectList, isFetchingProjectList } =
+          get();
 
-        if (!planetCashAccount || projectList !== null) return;
+        if (
+          !planetCashAccount ||
+          projectList !== null ||
+          isFetchingProjectList
+        )
+          return;
 
+        set(
+          { isFetchingProjectList: true },
+          undefined,
+          'bulkCode/fetch_project_list_start'
+        );
         try {
           const fetchedProjects = await getApi<CountryProject[]>(
             `/app/countryProjects/${planetCashAccount.country}`
@@ -76,6 +89,12 @@ export const useBulkCodeStore = create<BulkCodeStore>()(
           useErrorHandlingStore
             .getState()
             .setErrors(handleError(error as APIError));
+        } finally {
+          set(
+            { isFetchingProjectList: false },
+            undefined,
+            'bulkCode/fetch_project_list_complete'
+          );
         }
       },
 
