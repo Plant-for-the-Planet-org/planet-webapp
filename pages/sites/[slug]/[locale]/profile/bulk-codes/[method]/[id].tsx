@@ -67,8 +67,11 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
   // stale value.
   const checkContext = useCallback(async () => {
     if (!router.isReady) return;
+    if (!isValidMethod) {
+      router.push(localizedPath('/profile/bulk-codes'));
+      return;
+    }
     if (!planetCashAccount || !isAuthReady || !projectList) return;
-
     if (!project) {
       try {
         const paymentOptions = await getApiAuthenticated<PaymentOptions>(
@@ -105,10 +108,6 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
       }
     }
 
-    if (!isValidMethod) {
-      router.push(localizedPath('/profile/bulk-codes'));
-      return;
-    }
     if (bulkMethod !== method) setBulkMethod(method);
   }, [
     router.isReady,
@@ -125,7 +124,7 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
     checkContext();
   }, [checkContext]);
 
-  if (!isInitialized) return <></>;
+  if (!isInitialized || !router.isReady || !isValidMethod) return <></>;
 
   return (
     <UserLayout>
