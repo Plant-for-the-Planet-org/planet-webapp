@@ -17,7 +17,6 @@ import { useTranslations } from 'next-intl';
 interface ProjectSelectorProps {
   project: CountryProject | null;
   setProject?: (project: CountryProject | null) => void;
-  active?: boolean;
   disabled?: boolean;
 }
 const ProjectSelector = ({
