@@ -53,6 +53,9 @@ interface DonationReceiptState {
 }
 
 interface DonationReceiptStore extends DonationReceiptState {
+  // true once the store has either loaded sessionStorage or received fresh data,
+  // guards ownership checks against running against the default (empty) state
+  isHydrated: boolean;
   // actions
   initForVerification: (data: IssuedReceiptDataApi, user: User | null) => void;
   initForIssuance: (
@@ -136,6 +139,7 @@ export const useDonationReceiptStore = create<DonationReceiptStore>()(
     (set, get) => ({
       //state
       ...defaultState,
+      isHydrated: false,
 
       //actions
       // Initialize state for verification
@@ -185,7 +189,11 @@ export const useDonationReceiptStore = create<DonationReceiptStore>()(
           year: data.year ?? null,
         };
 
-        set(newState, undefined, 'donationReceipt/init_for_verification');
+        set(
+          { ...newState, isHydrated: true },
+          undefined,
+          'donationReceipt/init_for_verification'
+        );
         persistState(get());
       },
 
@@ -231,7 +239,11 @@ export const useDonationReceiptStore = create<DonationReceiptStore>()(
           year: null,
         };
 
-        set(newState, undefined, 'donationReceipt/init_for_issuance');
+        set(
+          { ...newState, isHydrated: true },
+          undefined,
+          'donationReceipt/init_for_issuance'
+        );
         persistState(get());
       },
 
@@ -277,7 +289,16 @@ export const useDonationReceiptStore = create<DonationReceiptStore>()(
           const storedState = sessionStorage.getItem(SESSION_STORAGE_KEY);
           if (storedState) {
             set(
-              JSON.parse(storedState) as DonationReceiptState,
+              {
+                ...(JSON.parse(storedState) as DonationReceiptState),
+                isHydrated: true,
+              },
+              undefined,
+              'donationReceipt/init_from_session'
+            );
+          } else {
+            set(
+              { isHydrated: true },
               undefined,
               'donationReceipt/init_from_session'
             );
@@ -285,6 +306,11 @@ export const useDonationReceiptStore = create<DonationReceiptStore>()(
         } catch (error) {
           console.error('Failed to parse session storage:', error);
           sessionStorage.removeItem(SESSION_STORAGE_KEY);
+          set(
+            { isHydrated: true },
+            undefined,
+            'donationReceipt/init_from_session'
+          );
         }
       },
     }),

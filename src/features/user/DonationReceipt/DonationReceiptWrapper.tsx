@@ -43,6 +43,7 @@ const DonationReceiptWrapper = () => {
   const tinIsRequired = useDonationReceiptStore((state) => state.tinIsRequired);
   const receiptData = useDonationReceiptStore(useShallow(selectReceiptData));
   const operation = useDonationReceiptStore(selectOperation);
+  const isHydrated = useDonationReceiptStore((state) => state.isHydrated);
   // store: actions
   const initForVerification = useDonationReceiptStore(
     (state) => state.initForVerification
@@ -53,9 +54,20 @@ const DonationReceiptWrapper = () => {
   // store: user state
   const userEmail = useUserStore((state) => state.userProfile?.email);
   const isOwner = validateOwnership(email, userEmail);
+  // Ownership can only be decided once the store has hydrated, otherwise
+  // the default (empty) email would read as "not the owner" and wipe a
+  // receipt that just hasn't loaded yet.
   useEffect(() => {
-    if (!isOwner) clearSessionStorage();
-  }, [isOwner]);
+    if (isHydrated && !isOwner) clearSessionStorage();
+  }, [isHydrated, isOwner]);
+
+  if (!isHydrated) {
+    return (
+      <div className={styles.donationReceiptSkeleton}>
+        <Skeleton height={700} width={760} />
+      </div>
+    );
+  }
 
   // The issuance of a receipt is not possible through a direct link.
   // It can only be done via the receipt list page.
