@@ -49,16 +49,20 @@ interface BulkCodeStore {
   setBulkMethod: (bulkMethod: BulkCodeMethods | null) => void;
   setPlanetCashAccount: (planetCashAccount: PlanetCashAccount | null) => void;
   setProject: (project: CountryProject | null) => void;
-  resetBulkStore: () => void;
+  resetBulkCodeStore: () => void;
 }
+
+const initialState = {
+  bulkMethod: null,
+  planetCashAccount: null,
+  project: null,
+  projectList: null,
+};
 
 export const useBulkCodeStore = create<BulkCodeStore>()(
   devtools(
     (set, get) => ({
-      bulkMethod: null,
-      planetCashAccount: null,
-      project: null,
-      projectList: null,
+      ...initialState,
 
       fetchProjectList: async (getApi) => {
         const { planetCashAccount, projectList } = get();
@@ -74,7 +78,11 @@ export const useBulkCodeStore = create<BulkCodeStore>()(
             planetCashAccount.currency
           );
 
-          set({ projectList: filteredProjects });
+          set(
+            { projectList: filteredProjects },
+            undefined,
+            'bulkCode/fetch_project_list_success'
+          );
         } catch (error) {
           useErrorHandlingStore
             .getState()
@@ -82,17 +90,25 @@ export const useBulkCodeStore = create<BulkCodeStore>()(
         }
       },
 
-      setProject: (project) => set({ project }),
+      setProject: (project) =>
+        set({ project }, undefined, 'bulkCode/set_project'),
 
-      setBulkMethod: (bulkMethod) => set({ bulkMethod }),
+      setBulkMethod: (bulkMethod) =>
+        set({ bulkMethod }, undefined, 'bulkCode/set_bulk_method'),
 
-      setPlanetCashAccount: (planetCashAccount) => set({ planetCashAccount }),
+      setPlanetCashAccount: (planetCashAccount) =>
+        set(
+          { planetCashAccount },
+          undefined,
+          'bulkCode/set_planet_cash_account'
+        ),
 
-      resetBulkStore: () =>
-        set({
-          bulkMethod: null,
-          project: null,
-        }),
+      resetBulkCodeStore: () =>
+        set(
+          { bulkMethod: null, project: null },
+          undefined,
+          'bulkCode/reset_store'
+        ),
     }),
     {
       name: 'BulkCodeStore',

@@ -58,7 +58,9 @@ const IssueCodesForm = (): ReactElement | null => {
   // store: action
   const refetchUserProfile = useUserStore((state) => state.refetchUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
-  const resetBulkStore = useBulkCodeStore((state) => state.resetBulkStore);
+  const resetBulkCodeStore = useBulkCodeStore(
+    (state) => state.resetBulkCodeStore
+  );
 
   const notificationLocales = [
     {
@@ -162,7 +164,7 @@ const IssueCodesForm = (): ReactElement | null => {
           // before the redirect.
           setTimeout(async () => {
             await router.push(localizedPath(`/profile/history?ref=${res.uid}`));
-            resetBulkStore();
+            resetBulkCodeStore();
             refetchUserProfile();
           }, 5000);
         } else {
