@@ -67,8 +67,7 @@ const DonorContactManagement = () => {
     (state) => state.updateDonorAndAddress
   );
 
-  // Ownership can only be decided once the store has hydrated, otherwise
-  // the default (empty) email would read as "not the owner".
+  // Ownership can only be decided once the store has hydrated, otherwise the default (empty) email would read as "not the owner".
   if (!isHydrated) return <Skeleton height={500} width={600} />;
 
   const isOwner = validateOwnership(email, userProfile?.email);

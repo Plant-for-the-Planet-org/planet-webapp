@@ -53,8 +53,7 @@ interface DonationReceiptState {
 }
 
 interface DonationReceiptStore extends DonationReceiptState {
-  // true once the store has either loaded sessionStorage or received fresh data,
-  // guards ownership checks against running against the default (empty) state
+  // true once the store has either loaded sessionStorage or received fresh data, guards ownership checks against running against the default (empty) state
   isHydrated: boolean;
   // actions
   initForVerification: (data: IssuedReceiptDataApi, user: User | null) => void;
@@ -309,7 +308,11 @@ export const useDonationReceiptStore = create<DonationReceiptStore>()(
           }
         } catch (error) {
           console.error('Failed to parse session storage:', error);
-          sessionStorage.removeItem(SESSION_STORAGE_KEY);
+          try {
+            sessionStorage.removeItem(SESSION_STORAGE_KEY);
+          } catch (removeError) {
+            console.error('Failed to clear session storage:', removeError);
+          }
           set(
             { isHydrated: true },
             undefined,

@@ -54,12 +54,8 @@ const DonationReceiptWrapper = () => {
   // store: user state
   const userEmail = useUserStore((state) => state.userProfile?.email);
   const isOwner = validateOwnership(email, userEmail);
-  // Ownership can only be decided once the store has hydrated, otherwise
-  // the default (empty) email would read as "not the owner" and wipe a
-  // receipt that just hasn't loaded yet.
-  // This effect is also what clears the previous donor's details after a
-  // profile switch, for example on exiting impersonation, so it only runs
-  // while this screen is mounted.
+  // Ownership can only be decided once the store has hydrated, otherwise the default (empty) email would read as "not the owner" and wipe a receipt that just hasn't loaded yet.
+  // This effect is also what clears the previous donor's details after a profile switch, for example on exiting impersonation, so it only runs while this screen is mounted.
   useEffect(() => {
     if (isHydrated && !isOwner) clearSessionStorage();
   }, [isHydrated, isOwner]);
