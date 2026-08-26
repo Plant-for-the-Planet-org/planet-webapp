@@ -1,16 +1,27 @@
-import { useTranslations } from 'next-intl';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import type { ReactNode } from 'react';
 
-import ProfileGridSkeleton from '../../../user/Profile/ProfileLayout/ProfileGridSkeleton';
-import styles from './UserProfileLoader.module.scss';
+import { useTranslations } from 'next-intl';
+
+import { SkeletonBlock, SkeletonCircle } from '../Skeleton';
+import GenericPageSkeleton from '../GenericPageSkeleton';
+import styles from './UserLayoutLoader.module.scss';
+
+interface UserLayoutLoaderProps {
+  /**
+   * The shape of the page being navigated to. Falls back to a minimal,
+   * content-agnostic placeholder when the route hasn't supplied one, rather
+   * than defaulting to any single page's shape.
+   */
+  skeleton?: ReactNode;
+}
 
 /**
  * Full-page loader displayed while the user context is loading. It replaces the
- * entire UserLayout, so it reproduces the sidebar, the content frame, and the
- * profile grid to minimize cumulative layout shift (CLS).
+ * entire UserLayout, so it reproduces the sidebar and the content frame to
+ * minimize cumulative layout shift (CLS). It owns only that shared chrome;
+ * the content area shows whatever skeleton the destination route supplies.
  */
-export const UserProfileLoader = () => {
+export const UserLayoutLoader = ({ skeleton }: UserLayoutLoaderProps) => {
   const t = useTranslations('Common');
 
   return (
@@ -23,7 +34,7 @@ export const UserProfileLoader = () => {
       {/* Mobile burger placeholder. Wrapped in aria-hidden to avoid exposing
     decorative loading UI to screen readers. */}
       <span aria-hidden="true">
-        <Skeleton className={styles.hamburgerSkeleton} borderRadius={10} />
+        <SkeletonBlock className={styles.hamburgerSkeleton} borderRadius={10} />
       </span>
 
       {/* Sidebar placeholder (matches UserLayout .sidebar) */}
@@ -32,7 +43,7 @@ export const UserProfileLoader = () => {
         <div className={styles.sidebarNavGroup}>
           {Array.from({ length: 6 }).map((_, index) => (
             <div key={index} className={styles.navRow}>
-              <Skeleton circle width={20} height={20} />
+              <SkeletonCircle size={20} />
             </div>
           ))}
         </div>
@@ -40,17 +51,16 @@ export const UserProfileLoader = () => {
         <div className={styles.sidebarBottomGroup}>
           {Array.from({ length: 4 }).map((_, index) => (
             <div key={index} className={styles.navRow}>
-              <Skeleton circle width={20} height={20} />
+              <SkeletonCircle size={20} />
             </div>
           ))}
         </div>
       </aside>
 
-      {/* Content frame (matches .profilePageWrapper + ProfileOuterContainer) */}
-      <div className={styles.wrapper} aria-hidden="true">
-        <div className={styles.outerContainer}>
-          <ProfileGridSkeleton />
-        </div>
+      {/* Content frame (matches .profilePageWrapper). The route-specific
+          skeleton renders inside, so this stays content-agnostic. */}
+      <div className={styles.wrapper}>
+        {skeleton ?? <GenericPageSkeleton />}
       </div>
     </div>
   );
