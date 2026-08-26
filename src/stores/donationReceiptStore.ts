@@ -128,10 +128,14 @@ const getDataState = (state: DonationReceiptStore): DonationReceiptState => ({
 // Persist the entire state to sessionStorage (mirrors the provider's effect)
 const persistState = (state: DonationReceiptStore): void => {
   if (typeof window === 'undefined') return;
-  sessionStorage.setItem(
-    SESSION_STORAGE_KEY,
-    JSON.stringify(getDataState(state))
-  );
+  try {
+    sessionStorage.setItem(
+      SESSION_STORAGE_KEY,
+      JSON.stringify(getDataState(state))
+    );
+  } catch (error) {
+    console.error('Failed to persist session storage:', error);
+  }
 };
 
 export const useDonationReceiptStore = create<DonationReceiptStore>()(
