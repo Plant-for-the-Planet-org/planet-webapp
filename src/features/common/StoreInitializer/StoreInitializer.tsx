@@ -3,12 +3,16 @@ import type { Tenant } from '@planet-sdk/common';
 import { useInitializeAuth } from '../../../hooks/useInitializeAuth';
 import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
+import { useInitializePlanetCash } from '../../../hooks/useInitializePlanetCash';
+import { useInitializePayout } from '../../../hooks/useInitializePayout';
+import { useInitializeBulkCode } from '../../../hooks/useInitializeBulkCode';
 import { useInitializeUser } from '../../../hooks/useInitializeUser';
 import { useInitializeProject } from '../../../hooks/useInitializeProject';
 import { useInitializeIntervention } from '../../../hooks/useInitializeIntervention';
 import { useInitializeView } from '../../../hooks/useInitializeView';
 import { useInitializeSingleProject } from '../../../hooks/useInitializeSingleProject';
 import { useInitializeTenant } from '../../../hooks/useInitializeTenant';
+import { useInitializeDonationReceipt } from '../../../hooks/useInitializeDonationReceipt';
 import { useInitializeLanguage } from '../../../hooks/useInitializeLanguage';
 
 interface StoreInitializerProps {
@@ -38,6 +42,10 @@ export const StoreInitializer = ({
   useInitializeAuth();
   useInitializeUser();
   useInitializeCurrency();
+  useInitializePlanetCash();
+  useInitializePayout();
+  useInitializeDonationReceipt();
+  useInitializeBulkCode();
   useInitializeView(isMobile);
   useInitializeProject();
   useInitializeSingleProject();

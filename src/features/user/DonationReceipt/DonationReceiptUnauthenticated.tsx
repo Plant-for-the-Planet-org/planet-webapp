@@ -6,13 +6,16 @@ import { handleError } from '@planet-sdk/common';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from 'next/router';
-import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import styles from './DonationReceipt.module.scss';
 import DonationReceiptWrapper from './DonationReceiptWrapper';
 import { useApi } from '../../../hooks/useApi';
 import { useTranslations } from 'next-intl';
 import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
-import { useUserStore, useErrorHandlingStore } from '../../../stores';
+import {
+  useUserStore,
+  useErrorHandlingStore,
+  useDonationReceiptStore,
+} from '../../../stores';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
 const DonationReceiptUnauthenticated = () => {
@@ -20,8 +23,11 @@ const DonationReceiptUnauthenticated = () => {
   const { localizedPath } = useLocalizedPath();
   const tReceipt = useTranslations('DonationReceipt');
   const { dtn, year, challenge } = router.query;
-  const { initForVerification } = useDonationReceiptContext();
   const { getApi } = useApi();
+  // store: action
+  const initForVerification = useDonationReceiptStore(
+    (state) => state.initForVerification
+  );
   // local state
   const [isLoading, setIsLoading] = useState(false);
   const [isReceiptInvalid, setIsReceiptInvalid] = useState(false);
