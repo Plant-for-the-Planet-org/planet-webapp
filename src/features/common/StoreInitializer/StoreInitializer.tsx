@@ -12,6 +12,7 @@ import { useInitializeIntervention } from '../../../hooks/useInitializeIntervent
 import { useInitializeView } from '../../../hooks/useInitializeView';
 import { useInitializeSingleProject } from '../../../hooks/useInitializeSingleProject';
 import { useInitializeTenant } from '../../../hooks/useInitializeTenant';
+import { useInitializeDonationReceipt } from '../../../hooks/useInitializeDonationReceipt';
 import { useInitializeLanguage } from '../../../hooks/useInitializeLanguage';
 
 interface StoreInitializerProps {
@@ -43,6 +44,7 @@ export const StoreInitializer = ({
   useInitializeCurrency();
   useInitializePlanetCash();
   useInitializePayout();
+  useInitializeDonationReceipt();
   useInitializeBulkCode();
   useInitializeView(isMobile);
   useInitializeProject();

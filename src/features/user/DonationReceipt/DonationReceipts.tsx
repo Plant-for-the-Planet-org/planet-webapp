@@ -12,7 +12,6 @@ import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import YearlyReceiptGroup from './microComponents/YearlyReceiptGroup';
-import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import {
   transformProfileToDonorView,
   transformProfileToPrimaryAddressGuid,
@@ -33,6 +32,7 @@ import {
   useAuthStore,
   useUserStore,
   useErrorHandlingStore,
+  useDonationReceiptStore,
 } from '../../../stores';
 
 const DonationReceipts = () => {
@@ -40,7 +40,13 @@ const DonationReceipts = () => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const tReceipt = useTranslations('DonationReceipt');
-  const { initForIssuance, initForVerification } = useDonationReceiptContext();
+  // store: actions
+  const initForIssuance = useDonationReceiptStore(
+    (state) => state.initForIssuance
+  );
+  const initForVerification = useDonationReceiptStore(
+    (state) => state.initForVerification
+  );
   // local state
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);

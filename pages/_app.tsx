@@ -24,7 +24,6 @@ import dynamic from 'next/dynamic';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { NextIntlClientProvider } from 'next-intl';
-import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
 
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
@@ -188,11 +187,7 @@ const PlanetWeb = ({
             <ThemeProvider>
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
-                <Layout>
-                  <DonationReceiptProvider>
-                    {pageContent}
-                  </DonationReceiptProvider>
-                </Layout>
+                <Layout>{pageContent}</Layout>
               </MuiThemeProvider>
             </ThemeProvider>
           </Auth0Provider>

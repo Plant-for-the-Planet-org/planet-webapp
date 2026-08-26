@@ -12,4 +12,9 @@ export { useSingleProjectStore } from './singleProjectStore';
 export { useInterventionStore } from './interventionStore';
 export { useViewStore } from './viewStore';
 export { useTenantStore } from './tenantStore';
+export {
+  useDonationReceiptStore,
+  selectReceiptData,
+  selectOperation,
+} from './donationReceiptStore';
 export { useBulkCodeStore } from './bulkCodeStore';
