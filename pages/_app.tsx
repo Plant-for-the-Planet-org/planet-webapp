@@ -21,7 +21,6 @@ import { useRouter } from 'next/router';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import dynamic from 'next/dynamic';
-import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { NextIntlClientProvider } from 'next-intl';
@@ -188,9 +187,7 @@ const PlanetWeb = ({
             <ThemeProvider>
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
-                <Layout>
-                  <BulkCodeProvider>{pageContent}</BulkCodeProvider>
-                </Layout>
+                <Layout>{pageContent}</Layout>
               </MuiThemeProvider>
             </ThemeProvider>
           </Auth0Provider>

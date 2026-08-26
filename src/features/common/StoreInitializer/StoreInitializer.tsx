@@ -5,6 +5,7 @@ import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
 import { useInitializePlanetCash } from '../../../hooks/useInitializePlanetCash';
 import { useInitializePayout } from '../../../hooks/useInitializePayout';
+import { useInitializeBulkCode } from '../../../hooks/useInitializeBulkCode';
 import { useInitializeUser } from '../../../hooks/useInitializeUser';
 import { useInitializeProject } from '../../../hooks/useInitializeProject';
 import { useInitializeIntervention } from '../../../hooks/useInitializeIntervention';
@@ -44,6 +45,7 @@ export const StoreInitializer = ({
   useInitializePlanetCash();
   useInitializePayout();
   useInitializeDonationReceipt();
+  useInitializeBulkCode();
   useInitializeView(isMobile);
   useInitializeProject();
   useInitializeSingleProject();
