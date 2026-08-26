@@ -11,8 +11,10 @@ import type {
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import ManageProjects from '../../../../../../src/features/user/ManageProjects';
-import GlobeContentLoader from '../../../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
+import ManageProjects, {
+  ProjectCreationTabs,
+} from '../../../../../../src/features/user/ManageProjects';
+import ManageProjectsSkeleton from '../../../../../../src/features/user/ManageProjects/ManageProjectsSkeleton';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../../../../src/features/common/Layout/Footer';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
@@ -34,6 +36,18 @@ import {
 } from '../../../../../../src/stores';
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { defaultTenant } from '../../../../../../tenant.config';
+
+// Mirrors the `type` query param ManageProjects' formRouteHandler sets when
+// navigating between steps, so the skeleton's active tab matches the step
+// being loaded instead of always defaulting to the first one.
+const TYPE_QUERY_TO_TAB: Record<string, ProjectCreationTabs> = {
+  'basic-details': ProjectCreationTabs.BASIC_DETAILS,
+  media: ProjectCreationTabs.PROJECT_MEDIA,
+  'detail-analysis': ProjectCreationTabs.DETAILED_ANALYSIS,
+  'project-sites': ProjectCreationTabs.PROJECT_SITES,
+  'project-spending': ProjectCreationTabs.PROJECT_SPENDING,
+  review: ProjectCreationTabs.REVIEW,
+};
 
 function ManageSingleProject(): ReactElement {
   const t = useTranslations('Common');
@@ -95,24 +109,29 @@ function ManageSingleProject(): ReactElement {
 
   // Showing error to other TPOs is left
 
+  // An existing project never shows the "project type" step, so this always
+  // resolves to a real step (basic details as the fallback, since that's
+  // the step ManageProjects lands on once the type query is missing).
+  const { type } = router.query;
+  const step =
+    (typeof type === 'string' && TYPE_QUERY_TO_TAB[type]) ||
+    ProjectCreationTabs.BASIC_DETAILS;
+  const skeleton = <ManageProjectsSkeleton variant="tabbed" step={step} />;
+
   return isInitialized ? (
     setupAccess ? (
       ready && token && !accessDenied && projectGUID && project ? (
-        <UserLayout>
+        <UserLayout skeleton={skeleton}>
           <Head>
             <title>{`${t('edit')} - ${project?.name}`}</title>
           </Head>
           <ManageProjects GUID={projectGUID} token={token} project={project} />
         </UserLayout>
       ) : (
-        <UserLayout>
-          <GlobeContentLoader />
-        </UserLayout>
+        <UserLayout skeleton={skeleton}>{skeleton}</UserLayout>
       )
     ) : (
-      <UserLayout>
-        <GlobeContentLoader />
-      </UserLayout>
+      <UserLayout skeleton={skeleton}>{skeleton}</UserLayout>
     )
   ) : (
     <></>
