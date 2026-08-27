@@ -11,8 +11,8 @@ import IconButton from '../../../common/IconButton';
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
 import { useApi } from '../../../../hooks/useApi';
+import { useIsAuthReady } from '../../../../hooks/useAuthReadiness';
 import {
-  useAuthStore,
   useMyForestStore,
   useUserStore,
   useErrorHandlingStore,
@@ -43,6 +43,7 @@ const TargetsModal = ({
   conservationTarget,
 }: TargetsModalProps) => {
   const { putApiAuthenticated } = useApi();
+  const isAuthReady = useIsAuthReady();
   const tProfile = useTranslations('Profile.progressBar');
   const tCommon = useTranslations('Common');
   // states to manage modal
@@ -58,15 +59,9 @@ const TargetsModal = ({
   );
   const [isConservedAreaTargetActive, setIsConservedAreaTargetActive] =
     useState(conservationTarget > 0);
-  //store: state
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
   //store: action
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
-  const refetchUserProfile = useUserStore(
-    (state) => state.refetchUserProfile
-  );
+  const refetchUserProfile = useUserStore((state) => state.refetchUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleClose = () => {
