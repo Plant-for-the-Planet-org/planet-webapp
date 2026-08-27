@@ -29,11 +29,11 @@ import {
   getOverviewEligibilityForAllYears,
 } from './receiptGroupingUtils';
 import {
-  useAuthStore,
   useUserStore,
   useErrorHandlingStore,
   useDonationReceiptStore,
 } from '../../../stores';
+import { useIsProfileReady } from '../../../hooks/useAuthReadiness';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useApi();
@@ -56,13 +56,13 @@ const DonationReceipts = () => {
   );
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
-  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const isProfileReady = useIsProfileReady();
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     (async () => {
-      if (!userProfile || !isAuthResolved) return;
+      if (!isProfileReady) return;
       try {
         const response = await getApiAuthenticated<DonationReceiptsStatus>(
           '/app/donationReceiptsStatus'
