@@ -287,7 +287,9 @@ export default function ProjectQuestionnaire({
         payload: data as Record<string, unknown>,
       });
       setProjectDetails(result);
-      handleNext(ProjectCreationTabs.REVIEW);
+      // Documents shares the Questionnaire's own visibility gate (both
+      // require acceptDonations), so this step is never reached without it.
+      handleNext(ProjectCreationTabs.DOCUMENTS);
     } catch (err) {
       setErrors(parseApiError(err as APIError));
     } finally {
@@ -711,7 +713,7 @@ export default function ProjectQuestionnaire({
               </Button>
               <Button
                 variant="contained"
-                onClick={() => handleNext(ProjectCreationTabs.REVIEW)}
+                onClick={() => handleNext(ProjectCreationTabs.DOCUMENTS)}
                 className="formButton"
               >
                 {t('skip')}

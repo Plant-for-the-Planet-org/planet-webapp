@@ -367,6 +367,43 @@ export interface QuestionnaireProps {
   purpose: 'trees' | 'conservation';
 }
 
+// project documents
+
+export interface DocumentReference {
+  id: string;
+  url: string;
+  filename: string;
+  mimeType: string;
+  size: number;
+  version: number;
+  uploadedAt: string | null;
+}
+
+export interface DocumentComment {
+  body: string;
+  createdAt: string;
+}
+
+export interface DocumentChecklistItem {
+  kind: string;
+  label: string;
+  required: boolean;
+  note: string | null;
+  fulfilled: boolean;
+  current: DocumentReference | null;
+  comments: DocumentComment[];
+}
+
+export interface ProjectDocumentsProps {
+  handleBack: (arg: number) => void;
+  handleNext: (arg: number) => void;
+  projectGUID: string;
+  isLocked: boolean;
+  verificationStatus?: string;
+  /** Reports whether every required document has been uploaded, for the menu status dot. */
+  onCompletenessChange?: (isComplete: boolean) => void;
+}
+
 // project review
 
 export interface SectionCompleteness {

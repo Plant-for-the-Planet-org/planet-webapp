@@ -19,6 +19,7 @@ import DetailedAnalysis from './components/DetailedAnalysis';
 import ProjectSites from './components/ProjectSites';
 import ProjectSpending from './components/ProjectSpending';
 import ProjectQuestionnaire from './components/ProjectQuestionnaire';
+import ProjectDocuments from './components/ProjectDocuments';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
@@ -46,7 +47,8 @@ export enum ProjectCreationTabs {
   PROJECT_SITES = 4,
   PROJECT_SPENDING = 5,
   QUESTIONNAIRE = 6,
-  REVIEW = 7,
+  DOCUMENTS = 7,
+  REVIEW = 8,
 }
 
 type PublishStatusApiPayload = {
@@ -86,6 +88,9 @@ export default function ManageProjects({
   const [mediaComplete, setMediaComplete] = useState<boolean | null>(null);
   const [sitesComplete, setSitesComplete] = useState<boolean | null>(null);
   const [spendingComplete, setSpendingComplete] = useState<boolean | null>(
+    null
+  );
+  const [documentsComplete, setDocumentsComplete] = useState<boolean | null>(
     null
   );
   // store
@@ -368,25 +373,28 @@ export default function ManageProjects({
 
     switch (router.query.type) {
       case 'basic-details':
-        setTabSelected(1);
+        setTabSelected(ProjectCreationTabs.BASIC_DETAILS);
         break;
       case 'media':
-        setTabSelected(2);
+        setTabSelected(ProjectCreationTabs.PROJECT_MEDIA);
         break;
       case 'detail-analysis':
-        setTabSelected(3);
+        setTabSelected(ProjectCreationTabs.DETAILED_ANALYSIS);
         break;
       case 'project-sites':
-        setTabSelected(4);
+        setTabSelected(ProjectCreationTabs.PROJECT_SITES);
         break;
       case 'project-spending':
-        setTabSelected(5);
+        setTabSelected(ProjectCreationTabs.PROJECT_SPENDING);
         break;
       case 'questionnaire':
-        setTabSelected(6);
+        setTabSelected(ProjectCreationTabs.QUESTIONNAIRE);
+        break;
+      case 'documents':
+        setTabSelected(ProjectCreationTabs.DOCUMENTS);
         break;
       case 'review':
-        setTabSelected(7);
+        setTabSelected(ProjectCreationTabs.REVIEW);
         break;
       default:
         // No type and no purpose on a new-project URL → back to type selection
@@ -396,6 +404,11 @@ export default function ManageProjects({
   }, [tabSelected, router.query.type, router.query.purpose]);
 
   const showQuestionnaire = projectDetails?.acceptDonations === true;
+  // Documents shares the same "this project goes through full verification"
+  // gate as the Questionnaire — the backend 404s the checklist endpoint for
+  // purposes with no requirement schema, so the component itself degrades
+  // gracefully if this ever needs to diverge from that assumption.
+  const showDocuments = showQuestionnaire;
 
   const detailedAnalysisMissing = getDetailedAnalysisMissing(projectDetails, t);
 
@@ -411,13 +424,16 @@ export default function ManageProjects({
           : null
         : null; // null = not applicable, doesn't block Review
 
+      const docsComplete = showDocuments ? documentsComplete : null; // null = not applicable, doesn't block Review
+
       // Review is green when no tracked tab is explicitly red
       const reviewReady =
         projectDetails !== null &&
         daComplete === true &&
         mediaComplete !== false &&
         sitesComplete !== false &&
-        (qComplete === null || qComplete === true);
+        (qComplete === null || qComplete === true) &&
+        (docsComplete === null || docsComplete === true);
 
       const toStatus = (
         v: boolean | null
@@ -466,6 +482,14 @@ export default function ManageProjects({
           ),
         });
       }
+      if (showDocuments) {
+        tabs.push({
+          label: t('documents'),
+          link: `/profile/projects/${projectGUID}?type=documents`,
+          step: ProjectCreationTabs.DOCUMENTS,
+          completionStatus: toStatus(documentsComplete),
+        });
+      }
       tabs.push({
         label: t('review'),
         link: `/profile/projects/${projectGUID}?type=review`,
@@ -511,6 +535,7 @@ export default function ManageProjects({
     mediaComplete,
     sitesComplete,
     spendingComplete,
+    documentsComplete,
   ]);
 
   const isLocked =
@@ -610,6 +635,17 @@ export default function ManageProjects({
                 (router.query.purpose as string | undefined) ??
                 'trees') as 'trees' | 'conservation'
             }
+          />
+        );
+      case ProjectCreationTabs.DOCUMENTS:
+        return (
+          <ProjectDocuments
+            handleBack={handleBack}
+            handleNext={handleNext}
+            projectGUID={projectGUID}
+            isLocked={isLocked}
+            verificationStatus={projectDetails?.verificationStatus}
+            onCompletenessChange={setDocumentsComplete}
           />
         );
       case ProjectCreationTabs.REVIEW:

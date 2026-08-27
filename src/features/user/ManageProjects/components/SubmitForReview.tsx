@@ -46,8 +46,10 @@ function SubmitForReview({
   const { localizedPath } = useLocalizedPath();
 
   const showQuestionnaire = projectDetails?.acceptDonations === true;
+  // Documents shares the Questionnaire's visibility gate, and sits directly
+  // before Review, so it is always the immediate previous step when shown.
   const backTab = showQuestionnaire
-    ? ProjectCreationTabs.QUESTIONNAIRE
+    ? ProjectCreationTabs.DOCUMENTS
     : ProjectCreationTabs.PROJECT_SPENDING;
 
   function UnderReviewComponent() {
@@ -79,9 +81,7 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>
-              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
-            </p>
+            <p>{t(showQuestionnaire ? 'backToDocuments' : 'backToSpending')}</p>
           </Button>
 
           <Button
@@ -185,9 +185,7 @@ function SubmitForReview({
             onClick={() => handleBack(backTab)}
             startIcon={<BackArrow />}
           >
-            <p>
-              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
-            </p>
+            <p>{t(showQuestionnaire ? 'backToDocuments' : 'backToSpending')}</p>
           </Button>
 
           <Button
@@ -228,9 +226,7 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>
-              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
-            </p>
+            <p>{t(showQuestionnaire ? 'backToDocuments' : 'backToSpending')}</p>
           </Button>
           <Button
             variant="contained"
@@ -259,9 +255,7 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>
-              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
-            </p>
+            <p>{t(showQuestionnaire ? 'backToDocuments' : 'backToSpending')}</p>
           </Button>
           <Button
             variant="contained"
@@ -301,9 +295,7 @@ function SubmitForReview({
             variant="outlined"
             startIcon={<BackArrow />}
           >
-            <p>
-              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
-            </p>
+            <p>{t(showQuestionnaire ? 'backToDocuments' : 'backToSpending')}</p>
           </Button>
           <Button
             variant="contained"
@@ -398,9 +390,7 @@ function SubmitForReview({
             onClick={() => handleBack(backTab)}
             startIcon={<BackArrow />}
           >
-            <p>
-              {t(showQuestionnaire ? 'backToQuestionnaire' : 'backToSpending')}
-            </p>
+            <p>{t(showQuestionnaire ? 'backToDocuments' : 'backToSpending')}</p>
           </Button>
           <Button
             onClick={() => submitForReview()}
