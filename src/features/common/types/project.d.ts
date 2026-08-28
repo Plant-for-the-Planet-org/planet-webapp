@@ -400,8 +400,8 @@ export interface ProjectDocumentsProps {
   projectGUID: string;
   isLocked: boolean;
   verificationStatus?: string;
-  /** Reports whether every required document has been uploaded, for the menu status dot. */
-  onCompletenessChange?: (isComplete: boolean) => void;
+  /** Reports the required documents still missing, for the menu status dot and the Review summary. */
+  onCompletenessChange?: (missing: MissingField[]) => void;
 }
 
 // project review
@@ -410,6 +410,8 @@ export interface SectionCompleteness {
   detailedAnalysis: MissingField[];
   /** Null when the questionnaire does not apply, or has not loaded yet. */
   questionnaire: MissingField[] | null;
+  /** Null when the document checklist does not apply, or has not loaded yet. */
+  documents: MissingField[] | null;
   media: boolean | null;
   sites: boolean | null;
 }

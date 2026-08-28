@@ -9,6 +9,7 @@ import type {
   ExpensesScopeProjects,
   SitesScopeProjects,
   MissingField,
+  DocumentChecklistItem,
 } from '../../common/types/project';
 
 import { useEffect, useRef, useState } from 'react';
@@ -36,6 +37,7 @@ import {
 import { dedupeInFlight } from './utils/dedupeInFlight';
 import {
   getDetailedAnalysisMissing,
+  getMissingDocuments,
   getQuestionnaireMissing,
 } from './utils/completeness';
 
@@ -90,9 +92,10 @@ export default function ManageProjects({
   const [spendingComplete, setSpendingComplete] = useState<boolean | null>(
     null
   );
-  const [documentsComplete, setDocumentsComplete] = useState<boolean | null>(
-    null
-  );
+  // Null until the document checklist has landed, so the dot stays grey.
+  const [documentsMissing, setDocumentsMissing] = useState<
+    MissingField[] | null
+  >(null);
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -410,6 +413,35 @@ export default function ManageProjects({
   // gracefully if this ever needs to diverge from that assumption.
   const showDocuments = showQuestionnaire;
 
+  const documentsCompletenessFetchedFor = useRef<string | null>(null);
+
+  // The Review page names the required documents that are still missing, so the
+  // checklist has to be known even when the Documents step was never opened.
+  useEffect(() => {
+    if (!projectGUID || !showDocuments) return;
+    if (documentsCompletenessFetchedFor.current === projectGUID) return;
+    documentsCompletenessFetchedFor.current = projectGUID;
+
+    const fetchDocumentsCompleteness = async () => {
+      try {
+        const result = await dedupeInFlight(`documents-${projectGUID}`, () =>
+          getApiAuthenticated<DocumentChecklistItem[]>(
+            `/app/projects/${projectGUID}/documents`
+          )
+        );
+        setDocumentsMissing(getMissingDocuments(result));
+      } catch (err) {
+        // No checklist for this project's purpose — nothing to require here.
+        if ((err as APIError)?.statusCode === 404) {
+          setDocumentsMissing([]);
+          return;
+        }
+        documentsCompletenessFetchedFor.current = null;
+      }
+    };
+    void fetchDocumentsCompleteness();
+  }, [projectGUID, showDocuments]);
+
   const detailedAnalysisMissing = getDetailedAnalysisMissing(projectDetails, t);
 
   useEffect(() => {
@@ -424,7 +456,11 @@ export default function ManageProjects({
           : null
         : null; // null = not applicable, doesn't block Review
 
-      const docsComplete = showDocuments ? documentsComplete : null; // null = not applicable, doesn't block Review
+      // null = not applicable or not loaded yet, doesn't block Review
+      const docsComplete =
+        showDocuments && documentsMissing
+          ? documentsMissing.length === 0
+          : null;
 
       // Review is green when no tracked tab is explicitly red
       const reviewReady =
@@ -487,7 +523,7 @@ export default function ManageProjects({
           label: t('documents'),
           link: `/profile/projects/${projectGUID}?type=documents`,
           step: ProjectCreationTabs.DOCUMENTS,
-          completionStatus: toStatus(documentsComplete),
+          completionStatus: toStatus(docsComplete),
         });
       }
       tabs.push({
@@ -535,7 +571,7 @@ export default function ManageProjects({
     mediaComplete,
     sitesComplete,
     spendingComplete,
-    documentsComplete,
+    documentsMissing,
   ]);
 
   const isLocked =
@@ -645,7 +681,7 @@ export default function ManageProjects({
             projectGUID={projectGUID}
             isLocked={isLocked}
             verificationStatus={projectDetails?.verificationStatus}
-            onCompletenessChange={setDocumentsComplete}
+            onCompletenessChange={setDocumentsMissing}
           />
         );
       case ProjectCreationTabs.REVIEW:
@@ -662,6 +698,7 @@ export default function ManageProjects({
               sectionCompleteness={{
                 detailedAnalysis: detailedAnalysisMissing,
                 questionnaire: showQuestionnaire ? questionnaireMissing : null,
+                documents: showDocuments ? documentsMissing : null,
                 media: mediaComplete,
                 sites: sitesComplete,
               }}

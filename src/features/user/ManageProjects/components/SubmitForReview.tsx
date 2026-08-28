@@ -22,13 +22,15 @@ const richTags = {
   italic: (chunks: ReactNode) => <em>{chunks}</em>,
 };
 
-const requiredDocumentKeys = [
-  'reviewDocuments.legalAccreditation',
-  'reviewDocuments.organizationBylaws',
-  'reviewDocuments.annualReport',
-  'reviewDocuments.financialReport',
-  'reviewDocuments.landTenureAgreements',
-  'reviewDocuments.projectPlan',
+const checklistKeys = [
+  'preSubmissionChecklistItems.organizationProfile',
+  'preSubmissionChecklistItems.projectFiles',
+] as const;
+
+const whatHappensNextKeys = [
+  'whatHappensNextItems.review',
+  'whatHappensNextItems.notification',
+  'whatHappensNextItems.publishing',
 ] as const;
 
 function SubmitForReview({
@@ -97,13 +99,42 @@ function SubmitForReview({
 
   const daMissing = sectionCompleteness.detailedAnalysis;
   const questionnaireMissing = sectionCompleteness.questionnaire ?? [];
+  const documentsMissing = sectionCompleteness.documents ?? [];
   const mediaIncomplete = sectionCompleteness.media === false;
   const sitesIncomplete = sectionCompleteness.sites === false;
   const canSubmit =
     daMissing.length === 0 &&
     questionnaireMissing.length === 0 &&
+    documentsMissing.length === 0 &&
     !mediaIncomplete &&
     !sitesIncomplete;
+
+  function ReviewIntro() {
+    return (
+      <div>
+        <div>{t.rich('dataReviewNote', richTags)}</div>
+        <div className={styles.checkInboxNote}>
+          {t.rich('preSubmissionChecklist', richTags)}
+        </div>
+        <ul className={styles.listOfReport}>
+          {checklistKeys.map((key) => (
+            <li key={key}>{t.rich(key, richTags)}</li>
+          ))}
+        </ul>
+        <div className={styles.checkInboxNote}>
+          {t.rich('whatHappensNext', richTags)}
+        </div>
+        <ul className={styles.listOfReport}>
+          {whatHappensNextKeys.map((key) => (
+            <li key={key}>{t.rich(key, richTags)}</li>
+          ))}
+        </ul>
+        <div className={styles.checkInboxNote}>
+          {t.rich('noFurtherActionNote', richTags)}
+        </div>
+      </div>
+    );
+  }
 
   /** Deep link straight to the field, not just to the tab holding it. */
   const linkToTab = (tab: string) => (key: string) =>
@@ -136,6 +167,16 @@ function SubmitForReview({
           hrefFor={linkToTab('questionnaire')}
           sx={{}}
         />
+        <MissingFieldsSummary
+          fields={documentsMissing}
+          title={t('incompleteDocumentsCount', {
+            count: documentsMissing.length,
+          })}
+          hrefFor={() =>
+            localizedPath(`/profile/projects/${projectGUID}?type=documents`)
+          }
+          sx={{}}
+        />
       </>
     );
   }
@@ -143,17 +184,7 @@ function SubmitForReview({
   function NotSubmittedReview() {
     return (
       <CenteredContainer>
-        <div>
-          <div>{t.rich('dataReviewNote', richTags)}</div>
-          <ul className={styles.listOfReport}>
-            {requiredDocumentKeys.map((key) => (
-              <li key={key}>{t.rich(key, richTags)}</li>
-            ))}
-          </ul>
-          <div className={styles.checkInboxNote}>
-            {t.rich('checkYourInbox', richTags)}
-          </div>
-        </div>
+        <ReviewIntro />
         <FormControlLabel
           label={
             <span className={styles.toggleText}>{t('publishProject')}</span>

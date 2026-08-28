@@ -285,16 +285,20 @@
     "errorForMaxPlantingDensity": "This value should be greater than planting density",
     "managePayoutsButton": "Manage Payouts",
     "siteNameValidation": "Please enter a site name",
-    "dataReviewNote": "<bold>Data Review & Verification</bold>: Plant-for-the-Planet will review and validate your data. To complete your onboarding and approve your project for donations, please ensure you have the following documents ready:",
-    "reviewDocuments": {
-      "legalAccreditation": "<bold>Proof of Legal Accreditation:</bold> <italic>Certificate of Recognition & Registration Number</italic>",
-      "organizationBylaws": "<bold>Organization Bylaws:</bold> <italic>Formal statutes of your organization</italic>",
-      "annualReport": "<bold>Annual Report:</bold> <italic>Your most recent annual report</italic>",
-      "financialReport": "<bold>Financial Report:</bold> <italic>Your most recent financial statement</italic>",
-      "landTenureAgreements": "<bold>Land Tenure Agreements:</bold> <italic>Long-term contracts with landowners or local governments (preferably 15+ years)</italic>",
-      "projectPlan": "<bold>Project Plan:</bold> <italic>Detailed plan including a precise budget breakdown</italic>"
+    "dataReviewNote": "<bold>Data Review & Verification</bold>: Plant-for-the-Planet will review and validate your project details and uploaded documents.",
+    "preSubmissionChecklist": "<bold>Pre-Submission Checklist:</bold>",
+    "preSubmissionChecklistItems": {
+      "organizationProfile": "<bold>Organization Profile:</bold> Ensure your organization\u2019s general documents in your profile are up to date. <italic>(Skip if already verified with current files).</italic>",
+      "projectFiles": "<bold>Project Files:</bold> Ensure all specific documents for this new project are uploaded."
     },
-    "checkYourInbox": "<bold>Check Your Inbox:</bold> We’ve sent you an email with detailed instructions and your next steps to complete the verification.",
+    "whatHappensNext": "<bold>What happens next?</bold>",
+    "whatHappensNextItems": {
+      "review": "<bold>Review:</bold> Our team will review your project details, and organizational files according to our standards.",
+      "notification": "<bold>Notification:</bold> You will receive an update once the review is complete or if additional information is needed.",
+      "publishing": "<bold>Publishing:</bold> Once approved, this project will be eligible to accept donations."
+    },
+    "noFurtherActionNote": "<italic>No further action is required from you once submitted.</italic>",
+    "incompleteDocumentsCount": "{count, plural, =1 {Documents is missing one required file:} other {Documents is missing # required files:}}",
     "siteCount": "Site {siteId} of {totalCount}",
     "delete": "Delete",
     "deleteSite": "Delete Site",

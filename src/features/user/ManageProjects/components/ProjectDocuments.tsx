@@ -20,6 +20,8 @@ import { useApi } from '../../../../hooks/useApi';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import AnnotationCallout from './microComponent/AnnotationCallout';
+import { getMissingDocuments } from '../utils/completeness';
+import { dedupeInFlight } from '../utils/dedupeInFlight';
 
 /**
  * Strips the "data:<mime>;base64," prefix FileReader.readAsDataURL adds, so
@@ -41,10 +43,7 @@ function DocumentRow({
   item: DocumentChecklistItem;
   projectGUID: string;
   isLocked: boolean;
-  onUploaded: (
-    kind: string,
-    current: DocumentChecklistItem['current']
-  ) => void;
+  onUploaded: (kind: string, current: DocumentChecklistItem['current']) => void;
 }): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const { postApiAuthenticated } = useApi();
@@ -230,8 +229,10 @@ export default function ProjectDocuments({
   useEffect(() => {
     const fetchChecklist = async () => {
       try {
-        const result = await getApiAuthenticated<DocumentChecklistItem[]>(
-          `/app/projects/${projectGUID}/documents`
+        const result = await dedupeInFlight(`documents-${projectGUID}`, () =>
+          getApiAuthenticated<DocumentChecklistItem[]>(
+            `/app/projects/${projectGUID}/documents`
+          )
         );
         setChecklist(result);
       } catch (err) {
@@ -248,9 +249,7 @@ export default function ProjectDocuments({
 
   useEffect(() => {
     if (!checklist) return;
-    onCompletenessChange?.(
-      checklist.every((item) => !item.required || item.fulfilled)
-    );
+    onCompletenessChange?.(getMissingDocuments(checklist));
   }, [checklist]);
 
   const handleUploaded = (

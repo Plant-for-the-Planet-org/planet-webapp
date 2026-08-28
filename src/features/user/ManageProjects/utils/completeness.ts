@@ -1,4 +1,5 @@
 import type {
+  DocumentChecklistItem,
   ExtendedProfileProjectProperties,
   MissingField,
   QuestionnaireFieldSchema,
@@ -216,4 +217,13 @@ export function getDetailedAnalysisFlagged(
       return value !== undefined && value !== null && value !== '';
     })
     .map(([key, labelKey]) => ({ key, label: t(labelKey) }));
+}
+
+/** Required documents with nothing uploaded yet, labelled as the backend names them. */
+export function getMissingDocuments(
+  checklist: DocumentChecklistItem[]
+): MissingField[] {
+  return checklist
+    .filter((item) => item.required && !item.fulfilled)
+    .map((item) => ({ key: item.kind, label: item.label }));
 }
