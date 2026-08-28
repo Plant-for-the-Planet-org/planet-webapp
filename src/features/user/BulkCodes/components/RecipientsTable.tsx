@@ -1,6 +1,6 @@
 import type { ReactElement, ChangeEvent } from 'react';
 import type { SetState } from '../../../common/types/common';
-import type { Recipient, TableHeader } from '../BulkCodesTypes';
+import type { RecipientUploadRow, TableHeader } from '../BulkCodesTypes';
 
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';
@@ -22,8 +22,8 @@ import RecipientHeader from './RecipientHeader';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
-  localRecipients: Recipient[];
-  setLocalRecipients: SetState<Recipient[]>;
+  localRecipients: RecipientUploadRow[];
+  setLocalRecipients: SetState<RecipientUploadRow[]>;
   canAddRecipients?: boolean;
   setIsAddingRecipient: SetState<boolean>;
   setIsEditingRecipient: SetState<boolean>;
@@ -67,7 +67,7 @@ const RecipientsTable = ({
     exitEditMode();
   };
 
-  const updateRecipient = (updatedRecipient: Recipient): void => {
+  const updateRecipient = (updatedRecipient: RecipientUploadRow): void => {
     if (editIndex !== null) {
       const absoluteEditIndex = page * rowsPerPage + editIndex;
       const _localRecipients = [...localRecipients];
