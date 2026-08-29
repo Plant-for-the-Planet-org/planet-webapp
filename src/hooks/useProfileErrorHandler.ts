@@ -11,6 +11,24 @@ import {
   registerRedirectAttempt,
 } from '../utils/authRedirectGuard';
 
+// `APIError.message` is always hardcoded to "Something went wrong" by the SDK.
+// The real failure text lives in `.errors`, which is a plain string for
+// HTTP errors and an object with a `message` field for wrapped errors
+// (see fetchUserProfile in userStore.ts). Fall back to `err.message`
+// only if neither shape matches.
+const getProfileErrorMessage = (err: APIError): string => {
+  if (typeof err.errors === 'string') return err.errors;
+  if (
+    err.errors &&
+    typeof err.errors === 'object' &&
+    'message' in err.errors &&
+    typeof err.errors.message === 'string'
+  ) {
+    return err.errors.message;
+  }
+  return err.message;
+};
+
 const useProfileErrorHandler = () => {
   const router = useRouter();
   const locale = useLocale();
@@ -84,12 +102,15 @@ const useProfileErrorHandler = () => {
         }
         // 500: server error, nothing the client can do, just log it
         case 500:
-          console.error('[Profile API] Internal Server Error:', err.message);
+          console.error(
+            '[Profile API] Internal Server Error:',
+            getProfileErrorMessage(err)
+          );
           break;
 
         // Any other status, log it for debugging
         default:
-          console.error('[Profile API] Error:', err.message);
+          console.error('[Profile API] Error:', getProfileErrorMessage(err));
           break;
       }
     },
