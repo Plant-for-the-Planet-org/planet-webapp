@@ -19,6 +19,7 @@
     "accountInactiveHelpText": "This account is inactive and cannot be used to make contributions. To activate this account, please contact <supportLink>support@plant-for-the-planet.org</supportLink>.",
     "noAccountsText": "You don't seem to have created a PlanetCash account yet.",
     "createPlanetCashButton": "Create Planet Cash Account",
+    "loadAccountsError": "Something went wrong while loading your PlanetCash accounts. Please try again later.",
     "accountQuotaReachedText": "You cannot create more accounts as you have exhausted your account quota.",
     "accountCreationSuccess": "Your PlanetCash account was successfully created",
     "labelCountry": "Country",
