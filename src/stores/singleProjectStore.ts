@@ -2,6 +2,7 @@ import type { APIError } from '@planet-sdk/common';
 import type { ExtendedProject } from '../features/common/types/projectv2';
 import type { ApiConfigBase } from '../hooks/useApi';
 import type { NextRouter } from 'next/router';
+import type { ApiRequestFn } from '../hooks/useApi';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -15,6 +16,7 @@ import {
   getSiteIdFromIndex,
 } from '../utils/projectV2';
 import { isSameFetchKey } from '../utils/fetchKey';
+
 
 /**
  * Conditions a fetched project depends on. Includes the slug, since a session
@@ -54,7 +56,7 @@ interface SingleProjectStore {
    * - Forwards errors to the global error store
    */
   fetchProject: (
-    getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>,
+    getApi: ApiRequestFn,
     config: ApiConfigBase,
     projectSlug: string
   ) => Promise<void>;
