@@ -10,6 +10,7 @@ import type { Tenant } from '@planet-sdk/common';
 
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import DonationLink from '../../../../../src/features/user/Widget/DonationLink';
+import SettingsFormSkeleton from '../../../../../src/features/user/Settings/SettingsFormSkeleton';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import {
@@ -30,7 +31,15 @@ export default function DonationLinkPage(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={
+        <SettingsFormSkeleton
+          title={t('donationLinkTitle')}
+          subtitleLines={2}
+          fieldsPerSection={1}
+        />
+      }
+    >
       <Head>
         <title>{t('donationLinkTitle')}</title>
       </Head>

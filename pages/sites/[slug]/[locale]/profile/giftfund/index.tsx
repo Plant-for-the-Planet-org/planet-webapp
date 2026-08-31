@@ -9,6 +9,7 @@ import type { AbstractIntlMessages } from 'next-intl';
 import type { Tenant } from '@planet-sdk/common';
 
 import GiftFunds from '../../../../../../src/features/user/GiftFunds';
+import SettingsFormSkeleton from '../../../../../../src/features/user/Settings/SettingsFormSkeleton';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
@@ -28,7 +29,15 @@ export default function Register(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={
+        <SettingsFormSkeleton
+          title={t('giftFund')}
+          subtitleLines={2}
+          fieldsPerSection={2}
+        />
+      }
+    >
       <Head>
         <title>{t('giftFund')}</title>
       </Head>

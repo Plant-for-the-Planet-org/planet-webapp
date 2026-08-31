@@ -11,6 +11,7 @@ import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import DonationReceipts from '../../../../../../src/features/user/DonationReceipt/DonationReceipts';
+import DonationReceiptsSkeleton from '../../../../../../src/features/user/DonationReceipt/DonationReceiptsSkeleton';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -27,7 +28,7 @@ export default function DonationReceiptsPage() {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout skeleton={<DonationReceiptsSkeleton />}>
       <Head>
         <title>{t('receipts')}</title>
       </Head>

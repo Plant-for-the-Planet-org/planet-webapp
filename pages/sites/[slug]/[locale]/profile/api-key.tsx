@@ -12,6 +12,7 @@ import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import ApiKey from '../../../../../src/features/user/Settings/ApiKey';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
+import SettingsFormSkeleton from '../../../../../src/features/user/Settings/SettingsFormSkeleton';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -28,7 +29,15 @@ function EditProfilePage(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={
+        <SettingsFormSkeleton
+          title={t('apiKey')}
+          subtitleLines={2}
+          fieldsPerSection={1}
+        />
+      }
+    >
       <Head>
         <title>{t('apiKey')}</title>
       </Head>

@@ -15,9 +15,10 @@ export const PROFILE_SECTION_HEIGHTS = {
 } as const;
 
 /**
- * Full profile grid in its loading state. Rendered both by ProfileLayout while
- * the my-forest data loads and by UserProfileLoader while the user context
- * loads, so the two phases share identical geometry and avoid layout shift.
+ * Full profile grid in its loading state. Rendered by ProfileLayout while the
+ * my-forest data loads, and passed to UserLayout as the `skeleton` for
+ * `/profile` while the user context loads, so both phases share identical
+ * geometry and avoid layout shift.
  */
 const ProfileGridSkeleton = () => {
   return (

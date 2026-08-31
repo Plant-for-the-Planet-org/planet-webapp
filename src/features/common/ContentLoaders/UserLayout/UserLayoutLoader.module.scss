@@ -87,22 +87,11 @@
   }
 }
 
-// Mirrors UserLayout `.profilePageWrapper`.
+// Mirrors UserLayout `.profilePageWrapper`. Deliberately has no padding or
+// header offset of its own: those belong to whichever skeleton renders
+// inside, since that's how the real page content area behaves too.
 .wrapper {
   width: 100%;
   min-height: 100vh;
   max-width: 1400px;
-}
-
-// Mirrors ProfileOuterContainer `.mainContainer` (the header offset + padding
-// that sits between the wrapper and the profile grid).
-.outerContainer {
-  margin-top: 80px;
-  padding: 20px 40px 40px;
-
-  @include xsPhoneView {
-    // Extra top space accommodates the mobile burger button.
-    margin-top: 142px;
-    padding: 20px 0;
-  }
 }
