@@ -15,7 +15,13 @@ import styles from './PayoutsSkeleton.module.scss';
  * Only the per-tab content (a bank account list or a form), which differs,
  * is a placeholder.
  */
-export default function PayoutsSkeleton(): ReactElement {
+interface PayoutsSkeletonProps {
+  step?: ManagePayoutTabs;
+}
+
+export default function PayoutsSkeleton({
+  step = ManagePayoutTabs.OVERVIEW,
+}: PayoutsSkeletonProps): ReactElement {
   const t = useTranslations('ManagePayouts');
 
   const tabItems: TabItem[] = [
@@ -41,7 +47,7 @@ export default function PayoutsSkeleton(): ReactElement {
         </span>
       }
     >
-      <TabbedView step={ManagePayoutTabs.OVERVIEW} tabItems={tabItems}>
+      <TabbedView step={step} tabItems={tabItems}>
         <div className={styles.content} aria-hidden="true">
           <SkeletonBlock height={120} borderRadius={9} />
           <SkeletonBlock height={120} borderRadius={9} />

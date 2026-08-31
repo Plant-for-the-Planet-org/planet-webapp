@@ -34,7 +34,9 @@ export default function AddBankDetailsPage(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout skeleton={<PayoutsSkeleton />}>
+    <UserLayout
+      skeleton={<PayoutsSkeleton step={ManagePayoutTabs.ADD_BANK_DETAILS} />}
+    >
       <Head>
         <title>{t('managePayouts.titleAddBankDetails')}</title>
       </Head>

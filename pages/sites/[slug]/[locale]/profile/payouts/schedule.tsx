@@ -33,7 +33,9 @@ export default function PayoutSchedulePage(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout skeleton={<PayoutsSkeleton />}>
+    <UserLayout
+      skeleton={<PayoutsSkeleton step={ManagePayoutTabs.PAYOUT_SCHEDULE} />}
+    >
       <Head>
         <title>{t('managePayouts.titlePayoutSchedule')}</title>
       </Head>

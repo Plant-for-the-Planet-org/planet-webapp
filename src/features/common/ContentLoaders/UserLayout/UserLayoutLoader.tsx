@@ -58,8 +58,11 @@ export const UserLayoutLoader = ({ skeleton }: UserLayoutLoaderProps) => {
       </aside>
 
       {/* Content frame (matches .profilePageWrapper). The route-specific
-          skeleton renders inside, so this stays content-agnostic. */}
-      <div className={styles.wrapper}>
+          skeleton renders inside, so this stays content-agnostic. aria-hidden
+          keeps the route skeleton's own landmarks (e.g. ProfileGridSkeleton's
+          article/section) out of the role="status" region above, which should
+          only announce the loading text. */}
+      <div className={styles.wrapper} aria-hidden="true">
         {skeleton ?? <GenericPageSkeleton />}
       </div>
     </div>
