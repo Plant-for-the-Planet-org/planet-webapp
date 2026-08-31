@@ -16,13 +16,16 @@ import { APIError } from '@planet-sdk/common';
 // convention in useApi.ts for a synthetic, non-server status code.
 const NON_HTTP_ERROR_STATUS_CODE = 0;
 
-// fetchUserProfile has no single owner - the token effect, the 403 handler,
+// fetchUserProfile has no single caller - the token effect, the 403 handler,
 // and the impersonation enter/exit screens can all call it around the same
-// time, with no cancellation. This id lets a call detect it has been
-// superseded by a later one, so a slow, stale response cannot overwrite the
-// store with the wrong identity. It is a cheap guard, not real request
-// sequencing (no AbortController, no cancellation) - see review item #14/A3.
-let latestFetchUserProfileRequestId = 0;
+// time. This controller is the single owner of "who is fetching": starting a
+// new fetch aborts whatever fetch is still in flight, so only the latest
+// request's response can ever reach the network's end and commit to the
+// store. The identity check below (`controller !== activeFetchController`)
+// additionally covers the narrow window where an older request's response
+// has already finished decoding by the time it is superseded, since aborting
+// cannot un-resolve a promise that has already settled.
+let activeFetchController: AbortController | null = null;
 
 type FetchUserProfileParams = {
   token: string;
@@ -112,8 +115,10 @@ export const useUserStore = create<UserStore>()(
           );
         }
 
-        const requestId = ++latestFetchUserProfileRequestId;
-        const isStale = () => requestId !== latestFetchUserProfileRequestId;
+        activeFetchController?.abort();
+        const controller = new AbortController();
+        activeFetchController = controller;
+        const isStale = () => activeFetchController !== controller;
 
         try {
           const sessionId = await getsessionId();
@@ -129,6 +134,7 @@ export const useUserStore = create<UserStore>()(
             {
               method: 'GET',
               headers: setHeaderForImpersonation(header, impersonationData),
+              signal: controller.signal,
             }
           );
 
