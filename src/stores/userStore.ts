@@ -16,15 +16,9 @@ import { APIError } from '@planet-sdk/common';
 // convention in useApi.ts for a synthetic, non-server status code.
 const NON_HTTP_ERROR_STATUS_CODE = 0;
 
-// fetchUserProfile has no single caller - the token effect, the 403 handler,
-// and the impersonation enter/exit screens can all call it around the same
-// time. This controller is the single owner of "who is fetching": starting a
-// new fetch aborts whatever fetch is still in flight, so only the latest
-// request's response can ever reach the network's end and commit to the
-// store. The identity check below (`controller !== activeFetchController`)
-// additionally covers the narrow window where an older request's response
-// has already finished decoding by the time it is superseded, since aborting
-// cannot un-resolve a promise that has already settled.
+// Multiple callers can start this action at the same time.
+// Starting a new request aborts the previous request.
+// The identity check rejects responses decoded before the abort.
 let activeFetchController: AbortController | null = null;
 
 type FetchUserProfileParams = {
