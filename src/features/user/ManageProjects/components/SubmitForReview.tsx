@@ -22,6 +22,10 @@ const richTags = {
   italic: (chunks: ReactNode) => <em>{chunks}</em>,
 };
 
+/**
+ * Two of the strings these keys resolve to describe the organization document area that only exists once RO-onboarding ships: `preSubmissionChecklistItems.organizationProfile` and `whatHappensNextItems.review`.
+ * Max is providing interim wording that drops that dependency. When it lands, paste the wording being replaced in here verbatim — it is restored unchanged once RO-onboarding is live, and the locale files are JSON so they cannot carry the note themselves.
+ */
 const checklistKeys = [
   'preSubmissionChecklistItems.organizationProfile',
   'preSubmissionChecklistItems.projectFiles',
