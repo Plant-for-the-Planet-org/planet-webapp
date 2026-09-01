@@ -124,6 +124,9 @@ export default function ManageProjects({
         path = `/profile/projects/${projectGUID}?type=questionnaire`;
         break;
       case 7:
+        path = `/profile/projects/${projectGUID}?type=documents`;
+        break;
+      case 8:
         path = `/profile/projects/${projectGUID}?type=review`;
         break;
       default:
