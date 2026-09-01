@@ -85,7 +85,9 @@ function DocumentRow({
   );
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: '.pdf,.jpg,.jpeg,.png',
+    // Each document kind decides what it takes, and the backend rejects anything else,
+    // so the picker follows the checklist rather than a list of its own.
+    accept: item.acceptedMimeTypes?.join(',') ?? 'application/pdf',
     multiple: false,
     maxSize: 10485760,
     disabled: isLocked || isUploading,
