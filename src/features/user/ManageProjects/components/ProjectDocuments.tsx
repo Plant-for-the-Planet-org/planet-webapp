@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type { APIError } from '@planet-sdk/common';
+import type { FileRejection } from 'react-dropzone';
 import type {
   ProjectDocumentsProps,
   DocumentChecklistItem,
@@ -34,6 +35,9 @@ function toBase64Payload(dataUrl: string): string {
   return commaIndex === -1 ? dataUrl : dataUrl.slice(commaIndex + 1);
 }
 
+/** Used only until the backend's per-document limit arrives. */
+const FALLBACK_MAX_BYTES = 10485760;
+
 function DocumentRow({
   item,
   projectGUID,
@@ -49,11 +53,16 @@ function DocumentRow({
   const { postApiAuthenticated } = useApi();
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const [isUploading, setIsUploading] = useState(false);
+  const [rejection, setRejection] = useState<string | null>(null);
+
+  const maxBytes = item.maxByteSize ?? FALLBACK_MAX_BYTES;
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
       if (!file) return;
+
+      setRejection(null);
 
       const reader = new FileReader();
       reader.onload = async (event) => {
@@ -84,14 +93,30 @@ function DocumentRow({
     [item.kind, projectGUID]
   );
 
+  /** The picker drops a file that fails its own rules, so the row has to say why. */
+  const onDropRejected = useCallback(
+    (rejections: FileRejection[]) => {
+      const code = rejections[0]?.errors[0]?.code;
+      setRejection(
+        code === 'file-too-large'
+          ? tManageProjects('documentTooLarge', {
+              maxMB: Math.floor(maxBytes / 1024 / 1024),
+            })
+          : tManageProjects('documentWrongType')
+      );
+    },
+    [maxBytes]
+  );
+
   const { getRootProps, getInputProps } = useDropzone({
-    // Each document kind decides what it takes, and the backend rejects anything else,
-    // so the picker follows the checklist rather than a list of its own.
+    // Each document kind decides what it takes and how big it may be, and the backend
+    // rejects anything else, so the picker follows the checklist rather than rules of its own.
     accept: item.acceptedMimeTypes?.join(',') ?? 'application/pdf',
     multiple: false,
-    maxSize: 10485760,
+    maxSize: maxBytes,
     disabled: isLocked || isUploading,
     onDropAccepted: onDrop,
+    onDropRejected,
   });
 
   return (
@@ -177,6 +202,12 @@ function DocumentRow({
       {item.comments.map((comment, index) => (
         <AnnotationCallout key={index} text={comment.body} />
       ))}
+
+      {rejection && (
+        <span style={{ color: '#c0392b', fontSize: '0.85em' }}>
+          {rejection}
+        </span>
+      )}
 
       {item.current ? (
         <a

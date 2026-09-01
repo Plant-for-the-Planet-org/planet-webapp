@@ -389,8 +389,9 @@ export interface DocumentChecklistItem {
   label: string;
   required: boolean;
   note: string | null;
-  /** Optional only to survive a deploy where the backend has not shipped it yet. */
+  /** Optional only to survive a deploy where the backend has not shipped them yet. */
   acceptedMimeTypes?: string[];
+  maxByteSize?: number;
   fulfilled: boolean;
   current: DocumentReference | null;
   comments: DocumentComment[];

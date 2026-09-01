@@ -139,6 +139,8 @@
     "documentMissing": "Not uploaded yet",
     "documentUpload": "Upload",
     "documentFormatNote": "A PDF is easiest for us to read, so please send one where you can. If all you have is a photo or a scan, upload that instead.",
+    "documentTooLarge": "That file is over {maxMB} MB. Please upload a smaller one.",
+    "documentWrongType": "That file type is not accepted for this document.",
     "documentReplace": "Replace",
     "uploading": "Uploading…",
     "backToDocuments": "Back to Documents",
