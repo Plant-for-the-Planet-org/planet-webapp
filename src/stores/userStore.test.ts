@@ -44,9 +44,18 @@ describe('userStore.fetchUserProfile', () => {
     useUserStore.setState({ userProfile: existingProfile });
     vi.mocked(fetch).mockResolvedValue(fetchResponse(500, {}));
 
-    await expect(
-      useUserStore.getState().fetchUserProfile(BASE_PARAMS)
-    ).rejects.toMatchObject({ statusCode: 500 });
+    const rejection: APIError = await useUserStore
+      .getState()
+      .fetchUserProfile(BASE_PARAMS)
+      .catch((error) => error);
+
+    expect(rejection.statusCode).toBe(500);
+    // APIError.message is always "Something went wrong" - callers read the
+    // real cause off `.errors` instead (see I7).
+    expect(rejection.errors).toMatchObject({
+      code: 500,
+      message: 'Failed to fetch user profile',
+    });
     expect(useUserStore.getState().userProfile).toEqual(existingProfile);
   });
 
@@ -85,6 +94,10 @@ describe('userStore.fetchUserProfile', () => {
     expect(rejection).toBeInstanceOf(APIError);
     expect(rejection.statusCode).toBe(0);
     expect(rejection.cause).toBe(networkError);
+    expect(rejection.errors).toMatchObject({
+      code: 0,
+      message: 'Failed to fetch',
+    });
   });
 
   it('rejects with the original 403 and leaves the profile untouched when starting an impersonation attempt', async () => {
