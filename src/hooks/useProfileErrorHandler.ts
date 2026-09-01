@@ -11,6 +11,15 @@ import {
   registerRedirectAttempt,
 } from '../utils/authRedirectGuard';
 
+// APIError.message is always the string "Something went wrong" - the real
+// text lives in `.errors`, which fetchUserProfile always shapes as
+// { code, message }. Fall back to err.message for errors from elsewhere
+// that don't follow that shape.
+const getProfileErrorMessage = (err: APIError): string =>
+  'message' in err.errors && typeof err.errors.message === 'string'
+    ? err.errors.message
+    : err.message;
+
 const useProfileErrorHandler = () => {
   const router = useRouter();
   const locale = useLocale();
@@ -80,12 +89,15 @@ const useProfileErrorHandler = () => {
         }
         // 500: server error, nothing the client can do, just log it
         case 500:
-          console.error('[Profile API] Internal Server Error:', err.message);
+          console.error(
+            '[Profile API] Internal Server Error:',
+            getProfileErrorMessage(err)
+          );
           break;
 
         // Any other status, log it for debugging
         default:
-          console.error('[Profile API] Error:', err.message);
+          console.error('[Profile API] Error:', getProfileErrorMessage(err));
           break;
       }
     },

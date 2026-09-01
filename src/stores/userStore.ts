@@ -132,20 +132,24 @@ export const useUserStore = create<UserStore>()(
           );
 
           if (!response.ok) {
-            throw new APIError(response.status, 'Failed to fetch user profile');
+            throw new APIError(response.status, {
+              code: response.status,
+              message: 'Failed to fetch user profile',
+            });
           }
 
           const result = await response.json();
           if (!result) {
-            throw new APIError(
-              response.status,
-              'User profile response was empty'
-            );
+            throw new APIError(response.status, {
+              code: response.status,
+              message: 'User profile response was empty',
+            });
           }
 
           // Superseded by a newer fetch: do not commit to store, and do not return a stale identity back to the caller (e.g. ImpersonateUserForm enters impersonation from this return value).
           if (isStale()) {
             throw new APIError(NON_HTTP_ERROR_STATUS_CODE, {
+              code: NON_HTTP_ERROR_STATUS_CODE,
               message: 'Profile fetch superseded by a newer request',
             });
           }
@@ -183,6 +187,7 @@ export const useUserStore = create<UserStore>()(
             const originalMessage =
               error instanceof Error ? error.message : String(error);
             apiError = new APIError(NON_HTTP_ERROR_STATUS_CODE, {
+              code: NON_HTTP_ERROR_STATUS_CODE,
               message: originalMessage,
             });
             apiError.cause = error;
