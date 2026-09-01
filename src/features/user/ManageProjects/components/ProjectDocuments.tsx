@@ -280,6 +280,11 @@ export default function ProjectDocuments({
         {isLocked && verificationStatus && (
           <ProjectLockedBanner verificationStatus={verificationStatus} />
         )}
+        {checklist !== null && (
+          <p style={{ fontSize: '0.85em', color: '#888' }}>
+            {tManageProjects('documentFormatNote')}
+          </p>
+        )}
         {checklist === null ? (
           <div className={styles.spinner} />
         ) : (

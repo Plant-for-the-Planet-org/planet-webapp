@@ -138,6 +138,7 @@
     "documentOptional": "Optional",
     "documentMissing": "Not uploaded yet",
     "documentUpload": "Upload",
+    "documentFormatNote": "A PDF is easiest for us to read, so please send one where you can. If all you have is a photo or a scan, upload that instead.",
     "documentReplace": "Replace",
     "uploading": "Uploading…",
     "backToDocuments": "Back to Documents",
