@@ -51,7 +51,9 @@ const KeyInfo = ({
     activitySeasons !== null && activitySeasons.length > 0;
   const showPlantingSeasons =
     plantingSeasons !== null && plantingSeasons.length > 0;
-  const restorationDate = firstTreePlanted ? formatDate(firstTreePlanted) : '';
+  const restorationDate = firstTreePlanted
+    ? formatDate(firstTreePlanted, locale)
+    : '';
   const showProjectArea =
     projectAreaInHectares !== null && projectAreaInHectares > 0;
 
