@@ -1,0 +1,129 @@
+@import '../../../theme/theme';
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.sectionTitle {
+  font-weight: 700;
+  font-size: $fontSixteen;
+  color: $dsCoreText;
+}
+
+.sectionHint {
+  font-size: $fontSmall;
+  color: $dsSoftText;
+}
+
+.documentRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 20px;
+  border: 1px solid $dsMediumGreyTransparent30;
+  border-radius: 10px;
+}
+
+.documentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.documentTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.documentLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-weight: 600;
+  color: $dsCoreText;
+}
+
+.badge {
+  flex-shrink: 0;
+  font-size: $fontXSmall;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: $dsSoftText;
+
+  &.required {
+    color: $dsFireRed;
+  }
+}
+
+.note {
+  font-size: $fontSmall;
+  color: $dsSoftText;
+}
+
+.error {
+  font-size: $fontSmall;
+  color: $dsFireRed;
+}
+
+.missing {
+  font-size: $fontSmall;
+  color: $dsHintText;
+}
+
+.fileLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: $fontSmall;
+  color: $dsPrimaryColor;
+  text-align: left;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: progress;
+  }
+
+  > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.nameRow {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+
+  @include xsPhoneView {
+    flex-direction: column;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.savedNote {
+  font-size: $fontSmall;
+  color: $dsForestGreen;
+}
