@@ -14,15 +14,20 @@ import styles from '../DueDiligence.module.scss';
 import { useApi } from '../../../../hooks/useApi';
 import { useErrorHandlingStore } from '../../../../stores';
 
-/** Empty strings rather than nulls, so every input stays controlled. */
-function toFormValues(fields: DueDiligenceFields): Record<string, string> {
+/**
+ * Empty strings rather than nulls, so every input stays controlled.
+ *
+ * Tolerates the whole object being absent: a backend that has not shipped these
+ * fields yet should leave the form empty, not take the page down with it.
+ */
+function toFormValues(fields?: DueDiligenceFields): Record<string, string> {
   return Object.fromEntries(
-    Object.entries(fields).map(([key, value]) => [key, value ?? ''])
+    Object.entries(fields ?? {}).map(([key, value]) => [key, value ?? ''])
   );
 }
 
 interface Props {
-  fields: DueDiligenceFields;
+  fields?: DueDiligenceFields;
   onSaved: (response: DueDiligenceFieldsResponse) => void;
 }
 

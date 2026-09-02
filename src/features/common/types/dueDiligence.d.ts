@@ -44,7 +44,8 @@ export interface DueDiligenceChecklist {
   documents: DueDiligenceDocument[];
   /** Human labels of the mandatory fields still empty, as the backend names them. */
   fieldsMissing: string[];
-  fields: DueDiligenceFields;
+  /** Optional only to survive a deploy where the backend has not shipped them yet. */
+  fields?: DueDiligenceFields;
   charitability: DueDiligenceCharitability;
 }
 

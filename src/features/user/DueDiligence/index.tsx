@@ -17,6 +17,7 @@ import CharitabilityStatus from './components/CharitabilityStatus';
 import DocumentRow from './components/DocumentRow';
 import OrganizationDataForm from './components/OrganizationDataForm';
 import SubmitForReview from './components/SubmitForReview';
+import { dedupeInFlight } from '../ManageProjects/utils/dedupeInFlight';
 import { useApi } from '../../../hooks/useApi';
 import { useAuthStore, useErrorHandlingStore } from '../../../stores';
 
@@ -35,9 +36,12 @@ export default function DueDiligence(): ReactElement {
 
     const load = async () => {
       try {
+        // Strict mode mounts this twice, and without this both mounts ask.
         setChecklist(
-          await getApiAuthenticated<DueDiligenceChecklist>(
-            '/app/profile/dueDiligence/documents'
+          await dedupeInFlight('ro-due-diligence', () =>
+            getApiAuthenticated<DueDiligenceChecklist>(
+              '/app/profile/dueDiligence/documents'
+            )
           )
         );
       } catch (err) {
@@ -117,3 +121,4 @@ export default function DueDiligence(): ReactElement {
     </DashboardView>
   );
 }
+
