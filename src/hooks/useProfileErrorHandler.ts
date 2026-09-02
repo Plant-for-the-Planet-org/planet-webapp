@@ -16,6 +16,7 @@ const useProfileErrorHandler = () => {
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
   const setToken = useAuthStore((state) => state.setToken);
+  const setHasAuthFailed = useAuthStore((state) => state.setHasAuthFailed);
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
   const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
 
@@ -74,6 +75,7 @@ const useProfileErrorHandler = () => {
       handleAuthExpiry,
       localizedPath,
       setToken,
+      setHasAuthFailed,
       exitImpersonation,
       fetchUserProfile,
       tenantId,
