@@ -39,8 +39,8 @@ const POINT_MARKER_MAP = {
   'managed-regeneration': ManagedRegeneration,
   agroforestry: Agroforestry,
   'urban-planting': UrbanRestoration,
-  'large-scale-planting': TreePlanting,
-  'other-planting': OtherPlanting,
+  'restoration-tree-planting': TreePlanting,
+  'other-restoration': OtherPlanting,
 } as const;
 
 type PointMarkerType = keyof typeof POINT_MARKER_MAP;

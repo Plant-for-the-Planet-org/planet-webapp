@@ -25,14 +25,109 @@ export interface Site {
   id: string;
   name: string;
   status: string;
+  acquisitionYear?: Nullable<number>;
+  yearAbandoned?: Nullable<number>;
 }
 
-type VerificationStatus =
+/**
+ * The backend workflow uses six statuses: draft, submitted, in_review,
+ * revision_requested, accepted and rejected. The rest are their pre-rename
+ * predecessors, still carried by older projects in the database.
+ */
+export type VerificationStatus =
+  | 'draft'
   | 'incomplete'
   | 'accepted'
   | 'processing'
   | 'denied'
-  | 'pending';
+  | 'rejected'
+  | 'pending'
+  | 'submitted'
+  | 'in_review'
+  | 'revision_requested';
+
+/** One field a form still needs, used by the missing-fields summaries. */
+export interface MissingField {
+  /** Field key. Also builds the jump anchor via fieldAnchorId(). */
+  key: string;
+  /** Human label, always the same text the field itself is labelled with. */
+  label: string;
+}
+
+export interface RevisionRequest {
+  snapshotAt: string;
+  globalAnnotation: string | null;
+  annotations: Record<string, string> | null;
+}
+
+// Questionnaire schema types (from GET /projects/questionnaire-schema/{purpose})
+export type QuestionnaireFieldType =
+  | 'text'
+  | 'number'
+  | 'integer'
+  | 'string'
+  | 'choice'
+  | 'multi_choice'
+  | 'boolean'
+  | 'row_list'
+  | 'matrix'
+  | 'species_list';
+
+export interface QuestionnaireFieldRow {
+  key: string;
+  label: string;
+}
+
+/** Per-column input type, sent for species_list columns only. */
+export type QuestionnaireColumnType = 'species' | 'number' | 'choice';
+
+export interface QuestionnaireFieldColumn {
+  key: string;
+  label: string;
+  /** Column group header (e.g. "Direct beneficiaries"). Adjacent columns sharing the same group are merged. */
+  group?: string;
+  /** species_list only: which input to render for this column. */
+  type?: QuestionnaireColumnType;
+  /** species_list only: allowed values when type is 'choice'. */
+  choices?: string[];
+}
+
+/** One row of a species_list answer. Values are keyed by column key. */
+export type QuestionnaireSpeciesRow = Record<string, string | number | null>;
+
+/** A scientific-name suggestion from `/suggest.php`. */
+export interface SpeciesSuggestionType {
+  id: string;
+  name: string;
+  scientificName: string;
+}
+
+export interface QuestionnaireFieldSchema {
+  type: QuestionnaireFieldType;
+  label: string;
+  description: string | null;
+  classifications: string[] | null;
+  /**
+   * The project owner may leave this question blank. Optional questions never
+   * count towards completeness, so they cannot block a review submission,
+   * unless a reviewer has annotated the field and asked for the value.
+   * Older schema payloads omit the flag, so absent means required.
+   */
+  optional?: boolean;
+  choices?: string[];
+  /** Used by row_list and matrix */
+  rows?: QuestionnaireFieldRow[];
+  /** Used by matrix and species_list */
+  columns?: QuestionnaireFieldColumn[];
+  /** species_list only: how many blank rows to seed the table with. No maximum. */
+  minRows?: number;
+}
+
+export interface QuestionnaireSchema {
+  version: string;
+  purposes: string[];
+  fields: Record<string, QuestionnaireFieldSchema>;
+}
 
 export interface ExtendedProfileProjectPropertiesTrees
   extends Omit<
@@ -65,6 +160,7 @@ export interface ExtendedProfileProjectPropertiesTrees
   geoLatitude: number;
   isVerified: boolean;
   intensity: Nullable<string>;
+  questionnaire: Nullable<Record<string, unknown>>;
   reviewRequested: boolean;
   revisionPeriodicityLevel: Nullable<string>;
   survivalRate: Nullable<number>;
@@ -73,6 +169,7 @@ export interface ExtendedProfileProjectPropertiesTrees
   verificationStatus: VerificationStatus;
   videoUrl: Nullable<string>;
   website: Nullable<string>;
+  revisionRequest: RevisionRequest | null;
 }
 
 export interface ExtendedProfileProjectPropertiesConservation
@@ -91,6 +188,7 @@ export interface ExtendedProfileProjectPropertiesConservation
   verificationStatus: VerificationStatus;
   videoUrl: Nullable<string>;
   website: Nullable<string>;
+  revisionRequest: RevisionRequest | null;
 }
 
 export type ExtendedProfileProjectProperties =
@@ -132,6 +230,7 @@ export interface BasicDetailsProps {
   setProjectGUID: SetState<string>;
   projectGUID: string;
   purpose: 'trees' | 'conservation';
+  isLocked: boolean;
 }
 
 export interface ViewPort {
@@ -153,6 +252,8 @@ export interface ProjectMediaProps {
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   projectGUID: string | unknown;
+  isLocked: boolean;
+  onCompletenessChange?: (complete: boolean) => void;
 }
 
 // Detail Analysis
@@ -166,6 +267,8 @@ export interface DetailedAnalysisProps {
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   projectGUID: string;
   purpose: string | string[] | undefined;
+  isLocked: boolean;
+  onCompletenessChange: (complete: boolean) => void;
 }
 
 export type InterventionOption = [InterventionTypes, boolean];
@@ -190,11 +293,20 @@ export interface ProjectSitesProps {
   handleNext: (arg: number) => void;
   projectGUID: string;
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
+  isLocked: boolean;
+  onCompletenessChange?: (complete: boolean) => void;
 }
 export interface SiteDetails {
   geometry: {};
   name: string;
   status: string;
+  /**
+   * Carried so the edit form can be seeded with the stored values. Without them
+   * the year inputs open empty and saving writes null back, erasing whatever
+   * was captured when the site was created.
+   */
+  acquisitionYear?: Nullable<number>;
+  yearAbandoned?: Nullable<number>;
 }
 export interface Viewport {
   height: number;
@@ -223,6 +335,7 @@ interface EditSiteProps {
   setSiteList: SetState<Site[]>;
   setEditMode: SetState<boolean>;
   siteGUID: Nullable<string>;
+  purpose: 'trees' | 'conservation';
 }
 
 // project spending
@@ -232,16 +345,89 @@ export interface ProjectSpendingProps {
   handleNext: (arg: number) => void;
   userLang: string;
   projectGUID: string | unknown;
+  isLocked: boolean;
+  verificationStatus?: string;
+  showQuestionnaire?: boolean;
+  /** Reports whether any spending has been recorded, for the menu status dot. */
+  onCompletenessChange?: (isComplete: boolean) => void;
+}
+
+// project questionnaire
+export interface QuestionnaireProps {
+  handleBack: (arg: number) => void;
+  handleNext: (arg: number) => void;
+  projectGUID: string;
+  projectDetails: Nullable<ExtendedProfileProjectProperties>;
+  setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
+  isLocked: boolean;
+  onCompletenessChange: (missing: MissingField[]) => void;
+  /** Pre-fetched schema from the parent. When provided the component skips its own fetch. */
+  initialSchema?: QuestionnaireSchema | null;
+  /** Project purpose — passed explicitly so the cache lookup works even before projectDetails loads. */
+  purpose: 'trees' | 'conservation';
+}
+
+// project documents
+
+export interface DocumentReference {
+  id: string;
+  url: string;
+  filename: string;
+  mimeType: string;
+  size: number;
+  version: number;
+  uploadedAt: string | null;
+}
+
+export interface DocumentComment {
+  body: string;
+  createdAt: string;
+}
+
+export interface DocumentChecklistItem {
+  kind: string;
+  label: string;
+  required: boolean;
+  note: string | null;
+  /** Optional only to survive a deploy where the backend has not shipped them yet. */
+  acceptedMimeTypes?: string[];
+  maxByteSize?: number;
+  fulfilled: boolean;
+  current: DocumentReference | null;
+  comments: DocumentComment[];
+}
+
+export interface ProjectDocumentsProps {
+  handleBack: (arg: number) => void;
+  handleNext: (arg: number) => void;
+  projectGUID: string;
+  isLocked: boolean;
+  verificationStatus?: string;
+  /** Reports the required documents still missing, for the menu status dot and the Review summary. */
+  onCompletenessChange?: (missing: MissingField[]) => void;
 }
 
 // project review
 
+export interface SectionCompleteness {
+  detailedAnalysis: MissingField[];
+  /** Null when the questionnaire does not apply, or has not loaded yet. */
+  questionnaire: MissingField[] | null;
+  /** Null when the document checklist does not apply, or has not loaded yet. */
+  documents: MissingField[] | null;
+  media: boolean | null;
+  sites: boolean | null;
+}
+
 export interface SubmitForReviewProps {
+  projectGUID: string;
   submitForReview: () => Promise<void>;
   handleBack: (arg: number) => void;
   isUploadingData: Boolean;
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   handlePublishChange: (arg: boolean) => Promise<void>;
+  isLocked: boolean;
+  sectionCompleteness: SectionCompleteness;
 }
 
 // Project certificate

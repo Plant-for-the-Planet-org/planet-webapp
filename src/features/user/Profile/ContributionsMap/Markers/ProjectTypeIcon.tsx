@@ -60,9 +60,9 @@ const ProjectTypeIcon = ({
       return <Agroforestry {...IconProps} />;
     case 'urban-planting':
       return <UrbanRestoration {...IconProps} />;
-    case 'large-scale-planting':
+    case 'restoration-tree-planting':
       return <TreePlanting {...IconProps} />;
-    case 'other-planting':
+    case 'other-restoration':
       return <OtherPlanting {...IconProps} />;
     default:
       return null;

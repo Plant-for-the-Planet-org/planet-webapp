@@ -6,6 +6,7 @@ import type {
   ProfileProjectPropertiesFund,
   ProfileProjectPropertiesTrees,
 } from '@planet-sdk/common';
+import type { VerificationStatus } from '../../common/types/project';
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
@@ -29,10 +30,71 @@ import {
   useErrorHandlingStore,
 } from '../../../stores';
 
-type ProjectProperties =
+type ProjectProperties = (
   | ProfileProjectPropertiesFund
   | ProfileProjectPropertiesTrees
-  | ProfileProjectPropertiesConservation;
+  | ProfileProjectPropertiesConservation
+) & {
+  /**
+   * Sent by `/app/profile/projects` for the owner's own projects. Optional
+   * because the SDK types describe the public listing, which omits it.
+   */
+  verificationStatus?: VerificationStatus;
+};
+
+/**
+ * Label and colour for the review status shown on each card. Pre-rename statuses
+ * map onto the same badge as the value that replaced them, so older projects read
+ * the same as new ones.
+ */
+const VERIFICATION_STATUS_BADGES = {
+  draft: { labelKey: 'statusDraft', tone: 'statusNeutral' },
+  incomplete: { labelKey: 'statusDraft', tone: 'statusNeutral' },
+  submitted: { labelKey: 'statusSubmitted', tone: 'statusInfo' },
+  pending: { labelKey: 'statusSubmitted', tone: 'statusInfo' },
+  in_review: { labelKey: 'statusInReview', tone: 'statusInfo' },
+  processing: { labelKey: 'statusInReview', tone: 'statusInfo' },
+  revision_requested: {
+    labelKey: 'statusRevisionRequested',
+    tone: 'statusWarning',
+  },
+  accepted: { labelKey: 'statusAccepted', tone: 'statusSuccess' },
+  denied: { labelKey: 'statusRejected', tone: 'statusDanger' },
+  rejected: { labelKey: 'statusRejected', tone: 'statusDanger' },
+} as const satisfies Record<
+  VerificationStatus,
+  { labelKey: string; tone: string }
+>;
+
+/**
+ * Maps API classification values to `ManageProjects` translation keys.
+ * Both the current and the pre-rename values are listed, since older projects
+ * still carry `large-scale-planting` / `other-planting` in the database.
+ */
+const CLASSIFICATION_LABEL_KEYS = {
+  'restoration-tree-planting': 'largeScalePlanting',
+  'large-scale-planting': 'largeScalePlanting',
+  agroforestry: 'agroforestry',
+  'natural-regeneration': 'naturalRegeneration',
+  'managed-regeneration': 'managedRegeneration',
+  mangroves: 'mangroves',
+  'urban-planting': 'urbanPlanting',
+  'other-restoration': 'otherPlanting',
+  'other-planting': 'otherPlanting',
+} as const;
+
+type ClassificationValue = keyof typeof CLASSIFICATION_LABEL_KEYS;
+
+/**
+ * Fallback label for the type slot in the card subtitle. Only tree projects carry
+ * a `classification`, so conservation and funds projects fall back to their
+ * purpose and would otherwise leave the subtitle showing a bare country.
+ */
+const PURPOSE_LABEL_KEYS = {
+  conservation: 'purposeConservation',
+  funds: 'purposeFunds',
+  trees: 'purposeRestoration',
+} as const;
 
 function SingleProject({ project }: { project: ProjectProperties }) {
   const ImageSource = project.image
@@ -41,6 +103,7 @@ function SingleProject({ project }: { project: ProjectProperties }) {
   const tDonate = useTranslations('Donate');
   const tCommon = useTranslations('Common');
   const tCountry = useTranslations('Country');
+  const tManageProjects = useTranslations('ManageProjects');
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -52,6 +115,29 @@ function SingleProject({ project }: { project: ProjectProperties }) {
     () => localizedAbbreviatedNumber(locale, Number(count), 1),
     [count]
   );
+  const classification = (project as ProfileProjectPropertiesTrees)
+    ?.classification as ClassificationValue | undefined;
+  const labelKey = classification
+    ? CLASSIFICATION_LABEL_KEYS[classification]
+    : undefined;
+  const classificationLabel = labelKey
+    ? tManageProjects(labelKey)
+    : classification;
+  // Falls back to the purpose so the subtitle never starts with a bare country.
+  // Only tree projects carry a `classification`. This slot used to read
+  // `metadata.ecosystem` for conservation, which is nullable, is an ecosystem
+  // rather than a project type, and rendered as a raw slug when it was set.
+  const typeLabel =
+    classificationLabel ?? tManageProjects(PURPOSE_LABEL_KEYS[project.purpose]);
+  const countryLabel = project.country
+    ? tCountry(project.country.toLowerCase() as Lowercase<CountryCode>)
+    : undefined;
+  // Joined rather than hardcoding the separator, so a project without a
+  // classification (e.g. a funds project) doesn't render a dangling "• ".
+  const subtitleParts = [typeLabel, countryLabel].filter(Boolean);
+  const statusBadge = project.verificationStatus
+    ? VERIFICATION_STATUS_BADGES[project.verificationStatus]
+    : undefined;
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (
@@ -64,19 +150,18 @@ function SingleProject({ project }: { project: ProjectProperties }) {
         <div className={styles.noProjectImage}></div>
       )}
       <div className={styles.projectInformation}>
-        <p className={styles.projectName}>{project.name}</p>
-        <p className={styles.projectClassification}>
-          {project?.purpose === 'conservation'
-            ? project?.metadata?.ecosystem
-            : (project as ProfileProjectPropertiesTrees)?.classification}{' '}
-          •{' '}
-          {project.country === null ? (
-            <></>
-          ) : (
-            tCountry(
-              (project.country || '').toLowerCase() as Lowercase<CountryCode>
-            )
+        <div className={styles.projectHeader}>
+          {statusBadge && (
+            <span
+              className={`${styles.statusChip} ${styles[statusBadge.tone]}`}
+            >
+              {tManageProjects(statusBadge.labelKey)}
+            </span>
           )}
+          <p className={styles.projectName}>{project.name}</p>
+        </div>
+        <p className={styles.projectClassification}>
+          {subtitleParts.join(' • ')}
         </p>
         <p className={styles.projectUnitsAchieved}>
           {count !== undefined &&

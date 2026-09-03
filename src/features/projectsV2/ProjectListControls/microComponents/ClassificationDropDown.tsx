@@ -18,12 +18,12 @@ import { clsx } from 'clsx';
 import { useProjectStore, useViewStore } from '../../../../stores';
 
 const classificationItemIcons = {
-  'large-scale-planting': <TreePlanting width={'20'} height={'20'} />,
+  'restoration-tree-planting': <TreePlanting width={'20'} height={'20'} />,
   agroforestry: <Agroforestry width={'20'} height={'20'} />,
   'natural-regeneration': <NaturalRegeneration width={'20'} height={'20'} />,
   'managed-regeneration': <ManagedRegeneration width={'20'} height={'20'} />,
   'urban-planting': <UrbanRestoration width={'20'} height={'20'} />,
-  'other-planting': <OtherPlanting width={'20'} height={'20'} />,
+  'other-restoration': <OtherPlanting width={'20'} height={'20'} />,
   mangroves: <Mangroves width={'20'} height={'20'} />,
 };
 

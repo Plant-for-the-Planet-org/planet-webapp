@@ -3,24 +3,43 @@ import type { APIError } from '@planet-sdk/common';
 import type {
   ManageProjectsProps,
   ExtendedProfileProjectProperties,
+  ExtendedProfileProjectPropertiesTrees,
+  QuestionnaireSchema,
+  ImagesScopeProjects,
+  ExpensesScopeProjects,
+  SitesScopeProjects,
+  MissingField,
+  DocumentChecklistItem,
 } from '../../common/types/project';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import BasicDetails from './components/BasicDetails';
 import ProjectMedia from './components/ProjectMedia';
 import ProjectSelection from './components/ProjectSelection';
 import DetailedAnalysis from './components/DetailedAnalysis';
 import ProjectSites from './components/ProjectSites';
 import ProjectSpending from './components/ProjectSpending';
+import ProjectQuestionnaire from './components/ProjectQuestionnaire';
+import ProjectDocuments from './components/ProjectDocuments';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
 import TabbedView from '../../common/Layout/TabbedView';
-import { handleError } from '@planet-sdk/common';
+import { parseApiError } from '../../../utils/parseApiError';
 import DashboardView from '../../common/Layout/DashboardView';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  getCachedSchema,
+  getOrFetchSchema,
+} from './utils/questionnaireSchemaCache';
+import { dedupeInFlight } from './utils/dedupeInFlight';
+import {
+  getDetailedAnalysisMissing,
+  getMissingDocuments,
+  getQuestionnaireMissing,
+} from './utils/completeness';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -29,12 +48,10 @@ export enum ProjectCreationTabs {
   DETAILED_ANALYSIS = 3,
   PROJECT_SITES = 4,
   PROJECT_SPENDING = 5,
-  REVIEW = 6,
+  QUESTIONNAIRE = 6,
+  DOCUMENTS = 7,
+  REVIEW = 8,
 }
-
-type RequestReviewApiPayload = {
-  reviewRequested: boolean;
-};
 
 type PublishStatusApiPayload = {
   publish: boolean;
@@ -49,14 +66,36 @@ export default function ManageProjects({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { putApiAuthenticated, getApiAuthenticated } = useApi();
+  const { putApiAuthenticated, postApiAuthenticated, getApiAuthenticated } =
+    useApi();
   // local state
   const [tabSelected, setTabSelected] = useState<number>(0);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [projectGUID, setProjectGUID] = useState<string>(GUID ? GUID : '');
   const [tablist, setTabList] = useState<TabItem[]>([]);
+  // Seeded from the `project` prop: the page has already fetched exactly this
+  // payload from the same endpoint and only renders this component once it
+  // resolves. Starting at null meant a second, identical request ran before
+  // anything could display, so the loader stayed up for two serial round trips.
   const [projectDetails, setProjectDetails] =
-    useState<ExtendedProfileProjectProperties | null>(null);
+    useState<ExtendedProfileProjectProperties | null>(project ?? null);
+  // Null until the schema and project data have both landed, so the dot can
+  // stay grey rather than claiming the tab is incomplete.
+  const [questionnaireMissing, setQuestionnaireMissing] = useState<
+    MissingField[] | null
+  >(null);
+  const [questionnaireSchema, setQuestionnaireSchema] =
+    useState<QuestionnaireSchema | null>(null);
+  // null = not yet loaded (grey disc), true/false = known
+  const [mediaComplete, setMediaComplete] = useState<boolean | null>(null);
+  const [sitesComplete, setSitesComplete] = useState<boolean | null>(null);
+  const [spendingComplete, setSpendingComplete] = useState<boolean | null>(
+    null
+  );
+  // Null until the document checklist has landed, so the dot stays grey.
+  const [documentsMissing, setDocumentsMissing] = useState<
+    MissingField[] | null
+  >(null);
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -82,6 +121,12 @@ export default function ManageProjects({
         path = `/profile/projects/${projectGUID}?type=project-spending`;
         break;
       case 6:
+        path = `/profile/projects/${projectGUID}?type=questionnaire`;
+        break;
+      case 7:
+        path = `/profile/projects/${projectGUID}?type=documents`;
+        break;
+      case 8:
         path = `/profile/projects/${projectGUID}?type=review`;
         break;
       default:
@@ -102,22 +147,16 @@ export default function ManageProjects({
 
   const submitForReview = async () => {
     setIsUploadingData(true);
-    const requestReviewPayload = {
-      reviewRequested: true,
-    };
-
     try {
-      const res = await putApiAuthenticated<
+      const res = await postApiAuthenticated<
         ExtendedProfileProjectProperties,
-        RequestReviewApiPayload
-      >(`/app/projects/${projectGUID}`, {
-        payload: requestReviewPayload,
-      });
+        Record<string, never>
+      >(`/app/projects/${projectGUID}/submit`, { payload: {} });
       setProjectDetails(res);
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(handleError(err as APIError));
+      setErrors(parseApiError(err as APIError));
     }
   };
 
@@ -138,28 +177,192 @@ export default function ManageProjects({
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(handleError(err as APIError));
+      setErrors(parseApiError(err as APIError));
     }
   };
 
+  // GUID (the SSR prop) and projectGUID (state seeded from it) hold the same
+  // value, so listing both as dependencies ran this twice on load and every
+  // downstream projectDetails effect with it. Guarded to one fetch per project;
+  // creating a project changes projectGUID, which still triggers a fresh load.
+  const detailsFetchedFor = useRef<string | null>(
+    project ? GUID ?? null : null
+  );
+
   useEffect(() => {
-    // Fetch details of the project
+    if (!projectGUID || !token) return;
+    if (detailsFetchedFor.current === projectGUID) return;
+    detailsFetchedFor.current = projectGUID;
+
     const fetchProjectDetails = async () => {
       try {
-        const res = await getApiAuthenticated<ExtendedProfileProjectProperties>(
-          `/app/profile/projects/${projectGUID}`
+        const res = await dedupeInFlight(`details-${projectGUID}`, () =>
+          getApiAuthenticated<ExtendedProfileProjectProperties>(
+            `/app/profile/projects/${projectGUID}`
+          )
         );
         setProjectDetails(res);
       } catch (err) {
-        setErrors(handleError(err as APIError));
+        detailsFetchedFor.current = null;
+        setErrors(parseApiError(err as APIError));
         router.push(localizedPath('/profile'));
       }
     };
 
-    if (projectGUID && token) {
-      fetchProjectDetails();
-    }
-  }, [GUID, projectGUID]);
+    void fetchProjectDetails();
+  }, [projectGUID, token]);
+
+  // Kick off schema fetch immediately on mount using the SSR project prop,
+  // in parallel with the projectDetails API call. By the time the user can
+  // navigate to the Questionnaire tab, the schema will already be cached.
+  useEffect(() => {
+    const purpose = project?.purpose;
+    if (!purpose || !project?.acceptDonations) return;
+    if (getCachedSchema(purpose, locale)) return; // already in cache
+
+    const prefetch = async () => {
+      try {
+        const schema = await getOrFetchSchema(purpose, locale, () =>
+          getApiAuthenticated<QuestionnaireSchema>(
+            `/app/projects/questionnaire-schema/${purpose}`,
+            {
+              additionalHeaders: { Accept: 'application/json' },
+              queryParams: { locale },
+            }
+          )
+        );
+        setQuestionnaireSchema(schema);
+      } catch {
+        // silently fail
+      }
+    };
+    void prefetch();
+  }, []); // intentionally empty — project prop is stable (SSR data)
+
+  // Pre-compute questionnaire completeness as soon as projectDetails loads,
+  // so the menu indicator is correct before the Questionnaire tab is visited.
+  useEffect(() => {
+    if (!projectDetails?.acceptDonations) return;
+    const purpose = projectDetails.purpose ?? 'trees';
+    const classification =
+      (projectDetails as ExtendedProfileProjectPropertiesTrees)
+        .classification ?? '';
+    const existing =
+      (projectDetails as ExtendedProfileProjectPropertiesTrees).questionnaire ??
+      {};
+
+    const computeCompleteness = async () => {
+      try {
+        // Shares the cache *and* any in-flight request with the prefetch above
+        // and with the Questionnaire component, so this never adds a second
+        // call for the same purpose/locale.
+        const schema = await getOrFetchSchema(purpose, locale, () =>
+          getApiAuthenticated<QuestionnaireSchema>(
+            `/app/projects/questionnaire-schema/${purpose}`,
+            {
+              additionalHeaders: { Accept: 'application/json' },
+              queryParams: { locale },
+            }
+          )
+        );
+        setQuestionnaireSchema(schema);
+        const visibleFields = Object.entries(schema.fields).filter(
+          ([, field]) =>
+            field.classifications === null ||
+            field.classifications.includes(classification)
+        );
+        setQuestionnaireMissing(
+          getQuestionnaireMissing(
+            visibleFields,
+            existing as Record<string, unknown>,
+            projectDetails.verificationStatus === 'revision_requested'
+              ? projectDetails.revisionRequest?.annotations ?? {}
+              : {}
+          )
+        );
+      } catch {
+        // silently fail — the dot stays grey
+      }
+    };
+
+    void computeCompleteness();
+  }, [projectDetails]);
+
+  // These two only feed the menu completeness dots. They key off projectDetails
+  // so they run once it is available, but projectDetails is reassigned whenever
+  // a section saves — which fired the same two requests again every time. The
+  // refs pin them to one call per project; the dots are updated directly by the
+  // section callbacks (setMediaComplete / setSitesComplete) after that.
+  const mediaCompletenessFetchedFor = useRef<string | null>(null);
+  const sitesCompletenessFetchedFor = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!projectDetails || !projectGUID) return;
+    if (mediaCompletenessFetchedFor.current === projectGUID) return;
+    mediaCompletenessFetchedFor.current = projectGUID;
+
+    const fetchMediaCompleteness = async () => {
+      try {
+        const result = await dedupeInFlight(`images-${projectGUID}`, () =>
+          getApiAuthenticated<ImagesScopeProjects>(
+            `/app/profile/projects/${projectGUID}?_scope=images`
+          )
+        );
+        setMediaComplete(result.images.length > 0);
+      } catch {
+        // silently fail — stays grey
+        mediaCompletenessFetchedFor.current = null;
+      }
+    };
+    void fetchMediaCompleteness();
+  }, [projectDetails, projectGUID]);
+
+  const spendingCompletenessFetchedFor = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!projectDetails || !projectGUID) return;
+    if (spendingCompletenessFetchedFor.current === projectGUID) return;
+    spendingCompletenessFetchedFor.current = projectGUID;
+
+    const fetchSpendingCompleteness = async () => {
+      try {
+        const result = await dedupeInFlight(`expenses-${projectGUID}`, () =>
+          getApiAuthenticated<ExpensesScopeProjects>(
+            `/app/profile/projects/${projectGUID}`,
+            { queryParams: { _scope: 'expenses' } }
+          )
+        );
+        setSpendingComplete(result.expenses.length > 0);
+      } catch {
+        // silently fail — stays grey
+        spendingCompletenessFetchedFor.current = null;
+      }
+    };
+    void fetchSpendingCompleteness();
+  }, [projectDetails, projectGUID]);
+
+  useEffect(() => {
+    if (!projectDetails || !projectGUID) return;
+    if (sitesCompletenessFetchedFor.current === projectGUID) return;
+    sitesCompletenessFetchedFor.current = projectGUID;
+
+    const fetchSitesCompleteness = async () => {
+      try {
+        const result = await dedupeInFlight(`sites-${projectGUID}`, () =>
+          getApiAuthenticated<SitesScopeProjects>(
+            `/app/profile/projects/${projectGUID}`,
+            { queryParams: { _scope: 'sites' } }
+          )
+        );
+        setSitesComplete(result.sites.length > 0);
+      } catch {
+        // silently fail — stays grey
+        sitesCompletenessFetchedFor.current = null;
+      }
+    };
+    void fetchSitesCompleteness();
+  }, [projectDetails, projectGUID]);
+
   const [userLang, setUserLang] = useState('en');
   useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -171,66 +374,172 @@ export default function ManageProjects({
   useEffect(() => {
     if (router.query.purpose) {
       setTabSelected(1);
+      return;
     }
 
     switch (router.query.type) {
       case 'basic-details':
-        setTabSelected(1);
+        setTabSelected(ProjectCreationTabs.BASIC_DETAILS);
         break;
       case 'media':
-        setTabSelected(2);
+        setTabSelected(ProjectCreationTabs.PROJECT_MEDIA);
         break;
       case 'detail-analysis':
-        setTabSelected(3);
+        setTabSelected(ProjectCreationTabs.DETAILED_ANALYSIS);
         break;
       case 'project-sites':
-        setTabSelected(4);
+        setTabSelected(ProjectCreationTabs.PROJECT_SITES);
         break;
       case 'project-spending':
-        setTabSelected(5);
+        setTabSelected(ProjectCreationTabs.PROJECT_SPENDING);
+        break;
+      case 'questionnaire':
+        setTabSelected(ProjectCreationTabs.QUESTIONNAIRE);
+        break;
+      case 'documents':
+        setTabSelected(ProjectCreationTabs.DOCUMENTS);
         break;
       case 'review':
-        setTabSelected(6);
+        setTabSelected(ProjectCreationTabs.REVIEW);
         break;
       default:
-        null;
+        // No type and no purpose on a new-project URL → back to type selection
+        if (!GUID) setTabSelected(0);
+        break;
     }
-  }, [tabSelected, router.query.type]);
+  }, [tabSelected, router.query.type, router.query.purpose]);
+
+  const showQuestionnaire = projectDetails?.acceptDonations === true;
+  // Documents shares the same "this project goes through full verification"
+  // gate as the Questionnaire — the backend 404s the checklist endpoint for
+  // purposes with no requirement schema, so the component itself degrades
+  // gracefully if this ever needs to diverge from that assumption.
+  const showDocuments = showQuestionnaire;
+
+  const documentsCompletenessFetchedFor = useRef<string | null>(null);
+
+  // The Review page names the required documents that are still missing, so the
+  // checklist has to be known even when the Documents step was never opened.
+  useEffect(() => {
+    if (!projectGUID || !showDocuments) return;
+    if (documentsCompletenessFetchedFor.current === projectGUID) return;
+    documentsCompletenessFetchedFor.current = projectGUID;
+
+    const fetchDocumentsCompleteness = async () => {
+      try {
+        const result = await dedupeInFlight(`documents-${projectGUID}`, () =>
+          getApiAuthenticated<DocumentChecklistItem[]>(
+            `/app/projects/${projectGUID}/documents`
+          )
+        );
+        setDocumentsMissing(getMissingDocuments(result));
+      } catch (err) {
+        // No checklist for this project's purpose — nothing to require here.
+        if ((err as APIError)?.statusCode === 404) {
+          setDocumentsMissing([]);
+          return;
+        }
+        documentsCompletenessFetchedFor.current = null;
+      }
+    };
+    void fetchDocumentsCompleteness();
+  }, [projectGUID, showDocuments]);
+
+  const detailedAnalysisMissing = getDetailedAnalysisMissing(projectDetails, t);
 
   useEffect(() => {
     if (router.query.type && project) {
-      setTabList([
+      const daComplete = projectDetails
+        ? detailedAnalysisMissing.length === 0
+        : null;
+
+      const qComplete = showQuestionnaire
+        ? questionnaireMissing
+          ? questionnaireMissing.length === 0
+          : null
+        : null; // null = not applicable, doesn't block Review
+
+      // null = not applicable or not loaded yet, doesn't block Review
+      const docsComplete =
+        showDocuments && documentsMissing
+          ? documentsMissing.length === 0
+          : null;
+
+      // Review is green when no tracked tab is explicitly red
+      const reviewReady =
+        projectDetails !== null &&
+        daComplete === true &&
+        mediaComplete !== false &&
+        sitesComplete !== false &&
+        (qComplete === null || qComplete === true) &&
+        (docsComplete === null || docsComplete === true);
+
+      const toStatus = (
+        v: boolean | null
+      ): 'complete' | 'incomplete' | undefined =>
+        v === true ? 'complete' : v === false ? 'incomplete' : undefined;
+
+      const tabs: TabItem[] = [
         {
           label: t('basicDetails'),
           link: `/profile/projects/${projectGUID}?type=basic-details`,
           step: ProjectCreationTabs.BASIC_DETAILS,
+          completionStatus: 'complete',
         },
         {
           label: t('projectMedia'),
           link: `/profile/projects/${projectGUID}?type=media`,
           step: ProjectCreationTabs.PROJECT_MEDIA,
+          completionStatus: toStatus(mediaComplete),
         },
         {
           label: t('detailedAnalysis'),
           link: `/profile/projects/${projectGUID}?type=detail-analysis`,
           step: ProjectCreationTabs.DETAILED_ANALYSIS,
+          completionStatus: toStatus(daComplete),
         },
         {
           label: t('projectSites'),
           link: `/profile/projects/${projectGUID}?type=project-sites`,
           step: ProjectCreationTabs.PROJECT_SITES,
+          completionStatus: toStatus(sitesComplete),
         },
         {
           label: t('projectSpending'),
           link: `/profile/projects/${projectGUID}?type=project-spending`,
           step: ProjectCreationTabs.PROJECT_SPENDING,
+          completionStatus: toStatus(spendingComplete),
         },
-        {
-          label: t('review'),
-          link: `/profile/projects/${projectGUID}?type=review`,
-          step: ProjectCreationTabs.REVIEW,
-        },
-      ]);
+      ];
+      if (showQuestionnaire) {
+        tabs.push({
+          label: t('questionnaire'),
+          link: `/profile/projects/${projectGUID}?type=questionnaire`,
+          step: ProjectCreationTabs.QUESTIONNAIRE,
+          completionStatus: toStatus(
+            questionnaireMissing ? questionnaireMissing.length === 0 : null
+          ),
+        });
+      }
+      if (showDocuments) {
+        tabs.push({
+          label: t('documents'),
+          link: `/profile/projects/${projectGUID}?type=documents`,
+          step: ProjectCreationTabs.DOCUMENTS,
+          completionStatus: toStatus(docsComplete),
+        });
+      }
+      tabs.push({
+        label: t('review'),
+        link: `/profile/projects/${projectGUID}?type=review`,
+        step: ProjectCreationTabs.REVIEW,
+        completionStatus: projectDetails
+          ? reviewReady
+            ? 'complete'
+            : 'incomplete'
+          : undefined,
+      });
+      setTabList(tabs);
     } else if (router.query.purpose === 'trees' && !project) {
       setTabList([
         {
@@ -256,7 +565,21 @@ export default function ManageProjects({
         },
       ]);
     }
-  }, [tabSelected, router.query.purpose, locale]);
+  }, [
+    tabSelected,
+    router.query.purpose,
+    locale,
+    projectDetails,
+    questionnaireMissing,
+    mediaComplete,
+    sitesComplete,
+    spendingComplete,
+    documentsMissing,
+  ]);
+
+  const isLocked =
+    projectDetails?.verificationStatus === 'submitted' ||
+    projectDetails?.verificationStatus === 'in_review';
 
   function getStepContent() {
     switch (tabSelected) {
@@ -277,6 +600,7 @@ export default function ManageProjects({
                 ? 'conservation'
                 : 'trees'
             }
+            isLocked={isLocked}
           />
         );
       case ProjectCreationTabs.PROJECT_MEDIA:
@@ -288,6 +612,8 @@ export default function ManageProjects({
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
             projectGUID={projectGUID}
+            isLocked={isLocked}
+            onCompletenessChange={setMediaComplete}
           />
         );
       case ProjectCreationTabs.DETAILED_ANALYSIS:
@@ -303,6 +629,8 @@ export default function ManageProjects({
             purpose={
               project?.purpose ? project?.purpose : router.query?.purpose
             }
+            isLocked={isLocked}
+            onCompletenessChange={() => {}}
           />
         );
       case ProjectCreationTabs.PROJECT_SITES:
@@ -312,6 +640,8 @@ export default function ManageProjects({
             handleBack={handleBack}
             projectGUID={projectGUID}
             projectDetails={projectDetails}
+            isLocked={isLocked}
+            onCompletenessChange={setSitesComplete}
           />
         );
       case ProjectCreationTabs.PROJECT_SPENDING:
@@ -322,17 +652,59 @@ export default function ManageProjects({
             token={token}
             handleBack={handleBack}
             projectGUID={projectGUID}
+            isLocked={isLocked}
+            verificationStatus={projectDetails?.verificationStatus}
+            onCompletenessChange={setSpendingComplete}
+            showQuestionnaire={showQuestionnaire}
+          />
+        );
+      case ProjectCreationTabs.QUESTIONNAIRE:
+        return (
+          <ProjectQuestionnaire
+            handleBack={handleBack}
+            handleNext={handleNext}
+            projectGUID={projectGUID}
+            projectDetails={projectDetails}
+            setProjectDetails={setProjectDetails}
+            isLocked={isLocked}
+            onCompletenessChange={setQuestionnaireMissing}
+            initialSchema={questionnaireSchema}
+            purpose={
+              (project?.purpose ??
+                (router.query.purpose as string | undefined) ??
+                'trees') as 'trees' | 'conservation'
+            }
+          />
+        );
+      case ProjectCreationTabs.DOCUMENTS:
+        return (
+          <ProjectDocuments
+            handleBack={handleBack}
+            handleNext={handleNext}
+            projectGUID={projectGUID}
+            isLocked={isLocked}
+            verificationStatus={projectDetails?.verificationStatus}
+            onCompletenessChange={setDocumentsMissing}
           />
         );
       case ProjectCreationTabs.REVIEW:
         if (projectDetails && projectGUID)
           return (
             <SubmitForReview
+              projectGUID={projectGUID}
               handleBack={handleBack}
               projectDetails={projectDetails}
               submitForReview={submitForReview}
               isUploadingData={isUploadingData}
               handlePublishChange={handlePublishChange}
+              isLocked={isLocked}
+              sectionCompleteness={{
+                detailedAnalysis: detailedAnalysisMissing,
+                questionnaire: showQuestionnaire ? questionnaireMissing : null,
+                documents: showDocuments ? documentsMissing : null,
+                media: mediaComplete,
+                sites: sitesComplete,
+              }}
             />
           );
         break;

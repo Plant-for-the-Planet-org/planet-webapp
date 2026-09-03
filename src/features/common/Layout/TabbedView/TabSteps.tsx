@@ -1,7 +1,7 @@
 import type { ReactElement, SyntheticEvent } from 'react';
 import type { TabItem } from './TabbedViewTypes';
 
-import { Tab, Tabs } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
@@ -49,10 +49,34 @@ export default function TabSteps({
 
   const renderTabs = () => {
     return tabItems.map((tabItem, index) => {
+      const discColor =
+        tabItem.completionStatus === 'complete'
+          ? 'success.main'
+          : tabItem.completionStatus === 'incomplete'
+          ? 'error.main'
+          : '#d6d6d6'; // very light grey when status is unknown
+
+      const label = (
+        <Box component="span" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {tabItem.label}
+          <Box
+            component="span"
+            sx={{
+              display: 'inline-block',
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              flexShrink: 0,
+              backgroundColor: discColor,
+            }}
+          />
+        </Box>
+      );
+
       return (
         <StyledTab
           key={index}
-          label={tabItem.label}
+          label={label}
           data-link={tabItem.link}
           disabled={tabItem.disabled}
           value={tabItem.step}

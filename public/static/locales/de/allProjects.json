@@ -5,12 +5,12 @@
     "deforestation": "Entwaldung",
     "projects": "Projekte",
     "classificationTypes": {
-      "large-scale-planting": "Groß angelegte Renaturierung",
+      "restoration-tree-planting": "Groß angelegte Renaturierung",
       "agroforestry": "Agroforstwirtschaft",
       "natural-regeneration": "Natürliche Regeneration",
       "managed-regeneration": "Managed Regeneration",
       "urban-planting": "Urbane Pflanzungen",
-      "other-planting": "Sonstige Pflanzungen",
+      "other-restoration": "Sonstige Pflanzungen",
       "mangroves": "Mangroven"
     },
     "noFilterApplied": "Kein Filter angewendet",
