@@ -79,7 +79,7 @@ export default function OrganizationDataForm({
       <span className={styles.sectionTitle}>{t('organizationData')}</span>
       <span className={styles.sectionHint}>{t('organizationDataHint')}</span>
 
-      <div className="inputContainer">
+      <div className={styles.fields}>
         <TextField
           label={t('registrationNumber')}
           helperText={t('registrationNumberHelp')}

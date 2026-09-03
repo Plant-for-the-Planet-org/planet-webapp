@@ -19,6 +19,7 @@ import TreeMapperIcon from '../../../../../public/assets/images/icons/Sidebar/Tr
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
 import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
 import FiberPinIcon from '@mui/icons-material/FiberPin';
+import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import IconContainer from './IconContainer';
 import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
@@ -98,6 +99,15 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         icon: <MapIcon />,
         accessLevel: ['tpo'],
         matchPattern: 'prefix', // Now projects will match /profile/projects/new-project
+      },
+      {
+        key: 'due-diligence',
+        title: t('dueDiligence.menuText'),
+        path: '/profile/due-diligence',
+        icon: <FactCheckOutlinedIcon />,
+        // Shown to every organisation, with or without a project. An
+        // organisation that has not created one yet still has papers to file.
+        accessLevel: ['tpo'],
       },
       {
         key: 'planet-cash',

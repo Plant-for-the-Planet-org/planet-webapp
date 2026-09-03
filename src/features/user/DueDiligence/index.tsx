@@ -13,6 +13,7 @@ import styles from './DueDiligence.module.scss';
 import CenteredContainer from '../../common/Layout/CenteredContainer';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
+import AboutDueDiligence from './components/AboutDueDiligence';
 import CharitabilityStatus from './components/CharitabilityStatus';
 import DocumentRow from './components/DocumentRow';
 import OrganizationDataForm from './components/OrganizationDataForm';
@@ -89,6 +90,8 @@ export default function DueDiligence(): ReactElement {
             <div className="spinner" />
           ) : (
             <>
+              <AboutDueDiligence />
+
               <CharitabilityStatus charitability={checklist.charitability} />
 
               <OrganizationDataForm
