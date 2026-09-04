@@ -230,17 +230,22 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
         queryParams = {},
         router
       ) => {
-        const pathname = `/${locale}/${projectSlug}`;
+        const displayPathname = `/${locale}/${projectSlug}`;
         // Extract only the visible query params for the URL
         const { locale: _, slug: __, p: ___, ...visibleParams } = queryParams;
 
         router?.push(
           {
-            pathname,
+            // Keep the actual route pattern here, not the tenant-facing
+            // display path. Passing the display path instead corrupts
+            // `router.pathname` after this shallow push (it no longer
+            // matches '/sites/[slug]/[locale]/[p]'), which broke page
+            // detection that relies on `router.pathname` (see useCurrentPage).
+            pathname: router.pathname,
             query: queryParams,
           },
           // Only show necessary params in the URL
-          `${pathname}${
+          `${displayPathname}${
             Object.keys(visibleParams).length
               ? '?' + new URLSearchParams(visibleParams).toString()
               : ''
