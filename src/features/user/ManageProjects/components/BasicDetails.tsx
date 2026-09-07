@@ -112,9 +112,9 @@ export default function BasicDetails({
 
   const canChangeUnitType =
     !projectDetails ||
-    ((projectDetails.verificationStatus === 'draft' ||
-      projectDetails.verificationStatus === 'incomplete') &&
-      projectDetails.reviewRequested === false);
+    projectDetails.verificationStatus === 'draft' ||
+    projectDetails.verificationStatus === 'revision_requested' ||
+    projectDetails.verificationStatus === 'incomplete';
 
   const changeLatitude = (e: ChangeEvent<HTMLInputElement>) => {
     // Clear coordinates and hide map marker when field is cleared or invalid
