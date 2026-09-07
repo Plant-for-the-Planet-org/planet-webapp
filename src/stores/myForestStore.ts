@@ -6,7 +6,7 @@ import type {
   MyContributionsSingleRegistration,
   ProjectListResponse,
 } from '../features/common/types/myForest';
-import type { ApiConfigBase } from '../hooks/useApi';
+import type { ApiRequestFn } from '../hooks/useApi';
 import type { APIError } from '@planet-sdk/common';
 
 import { create } from 'zustand';
@@ -27,11 +27,6 @@ interface UserInfo {
     areaConserved: number;
   };
 }
-export type ApiRequestFn = <T>(
-  url: string,
-  config?: ApiConfigBase
-) => Promise<T>;
-
 interface MyForestApiResponse {
   stats: ContributionsResponse['stats'];
   myContributionsMap: ContributionsResponse['myContributionsMap'];

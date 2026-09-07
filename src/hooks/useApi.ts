@@ -88,6 +88,11 @@ export type ApiConfigBase = {
   version?: string;
 };
 
+export type ApiRequestFn = <T>(
+  url: string,
+  config?: ApiConfigBase
+) => Promise<T>;
+
 type ApiConfigWithPayload<P extends Record<string, unknown>> = {
   payload: P;
 } & ApiConfigBase;

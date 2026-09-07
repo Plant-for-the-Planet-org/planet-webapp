@@ -21,13 +21,9 @@ import { useRouter } from 'next/router';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import dynamic from 'next/dynamic';
-import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
-import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { NextIntlClientProvider } from 'next-intl';
-import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
 
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
@@ -191,17 +187,7 @@ const PlanetWeb = ({
             <ThemeProvider>
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
-                <PlanetCashProvider>
-                  <PayoutsProvider>
-                    <Layout>
-                      <BulkCodeProvider>
-                        <DonationReceiptProvider>
-                          {pageContent}
-                        </DonationReceiptProvider>
-                      </BulkCodeProvider>
-                    </Layout>
-                  </PayoutsProvider>
-                </PlanetCashProvider>
+                <Layout>{pageContent}</Layout>
               </MuiThemeProvider>
             </ThemeProvider>
           </Auth0Provider>
