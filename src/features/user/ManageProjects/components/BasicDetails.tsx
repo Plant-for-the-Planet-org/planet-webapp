@@ -1,5 +1,5 @@
 import type { ChangeEvent, ReactElement } from 'react';
-import type { APIError } from '@planet-sdk/common';
+import type { APIError, TreeProjectClassification } from '@planet-sdk/common';
 import type {
   BasicDetailsProps,
   ExtendedProfileProjectProperties,
@@ -157,10 +157,13 @@ export default function BasicDetails({
       });
     }
   };
-  const classifications = [
+  const classifications: {
+    label: string;
+    value: TreeProjectClassification;
+  }[] = [
     {
       label: t('largeScalePlanting'),
-      value: 'large-scale-planting',
+      value: 'restoration-tree-planting',
     },
     {
       label: t('agroforestry'),
@@ -180,7 +183,7 @@ export default function BasicDetails({
     },
     {
       label: t('otherPlanting'),
-      value: 'other-planting',
+      value: 'other-restoration',
     },
   ];
 
