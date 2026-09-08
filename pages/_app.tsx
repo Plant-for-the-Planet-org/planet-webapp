@@ -4,11 +4,12 @@ import type { AppProps } from 'next/app';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { AbstractIntlMessages } from 'next-intl';
 import type { NextPage } from 'next';
+import type { AppState } from '@auth0/auth0-react';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '../src/createEmotionCache';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
 import { Auth0Provider } from '@auth0/auth0-react';
@@ -73,7 +74,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   });
 }
 
-const onRedirectCallback = (appState: any) => {
+const onRedirectCallback = (appState?: AppState) => {
   // Use Next.js's Router.replace method to replace the url
   if (appState) Router.replace(appState?.returnTo || '/');
 };
@@ -118,21 +119,19 @@ const PlanetWeb = ({
   const [browserCompatible, setBrowserCompatible] = useState(false);
   const locale = (router.query?.locale as string) ?? 'en';
 
-  const tagManagerArgs = {
-    gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
-  };
-
-  if (process.env.NODE_ENV !== 'production') {
-    if (process.env.VERCEL_URL && typeof window !== 'undefined') {
-      if (process.env.VERCEL_URL !== window.location.hostname) {
-        router.replace(`https://${process.env.VERCEL_URL}`);
-      }
+  useEffect(() => {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      process.env.VERCEL_URL &&
+      process.env.VERCEL_URL !== window.location.hostname
+    ) {
+      router.replace(`https://${process.env.VERCEL_URL}`);
     }
-  }
+  }, [router]);
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
-      TagManager.initialize(tagManagerArgs);
+      TagManager.initialize({ gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID });
     }
   }, []);
 
@@ -146,10 +145,7 @@ const PlanetWeb = ({
     document.documentElement.lang = locale;
   }, [locale, router.isReady]);
 
-  const isMobile = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    return window.innerWidth < 481;
-  }, [typeof window !== 'undefined' && window.innerWidth]);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 481;
 
   const pageComponentProps = {
     pageProps,
@@ -164,39 +160,39 @@ const PlanetWeb = ({
 
   if (browserCompatible) {
     return <BrowserNotSupported />;
-  } else {
-    return tenantConfig ? (
-      <NextIntlClientProvider locale={locale} messages={pageProps.messages}>
-        <CacheProvider value={emotionCache}>
-          <Auth0Provider
-            domain={process.env.AUTH0_CUSTOM_DOMAIN!}
-            clientId={
-              tenantConfig.config?.auth0ClientId
-                ? tenantConfig.config.auth0ClientId
-                : process.env.AUTH0_CLIENT_ID
-            }
-            redirectUri={
-              typeof window !== 'undefined' ? window.location.origin : ''
-            }
-            audience={'urn:plant-for-the-planet'}
-            cacheLocation={'localstorage'}
-            onRedirectCallback={onRedirectCallback}
-            useRefreshTokens={true}
-          >
-            <StoreInitializer isMobile={isMobile} tenantConfig={tenantConfig} />
-            <ThemeProvider>
-              <MuiThemeProvider theme={materialTheme}>
-                <CssBaseline />
-                <Layout>{pageContent}</Layout>
-              </MuiThemeProvider>
-            </ThemeProvider>
-          </Auth0Provider>
-        </CacheProvider>
-      </NextIntlClientProvider>
-    ) : (
-      <></>
-    );
   }
+
+  if (!tenantConfig) {
+    return null;
+  }
+
+  return (
+    <NextIntlClientProvider locale={locale} messages={pageProps.messages}>
+      <CacheProvider value={emotionCache}>
+        <Auth0Provider
+          domain={process.env.AUTH0_CUSTOM_DOMAIN!}
+          clientId={
+            tenantConfig.config?.auth0ClientId || process.env.AUTH0_CLIENT_ID
+          }
+          redirectUri={
+            typeof window !== 'undefined' ? window.location.origin : ''
+          }
+          audience={'urn:plant-for-the-planet'}
+          cacheLocation={'localstorage'}
+          onRedirectCallback={onRedirectCallback}
+          useRefreshTokens={true}
+        >
+          <StoreInitializer isMobile={isMobile} tenantConfig={tenantConfig} />
+          <ThemeProvider>
+            <MuiThemeProvider theme={materialTheme}>
+              <CssBaseline />
+              <Layout>{pageContent}</Layout>
+            </MuiThemeProvider>
+          </ThemeProvider>
+        </Auth0Provider>
+      </CacheProvider>
+    </NextIntlClientProvider>
+  );
 };
 
 export default PlanetWeb;
