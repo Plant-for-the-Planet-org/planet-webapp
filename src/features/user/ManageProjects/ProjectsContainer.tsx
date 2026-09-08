@@ -169,12 +169,10 @@ function SingleProject({ project }: { project: ProjectProperties }) {
             tCommon(`unitTypes.${project.unitType}`, { formattedCount, count })}
         </p>
         <div className={styles.projectLabels}>
-          {/* Needed in future */}
-          {/* {!project.isFeatured && (
-            <div className={styles.projectLabel}>🛰 ️TreeMapper</div>
-          )} */}
-          {project.isFeatured ? (
-            <div className={styles.projectLabel}>🌟 {tCommon('featured')}</div>
+          {project.isTopProject ? (
+            <div className={styles.projectLabel}>
+              🌟 {tCommon('topProject')}
+            </div>
           ) : (
             ''
           )}
