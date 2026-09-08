@@ -145,6 +145,14 @@ const PlanetWeb = ({
     document.documentElement.lang = locale;
   }, [locale, router.isReady]);
 
+  if (isBrowserIncompatible) {
+    return <BrowserNotSupported />;
+  }
+
+  if (!tenantConfig) {
+    return null;
+  }
+
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 481;
 
   const pageComponentProps = {
@@ -157,14 +165,6 @@ const PlanetWeb = ({
     <Component {...pageComponentProps} />,
     pageComponentProps
   );
-
-  if (isBrowserIncompatible) {
-    return <BrowserNotSupported />;
-  }
-
-  if (!tenantConfig) {
-    return null;
-  }
 
   return (
     <NextIntlClientProvider locale={locale} messages={pageProps.messages}>
