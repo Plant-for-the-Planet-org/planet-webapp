@@ -2,9 +2,7 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-// The module keeps an in-memory tenant-list cache at module scope, so each
-// test resets modules and re-imports it fresh instead of sharing that cache
-// (and its one-time fetch mock) across tests.
+// The module keeps an in-memory tenant-list cache at module scope, so each test resets modules and re-imports it fresh instead of sharing that cache (and its one-time fetch mock) across tests.
 const importHelpers = () => import('./helpers');
 
 const buildTenant = (overrides: Partial<Tenant['config']>): Tenant =>
@@ -99,9 +97,7 @@ describe('multiTenancy/helpers', () => {
     });
 
     it('does not fall through to appDomain when customDomain is malformed', async () => {
-      // A tenant with a set customDomain is matched only through it: a parse
-      // failure returns false for that tenant outright, it does not fall back
-      // to checking appDomain.
+      // A tenant with a set customDomain is matched only through it: a parse failure returns false for that tenant outright, it does not fall back to checking appDomain.
       mockFetchWith([
         buildTenant({
           slug: 'acme',

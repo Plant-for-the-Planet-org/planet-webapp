@@ -16,12 +16,17 @@ const mockTenant = (
 
 const buildRequest = (
   path: string,
-  { host = 'example.com', cookie }: { host?: string; cookie?: string } = {}
+  {
+    host = 'example.com',
+    cookie,
+    acceptLanguage,
+  }: { host?: string; cookie?: string; acceptLanguage?: string } = {}
 ) =>
   new NextRequest(`https://${host}${path}`, {
     headers: {
       host,
       ...(cookie ? { cookie } : {}),
+      ...(acceptLanguage ? { 'accept-language': acceptLanguage } : {}),
     },
   });
 
@@ -60,7 +65,10 @@ describe('middleware', () => {
 
     it('prefers the NEXT_LOCALE cookie over the negotiated language', async () => {
       const res = await middleware(
-        buildRequest('/about', { cookie: 'NEXT_LOCALE=de' })
+        buildRequest('/about', {
+          cookie: 'NEXT_LOCALE=de',
+          acceptLanguage: 'fr',
+        })
       );
 
       expect(redirectPathname(res).pathname).toBe('/de/about');
@@ -74,8 +82,7 @@ describe('middleware', () => {
 
     it('restricts the locale choice to the languages the tenant supports', async () => {
       mockTenant('acme', ['de']);
-      // The path already carries "en", but the tenant only supports "de", so
-      // this still counts as locale-missing and gets redirected.
+      // The path already carries "en", but the tenant only supports "de", so this still counts as locale-missing and gets redirected.
       const res = await middleware(buildRequest('/en/about'));
 
       expect(redirectPathname(res).pathname).toBe('/de/about');
@@ -98,11 +105,7 @@ describe('middleware', () => {
     });
 
     it('does not trigger the /sites canonical-access guard for a locale-prefixed path', async () => {
-      // Documents current behavior: locale resolution runs first, so a path
-      // that already carries a locale never falls into the "startsWith('/sites')"
-      // guard below - it only ever sees paths of the form "/<locale>/sites/...",
-      // which do not start with the literal string "/sites". The guard is
-      // effectively unreachable through the normal request flow today.
+      // Locale resolution runs first, so a locale-prefixed path never hits the "startsWith('/sites')" guard below - the guard is effectively unreachable today.
       const res = await middleware(buildRequest('/en/sites/acme/about'));
 
       expect(rewrittenPathname(res).pathname).toBe(
