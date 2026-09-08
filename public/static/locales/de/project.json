@@ -3,9 +3,11 @@
     "classification": {
       "natural-regeneration": "Natürliche Regeneration",
       "managed-regeneration": "Gemanagte Regeneration",
+      "restoration-tree-planting": "Großflächige Renaturierung",
       "large-scale-planting": "Groß angelegte Renataurierung",
       "agroforestry": "Agroforstwirtschaft",
       "urban-planting": "Urbane Pflanzungen",
+      "other-restoration": "Renaturierung",
       "other-planting": "Wiederherstellung",
       "mangroves": "Mangroven",
       "conservation": "Schutz"
