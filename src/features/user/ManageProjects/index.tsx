@@ -743,7 +743,7 @@ export default function ManageProjects({
         )
       }
     >
-      <TabbedView step={tabSelected} tabItems={tablist}>
+      <TabbedView step={tabSelected} tabItems={tablist} showCompletionStatus>
         {getStepContent()}
       </TabbedView>
     </DashboardView>

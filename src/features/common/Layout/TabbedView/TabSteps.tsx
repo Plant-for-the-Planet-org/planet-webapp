@@ -9,6 +9,11 @@ import { useRouter } from 'next/router';
 interface TabStepsProps {
   step: number | string | false;
   tabItems: TabItem[];
+  /**
+   * Show a per-tab completion disc.
+   * Off by default: a tab set that does not track completeness would otherwise get a grey disc on every tab, because an absent `completionStatus` is indistinguishable from an unknown one.
+   */
+  showCompletionStatus?: boolean;
 }
 
 const StyledTabs = styled(Tabs)({
@@ -33,6 +38,7 @@ const StyledTab = styled(Tab)({
 export default function TabSteps({
   step = 0,
   tabItems = [],
+  showCompletionStatus = false,
 }: TabStepsProps): ReactElement | null {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -56,8 +62,11 @@ export default function TabSteps({
           ? 'error.main'
           : '#d6d6d6'; // very light grey when status is unknown
 
-      const label = (
-        <Box component="span" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      const label = showCompletionStatus ? (
+        <Box
+          component="span"
+          sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+        >
           {tabItem.label}
           <Box
             component="span"
@@ -71,6 +80,8 @@ export default function TabSteps({
             }}
           />
         </Box>
+      ) : (
+        tabItem.label
       );
 
       return (
