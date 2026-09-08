@@ -4692,7 +4692,7 @@
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 1,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -4722,7 +4722,7 @@
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 15,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -4752,7 +4752,7 @@
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 1,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-halo-color": "#f0f0f0",
@@ -4782,7 +4782,7 @@
             [16, 16]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-halo-color": "#f0f0f0",
@@ -4812,7 +4812,7 @@
             [16, 18.5]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-halo-color": "#f0f0f0",
@@ -4842,7 +4842,7 @@
             [16, 22]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -4872,7 +4872,7 @@
             [16, 25]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -4897,7 +4897,7 @@
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -4922,7 +4922,7 @@
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -4947,7 +4947,7 @@
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -4972,7 +4972,7 @@
         "text-padding": 1,
         "text-letter-spacing": 0.05,
         "text-size": 10,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -4997,7 +4997,7 @@
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5022,7 +5022,7 @@
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5047,7 +5047,7 @@
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5072,7 +5072,7 @@
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": 10,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5108,7 +5108,7 @@
           ]
         },
         "text-transform": "uppercase",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5144,7 +5144,7 @@
           ]
         },
         "text-transform": "uppercase",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5181,7 +5181,7 @@
           ]
         },
         "text-transform": "uppercase",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5218,7 +5218,7 @@
           ]
         },
         "text-transform": "uppercase",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5256,7 +5256,7 @@
           ]
         },
         "text-transform": "uppercase",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5287,7 +5287,7 @@
             [8, 13]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5318,7 +5318,7 @@
             [8, 13]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5349,7 +5349,7 @@
             [8, 13]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5380,7 +5380,7 @@
             [8, 13]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5411,7 +5411,7 @@
             [8, 14]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5442,7 +5442,7 @@
             [8, 15]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5473,7 +5473,7 @@
             [8, 14]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5504,7 +5504,7 @@
             [8, 14]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5535,7 +5535,7 @@
             [8, 15]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5566,7 +5566,7 @@
             [8, 15]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5597,7 +5597,7 @@
             [8, 15]
           ]
         },
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5635,7 +5635,7 @@
           ]
         },
         "text-transform": "uppercase",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -5731,7 +5731,7 @@
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-optional": true,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-color": "#c3c3c3",
