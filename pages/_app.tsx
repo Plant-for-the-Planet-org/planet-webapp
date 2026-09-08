@@ -166,14 +166,25 @@ const PlanetWeb = ({
     pageComponentProps
   );
 
+  const domain = process.env.AUTH0_CUSTOM_DOMAIN;
+
+  if (!domain) {
+    throw new Error('AUTH0_CUSTOM_DOMAIN is not configured');
+  }
+
+  const clientId =
+    tenantConfig.config?.auth0ClientId || process.env.AUTH0_CLIENT_ID;
+
+  if (!clientId) {
+    throw new Error('AUTH0_CLIENT_ID is not configured');
+  }
+
   return (
     <NextIntlClientProvider locale={locale} messages={pageProps.messages}>
       <CacheProvider value={emotionCache}>
         <Auth0Provider
-          domain={process.env.AUTH0_CUSTOM_DOMAIN!}
-          clientId={
-            tenantConfig.config?.auth0ClientId || process.env.AUTH0_CLIENT_ID
-          }
+          domain={domain}
+          clientId={clientId}
           redirectUri={
             typeof window !== 'undefined' ? window.location.origin : ''
           }
