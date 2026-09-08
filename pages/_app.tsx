@@ -116,7 +116,7 @@ const PlanetWeb = ({
 }: AppPropsWithLayout) => {
   const router = useRouter();
   const { tenantConfig } = pageProps;
-  const [browserCompatible, setBrowserCompatible] = useState(false);
+  const [isBrowserIncompatible, setIsBrowserIncompatible] = useState(false);
   const locale = (router.query?.locale as string) ?? 'en';
 
   useEffect(() => {
@@ -136,7 +136,7 @@ const PlanetWeb = ({
   }, []);
 
   useEffect(() => {
-    setBrowserCompatible(browserNotCompatible());
+    setIsBrowserIncompatible(browserNotCompatible());
   }, []);
 
   // `_document` sets `<html lang>` at SSR and on every full load, including language switches. This effect is purely defensive: it would re-sync lang if the locale ever changed without a document render, which doesn't happen today. Its `router.isReady` guard avoids overwriting the SSR value in Next's static case where query can be empty pre-hydration.
@@ -158,7 +158,7 @@ const PlanetWeb = ({
     pageComponentProps
   );
 
-  if (browserCompatible) {
+  if (isBrowserIncompatible) {
     return <BrowserNotSupported />;
   }
 
