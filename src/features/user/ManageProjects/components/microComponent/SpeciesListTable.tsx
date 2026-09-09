@@ -151,21 +151,17 @@ export default function SpeciesListTable({
 }: Props) {
   const t = useTranslations('ManageProjects');
 
-  // The blank rows exist only to make the table read as a form to fill in, so
-  // they are held here rather than pushed up to the form. `rows` is the visible
-  // grid (answers + blanks); only non-blank rows are ever emitted, so an
-  // untouched table saves nothing and a partly filled one saves no empties.
-  //
-  // Editing keeps row positions stable: filtering on the way out rather than
-  // in place means filling row 3 first does not shift it up to row 1.
+  // Blank padding rows make the table read as a form to fill in. They stay local, so only the non-blank rows reach form state.
   const [rows, setRows] = useState<QuestionnaireSpeciesRow[]>(() =>
     padRows(value ?? [], minRows, columns)
   );
 
-  // Adopt the saved answer once it arrives (the schema and the project load
-  // independently, so `value` can be empty on first render).
+  // Adopt `value` only when it differs from what the grid already shows, so typing does not rebuild the grid from its own `onChange`.
   useEffect(() => {
-    if (value?.length) setRows(padRows(value, minRows, columns));
+    const shown = rows.filter((row) => !isBlankRow(row));
+    const incoming = value ?? [];
+    if (JSON.stringify(shown) === JSON.stringify(incoming)) return;
+    setRows(padRows(incoming, minRows, columns));
   }, [value]);
 
   const commit = (next: QuestionnaireSpeciesRow[]): void => {
