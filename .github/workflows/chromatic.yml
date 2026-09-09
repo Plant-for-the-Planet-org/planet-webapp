@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - develop
+      - feature/project-onboarding
 # List of jobs
 jobs:
   chromatic-deployment:
