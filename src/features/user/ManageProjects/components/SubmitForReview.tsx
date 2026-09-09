@@ -463,6 +463,7 @@ function SubmitForReview({
     );
   }
 
+  // TODO: status cleanup after old statuses are retired. UnderReviewComponent may also be not needed anymore (default case could use an error component for an unexpected status).
   switch (projectDetails?.verificationStatus) {
     case 'draft':
     case 'incomplete':

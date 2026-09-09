@@ -29,6 +29,7 @@ export interface Site {
   yearAbandoned?: Nullable<number>;
 }
 
+// TODO: status cleanup after deployment
 /**
  * The backend workflow uses six statuses: draft, submitted, in_review,
  * revision_requested, accepted and rejected. The rest are their pre-rename
@@ -36,15 +37,15 @@ export interface Site {
  */
 export type VerificationStatus =
   | 'draft'
-  | 'incomplete'
-  | 'accepted'
-  | 'processing'
-  | 'denied'
-  | 'rejected'
-  | 'pending'
   | 'submitted'
   | 'in_review'
-  | 'revision_requested';
+  | 'accepted'
+  | 'rejected'
+  | 'revision_requested'
+  | 'incomplete' // old
+  | 'processing' // old
+  | 'denied' // old
+  | 'pending'; // old
 
 /** One field a form still needs, used by the missing-fields summaries. */
 export interface MissingField {

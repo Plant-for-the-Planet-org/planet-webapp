@@ -110,6 +110,7 @@ export default function BasicDetails({
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
+  // TODO: status cleanup after old statuses are retired
   const canChangeUnitType =
     !projectDetails ||
     projectDetails.verificationStatus === 'draft' ||
