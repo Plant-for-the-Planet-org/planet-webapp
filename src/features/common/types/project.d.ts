@@ -53,6 +53,8 @@ export interface MissingField {
   key: string;
   /** Human label, always the same text the field itself is labelled with. */
   label: string;
+  /** ManageProjects key for a note appended after the label. A union rather than a string, so the key stays type-checked. */
+  additionalInfo?: 'incompleteOrPartial';
 }
 
 export interface RevisionRequest {

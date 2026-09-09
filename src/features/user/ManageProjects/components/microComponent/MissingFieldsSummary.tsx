@@ -5,6 +5,7 @@ import type { SxProps } from '@mui/material';
 
 import { Alert, Box, Link as MuiLink } from '@mui/material';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { fieldAnchorId } from '../../utils/completeness';
 
 interface Props {
@@ -45,6 +46,8 @@ export default function MissingFieldsSummary({
   severity = 'warning',
   sx = { mb: 2 },
 }: Props): ReactElement | null {
+  const t = useTranslations('ManageProjects');
+
   if (fields.length === 0) return null;
 
   return (
@@ -54,7 +57,7 @@ export default function MissingFieldsSummary({
         component="ul"
         sx={{ m: 0, mt: 0.75, pl: 2.5, display: 'grid', gap: 0.25 }}
       >
-        {fields.map(({ key, label }) => (
+        {fields.map(({ key, label, additionalInfo }) => (
           <li key={key}>
             {hrefFor ? (
               <MuiLink
@@ -76,6 +79,7 @@ export default function MissingFieldsSummary({
                 {label}
               </MuiLink>
             )}
+            {additionalInfo ? ` ${t(additionalInfo)}` : null}
           </li>
         ))}
       </Box>

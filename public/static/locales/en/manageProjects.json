@@ -357,6 +357,7 @@
     "questionnaireLoadFailed": "We couldn't load the questionnaire. Please try again.",
     "tryAgain": "Try again",
     "addSpeciesRow": "Add species",
+    "incompleteOrPartial": "(Incomplete/partial information)",
     "deleteSpeciesRow": "Remove this species"
   }
 }

@@ -41,15 +41,20 @@ export function isFieldFilled(
 
   if (field.type === 'species_list') {
     if (!Array.isArray(val)) return false;
-    // A row of only blanks does not count, so padding rows never mark the
-    // field complete.
-    return val.some(
-      (row) =>
-        typeof row === 'object' &&
-        row !== null &&
-        Object.values(row as Record<string, unknown>).some(
-          (v) => v !== '' && v !== null && v !== undefined
-        )
+    const keys = (field.columns ?? []).map((column) => column.key);
+    // Only the schema's own columns count as cells, so stray keys on the row object are ignored.
+    const cells = (row: unknown): unknown[] =>
+      typeof row === 'object' && row !== null
+        ? (keys.length > 0 ? keys : Object.keys(row)).map(
+            (key) => (row as Record<string, unknown>)[key]
+          )
+        : [];
+    const isSet = (v: unknown) => v !== '' && v !== null && v !== undefined;
+    // Rows of only blanks are the table's padding, so they are ignored rather than counted as missing.
+    const answered = val.filter((row) => cells(row).some(isSet));
+    // A partly filled row leaves the field incomplete, so the owner is told before it reaches a reviewer.
+    return (
+      answered.length > 0 && answered.every((row) => cells(row).every(isSet))
     );
   }
 
@@ -83,7 +88,14 @@ export function getQuestionnaireMissing(
     // annotation client-side, so treating it as permanently missing would
     // block resubmission forever.
     if (isFieldFilled(field, values[name])) continue;
-    missing.push({ key: name, label: field.label });
+    // A species list is missing either because the table is empty or because a row is partly filled, so the note covers both.
+    missing.push({
+      key: name,
+      label: field.label,
+      ...(field.type === 'species_list'
+        ? { additionalInfo: 'incompleteOrPartial' }
+        : {}),
+    });
   }
   return missing;
 }
