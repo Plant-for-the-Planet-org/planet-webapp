@@ -21,6 +21,7 @@ import {
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
+import styles from '../../StepForm.module.scss';
 import TrashIcon from '../../../../../../public/assets/images/icons/manageProjects/Trash';
 import { useApi } from '../../../../../hooks/useApi';
 import { useErrorHandlingStore } from '../../../../../stores/errorHandlingStore';
@@ -36,7 +37,9 @@ interface Props {
   disabled?: boolean;
 }
 
-function blankRow(columns: QuestionnaireFieldColumn[]): QuestionnaireSpeciesRow {
+function blankRow(
+  columns: QuestionnaireFieldColumn[]
+): QuestionnaireSpeciesRow {
   const row: QuestionnaireSpeciesRow = {};
   for (const column of columns) row[column.key] = '';
   return row;
@@ -247,7 +250,7 @@ export default function SpeciesListTable({
                   <IconButton
                     aria-label={t('deleteSpeciesRow')}
                     onClick={() => removeRow(rowIndex)}
-                    size="small"
+                    className={styles.deleteRowButton}
                   >
                     <TrashIcon />
                   </IconButton>

@@ -882,3 +882,18 @@
     align-items: center;
   }
 }
+
+.deleteRowButton {
+  background-color: $dsWhite;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  > svg {
+    height: 12px;
+  }
+}
