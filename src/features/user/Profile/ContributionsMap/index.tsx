@@ -1,13 +1,14 @@
-import type { MapStyle } from 'react-map-gl-v7/maplibre';
+import type { StyleSpecification } from 'react-map-gl/maplibre';
 import type { MutableRefObject } from 'react';
 import type { ProfilePageType } from '../../../common/types/myForest';
-import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { ViewState } from 'react-map-gl/maplibre';
 
 import { useEffect, useState } from 'react';
-import Map from 'react-map-gl-v7/maplibre';
+import Map from 'react-map-gl/maplibre';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { NavigationControl } from 'react-map-gl-v7/maplibre';
+import '../../../../utils/mapsV2/maplibreWorker';
+import { NavigationControl } from 'react-map-gl/maplibre';
 import MapCredits from './Common/MapCredits';
 import Markers from './Markers';
 import { useRef } from 'react';
@@ -20,7 +21,7 @@ interface ContributionsMapProps {
   supportedTreecounter?: string | undefined;
 }
 interface MapState {
-  mapStyle: MapStyle;
+  mapStyle: StyleSpecification;
   dragPan: boolean;
   scrollZoom: boolean;
   minZoom: number;
@@ -30,7 +31,7 @@ interface MapState {
 const EMPTY_STYLE = {
   version: 8,
   sources: {},
-  layers: [] as MapStyle['layers'],
+  layers: [] as StyleSpecification['layers'],
 } as const;
 
 function ContributionsMap({

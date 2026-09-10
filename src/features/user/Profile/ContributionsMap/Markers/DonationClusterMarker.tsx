@@ -1,4 +1,4 @@
-import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { ViewState } from 'react-map-gl/maplibre';
 import type {
   DonationProperties,
   DonationSuperclusterProperties,
@@ -8,7 +8,7 @@ import type { MutableRefObject } from 'react';
 import type { PointFeature } from 'supercluster';
 import type { TreeProjectClassification, UnitTypes } from '@planet-sdk/common';
 
-import { Marker } from 'react-map-gl-v7/maplibre';
+import { Marker } from 'react-map-gl/maplibre';
 import { useEffect, useState } from 'react';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import ClusterIcon from './ClusterIcon';
