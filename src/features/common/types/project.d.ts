@@ -433,7 +433,12 @@ export interface SubmitForReviewProps {
   /** Computed by the parent, which alone can tell a section that has not loaded from one that does not apply. */
   canSubmit: boolean;
   sectionCompleteness: SectionCompleteness;
+  /** Sections whose completeness fetch failed. Each one is unknown, and unknown blocks Submit, so the Review tab names them. */
+  sectionFetchFailed: Partial<Record<SectionFetchKey, boolean>>;
 }
+
+/** Sections whose completeness comes from a request, so it can fail. Detailed Analysis is computed locally and cannot. */
+export type SectionFetchKey = 'media' | 'sites' | 'questionnaire' | 'documents';
 
 // Project certificate
 

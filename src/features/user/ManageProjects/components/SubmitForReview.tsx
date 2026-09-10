@@ -7,7 +7,7 @@ import SubmitForReviewImage from '../../../../../public/assets/images/icons/mana
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
 import { useTranslations } from 'next-intl';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
-import { Alert, Button, FormControlLabel, Stack } from '@mui/material';
+import { Alert, Box, Button, FormControlLabel, Stack } from '@mui/material';
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
@@ -16,6 +16,14 @@ import { useRouter } from 'next/router';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import MissingFieldsSummary from './microComponent/MissingFieldsSummary';
 import { fieldAnchorId } from '../utils/completeness';
+
+/** Tab label for each section whose completeness is fetched, for the failure notice. */
+const SECTION_LABEL_KEYS = {
+  media: 'projectMedia',
+  sites: 'projectSites',
+  questionnaire: 'questionnaire',
+  documents: 'documents',
+} as const;
 
 const richTags = {
   bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
@@ -65,6 +73,7 @@ function SubmitForReview({
   isLocked,
   canSubmit,
   sectionCompleteness,
+  sectionFetchFailed,
   projectGUID,
 }: SubmitForReviewProps): ReactElement {
   const t = useTranslations('ManageProjects');
@@ -156,9 +165,29 @@ function SubmitForReview({
       `/profile/projects/${projectGUID}?type=${tab}#${fieldAnchorId(key)}`
     );
 
+  const failedSections = (
+    Object.keys(SECTION_LABEL_KEYS) as (keyof typeof SECTION_LABEL_KEYS)[]
+  ).filter((section) => sectionFetchFailed[section]);
+
+  function FetchFailureNotice() {
+    if (failedSections.length === 0) return null;
+    return (
+      <Alert severity="error" sx={{ mb: 2 }}>
+        {t('sectionFetchFailedIntro')}
+        <Box component="ul" sx={{ m: 0, mt: 0.75, mb: 0.75, pl: 2.5 }}>
+          {failedSections.map((section) => (
+            <li key={section}>{t(SECTION_LABEL_KEYS[section])}</li>
+          ))}
+        </Box>
+        {t('sectionFetchFailedHelp')}
+      </Alert>
+    );
+  }
+
   function IncompleteSections() {
     return (
       <>
+        <FetchFailureNotice />
         {mediaIncomplete && (
           <Alert severity="warning">{t('incompleteMedia')}</Alert>
         )}

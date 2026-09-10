@@ -2,6 +2,7 @@ import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import type { APIError } from '@planet-sdk/common';
 import type {
   ManageProjectsProps,
+  SectionFetchKey,
   ExtendedProfileProjectProperties,
   ExtendedProfileProjectPropertiesTrees,
   QuestionnaireSchema,
@@ -96,6 +97,10 @@ export default function ManageProjects({
   const [documentsMissing, setDocumentsMissing] = useState<
     MissingField[] | null
   >(null);
+  // Completeness fetches that failed. A failed section stays unknown, which blocks Submit.
+  const [sectionFetchFailed, setSectionFetchFailed] = useState<
+    Partial<Record<SectionFetchKey, boolean>>
+  >({});
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -239,6 +244,11 @@ export default function ManageProjects({
     void prefetch();
   }, []); // intentionally empty — project prop is stable (SSR data)
 
+  const updateFailedFetchSections = (
+    key: SectionFetchKey,
+    hasFailed: boolean
+  ) => setSectionFetchFailed((current) => ({ ...current, [key]: hasFailed }));
+
   // Pre-compute questionnaire completeness as soon as projectDetails loads,
   // so the menu indicator is correct before the Questionnaire tab is visited.
   useEffect(() => {
@@ -280,8 +290,9 @@ export default function ManageProjects({
               : {}
           )
         );
+        updateFailedFetchSections('questionnaire', false);
       } catch {
-        // silently fail — the dot stays grey
+        updateFailedFetchSections('questionnaire', true);
       }
     };
 
@@ -309,8 +320,9 @@ export default function ManageProjects({
           )
         );
         setMediaComplete(result.images.length > 0);
+        updateFailedFetchSections('media', false);
       } catch {
-        // silently fail — stays grey
+        updateFailedFetchSections('media', true);
         mediaCompletenessFetchedFor.current = null;
       }
     };
@@ -355,8 +367,9 @@ export default function ManageProjects({
           )
         );
         setSitesComplete(result.sites.length > 0);
+        updateFailedFetchSections('sites', false);
       } catch {
-        // silently fail — stays grey
+        updateFailedFetchSections('sites', true);
         sitesCompletenessFetchedFor.current = null;
       }
     };
@@ -433,12 +446,15 @@ export default function ManageProjects({
           )
         );
         setDocumentsMissing(getMissingDocuments(result));
+        updateFailedFetchSections('documents', false);
       } catch (err) {
         // No checklist for this project's purpose — nothing to require here.
         if ((err as APIError)?.statusCode === 404) {
           setDocumentsMissing([]);
+          updateFailedFetchSections('documents', false);
           return;
         }
+        updateFailedFetchSections('documents', true);
         documentsCompletenessFetchedFor.current = null;
       }
     };
@@ -709,6 +725,7 @@ export default function ManageProjects({
               handlePublishChange={handlePublishChange}
               isLocked={isLocked}
               canSubmit={canSubmit}
+              sectionFetchFailed={sectionFetchFailed}
               sectionCompleteness={{
                 detailedAnalysis: detailedAnalysisMissing,
                 questionnaire: showQuestionnaire ? questionnaireMissing : null,

@@ -356,6 +356,8 @@
     },
     "questionnaireLoadFailed": "We couldn't load the questionnaire. Please try again.",
     "tryAgain": "Try again",
+    "sectionFetchFailedIntro": "An error occurred while fetching the following information:",
+    "sectionFetchFailedHelp": "This may be temporary. Open the tabs listed above to try again. If the error persists, please let us know at support@plant-for-the-planet.org",
     "addSpeciesRow": "Add species",
     "incompleteOrPartial": "(Incomplete/partial information)",
     "deleteSpeciesRow": "Remove this species"
