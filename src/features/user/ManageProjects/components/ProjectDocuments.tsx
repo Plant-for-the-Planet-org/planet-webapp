@@ -102,10 +102,14 @@ function DocumentRow({
           ? tManageProjects('documentTooLarge', {
               maxMB: Math.floor(maxBytes / 1024 / 1024),
             })
+          : item.acceptedFormats
+          ? tManageProjects('documentWrongTypeWithFormats', {
+              formats: item.acceptedFormats,
+            })
           : tManageProjects('documentWrongType')
       );
     },
-    [maxBytes]
+    [maxBytes, item.acceptedFormats]
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -177,6 +181,13 @@ function DocumentRow({
           {item.note && (
             <span style={{ fontSize: '0.85em', color: '#888' }}>
               {item.note}
+            </span>
+          )}
+          {item.acceptedFormats && (
+            <span style={{ fontSize: '0.8em', color: '#aaa' }}>
+              {tManageProjects('acceptedFormats', {
+                formats: item.acceptedFormats,
+              })}
             </span>
           )}
         </div>

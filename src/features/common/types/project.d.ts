@@ -394,6 +394,8 @@ export interface DocumentChecklistItem {
   note: string | null;
   /** Optional only to survive a deploy where the backend has not shipped them yet. */
   acceptedMimeTypes?: string[];
+  /** The same list as a sentence the backend already writes, e.g. "PDF, PNG, JPG or XLSX". */
+  acceptedFormats?: string;
   maxByteSize?: number;
   fulfilled: boolean;
   current: DocumentReference | null;
