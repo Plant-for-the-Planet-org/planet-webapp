@@ -8,7 +8,7 @@ import type {
   RegistrationSuperclusterProperties,
 } from '../../../../common/types/myForest';
 import type { SetState } from '../../../../common/types/common';
-import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { ViewState } from 'react-map-gl/maplibre';
 
 import { useEffect, useRef, useState } from 'react';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';

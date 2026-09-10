@@ -4,7 +4,7 @@ import type {
   MapLibreRef,
 } from '../../../../common/types/map';
 
-import MapGL, { Source, Layer } from 'react-map-gl-v7/maplibre';
+import MapGL, { Source, Layer } from 'react-map-gl/maplibre';
 import themeProperties from '../../../../../theme/themeProperties';
 import { useMemo, useRef } from 'react';
 import { bbox } from '@turf/turf';

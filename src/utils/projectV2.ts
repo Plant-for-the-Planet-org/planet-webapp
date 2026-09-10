@@ -6,7 +6,7 @@ import type {
   SingleTreeRegistration,
   TreeProjectClassification,
 } from '@planet-sdk/common';
-import type { MapGeoJSONFeature, PointLike } from 'react-map-gl-v7/maplibre';
+import type { MapGeoJSONFeature, PointLike } from 'react-map-gl/maplibre';
 import type { Position } from 'geojson';
 import type { ParsedUrlQuery } from 'querystring';
 import type {
