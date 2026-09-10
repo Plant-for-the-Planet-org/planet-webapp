@@ -1,19 +1,15 @@
 /**
  * Copies the MapLibre worker files from `node_modules` to `public/`.
  *
- * MapLibre v6 loads its worker as a separate file. In our Webpack setup,
- * MapLibre cannot resolve the worker URL correctly, so vector map tiles
- * are not processed.
+ * MapLibre v6 loads its worker as a separate file.
+ * In our Webpack setup, MapLibre cannot resolve the worker URL correctly, so vector map tiles are not processed.
  *
- * `src/utils/mapsV2/maplibreWorker.ts` tells MapLibre to use the worker
- * copied by this script.
+ * `src/utils/mapsV2/maplibreWorker.ts` tells MapLibre to use the worker copied by this script.
  *
- * This script runs before development and production builds so the worker
- * files always match the installed MapLibre version.
+ * This script runs before development and production builds so the worker files always match the installed MapLibre version.
  *
  * The worker also depends on a shared file, so both files are copied.
- * They are saved as `.js` files so they are served correctly as JavaScript
- * and can be loaded as module workers.
+ * They are saved as `.js` files so they are served correctly as JavaScript and can be loaded as module workers.
  */
 const fs = require('fs');
 const path = require('path');
@@ -29,8 +25,7 @@ const { version } = require('maplibre-gl/package.json');
 const workerCode = fs.readFileSync(workerSource, 'utf8');
 if (!workerCode.includes(SHARED_SPECIFIER)) {
   throw new Error(
-    `Expected MapLibre's worker to import "${SHARED_SPECIFIER}". MapLibre ${version} appears to ` +
-      'have changed its bundle layout, so scripts/copy-maplibre-worker.js needs updating.'
+    `Expected MapLibre's worker to import "${SHARED_SPECIFIER}". MapLibre ${version} appears to have changed its bundle layout, so scripts/copy-maplibre-worker.js needs updating.`
   );
 }
 

@@ -151,9 +151,8 @@ export default function TimeTravel({
     sitesGeoJson,
   ]);
 
-  // The map's error event carries the failing source id alongside the error, and tile
-  // fetches surface an AJAXError with an HTTP status. MapLibre declares neither on
-  // ErrorEvent (its `error` is only `{ message: string }`), so both are read defensively.
+  // The map's error event carries the failing source id alongside the error, and tile fetches surface an AJAXError with an HTTP status.
+  // MapLibre declares neither on ErrorEvent (its `error` is only `{ message: string }`), so both are read defensively.
   const isTileError = (
     e: MaplibreErrorEvent
   ): e is MaplibreErrorEvent & { sourceId: string } => {
