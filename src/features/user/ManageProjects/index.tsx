@@ -447,6 +447,16 @@ export default function ManageProjects({
 
   const detailedAnalysisMissing = getDetailedAnalysisMissing(projectDetails, t);
 
+  // Every applicable section has to be positively complete, so a section that has not loaded blocks submission rather than passing it.
+  // Deliberately stricter than `reviewReady` below, which leaves the Review dot neutral while a section is unknown.
+  const canSubmit =
+    projectDetails !== null &&
+    detailedAnalysisMissing.length === 0 &&
+    mediaComplete === true &&
+    sitesComplete === true &&
+    (!showQuestionnaire || questionnaireMissing?.length === 0) &&
+    (!showDocuments || documentsMissing?.length === 0);
+
   useEffect(() => {
     if (router.query.type && project) {
       const daComplete = projectDetails
@@ -698,6 +708,7 @@ export default function ManageProjects({
               isUploadingData={isUploadingData}
               handlePublishChange={handlePublishChange}
               isLocked={isLocked}
+              canSubmit={canSubmit}
               sectionCompleteness={{
                 detailedAnalysis: detailedAnalysisMissing,
                 questionnaire: showQuestionnaire ? questionnaireMissing : null,

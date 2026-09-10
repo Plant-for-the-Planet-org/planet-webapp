@@ -63,6 +63,7 @@ function SubmitForReview({
   projectDetails,
   handlePublishChange,
   isLocked,
+  canSubmit,
   sectionCompleteness,
   projectGUID,
 }: SubmitForReviewProps): ReactElement {
@@ -120,17 +121,12 @@ function SubmitForReview({
     );
   }
 
+  // For the summaries below only. `canSubmit` comes from the parent, because a null here could mean not loaded, load failed, or not applicable.
   const daMissing = sectionCompleteness.detailedAnalysis;
   const questionnaireMissing = sectionCompleteness.questionnaire ?? [];
   const documentsMissing = sectionCompleteness.documents ?? [];
   const mediaIncomplete = sectionCompleteness.media === false;
   const sitesIncomplete = sectionCompleteness.sites === false;
-  const canSubmit =
-    daMissing.length === 0 &&
-    questionnaireMissing.length === 0 &&
-    documentsMissing.length === 0 &&
-    !mediaIncomplete &&
-    !sitesIncomplete;
 
   function ReviewIntro() {
     return (

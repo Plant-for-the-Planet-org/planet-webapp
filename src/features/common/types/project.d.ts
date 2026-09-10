@@ -430,6 +430,8 @@ export interface SubmitForReviewProps {
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   handlePublishChange: (arg: boolean) => Promise<void>;
   isLocked: boolean;
+  /** Computed by the parent, which alone can tell a section that has not loaded from one that does not apply. */
+  canSubmit: boolean;
   sectionCompleteness: SectionCompleteness;
 }
 
