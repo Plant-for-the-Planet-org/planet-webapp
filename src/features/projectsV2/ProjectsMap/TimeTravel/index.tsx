@@ -12,6 +12,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import MaplibreCompare from '@maplibre/maplibre-gl-compare';
 import '@maplibre/maplibre-gl-compare/dist/maplibre-gl-compare.css';
 import { Map as MaplibreMap } from 'maplibre-gl';
+import '../../../../utils/mapsV2/maplibreWorker';
 import TimeTravelDropdown from '../../TimeTravelDropdown';
 import styles from './TimeTravel.module.scss';
 import themeProperties from '../../../../theme/themeProperties';

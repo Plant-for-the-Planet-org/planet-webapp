@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import Map from 'react-map-gl/maplibre';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import '../../../../utils/mapsV2/maplibreWorker';
 import { NavigationControl } from 'react-map-gl/maplibre';
 import MapCredits from './Common/MapCredits';
 import Markers from './Markers';

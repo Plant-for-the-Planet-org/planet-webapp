@@ -5,6 +5,7 @@ import type {
 } from '../../../../common/types/map';
 
 import MapGL, { Source, Layer } from 'react-map-gl/maplibre';
+import '../../../../../utils/mapsV2/maplibreWorker';
 import themeProperties from '../../../../../theme/themeProperties';
 import { useMemo, useRef } from 'react';
 import { bbox } from '@turf/turf';

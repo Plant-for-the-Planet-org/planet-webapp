@@ -9,6 +9,7 @@ import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import '../../../utils/mapsV2/maplibreWorker';
 import Map, { NavigationControl } from 'react-map-gl/maplibre';
 import { useFetchLayers } from '../../../utils/mapsV2/useFetchLayers';
 import MultipleProjectsView from './MultipleProjectsView';

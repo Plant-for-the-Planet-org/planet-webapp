@@ -6,8 +6,12 @@
     ".next/cache"
   ],
   "scripts": {
+    "copy-maplibre-worker": "node scripts/copy-maplibre-worker.js",
+    "predev-https": "npm run copy-maplibre-worker",
     "dev-https": "next dev --experimental-https",
+    "predev": "npm run copy-maplibre-worker",
     "dev": "next dev",
+    "prebuild": "npm run copy-maplibre-worker",
     "build": "next build",
     "analyze": "ANALYZE=true npm run build",
     "export": "next export",
