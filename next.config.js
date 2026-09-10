@@ -61,10 +61,8 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   experimental: {
-    // This app forces Babel via .babelrc, so Next.js runs even node_modules
-    // ESM interop through it instead of SWC. @sentry/node's module hook
-    // (import-in-the-middle) ships un-transpiled private class methods that
-    // Next's bundled Babel can't parse, so keep it as a native Node require.
+    // This app forces Babel via .babelrc, so Next.js runs even node_modules ESM interop through it instead of SWC.
+    // @sentry/node's module hook (import-in-the-middle) ships un-transpiled private class methods that Next's bundled Babel can't parse, so keep it as a native Node require.
     serverComponentsExternalPackages: [
       'import-in-the-middle',
       'require-in-the-middle',
@@ -142,8 +140,7 @@ module.exports = () => {
   const plugins = [withBundleAnalyzer];
   const config = plugins.reduce((config, plugin) => plugin(config), nextConfig);
   return withSentryConfig(config, {
-    // org, project and authToken are read from the SENTRY_ORG, SENTRY_PROJECT
-    // and SENTRY_AUTH_TOKEN env vars by default.
+    // org, project and authToken are read from the SENTRY_ORG, SENTRY_PROJECT and SENTRY_AUTH_TOKEN env vars by default.
     widenClientFileUpload: true,
     // This app uses the Pages Router only, so there's no App Router navigation to instrument.
     suppressOnRouterTransitionStartWarning: true,

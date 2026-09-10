@@ -13,4 +13,5 @@ export async function register() {
   }
 }
 
+// Next.js only calls this from v15 onward; on our Next 14 it is inert, and Pages Router server errors are captured by the SDK's automatic data-fetcher and API-route wrapping instead.
 export const onRequestError = Sentry.captureRequestError;
