@@ -3,7 +3,31 @@ import type {
   ExtendedProfileProjectProperties,
   MissingField,
   QuestionnaireFieldSchema,
+  QuestionnaireSchema,
 } from '../../../common/types/project';
+
+/** The questionnaire fields that apply to a project, given its classification. */
+export function getVisibleQuestionnaireFields(
+  schema: QuestionnaireSchema,
+  classification: string
+): [string, QuestionnaireFieldSchema][] {
+  return Object.entries(schema.fields).filter(
+    ([, field]) =>
+      field.classifications === null ||
+      field.classifications.includes(classification)
+  );
+}
+
+/**
+ * A field with no `classifications` applies to every project, so an empty result means every field is scoped and none matched this project's classification.
+ * That is a mismatch to report, not a questionnaire with nothing to ask, and the caller must not read it as complete.
+ */
+export function isClassificationUnsupported(
+  schema: QuestionnaireSchema,
+  visibleFields: [string, QuestionnaireFieldSchema][]
+): boolean {
+  return visibleFields.length === 0 && Object.keys(schema.fields).length > 0;
+}
 
 /** DOM id put on a form field so a jump link can target it. */
 export function fieldAnchorId(key: string): string {

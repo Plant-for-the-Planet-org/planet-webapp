@@ -357,6 +357,7 @@
       "partialError": "Error uploading some sites"
     },
     "questionnaireLoadFailed": "We couldn't load the questionnaire. Please try again.",
+    "questionnaireUnavailable": "We couldn't work out which questions apply to this project. Please let us know at support@plant-for-the-planet.org so we can sort it out.",
     "tryAgain": "Try again",
     "sectionFetchFailedIntro": "An error occurred while fetching the following information:",
     "sectionFetchFailedHelp": "This may be temporary. Open the tabs listed above to try again. If the error persists, please let us know at support@plant-for-the-planet.org",

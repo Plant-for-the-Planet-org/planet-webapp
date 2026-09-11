@@ -40,6 +40,8 @@ import {
   getDetailedAnalysisMissing,
   getMissingDocuments,
   getQuestionnaireMissing,
+  getVisibleQuestionnaireFields,
+  isClassificationUnsupported,
 } from './utils/completeness';
 
 export enum ProjectCreationTabs {
@@ -276,11 +278,15 @@ export default function ManageProjects({
           )
         );
         setQuestionnaireSchema(schema);
-        const visibleFields = Object.entries(schema.fields).filter(
-          ([, field]) =>
-            field.classifications === null ||
-            field.classifications.includes(classification)
+        const visibleFields = getVisibleQuestionnaireFields(
+          schema,
+          classification
         );
+        // Leaves completeness unknown, so Submit blocks and the Review tab names the section rather than passing a questionnaire nobody could answer.
+        if (isClassificationUnsupported(schema, visibleFields)) {
+          updateFailedFetchSections('questionnaire', true);
+          return;
+        }
         setQuestionnaireMissing(
           getQuestionnaireMissing(
             visibleFields,

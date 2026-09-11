@@ -50,11 +50,20 @@ import {
   fieldAnchorId,
   getQuestionnaireFlagged,
   getQuestionnaireMissing,
+  getVisibleQuestionnaireFields,
+  isClassificationUnsupported,
   isQuestionnaireFieldRequired,
 } from '../utils/completeness';
 
 // Widened to support nested row_list / matrix values
 type QuestionnaireFormData = Record<string, unknown>;
+
+type QuestionnaireState =
+  | 'loading'
+  | 'loadFailed'
+  | 'classificationUnsupported'
+  | 'noQuestions'
+  | 'ready';
 
 function humanizeLabel(value: string): string {
   return value.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
@@ -172,11 +181,7 @@ export default function ProjectQuestionnaire({
 
   const visibleFields = useMemo((): [string, QuestionnaireFieldSchema][] => {
     if (!schema) return [];
-    return Object.entries(schema.fields).filter(
-      ([, field]) =>
-        field.classifications === null ||
-        field.classifications.includes(classification)
-    );
+    return getVisibleQuestionnaireFields(schema, classification);
   }, [schema, classification]);
 
   const {
@@ -616,13 +621,58 @@ export default function ProjectQuestionnaire({
     );
   }
 
-  // Show spinner until BOTH schema and projectDetails are available.
-  // Deriving directly from the data avoids any intermediate flag that could
-  // be false before the data actually arrives.
-  const isLoading =
-    !schemaFailed && (schema === null || projectDetails === null);
+  // Derived straight from the data, so no intermediate flag can say "ready" before the data arrives.
+  function getState(): QuestionnaireState {
+    if (schemaFailed) return 'loadFailed';
+    if (schema === null || projectDetails === null) return 'loading';
+    if (isClassificationUnsupported(schema, visibleFields))
+      return 'classificationUnsupported';
+    if (visibleFields.length === 0) return 'noQuestions';
+    return 'ready';
+  }
 
-  useFieldAnchorScroll(!isLoading && visibleFields.length > 0);
+  const state = getState();
+
+  useFieldAnchorScroll(state === 'ready');
+
+  /** The questions, or the reason there are none. */
+  function renderQuestions(): ReactElement {
+    switch (state) {
+      case 'loading':
+        return <CircularProgress size={32} />;
+      case 'loadFailed':
+        return (
+          <Alert
+            severity="error"
+            action={
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setSchemaFailed(false);
+                  setRetryCount((count) => count + 1);
+                }}
+              >
+                {t('tryAgain')}
+              </Button>
+            }
+          >
+            {t('questionnaireLoadFailed')}
+          </Alert>
+        );
+      case 'classificationUnsupported':
+        return <Alert severity="error">{t('questionnaireUnavailable')}</Alert>;
+      case 'noQuestions':
+        return <p>{t('noQuestionnaire')}</p>;
+      case 'ready':
+        return (
+          <>
+            <p>{t('questionnaireDescription')}</p>
+            {visibleFields.map(([name, field]) => renderField(name, field))}
+          </>
+        );
+    }
+  }
 
   return (
     <CenteredContainer>
@@ -632,9 +682,8 @@ export default function ProjectQuestionnaire({
             verificationStatus={projectDetails.verificationStatus}
           />
         )}
-        {!isLoading &&
+        {state === 'ready' &&
           !isLocked &&
-          visibleFields.length > 0 &&
           (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
             ?.questionnaire != null && (
             <>
@@ -654,36 +703,7 @@ export default function ProjectQuestionnaire({
             </>
           )}
 
-        <div className="inputContainer">
-          {isLoading ? (
-            <CircularProgress size={32} />
-          ) : schemaFailed ? (
-            <Alert
-              severity="error"
-              action={
-                <Button
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setSchemaFailed(false);
-                    setRetryCount((count) => count + 1);
-                  }}
-                >
-                  {t('tryAgain')}
-                </Button>
-              }
-            >
-              {t('questionnaireLoadFailed')}
-            </Alert>
-          ) : visibleFields.length === 0 ? (
-            <p>{t('noQuestionnaire')}</p>
-          ) : (
-            <>
-              <p>{t('questionnaireDescription')}</p>
-              {visibleFields.map(([name, field]) => renderField(name, field))}
-            </>
-          )}
-        </div>
+        <div className="inputContainer">{renderQuestions()}</div>
 
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
