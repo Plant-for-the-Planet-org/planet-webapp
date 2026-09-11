@@ -4,6 +4,7 @@ import type {
   QuestionnaireProps,
   QuestionnaireSchema,
   QuestionnaireFieldSchema,
+  QuestionnaireFieldType,
   ExtendedProfileProjectProperties,
   ExtendedProfileProjectPropertiesTrees,
   QuestionnaireSpeciesRow,
@@ -20,6 +21,7 @@ import {
   FormGroup,
   FormHelperText,
   FormLabel,
+  InputAdornment,
   Table,
   TableBody,
   TableCell,
@@ -70,6 +72,11 @@ function humanizeLabel(value: string): string {
   return value.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 }
 
+/** A percentage is a number that carries its own 0 to 100 bound, so it renders and loads like one. */
+function isNumericField(type: QuestionnaireFieldType): boolean {
+  return type === 'number' || type === 'integer' || type === 'percentage';
+}
+
 function buildDefaults(
   visibleFields: [string, QuestionnaireFieldSchema][],
   existing: Record<string, unknown> | null | undefined
@@ -86,7 +93,7 @@ function buildDefaults(
         const otherVal = existing?.[otherKey];
         defaults[otherKey] = typeof otherVal === 'string' ? otherVal : '';
       }
-    } else if (field.type === 'number' || field.type === 'integer') {
+    } else if (isNumericField(field.type)) {
       // Number('') is 0, so an untouched field saved as '' would come back as a real answer of zero.
       defaults[name] = isValueSet(val) ? Number(val) : '';
     } else if (field.type === 'row_list' && field.rows) {
@@ -389,8 +396,13 @@ export default function ProjectQuestionnaire({
       );
     }
 
-    // ── number / integer ──────────────────────────────────────────────────
-    if (field.type === 'number' || field.type === 'integer') {
+    // ── number / integer / percentage ─────────────────────────────────────
+    if (isNumericField(field.type)) {
+      const isPercentage = field.type === 'percentage';
+      // The backend rejects a percentage outside 0 to 100, and reports it as a
+      // banner rather than on the field, so the bound is enforced here too.
+      const outOfRange =
+        errors[name]?.type === 'min' || errors[name]?.type === 'max';
       return (
         <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
           <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
@@ -402,7 +414,10 @@ export default function ProjectQuestionnaire({
           <Controller
             name={name}
             control={control}
-            rules={{ required: isRequired }}
+            rules={{
+              required: isRequired,
+              ...(isPercentage ? { min: 0, max: 100 } : {}),
+            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextField
                 type="number"
@@ -411,7 +426,25 @@ export default function ProjectQuestionnaire({
                 onBlur={onBlur}
                 value={value}
                 error={hasError}
-                helperText={hasError ? t('requiredField') : undefined}
+                inputProps={
+                  isPercentage ? { min: 0, max: 100, step: 'any' } : undefined
+                }
+                InputProps={
+                  isPercentage
+                    ? {
+                        endAdornment: (
+                          <InputAdornment position="end">%</InputAdornment>
+                        ),
+                      }
+                    : undefined
+                }
+                helperText={
+                  outOfRange
+                    ? t('percentageRange')
+                    : hasError
+                    ? t('requiredField')
+                    : undefined
+                }
               />
             )}
           />

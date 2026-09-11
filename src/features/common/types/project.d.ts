@@ -67,6 +67,7 @@ export interface RevisionRequest {
 export type QuestionnaireFieldType =
   | 'text'
   | 'number'
+  | 'percentage'
   | 'integer'
   | 'string'
   | 'choice'
@@ -82,7 +83,11 @@ export interface QuestionnaireFieldRow {
 }
 
 /** Per-column input type, sent for species_list columns only. */
-export type QuestionnaireColumnType = 'species' | 'number' | 'choice';
+export type QuestionnaireColumnType =
+  | 'species'
+  | 'number'
+  | 'percentage'
+  | 'choice';
 
 export interface QuestionnaireFieldColumn {
   key: string;

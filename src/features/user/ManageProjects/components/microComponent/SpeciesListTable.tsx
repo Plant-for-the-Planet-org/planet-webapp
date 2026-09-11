@@ -11,6 +11,7 @@ import {
   Autocomplete,
   Button,
   IconButton,
+  InputAdornment,
   MenuItem,
   Table,
   TableBody,
@@ -235,6 +236,22 @@ export default function SpeciesListTable({
                         disabled={disabled}
                         onChange={(event) =>
                           updateCell(rowIndex, column.key, event.target.value)
+                        }
+                        inputProps={
+                          column.type === 'percentage'
+                            ? { min: 0, max: 100, step: 'any' }
+                            : undefined
+                        }
+                        InputProps={
+                          column.type === 'percentage'
+                            ? {
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    %
+                                  </InputAdornment>
+                                ),
+                              }
+                            : undefined
                         }
                       />
                     )}
