@@ -11,6 +11,7 @@ import styles from './ImpersonateUser.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import { APIError } from '@planet-sdk/common';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import useProfileErrorHandler from '../../../../hooks/useProfileErrorHandler';
 import { useAuthStore, useTenantStore, useUserStore } from '../../../../stores';
 
 const ImpersonateUserForm = (): ReactElement => {
@@ -18,6 +19,7 @@ const ImpersonateUserForm = (): ReactElement => {
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Me');
   const locale = useLocale();
+  const { handleProfileError } = useProfileErrorHandler();
   // store: state
   const token = useAuthStore((state) => state.token);
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
@@ -99,8 +101,13 @@ const ImpersonateUserForm = (): ReactElement => {
         router.push(localizedPath('/profile'));
       } catch (err) {
         if (err instanceof APIError) {
-          console.error('API error:', err.message);
-          if (err.statusCode === 403) setIsInvalidEmail(true);
+          // A 403 here means the target email/support pin pair was rejected -
+          // handle it locally instead of through the global error handler.
+          if (err.statusCode === 403) {
+            setIsInvalidEmail(true);
+          } else {
+            handleProfileError(err);
+          }
         } else {
           console.error('Unexpected error:', err);
         }
