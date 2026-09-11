@@ -89,10 +89,16 @@ export default function DocumentRow({ item, onUploaded }: Props): ReactElement {
   const onDropRejected = useCallback(
     (rejections: FileRejection[]) => {
       const code = rejections[0]?.errors[0]?.code;
+
+      if (code === 'file-too-large') {
+        setRejection(
+          t('documentTooLarge', { maxMB: Math.floor(maxBytes / 1024 / 1024) })
+        );
+        return;
+      }
+
       setRejection(
-        code === 'file-too-large'
-          ? t('documentTooLarge', { maxMB: Math.floor(maxBytes / 1024 / 1024) })
-          : item.acceptedFormats
+        item.acceptedFormats
           ? t('documentWrongTypeWithFormats', {
               formats: item.acceptedFormats,
             })

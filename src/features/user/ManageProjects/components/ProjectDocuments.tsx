@@ -97,12 +97,18 @@ function DocumentRow({
   const onDropRejected = useCallback(
     (rejections: FileRejection[]) => {
       const code = rejections[0]?.errors[0]?.code;
+
+      if (code === 'file-too-large') {
+        setRejection(
+          tManageProjects('documentTooLarge', {
+            maxMB: Math.floor(maxBytes / 1024 / 1024),
+          })
+        );
+        return;
+      }
+
       setRejection(
-        code === 'file-too-large'
-          ? tManageProjects('documentTooLarge', {
-              maxMB: Math.floor(maxBytes / 1024 / 1024),
-            })
-          : item.acceptedFormats
+        item.acceptedFormats
           ? tManageProjects('documentWrongTypeWithFormats', {
               formats: item.acceptedFormats,
             })
