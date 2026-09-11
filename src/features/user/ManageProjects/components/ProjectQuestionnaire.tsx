@@ -53,6 +53,7 @@ import {
   getVisibleQuestionnaireFields,
   isClassificationUnsupported,
   isQuestionnaireFieldRequired,
+  isValueSet,
 } from '../utils/completeness';
 
 // Widened to support nested row_list / matrix values
@@ -86,8 +87,8 @@ function buildDefaults(
         defaults[otherKey] = typeof otherVal === 'string' ? otherVal : '';
       }
     } else if (field.type === 'number' || field.type === 'integer') {
-      defaults[name] =
-        typeof val === 'number' ? val : val != null ? Number(val) : '';
+      // Number('') is 0, so an untouched field saved as '' would come back as a real answer of zero.
+      defaults[name] = isValueSet(val) ? Number(val) : '';
     } else if (field.type === 'row_list' && field.rows) {
       const existing_row = val as Record<string, unknown> | undefined;
       const rowDefaults: Record<string, string | number> = {};
