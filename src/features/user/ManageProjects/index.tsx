@@ -22,6 +22,7 @@ import ProjectSites from './components/ProjectSites';
 import ProjectSpending from './components/ProjectSpending';
 import ProjectQuestionnaire from './components/ProjectQuestionnaire';
 import ProjectDocuments from './components/ProjectDocuments';
+import SectionUnavailable from './components/microComponent/SectionUnavailable';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
@@ -691,6 +692,13 @@ export default function ManageProjects({
           />
         );
       case ProjectCreationTabs.QUESTIONNAIRE:
+        // The tab list and the flow both skip this when donations are off, but the URL does not, and the backend's questionnaire PUT does not check it either, so a stale bookmark would open a form that really saves.
+        if (projectDetails && !showQuestionnaire)
+          return (
+            <SectionUnavailable
+              onGoToReview={() => handleNext(ProjectCreationTabs.REVIEW)}
+            />
+          );
         return (
           <ProjectQuestionnaire
             handleBack={handleBack}
@@ -709,6 +717,12 @@ export default function ManageProjects({
           />
         );
       case ProjectCreationTabs.DOCUMENTS:
+        if (projectDetails && !showDocuments)
+          return (
+            <SectionUnavailable
+              onGoToReview={() => handleNext(ProjectCreationTabs.REVIEW)}
+            />
+          );
         return (
           <ProjectDocuments
             handleBack={handleBack}
