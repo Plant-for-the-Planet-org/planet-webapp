@@ -88,6 +88,7 @@ export default function ProjectSites({
   } = useForm<ProjectSitesFormData>();
 
   const [isLoadingSites, setIsLoadingSites] = useState<boolean>(true);
+  const [hasLoadedSites, setHasLoadedSites] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -147,6 +148,7 @@ export default function ProjectSites({
       setGeoLocation({ geoLatitude: result.geoLatitude, geoLongitude: result.geoLongitude });
       if (result.sites.length > 0) setShowForm(false);
       setSiteList(result.sites);
+      setHasLoadedSites(true);
     } catch (err) {
       setErrors(handleError(err as APIError));
       router.push(localizedPath('/profile'));
@@ -160,8 +162,9 @@ export default function ProjectSites({
   }, [fetchProjSites]);
 
   useEffect(() => {
+    if (!hasLoadedSites) return;
     onCompletenessChange?.(siteList.length > 0);
-  }, [siteList]);
+  }, [siteList, hasLoadedSites]);
 
   const uploadProjectSite = async (data: ProjectSitesFormData) => {
     if (!geoJson || geoJson.features.length === 0) {

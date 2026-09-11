@@ -86,6 +86,7 @@ export default function ProjectMedia({
   const { colors } = themeProperties.designSystem;
   // local state
   const [uploadedImages, setUploadedImages] = useState<UploadImage[]>([]);
+  const [hasLoadedImages, setHasLoadedImages] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>('');
   // store
@@ -99,6 +100,7 @@ export default function ProjectMedia({
           `/app/profile/projects/${projectGUID}?_scope=images`
         );
         setUploadedImages(result.images);
+        setHasLoadedImages(true);
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -111,8 +113,9 @@ export default function ProjectMedia({
   }, [projectGUID]);
 
   useEffect(() => {
+    if (!hasLoadedImages) return;
     onCompletenessChange?.(uploadedImages.length > 0);
-  }, [uploadedImages]);
+  }, [uploadedImages, hasLoadedImages]);
 
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
