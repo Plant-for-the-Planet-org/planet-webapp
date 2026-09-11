@@ -48,6 +48,11 @@ export function isQuestionnaireFieldRequired(
   return field.optional !== true;
 }
 
+/** True when a value counts as given. An empty string is what an untouched field holds, so it is not a value. */
+export function isValueSet(value: unknown): boolean {
+  return value !== undefined && value !== null && value !== '';
+}
+
 /** Returns true when the given field value counts as "filled" (at least one cell non-empty). */
 export function isFieldFilled(
   field: QuestionnaireFieldSchema,
@@ -58,9 +63,7 @@ export function isFieldFilled(
 
   if (field.type === 'row_list') {
     if (!val || typeof val !== 'object') return false;
-    return Object.values(val as Record<string, unknown>).some(
-      (v) => v !== '' && v !== null && v !== undefined
-    );
+    return Object.values(val as Record<string, unknown>).some(isValueSet);
   }
 
   if (field.type === 'species_list') {
@@ -73,12 +76,12 @@ export function isFieldFilled(
             (key) => (row as Record<string, unknown>)[key]
           )
         : [];
-    const isSet = (v: unknown) => v !== '' && v !== null && v !== undefined;
     // Rows of only blanks are the table's padding, so they are ignored rather than counted as missing.
-    const answered = val.filter((row) => cells(row).some(isSet));
+    const answered = val.filter((row) => cells(row).some(isValueSet));
     // A partly filled row leaves the field incomplete, so the owner is told before it reaches a reviewer.
     return (
-      answered.length > 0 && answered.every((row) => cells(row).every(isSet))
+      answered.length > 0 &&
+      answered.every((row) => cells(row).every(isValueSet))
     );
   }
 
@@ -88,13 +91,11 @@ export function isFieldFilled(
       (r) =>
         typeof r === 'object' &&
         r !== null &&
-        Object.values(r as Record<string, unknown>).some(
-          (v) => v !== '' && v !== null && v !== undefined
-        )
+        Object.values(r as Record<string, unknown>).some(isValueSet)
     );
   }
 
-  return val !== undefined && val !== '' && val !== null;
+  return isValueSet(val);
 }
 
 /** Every required questionnaire field still left blank, in the order it is rendered. */
@@ -250,7 +251,7 @@ export function getDetailedAnalysisFlagged(
       if (!annotations[`metadata.${key}`]) return false;
       const value = metadata[key];
       if (Array.isArray(value)) return value.length > 0;
-      return value !== undefined && value !== null && value !== '';
+      return isValueSet(value);
     })
     .map(([key, labelKey]) => ({ key, label: t(labelKey) }));
 }
