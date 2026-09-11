@@ -10,6 +10,7 @@ import {
   useUserStore,
   useViewStore,
 } from '../../../../stores';
+import { useCurrentPage } from '../../../../hooks/useCurrentPage';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
@@ -28,7 +29,7 @@ const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
   const isImpersonationModeOn = useUserStore(
     (state) => state.isImpersonationModeOn
   );
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
   const isMapMode = useViewStore((state) => state.selectedMode === 'map');
 
   // store: action
