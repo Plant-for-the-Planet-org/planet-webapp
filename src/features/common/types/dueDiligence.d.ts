@@ -6,6 +6,14 @@ export interface DueDiligenceDocument {
   label: string;
   required: boolean;
   note: string | null;
+  /**
+   * What this kind takes, and how big. Optional only to survive a deploy where
+   * the backend has not shipped them yet; the server check is the real gate.
+   */
+  acceptedMimeTypes?: string[];
+  /** The same list as a sentence the backend already writes, e.g. "PDF, PNG or JPG". */
+  acceptedFormats?: string;
+  maxByteSize?: number;
   fulfilled: boolean;
   current: DocumentReference | null;
 }

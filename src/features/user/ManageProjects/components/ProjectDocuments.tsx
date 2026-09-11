@@ -97,15 +97,25 @@ function DocumentRow({
   const onDropRejected = useCallback(
     (rejections: FileRejection[]) => {
       const code = rejections[0]?.errors[0]?.code;
+
+      if (code === 'file-too-large') {
+        setRejection(
+          tManageProjects('documentTooLarge', {
+            maxMB: Math.floor(maxBytes / 1024 / 1024),
+          })
+        );
+        return;
+      }
+
       setRejection(
-        code === 'file-too-large'
-          ? tManageProjects('documentTooLarge', {
-              maxMB: Math.floor(maxBytes / 1024 / 1024),
+        item.acceptedFormats
+          ? tManageProjects('documentWrongTypeWithFormats', {
+              formats: item.acceptedFormats,
             })
           : tManageProjects('documentWrongType')
       );
     },
-    [maxBytes]
+    [maxBytes, item.acceptedFormats]
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -177,6 +187,13 @@ function DocumentRow({
           {item.note && (
             <span style={{ fontSize: '0.85em', color: '#888' }}>
               {item.note}
+            </span>
+          )}
+          {item.acceptedFormats && (
+            <span style={{ fontSize: '0.8em', color: '#aaa' }}>
+              {tManageProjects('acceptedFormats', {
+                formats: item.acceptedFormats,
+              })}
             </span>
           )}
         </div>

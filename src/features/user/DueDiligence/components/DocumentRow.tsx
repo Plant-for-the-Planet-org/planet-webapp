@@ -17,12 +17,14 @@ import { useDocumentDownload } from '../utils/useDocumentDownload';
 import { useErrorHandlingStore } from '../../../../stores';
 
 /**
- * These six kinds all take a PDF of at most 25 MB, and the backend does not
- * publish either rule, so the picker repeats what the kinds say. The upload is
- * still refused server side if this drifts.
+ * Each kind carries its own accepted types and size limit, and those are what
+ * the picker follows. These two are used only until a row arrives that has
+ * them, so an old backend keeps the behaviour it had. Never widen them here:
+ * the server check is the real gate, and a guess made here would be wrong the
+ * next time the policy moves.
  */
-const ACCEPTED_MIME_TYPE = 'application/pdf';
-const MAX_BYTES = 25 * 1024 * 1024;
+const FALLBACK_ACCEPTED_MIME_TYPE = 'application/pdf';
+const FALLBACK_MAX_BYTES = 25 * 1024 * 1024;
 
 /** FileReader gives a data URI; the API takes the base64 payload on its own. */
 function toBase64Payload(dataUrl: string): string {
@@ -35,16 +37,17 @@ interface Props {
   onUploaded: (kind: string, current: DocumentReference) => void;
 }
 
-export default function DocumentRow({
-  item,
-  onUploaded,
-}: Props): ReactElement {
+export default function DocumentRow({ item, onUploaded }: Props): ReactElement {
   const t = useTranslations('Me.dueDiligence');
   const { postApiAuthenticated } = useApi();
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const { openDocument, downloadingKind } = useDocumentDownload();
   const [isUploading, setIsUploading] = useState(false);
   const [rejection, setRejection] = useState<string | null>(null);
+
+  const accept =
+    item.acceptedMimeTypes?.join(',') ?? FALLBACK_ACCEPTED_MIME_TYPE;
+  const maxBytes = item.maxByteSize ?? FALLBACK_MAX_BYTES;
 
   const onDropAccepted = useCallback(
     (acceptedFiles: File[]) => {
@@ -83,19 +86,32 @@ export default function DocumentRow({
   );
 
   /** The picker drops a file that fails its own rules, so the row has to say why. */
-  const onDropRejected = useCallback((rejections: FileRejection[]) => {
-    const code = rejections[0]?.errors[0]?.code;
-    setRejection(
-      code === 'file-too-large'
-        ? t('documentTooLarge', { maxMB: Math.floor(MAX_BYTES / 1024 / 1024) })
-        : t('documentWrongType')
-    );
-  }, []);
+  const onDropRejected = useCallback(
+    (rejections: FileRejection[]) => {
+      const code = rejections[0]?.errors[0]?.code;
+
+      if (code === 'file-too-large') {
+        setRejection(
+          t('documentTooLarge', { maxMB: Math.floor(maxBytes / 1024 / 1024) })
+        );
+        return;
+      }
+
+      setRejection(
+        item.acceptedFormats
+          ? t('documentWrongTypeWithFormats', {
+              formats: item.acceptedFormats,
+            })
+          : t('documentWrongType')
+      );
+    },
+    [maxBytes, item.acceptedFormats]
+  );
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: ACCEPTED_MIME_TYPE,
+    accept,
     multiple: false,
-    maxSize: MAX_BYTES,
+    maxSize: maxBytes,
     disabled: isUploading,
     onDropAccepted,
     onDropRejected,
@@ -116,6 +132,11 @@ export default function DocumentRow({
             </span>
           </div>
           {item.note && <span className={styles.note}>{item.note}</span>}
+          {item.acceptedFormats && (
+            <span className={styles.formats}>
+              {t('acceptedFormats', { formats: item.acceptedFormats })}
+            </span>
+          )}
         </div>
 
         <div {...getRootProps()}>
