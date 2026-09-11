@@ -1,6 +1,6 @@
 import type { Review } from '@planet-sdk/common';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import styles from '../../styles/ProjectReviews.module.scss';
 import DownloadReportIcon from '../../../../../../public/assets/images/icons/projectV2/DownloadReportIcon';
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -17,12 +17,13 @@ interface Props {
 const SingleReview = ({ singleReview }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
+  const locale = useLocale();
 
   const { colors } = themeProperties.designSystem;
 
   const displayDate = (date: string) => {
     return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy', {
-      locale: localeMapForDate[localStorage.getItem('language') || 'en'],
+      locale: localeMapForDate[locale] || localeMapForDate['en'],
     });
   };
 

@@ -5,7 +5,7 @@ import type {
 } from '../../../../common/types/myForest';
 import type { SetState } from '../../../../common/types/common';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Popup } from 'react-map-gl-v7/maplibre';
 import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestMapIcons/RegisteredTreePopupIcon';
 import styles from '../ContributionsMap.module.scss';
@@ -16,6 +16,7 @@ type RegisteredTreesInfoProps = {
 };
 const RegisteredTreesInfo = ({ registrations }: RegisteredTreesInfoProps) => {
   const tProfile = useTranslations('Profile.myForestMap');
+  const locale = useLocale();
   return (
     <>
       {registrations.map((singleRegistration) => {
@@ -32,7 +33,7 @@ const RegisteredTreesInfo = ({ registrations }: RegisteredTreesInfoProps) => {
               {tProfile('registered')}
             </div>
             <div className={styles.registeredTreeDate}>
-              {formatDate(plantDate)}
+              {formatDate(plantDate, locale)}
             </div>
           </>
         );

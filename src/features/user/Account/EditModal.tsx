@@ -65,17 +65,10 @@ export const EditModal = ({
     mode: 'all',
   });
   //local state
-  const [userLang, setUserLang] = useState('en');
   const [disabled, setDisabled] = useState(false);
   //store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
-  useEffect(() => {
-    if (localStorage.getItem('language')) {
-      const userLang = localStorage.getItem('language');
-      if (userLang) setUserLang(userLang);
-    }
-  }, []);
   useEffect(() => {
     setDisabled(false);
   }, [editModalOpen]);
@@ -247,9 +240,7 @@ export const EditModal = ({
                   <LocalizationProvider
                     dateAdapter={AdapterDateFns}
                     adapterLocale={
-                      localeMapForDate[userLang]
-                        ? localeMapForDate[userLang]
-                        : localeMapForDate['en']
+                      localeMapForDate[locale] || localeMapForDate['en']
                     }
                   >
                     <Controller

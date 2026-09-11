@@ -6,7 +6,7 @@ import { getPDFFile } from '../../../../utils/getImageURL';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
@@ -15,9 +15,10 @@ interface Props {
 
 export default function TopProjectReports({ projectReviews }: Props) {
   const t = useTranslations('Common');
+  const locale = useLocale();
   const displayDate = (date: string) => {
     return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy', {
-      locale: localeMapForDate[localStorage.getItem('language') || 'en'],
+      locale: localeMapForDate[locale] || localeMapForDate['en'],
     });
   };
   return (
