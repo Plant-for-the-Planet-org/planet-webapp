@@ -227,7 +227,7 @@ export default function ManageProjects({
     if (!purpose || !project?.acceptDonations) return;
     if (getCachedSchema(purpose, locale)) return; // already in cache
 
-    const prefetch = async () => {
+    const loadSchema = async () => {
       try {
         const schema = await getOrFetchSchema(purpose, locale, () =>
           getApiAuthenticated<QuestionnaireSchema>(
@@ -243,7 +243,7 @@ export default function ManageProjects({
         // silently fail
       }
     };
-    void prefetch();
+    void loadSchema();
   }, []);
 
   const updateFailedFetchSections = (
