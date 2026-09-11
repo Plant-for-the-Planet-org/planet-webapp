@@ -219,9 +219,9 @@ export default function ManageProjects({
     void fetchProjectDetails();
   }, [projectGUID, token]);
 
-  // Kick off schema fetch immediately on mount using the SSR project prop,
-  // in parallel with the projectDetails API call. By the time the user can
-  // navigate to the Questionnaire tab, the schema will already be cached.
+  // Fetch the schema on mount, in parallel with the projectDetails call, so the Questionnaire tab has it cached by the time the user can reach it.
+  // Runs once per mount, which is once per project: nothing navigates from one project's edit page to another's, so this component always remounts for a new project.
+  // If such a link is ever added, this is not the only thing that goes stale — `loadProject` in `pages/sites/[slug]/[locale]/profile/projects/[id].tsx` does not watch the id either, so `project` would stay on the old one.
   useEffect(() => {
     const purpose = project?.purpose;
     if (!purpose || !project?.acceptDonations) return;
@@ -244,7 +244,7 @@ export default function ManageProjects({
       }
     };
     void prefetch();
-  }, []); // intentionally empty — project prop is stable (SSR data)
+  }, []);
 
   const updateFailedFetchSections = (
     key: SectionFetchKey,
