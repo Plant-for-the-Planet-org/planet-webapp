@@ -7,11 +7,14 @@ import StyledForm from '../../../../common/Layout/StyledForm';
 import styles from '../../StepForm.module.scss';
 
 interface SectionUnavailableProps {
+  /** Why this section is not needed. Translated by the caller, because each case has its own reason. */
+  message: string;
   onGoToReview: () => void;
 }
 
 /** Shown when the URL opens a tab this project does not have, so the owner is told why rather than moved without explanation. */
 export default function SectionUnavailable({
+  message,
   onGoToReview,
 }: SectionUnavailableProps): ReactElement {
   const t = useTranslations('ManageProjects');
@@ -20,7 +23,7 @@ export default function SectionUnavailable({
     <CenteredContainer>
       <StyledForm>
         <div className="inputContainer">
-          <Alert severity="info">{t('sectionUnavailable')}</Alert>
+          <Alert severity="info">{message}</Alert>
         </div>
         <div className={styles.buttonsForProjectCreationForm}>
           <Button

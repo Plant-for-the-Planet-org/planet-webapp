@@ -21,6 +21,7 @@ import { useApi } from '../../../../hooks/useApi';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import AnnotationCallout from './microComponent/AnnotationCallout';
+import SectionUnavailable from './microComponent/SectionUnavailable';
 import { getMissingDocuments } from '../utils/completeness';
 import { dedupeInFlight } from '../utils/dedupeInFlight';
 
@@ -314,13 +315,15 @@ export default function ProjectDocuments({
     );
   };
 
-  // A purpose with no document checklist at all (e.g. funds) has nothing to
-  // show here — skip straight past this step rather than render an empty one.
-  useEffect(() => {
-    if (notApplicable) handleNext(ProjectCreationTabs.REVIEW);
-  }, [notApplicable]);
-
-  if (notApplicable) return <></>;
+  // The tab is in the tab list, so say why there is nothing here and let the owner move on.
+  // Navigating away on mount instead would land them on Review without explanation, and Review's Back would bring them straight back.
+  if (notApplicable)
+    return (
+      <SectionUnavailable
+        message={tManageProjects('noDocumentsNeeded')}
+        onGoToReview={() => handleNext(ProjectCreationTabs.REVIEW)}
+      />
+    );
 
   return (
     <CenteredContainer>

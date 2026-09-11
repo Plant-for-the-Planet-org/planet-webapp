@@ -696,6 +696,7 @@ export default function ManageProjects({
         if (projectDetails && !showQuestionnaire)
           return (
             <SectionUnavailable
+              message={t('sectionUnavailable')}
               onGoToReview={() => handleNext(ProjectCreationTabs.REVIEW)}
             />
           );
@@ -720,6 +721,7 @@ export default function ManageProjects({
         if (projectDetails && !showDocuments)
           return (
             <SectionUnavailable
+              message={t('sectionUnavailable')}
               onGoToReview={() => handleNext(ProjectCreationTabs.REVIEW)}
             />
           );

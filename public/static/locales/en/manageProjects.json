@@ -147,6 +147,7 @@
     "uploading": "Uploading…",
     "backToDocuments": "Back to Documents",
     "sectionUnavailable": "This section is only for projects that accept donations. You can turn that on in Basic Details.",
+    "noDocumentsNeeded": "No documents are needed for this project.",
     "goToReview": "Go to Review",
     "backToProjectSpending": "Back to Project Spending",
     "optionalFieldSuffix": "(optional)",
