@@ -2,11 +2,11 @@ import type { APIError } from '@planet-sdk/common';
 
 import { useState } from 'react';
 import { handleError } from '@planet-sdk/common';
-import { useApi } from '../../../../hooks/useApi';
-import { useErrorHandlingStore } from '../../../../stores';
+import { useApi } from './useApi';
+import { useErrorHandlingStore } from '../stores';
 
 /**
- * Opens a due diligence document.
+ * Opens an uploaded document, for the due diligence and project checklists.
  *
  * Not a plain link: these documents are readable only by the organisation that
  * filed them, so the request has to be authenticated, and the path the API

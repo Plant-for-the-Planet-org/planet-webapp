@@ -13,7 +13,7 @@ import { clsx } from 'clsx';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import styles from '../DueDiligence.module.scss';
 import { useApi } from '../../../../hooks/useApi';
-import { useDocumentDownload } from '../utils/useDocumentDownload';
+import { useDocumentDownload } from '../../../../hooks/useDocumentDownload';
 import { useErrorHandlingStore } from '../../../../stores';
 
 /**

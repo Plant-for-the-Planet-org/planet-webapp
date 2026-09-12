@@ -18,6 +18,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
+import { useDocumentDownload } from '../../../../hooks/useDocumentDownload';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import AnnotationCallout from './microComponent/AnnotationCallout';
@@ -52,6 +53,8 @@ function DocumentRow({
 }): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const { postApiAuthenticated } = useApi();
+  const { openDocument, downloadingKind } = useDocumentDownload();
+  const current = item.current;
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const [isUploading, setIsUploading] = useState(false);
   const [rejection, setRejection] = useState<string | null>(null);
@@ -227,16 +230,23 @@ function DocumentRow({
         </span>
       )}
 
-      {item.current ? (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={item.current.url}
+      {current ? (
+        <button
+          type="button"
+          onClick={() => openDocument(item.kind, current.url)}
+          disabled={downloadingKind === item.kind}
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: 6,
             minWidth: 0,
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            font: 'inherit',
+            color: 'inherit',
+            cursor: 'pointer',
+            textDecoration: 'underline',
           }}
         >
           <PDFRed />
@@ -247,9 +257,9 @@ function DocumentRow({
               whiteSpace: 'nowrap',
             }}
           >
-            {item.current.filename}
+            {current.filename}
           </span>
-        </a>
+        </button>
       ) : (
         <span style={{ color: '#aaa', fontSize: '0.9em' }}>
           {tManageProjects('documentMissing')}
