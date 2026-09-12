@@ -11,6 +11,7 @@ import {
   Autocomplete,
   Button,
   IconButton,
+  InputAdornment,
   MenuItem,
   Table,
   TableBody,
@@ -199,6 +200,11 @@ export default function SpeciesListTable({
             <TableRow key={rowIndex}>
               {columns.map((column) => {
                 const cell = row[column.key] ?? '';
+                // The cell is not a react-hook-form field, so the column's 0 to 100 bound has nothing to enforce it. Checked here so a wrong value is visible rather than silent until the backend rejects the save.
+                const outOfRange =
+                  column.type === 'percentage' &&
+                  cell !== '' &&
+                  (Number(cell) < 0 || Number(cell) > 100);
                 return (
                   <TableCell key={column.key}>
                     {column.type === 'species' ? (
@@ -235,6 +241,26 @@ export default function SpeciesListTable({
                         disabled={disabled}
                         onChange={(event) =>
                           updateCell(rowIndex, column.key, event.target.value)
+                        }
+                        error={outOfRange}
+                        helperText={
+                          outOfRange ? t('percentageRangeShort') : undefined
+                        }
+                        inputProps={
+                          column.type === 'percentage'
+                            ? { min: 0, max: 100, step: 'any' }
+                            : undefined
+                        }
+                        InputProps={
+                          column.type === 'percentage'
+                            ? {
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    %
+                                  </InputAdornment>
+                                ),
+                              }
+                            : undefined
                         }
                       />
                     )}

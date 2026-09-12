@@ -10,7 +10,7 @@ export const listSpeciesColumns: QuestionnaireFieldColumn[] = [
   {
     key: 'percentage',
     label: 'Approximate % of total trees planted',
-    type: 'number',
+    type: 'percentage',
   },
   {
     key: 'origin',

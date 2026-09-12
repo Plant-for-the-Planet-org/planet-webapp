@@ -8,6 +8,7 @@ import {
   getDetailedAnalysisFlagged,
   getQuestionnaireFlagged,
   getQuestionnaireMissing,
+  isFieldFilled,
   isQuestionnaireFieldRequired,
 } from './completeness';
 
@@ -19,6 +20,33 @@ const textField = (
   description: null,
   classifications: null,
   ...overrides,
+});
+
+const percentageField = (
+  overrides: Partial<QuestionnaireFieldSchema> = {}
+): QuestionnaireFieldSchema => ({
+  type: 'percentage',
+  label: 'Survival Rate',
+  description: null,
+  classifications: null,
+  ...overrides,
+});
+
+describe('isFieldFilled for a percentage', () => {
+  // A survival rate of nought is a real answer, so it must not read as unanswered.
+  it('counts zero as answered', () => {
+    expect(isFieldFilled(percentageField(), 0)).toBe(true);
+  });
+
+  it('counts a value in range as answered', () => {
+    expect(isFieldFilled(percentageField(), 80)).toBe(true);
+  });
+
+  it('counts an untouched field as unanswered', () => {
+    expect(isFieldFilled(percentageField(), '')).toBe(false);
+    expect(isFieldFilled(percentageField(), null)).toBe(false);
+    expect(isFieldFilled(percentageField(), undefined)).toBe(false);
+  });
 });
 
 describe('isQuestionnaireFieldRequired', () => {
@@ -105,9 +133,9 @@ describe('getQuestionnaireFlagged', () => {
   ];
 
   it('is empty with no annotations', () => {
-    expect(
-      getQuestionnaireFlagged(fields, { projectGoals: 'done' })
-    ).toEqual([]);
+    expect(getQuestionnaireFlagged(fields, { projectGoals: 'done' })).toEqual(
+      []
+    );
   });
 
   it('lists an answered field a reviewer commented on', () => {
