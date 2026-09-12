@@ -416,7 +416,7 @@ export default function DetailedAnalysis({
               ecosystem: metadata.ecosystem || '',
               firstTreePlanted: metadata.firstTreePlanted
                 ? new Date(metadata.firstTreePlanted)
-                : new Date(),
+                : null,
               plantingDensity: metadata.plantingDensity?.toString() || '',
               maxPlantingDensity: metadata.maxPlantingDensity?.toString() || '',
               employeesCount: metadata.employeesCount?.toString() || '',
