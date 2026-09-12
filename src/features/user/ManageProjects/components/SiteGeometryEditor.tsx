@@ -137,6 +137,12 @@ export default function SiteGeometryEditor({
   );
 
   // Handle click to add point
+  // coordinatesRef is the copy handleDoubleClick reads, so everything that discards the polygon clears both here rather than reaching for the setter.
+  const clearCoordinates = useCallback(() => {
+    setCoordinates([]);
+    coordinatesRef.current = [];
+  }, []);
+
   const handleClick = useCallback(
     (e: MapMouseEvent) => {
       setErrorMessage(null);
@@ -157,11 +163,12 @@ export default function SiteGeometryEditor({
   // update coordinatesRef synchronously inside the setState updater, so by
   // the time handleDoubleClick runs the ref already reflects those 2 points.
   const handleDoubleClick = useCallback(() => {
+    // Only a double-click while drawing closes a polygon. Without this the map's own zoom gesture would complete one from whatever the ref still holds.
+    if (!isDrawing) return;
     const coords = coordinatesRef.current;
     if (coords.length < 4) {
       setErrorMessage(tManageProjects('errors.polygon.minimumPoints'));
-      setCoordinates([]);
-      coordinatesRef.current = [];
+      clearCoordinates();
       return;
     }
     const closed = [...coords, coords[0]];
@@ -187,9 +194,8 @@ export default function SiteGeometryEditor({
       };
     });
 
-    setCoordinates([]);
-    coordinatesRef.current = [];
-  }, [tManageProjects]);
+    clearCoordinates();
+  }, [isDrawing, clearCoordinates, tManageProjects]);
 
   useEffect(() => {
     async function loadMapStyle() {
@@ -262,7 +268,7 @@ export default function SiteGeometryEditor({
           isDrawing={isDrawing}
           setIsDrawing={setIsDrawing}
           coordinates={coordinates}
-          setCoordinates={setCoordinates}
+          clearCoordinates={clearCoordinates}
           isSatelliteMode={isSatelliteMode}
           setIsSatelliteMode={setIsSatelliteMode}
         />
