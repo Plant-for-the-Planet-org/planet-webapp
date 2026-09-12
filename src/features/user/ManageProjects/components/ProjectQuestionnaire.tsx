@@ -126,8 +126,11 @@ function buildDefaults(
       // Blank padding rows are added at render time, so an unanswered field
       // stays an empty array and never persists placeholder rows.
       defaults[name] = Array.isArray(val) ? val : [];
-    } else {
+    } else if (field.type === 'text' || field.type === 'string') {
       defaults[name] = typeof val === 'string' ? val : '';
+    } else {
+      // A type this form has no branch for. Keeping the stored value means a save round-trips it instead of erasing it, which is what the old catch-all did.
+      defaults[name] = val ?? '';
     }
   }
   return defaults;
@@ -624,7 +627,20 @@ export default function ProjectQuestionnaire({
       );
     }
 
-    // ── text / string / default ───────────────────────────────────────────
+    // ── anything this form has no branch for ──────────────────────────────
+    if (field.type !== 'text' && field.type !== 'string') {
+      return (
+        <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+            {labelText}
+          </FormLabel>
+          <Alert severity="warning">{t('unsupportedFieldType')}</Alert>
+          {annotation && <AnnotationCallout text={annotation} />}
+        </div>
+      );
+    }
+
+    // ── text / string ─────────────────────────────────────────────────────
     return (
       <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
         <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>

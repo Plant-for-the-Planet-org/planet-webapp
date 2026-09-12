@@ -154,6 +154,7 @@
     "requiredField": "This field is required",
     "percentageRange": "Enter a percentage between 0 and 100",
     "percentageRangeShort": "Should be between 0-100",
+    "unsupportedFieldType": "This question cannot be shown here yet. Please let us know at support@plant-for-the-planet.org",
     "incompleteFieldsBanner": "You have not filled in all fields. You can come back later to provide the missing information.",
     "incompleteMedia": "Project Media is incomplete. Please upload at least one image before submitting.",
     "incompleteSites": "Project Sites is incomplete. Please add at least one site before submitting.",
