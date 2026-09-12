@@ -63,5 +63,6 @@ export interface DueDiligenceFieldsResponse {
 }
 
 export interface DueDiligenceSubmitResponse {
-  submittedAt: string | null;
+  /** Always set. A submission that does not go through rejects rather than returning null. */
+  submittedAt: string;
 }

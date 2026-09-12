@@ -265,7 +265,7 @@ function SubmitForReview({
           <Button
             onClick={() => submitForReview()}
             variant="contained"
-            disabled={!canSubmit}
+            disabled={!canSubmit || isUploadingData}
           >
             {isUploadingData ? (
               <div className={styles.spinner}></div>
@@ -469,7 +469,7 @@ function SubmitForReview({
           <Button
             onClick={() => submitForReview()}
             variant="contained"
-            disabled={!canSubmit}
+            disabled={!canSubmit || isUploadingData}
           >
             {isUploadingData ? (
               <div className={styles.spinner}></div>

@@ -433,7 +433,7 @@ export interface SubmitForReviewProps {
   projectGUID: string;
   submitForReview: () => Promise<void>;
   handleBack: (arg: number) => void;
-  isUploadingData: Boolean;
+  isUploadingData: boolean;
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   handlePublishChange: (arg: boolean) => Promise<void>;
   isLocked: boolean;
