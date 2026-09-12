@@ -1,14 +1,20 @@
 import type { ReactElement, SyntheticEvent } from 'react';
 import type { TabItem } from './TabbedViewTypes';
 
-import { Tab, Tabs } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import CompletionStatus from './CompletionStatus';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 
 interface TabStepsProps {
   step: number | string | false;
   tabItems: TabItem[];
+  /**
+   * Show a per-tab completion disc.
+   * Off by default: a tab set that does not track completeness would otherwise get a grey disc on every tab, because an absent `completionStatus` is indistinguishable from an unknown one.
+   */
+  showCompletionStatus?: boolean;
 }
 
 const StyledTabs = styled(Tabs)({
@@ -33,6 +39,7 @@ const StyledTab = styled(Tab)({
 export default function TabSteps({
   step = 0,
   tabItems = [],
+  showCompletionStatus = false,
 }: TabStepsProps): ReactElement | null {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -49,10 +56,22 @@ export default function TabSteps({
 
   const renderTabs = () => {
     return tabItems.map((tabItem, index) => {
+      const label = showCompletionStatus ? (
+        <Box
+          component="span"
+          sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+        >
+          {tabItem.label}
+          <CompletionStatus status={tabItem.completionStatus} />
+        </Box>
+      ) : (
+        tabItem.label
+      );
+
       return (
         <StyledTab
           key={index}
-          label={tabItem.label}
+          label={label}
           data-link={tabItem.link}
           disabled={tabItem.disabled}
           value={tabItem.step}

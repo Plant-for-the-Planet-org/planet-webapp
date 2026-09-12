@@ -1,0 +1,797 @@
+import type { ReactElement } from 'react';
+import type { APIError } from '@planet-sdk/common';
+import type {
+  QuestionnaireProps,
+  QuestionnaireSchema,
+  QuestionnaireFieldSchema,
+  QuestionnaireFieldType,
+  ExtendedProfileProjectProperties,
+  ExtendedProfileProjectPropertiesTrees,
+  QuestionnaireSpeciesRow,
+} from '../../../common/types/project';
+
+import { useEffect, useMemo, useState } from 'react';
+import { useForm, Controller, useWatch } from 'react-hook-form';
+import {
+  Alert,
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  FormLabel,
+  InputAdornment,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+} from '@mui/material';
+import { useLocale, useTranslations } from 'next-intl';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
+import styles from '../StepForm.module.scss';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
+import { ProjectCreationTabs } from '..';
+import { useApi } from '../../../../hooks/useApi';
+import { parseApiError } from '../../../../utils/parseApiError';
+import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
+import AnnotationCallout from './microComponent/AnnotationCallout';
+import MissingFieldsSummary from './microComponent/MissingFieldsSummary';
+import SpeciesListTable from './microComponent/SpeciesListTable';
+import FieldDescription from './microComponent/FieldDescription';
+import {
+  getCachedSchema,
+  getOrFetchSchema,
+} from '../utils/questionnaireSchemaCache';
+import useFieldAnchorScroll from '../utils/useFieldAnchorScroll';
+import {
+  fieldAnchorId,
+  getQuestionnaireFlagged,
+  getQuestionnaireMissing,
+  getVisibleQuestionnaireFields,
+  isClassificationUnsupported,
+  isQuestionnaireFieldRequired,
+  isValueSet,
+} from '../utils/completeness';
+
+// Widened to support nested row_list / matrix values
+type QuestionnaireFormData = Record<string, unknown>;
+
+type QuestionnaireState =
+  | 'loading'
+  | 'loadFailed'
+  | 'classificationUnsupported'
+  | 'noQuestions'
+  | 'ready';
+
+function humanizeLabel(value: string): string {
+  return value.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+}
+
+/** A percentage is a number that carries its own 0 to 100 bound, so it renders and loads like one. */
+function isNumericField(type: QuestionnaireFieldType): boolean {
+  return type === 'number' || type === 'integer' || type === 'percentage';
+}
+
+function buildDefaults(
+  visibleFields: [string, QuestionnaireFieldSchema][],
+  existing: Record<string, unknown> | null | undefined
+): QuestionnaireFormData {
+  const defaults: QuestionnaireFormData = {};
+  for (const [name, field] of visibleFields) {
+    const val = existing?.[name];
+
+    if (field.type === 'multi_choice') {
+      defaults[name] = Array.isArray(val) ? (val as string[]) : [];
+      // Restore companion "other" text if the field includes that choice
+      if (field.choices?.includes('other')) {
+        const otherKey = `${name}__other`;
+        const otherVal = existing?.[otherKey];
+        defaults[otherKey] = typeof otherVal === 'string' ? otherVal : '';
+      }
+    } else if (isNumericField(field.type)) {
+      // Number('') is 0, so an untouched field saved as '' would come back as a real answer of zero.
+      defaults[name] = isValueSet(val) ? Number(val) : '';
+    } else if (field.type === 'row_list' && field.rows) {
+      const existing_row = val as Record<string, unknown> | undefined;
+      const rowDefaults: Record<string, string | number> = {};
+      for (const row of field.rows) {
+        const v = existing_row?.[row.key];
+        rowDefaults[row.key] =
+          typeof v === 'number' ? v : typeof v === 'string' ? v : '';
+      }
+      defaults[name] = rowDefaults;
+    } else if (field.type === 'matrix' && field.rows && field.columns) {
+      const existingMatrix = val as
+        | Record<string, Record<string, unknown>>
+        | undefined;
+      const matrixDefaults: Record<
+        string,
+        Record<string, string | number>
+      > = {};
+      for (const row of field.rows) {
+        matrixDefaults[row.key] = {};
+        for (const col of field.columns) {
+          const v = existingMatrix?.[row.key]?.[col.key];
+          matrixDefaults[row.key][col.key] =
+            typeof v === 'number' ? v : typeof v === 'string' ? v : '';
+        }
+      }
+      defaults[name] = matrixDefaults;
+    } else if (field.type === 'species_list') {
+      // Blank padding rows are added at render time, so an unanswered field
+      // stays an empty array and never persists placeholder rows.
+      defaults[name] = Array.isArray(val) ? val : [];
+    } else if (field.type === 'text' || field.type === 'string') {
+      defaults[name] = typeof val === 'string' ? val : '';
+    } else {
+      // A type this form has no branch for. Keeping the stored value means a save round-trips it instead of erasing it, which is what the old catch-all did.
+      defaults[name] = val ?? '';
+    }
+  }
+  return defaults;
+}
+
+/** Merge adjacent columns that share the same group label into colspan spans. */
+function columnGroups(
+  columns: { key: string; label: string; group?: string }[]
+): { label: string; count: number }[] {
+  const groups: { label: string; count: number }[] = [];
+  for (const col of columns) {
+    const g = col.group ?? '';
+    const last = groups[groups.length - 1];
+    if (last && last.label === g) {
+      last.count++;
+    } else {
+      groups.push({ label: g, count: 1 });
+    }
+  }
+  return groups;
+}
+
+const tableCellSx = {
+  border: '1px solid',
+  borderColor: 'divider',
+  padding: '6px 10px',
+};
+
+export default function ProjectQuestionnaire({
+  handleBack,
+  handleNext,
+  projectGUID,
+  projectDetails,
+  setProjectDetails,
+  isLocked,
+  onCompletenessChange,
+  initialSchema = null,
+  purpose,
+}: QuestionnaireProps): ReactElement {
+  const t = useTranslations('ManageProjects');
+  const locale = useLocale();
+  const { getApiAuthenticated, putApiAuthenticated } = useApi();
+  const setErrors = useErrorHandlingStore((state) => state.setErrors);
+
+  // Lazy initializer: check initialSchema then module cache synchronously,
+  // so the schema is available on the very first render if the parent pre-fetched it.
+  const [schema, setSchema] = useState<QuestionnaireSchema | null>(
+    () => initialSchema ?? getCachedSchema(purpose, locale) ?? null
+  );
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // Set when the schema request fails, so the form can show a retryable error
+  // instead of spinning forever on a null schema.
+  const [schemaFailed, setSchemaFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const classification =
+    (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
+      ?.classification ?? '';
+
+  const visibleFields = useMemo((): [string, QuestionnaireFieldSchema][] => {
+    if (!schema) return [];
+    return getVisibleQuestionnaireFields(schema, classification);
+  }, [schema, classification]);
+
+  const {
+    control,
+    reset,
+    trigger,
+    getValues,
+    formState: { errors },
+  } = useForm<QuestionnaireFormData>({
+    mode: 'onBlur',
+    defaultValues: {},
+  });
+
+  const watchedValues = useWatch({ control });
+
+  // Read here rather than at render time because annotations also decide
+  // requiredness: an optional field a reviewer asked about has to be answered.
+  const questionnaireAnnotations = useMemo(
+    () =>
+      projectDetails?.verificationStatus === 'revision_requested'
+        ? projectDetails.revisionRequest?.annotations ?? {}
+        : {},
+    [projectDetails]
+  );
+
+  const missingFields = useMemo(
+    () =>
+      getQuestionnaireMissing(
+        visibleFields,
+        watchedValues as Record<string, unknown>,
+        questionnaireAnnotations
+      ),
+    [visibleFields, watchedValues, questionnaireAnnotations]
+  );
+
+  // Answered fields a reviewer commented on. Purely informational, so it
+  // never feeds into onCompletenessChange and never blocks resubmission.
+  const flaggedFields = useMemo(
+    () =>
+      getQuestionnaireFlagged(
+        visibleFields,
+        watchedValues as Record<string, unknown>,
+        questionnaireAnnotations
+      ),
+    [visibleFields, watchedValues, questionnaireAnnotations]
+  );
+
+  // Keyed on the field names so the parent hears about a real change, not
+  // about every keystroke.
+  const missingKey = missingFields.map((field) => field.key).join('|');
+
+  // Sync if parent provides (or updates) the schema after mount
+  useEffect(() => {
+    if (initialSchema !== null) {
+      setSchema(initialSchema);
+    }
+  }, [initialSchema]);
+
+  // Fetch only when schema is still missing (no initialSchema, no cache hit)
+  useEffect(() => {
+    if (schema !== null) return;
+
+    const fetchSchema = async () => {
+      try {
+        const result = await getOrFetchSchema(purpose, locale, () =>
+          getApiAuthenticated<QuestionnaireSchema>(
+            `/app/projects/questionnaire-schema/${purpose}`,
+            {
+              additionalHeaders: { Accept: 'application/json' },
+              queryParams: { locale },
+            }
+          )
+        );
+        setSchema(result);
+        setSchemaFailed(false);
+      } catch (err) {
+        setSchemaFailed(true);
+        setErrors(parseApiError(err as APIError));
+      }
+    };
+    void fetchSchema();
+  }, [purpose, retryCount]);
+
+  useEffect(() => {
+    if (visibleFields.length === 0) return;
+    const existing =
+      (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
+        ?.questionnaire ?? null;
+    reset(buildDefaults(visibleFields, existing));
+    // Deliberately no trigger() here. Validating on load painted every blank
+    // required field red before the user had touched anything. The summary at
+    // the top carries that message instead, and fields turn red on blur or on
+    // save.
+  }, [schema, projectDetails]);
+
+  useEffect(() => {
+    if (visibleFields.length === 0) return;
+    onCompletenessChange(missingFields);
+  }, [missingKey, visibleFields.length]);
+
+  const onSubmit = async (data: QuestionnaireFormData) => {
+    setIsSubmitting(true);
+    try {
+      const result = await putApiAuthenticated<
+        ExtendedProfileProjectProperties,
+        Record<string, unknown>
+      >(`/app/projects/${projectGUID}/questionnaire`, {
+        payload: data as Record<string, unknown>,
+      });
+      setProjectDetails(result);
+      // Documents shares the Questionnaire's own visibility gate (both
+      // require acceptDonations), so this step is never reached without it.
+      handleNext(ProjectCreationTabs.DOCUMENTS);
+    } catch (err) {
+      setErrors(parseApiError(err as APIError));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  function renderField(
+    name: string,
+    field: QuestionnaireFieldSchema
+  ): ReactElement {
+    const annotation = questionnaireAnnotations[`questionnaire.${name}`];
+    const isRequired = isQuestionnaireFieldRequired(field, annotation);
+    const hasError = Boolean(errors[name]);
+    const fieldClassName = `${styles.formFieldLarge} ${styles.questionnaireField}`;
+    // The schema carries the hint as a flag, so the suffix is translated here
+    // rather than baked into the label the API returns. An annotated optional
+    // field drops the hint, because the reviewer has now asked for it.
+    const labelText = isRequired
+      ? field.label
+      : `${field.label} ${t('optionalFieldSuffix')}`;
+
+    // ── multi_choice ─────────────────────────────────────────────────────
+    if (field.type === 'multi_choice' && field.choices) {
+      return (
+        <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+          <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
+            {labelText}
+          </FormLabel>
+          {field.description && (
+            <FieldDescription>{field.description}</FieldDescription>
+          )}
+          <Controller
+            name={name}
+            control={control}
+            rules={{
+              validate: (v) =>
+                !isRequired || (Array.isArray(v) ? v.length > 0 : !!v),
+            }}
+            render={({ field: { value, onChange } }) => {
+              const current = Array.isArray(value) ? (value as string[]) : [];
+              return (
+                <FormGroup>
+                  {field.choices!.map((choice) => (
+                    <FormControlLabel
+                      key={choice}
+                      label={humanizeLabel(choice)}
+                      control={
+                        <Checkbox
+                          checked={current.includes(choice)}
+                          onChange={(e) => {
+                            onChange(
+                              e.target.checked
+                                ? [...current, choice]
+                                : current.filter((v) => v !== choice)
+                            );
+                          }}
+                        />
+                      }
+                    />
+                  ))}
+                </FormGroup>
+              );
+            }}
+          />
+          {field.choices!.includes('other') &&
+            Array.isArray(watchedValues[name]) &&
+            (watchedValues[name] as string[]).includes('other') && (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              <Controller
+                name={`${name}__other` as any}
+                control={control}
+                shouldUnregister
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextField
+                    label="Please specify"
+                    fullWidth
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={(value as string) ?? ''}
+                    sx={{ mt: 1 }}
+                  />
+                )}
+              />
+            )}
+          {hasError && (
+            <FormHelperText error>{t('requiredField')}</FormHelperText>
+          )}
+          {annotation && <AnnotationCallout text={annotation} />}
+        </div>
+      );
+    }
+
+    // ── number / integer / percentage ─────────────────────────────────────
+    if (isNumericField(field.type)) {
+      const isPercentage = field.type === 'percentage';
+      // The backend rejects a percentage outside 0 to 100, and reports it as a
+      // banner rather than on the field, so the bound is enforced here too.
+      const outOfRange =
+        errors[name]?.type === 'min' || errors[name]?.type === 'max';
+      return (
+        <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+          <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
+            {labelText}
+          </FormLabel>
+          {field.description && (
+            <FieldDescription>{field.description}</FieldDescription>
+          )}
+          <Controller
+            name={name}
+            control={control}
+            rules={{
+              required: isRequired,
+              ...(isPercentage ? { min: 0, max: 100 } : {}),
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextField
+                type="number"
+                fullWidth
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={hasError}
+                inputProps={
+                  isPercentage ? { min: 0, max: 100, step: 'any' } : undefined
+                }
+                InputProps={
+                  isPercentage
+                    ? {
+                        endAdornment: (
+                          <InputAdornment position="end">%</InputAdornment>
+                        ),
+                      }
+                    : undefined
+                }
+                helperText={
+                  outOfRange
+                    ? t('percentageRange')
+                    : hasError
+                    ? t('requiredField')
+                    : undefined
+                }
+              />
+            )}
+          />
+          {annotation && <AnnotationCallout text={annotation} />}
+        </div>
+      );
+    }
+
+    // ── row_list ──────────────────────────────────────────────────────────
+    if (field.type === 'row_list' && field.rows) {
+      return (
+        <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+          <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
+            {labelText}
+          </FormLabel>
+          {field.description && (
+            <FieldDescription>{field.description}</FieldDescription>
+          )}
+          <Table
+            size="small"
+            sx={{ '& td, & th': tableCellSx, tableLayout: 'auto' }}
+          >
+            <TableBody>
+              {field.rows.map((row) => (
+                <TableRow key={row.key}>
+                  <TableCell sx={{ fontSize: '0.875rem' }}>
+                    {row.label}
+                  </TableCell>
+                  <TableCell sx={{ width: 140 }}>
+                    <Controller
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      name={`${name}.${row.key}` as any}
+                      control={control}
+                      render={({ field: { onChange, onBlur, value } }) => (
+                        <TextField
+                          type="number"
+                          size="small"
+                          fullWidth
+                          onChange={onChange}
+                          onBlur={onBlur}
+                          value={(value as string | number) ?? ''}
+                          inputProps={{ min: 0 }}
+                        />
+                      )}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          {annotation && <AnnotationCallout text={annotation} />}
+        </div>
+      );
+    }
+
+    // ── species_list ──────────────────────────────────────────────────────
+    if (field.type === 'species_list' && field.columns) {
+      const columns = field.columns;
+      return (
+        <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+          <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
+            {labelText}
+          </FormLabel>
+          {field.description && (
+            <FieldDescription>{field.description}</FieldDescription>
+          )}
+          <Controller
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            name={name as any}
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <SpeciesListTable
+                columns={columns}
+                minRows={field.minRows ?? 5}
+                value={(value as QuestionnaireSpeciesRow[]) ?? []}
+                onChange={onChange}
+                disabled={isLocked}
+              />
+            )}
+          />
+          {annotation && <AnnotationCallout text={annotation} />}
+        </div>
+      );
+    }
+
+    // ── matrix ────────────────────────────────────────────────────────────
+    if (field.type === 'matrix' && field.rows && field.columns) {
+      const groups = columnGroups(field.columns);
+      const hasGroups = groups.some((g) => g.label !== '');
+
+      return (
+        <div
+          key={name}
+          id={fieldAnchorId(name)}
+          className={fieldClassName}
+          style={{ overflowX: 'auto' }}
+        >
+          <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
+            {labelText}
+          </FormLabel>
+          {field.description && (
+            <FieldDescription>{field.description}</FieldDescription>
+          )}
+          <Table
+            size="small"
+            sx={{ '& td, & th': tableCellSx, tableLayout: 'auto' }}
+          >
+            <TableHead>
+              {hasGroups && (
+                <TableRow>
+                  <TableCell />
+                  {groups.map((g, i) => (
+                    <TableCell
+                      key={i}
+                      colSpan={g.count}
+                      align="center"
+                      sx={{ fontWeight: 600, fontSize: '0.8rem' }}
+                    >
+                      {g.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              )}
+              <TableRow>
+                <TableCell />
+                {field.columns.map((col) => (
+                  <TableCell
+                    key={col.key}
+                    align="center"
+                    sx={{ fontWeight: 500, fontSize: '0.8rem', minWidth: 90 }}
+                  >
+                    {col.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {field.rows.map((row) => (
+                <TableRow key={row.key}>
+                  <TableCell
+                    sx={{
+                      fontWeight: 500,
+                      whiteSpace: 'nowrap',
+                      fontSize: '0.875rem',
+                    }}
+                  >
+                    {row.label}
+                  </TableCell>
+                  {field.columns!.map((col) => (
+                    <TableCell key={col.key} align="center">
+                      <Controller
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        name={`${name}.${row.key}.${col.key}` as any}
+                        control={control}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                          <TextField
+                            type="number"
+                            size="small"
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            value={(value as string | number) ?? ''}
+                            inputProps={{
+                              min: 0,
+                              style: { textAlign: 'center', width: 60 },
+                            }}
+                          />
+                        )}
+                      />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          {annotation && <AnnotationCallout text={annotation} />}
+        </div>
+      );
+    }
+
+    // ── anything this form has no branch for ──────────────────────────────
+    if (field.type !== 'text' && field.type !== 'string') {
+      return (
+        <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+          <FormLabel component="legend" sx={{ mb: 0.5 }}>
+            {labelText}
+          </FormLabel>
+          <Alert severity="warning">{t('unsupportedFieldType')}</Alert>
+          {annotation && <AnnotationCallout text={annotation} />}
+        </div>
+      );
+    }
+
+    // ── text / string ─────────────────────────────────────────────────────
+    return (
+      <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
+        <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
+          {labelText}
+        </FormLabel>
+        {field.description && (
+          <FieldDescription>{field.description}</FieldDescription>
+        )}
+        <Controller
+          name={name}
+          control={control}
+          rules={{ required: isRequired }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              multiline
+              minRows={3}
+              fullWidth
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={hasError}
+              helperText={hasError ? t('requiredField') : undefined}
+            />
+          )}
+        />
+        {annotation && <AnnotationCallout text={annotation} />}
+      </div>
+    );
+  }
+
+  // Derived straight from the data, so no intermediate flag can say "ready" before the data arrives.
+  function getState(): QuestionnaireState {
+    if (schemaFailed) return 'loadFailed';
+    if (schema === null || projectDetails === null) return 'loading';
+    if (isClassificationUnsupported(schema, visibleFields))
+      return 'classificationUnsupported';
+    if (visibleFields.length === 0) return 'noQuestions';
+    return 'ready';
+  }
+
+  const state = getState();
+
+  useFieldAnchorScroll(state === 'ready');
+
+  /** The questions, or the reason there are none. */
+  function renderQuestions(): ReactElement {
+    switch (state) {
+      case 'loading':
+        return <CircularProgress size={32} />;
+      case 'loadFailed':
+        return (
+          <Alert
+            severity="error"
+            action={
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setSchemaFailed(false);
+                  setRetryCount((count) => count + 1);
+                }}
+              >
+                {t('tryAgain')}
+              </Button>
+            }
+          >
+            {t('questionnaireLoadFailed')}
+          </Alert>
+        );
+      case 'classificationUnsupported':
+        return <Alert severity="error">{t('questionnaireUnavailable')}</Alert>;
+      case 'noQuestions':
+        return <p>{t('noQuestionnaire')}</p>;
+      case 'ready':
+        return (
+          <>
+            <p>{t('questionnaireDescription')}</p>
+            {visibleFields.map(([name, field]) => renderField(name, field))}
+          </>
+        );
+    }
+  }
+
+  return (
+    <CenteredContainer>
+      <StyledForm>
+        {projectDetails && (
+          <ProjectLockedBanner
+            verificationStatus={projectDetails.verificationStatus}
+          />
+        )}
+        {state === 'ready' &&
+          !isLocked &&
+          (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
+            ?.questionnaire != null && (
+            <>
+              <MissingFieldsSummary
+                fields={missingFields}
+                title={t('missingFieldsCount', {
+                  count: missingFields.length,
+                })}
+              />
+              <MissingFieldsSummary
+                fields={flaggedFields}
+                title={t('flaggedFieldsCount', {
+                  count: flaggedFields.length,
+                })}
+                severity="info"
+              />
+            </>
+          )}
+
+        <div className="inputContainer">{renderQuestions()}</div>
+
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            variant="outlined"
+            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            className="formButton"
+            startIcon={<BackArrow />}
+          >
+            <p>{t('backToProjectSpending')}</p>
+          </Button>
+
+          {!isLocked && (
+            <>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  trigger();
+                  void onSubmit(getValues());
+                }}
+                className="formButton"
+              >
+                {isSubmitting ? (
+                  <div className={styles.spinner} />
+                ) : (
+                  t('saveAndContinue')
+                )}
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => handleNext(ProjectCreationTabs.DOCUMENTS)}
+                className="formButton"
+              >
+                {t('skip')}
+              </Button>
+            </>
+          )}
+        </div>
+      </StyledForm>
+    </CenteredContainer>
+  );
+}

@@ -1,0 +1,266 @@
+import type {
+  DocumentChecklistItem,
+  ExtendedProfileProjectProperties,
+  MissingField,
+  QuestionnaireFieldSchema,
+  QuestionnaireSchema,
+} from '../../../common/types/project';
+
+/** The questionnaire fields that apply to a project, given its classification. */
+export function getVisibleQuestionnaireFields(
+  schema: QuestionnaireSchema,
+  classification: string
+): [string, QuestionnaireFieldSchema][] {
+  return Object.entries(schema.fields).filter(
+    ([, field]) =>
+      field.classifications === null ||
+      field.classifications.includes(classification)
+  );
+}
+
+/**
+ * A field with no `classifications` applies to every project, so an empty result means every field is scoped and none matched this project's classification.
+ * That is a mismatch to report, not a questionnaire with nothing to ask, and the caller must not read it as complete.
+ */
+export function isClassificationUnsupported(
+  schema: QuestionnaireSchema,
+  visibleFields: [string, QuestionnaireFieldSchema][]
+): boolean {
+  return visibleFields.length === 0 && Object.keys(schema.fields).length > 0;
+}
+
+/** DOM id put on a form field so a jump link can target it. */
+export function fieldAnchorId(key: string): string {
+  return `field-${key}`;
+}
+
+/**
+ * Optional fields exist so the user can supply extra data when a reviewer asks
+ * for it. The schema marks them with `optional`. An annotation overrides that:
+ * once a reviewer has asked for the value, it has to be given before the
+ * project can go back for review.
+ */
+export function isQuestionnaireFieldRequired(
+  field: QuestionnaireFieldSchema,
+  annotation?: string
+): boolean {
+  if (annotation) return true;
+  return field.optional !== true;
+}
+
+/** True when a value counts as given. An empty string is what an untouched field holds, so it is not a value. */
+export function isValueSet(value: unknown): boolean {
+  return value !== undefined && value !== null && value !== '';
+}
+
+/** Returns true when the given field value counts as "filled" (at least one cell non-empty). */
+export function isFieldFilled(
+  field: QuestionnaireFieldSchema,
+  val: unknown
+): boolean {
+  if (field.type === 'multi_choice')
+    return Array.isArray(val) && val.length > 0;
+
+  if (field.type === 'row_list') {
+    if (!val || typeof val !== 'object') return false;
+    return Object.values(val as Record<string, unknown>).some(isValueSet);
+  }
+
+  if (field.type === 'species_list') {
+    if (!Array.isArray(val)) return false;
+    const keys = (field.columns ?? []).map((column) => column.key);
+    // Only the schema's own columns count as cells, so stray keys on the row object are ignored.
+    const cells = (row: unknown): unknown[] =>
+      typeof row === 'object' && row !== null
+        ? (keys.length > 0 ? keys : Object.keys(row)).map(
+            (key) => (row as Record<string, unknown>)[key]
+          )
+        : [];
+    // Rows of only blanks are the table's padding, so they are ignored rather than counted as missing.
+    const answered = val.filter((row) => cells(row).some(isValueSet));
+    // A partly filled row leaves the field incomplete, so the owner is told before it reaches a reviewer.
+    return (
+      answered.length > 0 &&
+      answered.every((row) => cells(row).every(isValueSet))
+    );
+  }
+
+  if (field.type === 'matrix') {
+    if (!val || typeof val !== 'object') return false;
+    return Object.values(val as Record<string, unknown>).some(
+      (r) =>
+        typeof r === 'object' &&
+        r !== null &&
+        Object.values(r as Record<string, unknown>).some(isValueSet)
+    );
+  }
+
+  return isValueSet(val);
+}
+
+/** Every required questionnaire field still left blank, in the order it is rendered. */
+export function getQuestionnaireMissing(
+  visibleFields: [string, QuestionnaireFieldSchema][],
+  values: Record<string, unknown>,
+  annotations: Record<string, string> = {}
+): MissingField[] {
+  const missing: MissingField[] = [];
+  for (const [name, field] of visibleFields) {
+    const annotation = annotations[`questionnaire.${name}`];
+    if (!isQuestionnaireFieldRequired(field, annotation)) continue;
+    // Once a field is filled it is resolved for gating purposes, even if a
+    // reviewer's annotation is still attached to it. Nothing clears an
+    // annotation client-side, so treating it as permanently missing would
+    // block resubmission forever.
+    if (isFieldFilled(field, values[name])) continue;
+    // A species list is missing either because the table is empty or because a row is partly filled, so the note covers both.
+    missing.push({
+      key: name,
+      label: field.label,
+      ...(field.type === 'species_list'
+        ? { additionalInfo: 'incompleteOrPartial' }
+        : {}),
+    });
+  }
+  return missing;
+}
+
+/**
+ * Answered questionnaire fields a reviewer left a comment on. These are
+ * already filled in, so `getQuestionnaireMissing` leaves them alone and
+ * resubmission is never blocked by them. This list is purely informational,
+ * so the owner notices the feedback on the Questionnaire tab itself instead
+ * of only inline on the field or in the Review tab's revision summary.
+ */
+export function getQuestionnaireFlagged(
+  visibleFields: [string, QuestionnaireFieldSchema][],
+  values: Record<string, unknown>,
+  annotations: Record<string, string> = {}
+): MissingField[] {
+  const flagged: MissingField[] = [];
+  for (const [name, field] of visibleFields) {
+    const annotation = annotations[`questionnaire.${name}`];
+    if (!annotation) continue;
+    if (!isFieldFilled(field, values[name])) continue;
+    flagged.push({ key: name, label: field.label });
+  }
+  return flagged;
+}
+
+/**
+ * Required Detailed Analysis fields, listed in the order the form renders them
+ * so the summary reads top to bottom. The second entry of each pair is the
+ * translation key the form itself labels the field with, so the summary and the
+ * field always say the same thing.
+ */
+const TREE_REQUIRED = [
+  ['employeesCount', 'employeeCount'],
+  ['ecosystem', 'ecosystem'],
+  ['mainInterventions', 'labelMainInterventions'],
+  ['plantingDensity', 'plantingDensity'],
+  ['degradationCause', 'causeOfDegradation'],
+  ['mainChallenge', 'mainChallenge'],
+  ['motivation', 'whyThisSite'],
+  ['longTermPlan', 'longTermPlan'],
+  ['siteOwnerType', 'siteOwner'],
+  ['siteOwnerName', 'ownerName'],
+] as const;
+
+const CONSERVATION_REQUIRED = [
+  ['areaProtected', 'areaProtected'],
+  ['startingProtectionYear', 'protectionStartedIN'],
+  ['ecosystem', 'ecosystem'],
+  ['ownershipType', 'ownershipType'],
+  ['landOwnershipType', 'siteOwner'],
+  ['actions', 'forestProtectionType'],
+  ['mainChallenge', 'mainChallenge'],
+  ['motivation', 'whyThisSite'],
+  // longTermPlan is deliberately absent: the form only requires it for trees.
+  ['siteOwnerName', 'ownerName'],
+] as const;
+
+/**
+ * Single source of truth for Detailed Analysis completeness. The tab dot, the
+ * in-page summary and the Review page all read this, so they can never
+ * disagree about what is still missing.
+ */
+/**
+ * `benefits` (shown as "Conservation Impacts") is optional and left out of
+ * CONSERVATION_REQUIRED on purpose, but a reviewer can still annotate it, so
+ * it also needs a label for the flagged-fields list below.
+ */
+const BENEFITS_KEY = 'benefits';
+const BENEFITS_LABEL_KEY = 'conservationImpacts';
+
+/**
+ * The translation keys the two lists above use. Typing the translator against
+ * this union keeps it compatible with next-intl's typed `t`, which rejects a
+ * plain `(key: string) => string`.
+ */
+type LabelKey =
+  | (typeof TREE_REQUIRED)[number][1]
+  | (typeof CONSERVATION_REQUIRED)[number][1]
+  | typeof BENEFITS_LABEL_KEY;
+
+export function getDetailedAnalysisMissing(
+  details: ExtendedProfileProjectProperties | null,
+  t: (key: LabelKey) => string
+): MissingField[] {
+  if (!details) return [];
+  const required: readonly (readonly [string, LabelKey])[] =
+    details.purpose === 'trees' ? TREE_REQUIRED : CONSERVATION_REQUIRED;
+  const metadata = (details.metadata ?? {}) as unknown as Record<
+    string,
+    unknown
+  >;
+
+  return required
+    .filter(([key]) => {
+      const value = metadata[key];
+      if (Array.isArray(value)) return value.length === 0;
+      return value === undefined || value === null || value === '';
+    })
+    .map(([key, labelKey]) => ({ key, label: t(labelKey) }));
+}
+
+/**
+ * Answered Detailed Analysis fields a reviewer left a comment on. Same idea
+ * as `getQuestionnaireFlagged`: purely informational, never blocks
+ * resubmission. Covers `benefits` too, since it is annotatable even though
+ * it sits outside the required-fields list.
+ */
+export function getDetailedAnalysisFlagged(
+  details: ExtendedProfileProjectProperties | null,
+  t: (key: LabelKey) => string,
+  annotations: Record<string, string> = {}
+): MissingField[] {
+  if (!details) return [];
+  const required: readonly (readonly [string, LabelKey])[] =
+    details.purpose === 'trees' ? TREE_REQUIRED : CONSERVATION_REQUIRED;
+  const annotatable: readonly (readonly [string, LabelKey])[] =
+    details.purpose === 'trees'
+      ? required
+      : [...required, [BENEFITS_KEY, BENEFITS_LABEL_KEY] as const];
+  const metadata = (details.metadata ?? {}) as unknown as Record<
+    string,
+    unknown
+  >;
+
+  return annotatable
+    .filter(([key]) => {
+      if (!annotations[`metadata.${key}`]) return false;
+      const value = metadata[key];
+      if (Array.isArray(value)) return value.length > 0;
+      return isValueSet(value);
+    })
+    .map(([key, labelKey]) => ({ key, label: t(labelKey) }));
+}
+
+/** Required documents with nothing uploaded yet, labelled as the backend names them. */
+export function getMissingDocuments(
+  checklist: DocumentChecklistItem[]
+): MissingField[] {
+  return checklist
+    .filter((item) => item.required && !item.fulfilled)
+    .map((item) => ({ key: item.kind, label: item.label }));
+}

@@ -28,8 +28,11 @@ import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import themeProperties from '../../../../theme/themeProperties';
 import ProjectLocationMap from './microComponents/ProjectLocationMap';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
+import AnnotationCallout from './microComponent/AnnotationCallout';
 
 export type BaseFormData = {
   name: string;
@@ -40,10 +43,6 @@ export type BaseFormData = {
   unitCost: string;
   latitude: string;
   longitude: string;
-  metadata: {
-    visitorAssistance: boolean;
-    ecosystem: string;
-  };
 };
 
 export type TreeFormData = BaseFormData & {
@@ -62,10 +61,6 @@ type BaseProjectApiPayload = {
   acceptDonations: boolean;
   unitCost?: number;
   currency: 'EUR';
-  metadata: {
-    ecosystem: string;
-    visitorAssistance: boolean;
-  };
   geometry: {
     type: 'Point';
     coordinates: [number, number];
@@ -96,6 +91,7 @@ export default function BasicDetails({
   setProjectGUID,
   projectGUID,
   purpose,
+  isLocked,
 }: BasicDetailsProps): ReactElement {
   const t = useTranslations('ManageProjects');
   const locale = useLocale();
@@ -114,10 +110,12 @@ export default function BasicDetails({
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
+  // TODO: status cleanup after old statuses are retired
   const canChangeUnitType =
     !projectDetails ||
-    (projectDetails.verificationStatus === 'incomplete' &&
-      projectDetails.reviewRequested === false);
+    projectDetails.verificationStatus === 'draft' ||
+    projectDetails.verificationStatus === 'revision_requested' ||
+    projectDetails.verificationStatus === 'incomplete';
 
   const changeLatitude = (e: ChangeEvent<HTMLInputElement>) => {
     // Clear coordinates and hide map marker when field is cleared or invalid
@@ -178,6 +176,10 @@ export default function BasicDetails({
       value: 'managed-regeneration',
     },
     {
+      label: t('mangroves'),
+      value: 'mangroves',
+    },
+    {
       label: t('urbanPlanting'),
       value: 'urban-planting',
     },
@@ -185,23 +187,6 @@ export default function BasicDetails({
       label: t('otherPlanting'),
       value: 'other-restoration',
     },
-  ];
-
-  const ecosystemTypes = [
-    'tropical-moist-forests',
-    'tropical-dry-forests',
-    'tropical-coniferous-forests',
-    'tropical-grasslands-forests',
-    'temperate-broadleaf-forests',
-    'temperate-coniferous-forests',
-    'temperate-grasslands-forests',
-    'mediterranean-forests',
-    'mangroves',
-    'deserts',
-    'flooded-grasslands',
-    'montane-grasslands',
-    'boreal-forests',
-    'tundra',
   ];
 
   const unitTypeOptions = ['tree', 'm2'] as const;
@@ -219,10 +204,6 @@ export default function BasicDetails({
           unitType: '',
           latitude: '',
           longitude: '',
-          metadata: {
-            ecosystem: '',
-            visitorAssistance: false,
-          },
           classification: '',
           countTarget: '',
         }
@@ -235,10 +216,6 @@ export default function BasicDetails({
           unitCost: '',
           latitude: '',
           longitude: '',
-          metadata: {
-            ecosystem: '',
-            visitorAssistance: false,
-          },
         };
 
   const {
@@ -278,11 +255,6 @@ export default function BasicDetails({
               ),
               latitude: projectDetails.geoLatitude.toString(),
               longitude: projectDetails.geoLongitude.toString(),
-              metadata: {
-                visitorAssistance:
-                  projectDetails.metadata.visitorAssistance || false,
-                ecosystem: projectDetails.metadata.ecosystem || '',
-              },
               classification: projectDetails.classification || '',
               countTarget: projectDetails.countTarget || '',
             }
@@ -298,11 +270,6 @@ export default function BasicDetails({
               ),
               latitude: projectDetails.geoLatitude.toString(),
               longitude: projectDetails.geoLongitude.toString(),
-              metadata: {
-                visitorAssistance:
-                  projectDetails.metadata.visitorAssistance || false,
-                ecosystem: projectDetails.metadata.ecosystem || '',
-              },
             };
       if (
         projectDetails.geoLongitude != null &&
@@ -332,10 +299,6 @@ export default function BasicDetails({
         ? parseNumber(locale, Number(data.unitCost))
         : undefined,
       currency: 'EUR',
-      metadata: {
-        ecosystem: data.metadata.ecosystem,
-        visitorAssistance: data.metadata.visitorAssistance,
-      },
       geometry: {
         type: 'Point',
         coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],
@@ -386,9 +349,21 @@ export default function BasicDetails({
     }
   };
 
+  const revisionAnnotations =
+    projectDetails?.verificationStatus === 'revision_requested'
+      ? (projectDetails.revisionRequest?.annotations ?? {})
+      : {};
+  const basicAnnotation = (field: string) =>
+    revisionAnnotations[`basic.${field}`];
+
   return (
     <CenteredContainer>
       <StyledForm>
+        {projectDetails && (
+          <ProjectLockedBanner
+            verificationStatus={projectDetails.verificationStatus}
+          />
+        )}
         <div className="inputContainer">
           <Controller
             name="name"
@@ -406,36 +381,11 @@ export default function BasicDetails({
               />
             )}
           />
-          <InlineFormDisplayGroup>
-            <Controller
-              name="metadata.ecosystem"
-              rules={{
-                required: t('ecosystemType'),
-              }}
-              control={control}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <TextField
-                  label={t('ecosystem')}
-                  variant="outlined"
-                  select
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.metadata?.ecosystem !== undefined}
-                  helperText={
-                    errors.metadata?.ecosystem !== undefined &&
-                    errors.metadata.ecosystem.message
-                  }
-                >
-                  {ecosystemTypes.map((ecosystem) => (
-                    <MenuItem key={ecosystem} value={ecosystem}>
-                      {t(`ecosystemTypes.${ecosystem}`)}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-            {purpose === 'trees' && (
+          {basicAnnotation('name') && (
+            <AnnotationCallout text={basicAnnotation('name')!} />
+          )}
+          {purpose === 'trees' && (
+            <InlineFormDisplayGroup>
               <Controller
                 name="classification"
                 rules={{
@@ -468,8 +418,11 @@ export default function BasicDetails({
                   </TextField>
                 )}
               />
-            )}
-          </InlineFormDisplayGroup>
+            </InlineFormDisplayGroup>
+          )}
+          {basicAnnotation('classification') && (
+            <AnnotationCallout text={basicAnnotation('classification')!} />
+          )}
           {purpose === 'trees' && (
             <InlineFormDisplayGroup>
               <Controller
@@ -546,53 +499,71 @@ export default function BasicDetails({
               />
             </InlineFormDisplayGroup>
           )}
+          {basicAnnotation('unitType') && (
+            <AnnotationCallout text={basicAnnotation('unitType')!} />
+          )}
+          {basicAnnotation('countTarget') && (
+            <AnnotationCallout text={basicAnnotation('countTarget')!} />
+          )}
           <InlineFormDisplayGroup>
-            <Controller
-              name="slug"
-              control={control}
-              rules={{ required: t('slugValidation') }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextField
-                  label={t('slug')}
-                  variant="outlined"
-                  InputProps={{
-                    startAdornment: (
-                      <p className={styles.inputStartAdornment}>pp.eco/</p>
-                    ),
-                  }}
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.slug !== undefined}
-                  helperText={errors.slug !== undefined && errors.slug.message}
-                />
+            <div style={{ flex: 1, minWidth: 180 }}>
+              <Controller
+                name="slug"
+                control={control}
+                rules={{ required: t('slugValidation') }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextField
+                    label={t('slug')}
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <p className={styles.inputStartAdornment}>pp.eco/</p>
+                      ),
+                    }}
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    error={errors.slug !== undefined}
+                    helperText={errors.slug !== undefined && errors.slug.message}
+                  />
+                )}
+              />
+              {basicAnnotation('slug') && (
+                <AnnotationCallout text={basicAnnotation('slug')!} />
               )}
-            />
-            <Controller
-              name="website"
-              control={control}
-              rules={{
-                required: t('websiteValidationRequired'),
-                pattern: {
-                  value:
-                    /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-                  message: t('websiteValidationInvalid'),
-                },
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextField
-                  label={t('website')}
-                  variant="outlined"
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.website !== undefined}
-                  helperText={
-                    errors.website !== undefined && errors.website.message
-                  }
-                />
+            </div>
+            <div style={{ flex: 1, minWidth: 180 }}>
+              <Controller
+                name="website"
+                control={control}
+                rules={{
+                  required: t('websiteValidationRequired'),
+                  pattern: {
+                    value:
+                      /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                    message: t('websiteValidationInvalid'),
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextField
+                    label={t('website')}
+                    variant="outlined"
+                    fullWidth
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    error={errors.website !== undefined}
+                    helperText={
+                      errors.website !== undefined && errors.website.message
+                    }
+                  />
+                )}
+              />
+              {basicAnnotation('website') && (
+                <AnnotationCallout text={basicAnnotation('website')!} />
               )}
-            />
+            </div>
           </InlineFormDisplayGroup>
           <Controller
             name="description"
@@ -614,9 +585,21 @@ export default function BasicDetails({
                 helperText={
                   errors.description !== undefined && errors.description.message
                 }
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip title={t('descriptionInfo')} arrow>
+                      <span className={styles.tooltipIcon}>
+                        <InfoIcon />
+                      </span>
+                    </Tooltip>
+                  ),
+                }}
               />
             )}
           />
+          {basicAnnotation('description') && (
+            <AnnotationCallout text={basicAnnotation('description')!} />
+          )}
           <InlineFormDisplayGroup>
             <Controller
               name="acceptDonations"
@@ -690,6 +673,9 @@ export default function BasicDetails({
               />
             )}
           </InlineFormDisplayGroup>
+          {basicAnnotation('unitCost') && (
+            <AnnotationCallout text={basicAnnotation('unitCost')!} />
+          )}
           <div
             className={clsx(styles.formFieldLarge, styles.mapboxContainer)}
             style={{ width: '100%' }}
@@ -789,55 +775,45 @@ export default function BasicDetails({
               {errors.latitude?.message || errors.longitude?.message}
             </p>
           )}
-          <Controller
-            name="metadata.visitorAssistance"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <FormControlLabel
-                label={
-                  <p className={styles.toggleText}>
-                    {t('visitorAssistanceLabel')}
-                  </p>
-                }
-                labelPlacement="end"
-                control={
-                  <NewToggleSwitch
-                    checked={value}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      onChange(e.target.checked);
-                    }}
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  />
-                }
-                sx={{ marginLeft: '0px' }}
-              />
-            )}
-          />
         </div>
         <div className={styles.buttonsForProjectCreationForm}>
-          <Button
-            variant="contained"
-            onClick={handleSubmit(onSubmit)}
-            className="formButton"
-            disabled={Object.keys(errors).length > 0}
-          >
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              t('saveAndContinue')
-            )}
-          </Button>
-
-          {IsSkipButtonVisible ? (
+          {!projectGUID && (
             <Button
+              variant="outlined"
               className="formButton"
-              variant="contained"
-              onClick={() => handleNext(ProjectCreationTabs.PROJECT_MEDIA)}
+              onClick={() =>
+                router.push(localizedPath('/profile/projects/new-project'))
+              }
+              startIcon={<BackArrow />}
             >
-              {t('skip')}
+              {t('backToProjectType')}
             </Button>
-          ) : (
-            ''
+          )}
+          {!isLocked && (
+            <>
+              <Button
+                variant="contained"
+                onClick={handleSubmit(onSubmit)}
+                className="formButton"
+                disabled={Object.keys(errors).length > 0}
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('saveAndContinue')
+                )}
+              </Button>
+
+              {IsSkipButtonVisible && (
+                <Button
+                  className="formButton"
+                  variant="contained"
+                  onClick={() => handleNext(ProjectCreationTabs.PROJECT_MEDIA)}
+                >
+                  {t('skip')}
+                </Button>
+              )}
+            </>
           )}
         </div>
       </StyledForm>

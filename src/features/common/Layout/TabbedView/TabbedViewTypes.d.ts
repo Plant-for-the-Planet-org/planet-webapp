@@ -4,4 +4,5 @@ export interface TabItem {
   link: string;
   disabled?: boolean;
   step: number | string;
+  completionStatus?: 'complete' | 'incomplete';
 }
