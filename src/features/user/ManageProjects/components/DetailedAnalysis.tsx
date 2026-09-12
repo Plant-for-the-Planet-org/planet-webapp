@@ -339,8 +339,8 @@ export default function DetailedAnalysis({
   }, [router.query.type]);
 
   const onSubmit = async (data: TreeFormData | ConservationFormData) => {
-    if (data.purpose === 'trees' && mainInterventions.length === 0) {
-      setIsInterventionsMissing(true);
+    if (data.purpose === 'trees') {
+      setIsInterventionsMissing(mainInterventions.length === 0);
     }
     setIsUploadingData(true);
     const commonFields: BaseProjectMetadata = {
