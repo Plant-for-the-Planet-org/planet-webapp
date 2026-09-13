@@ -1,10 +1,11 @@
-import type { ApiConfigBase } from '../hooks/useApi';
 import type { CurrencyCode, APIError } from '@planet-sdk/common';
+import type { ApiRequestFn } from '../hooks/useApi';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { useErrorHandlingStore } from './errorHandlingStore';
 import { handleError } from '@planet-sdk/common';
+
 
 type CurrencyList = {
   [key in CurrencyCode]?: string;
@@ -26,8 +27,8 @@ interface CurrencyStore {
   isFetching: boolean;
 
   fetchSupportedCurrencies: (
-    getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>
-  ) => void;
+    getApi: ApiRequestFn
+  ) => Promise<void>;
   setCurrencyCode: (code: CurrencyCode) => void;
   initializeCurrencyCode: () => void;
 }

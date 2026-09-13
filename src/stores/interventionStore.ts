@@ -1,13 +1,14 @@
 import type { Intervention, SampleTreeRegistration } from '@planet-sdk/common';
-import type { ApiConfigBase } from '../hooks/useApi';
 import type { INTERVENTION_TYPE } from '../utils/constants/intervention';
 import type { NextRouter } from 'next/router';
 import type { TreemapperApiResponse } from '../features/common/types/map';
+import type { ApiRequestFn } from '../hooks/useApi';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { buildProjectDetailsQuery } from '../utils/projectV2';
 import { useSingleProjectStore } from './singleProjectStore';
+
 
 interface InterventionStore {
   interventions: Intervention[] | null;
@@ -24,7 +25,7 @@ interface InterventionStore {
    * Uses extended scope to include sample interventions.
    */
   fetchInterventions: (
-    getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>,
+    getApi: ApiRequestFn,
     projectId: string
   ) => Promise<void>;
 

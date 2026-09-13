@@ -1,6 +1,7 @@
 import type { MapProject } from '../features/common/types/projectv2';
 import type { ApiConfigBase } from '../hooks/useApi';
 import type { APIError, TreeProjectClassification } from '@planet-sdk/common';
+import type { ApiRequestFn } from '../hooks/useApi';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -8,6 +9,7 @@ import { useErrorHandlingStore } from './errorHandlingStore';
 import { handleError } from '@planet-sdk/common';
 import { getTopProjects } from '../utils/projectV2';
 import { isSameFetchKey } from '../utils/fetchKey';
+
 
 /**
  * Conditions a fetched project list depends on. No slug, unlike the single
@@ -39,7 +41,7 @@ interface ProjectStore {
   debouncedSearchValue: string;
 
   fetchProjects: (
-    getApi: <T>(url: string, config?: ApiConfigBase) => Promise<T>,
+    getApi: ApiRequestFn,
     config: ApiConfigBase
   ) => Promise<void>;
   setShowDonatableProjects: (show: boolean) => void;
@@ -72,7 +74,7 @@ export const useProjectStore = create<ProjectStore>()(
       isSearching: false,
       debouncedSearchValue: '',
 
-      fetchProjects: async (getApi, config) => {
+      fetchProjects: async (getApi , config) => {
         const { lastFetch, pendingFetch, projects: cached } = get();
         const requested: ProjectsFetchKey = {
           locale: String(config.queryParams?.locale ?? ''),
