@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
-import { TextField, Button, IconButton } from '@mui/material';
+import { Alert, TextField, Button, IconButton } from '@mui/material';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
@@ -21,14 +21,13 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
+import { parseApiError } from '../../../../utils/parseApiError';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import themeProperties from '../../../../theme/themeProperties';
 import { validateYouTubeUrl } from '../../../../utils/youTubeValidation';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
-import { useRouter } from 'next/router';
-import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 type UploadImageApiPayload = {
@@ -67,8 +66,6 @@ export default function ProjectMedia({
   onCompletenessChange,
 }: ProjectMediaProps): ReactElement {
   const t = useTranslations('ManageProjects');
-  const router = useRouter();
-  const { localizedPath } = useLocalizedPath();
   const {
     getApiAuthenticated,
     deleteApiAuthenticated,
@@ -87,6 +84,8 @@ export default function ProjectMedia({
   // local state
   const [uploadedImages, setUploadedImages] = useState<UploadImage[]>([]);
   const [hasLoadedImages, setHasLoadedImages] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>('');
   // store
@@ -101,16 +100,18 @@ export default function ProjectMedia({
         );
         setUploadedImages(result.images);
         setHasLoadedImages(true);
+        setLoadFailed(false);
       }
     } catch (err) {
-      setErrors(handleError(err as APIError));
-      router.push(localizedPath('/profile'));
+      // Staying put with an error beats navigating away: an empty photo list looks like the photos are gone.
+      setErrors(parseApiError(err as APIError));
+      setLoadFailed(true);
     }
   };
 
   useEffect(() => {
     fetchImages();
-  }, [projectGUID]);
+  }, [projectGUID, retryCount]);
 
   useEffect(() => {
     if (!hasLoadedImages) return;
@@ -306,6 +307,24 @@ export default function ProjectMedia({
               />
             )}
           />
+
+          {loadFailed && (
+            <Alert
+              severity="error"
+              sx={{ mb: 2 }}
+              action={
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={() => setRetryCount((count) => count + 1)}
+                >
+                  {t('tryAgain')}
+                </Button>
+              }
+            >
+              {t('mediaLoadFailed')}
+            </Alert>
+          )}
 
           {/* Change to field array of react hook form  */}
           {uploadedImages && uploadedImages.length > 0 ? (

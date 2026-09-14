@@ -17,11 +17,18 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
-import { MenuItem, Button, TextField, CircularProgress } from '@mui/material';
+import {
+  Alert,
+  MenuItem,
+  Button,
+  TextField,
+  CircularProgress,
+} from '@mui/material';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
+import { parseApiError } from '../../../../utils/parseApiError';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import themeProperties from '../../../../theme/themeProperties';
@@ -32,8 +39,6 @@ import SiteCard from './microComponent/SiteCard';
 import SyncErrorPopover from './microComponent/SyncErrorPopover';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
-import { useRouter } from 'next/router';
-import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import useRestorSync from '../hooks/useRestorSync';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
@@ -78,8 +83,6 @@ export default function ProjectSites({
   const { deleteApiAuthenticated, postApiAuthenticated, getApiAuthenticated } = useApi();
   const { colors } = themeProperties.designSystem;
   const t = useTranslations('ManageProjects');
-  const router = useRouter();
-  const { localizedPath } = useLocalizedPath();
   const {
     handleSubmit,
     formState: { errors },
@@ -89,6 +92,8 @@ export default function ProjectSites({
 
   const [isLoadingSites, setIsLoadingSites] = useState<boolean>(true);
   const [hasLoadedSites, setHasLoadedSites] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -149,13 +154,15 @@ export default function ProjectSites({
       if (result.sites.length > 0) setShowForm(false);
       setSiteList(result.sites);
       setHasLoadedSites(true);
+      setLoadFailed(false);
     } catch (err) {
-      setErrors(handleError(err as APIError));
-      router.push(localizedPath('/profile'));
+      // Staying put with an error beats navigating away: an empty list looks like the sites are gone, and someone may redraw one.
+      setErrors(parseApiError(err as APIError));
+      setLoadFailed(true);
     } finally {
       setIsLoadingSites(false);
     }
-  }, [projectGUID]);
+  }, [projectGUID, retryCount]);
 
   useEffect(() => {
     fetchProjSites();
@@ -295,6 +302,24 @@ export default function ProjectSites({
           <ProjectLockedBanner
             verificationStatus={projectDetails.verificationStatus}
           />
+        )}
+
+        {loadFailed && (
+          <Alert
+            severity="error"
+            sx={{ mb: 2 }}
+            action={
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => setRetryCount((count) => count + 1)}
+              >
+                {t('tryAgain')}
+              </Button>
+            }
+          >
+            {t('sitesLoadFailed')}
+          </Alert>
         )}
 
         {isLoadingSites ? (

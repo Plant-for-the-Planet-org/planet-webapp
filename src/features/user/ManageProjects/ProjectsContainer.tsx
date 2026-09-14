@@ -17,7 +17,8 @@ import getImageUrl from '../../../utils/getImageURL';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useLocale, useTranslations } from 'next-intl';
-import { handleError } from '@planet-sdk/common';
+import { Alert, Button } from '@mui/material';
+import { parseApiError } from '../../../utils/parseApiError';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 import { useRouter } from 'next/router';
@@ -206,7 +207,6 @@ function SingleProject({ project }: { project: ProjectProperties }) {
 }
 
 export default function ProjectsContainer() {
-  const router = useRouter();
   const tDonate = useTranslations('Donate');
   const tManageProjects = useTranslations('ManageProjects');
   const { getApiAuthenticated } = useApi();
@@ -214,6 +214,8 @@ export default function ProjectsContainer() {
   // local state
   const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
   const [loader, setLoader] = useState(true);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   // store: state
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
@@ -230,9 +232,11 @@ export default function ProjectsContainer() {
           { queryParams: { version: '1.2' } }
         );
         setProjects(projects);
+        setLoadFailed(false);
       } catch (err) {
-        setErrors(handleError(err as APIError));
-        router.push(localizedPath('/profile'));
+        // Staying put with an error beats navigating away: an empty list reads as "you have no projects".
+        setErrors(parseApiError(err as APIError));
+        setLoadFailed(true);
       }
       setLoader(false);
     }
@@ -242,7 +246,7 @@ export default function ProjectsContainer() {
     if (isAuthReady) {
       loadProjects();
     }
-  }, [isAuthReady]);
+  }, [isAuthReady, retryCount]);
 
   return (
     <DashboardView
@@ -271,7 +275,22 @@ export default function ProjectsContainer() {
 
         <div className={styles.projectsContainer} id="projectsContainer">
           {loader && <GlobeContentLoader />}
-          {projects?.length < 1 && !loader ? (
+          {loadFailed && !loader ? (
+            <Alert
+              severity="error"
+              action={
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={() => setRetryCount((count) => count + 1)}
+                >
+                  {tManageProjects('tryAgain')}
+                </Button>
+              }
+            >
+              {tManageProjects('projectsLoadFailed')}
+            </Alert>
+          ) : projects?.length < 1 && !loader ? (
             <div className={styles.projectNotFound}>
               <LazyLoad>
                 <NotFound className={styles.projectNotFoundImage} />
