@@ -435,6 +435,9 @@ export default function ManageProjects({
   // purposes with no requirement schema, so the component itself degrades
   // gracefully if this ever needs to diverge from that assumption.
   const showDocuments = showQuestionnaire;
+  // The backend exempts this project from the questionnaire and skips validating it on submit, so neither section may report itself incomplete or hold Submit back.
+  // The tabs stay open and the missing-field summary stays, because filling it in is still welcome.
+  const questionnaireExempt = projectDetails?.skipQuestionnaire === true;
 
   const documentsCompletenessFetchedFor = useRef<string | null>(null);
 
@@ -477,8 +480,10 @@ export default function ManageProjects({
     detailedAnalysisMissing.length === 0 &&
     mediaComplete === true &&
     sitesComplete === true &&
-    (!showQuestionnaire || questionnaireMissing?.length === 0) &&
-    (!showDocuments || documentsMissing?.length === 0);
+    (!showQuestionnaire ||
+      questionnaireExempt ||
+      questionnaireMissing?.length === 0) &&
+    (!showDocuments || questionnaireExempt || documentsMissing?.length === 0);
 
   useEffect(() => {
     if (router.query.type && project) {
@@ -486,15 +491,15 @@ export default function ManageProjects({
         ? detailedAnalysisMissing.length === 0
         : null;
 
-      const qComplete = showQuestionnaire
-        ? questionnaireMissing
+      // null = not applicable or not loaded yet, doesn't block Review
+      const qComplete =
+        showQuestionnaire && !questionnaireExempt && questionnaireMissing
           ? questionnaireMissing.length === 0
-          : null
-        : null; // null = not applicable, doesn't block Review
+          : null;
 
       // null = not applicable or not loaded yet, doesn't block Review
       const docsComplete =
-        showDocuments && documentsMissing
+        showDocuments && !questionnaireExempt && documentsMissing
           ? documentsMissing.length === 0
           : null;
 
@@ -549,9 +554,7 @@ export default function ManageProjects({
           label: t('questionnaire'),
           link: `/profile/projects/${projectGUID}?type=questionnaire`,
           step: ProjectCreationTabs.QUESTIONNAIRE,
-          completionStatus: toStatus(
-            questionnaireMissing ? questionnaireMissing.length === 0 : null
-          ),
+          completionStatus: toStatus(qComplete),
         });
       }
       if (showDocuments) {

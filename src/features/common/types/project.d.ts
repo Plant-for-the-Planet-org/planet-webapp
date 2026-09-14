@@ -170,6 +170,8 @@ export interface ExtendedProfileProjectPropertiesTrees
   intensity: Nullable<string>;
   questionnaire: Nullable<Record<string, unknown>>;
   reviewRequested: boolean;
+  /** The backend's own exemption: this project does not have to answer the questionnaire. Read for the tab discs only; `acceptDonations` still decides which tabs are shown. */
+  skipQuestionnaire: boolean;
   revisionPeriodicityLevel: Nullable<string>;
   survivalRate: Nullable<number>;
   survivalRateStatus: Nullable<string>;
@@ -192,6 +194,8 @@ export interface ExtendedProfileProjectPropertiesConservation
   acceptDonations: boolean;
   publish: boolean;
   reviewRequested: boolean;
+  /** See the trees interface: the backend's own questionnaire exemption, read for the tab discs only. */
+  skipQuestionnaire: boolean;
   classification: null;
   verificationStatus: VerificationStatus;
   videoUrl: Nullable<string>;
