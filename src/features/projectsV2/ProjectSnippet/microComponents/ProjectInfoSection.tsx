@@ -40,15 +40,14 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
   const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
   const token = useAuthStore((state) => state.token);
 
-  const donateLink = getDonationUrl(
-    tenantId,
-    slug,
+  const donateLink = getDonationUrl({
+    tenant: tenantId,
+    target: slug,
     token,
-    embed || undefined,
-    callbackUrl || undefined,
-    undefined,
-    utmCampaign || undefined
-  );
+    embed: embed || undefined,
+    callbackUrl: callbackUrl || undefined,
+    utmCampaign: utmCampaign || undefined,
+  });
   const donationLabel = useMemo(() => {
     if (unitCount === undefined) {
       return;
