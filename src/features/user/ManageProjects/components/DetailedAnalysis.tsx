@@ -39,6 +39,7 @@ import {
   getDetailedAnalysisMissing,
 } from '../utils/completeness';
 import useFieldAnchorScroll from '../utils/useFieldAnchorScroll';
+import { scrollToFirstError } from '../utils/scrollToFirstError';
 
 type BaseFormData = {
   ecosystem: string;
@@ -1000,6 +1001,7 @@ export default function DetailedAnalysis({
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
                       label={tManageProjects('maxPlantingDensity')}
+                      id={fieldAnchorId('maxPlantingDensity')}
                       variant="outlined"
                       InputProps={{
                         endAdornment: (
@@ -1118,6 +1120,7 @@ export default function DetailedAnalysis({
               }}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
+                  id={fieldAnchorId('benefits')}
                   label={tManageProjects('conservationImpacts')}
                   variant="outlined"
                   multiline
@@ -1368,8 +1371,15 @@ export default function DetailedAnalysis({
           {!isLocked && (
             <>
               <Button
-                onClick={() => {
-                  trigger();
+                onClick={async () => {
+                  // Presence rules are gone, so what is left is shape. A refused save has to say so: the field may be far off-screen.
+                  if (!(await trigger())) {
+                    scrollToFirstError(errors);
+                    setErrors([
+                      { message: tManageProjects('saveBlockedByErrors') },
+                    ]);
+                    return;
+                  }
                   void onSubmit(
                     getValues() as TreeFormData | ConservationFormData
                   );

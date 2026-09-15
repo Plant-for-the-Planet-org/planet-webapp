@@ -48,6 +48,7 @@ import {
   getOrFetchSchema,
 } from '../utils/questionnaireSchemaCache';
 import useFieldAnchorScroll from '../utils/useFieldAnchorScroll';
+import { scrollToFirstError } from '../utils/scrollToFirstError';
 import {
   fieldAnchorId,
   getQuestionnaireFlagged,
@@ -763,8 +764,13 @@ export default function ProjectQuestionnaire({
             <>
               <Button
                 variant="contained"
-                onClick={() => {
-                  trigger();
+                onClick={async () => {
+                  // Presence rules are gone, so what is left is shape. A refused save has to say so: the field may be far off-screen.
+                  if (!(await trigger())) {
+                    scrollToFirstError(errors);
+                    setErrors([{ message: t('saveBlockedByErrors') }]);
+                    return;
+                  }
                   void onSubmit(getValues());
                 }}
                 className="formButton"

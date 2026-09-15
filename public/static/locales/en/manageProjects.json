@@ -152,6 +152,7 @@
     "backToProjectSpending": "Back to Project Spending",
     "optionalFieldSuffix": "(optional)",
     "requiredField": "This field is required",
+    "saveBlockedByErrors": "Some fields have errors, please correct them before saving.",
     "percentageRange": "Enter a percentage between 0 and 100",
     "percentageRangeShort": "Should be between 0-100",
     "unsupportedFieldType": "This question cannot be shown here yet. Please let us know at support@plant-for-the-planet.org",
