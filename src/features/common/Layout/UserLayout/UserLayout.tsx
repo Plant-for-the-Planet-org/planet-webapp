@@ -26,6 +26,11 @@ import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
 import { useAuthSession } from '../../../../hooks/useAuthSession';
 import { useAuthStore, useUserStore } from '../../../../stores';
+import {
+  hasExceededRedirectLimit,
+  isAuthExpiryHandlingActive,
+  registerRedirectAttempt,
+} from '../../../../utils/authRedirectGuard';
 
 const UserLayout = ({ children }: { children: ReactNode }) => {
   const t = useTranslations('Me');
@@ -270,11 +275,22 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!isAuthResolved || userProfile) return;
 
+    // Auth expiry is already being handled by handleAuthExpiry.
+    // Avoid another redirect here so we don't overwrite redirectLink or redirect twice.
+    if (isAuthExpiryHandlingActive()) return;
+
+    // handleAuthExpiry (or useInitializeAuth) already gave up after repeated
+    // auth failures. Respect the same shared limit here, otherwise this
+    // fallback would keep redirecting to /login on its own after the other
+    // paths stopped, bypassing the loop guard.
+    if (hasExceededRedirectLimit()) return;
+
     // Redirect user to desired page after login
     if (router.asPath) {
       localStorage.setItem('redirectLink', router.asPath);
     }
 
+    registerRedirectAttempt();
     router.push(localizedPath('/login'));
   }, [isAuthResolved, userProfile]);
 

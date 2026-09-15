@@ -53,3 +53,32 @@ export const clearRedirectCount = (): void => {
     // Storage blocked; the in-memory reset above is the fallback.
   }
 };
+
+// Prevents the shared auth-expiry handler from running more than once at the
+// same time. Multiple authenticated requests can fail together when a session
+// expires, and without this lock each one could clear the session and redirect.
+//
+// A later call could also overwrite the saved return route with `/login` after
+// the first call has already redirected there.
+//
+// In-memory state is enough because this only needs to cover the short period
+// while the first redirect is happening.
+let isAuthExpiryHandlingInFlight = false;
+
+// Returns true for the first caller. Any concurrent caller gets false and
+// should stop without handling the expiry again.
+export const beginAuthExpiryHandling = (): boolean => {
+  if (isAuthExpiryHandlingInFlight) return false;
+  isAuthExpiryHandlingInFlight = true;
+  return true;
+};
+
+// Reset after the session becomes valid again so a future expiry can be handled.
+export const resetAuthExpiryHandling = (): void => {
+  isAuthExpiryHandlingInFlight = false;
+};
+
+// Check whether auth expiry is already being handled.
+// Page-level redirects should wait to avoid overwriting redirectLink or redirecting twice.
+export const isAuthExpiryHandlingActive = (): boolean =>
+  isAuthExpiryHandlingInFlight;
