@@ -341,10 +341,6 @@ export default function ProjectQuestionnaire({
           <Controller
             name={name}
             control={control}
-            rules={{
-              validate: (v) =>
-                !isRequired || (Array.isArray(v) ? v.length > 0 : !!v),
-            }}
             render={({ field: { value, onChange } }) => {
               const current = Array.isArray(value) ? (value as string[]) : [];
               return (
@@ -418,7 +414,6 @@ export default function ProjectQuestionnaire({
             name={name}
             control={control}
             rules={{
-              required: isRequired,
               ...(isPercentage ? { min: 0, max: 100 } : {}),
             }}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -652,7 +647,6 @@ export default function ProjectQuestionnaire({
         <Controller
           name={name}
           control={control}
-          rules={{ required: isRequired }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
               multiline

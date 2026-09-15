@@ -627,9 +627,6 @@ export default function DetailedAnalysis({
                   name="areaProtected"
                   control={control}
                   rules={{
-                    required: tManageProjects('validation', {
-                      fieldName: tManageProjects('areaProtected'),
-                    }),
                     validate: (value) =>
                       value ? parseInt(value, 10) > 0 : true,
                   }}
@@ -684,11 +681,6 @@ export default function DetailedAnalysis({
                   <Controller
                     name="startingProtectionYear"
                     control={control}
-                    rules={{
-                      required: tManageProjects('validation', {
-                        fieldName: tManageProjects('date'),
-                      }),
-                    }}
                     render={({ field: { value, onChange } }) => (
                       <MuiDatePicker
                         label={tManageProjects('protectionStartedIN')}
@@ -733,12 +725,6 @@ export default function DetailedAnalysis({
                 name="employeesCount"
                 control={control}
                 rules={{
-                  required:
-                    purpose === 'trees'
-                      ? tManageProjects('validation', {
-                          fieldName: tManageProjects('employeeCount'),
-                        })
-                      : false,
                   validate: (value) => !value || parseInt(value, 10) > 0,
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
@@ -782,9 +768,6 @@ export default function DetailedAnalysis({
               <Controller
                 name="ecosystem"
                 control={control}
-                rules={{
-                  required: tManageProjects('ecosystemType'),
-                }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
                     required
@@ -820,7 +803,6 @@ export default function DetailedAnalysis({
                 <Controller
                   name="ownershipType"
                   control={control}
-                  rules={{ required: tManageProjects('requiredField') }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
                       required
@@ -962,7 +944,6 @@ export default function DetailedAnalysis({
                     name="plantingDensity"
                     control={control}
                     rules={{
-                      required: tManageProjects('requiredField'),
                       validate: (value) => !value || parseInt(value, 10) > 1,
                     }}
                     render={({ field: { onChange, value, onBlur } }) => (
@@ -1052,7 +1033,6 @@ export default function DetailedAnalysis({
               name="actions"
               control={control}
               rules={{
-                required: tManageProjects('requiredField'),
                 maxLength: {
                   value: 300,
                   message: tManageProjects('max300Chars'),
@@ -1085,7 +1065,6 @@ export default function DetailedAnalysis({
                 name="degradationCause"
                 control={control}
                 rules={{
-                  required: tManageProjects('requiredField'),
                   maxLength: {
                     value: 300,
                     message: tManageProjects('max300Chars'),
@@ -1171,7 +1150,6 @@ export default function DetailedAnalysis({
             name="mainChallenge"
             control={control}
             rules={{
-              required: tManageProjects('requiredField'),
               maxLength: {
                 value: 300,
                 message: tManageProjects('max300Chars'),
@@ -1213,7 +1191,6 @@ export default function DetailedAnalysis({
             name="motivation"
             control={control}
             rules={{
-              required: tManageProjects('requiredField'),
               maxLength: {
                 value: 300,
                 message: tManageProjects('max300Chars'),
@@ -1253,8 +1230,6 @@ export default function DetailedAnalysis({
             name="longTermPlan"
             control={control}
             rules={{
-              required:
-                purpose === 'trees' ? tManageProjects('requiredField') : false,
               maxLength: {
                 value: 300,
                 message: tManageProjects('max300Chars'),
@@ -1355,7 +1330,6 @@ export default function DetailedAnalysis({
           <Controller
             name="siteOwnerName"
             control={control}
-            rules={{ required: tManageProjects('requiredField') }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 required
