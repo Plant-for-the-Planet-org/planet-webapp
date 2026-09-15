@@ -327,11 +327,6 @@
       display: flex;
       gap: 5px;
       align-items: center;
-
-      &:focus-visible {
-        border: 2px solid $dsPrimaryColor;
-        border-radius: 3px;
-      }
     }
   }
 }
