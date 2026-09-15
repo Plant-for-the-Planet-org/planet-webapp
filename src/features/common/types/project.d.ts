@@ -372,7 +372,6 @@ export interface QuestionnaireProps {
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
   setProjectDetails: SetState<ExtendedProfileProjectProperties | null>;
   isLocked: boolean;
-  onCompletenessChange: (missing: MissingField[]) => void;
   /** Pre-fetched schema from the parent. When provided the component skips its own fetch. */
   initialSchema?: QuestionnaireSchema | null;
   /** Project purpose — passed explicitly so the cache lookup works even before projectDetails loads. */

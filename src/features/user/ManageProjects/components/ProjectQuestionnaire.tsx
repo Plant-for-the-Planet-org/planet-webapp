@@ -174,7 +174,6 @@ export default function ProjectQuestionnaire({
   projectDetails,
   setProjectDetails,
   isLocked,
-  onCompletenessChange,
   initialSchema = null,
   purpose,
 }: QuestionnaireProps): ReactElement {
@@ -227,31 +226,35 @@ export default function ProjectQuestionnaire({
     [projectDetails]
   );
 
+  // Read from the saved answers, not from the form, so this summary, the tab disc and the Review page can never disagree about what is still missing. Same rule as DetailedAnalysis.
+  const savedAnswers = useMemo(
+    () =>
+      ((projectDetails as ExtendedProfileProjectPropertiesTrees | null)
+        ?.questionnaire ?? {}) as Record<string, unknown>,
+    [projectDetails]
+  );
+
   const missingFields = useMemo(
     () =>
       getQuestionnaireMissing(
         visibleFields,
-        watchedValues as Record<string, unknown>,
+        savedAnswers,
         questionnaireAnnotations
       ),
-    [visibleFields, watchedValues, questionnaireAnnotations]
+    [visibleFields, savedAnswers, questionnaireAnnotations]
   );
 
-  // Answered fields a reviewer commented on. Purely informational, so it
-  // never feeds into onCompletenessChange and never blocks resubmission.
+  // Answered fields a reviewer commented on. Purely informational, so it never
+  // feeds the tab disc and never blocks resubmission.
   const flaggedFields = useMemo(
     () =>
       getQuestionnaireFlagged(
         visibleFields,
-        watchedValues as Record<string, unknown>,
+        savedAnswers,
         questionnaireAnnotations
       ),
-    [visibleFields, watchedValues, questionnaireAnnotations]
+    [visibleFields, savedAnswers, questionnaireAnnotations]
   );
-
-  // Keyed on the field names so the parent hears about a real change, not
-  // about every keystroke.
-  const missingKey = missingFields.map((field) => field.key).join('|');
 
   // Sync if parent provides (or updates) the schema after mount
   useEffect(() => {
@@ -296,11 +299,6 @@ export default function ProjectQuestionnaire({
     // the top carries that message instead, and fields turn red on blur or on
     // save.
   }, [schema, projectDetails]);
-
-  useEffect(() => {
-    if (visibleFields.length === 0) return;
-    onCompletenessChange(missingFields);
-  }, [missingKey, visibleFields.length]);
 
   const onSubmit = async (data: QuestionnaireFormData) => {
     setIsSubmitting(true);

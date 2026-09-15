@@ -711,7 +711,6 @@ export default function ManageProjects({
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
             isLocked={isLocked}
-            onCompletenessChange={setQuestionnaireMissing}
             initialSchema={questionnaireSchema}
             purpose={
               (project?.purpose ??
