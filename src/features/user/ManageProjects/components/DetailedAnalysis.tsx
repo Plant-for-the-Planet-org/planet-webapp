@@ -314,6 +314,12 @@ export default function DetailedAnalysis({
     defaultValues: defaultFormData,
   });
 
+  // The min rule lives on maxPlantingDensity but reads minDensity, so raising the minimum changes the rule without the other field ever hearing about it.
+  // Re-checked here rather than in the onChange, which would still be looking at the previous minDensity.
+  useEffect(() => {
+    void trigger('maxPlantingDensity');
+  }, [minDensity]);
+
   const owners: string[] = [];
   for (let i = 0; i < siteOwners.length; i++) {
     if (siteOwners[i].isSet) {
