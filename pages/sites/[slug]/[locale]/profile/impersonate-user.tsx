@@ -13,6 +13,7 @@ import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import ImpersonateUser from '../../../../../src/features/user/Settings/ImpersonateUser';
 import AccessDeniedLoader from '../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import SettingsFormSkeleton from '../../../../../src/features/user/Settings/SettingsFormSkeleton';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -35,7 +36,11 @@ const ImpersonateUserPage = (): ReactElement => {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={
+        <SettingsFormSkeleton title={t('switchUser')} fieldsPerSection={2} />
+      }
+    >
       <Head>
         <title>{t('switchUser')}</title>
       </Head>

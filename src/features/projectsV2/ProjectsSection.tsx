@@ -1,10 +1,8 @@
-import Skeleton from 'react-loading-skeleton';
 import { useEffect, useState } from 'react';
-import 'react-loading-skeleton/dist/skeleton.css';
-import styles from './ProjectsSection.module.scss';
 import ProjectListControls, { type ProjectTabs } from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import ProjectList from './ProjectList';
+import ProjectsSectionSkeleton from './ProjectsSectionSkeleton';
 import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
 import {
   useProjectMapStore,
@@ -59,7 +57,12 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   const shouldHideProjectTabs = tenantConfig.topProjectsOnly === true;
 
   if ((isProjectsFetching || isProjectsError) && !hasFilteredProjects) {
-    return <Skeleton className={styles.projectSectionSkeleton} />;
+    return (
+      <ProjectsSectionSkeleton
+        isMobile={isMobile}
+        shouldHideProjectTabs={shouldHideProjectTabs}
+      />
+    );
   }
 
   const projectListControlCommonProps = {

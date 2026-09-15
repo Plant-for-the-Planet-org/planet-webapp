@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../../../../src/features/user/Widget/EmbedModal';
 import styles from '../../../../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
+import SettingsFormSkeleton from '../../../../../src/features/user/Settings/SettingsFormSkeleton';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import {
@@ -41,7 +42,7 @@ function ProfilePage(): ReactElement {
   if (!isInitialized) return <></>;
   // TO DO - change widget link
   return (
-    <UserLayout>
+    <UserLayout skeleton={<SettingsFormSkeleton variant="none" />}>
       <Head>
         <title>{t('widgets')}</title>
       </Head>

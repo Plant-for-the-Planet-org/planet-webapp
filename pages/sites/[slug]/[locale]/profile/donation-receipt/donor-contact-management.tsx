@@ -11,6 +11,7 @@ import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import DonorContactManagement from '../../../../../../src/features/user/DonationReceipt/DonorContactManagement';
+import SettingsFormSkeleton from '../../../../../../src/features/user/Settings/SettingsFormSkeleton';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -27,7 +28,9 @@ export default function ModifyDonorData() {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={<SettingsFormSkeleton variant="section" fieldsPerSection={3} />}
+    >
       <Head>
         <title>{t('donorContactManagement')}</title>
       </Head>

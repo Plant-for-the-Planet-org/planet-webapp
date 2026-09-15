@@ -12,6 +12,7 @@ import Head from 'next/head';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import { useTranslations } from 'next-intl';
 import DeleteProfile from '../../../../../src/features/user/Settings/DeleteProfile';
+import SettingsFormSkeleton from '../../../../../src/features/user/Settings/SettingsFormSkeleton';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -29,7 +30,11 @@ function DeleteProfilePage(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={
+        <SettingsFormSkeleton title={t('deleteProfile')} fieldsPerSection={1} />
+      }
+    >
       <Head>
         <title>{t('deleteProfile')}</title>
       </Head>
