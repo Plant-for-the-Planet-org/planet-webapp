@@ -146,7 +146,11 @@ export const useApi = () => {
       }
       headers.Authorization = `Bearer ${token}`;
     }
-    const finalHeader = setHeaderForImpersonation(headers);
+    // Impersonation headers (and the localStorage read behind them) only apply to
+    // authenticated requests, so public requests never carry the target's email/pin.
+    const finalHeader = authRequired
+      ? setHeaderForImpersonation(headers)
+      : headers;
     const requestOptions =
       method === 'POST' || method === 'PUT'
         ? { method, url, data, queryParams, additionalHeaders: finalHeader }
