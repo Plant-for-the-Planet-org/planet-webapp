@@ -1,4 +1,4 @@
-import type { Recipient } from '../BulkCodesTypes';
+import type { RecipientUploadRow } from '../BulkCodesTypes';
 
 import { TableRow, TableCell, IconButton } from '@mui/material';
 import { useForm } from 'react-hook-form';
@@ -10,8 +10,8 @@ import RecipientFormFields from './RecipientFormFields';
 import ActionContainer from './ActionContainer';
 
 interface Props {
-  recipient: Recipient;
-  updateRecipient: (updatedRecipient: Recipient) => void;
+  recipient: RecipientUploadRow;
+  updateRecipient: (updatedRecipient: RecipientUploadRow) => void;
   exitEditMode: () => void;
 }
 
@@ -25,14 +25,14 @@ const UpdateRecipient = ({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<Recipient>({
+  } = useForm<RecipientUploadRow>({
     mode: 'onBlur',
     defaultValues: recipient,
   });
 
   const hasErrors = Object.keys(errors).length > 0;
 
-  const handleUpdate = (updatedRecipient: Recipient): void => {
+  const handleUpdate = (updatedRecipient: RecipientUploadRow): void => {
     updateRecipient(updatedRecipient);
     reset();
   };

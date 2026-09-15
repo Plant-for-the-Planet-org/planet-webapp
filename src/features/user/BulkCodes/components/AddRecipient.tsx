@@ -1,5 +1,5 @@
 import type { SetState } from '../../../common/types/common';
-import type { Recipient } from '../BulkCodesTypes';
+import type { RecipientUploadRow } from '../BulkCodesTypes';
 
 import { TableRow, TableCell, IconButton } from '@mui/material';
 import { useEffect } from 'react';
@@ -11,7 +11,7 @@ import RecipientFormFields from './RecipientFormFields';
 import ActionContainer from './ActionContainer';
 
 interface Props {
-  setLocalRecipients: SetState<Recipient[]>;
+  setLocalRecipients: SetState<RecipientUploadRow[]>;
   setIsAddingRecipient: SetState<boolean>;
   afterSaveCallback: () => void;
 }
@@ -27,7 +27,7 @@ const AddRecipient = ({
     handleSubmit,
     formState: { errors, dirtyFields },
     reset,
-  } = useForm<Recipient>({
+  } = useForm<RecipientUploadRow>({
     mode: 'onBlur',
     defaultValues: {
       recipient_name: '',
@@ -40,7 +40,7 @@ const AddRecipient = ({
 
   const hasErrors = Object.keys(errors).length > 0;
 
-  const handleSave = (newRecipient: Recipient): void => {
+  const handleSave = (newRecipient: RecipientUploadRow): void => {
     setLocalRecipients((currentRecipients) => [
       newRecipient,
       ...currentRecipients,

@@ -5,8 +5,7 @@ import type {
   Donation,
   PrepaidDonationRequest,
 } from '@planet-sdk/common';
-import type { Recipient } from '../../../../stores/bulkCodeStore';
-import type { Recipient as LocalRecipient } from '../BulkCodesTypes';
+import type { RecipientPayload, RecipientUploadRow } from '../BulkCodesTypes';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -39,7 +38,9 @@ const IssueCodesForm = (): ReactElement | null => {
   const { localizedPath } = useLocalizedPath();
   const { postApiAuthenticated } = useApi();
   // local state
-  const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
+  const [localRecipients, setLocalRecipients] = useState<RecipientUploadRow[]>(
+    []
+  );
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
   const [codeQuantity, setCodeQuantity] = useState('');
@@ -85,8 +86,8 @@ const IssueCodesForm = (): ReactElement | null => {
     }
   };
 
-  const getProcessedRecipients = (): Recipient[] => {
-    const recipients: Recipient[] = [];
+  const getProcessedRecipients = (): RecipientPayload[] => {
+    const recipients: RecipientPayload[] = [];
     localRecipients.forEach((recipient) => {
       const temp = {
         recipientName: recipient.recipient_name,
