@@ -69,6 +69,13 @@ type QuestionnaireState =
   | 'noQuestions'
   | 'ready';
 
+/** A cell judges its own value, so the red lands on the offending cell as it is typed rather than on the whole table when it loses focus. */
+function isNegative(value: unknown): boolean {
+  return (
+    value !== '' && value !== null && value !== undefined && Number(value) < 0
+  );
+}
+
 function humanizeLabel(value: string): string {
   return value.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 }
@@ -203,6 +210,7 @@ export default function ProjectQuestionnaire({
     getValues,
     formState: { errors },
   } = useForm<QuestionnaireFormData>({
+    // Speaks when a field is left, then revalidates on every keystroke until it is right: reValidateMode defaults to onChange.
     mode: 'onBlur',
     defaultValues: {},
   });
@@ -401,8 +409,7 @@ export default function ProjectQuestionnaire({
       const isPercentage = field.type === 'percentage';
       // The backend rejects a percentage outside 0 to 100, and reports it as a
       // banner rather than on the field, so the bound is enforced here too.
-      const outOfRange =
-        errors[name]?.type === 'min' || errors[name]?.type === 'max';
+      const errorType = errors[name]?.type;
       return (
         <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>
           <FormLabel component="legend" error={hasError} sx={{ mb: 0.5 }}>
@@ -415,7 +422,8 @@ export default function ProjectQuestionnaire({
             name={name}
             control={control}
             rules={{
-              ...(isPercentage ? { min: 0, max: 100 } : {}),
+              min: 0,
+              ...(isPercentage ? { max: 100 } : {}),
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextField
@@ -426,7 +434,7 @@ export default function ProjectQuestionnaire({
                 value={value}
                 error={hasError}
                 inputProps={
-                  isPercentage ? { min: 0, max: 100, step: 'any' } : undefined
+                  isPercentage ? { min: 0, max: 100, step: 'any' } : { min: 0 }
                 }
                 InputProps={
                   isPercentage
@@ -438,10 +446,10 @@ export default function ProjectQuestionnaire({
                     : undefined
                 }
                 helperText={
-                  outOfRange
+                  isPercentage && (errorType === 'min' || errorType === 'max')
                     ? t('percentageRange')
-                    : hasError
-                    ? t('requiredField')
+                    : errorType === 'min'
+                    ? t('negativeNotAllowed')
                     : undefined
                 }
               />
@@ -477,6 +485,7 @@ export default function ProjectQuestionnaire({
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       name={`${name}.${row.key}` as any}
                       control={control}
+                      rules={{ min: 0 }}
                       render={({ field: { onChange, onBlur, value } }) => (
                         <TextField
                           type="number"
@@ -485,6 +494,7 @@ export default function ProjectQuestionnaire({
                           onChange={onChange}
                           onBlur={onBlur}
                           value={(value as string | number) ?? ''}
+                          error={isNegative(value)}
                           inputProps={{ min: 0 }}
                         />
                       )}
@@ -494,6 +504,12 @@ export default function ProjectQuestionnaire({
               ))}
             </TableBody>
           </Table>
+          {/* Worded for money because the only row_list today is priceComposition. A row_list for anything else would need the generic message, or one carried in the schema. */}
+          {Object.values(
+            (watchedValues[name] ?? {}) as Record<string, unknown>
+          ).some(isNegative) && (
+            <FormHelperText error>{t('costNotNegative')}</FormHelperText>
+          )}
           {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );
@@ -514,6 +530,22 @@ export default function ProjectQuestionnaire({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             name={name as any}
             control={control}
+            // The table is one field, so its cells cannot carry rules of their own. Checked here so an out-of-range number reaches trigger() and stops the save.
+            rules={{
+              validate: (rows) =>
+                !Array.isArray(rows) ||
+                rows.every((row) =>
+                  columns.every((column) => {
+                    const cell = (row as QuestionnaireSpeciesRow)[column.key];
+                    if (cell === '' || cell === null || cell === undefined)
+                      return true;
+                    if (column.type === 'percentage')
+                      return Number(cell) >= 0 && Number(cell) <= 100;
+                    if (column.type === 'number') return Number(cell) >= 0;
+                    return true;
+                  })
+                ),
+            }}
             render={({ field: { onChange, value } }) => (
               <SpeciesListTable
                 columns={columns}
@@ -598,6 +630,7 @@ export default function ProjectQuestionnaire({
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         name={`${name}.${row.key}.${col.key}` as any}
                         control={control}
+                        rules={{ min: 0 }}
                         render={({ field: { onChange, onBlur, value } }) => (
                           <TextField
                             type="number"
@@ -605,6 +638,7 @@ export default function ProjectQuestionnaire({
                             onChange={onChange}
                             onBlur={onBlur}
                             value={(value as string | number) ?? ''}
+                            error={isNegative(value)}
                             inputProps={{
                               min: 0,
                               style: { textAlign: 'center', width: 60 },
@@ -618,6 +652,14 @@ export default function ProjectQuestionnaire({
               ))}
             </TableBody>
           </Table>
+          {Object.values(
+            (watchedValues[name] ?? {}) as Record<string, unknown>
+          ).some(
+            (row) =>
+              typeof row === 'object' &&
+              row !== null &&
+              Object.values(row as Record<string, unknown>).some(isNegative)
+          ) && <FormHelperText error>{t('negativeNotAllowed')}</FormHelperText>}
           {annotation && <AnnotationCallout text={annotation} />}
         </div>
       );
