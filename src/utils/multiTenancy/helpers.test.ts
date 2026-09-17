@@ -110,7 +110,7 @@ describe('multiTenancy/helpers', () => {
     });
 
     it('does not fall through to appDomain when customDomain is malformed', async () => {
-      // A tenant with a set customDomain is matched only through it: a parse failure returns false for that tenant outright, it does not fall back to checking appDomain.
+      // A parse failure counts as not matching, so the tenant is skipped rather than retried against its appDomain.
       mockFetchWith([
         buildTenant({
           slug: 'acme',
@@ -171,6 +171,22 @@ describe('multiTenancy/helpers', () => {
         slug: 'planet',
         supportedLanguages: ['en'],
       });
+    });
+  });
+
+  describe('getTenantConfigList caching', () => {
+    it('fetches the tenant list once and reuses it', async () => {
+      mockFetchWith([
+        buildTenant({ slug: 'acme', appDomain: 'https://acme.example.org' }),
+      ]);
+      const { getTenantConfigList } = await importHelpers();
+
+      await getTenantConfigList();
+      await getTenantConfigList();
+
+      expect(fetch).toHaveBeenCalledExactlyOnceWith(
+        'https://api.example.org/app/tenants?_scope=deployment'
+      );
     });
   });
 
