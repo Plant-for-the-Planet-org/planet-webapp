@@ -8,14 +8,17 @@ vi.mock('../../redis-client', () => ({ default: null }));
 // The module keeps an in-memory tenant-list cache at module scope, so each test resets modules and re-imports it fresh instead of sharing that cache (and its one-time fetch mock) across tests.
 const importHelpers = () => import('./helpers');
 
-const buildTenant = (overrides: Partial<Tenant['config']>): Tenant => ({
-  id: overrides.slug ?? 'id',
-  name: overrides.slug ?? 'name',
+const buildTenant = (
+  slug: string,
+  overrides: Partial<Tenant['config']> = {}
+): Tenant => ({
+  id: slug,
+  name: slug,
   image: null,
   tenantGoal: null,
   config: {
     appDomain: '',
-    slug: 'planet',
+    slug,
     tenantURL: null,
     languages: ['en'],
     font: {
@@ -70,8 +73,7 @@ describe('multiTenancy/helpers', () => {
   describe('getTenantSlug', () => {
     it('matches a tenant with a custom domain only through the custom domain', async () => {
       mockFetchWith([
-        buildTenant({
-          slug: 'acme',
+        buildTenant('acme', {
           customDomain: 'https://acme.example.org',
           appDomain: 'https://acme.plant-for-the-planet.org',
         }),
@@ -86,8 +88,7 @@ describe('multiTenancy/helpers', () => {
 
     it('resolves a tenant by its app domain when there is no custom domain', async () => {
       mockFetchWith([
-        buildTenant({
-          slug: 'acme',
+        buildTenant('acme', {
           appDomain: 'https://acme.plant-for-the-planet.org',
         }),
       ]);
@@ -100,7 +101,7 @@ describe('multiTenancy/helpers', () => {
 
     it('falls back to the default tenant slug for an unrecognized host', async () => {
       mockFetchWith([
-        buildTenant({ slug: 'acme', appDomain: 'https://acme.example.org' }),
+        buildTenant('acme', { appDomain: 'https://acme.example.org' }),
       ]);
       const { getTenantSlug, DEFAULT_TENANT } = await importHelpers();
 
@@ -112,8 +113,7 @@ describe('multiTenancy/helpers', () => {
     it('does not fall through to appDomain when customDomain is malformed', async () => {
       // A parse failure counts as not matching, so the tenant is skipped rather than retried against its appDomain.
       mockFetchWith([
-        buildTenant({
-          slug: 'acme',
+        buildTenant('acme', {
           customDomain: 'not-a-valid-url',
           appDomain: 'https://acme.example.org',
         }),
@@ -129,8 +129,7 @@ describe('multiTenancy/helpers', () => {
   describe('getTenantConciseInfo', () => {
     it('returns the slug and supported languages for a matched tenant', async () => {
       mockFetchWith([
-        buildTenant({
-          slug: 'acme',
+        buildTenant('acme', {
           appDomain: 'https://acme.example.org',
           languages: ['en', 'de'],
         }),
@@ -145,8 +144,7 @@ describe('multiTenancy/helpers', () => {
 
     it('falls back to the default tenant languages for an unrecognized host', async () => {
       mockFetchWith([
-        buildTenant({
-          slug: 'planet',
+        buildTenant('planet', {
           appDomain: 'https://planet.example.org',
           languages: ['en', 'fr'],
         }),
@@ -177,7 +175,7 @@ describe('multiTenancy/helpers', () => {
   describe('getTenantConfigList caching', () => {
     it('fetches the tenant list once and reuses it', async () => {
       mockFetchWith([
-        buildTenant({ slug: 'acme', appDomain: 'https://acme.example.org' }),
+        buildTenant('acme', { appDomain: 'https://acme.example.org' }),
       ]);
       const { getTenantConfigList } = await importHelpers();
 
@@ -213,7 +211,7 @@ describe('multiTenancy/helpers', () => {
 
     it('serves the last good list when a later refresh fails', async () => {
       const tenants = [
-        buildTenant({ slug: 'acme', appDomain: 'https://acme.example.org' }),
+        buildTenant('acme', { appDomain: 'https://acme.example.org' }),
       ];
       mockFetchWith(tenants);
       const { getTenantConfigList } = await importHelpers();
