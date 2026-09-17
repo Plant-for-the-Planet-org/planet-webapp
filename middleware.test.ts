@@ -12,7 +12,9 @@ const mockTenant = (
   slug: string,
   supportedLanguages: string[] = ['en', 'de', 'fr']
 ) =>
-  vi.mocked(getTenantConciseInfo).mockResolvedValue({ slug, supportedLanguages });
+  vi
+    .mocked(getTenantConciseInfo)
+    .mockResolvedValue({ slug, supportedLanguages });
 
 const buildRequest = (
   path: string,
@@ -30,13 +32,14 @@ const buildRequest = (
     },
   });
 
-const redirectPathname = (res: Response) => {
+const getRedirectUrl = (res: Response) => {
   const location = res.headers.get('location');
   expect(location).not.toBeNull();
   return new URL(location as string);
 };
 
-const rewrittenPathname = (res: Response) => {
+// x-middleware-rewrite is a Next internal convention, not a web standard, so a Next upgrade can rename it and break these tests without the rewrite logic changing.
+const getRewrittenUrl = (res: Response) => {
   const rewrite = res.headers.get('x-middleware-rewrite');
   expect(rewrite).not.toBeNull();
   return new URL(rewrite as string);
@@ -52,13 +55,13 @@ describe('middleware', () => {
       const res = await middleware(buildRequest('/'));
 
       expect(res.status).toBe(307);
-      expect(redirectPathname(res).pathname).toBe('/en/');
+      expect(getRedirectUrl(res).pathname).toBe('/en/');
     });
 
     it('preserves the query string across the locale redirect', async () => {
       const res = await middleware(buildRequest('/about?x=1'));
 
-      const location = redirectPathname(res);
+      const location = getRedirectUrl(res);
       expect(location.pathname).toBe('/en/about');
       expect(location.search).toBe('?x=1');
     });
@@ -71,7 +74,7 @@ describe('middleware', () => {
         })
       );
 
-      expect(redirectPathname(res).pathname).toBe('/de/about');
+      expect(getRedirectUrl(res).pathname).toBe('/de/about');
     });
 
     it('does not redirect when the path already carries a supported locale', async () => {
@@ -85,7 +88,7 @@ describe('middleware', () => {
       // The path already carries "en", but the tenant only supports "de", so this still counts as locale-missing and gets redirected.
       const res = await middleware(buildRequest('/en/about'));
 
-      expect(redirectPathname(res).pathname).toBe('/de/about');
+      expect(getRedirectUrl(res).pathname).toBe('/de/about');
     });
   });
 
@@ -95,30 +98,35 @@ describe('middleware', () => {
         buildRequest('/en/about', { host: 'acme.example.org' })
       );
 
-      expect(rewrittenPathname(res).pathname).toBe('/sites/acme/en/about');
+      expect(getRewrittenUrl(res).pathname).toBe('/sites/acme/en/about');
     });
 
-    it('resolves the tenant using the request host', async () => {
+    it('passes the request host into the tenant lookup', async () => {
       await middleware(buildRequest('/en/about', { host: 'acme.example.org' }));
 
-      expect(getTenantConciseInfo).toHaveBeenCalledWith('acme.example.org');
-    });
-
-    it('does not trigger the /sites canonical-access guard for a locale-prefixed path', async () => {
-      // Locale resolution runs first, so a locale-prefixed path never hits the "startsWith('/sites')" guard below - the guard is effectively unreachable today.
-      const res = await middleware(buildRequest('/en/sites/acme/about'));
-
-      expect(rewrittenPathname(res).pathname).toBe(
-        '/sites/acme/en/sites/acme/about'
+      expect(getTenantConciseInfo).toHaveBeenCalledExactlyOnceWith(
+        'acme.example.org'
       );
     });
   });
 
   describe('NEXT_LOCALE cookie', () => {
-    it('sets the cookie to the resolved locale when none was set before', async () => {
-      const res = await middleware(buildRequest('/en/about'));
+    it('does not set the cookie on the redirect hop for locale-less paths, only on the request that follows', async () => {
+      const res = await middleware(buildRequest('/about'));
 
-      expect(res.cookies.get('NEXT_LOCALE')?.value).toBe('en');
+      expect(res.cookies.get('NEXT_LOCALE')).toBeUndefined();
+    });
+
+    it('sets the cookie to the path locale when no cookie was set before', async () => {
+      const res = await middleware(buildRequest('/de/about'));
+
+      expect(res.cookies.get('NEXT_LOCALE')).toMatchObject({
+        value: 'de',
+        path: '/',
+        sameSite: 'lax',
+        maxAge: 31536000,
+        secure: true,
+      });
     });
 
     it('updates the cookie when the path locale differs from the stored one', async () => {
@@ -135,6 +143,15 @@ describe('middleware', () => {
       );
 
       expect(res.cookies.get('NEXT_LOCALE')).toBeUndefined();
+    });
+  });
+
+  describe('known gaps, pinned but not approved', () => {
+    // The /sites guard in middleware.ts is meant to block direct access to the internal path shape, but locale resolution redirects first so the guard's condition is never true. See #3137.
+    it('lets a direct /sites request through the guard (#3137)', async () => {
+      const res = await middleware(buildRequest('/sites/acme/about'));
+
+      expect(getRedirectUrl(res).pathname).toBe('/en/sites/acme/about');
     });
   });
 });
