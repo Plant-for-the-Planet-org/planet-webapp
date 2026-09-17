@@ -111,17 +111,31 @@ Do not let a pre-existing broken E2E job become a false Next.js 16 regression.
 
 ## 0.3 Add the minimum regression suite
 
+**Status: Done.** See PR [#3119](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3119) (`feature/phase-0-3-regression-suite`).
+
 Add automated coverage for the highest-risk shared infrastructure:
 
-- tenant resolution,
-- hostname rewrites,
-- locale redirects,
-- `NEXT_LOCALE` cookie behavior,
-- authentication redirects,
-- embed-mode URL handling,
-- at least one donation/payment-path smoke test.
+- tenant resolution — added,
+- hostname rewrites — added,
+- locale redirects — added,
+- `NEXT_LOCALE` cookie behavior — added,
+- authentication redirects — already covered by `src/utils/authRedirectGuard.test.ts`,
+- embed-mode URL handling — already covered by `src/utils/getDonationUrl.test.ts`,
+- at least one donation/payment-path smoke test — already covered by `src/utils/getDonationUrl.test.ts`. The webapp has no checkout flow; it hands off to the donation app, and this test covers that handoff.
 
 The highest-risk parts of this application are the request-wide behaviors, not the individual route files.
+
+### Known gaps in the suite
+
+Phase 3 asks for more than this suite covers. Listed here so the safety net is not overstated.
+
+- **Redis is mocked out.** Nothing tests reading from it, writing to it, or falling back when it is missing. Phase 3 needs this verified by hand. The in-memory cache and the stale-cache fallback are covered.
+- **`getTenantConfig` and `constructPathsForTenantSlug` have no tests.** The second one decides which pages get built, and has a Heroku-only branch that Phase 1 will either keep or remove.
+- **Locale negotiation is only tested with a cookie present.** The cookie wins over `Accept-Language`, so the first-visit path is unproven.
+- **The middleware and the tenant helpers are never run together.** Each is tested with the other mocked out, so a change to what `getTenantConciseInfo` returns would pass both suites.
+- **A dead security guard is pinned, not fixed.** See issue [#3137](https://github.com/Plant-for-the-Planet-org/planet-webapp/issues/3137).
+
+E2E coverage is not part of this item. See 0.2.
 
 ---
 
