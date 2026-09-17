@@ -167,6 +167,8 @@ This phase should eliminate most of the custom webpack/Sentry/tooling debt befor
 
 ## 1. Migrate Sentry first
 
+**Status: Done.** See PR [#3121](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3121) (`feature/migrate-sentry-nextjs`).
+
 Move to the modern integration:
 
 ```text
