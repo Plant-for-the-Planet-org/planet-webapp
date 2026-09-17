@@ -56,6 +56,16 @@ const mockFetchWith = (tenants: Tenant[]) => {
   );
 };
 
+const mockFetchFailure = () => {
+  const failingFetch = vi.fn().mockRejectedValue(new Error('network down'));
+  vi.stubGlobal('fetch', failingFetch);
+  return failingFetch;
+};
+
+const mockFetchStatus = (status: number) => {
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status }));
+};
+
 describe('multiTenancy/helpers', () => {
   beforeEach(() => {
     vi.resetModules();
@@ -190,20 +200,14 @@ describe('multiTenancy/helpers', () => {
 
   describe('getTenantConfigList resilience', () => {
     it('returns an empty list instead of throwing when the tenant API request fails', async () => {
-      vi.stubGlobal(
-        'fetch',
-        vi.fn().mockRejectedValue(new Error('network down'))
-      );
+      mockFetchFailure();
       const { getTenantConfigList } = await importHelpers();
 
       await expect(getTenantConfigList()).resolves.toEqual([]);
     });
 
     it('returns an empty list instead of throwing on a non-2xx response', async () => {
-      vi.stubGlobal(
-        'fetch',
-        vi.fn().mockResolvedValue({ ok: false, status: 500 })
-      );
+      mockFetchStatus(500);
       const { getTenantConfigList } = await importHelpers();
 
       await expect(getTenantConfigList()).resolves.toEqual([]);
@@ -221,8 +225,7 @@ describe('multiTenancy/helpers', () => {
       // The cached list is good for four hours, so the clock has to move past that before a second call will try to refresh at all.
       vi.useFakeTimers();
       vi.setSystemTime(Date.now() + 5 * 60 * 60 * 1000);
-      const failingFetch = vi.fn().mockRejectedValue(new Error('network down'));
-      vi.stubGlobal('fetch', failingFetch);
+      const failingFetch = mockFetchFailure();
 
       await expect(getTenantConfigList()).resolves.toEqual(tenants);
       // Without this the test would also pass on an unexpired cache, which never reaches the stale-cache branch.
