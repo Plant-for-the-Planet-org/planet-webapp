@@ -64,6 +64,7 @@ describe('multiTenancy/helpers', () => {
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.unstubAllEnvs();
+    vi.useRealTimers();
   });
 
   describe('getTenantSlug', () => {
@@ -192,6 +193,26 @@ describe('multiTenancy/helpers', () => {
       const { getTenantConfigList } = await importHelpers();
 
       await expect(getTenantConfigList()).resolves.toEqual([]);
+    });
+
+    it('serves the last good list when a later refresh fails', async () => {
+      const tenants = [
+        buildTenant({ slug: 'acme', appDomain: 'https://acme.example.org' }),
+      ];
+      mockFetchWith(tenants);
+      const { getTenantConfigList } = await importHelpers();
+
+      await expect(getTenantConfigList()).resolves.toEqual(tenants);
+
+      // The cached list is good for four hours, so the clock has to move past that before a second call will try to refresh at all.
+      vi.useFakeTimers();
+      vi.setSystemTime(Date.now() + 5 * 60 * 60 * 1000);
+      const failingFetch = vi.fn().mockRejectedValue(new Error('network down'));
+      vi.stubGlobal('fetch', failingFetch);
+
+      await expect(getTenantConfigList()).resolves.toEqual(tenants);
+      // Without this the test would also pass on an unexpired cache, which never reaches the stale-cache branch.
+      expect(failingFetch).toHaveBeenCalledOnce();
     });
   });
 });
