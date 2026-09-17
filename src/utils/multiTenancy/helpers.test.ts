@@ -2,39 +2,46 @@ import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+// redis-client builds a real Upstash client when REDIS_URL and REDIS_TOKEN are set, so without this the tests would hit the network on any machine that has them. null keeps them on the no-cache path.
+vi.mock('../../redis-client', () => ({ default: null }));
+
 // The module keeps an in-memory tenant-list cache at module scope, so each test resets modules and re-imports it fresh instead of sharing that cache (and its one-time fetch mock) across tests.
 const importHelpers = () => import('./helpers');
 
-const buildTenant = (overrides: Partial<Tenant['config']>): Tenant =>
-  ({
-    id: overrides.slug ?? 'id',
-    name: overrides.slug ?? 'name',
-    image: null,
-    tenantGoal: null,
-    config: {
-      appDomain: '',
-      slug: 'planet',
-      tenantURL: null,
-      languages: ['en'],
-      font: {
-        primaryFontFamily: null,
-        secondaryFontFamily: null,
-        primaryFontURL: null,
-        secondaryFontURL: null,
-      },
-      header: { isSecondaryTenant: false, tenantLogoURL: '', tenantLogoLink: '', items: [] },
-      meta: {
-        title: '',
-        description: '',
-        image: '',
-        twitterHandle: '',
-        locale: 'en',
-      },
-      footerLinks: [],
-      manifest: '',
-      ...overrides,
+const buildTenant = (overrides: Partial<Tenant['config']>): Tenant => ({
+  id: overrides.slug ?? 'id',
+  name: overrides.slug ?? 'name',
+  image: null,
+  tenantGoal: null,
+  config: {
+    appDomain: '',
+    slug: 'planet',
+    tenantURL: null,
+    languages: ['en'],
+    font: {
+      primaryFontFamily: null,
+      secondaryFontFamily: null,
+      primaryFontURL: null,
+      secondaryFontURL: null,
     },
-  }) as Tenant;
+    header: {
+      isSecondaryTenant: false,
+      tenantLogoURL: '',
+      tenantLogoLink: '',
+      items: [],
+    },
+    meta: {
+      title: '',
+      description: '',
+      image: '',
+      twitterHandle: '',
+      locale: 'en',
+    },
+    footerLinks: [],
+    manifest: '',
+    ...overrides,
+  },
+});
 
 const mockFetchWith = (tenants: Tenant[]) => {
   vi.stubGlobal(
@@ -49,16 +56,18 @@ const mockFetchWith = (tenants: Tenant[]) => {
 describe('multiTenancy/helpers', () => {
   beforeEach(() => {
     vi.resetModules();
+    // The source interpolates this into the tenant API URL.
     vi.stubEnv('API_ENDPOINT', 'https://api.example.org');
   });
 
+  // clearMocks and restoreMocks do not touch stubs, so the real fetch and env have to be put back by hand.
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.unstubAllEnvs();
   });
 
   describe('getTenantSlug', () => {
-    it('resolves a tenant by its custom domain', async () => {
+    it('matches a tenant with a custom domain only through the custom domain', async () => {
       mockFetchWith([
         buildTenant({
           slug: 'acme',
@@ -66,9 +75,12 @@ describe('multiTenancy/helpers', () => {
           appDomain: 'https://acme.plant-for-the-planet.org',
         }),
       ]);
-      const { getTenantSlug } = await importHelpers();
+      const { getTenantSlug, DEFAULT_TENANT } = await importHelpers();
 
       await expect(getTenantSlug('acme.example.org')).resolves.toBe('acme');
+      await expect(
+        getTenantSlug('acme.plant-for-the-planet.org')
+      ).resolves.toBe(DEFAULT_TENANT);
     });
 
     it('resolves a tenant by its app domain when there is no custom domain', async () => {
@@ -124,9 +136,7 @@ describe('multiTenancy/helpers', () => {
       ]);
       const { getTenantConciseInfo } = await importHelpers();
 
-      await expect(
-        getTenantConciseInfo('acme.example.org')
-      ).resolves.toEqual({
+      await expect(getTenantConciseInfo('acme.example.org')).resolves.toEqual({
         slug: 'acme',
         supportedLanguages: ['en', 'de'],
       });
@@ -165,7 +175,10 @@ describe('multiTenancy/helpers', () => {
 
   describe('getTenantConfigList resilience', () => {
     it('returns an empty list instead of throwing when the tenant API request fails', async () => {
-      vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network down')));
+      vi.stubGlobal(
+        'fetch',
+        vi.fn().mockRejectedValue(new Error('network down'))
+      );
       const { getTenantConfigList } = await importHelpers();
 
       await expect(getTenantConfigList()).resolves.toEqual([]);
