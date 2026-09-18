@@ -296,9 +296,10 @@
       "menuText": "Due Diligence and Compliance",
       "title": "Due Diligence and Compliance",
       "subtitle": "What we need from your organization, and where it stands.",
-      "calloutWhat": "Due diligence is how we confirm your organization is a legally recognized charity. We ask for a short list of documents and a few details about the organization, and someone here reviews them.",
-      "calloutRenewal": "It has to be renewed every two years, so we will ask for current papers again before your confirmation runs out.",
-      "calloutWhenItMatters": "It only matters if your projects collect donations. If none of them do yet, nothing here is urgent, and you can still prepare it in advance.",
+      "calloutWhat": "As part of our due diligence process, this verification is intended to confirm that your organization is a legally recognized charity, its governance structure, and alignment with our ethical standards.",
+      "calloutRenewal": "This charity status must be renewed every {years} years. Accordingly, we will request current documentation from you again {months} months before it expires.",
+      "calloutWhenItMatters": "This requirement applies only if your projects are collecting donations. If none of your projects do so yet, this is not time-sensitive, but you are welcome to prepare the documentation in advance.",
+      "calloutContact": "Questions about the verification requirements can be sent to Maximilian Schmid at <link>maximilian.schmid@plant-for-the-planet.org</link>.",
       "organizationData": "Organization Data",
       "organizationDataHint": "These details are checked against the documents you upload below.",
       "registrationNumber": "Official Registration Number",
@@ -335,7 +336,8 @@
       "reviewerFeedback": "Feedback from our reviewer",
       "submitTitle": "Submit for Review",
       "submitReady": "Everything is filled in. Submit it and we will review it.",
-      "submitIncomplete": "Still outstanding: {outstanding}. You can still submit if you cannot get one of these, and tell us why.",
+      "submitIncomplete": "Please note that your application can only be submitted once all required documents have been uploaded. If you are unable to obtain a specific document, please contact us with a brief explanation, and we will advise on how to proceed.",
+      "outstandingTitle": "The following information is outstanding:",
       "submitWaiting": "We have your submission and are reviewing it. You can keep uploading in the meantime.",
       "submit": "Submit for Review"
     }

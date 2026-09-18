@@ -6,7 +6,7 @@ import type {
 } from '../../../common/types/dueDiligence';
 
 import { useState } from 'react';
-import { Button } from '@mui/material';
+import { Alert, Box, Button } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import { useTranslations } from 'next-intl';
 import styles from '../DueDiligence.module.scss';
@@ -20,9 +20,8 @@ interface Props {
 }
 
 /**
- * Submitting is the only thing that reaches a reviewer, and it stays available
- * on an incomplete checklist on purpose: an organisation that cannot obtain one
- * of the documents has to be able to say so rather than be locked out.
+ * Submitting is the only thing that reaches a reviewer, and it needs the whole filing: every required document and every organisation field.
+ * An organisation that cannot obtain one of them is asked to write to us instead, because a reviewer has nothing to act on without it.
  */
 export default function SubmitForReview({
   checklist,
@@ -59,15 +58,35 @@ export default function SubmitForReview({
         {isAwaitingReview
           ? t('submitWaiting')
           : outstanding.length > 0
-          ? t('submitIncomplete', { outstanding: outstanding.join(', ') })
+          ? t('submitIncomplete')
           : t('submitReady')}
       </span>
+
+      {!isAwaitingReview && outstanding.length > 0 && (
+        <Alert severity="warning" sx={{ mt: 1, mb: 1 }}>
+          {t('outstandingTitle')}
+          <Box
+            component="ul"
+            sx={{
+              m: 0,
+              mt: 0.75,
+              pl: 2.5,
+              display: 'grid',
+              gap: 0.25,
+            }}
+          >
+            {outstanding.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </Box>
+        </Alert>
+      )}
 
       <div className={styles.actions}>
         <Button
           variant="contained"
           onClick={submit}
-          disabled={isSubmitting || isAwaitingReview}
+          disabled={isSubmitting || isAwaitingReview || outstanding.length > 0}
         >
           {isSubmitting ? <div className="spinner" /> : t('submit')}
         </Button>
