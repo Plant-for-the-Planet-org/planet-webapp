@@ -6,7 +6,7 @@ import type {
 import type { SetState } from '../../../../common/types/common';
 
 import { useTranslations } from 'next-intl';
-import { Popup } from 'react-map-gl-v7/maplibre';
+import { Popup } from 'react-map-gl/maplibre';
 import RegisteredTreePopupIcon from '../../../../../../public/assets/images/icons/myForestMapIcons/RegisteredTreePopupIcon';
 import styles from '../ContributionsMap.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';

@@ -6,11 +6,13 @@ import type {
   SingleYearTimeTravelData,
 } from '../../../../utils/mapsV2/timeTravel';
 import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
+import type { ErrorEvent as MaplibreErrorEvent } from 'maplibre-gl';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import MaplibreCompare from '@maplibre/maplibre-gl-compare';
 import '@maplibre/maplibre-gl-compare/dist/maplibre-gl-compare.css';
 import { Map as MaplibreMap } from 'maplibre-gl';
+import '../../../../utils/mapsV2/maplibreWorker';
 import TimeTravelDropdown from '../../TimeTravelDropdown';
 import styles from './TimeTravel.module.scss';
 import themeProperties from '../../../../theme/themeProperties';
@@ -149,19 +151,24 @@ export default function TimeTravel({
     sitesGeoJson,
   ]);
 
-  // Add this helper function before the initializeMap function
+  // The map's error event carries the failing source id alongside the error, and tile fetches surface an AJAXError with an HTTP status.
+  // MapLibre declares neither on ErrorEvent (its `error` is only `{ message: string }`), so both are read defensively.
   const isTileError = (
-    e: ErrorEvent & Object
-  ): e is ErrorEvent & Object & { sourceId: string } => {
-    const eventWithProps = e as ErrorEvent & Object & Record<string, unknown>;
+    e: MaplibreErrorEvent
+  ): e is MaplibreErrorEvent & { sourceId: string } => {
+    const { sourceId } = e as MaplibreErrorEvent & { sourceId?: unknown };
+    if (typeof sourceId !== 'string' || !sourceId.includes('imagery-esri')) {
+      return false;
+    }
+
+    const error = e.error as
+      | { message?: string; status?: number; name?: string }
+      | undefined;
 
     return (
-      'sourceId' in e &&
-      typeof eventWithProps.sourceId === 'string' &&
-      (eventWithProps.sourceId as string).includes('imagery-esri') &&
-      (e.error?.message?.includes('Failed to fetch') ||
-        e.error?.status === 404 ||
-        e.error?.name === 'NetworkError')
+      error?.message?.includes('Failed to fetch') === true ||
+      error?.status === 404 ||
+      error?.name === 'NetworkError'
     );
   };
 
