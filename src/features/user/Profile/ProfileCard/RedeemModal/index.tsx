@@ -14,12 +14,12 @@ import {
   EnterRedeemCode,
 } from '../../../../common/RedeemCode';
 import {
-  useAuthStore,
   useMyForestStore,
   useUserStore,
   useErrorHandlingStore,
 } from '../../../../../stores';
 import { useApi } from '../../../../../hooks/useApi';
+import { useIsProfileReady } from '../../../../../hooks/useAuthReadiness';
 
 interface RedeemModal {
   redeemModalOpen: boolean;
@@ -43,7 +43,7 @@ export default function RedeemModal({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
-  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const isProfileReady = useIsProfileReady();
   const errors = useErrorHandlingStore((state) => state.errors);
   // store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
@@ -58,7 +58,8 @@ export default function RedeemModal({
     const payload = {
       code: data,
     };
-    if (isAuthResolved && userProfile) {
+    // userProfile is re-checked here (isProfileReady already implies it) so TS can narrow it for the spread below.
+    if (isProfileReady && userProfile) {
       try {
         const res = await postApiAuthenticated<
           RedeemedCodeData,

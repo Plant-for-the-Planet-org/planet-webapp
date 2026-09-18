@@ -22,12 +22,9 @@ import SingleColumnView from '../../common/Layout/SingleColumnView';
 import { useRouter } from 'next/router';
 import { generateProjectLink } from '../../../utils/projectV2';
 import { useApi } from '../../../hooks/useApi';
+import { useIsAuthReady } from '../../../hooks/useAuthReadiness';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import {
-  useAuthStore,
-  useUserStore,
-  useErrorHandlingStore,
-} from '../../../stores';
+import { useUserStore, useErrorHandlingStore } from '../../../stores';
 
 type ProjectProperties =
   | ProfileProjectPropertiesFund
@@ -128,13 +125,11 @@ export default function ProjectsContainer() {
   const tManageProjects = useTranslations('ManageProjects');
   const { getApiAuthenticated } = useApi();
   const { localizedPath } = useLocalizedPath();
+  const isAuthReady = useIsAuthReady();
   // local state
   const [projects, setProjects] = useState<ProfileProjectFeature[]>([]);
   const [loader, setLoader] = useState(true);
   // store: state
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
   const userProfile = useUserStore((state) => state.userProfile);
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
