@@ -229,29 +229,43 @@ This materially reduces the custom webpack surface before the Next.js 16 build-s
 
 ## 2. Fix Storybook before Next.js 16
 
+**Status: Done.** Branch `feature/storybook-10-upgrade`, cut from `feature/nextjs-15-upgrade`. Storybook went from 8.6.18 to 10.6.0, not the 9.x line this section originally named. By the time the work ran, 10.6.0 was the stable release and its `@storybook/nextjs` peer range already covered `next ^16` and `react ^18`, so it met the Next.js 16 requirement while avoiding a second major migration a few months later. The upgrade CLI refuses to skip a major, so it ran as 8 to 9 to 10 in one branch.
+
 Storybook is part of CI and must be treated as an upgrade blocker, not optional local tooling.
 
-Current issue:
+Original issue:
 
 ```text
 @storybook/nextjs@8.6.18
 ```
 
-declares support through Next.js 15, not Next.js 16.
+declared support through Next.js 15, not Next.js 16.
 
-`.github/workflows/chromatic.yml` runs `build-storybook` on pushes to `develop`, so leaving this unchanged will break CI even if the application itself builds.
+`.github/workflows/chromatic.yml` runs `build-storybook` on pushes to `develop`, so leaving this unchanged would have broken CI even if the application itself built.
 
-### Task
+### What changed
 
-Upgrade the Storybook stack to a Next.js 16-compatible 9.x line and verify:
+- `@storybook/nextjs`, `@storybook/addon-links`, `storybook`, and `eslint-plugin-storybook` are pinned at `10.6.0`.
+- `@storybook/addon-essentials`, `@storybook/addon-interactions`, `@storybook/addon-actions`, `@storybook/react`, `@storybook/test`, and `@storybook/theming` were removed. Storybook 9 folded all of them into the `storybook` core package; `@storybook/addon-docs` is now a separate explicit addon and was added.
+- The 45 story files moved from `import type { Meta, StoryObj } from '@storybook/react'` to `'@storybook/nextjs'`, which is the framework-based configuration Storybook 9 requires. `.storybook/preview.js` moved from `@storybook/theming` to `storybook/theming`, and the one `fn` import moved from `@storybook/test` to `storybook/test`. All of this was applied by the official automigrations, not by hand.
+- The framework stays `@storybook/nextjs` on webpack. The `nextjs-to-nextjs-vite` automigration was offered and deliberately not taken, because `.storybook/main.js` carries a `webpackFinal` hook for the `fs` and `path-browserify` fallbacks. Moving to Vite is a separate decision, not part of a compatibility fix.
+- The `addon-mcp` automigration installed `@storybook/addon-mcp`. It was removed again as unrelated to this upgrade.
+- `.storybook/main.js` lost three dead entries: the `*.stories.mdx` glob (the repo has no MDX stories and Storybook 9 dropped that format), the `features.emotionAlias` flag (a Storybook 6-era flag that no longer exists), and an empty `docs: {}`.
+- `.github/workflows/chromatic.yml` moved from Node 18 to Node 24. Storybook 9 and 10 both require `node >= 20`, so the workflow would have failed on install regardless of the build. Node 24 matches the `engines` field in `package.json`.
+- `tsconfig.json` now excludes `storybook-static`. Running `build-storybook` locally copies `public/` into that directory, which includes a few `.tsx` files, and `tsc --noEmit` was then typechecking build output.
 
-```bash
-npm run build-storybook
-```
+### Verification
 
-Also verify the Chromatic workflow end to end.
+- `npm run build-storybook` passes. The generated `index.json` holds 135 entries across all 45 story files, so nothing dropped out of the index silently.
+- `npm run storybook` serves and responds on port 6006.
+- `npm run lint` reports 0 errors. `eslint-plugin-storybook@10` declares `eslint >= 8`, so it works on the current ESLint 8 without waiting for the 1.3 flat-config migration.
+- `npx tsc --noEmit` went from 128 to 125 pre-existing errors, with no new ones. The three that cleared were the unresolvable `@storybook/test` import and the two `storybook-static` files.
+- `npm test` passes, 68 tests across 6 files.
+- `npm run build` (Next.js 15) still passes.
 
-Keep Storybook changes in Phase 1 so the Next.js 16 PR is not polluted by an unrelated Storybook major migration.
+Still outstanding: the Chromatic workflow itself has only been verified by reasoning about the Node requirement, not by an actual run. It fires on pushes to `develop`, so it gets its real test when this merges. `chromatic` is still on `^6.24.1` and `chromaui/action` on `v1`; both are old, and refreshing them was left out to keep this branch to the Storybook migration.
+
+Keeping Storybook changes in Phase 1 means the Next.js 16 PR is not polluted by an unrelated Storybook major migration.
 
 ---
 
@@ -450,7 +464,7 @@ Skipped for now:
 
 - 0.2 Cypress repair
 - 0.4 Typecheck CI baseline
-- 1.2 Storybook upgrade
+- 1.2 Storybook upgrade (done since, on branch `feature/storybook-10-upgrade`)
 - 1.3 ESLint modernization
 - 1.4 `@next/bundle-analyzer` / Netlify plugin upgrades
 - 1.5 Dead dependency removal
@@ -870,7 +884,7 @@ Dependency/tooling modernization on Next.js 14
 │
 ├─ Sentry → @sentry/nextjs
 │  └─ remove RewriteFrames/getConfig/serverRuntimeConfig
-├─ Storybook 8 → Next-16-compatible Storybook 9
+├─ Storybook 8 → Storybook 10 (done)
 ├─ ESLint 9 + flat config + @typescript-eslint v8 path
 ├─ Upgrade @next/bundle-analyzer
 ├─ Upgrade/remove Netlify plugin
@@ -993,7 +1007,7 @@ The Next.js 16 upgrade is complete when:
 - [ ] Existing `next/router` behavior works.
 - [ ] Existing `next/head` behavior works.
 - [ ] Existing `getStaticProps` / `getStaticPaths` behavior works.
-- [ ] Storybook builds on the Next.js 16-compatible Storybook version.
+- [x] Storybook builds on the Next.js 16-compatible Storybook version (10.6.0).
 - [ ] Chromatic CI passes.
 - [ ] ESLint runs on the modern supported dependency stack and flat config.
 - [ ] The typecheck job exists with a recorded baseline and does not show an unexplained material regression.
