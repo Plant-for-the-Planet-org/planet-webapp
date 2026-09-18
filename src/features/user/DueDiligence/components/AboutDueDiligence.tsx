@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 
 import { useTranslations } from 'next-intl';
-import styles from '../DueDiligence.module.scss';
+import Callout from '../../../common/Layout/Callout';
 
 /**
  * Both numbers belong to the backend and neither is in the checklist response, so they are repeated here.
@@ -21,7 +21,7 @@ export default function AboutDueDiligence(): ReactElement {
   const t = useTranslations('Me.dueDiligence');
 
   return (
-    <aside className={styles.callout}>
+    <Callout>
       <p>{t('calloutWhat')}</p>
       <p>
         {t('calloutRenewal', {
@@ -35,6 +35,6 @@ export default function AboutDueDiligence(): ReactElement {
           link: (chunks) => <a href={`mailto:${SUPPORT_EMAIL}`}>{chunks}</a>,
         })}
       </p>
-    </aside>
+    </Callout>
   );
 }
