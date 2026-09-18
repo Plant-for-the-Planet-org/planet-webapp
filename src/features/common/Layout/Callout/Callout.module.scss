@@ -25,4 +25,13 @@
     display: grid;
     gap: 4px;
   }
+
+  // The global reset puts `font: inherit` on em and strong among 80 other elements, so emphasis in translated copy renders flat. Restored here rather than in the reset, which would change type across the app.
+  em {
+    font-style: italic;
+  }
+
+  strong {
+    font-weight: bold;
+  }
 }

@@ -303,7 +303,7 @@
     "dataReviewSummary": "Plant-for-the-Planet will review and validate your project details and uploaded documents.",
     "preSubmissionChecklist": "<bold>Pre-Submission Checklist:</bold>",
     "preSubmissionItems": {
-      "organizationProfile": "<bold>Organization Profile:</bold> Ensure your organization\u2019s general documents in the <link>Due Diligence</link> section are up to date. <italic>(Skip if already verified with current files).</italic>",
+      "organizationProfile": "<bold>Organization Profile:</bold> Ensure your organization\u2019s general documents in the <link>Due Diligence</link> section are up to date <italic>(Skip if already verified with current files).</italic>",
       "projectFiles": "<bold>Project Files:</bold> Ensure all specific documents for this new project are uploaded."
     },
     "whatHappensNext": "<bold>What happens next?</bold>",
