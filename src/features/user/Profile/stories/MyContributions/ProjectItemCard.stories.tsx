@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import type { MyForestProject } from '../../../../common/types/myForest';
 import type { MyContributionsSingleProject } from '../../../../common/types/myForest';
 

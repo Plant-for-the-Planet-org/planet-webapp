@@ -1,17 +1,13 @@
 module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-  ],
+  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  addons: ['@storybook/addon-links', '@storybook/addon-docs'],
 
   framework: {
     name: '@storybook/nextjs',
     options: {},
   },
 
-  webpackFinal: async (config, { configType }) => {
+  webpackFinal: async (config) => {
     config.resolve = {
       ...config.resolve,
       fallback: {
@@ -21,17 +17,10 @@ module.exports = {
       },
     };
 
-    // Return the altered config
     return config;
   },
 
-  features: {
-    emotionAlias: false,
-  },
-
   staticDirs: ['../public'],
-
-  docs: {},
 
   env: (config) => ({
     ...config,
