@@ -55,6 +55,14 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         icon: <UserIcon />,
       },
       {
+        key: 'due-diligence',
+        title: t('dueDiligence.menuText'),
+        path: '/profile/due-diligence',
+        icon: <FactCheckOutlinedIcon />,
+        // Shown to every organisation, with or without a project. An organisation that has not created one yet still has papers to file.
+        accessLevel: ['tpo'],
+      },
+      {
         key: 'payments',
         title: t('payments'),
         icon: <DonateIcon />,
@@ -99,15 +107,6 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         icon: <MapIcon />,
         accessLevel: ['tpo'],
         matchPattern: 'prefix', // Now projects will match /profile/projects/new-project
-      },
-      {
-        key: 'due-diligence',
-        title: t('dueDiligence.menuText'),
-        path: '/profile/due-diligence',
-        icon: <FactCheckOutlinedIcon />,
-        // Shown to every organisation, with or without a project. An
-        // organisation that has not created one yet still has papers to file.
-        accessLevel: ['tpo'],
       },
       {
         key: 'planet-cash',
