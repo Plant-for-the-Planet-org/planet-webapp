@@ -107,6 +107,26 @@ const ProjectMarkersGL = ({ projects }: Props) => {
     };
   }, [mapInstance]);
 
+  // Explore raster layers (e.g. forest cover) are appended to the top of the style when toggled on, which hides the pins. Keep the marker layer last in the draw order.
+  useEffect(() => {
+    const map = mapInstance?.getMap();
+    if (!map) return;
+    const keepMarkersOnTop = () => {
+      const order = map.getLayersOrder();
+      if (
+        order.includes(PROJECT_MARKERS_LAYER) &&
+        order[order.length - 1] !== PROJECT_MARKERS_LAYER
+      ) {
+        map.moveLayer(PROJECT_MARKERS_LAYER);
+      }
+    };
+    keepMarkersOnTop();
+    map.on('styledata', keepMarkersOnTop);
+    return () => {
+      map.off('styledata', keepMarkersOnTop);
+    };
+  }, [mapInstance]);
+
   // Hover/click interactions on the marker layer.
   const [popupProject, setPopupProject] = useState<MapProject | null>(null);
   const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
