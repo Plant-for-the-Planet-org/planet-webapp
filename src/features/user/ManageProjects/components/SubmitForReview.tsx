@@ -7,7 +7,15 @@ import SubmitForReviewImage from '../../../../../public/assets/images/icons/mana
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
 import { useTranslations } from 'next-intl';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
-import { Alert, Box, Button, FormControlLabel, Stack } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  FormControlLabel,
+  Link as MuiLink,
+  Stack,
+} from '@mui/material';
+import Link from 'next/link';
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
@@ -15,6 +23,7 @@ import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import MissingFieldsSummary from './microComponent/MissingFieldsSummary';
+import Callout from '../../../common/Layout/Callout';
 import { fieldAnchorId } from '../utils/completeness';
 
 /** Tab label for each section whose completeness is fetched, for the failure notice. */
@@ -30,39 +39,16 @@ const richTags = {
   italic: (chunks: ReactNode) => <em>{chunks}</em>,
 };
 
-/**
- * Where the organizational documents go until RO-onboarding gives the profile somewhere to upload them.
- * A person, not a role address, because Max asked for his own while he handles these by hand.
- */
-const ORGANIZATION_DOCUMENTS_EMAIL =
-  'maximilian.schmid@plant-for-the-planet.org';
-
-const reviewDocumentKeys = [
-  'reviewDocuments.legalAccreditation',
-  'reviewDocuments.organizationBylaws',
-  'reviewDocuments.taxExemptStatus',
-  'reviewDocuments.bankAccountStatement',
-  'reviewDocuments.annualReport',
-  'reviewDocuments.financialReport',
+const preSubmissionKeys = [
+  'preSubmissionItems.organizationProfile',
+  'preSubmissionItems.projectFiles',
 ] as const;
 
-/**
- * Parked wording, restored verbatim once RO-onboarding ships.
- *
- * This is the text the current copy replaced. It asked the RO to keep the organization documents
- * in their profile up to date, which is the area RO-onboarding builds and nothing points at yet.
- * The locale files are JSON and cannot hold the note, so it lives here.
- *
- *   dataReviewNote: "<bold>Data Review & Verification</bold>: Plant-for-the-Planet will review and validate your project details and uploaded documents."
- *   preSubmissionChecklist: "<bold>Pre-Submission Checklist:</bold>"
- *     organizationProfile: "<bold>Organization Profile:</bold> Ensure your organization’s general documents in your profile are up to date. <italic>(Skip if already verified with current files).</italic>"
- *     projectFiles: "<bold>Project Files:</bold> Ensure all specific documents for this new project are uploaded."
- *   whatHappensNext: "<bold>What happens next?</bold>"
- *     review: "<bold>Review:</bold> Our team will review your project details, and organizational files according to our standards."
- *     notification: "<bold>Notification:</bold> You will receive an update once the review is complete or if additional information is needed."
- *     publishing: "<bold>Publishing:</bold> Once approved, this project will be eligible to accept donations."
- *   noFurtherActionNote: "<italic>No further action is required from you once submitted.</italic>"
- */
+const whatHappensNextKeys = [
+  'whatHappensNextItems.review',
+  'whatHappensNextItems.notification',
+  'whatHappensNextItems.publishing',
+] as const;
 
 function SubmitForReview({
   submitForReview,
@@ -138,24 +124,40 @@ function SubmitForReview({
   const sitesIncomplete = sectionCompleteness.sites === false;
 
   function ReviewIntro() {
+    // Only the organization profile item uses this, but next-intl takes the tags per message, so it rides along with the shared ones.
+    const introTags = {
+      ...richTags,
+      link: (chunks: ReactNode) => (
+        <MuiLink
+          component={Link}
+          href={localizedPath('/profile/due-diligence')}
+        >
+          {chunks}
+        </MuiLink>
+      ),
+    };
+
     return (
-      <div>
-        <div>{t.rich('dataReviewNote', richTags)}</div>
-        <div className={styles.checkInboxNote}>
-          {t.rich('dataReviewIntro', {
-            ...richTags,
-            email: ORGANIZATION_DOCUMENTS_EMAIL,
-          })}
-        </div>
-        <ul className={styles.listOfReport}>
-          {reviewDocumentKeys.map((key) => (
+      <Callout>
+        <p>{t.rich('dataReviewNote', richTags)}</p>
+        <p>{t('dataReviewSummary')}</p>
+
+        <p>{t.rich('preSubmissionChecklist', richTags)}</p>
+        <ul>
+          {preSubmissionKeys.map((key) => (
+            <li key={key}>{t.rich(key, introTags)}</li>
+          ))}
+        </ul>
+
+        <p>{t.rich('whatHappensNext', richTags)}</p>
+        <ul>
+          {whatHappensNextKeys.map((key) => (
             <li key={key}>{t.rich(key, richTags)}</li>
           ))}
         </ul>
-        <div className={styles.checkInboxNote}>
-          {t.rich('verificationStartNote', richTags)}
-        </div>
-      </div>
+
+        <p>{t.rich('noFurtherActionNote', richTags)}</p>
+      </Callout>
     );
   }
 
