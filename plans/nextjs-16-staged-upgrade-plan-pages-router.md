@@ -443,6 +443,31 @@ A recorded `.babelrc` decision is required before this project is complete.
 
 **Status: In progress.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). `next` is bumped to 15.5.25 and `serverComponentsExternalPackages` moved to the stable `serverExternalPackages` key. The Phase 1.8 Babel decision above was resolved as part of this PR rather than beforehand, since it turned out to be required for the Next 15 build to succeed. Local build, unit tests, and lint pass. Full regression testing (Cypress/E2E, staging verification, manual tenant/locale/auth/donation checks) is still outstanding before this phase can be marked done.
 
+### Note on sequencing
+
+This PR started Phase 2 before finishing the rest of Phase 0 and Phase 1.
+
+Skipped for now:
+
+- 0.1 React 18/Next 16 spike
+- 0.2 Cypress repair
+- 0.4 Typecheck CI baseline
+- 1.2 Storybook upgrade
+- 1.3 ESLint modernization
+- 1.4 `@next/bundle-analyzer` / Netlify plugin upgrades
+- 1.5 Dead dependency removal
+- 1.6 `next export` workflow removal
+- 1.7 Heroku/Express decision
+
+This was a deliberate choice to get a working Next 15 build landed first rather than finish all cleanup up front.
+
+None of these block Next 15 itself.
+The installed `@sentry/nextjs` and `@storybook/nextjs` versions already declare peer support for Next 15.
+The repo has no App Router surface for the async-request-API changes to touch.
+Node and React already meet Next 15's minimums.
+
+These skipped items remain open and will be picked up after this PR merges into `develop`.
+
 Upgrade to the latest appropriate Next.js 15 release before moving to Next.js 16.
 
 ## Tasks
