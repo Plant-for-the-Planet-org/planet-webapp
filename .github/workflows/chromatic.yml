@@ -40,3 +40,5 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           # Reuse the build from the previous step instead of building Storybook again.
           storybookBuildDir: storybook-static
+          # Snapshot differences are reported in Chromatic, not treated as a build failure, matching the chromatic script in package.json.
+          exitZeroOnChanges: true
