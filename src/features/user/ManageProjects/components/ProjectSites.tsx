@@ -171,7 +171,12 @@ export default function ProjectSites({
     try {
       setIsUploadingData(true);
       await deleteApiAuthenticated(`/app/projects/${projectGUID}/sites/${id}`);
-      setSiteList((prev) => prev.filter((item) => item.id !== id));
+      setSiteList((prev) => {
+        const updatedList = prev.filter((item) => item.id !== id);
+        // No sites left, so show the form instead of an empty list.
+        if (updatedList.length === 0) setShowForm(true);
+        return updatedList;
+      });
     } catch (err) {
       setErrors(handleError(err as APIError));
     } finally {
@@ -181,6 +186,12 @@ export default function ProjectSites({
   };
 
   const uploadProjectSiteNext = async (data: ProjectSitesFormData) => {
+    // No new site is being drafted.
+    if (!geoJson || geoJson.features.length === 0) {
+      handleNext(ProjectCreationTabs.PROJECT_SPENDING);
+      return;
+    }
+
     const success = await uploadProjectSite(data);
     if (success) handleNext(ProjectCreationTabs.PROJECT_SPENDING);
   };
