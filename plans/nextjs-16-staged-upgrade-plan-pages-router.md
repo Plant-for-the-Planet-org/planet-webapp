@@ -400,6 +400,8 @@ Tenant rewriting is the routing model for the application, so this cannot be ass
 
 ## 8. Audit Babel before the framework bump
 
+**Status: Done.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). Decision: `.babelrc` removed, the app builds on SWC. `@babel/plugin-transform-unicode-regex` and `babel-loader` were removed as dead dependencies alongside it. `@emotion/babel-plugin` was never installed, so there was no Emotion-related Babel dependency to begin with. This turned out to be a Next.js 15 build blocker, not just tooling debt: keeping `.babelrc` broke `npm run build` under Next 15 with a `jsxDEV is not a function` error during page-data collection.
+
 This application currently opts out of the normal SWC compilation path by providing:
 
 ```text
@@ -438,6 +440,8 @@ A recorded `.babelrc` decision is required before this project is complete.
 ---
 
 # Phase 2 — Upgrade Next.js 14 to Next.js 15
+
+**Status: In progress.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). `next` is bumped to 15.5.25 and `serverComponentsExternalPackages` moved to the stable `serverExternalPackages` key. The Phase 1.8 Babel decision above was resolved as part of this PR rather than beforehand, since it turned out to be required for the Next 15 build to succeed. Local build, unit tests, and lint pass. Full regression testing (Cypress/E2E, staging verification, manual tenant/locale/auth/donation checks) is still outstanding before this phase can be marked done.
 
 Upgrade to the latest appropriate Next.js 15 release before moving to Next.js 16.
 
