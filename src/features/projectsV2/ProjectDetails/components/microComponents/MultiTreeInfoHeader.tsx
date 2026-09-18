@@ -32,7 +32,8 @@ const MultiTreeInfoHeader = ({
             Number(totalTreesCount),
             1
           ),
-          area: hectaresCovered > 0 ? hectaresCovered.toFixed(3) : undefined,
+          // The message's ICU select matches the literal string 'undefined' to hide the area chunk
+          area: hectaresCovered > 0 ? hectaresCovered.toFixed(3) : 'undefined',
           areaContainer: (chunks) => <span>{chunks}</span>,
         })}
       </div>
