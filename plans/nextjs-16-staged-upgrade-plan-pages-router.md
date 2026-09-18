@@ -59,7 +59,7 @@ Do this before committing to the dependency strategy.
 
 - `next build --webpack`: succeeded, all 45 pages generated, no errors.
 - `next dev --webpack`: ready in 1.4s. Tenant/locale middleware verified end to end through a real request (`/` returned 307, `/en` returned 200, `NEXT_LOCALE` cookie set, rewrite to `/sites/planet/en` confirmed in the log).
-- Only warnings seen: the expected `middleware` to `proxy` deprecation notice (see Phase 3.2), Sass `@import` deprecation noise (see Phase 3.3), and local Sentry "no auth token" warnings (expected without `SENTRY_AUTH_TOKEN` set locally).
+- Only warnings seen: the expected `middleware` to `proxy` deprecation notice (see Phase 3.3), Sass `@import` deprecation noise (see Phase 3.4), and local Sentry "no auth token" warnings (expected without `SENTRY_AUTH_TOKEN` set locally).
 
 **Decision: keep React 18.** It works correctly with Next.js 16.3.5 and the app's critical dependencies on Webpack. React 19 is not a required prerequisite for this upgrade.
 
@@ -412,7 +412,7 @@ Tenant rewriting is the routing model for the application, so this cannot be ass
 
 **Status: Done.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). Decision: `.babelrc` removed, the app builds on SWC. `@babel/plugin-transform-unicode-regex` and `babel-loader` were removed as dead dependencies alongside it. `@emotion/babel-plugin` was never installed, so there was no Emotion-related Babel dependency to begin with. This turned out to be a Next.js 15 build blocker, not just tooling debt: keeping `.babelrc` broke `npm run build` under Next 15 with a `jsxDEV is not a function` error during page-data collection.
 
-This application currently opts out of the normal SWC compilation path by providing:
+Before this fix, the application opted out of the normal SWC compilation path by providing:
 
 ```text
 .babelrc
@@ -428,24 +428,13 @@ with:
 
 and an additional Unicode-regex transform plugin.
 
-This matters because Next.js 16/Turbopack will detect Babel configuration and continue through the Babel path, which makes any future Turbopack migration slower and less representative of the default compiler path.
+This mattered because Next.js 16/Turbopack detects Babel configuration and continues through the Babel path, which would have made any future Turbopack migration slower and less representative of the default compiler path.
 
-The repository also includes:
+### Tasks (resolved)
 
-```text
-@emotion/babel-plugin
-```
-
-but it does not appear in the shown Babel configuration, so determine whether it is dead or whether configuration is missing.
-
-### Tasks
-
-- Test whether `@babel/plugin-transform-unicode-regex` is still required for supported browsers/runtimes.
-- Determine whether `@emotion/babel-plugin` is actually needed.
-- If neither requires a project-level Babel file, remove `.babelrc` and verify the application on SWC.
-- If Babel must remain, document the reason and treat it as a known Turbopack constraint.
-
-A recorded `.babelrc` decision is required before this project is complete.
+- `@babel/plugin-transform-unicode-regex` was not required and was removed.
+- `@emotion/babel-plugin` was never installed, so there was nothing to remove.
+- `.babelrc` was removed and the application verified on SWC.
 
 ---
 
@@ -459,7 +448,6 @@ This PR started Phase 2 before finishing the rest of Phase 0 and Phase 1.
 
 Skipped for now:
 
-- 0.1 React 18/Next 16 spike
 - 0.2 Cypress repair
 - 0.4 Typecheck CI baseline
 - 1.2 Storybook upgrade
