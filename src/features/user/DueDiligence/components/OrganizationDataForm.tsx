@@ -113,6 +113,7 @@ export default function OrganizationDataForm({
         <TextField
           label={t('authorizedRepresentatives')}
           helperText={t('authorizedRepresentativesHelp')}
+          placeholder={t('authorizedRepresentativesPlaceholder')}
           multiline
           minRows={3}
           {...field('authorizedRepresentatives')}

@@ -311,6 +311,7 @@
       "contactEmail": "Contact Email",
       "authorizedRepresentatives": "Authorized Representatives",
       "authorizedRepresentativesHelp": "The people authorized to act for the organization, as name and title.",
+      "authorizedRepresentativesPlaceholder": "John T, CEO\nMaria S, Treasurer",
       "save": "Save",
       "saved": "Saved",
       "documents": "Documents",
