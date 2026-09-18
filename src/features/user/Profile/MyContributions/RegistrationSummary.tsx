@@ -2,7 +2,7 @@ import type { CountryCode } from '@planet-sdk/common';
 import type { DateString } from '../../../common/types/common';
 
 import styles from './MyContributions.module.scss';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import format from 'date-fns/format';
 
@@ -19,10 +19,11 @@ const RegistrationSummary = ({
 }: Props) => {
   const t = useTranslations('Profile');
   const tCountry = useTranslations('Country');
+  const locale = useLocale();
 
   const formattedRegDate = registrationDate
     ? format(new Date(registrationDate), 'PP', {
-        locale: localeMapForDate[localStorage.getItem('language') || 'en'],
+        locale: localeMapForDate[locale] || localeMapForDate['en'],
       })
     : '';
 

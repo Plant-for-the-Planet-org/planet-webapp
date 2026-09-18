@@ -51,6 +51,7 @@ export default function AddProjectType(): ReactElement {
 
       loginWithRedirect({
         redirectUri: `${window.location.origin}/login`,
+        // Legacy compatibility read, kept until Auth0 redirects are migrated off localStorage.language (see issue #3020).
         ui_locales: localStorage.getItem('language') || 'en',
       });
       return;
