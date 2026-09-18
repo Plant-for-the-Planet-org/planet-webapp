@@ -10,7 +10,7 @@ import { Button } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import { useTranslations } from 'next-intl';
 import { clsx } from 'clsx';
-import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
+import FileAttachedIcon from '../../../../../public/assets/images/icons/FileAttachedIcon';
 import styles from '../DueDiligence.module.scss';
 import { useApi } from '../../../../hooks/useApi';
 import { useDocumentDownload } from '../../../../hooks/useDocumentDownload';
@@ -160,7 +160,7 @@ export default function DocumentRow({ item, onUploaded }: Props): ReactElement {
           onClick={() => openDocument(item.kind, current.url)}
           disabled={downloadingKind === item.kind}
         >
-          <PDFRed />
+          <FileAttachedIcon />
           <span>{current.filename}</span>
         </button>
       ) : (

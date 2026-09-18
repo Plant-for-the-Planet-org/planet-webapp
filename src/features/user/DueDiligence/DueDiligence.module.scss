@@ -124,6 +124,12 @@
     cursor: progress;
   }
 
+  // The icon has no intrinsic size, so it needs one here. 24px matches the only other caller.
+  > svg {
+    flex-shrink: 0;
+    height: 24px;
+  }
+
   > span {
     overflow: hidden;
     text-overflow: ellipsis;
