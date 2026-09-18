@@ -60,14 +60,8 @@ const nextConfig = {
   trailingSlash: false,
   reactStrictMode: true,
   poweredByHeader: false,
-  experimental: {
-    // This app forces Babel via .babelrc, so Next.js runs even node_modules ESM interop through it instead of SWC.
-    // @sentry/node's module hook (import-in-the-middle) ships un-transpiled private class methods that Next's bundled Babel can't parse, so keep it as a native Node require.
-    serverComponentsExternalPackages: [
-      'import-in-the-middle',
-      'require-in-the-middle',
-    ],
-  },
+  // @sentry/node's module hook patches Node's own require() at runtime, so it must load unbundled rather than go through webpack.
+  serverExternalPackages: ['import-in-the-middle', 'require-in-the-middle'],
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if

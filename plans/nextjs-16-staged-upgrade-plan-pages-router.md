@@ -55,6 +55,16 @@ Do this before committing to the dependency strategy.
 
 ## 0.1 Run a day-one React 18 / Next.js 16 compatibility spike
 
+**Status: Done.** Tested on a disposable branch (`spike/nextjs-16-react18-webpack`, now deleted) against Next.js 16.3.5 with React 18.3.1 on Webpack.
+
+- `next build --webpack`: succeeded, all 45 pages generated, no errors.
+- `next dev --webpack`: ready in 1.4s. Tenant/locale middleware verified end to end through a real request (`/` returned 307, `/en` returned 200, `NEXT_LOCALE` cookie set, rewrite to `/sites/planet/en` confirmed in the log).
+- Only warnings seen: the expected `middleware` to `proxy` deprecation notice (see Phase 3.3), Sass `@import` deprecation noise (see Phase 3.4), and local Sentry "no auth token" warnings (expected without `SENTRY_AUTH_TOKEN` set locally).
+
+**Decision: keep React 18.** It works correctly with Next.js 16.3.5 and the app's critical dependencies on Webpack. React 19 is not a required prerequisite for this upgrade.
+
+**New finding, not previously in this plan:** Next.js 16 ships an `agentRules` feature that is on by default. Running `next dev` or `next build` auto-writes an AI-agent-directed block into `CLAUDE.md`, and modifies `next-env.d.ts` (route-types path moves under `.next/dev/types`, adds `root-params.d.ts`) and `tsconfig.json` (`jsx` flips from `"preserve"` to `"react-jsx"`, arrays get reformatted). This repository actively curates `CLAUDE.md`, so the Phase 3 PR needs an explicit decision here: set `agentRules: false` in `next.config.js`, or accept the auto-writes deliberately.
+
 Create a throwaway branch and answer the React question immediately, before investing in the staged upgrade.
 
 Test:
@@ -400,7 +410,9 @@ Tenant rewriting is the routing model for the application, so this cannot be ass
 
 ## 8. Audit Babel before the framework bump
 
-This application currently opts out of the normal SWC compilation path by providing:
+**Status: Done.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). Decision: `.babelrc` removed, the app builds on SWC. `@babel/plugin-transform-unicode-regex` and `babel-loader` were removed as dead dependencies alongside it. `@emotion/babel-plugin` was never installed, so there was no Emotion-related Babel dependency to begin with. This turned out to be a Next.js 15 build blocker, not just tooling debt: keeping `.babelrc` broke `npm run build` under Next 15 with a `jsxDEV is not a function` error during page-data collection.
+
+Before this fix, the application opted out of the normal SWC compilation path by providing:
 
 ```text
 .babelrc
@@ -416,28 +428,43 @@ with:
 
 and an additional Unicode-regex transform plugin.
 
-This matters because Next.js 16/Turbopack will detect Babel configuration and continue through the Babel path, which makes any future Turbopack migration slower and less representative of the default compiler path.
+This mattered because Next.js 16/Turbopack detects Babel configuration and continues through the Babel path, which would have made any future Turbopack migration slower and less representative of the default compiler path.
 
-The repository also includes:
+### Tasks (resolved)
 
-```text
-@emotion/babel-plugin
-```
-
-but it does not appear in the shown Babel configuration, so determine whether it is dead or whether configuration is missing.
-
-### Tasks
-
-- Test whether `@babel/plugin-transform-unicode-regex` is still required for supported browsers/runtimes.
-- Determine whether `@emotion/babel-plugin` is actually needed.
-- If neither requires a project-level Babel file, remove `.babelrc` and verify the application on SWC.
-- If Babel must remain, document the reason and treat it as a known Turbopack constraint.
-
-A recorded `.babelrc` decision is required before this project is complete.
+- `@babel/plugin-transform-unicode-regex` was not required and was removed.
+- `@emotion/babel-plugin` was never installed, so there was nothing to remove.
+- `.babelrc` was removed and the application verified on SWC.
 
 ---
 
 # Phase 2 — Upgrade Next.js 14 to Next.js 15
+
+**Status: In progress.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). `next` is bumped to 15.5.25 and `serverComponentsExternalPackages` moved to the stable `serverExternalPackages` key. The Phase 1.8 Babel decision above was resolved as part of this PR rather than beforehand, since it turned out to be required for the Next 15 build to succeed. Local build, unit tests, and lint pass. Full regression testing (Cypress/E2E, staging verification, manual tenant/locale/auth/donation checks) is still outstanding before this phase can be marked done.
+
+### Note on sequencing
+
+This PR started Phase 2 before finishing the rest of Phase 0 and Phase 1.
+
+Skipped for now:
+
+- 0.2 Cypress repair
+- 0.4 Typecheck CI baseline
+- 1.2 Storybook upgrade
+- 1.3 ESLint modernization
+- 1.4 `@next/bundle-analyzer` / Netlify plugin upgrades
+- 1.5 Dead dependency removal
+- 1.6 `next export` workflow removal
+- 1.7 Heroku/Express decision
+
+This was a deliberate choice to get a working Next 15 build landed first rather than finish all cleanup up front.
+
+None of these block Next 15 itself.
+The installed `@sentry/nextjs` and `@storybook/nextjs` versions already declare peer support for Next 15.
+The repo has no App Router surface for the async-request-API changes to touch.
+Node and React already meet Next 15's minimums.
+
+These skipped items remain open and will be picked up after this PR merges into `develop`.
 
 Upgrade to the latest appropriate Next.js 15 release before moving to Next.js 16.
 
@@ -545,7 +572,18 @@ Stabilize the framework first.
 
 ---
 
-## 2. Rename `middleware.ts` to `proxy.ts`
+## 2. Decide on the `agentRules` auto-write behavior
+
+Discovered during the Phase 0.1 spike: Next.js 16 ships an `agentRules` feature, on by default, that runs on `next dev` and `next build`. It auto-writes an AI-agent-directed block into `CLAUDE.md`, and modifies `next-env.d.ts` (route-types path moves under `.next/dev/types`, adds `root-params.d.ts`) and `tsconfig.json` (`jsx` flips from `"preserve"` to `"react-jsx"`, arrays get reformatted).
+
+This repository actively curates `CLAUDE.md` for real governance instructions, so this needs an explicit decision before the Phase 3 PR merges, not a silent auto-write discovered later:
+
+- set `agentRules: false` in `next.config.js` to opt out, or
+- accept the auto-writes deliberately and record why.
+
+---
+
+## 3. Rename `middleware.ts` to `proxy.ts`
 
 Move the existing request interception logic from:
 
@@ -593,7 +631,7 @@ Regression-test this heavily because it affects every request.
 
 ---
 
-## 3. Validate Sass / CSS behavior under the Next.js 16 loader stack
+## 4. Validate Sass / CSS behavior under the Next.js 16 loader stack
 
 Next.js 16 moves the Sass loader stack forward, including `sass-loader` v16 behavior and the modern Sass API.
 
@@ -622,7 +660,7 @@ Do not turn this upgrade into a full Sass `@import` → `@use` rewrite unless th
 
 ---
 
-## 4. Run full regression verification
+## 5. Run full regression verification
 
 ### Tenant routing
 
@@ -935,8 +973,9 @@ The Next.js 16 upgrade is complete when:
 - [ ] The application runs on Next.js 16.
 - [ ] The Pages Router remains the active routing architecture.
 - [ ] No `app/` migration is required.
-- [ ] The React 18/React 19 decision is based on an actual Next.js 16 spike, not assumptions.
-- [ ] React 18 remains in place if it passed the compatibility spike, or React 19 has a separately justified migration.
+- [x] The React 18/React 19 decision is based on an actual Next.js 16 spike, not assumptions. Done via Phase 0.1, see that section.
+- [x] React 18 remains in place if it passed the compatibility spike, or React 19 has a separately justified migration. React 18 passed.
+- [ ] `agentRules` in `next.config.js` has an explicit decision recorded (disabled, or accepted deliberately). See Phase 3.2.
 - [ ] `serverRuntimeConfig` has been removed during the Sentry modernization work.
 - [ ] Legacy Sentry webpack aliases/plugin wiring are removed where no longer needed.
 - [ ] Sentry works in production.
