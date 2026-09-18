@@ -55,6 +55,16 @@ Do this before committing to the dependency strategy.
 
 ## 0.1 Run a day-one React 18 / Next.js 16 compatibility spike
 
+**Status: Done.** Tested on a disposable branch (`spike/nextjs-16-react18-webpack`, now deleted) against Next.js 16.3.5 with React 18.3.1 on Webpack.
+
+- `next build --webpack`: succeeded, all 45 pages generated, no errors.
+- `next dev --webpack`: ready in 1.4s. Tenant/locale middleware verified end to end through a real request (`/` returned 307, `/en` returned 200, `NEXT_LOCALE` cookie set, rewrite to `/sites/planet/en` confirmed in the log).
+- Only warnings seen: the expected `middleware` to `proxy` deprecation notice (see Phase 3.2), Sass `@import` deprecation noise (see Phase 3.3), and local Sentry "no auth token" warnings (expected without `SENTRY_AUTH_TOKEN` set locally).
+
+**Decision: keep React 18.** It works correctly with Next.js 16.3.5 and the app's critical dependencies on Webpack. React 19 is not a required prerequisite for this upgrade.
+
+**New finding, not previously in this plan:** Next.js 16 ships an `agentRules` feature that is on by default. Running `next dev` or `next build` auto-writes an AI-agent-directed block into `CLAUDE.md`, and modifies `next-env.d.ts` (route-types path moves under `.next/dev/types`, adds `root-params.d.ts`) and `tsconfig.json` (`jsx` flips from `"preserve"` to `"react-jsx"`, arrays get reformatted). This repository actively curates `CLAUDE.md`, so the Phase 3 PR needs an explicit decision here: set `agentRules: false` in `next.config.js`, or accept the auto-writes deliberately.
+
 Create a throwaway branch and answer the React question immediately, before investing in the staged upgrade.
 
 Test:
@@ -574,7 +584,18 @@ Stabilize the framework first.
 
 ---
 
-## 2. Rename `middleware.ts` to `proxy.ts`
+## 2. Decide on the `agentRules` auto-write behavior
+
+Discovered during the Phase 0.1 spike: Next.js 16 ships an `agentRules` feature, on by default, that runs on `next dev` and `next build`. It auto-writes an AI-agent-directed block into `CLAUDE.md`, and modifies `next-env.d.ts` (route-types path moves under `.next/dev/types`, adds `root-params.d.ts`) and `tsconfig.json` (`jsx` flips from `"preserve"` to `"react-jsx"`, arrays get reformatted).
+
+This repository actively curates `CLAUDE.md` for real governance instructions, so this needs an explicit decision before the Phase 3 PR merges, not a silent auto-write discovered later:
+
+- set `agentRules: false` in `next.config.js` to opt out, or
+- accept the auto-writes deliberately and record why.
+
+---
+
+## 3. Rename `middleware.ts` to `proxy.ts`
 
 Move the existing request interception logic from:
 
@@ -622,7 +643,7 @@ Regression-test this heavily because it affects every request.
 
 ---
 
-## 3. Validate Sass / CSS behavior under the Next.js 16 loader stack
+## 4. Validate Sass / CSS behavior under the Next.js 16 loader stack
 
 Next.js 16 moves the Sass loader stack forward, including `sass-loader` v16 behavior and the modern Sass API.
 
@@ -651,7 +672,7 @@ Do not turn this upgrade into a full Sass `@import` → `@use` rewrite unless th
 
 ---
 
-## 4. Run full regression verification
+## 5. Run full regression verification
 
 ### Tenant routing
 
@@ -964,8 +985,9 @@ The Next.js 16 upgrade is complete when:
 - [ ] The application runs on Next.js 16.
 - [ ] The Pages Router remains the active routing architecture.
 - [ ] No `app/` migration is required.
-- [ ] The React 18/React 19 decision is based on an actual Next.js 16 spike, not assumptions.
-- [ ] React 18 remains in place if it passed the compatibility spike, or React 19 has a separately justified migration.
+- [x] The React 18/React 19 decision is based on an actual Next.js 16 spike, not assumptions. Done via Phase 0.1, see that section.
+- [x] React 18 remains in place if it passed the compatibility spike, or React 19 has a separately justified migration. React 18 passed.
+- [ ] `agentRules` in `next.config.js` has an explicit decision recorded (disabled, or accepted deliberately). See Phase 3.2.
 - [ ] `serverRuntimeConfig` has been removed during the Sentry modernization work.
 - [ ] Legacy Sentry webpack aliases/plugin wiring are removed where no longer needed.
 - [ ] Sentry works in production.
