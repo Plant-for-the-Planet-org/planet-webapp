@@ -12,7 +12,7 @@ import { Button } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import { useTranslations } from 'next-intl';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
-import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
+import FileAttachedIcon from '../../../../../public/assets/images/icons/FileAttachedIcon';
 import styles from './../StepForm.module.scss';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
@@ -249,7 +249,11 @@ function DocumentRow({
             textDecoration: 'underline',
           }}
         >
-          <PDFRed />
+          <span
+            style={{ display: 'flex', flexShrink: 0, height: 24, width: 24 }}
+          >
+            <FileAttachedIcon />
+          </span>
           <span
             style={{
               overflow: 'hidden',
