@@ -6,6 +6,7 @@ import type {
 } from '../../../common/types/project';
 
 import { useEffect, useState, useCallback } from 'react';
+import { dedupeInFlight } from '../utils/dedupeInFlight';
 import styles from './../StepForm.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -29,6 +30,7 @@ import { clsx } from 'clsx';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 type ExpenseFormData = {
   year: Date;
@@ -47,9 +49,16 @@ export default function ProjectSpending({
   handleNext,
   userLang,
   projectGUID,
+  isLocked,
+  verificationStatus,
+  showQuestionnaire = false,
+  onCompletenessChange,
 }: ProjectSpendingProps): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
   const tCommon = useTranslations('Common');
+  const nextStep = showQuestionnaire
+    ? ProjectCreationTabs.QUESTIONNAIRE
+    : ProjectCreationTabs.REVIEW;
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const {
@@ -96,7 +105,7 @@ export default function ProjectSpending({
       setIsUploadingData(false);
       setShowForm(false);
       setErrorMessage('');
-      handleNext(ProjectCreationTabs.REVIEW);
+      handleNext(nextStep);
     } catch (err) {
       setIsUploadingData(false);
       setErrors(handleError(err as APIError));
@@ -154,9 +163,13 @@ export default function ProjectSpending({
     try {
       // Fetch spending of the project
       if (projectGUID && token) {
-        const result = await getApiAuthenticated<ExpensesScopeProjects>(
-          `/app/profile/projects/${projectGUID}`,
-          { queryParams: { _scope: 'expenses' } }
+        // Shares the key with the completeness fetch in ManageProjects so the
+        // two do not both request the same payload on mount.
+        const result = await dedupeInFlight(`expenses-${projectGUID}`, () =>
+          getApiAuthenticated<ExpensesScopeProjects>(
+            `/app/profile/projects/${projectGUID}`,
+            { queryParams: { _scope: 'expenses' } }
+          )
         );
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);
@@ -170,6 +183,10 @@ export default function ProjectSpending({
   };
 
   useEffect(() => {
+    onCompletenessChange?.(uploadedFiles.length > 0);
+  }, [uploadedFiles]);
+
+  useEffect(() => {
     fetchProjSpending();
   }, [projectGUID]);
 
@@ -178,6 +195,9 @@ export default function ProjectSpending({
   return (
     <CenteredContainer>
       <StyledForm>
+        {verificationStatus && (
+          <ProjectLockedBanner verificationStatus={verificationStatus} />
+        )}
         {uploadedFiles && uploadedFiles.length > 0 ? (
           <InlineFormDisplayGroup>
             {uploadedFiles.map((report) => {
@@ -341,31 +361,35 @@ export default function ProjectSpending({
             <p>{tManageProjects('backToSites')}</p>
           </Button>
 
-          <Button
-            onClick={() => {
-              if (uploadedFiles && uploadedFiles.length > 0) {
-                handleNext(ProjectCreationTabs.REVIEW);
-              } else {
-                setErrorMessage('Please upload  report');
-              }
-            }}
-            variant="contained"
-            className="formButton"
-          >
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              tCommon('continue')
-            )}
-          </Button>
+          {!isLocked && (
+            <>
+              <Button
+                onClick={() => {
+                  if (uploadedFiles && uploadedFiles.length > 0) {
+                    handleNext(nextStep);
+                  } else {
+                    setErrorMessage('Please upload  report');
+                  }
+                }}
+                variant="contained"
+                className="formButton"
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  tCommon('continue')
+                )}
+              </Button>
 
-          <Button
-            className="formButton"
-            variant="contained"
-            onClick={() => handleNext(ProjectCreationTabs.REVIEW)}
-          >
-            {tManageProjects('skip')}
-          </Button>
+              <Button
+                className="formButton"
+                variant="contained"
+                onClick={() => handleNext(nextStep)}
+              >
+                {tManageProjects('skip')}
+              </Button>
+            </>
+          )}
         </div>
       </StyledForm>
     </CenteredContainer>
