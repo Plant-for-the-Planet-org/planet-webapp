@@ -55,6 +55,16 @@ Do this before committing to the dependency strategy.
 
 ## 0.1 Run a day-one React 18 / Next.js 16 compatibility spike
 
+**Status: Done.** Tested on a disposable branch (`spike/nextjs-16-react18-webpack`, now deleted) against Next.js 16.3.5 with React 18.3.1 on Webpack.
+
+- `next build --webpack`: succeeded, all 45 pages generated, no errors.
+- `next dev --webpack`: ready in 1.4s. Tenant/locale middleware verified end to end through a real request (`/` returned 307, `/en` returned 200, `NEXT_LOCALE` cookie set, rewrite to `/sites/planet/en` confirmed in the log).
+- Only warnings seen: the expected `middleware` to `proxy` deprecation notice (see Phase 3.3), Sass `@import` deprecation noise (see Phase 3.4), and local Sentry "no auth token" warnings (expected without `SENTRY_AUTH_TOKEN` set locally).
+
+**Decision: keep React 18.** It works correctly with Next.js 16.3.5 and the app's critical dependencies on Webpack. React 19 is not a required prerequisite for this upgrade.
+
+**New finding, not previously in this plan:** Next.js 16 ships an `agentRules` feature that is on by default. Running `next dev` or `next build` auto-writes an AI-agent-directed block into `CLAUDE.md`, and modifies `next-env.d.ts` (route-types path moves under `.next/dev/types`, adds `root-params.d.ts`) and `tsconfig.json` (`jsx` flips from `"preserve"` to `"react-jsx"`, arrays get reformatted). This repository actively curates `CLAUDE.md`, so the Phase 3 PR needs an explicit decision here: set `agentRules: false` in `next.config.js`, or accept the auto-writes deliberately.
+
 Create a throwaway branch and answer the React question immediately, before investing in the staged upgrade.
 
 Test:
@@ -155,6 +165,8 @@ Initially make it **non-blocking** and record a baseline error count. Fail or wa
 
 The goal is to detect new type breakage, not to turn this project into a full type-cleanup effort.
 
+**The job must run after a build.** From Next.js 15, `next-env.d.ts` references `.next/types/routes.d.ts`, which only exists once the app has been built. Typechecking a clean checkout reports a spurious `TS6053` for the missing file. Measured after a build, the count is **127 errors**, unchanged by the Next.js 15 upgrade.
+
 ---
 
 # Phase 1 — Modernize dependencies and tooling while still on Next.js 14
@@ -219,29 +231,48 @@ This materially reduces the custom webpack surface before the Next.js 16 build-s
 
 ## 2. Fix Storybook before Next.js 16
 
+**Status: Done.** Branch `feature/storybook-10-upgrade`, cut from `feature/nextjs-15-upgrade`. Storybook went from 8.6.18 to 10.6.0, not the 9.x line this section originally named. By the time the work ran, 10.6.0 was the stable release and its `@storybook/nextjs` peer range already covered `next ^16` and `react ^18`, so it met the Next.js 16 requirement while avoiding a second major migration a few months later. The upgrade CLI refuses to skip a major, so it ran as 8 to 9 to 10 in one branch.
+
 Storybook is part of CI and must be treated as an upgrade blocker, not optional local tooling.
 
-Current issue:
+Original issue:
 
 ```text
 @storybook/nextjs@8.6.18
 ```
 
-declares support through Next.js 15, not Next.js 16.
+declared support through Next.js 15, not Next.js 16.
 
-`.github/workflows/chromatic.yml` runs `build-storybook` on pushes to `develop`, so leaving this unchanged will break CI even if the application itself builds.
+`.github/workflows/chromatic.yml` runs `build-storybook` on pushes to `develop`, so leaving this unchanged would have broken CI even if the application itself built.
 
-### Task
+### What changed
 
-Upgrade the Storybook stack to a Next.js 16-compatible 9.x line and verify:
+- `@storybook/nextjs`, `storybook`, and `eslint-plugin-storybook` are pinned at `10.6.0`. `@storybook/addon-docs` was added at `10.6.0` as well.
+- Four packages were removed because Storybook 9 folded them into the `storybook` core package: `@storybook/addon-interactions` and `@storybook/addon-actions` into the core addon set, `@storybook/test` into `storybook/test`, and `@storybook/theming` into `storybook/theming`.
+- `@storybook/addon-essentials` was removed and split. Its component addons are part of core now, and its docs half became the separate `@storybook/addon-docs` entry in `.storybook/main.js`.
+- `@storybook/react` was removed and replaced by `@storybook/nextjs`, which is where the story types live under the framework-based configuration.
+- `@storybook/addon-links` was removed outright, with no replacement. Nothing in the repo imported it.
+- The 45 story files moved from `import type { Meta, StoryObj } from '@storybook/react'` to `'@storybook/nextjs'`, which is the framework-based configuration Storybook 9 requires. `.storybook/preview.js` moved from `@storybook/theming` to `storybook/theming`, and the one `fn` import moved from `@storybook/test` to `storybook/test`. All of this was applied by the official automigrations, not by hand.
+- The framework stays `@storybook/nextjs` on webpack. The `nextjs-to-nextjs-vite` automigration was offered and deliberately not taken, because `.storybook/main.js` carries a `webpackFinal` hook for the `fs` and `path-browserify` fallbacks. Moving to Vite is a separate decision, not part of a compatibility fix.
+- The `addon-mcp` automigration installed `@storybook/addon-mcp`. It was removed again as unrelated to this upgrade.
+- `.storybook/main.js` lost three dead entries: the `*.stories.mdx` glob (the repo has no MDX stories and Storybook 9 dropped that format), the `features.emotionAlias` flag (a Storybook 6-era flag that no longer exists), and an empty `docs: {}`.
+- `.github/workflows/chromatic.yml` moved from Node 18 to Node 24. Storybook 10's CLI hard-exits below Node 20.19 or 22.12, so `build-storybook` would have failed on Node 18. No Storybook package declares an `engines` field, so `npm ci` itself would have succeeded; the failure comes at build time, not install time. Node 24 matches the `engines` field in `package.json`.
+- `tsconfig.json` now excludes `storybook-static`. Running `build-storybook` locally copies `public/` into that directory, which includes a few `.tsx` files, and `tsc --noEmit` was then typechecking build output.
+- The Chromatic side was refreshed to match. `chromatic` went from `^6.24.1` to `^18.9.4` and `chromaui/action` from `v1` to `v18`. The `v1` tag is a floating tag Chromatic stopped moving in March 2025, where it maps to CLI 11.27.0, which predates Storybook 9 and 10. The workflow now also passes `storybookBuildDir: storybook-static` so the action reuses the existing build step instead of building Storybook a second time. It also passes `exitZeroOnChanges: true`, so the step reports snapshot differences without failing the job, which is the policy the `chromatic` script in `package.json` has always used locally.
+- `.github/workflows/eslint.yml` moved from Node 22 to Node 24 and `.nvmrc` from 16 to 24. `eslint-plugin-storybook@10` is a pure ESM package, while `0.6.15` was CommonJS, so linting through the CommonJS `.eslintrc.js` now needs Node's `require(ESM)` support (`^20.19 || >=22.12`). `chromatic@18` separately declares `engines.node >= 22`. Every Node signal in the repo now reads 24.
 
-```bash
-npm run build-storybook
-```
+### Verification
 
-Also verify the Chromatic workflow end to end.
+- `npm run build-storybook` passes. The generated `index.json` holds 135 entries across all 45 story files, so nothing dropped out of the index silently.
+- `npm run storybook` serves and responds on port 6006.
+- `npm run lint` reports 0 errors. `eslint-plugin-storybook@10` declares `eslint >= 8`, so it works on the current ESLint 8 without waiting for the 1.3 flat-config migration.
+- `npx tsc --noEmit` went from 128 to 125 pre-existing errors, with no new ones. The three that cleared were the unresolvable `@storybook/test` import and the two `storybook-static` files.
+- `npm test` passes, 68 tests across 6 files.
+- `npm run build` (Next.js 15) still passes.
 
-Keep Storybook changes in Phase 1 so the Next.js 16 PR is not polluted by an unrelated Storybook major migration.
+Still outstanding: the Chromatic workflow itself has only been verified by reasoning, not by an actual run. It fires on pushes to `develop`, so it gets its real test when this merges. Expect that run to report a large number of snapshot differences: going from Storybook 8 to 10 changes the preview runtime, the docs pages, and the addon set, and the stored baseline was captured by CLI 11 against Storybook 8. Those differences are real and need accepting once in Chromatic to set a new baseline. `exitZeroOnChanges: true` keeps that first run from turning `develop` red while the baseline is being re-accepted.
+
+Keeping Storybook changes in Phase 1 means the Next.js 16 PR is not polluted by an unrelated Storybook major migration.
 
 ---
 
@@ -285,9 +316,13 @@ Upgrade it to a version compatible with the selected Next.js release and verify 
 
 ### `@netlify/plugin-nextjs`
 
-If Netlify remains an active deployment path, upgrade from v4 to a current v5 release compatible with Next.js 16.
+Decided on 2026-09-21: Netlify is not a deployment path any more. Netlify deployments for this repo were blocked a while back and no current version of the app is served from there. Vercel is the deployment path.
 
-If Netlify is no longer used, prefer removing the plugin and its configuration instead of carrying another deployment adapter through the upgrade.
+So do not upgrade the plugin to v5. Remove `@netlify/plugin-nextjs` from `package.json` and delete `netlify.toml`, instead of carrying a dead deployment adapter through the upgrade.
+
+The removal is safe. All three redirects in `netlify.toml` (`/my-trees`, `/redeem`, `/yucatan-reforestation`) already exist in the `redirects()` block in `next.config.js`, so deleting the file loses nothing. The repo signals agree too: the last 100 GitHub deployments are all Vercel or manual `planet-app-sf` ones, no Netlify check or commit status appears on `develop`, and `netlify.toml` has not been touched since August 2023.
+
+One detail worth keeping in mind while `netlify.toml` is still in the tree: Netlify resolves its build Node version from `.nvmrc` when `NODE_VERSION` is unset, and `netlify.toml` sets none. That is why raising `.nvmrc` from 16 to 24 was checked against Netlify at all. With deployments blocked nothing reads it. Heroku is unaffected either way, because its Node buildpack reads `engines.node` from `package.json`, which already said `24.x`.
 
 ### `next-intl`
 
@@ -400,7 +435,9 @@ Tenant rewriting is the routing model for the application, so this cannot be ass
 
 ## 8. Audit Babel before the framework bump
 
-This application currently opts out of the normal SWC compilation path by providing:
+**Status: Done.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). Decision: `.babelrc` removed, the app builds on SWC. `@babel/plugin-transform-unicode-regex` and `babel-loader` were removed as dead dependencies alongside it. `@emotion/babel-plugin` was never installed, so there was no Emotion-related Babel dependency to begin with. This turned out to be a Next.js 15 build blocker, not just tooling debt: keeping `.babelrc` broke `npm run build` under Next 15 with a `jsxDEV is not a function` error during page-data collection.
+
+Before this fix, the application opted out of the normal SWC compilation path by providing:
 
 ```text
 .babelrc
@@ -416,28 +453,43 @@ with:
 
 and an additional Unicode-regex transform plugin.
 
-This matters because Next.js 16/Turbopack will detect Babel configuration and continue through the Babel path, which makes any future Turbopack migration slower and less representative of the default compiler path.
+This mattered because Next.js 16/Turbopack detects Babel configuration and continues through the Babel path, which would have made any future Turbopack migration slower and less representative of the default compiler path.
 
-The repository also includes:
+### Tasks (resolved)
 
-```text
-@emotion/babel-plugin
-```
-
-but it does not appear in the shown Babel configuration, so determine whether it is dead or whether configuration is missing.
-
-### Tasks
-
-- Test whether `@babel/plugin-transform-unicode-regex` is still required for supported browsers/runtimes.
-- Determine whether `@emotion/babel-plugin` is actually needed.
-- If neither requires a project-level Babel file, remove `.babelrc` and verify the application on SWC.
-- If Babel must remain, document the reason and treat it as a known Turbopack constraint.
-
-A recorded `.babelrc` decision is required before this project is complete.
+- `@babel/plugin-transform-unicode-regex` was not required and was removed.
+- `@emotion/babel-plugin` was never installed, so there was nothing to remove.
+- `.babelrc` was removed and the application verified on SWC.
 
 ---
 
 # Phase 2 — Upgrade Next.js 14 to Next.js 15
+
+**Status: Done.** Merged into `develop` through PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). `next` is at 15.5.25 and `serverComponentsExternalPackages` moved to the stable `serverExternalPackages` key. The Phase 1.8 Babel decision above was resolved as part of this PR rather than beforehand, since it turned out to be required for the Next 15 build to succeed. Build, unit tests, and lint pass, and the upgrade was verified on staging before merging. Cypress/E2E was not part of that check, because the suite stays broken until item 0.2 is done.
+
+### Note on sequencing
+
+This PR started Phase 2 before finishing the rest of Phase 0 and Phase 1.
+
+Skipped for now:
+
+- 0.2 Cypress repair
+- 0.4 Typecheck CI baseline
+- 1.2 Storybook upgrade (done since, on branch `feature/storybook-10-upgrade`)
+- 1.3 ESLint modernization
+- 1.4 `@next/bundle-analyzer` / Netlify plugin upgrades
+- 1.5 Dead dependency removal
+- 1.6 `next export` workflow removal
+- 1.7 Heroku/Express decision
+
+This was a deliberate choice to get a working Next 15 build landed first rather than finish all cleanup up front.
+
+None of these block Next 15 itself.
+The installed `@sentry/nextjs` and `@storybook/nextjs` versions already declare peer support for Next 15.
+The repo has no App Router surface for the async-request-API changes to touch.
+Node and React already meet Next 15's minimums.
+
+That merge has happened. These skipped items remain open and are now the queue on top of `develop`.
 
 Upgrade to the latest appropriate Next.js 15 release before moving to Next.js 16.
 
@@ -474,7 +526,7 @@ Repository assessment found:
 - no `next/navigation`,
 - no `getServerSideProps` usage relevant to this migration item.
 
-The one identified Next.js 15 request-object change touching the repository was `NextRequest.geo` / `.ip` usage inside `src/middlewares/rate-limiter.ts`, and that module is deleted in Phase 1 because it is unused.
+There is no `NextRequest.geo` / `.ip` exposure either. An earlier version of this plan flagged `src/middlewares/rate-limiter.ts`, but that file types its argument as express's `Request`, so `request.ip` is express's property and Next.js 15 does not touch it. The module is also imported nowhere, so leaving it in place (Phase 1.5 was skipped) costs nothing for this upgrade.
 
 ## Why still use Next.js 15 as an intermediate step?
 
@@ -545,7 +597,18 @@ Stabilize the framework first.
 
 ---
 
-## 2. Rename `middleware.ts` to `proxy.ts`
+## 2. Decide on the `agentRules` auto-write behavior
+
+Discovered during the Phase 0.1 spike: Next.js 16 ships an `agentRules` feature, on by default, that runs on `next dev` and `next build`. It auto-writes an AI-agent-directed block into `CLAUDE.md`, and modifies `next-env.d.ts` (route-types path moves under `.next/dev/types`, adds `root-params.d.ts`) and `tsconfig.json` (`jsx` flips from `"preserve"` to `"react-jsx"`, arrays get reformatted).
+
+This repository actively curates `CLAUDE.md` for real governance instructions, so this needs an explicit decision before the Phase 3 PR merges, not a silent auto-write discovered later:
+
+- set `agentRules: false` in `next.config.js` to opt out, or
+- accept the auto-writes deliberately and record why.
+
+---
+
+## 3. Rename `middleware.ts` to `proxy.ts`
 
 Move the existing request interception logic from:
 
@@ -593,7 +656,7 @@ Regression-test this heavily because it affects every request.
 
 ---
 
-## 3. Validate Sass / CSS behavior under the Next.js 16 loader stack
+## 4. Validate Sass / CSS behavior under the Next.js 16 loader stack
 
 Next.js 16 moves the Sass loader stack forward, including `sass-loader` v16 behavior and the modern Sass API.
 
@@ -622,7 +685,7 @@ Do not turn this upgrade into a full Sass `@import` → `@use` rewrite unless th
 
 ---
 
-## 4. Run full regression verification
+## 5. Run full regression verification
 
 ### Tenant routing
 
@@ -832,10 +895,10 @@ Dependency/tooling modernization on Next.js 14
 │
 ├─ Sentry → @sentry/nextjs
 │  └─ remove RewriteFrames/getConfig/serverRuntimeConfig
-├─ Storybook 8 → Next-16-compatible Storybook 9
+├─ Storybook 8 → Storybook 10 (done)
 ├─ ESLint 9 + flat config + @typescript-eslint v8 path
 ├─ Upgrade @next/bundle-analyzer
-├─ Upgrade/remove Netlify plugin
+├─ Remove Netlify plugin and netlify.toml (Netlify is dead)
 ├─ Mark next-intl as already compatible
 ├─ Remove dead rate-limiter dependencies/module
 ├─ Remove next-unused
@@ -935,8 +998,9 @@ The Next.js 16 upgrade is complete when:
 - [ ] The application runs on Next.js 16.
 - [ ] The Pages Router remains the active routing architecture.
 - [ ] No `app/` migration is required.
-- [ ] The React 18/React 19 decision is based on an actual Next.js 16 spike, not assumptions.
-- [ ] React 18 remains in place if it passed the compatibility spike, or React 19 has a separately justified migration.
+- [x] The React 18/React 19 decision is based on an actual Next.js 16 spike, not assumptions. Done via Phase 0.1, see that section.
+- [x] React 18 remains in place if it passed the compatibility spike, or React 19 has a separately justified migration. React 18 passed.
+- [ ] `agentRules` in `next.config.js` has an explicit decision recorded (disabled, or accepted deliberately). See Phase 3.2.
 - [ ] `serverRuntimeConfig` has been removed during the Sentry modernization work.
 - [ ] Legacy Sentry webpack aliases/plugin wiring are removed where no longer needed.
 - [ ] Sentry works in production.
@@ -954,7 +1018,7 @@ The Next.js 16 upgrade is complete when:
 - [ ] Existing `next/router` behavior works.
 - [ ] Existing `next/head` behavior works.
 - [ ] Existing `getStaticProps` / `getStaticPaths` behavior works.
-- [ ] Storybook builds on the Next.js 16-compatible Storybook version.
+- [x] Storybook builds on the Next.js 16-compatible Storybook version (10.6.0).
 - [ ] Chromatic CI passes.
 - [ ] ESLint runs on the modern supported dependency stack and flat config.
 - [ ] The typecheck job exists with a recorded baseline and does not show an unexplained material regression.
@@ -963,7 +1027,7 @@ The Next.js 16 upgrade is complete when:
 - [ ] CI start commands do not pass duplicate port flags.
 - [ ] `next-unused` and its fragile script are removed.
 - [ ] `@next/bundle-analyzer` is upgraded and works if still used.
-- [ ] Netlify plugin is upgraded if Netlify is active, or removed if it is not.
+- [ ] `@netlify/plugin-nextjs` and `netlify.toml` are removed, since Netlify is no longer a deployment path.
 - [ ] `next-intl` is recorded as compatible with the selected Next.js version unless testing proves otherwise.
 - [ ] A deliberate `.babelrc` decision is recorded: removed to use SWC, or retained with a documented requirement.
 - [ ] Emotion SSR remains correct.

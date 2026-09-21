@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import VideoPlayer from '../components/VideoPlayer';
 
 const meta: Meta<typeof VideoPlayer> = {

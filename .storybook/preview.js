@@ -2,7 +2,7 @@ import '../src/theme/global.scss';
 import './storybook.scss';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import { ThemeProvider } from '@storybook/theming';
+import { ThemeProvider } from 'storybook/theming';
 import { useTheme } from '../src/theme/themeContext';
 // import { ThemeProvider } from 'emotion-theming';
 import getMessages from './i18n';

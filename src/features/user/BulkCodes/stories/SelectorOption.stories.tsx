@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import SelectorOption from '../components/SelectorOption';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
