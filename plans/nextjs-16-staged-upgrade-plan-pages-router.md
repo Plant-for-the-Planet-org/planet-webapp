@@ -247,8 +247,11 @@ declared support through Next.js 15, not Next.js 16.
 
 ### What changed
 
-- `@storybook/nextjs`, `@storybook/addon-links`, `storybook`, and `eslint-plugin-storybook` are pinned at `10.6.0`.
-- `@storybook/addon-essentials`, `@storybook/addon-interactions`, `@storybook/addon-actions`, `@storybook/react`, `@storybook/test`, and `@storybook/theming` were removed. Storybook 9 folded all of them into the `storybook` core package; `@storybook/addon-docs` is now a separate explicit addon and was added.
+- `@storybook/nextjs`, `storybook`, and `eslint-plugin-storybook` are pinned at `10.6.0`. `@storybook/addon-docs` was added at `10.6.0` as well.
+- Four packages were removed because Storybook 9 folded them into the `storybook` core package: `@storybook/addon-interactions` and `@storybook/addon-actions` into the core addon set, `@storybook/test` into `storybook/test`, and `@storybook/theming` into `storybook/theming`.
+- `@storybook/addon-essentials` was removed and split. Its component addons are part of core now, and its docs half became the separate `@storybook/addon-docs` entry in `.storybook/main.js`.
+- `@storybook/react` was removed and replaced by `@storybook/nextjs`, which is where the story types live under the framework-based configuration.
+- `@storybook/addon-links` was removed outright, with no replacement. Nothing in the repo imported it.
 - The 45 story files moved from `import type { Meta, StoryObj } from '@storybook/react'` to `'@storybook/nextjs'`, which is the framework-based configuration Storybook 9 requires. `.storybook/preview.js` moved from `@storybook/theming` to `storybook/theming`, and the one `fn` import moved from `@storybook/test` to `storybook/test`. All of this was applied by the official automigrations, not by hand.
 - The framework stays `@storybook/nextjs` on webpack. The `nextjs-to-nextjs-vite` automigration was offered and deliberately not taken, because `.storybook/main.js` carries a `webpackFinal` hook for the `fs` and `path-browserify` fallbacks. Moving to Vite is a separate decision, not part of a compatibility fix.
 - The `addon-mcp` automigration installed `@storybook/addon-mcp`. It was removed again as unrelated to this upgrade.

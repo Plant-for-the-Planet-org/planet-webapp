@@ -250,7 +250,7 @@ This is the phase teams skip and then regret.
 
 - Sentry v6 to `@sentry/nextjs`.
 - `@next/bundle-analyzer` 10 to current.
-- `@netlify/plugin-nextjs` v4 to v5.
+- Remove `@netlify/plugin-nextjs`. Netlify is dead as of 2026-09-21, so the plugin goes rather than moving to v5.
 - Remove unused packages: `next-connect`, `express-rate-limit`, `express-slow-down`, and `src/middlewares/rate-limiter.ts`. Nothing imports them.
 - Delete the dead `export` script and fix `.github/workflows/cypress.yml`.
 
