@@ -10,14 +10,14 @@ interface DrawingControlsProp {
   isDrawing: boolean;
   setIsDrawing: SetState<boolean>;
   coordinates: number[][];
-  setCoordinates: SetState<number[][]>;
+  clearCoordinates: () => void;
 }
 
 const DrawingControls = ({
   isDrawing,
   setIsDrawing,
   coordinates,
-  setCoordinates,
+  clearCoordinates,
 }: DrawingControlsProp) => {
   const showDeleteButton = coordinates.length > 0;
   const tManageProjects = useTranslations('ManageProjects');
@@ -48,7 +48,7 @@ const DrawingControls = ({
           type="button"
           onClick={(e) => {
             e.preventDefault();
-            setCoordinates([]);
+            clearCoordinates();
           }}
           title={tManageProjects('drawing.polygon.delete')}
           aria-label={tManageProjects('drawing.polygon.delete')}
