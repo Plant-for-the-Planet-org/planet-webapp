@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import type { QuestionnaireSpeciesRow } from '../../../common/types/project';
 
 import { useState } from 'react';
