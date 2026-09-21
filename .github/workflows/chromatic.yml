@@ -41,4 +41,5 @@ jobs:
           # Reuse the build from the previous step instead of building Storybook again.
           storybookBuildDir: storybook-static
           # Snapshot differences are reported in Chromatic, not treated as a build failure, matching the chromatic script in package.json.
+          # Remove this if we start maintaining baselines, so visual changes nobody has reviewed fail the job. Note the workflow only runs on pushes to develop, so it would also need a pull_request trigger to gate anything before merge.
           exitZeroOnChanges: true
