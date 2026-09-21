@@ -165,6 +165,8 @@ Initially make it **non-blocking** and record a baseline error count. Fail or wa
 
 The goal is to detect new type breakage, not to turn this project into a full type-cleanup effort.
 
+**The job must run after a build.** From Next.js 15, `next-env.d.ts` references `.next/types/routes.d.ts`, which only exists once the app has been built. Typechecking a clean checkout reports a spurious `TS6053` for the missing file. Measured after a build, the count is **127 errors**, unchanged by the Next.js 15 upgrade.
+
 ---
 
 # Phase 1 — Modernize dependencies and tooling while still on Next.js 14
@@ -521,7 +523,7 @@ Repository assessment found:
 - no `next/navigation`,
 - no `getServerSideProps` usage relevant to this migration item.
 
-The one identified Next.js 15 request-object change touching the repository was `NextRequest.geo` / `.ip` usage inside `src/middlewares/rate-limiter.ts`, and that module is deleted in Phase 1 because it is unused.
+There is no `NextRequest.geo` / `.ip` exposure either. An earlier version of this plan flagged `src/middlewares/rate-limiter.ts`, but that file types its argument as express's `Request`, so `request.ip` is express's property and Next.js 15 does not touch it. The module is also imported nowhere, so leaving it in place (Phase 1.5 was skipped) costs nothing for this upgrade.
 
 ## Why still use Next.js 15 as an intermediate step?
 
