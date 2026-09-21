@@ -315,6 +315,10 @@ If Netlify remains an active deployment path, upgrade from v4 to a current v5 re
 
 If Netlify is no longer used, prefer removing the plugin and its configuration instead of carrying another deployment adapter through the upgrade.
 
+Evidence gathered on 2026-09-21 points at Netlify being dead: the last 100 GitHub deployments on this repo are all Vercel or manual `planet-app-sf` ones, no Netlify check or commit status appears on `develop`, and `netlify.toml` has not been touched since August 2023. That is strong but not proof, because a Netlify site can build without the GitHub app reporting back, so the Netlify dashboard still needs a look before the plugin and `netlify.toml` are removed.
+
+Until that call is made, treat `.nvmrc` as a deployment input and not only a developer convenience. Netlify resolves its build Node version from `.nvmrc` when `NODE_VERSION` is unset, and `netlify.toml` sets no `NODE_VERSION`. Raising `.nvmrc` from 16 to 24 on `feature/storybook-10-upgrade` therefore also raises the Node version of any Netlify build that still runs. `@netlify/plugin-nextjs@4.41.3` declares `engines.node: ">=12.0.0"`, so nothing there blocks it. Heroku is unaffected, because its Node buildpack reads `engines.node` from `package.json`, which already said `24.x`.
+
 ### `next-intl`
 
 No migration work is currently expected for `next-intl@4.13.0`; its published peer range already includes Next.js 16.
