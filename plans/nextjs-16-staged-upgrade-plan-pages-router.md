@@ -311,13 +311,13 @@ Upgrade it to a version compatible with the selected Next.js release and verify 
 
 ### `@netlify/plugin-nextjs`
 
-If Netlify remains an active deployment path, upgrade from v4 to a current v5 release compatible with Next.js 16.
+Decided on 2026-09-21: Netlify is not a deployment path any more. Netlify deployments for this repo were blocked a while back and no current version of the app is served from there. Vercel is the deployment path.
 
-If Netlify is no longer used, prefer removing the plugin and its configuration instead of carrying another deployment adapter through the upgrade.
+So do not upgrade the plugin to v5. Remove `@netlify/plugin-nextjs` from `package.json` and delete `netlify.toml`, instead of carrying a dead deployment adapter through the upgrade.
 
-Evidence gathered on 2026-09-21 points at Netlify being dead: the last 100 GitHub deployments on this repo are all Vercel or manual `planet-app-sf` ones, no Netlify check or commit status appears on `develop`, and `netlify.toml` has not been touched since August 2023. That is strong but not proof, because a Netlify site can build without the GitHub app reporting back, so the Netlify dashboard still needs a look before the plugin and `netlify.toml` are removed.
+The removal is safe. All three redirects in `netlify.toml` (`/my-trees`, `/redeem`, `/yucatan-reforestation`) already exist in the `redirects()` block in `next.config.js`, so deleting the file loses nothing. The repo signals agree too: the last 100 GitHub deployments are all Vercel or manual `planet-app-sf` ones, no Netlify check or commit status appears on `develop`, and `netlify.toml` has not been touched since August 2023.
 
-Until that call is made, treat `.nvmrc` as a deployment input and not only a developer convenience. Netlify resolves its build Node version from `.nvmrc` when `NODE_VERSION` is unset, and `netlify.toml` sets no `NODE_VERSION`. Raising `.nvmrc` from 16 to 24 on `feature/storybook-10-upgrade` therefore also raises the Node version of any Netlify build that still runs. `@netlify/plugin-nextjs@4.41.3` declares `engines.node: ">=12.0.0"`, so nothing there blocks it. Heroku is unaffected, because its Node buildpack reads `engines.node` from `package.json`, which already said `24.x`.
+One detail worth keeping in mind while `netlify.toml` is still in the tree: Netlify resolves its build Node version from `.nvmrc` when `NODE_VERSION` is unset, and `netlify.toml` sets none. That is why raising `.nvmrc` from 16 to 24 was checked against Netlify at all. With deployments blocked nothing reads it. Heroku is unaffected either way, because its Node buildpack reads `engines.node` from `package.json`, which already said `24.x`.
 
 ### `next-intl`
 
@@ -893,7 +893,7 @@ Dependency/tooling modernization on Next.js 14
 ├─ Storybook 8 → Storybook 10 (done)
 ├─ ESLint 9 + flat config + @typescript-eslint v8 path
 ├─ Upgrade @next/bundle-analyzer
-├─ Upgrade/remove Netlify plugin
+├─ Remove Netlify plugin and netlify.toml (Netlify is dead)
 ├─ Mark next-intl as already compatible
 ├─ Remove dead rate-limiter dependencies/module
 ├─ Remove next-unused
@@ -1022,7 +1022,7 @@ The Next.js 16 upgrade is complete when:
 - [ ] CI start commands do not pass duplicate port flags.
 - [ ] `next-unused` and its fragile script are removed.
 - [ ] `@next/bundle-analyzer` is upgraded and works if still used.
-- [ ] Netlify plugin is upgraded if Netlify is active, or removed if it is not.
+- [ ] `@netlify/plugin-nextjs` and `netlify.toml` are removed, since Netlify is no longer a deployment path.
 - [ ] `next-intl` is recorded as compatible with the selected Next.js version unless testing proves otherwise.
 - [ ] A deliberate `.babelrc` decision is recorded: removed to use SWC, or retained with a documented requirement.
 - [ ] Emotion SSR remains correct.

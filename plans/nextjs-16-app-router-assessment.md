@@ -114,7 +114,7 @@ The modern answer is one `@sentry/nextjs` package. This is a rewrite of our erro
 ### 4. Stale build-chain packages
 
 - `@next/bundle-analyzer` is on 10.2.3, six majors behind even our current Next 14.
-- `@netlify/plugin-nextjs` is on v4, and Next 16 needs v5.
+- `@netlify/plugin-nextjs` is on v4, and Next 16 would need v5. Since confirmed dead on 2026-09-21: Netlify deployments are blocked, so remove the plugin rather than upgrade it.
 
 ### 5. `middleware.ts` is deprecated in favour of `proxy.ts`
 
