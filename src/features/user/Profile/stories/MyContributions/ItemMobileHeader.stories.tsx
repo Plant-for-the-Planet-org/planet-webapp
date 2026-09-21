@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import ItemMobileHeader from '../../MyContributions/ItemMobileHeader';
 
 const meta: Meta<typeof ItemMobileHeader> = {
