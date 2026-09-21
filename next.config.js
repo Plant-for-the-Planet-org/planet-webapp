@@ -60,7 +60,8 @@ const nextConfig = {
   trailingSlash: false,
   reactStrictMode: true,
   poweredByHeader: false,
-  // @sentry/node's module hook patches Node's own require() at runtime, so it must load unbundled rather than go through webpack.
+  // Sentry's module hook must patch Node's require() at runtime, so it cannot be bundled.
+  // Next currently externalises it anyway; this makes that explicit rather than relying on a default.
   serverExternalPackages: ['import-in-the-middle', 'require-in-the-middle'],
   typescript: {
     // !! WARN !!
