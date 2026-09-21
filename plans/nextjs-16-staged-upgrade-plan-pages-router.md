@@ -462,7 +462,7 @@ This mattered because Next.js 16/Turbopack detects Babel configuration and conti
 
 # Phase 2 — Upgrade Next.js 14 to Next.js 15
 
-**Status: In progress.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). `next` is bumped to 15.5.25 and `serverComponentsExternalPackages` moved to the stable `serverExternalPackages` key. The Phase 1.8 Babel decision above was resolved as part of this PR rather than beforehand, since it turned out to be required for the Next 15 build to succeed. Local build, unit tests, and lint pass. Full regression testing (Cypress/E2E, staging verification, manual tenant/locale/auth/donation checks) is still outstanding before this phase can be marked done.
+**Status: Done.** Merged into `develop` through PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). `next` is at 15.5.25 and `serverComponentsExternalPackages` moved to the stable `serverExternalPackages` key. The Phase 1.8 Babel decision above was resolved as part of this PR rather than beforehand, since it turned out to be required for the Next 15 build to succeed. Build, unit tests, and lint pass, and the upgrade was verified on staging before merging. Cypress/E2E was not part of that check, because the suite stays broken until item 0.2 is done.
 
 ### Note on sequencing
 
@@ -486,7 +486,7 @@ The installed `@sentry/nextjs` and `@storybook/nextjs` versions already declare 
 The repo has no App Router surface for the async-request-API changes to touch.
 Node and React already meet Next 15's minimums.
 
-These skipped items remain open and will be picked up after this PR merges into `develop`.
+That merge has happened. These skipped items remain open and are now the queue on top of `develop`.
 
 Upgrade to the latest appropriate Next.js 15 release before moving to Next.js 16.
 
