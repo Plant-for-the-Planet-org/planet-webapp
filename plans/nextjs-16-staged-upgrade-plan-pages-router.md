@@ -454,7 +454,9 @@ Pages Router
 
 Tenant rewriting is the routing model for the application, so this cannot be assumed from a successful build alone.
 
-That third point is the real risk in this decision. `server.js` hands every request to `getRequestHandler()` through a `server.get('*')` catch-all, and whether Next.js middleware or `proxy.ts` runs on that path has not been confirmed for any version this repository has shipped. Verify it against a running Heroku dyno, not only locally.
+That third point is the real risk in this decision. `server.js` reaches `getRequestHandler()` through a `server.get('*')` catch-all, so what arrives there is GET and HEAD requests that fall through the `/static` middleware. Whether Next.js middleware or `proxy.ts` runs on that path has not been confirmed for any version this repository has shipped. Verify it against a running Heroku dyno, not only locally.
+
+Requests with other methods never reach the catch-all, so they need a separate check. `pages/api/restor/sync-sites.ts` answers only `POST`, and Heroku starts the app with `node server.js` from the `Procfile`, so that route cannot be reached in production as the server stands today. Confirm on a dyno whether any non-GET path is meant to work, and add an explicit route for it if so.
 
 Note also that `server.js` uses Express 4. The `'*'` catch-all route is not valid in Express 5, so an Express major upgrade is a separate piece of work and should not be folded into the Next.js 16 PR.
 
