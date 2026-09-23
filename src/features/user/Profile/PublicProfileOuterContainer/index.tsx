@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
 
 import styles from './PublicProfileOuterContainer.module.scss';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { clsx } from 'clsx';
+import { useUserStore } from '../../../../stores';
 
 const PublicProfileOuterContainer = ({ children }: { children: ReactNode }) => {
-  const { isImpersonationModeOn } = useUserProps();
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
   return (
     <main
       className={clsx(styles.mainContainer, {

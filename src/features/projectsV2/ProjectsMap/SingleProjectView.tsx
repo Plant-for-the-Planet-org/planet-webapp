@@ -17,8 +17,11 @@ import FireLocationsMarker from './microComponents/FireLocationsMarker';
 import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
 import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
-import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { useInterventionStore, useSingleProjectStore } from '../../../stores';
+import {
+  useInterventionStore,
+  useSingleProjectStore,
+  useProjectMapStore,
+} from '../../../stores';
 
 interface Props {
   mapRef: MapLibreRef;

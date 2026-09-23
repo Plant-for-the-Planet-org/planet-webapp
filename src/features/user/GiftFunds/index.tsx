@@ -4,37 +4,38 @@ import { useEffect, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import GiftFundDetails from './GiftFundDetails';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useUserStore } from '../../../stores';
 
 const GiftFunds = () => {
   const t = useTranslations('GiftFunds');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { user } = useUserProps();
+  // store: state
+  const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
 
   useEffect(() => {
     if (
-      !user?.planetCash ||
-      user.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
+      !userPlanetCash ||
+      userPlanetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
         .length === 0
     )
       router.push(localizedPath('/profile'));
-  }, [user]);
+  }, [userPlanetCash]);
 
   const [validGiftFunds, setValidGiftFunds] = useState<GiftFund[] | null>(null);
 
   useEffect(() => {
     //Not displaying details for gift fund where open units = 0
-    const nonZeroOpenUnitsGiftFunds = user?.planetCash?.giftFunds.filter(
+    const nonZeroOpenUnitsGiftFunds = userPlanetCash?.giftFunds.filter(
       (gift) => gift.openUnits !== 0
     );
     setValidGiftFunds(
       nonZeroOpenUnitsGiftFunds ? nonZeroOpenUnitsGiftFunds : null
     );
-  }, [user]);
+  }, [userPlanetCash]);
 
   return (
     <DashboardView

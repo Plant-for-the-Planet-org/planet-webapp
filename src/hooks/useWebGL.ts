@@ -17,12 +17,13 @@ export const useWebGL = (): WebGLSupport => {
     const detectWebGL = () => {
       try {
         const canvas = document.createElement('canvas');
-        const gl =
-          canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        // MapLibre GL JS v5+ renders through WebGL2 only. Probing WebGL1 here would
+        // pass browsers where the map then throws GPUInitializationError on construction.
+        const gl = canvas.getContext('webgl2');
 
-        if (!gl || !(gl instanceof WebGLRenderingContext)) {
+        if (!gl) {
           setIsWebglSupported(false);
-          setError('WebGL context could not be created');
+          setError('WebGL2 context could not be created');
         } else {
           // Additional check for working WebGL
           const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');

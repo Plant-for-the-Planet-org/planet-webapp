@@ -1,5 +1,6 @@
 {
   "Profile": {
+    "editProfile": "Profil bearbeiten",
     "myProfile": {
       "memberSince": "Mitglied seit {date}",
       "donorCircleMember": "Fördermitglied"
@@ -71,7 +72,9 @@
       "textToShare": "Schließen Sie sich {name} und Tausenden von anderen an, um eine Billion Bäume zu pflanzen und die Klimakrise zu bekämpfen #StopTalkingStartPlanting #TrillionTrees",
       "shareVia": "Teilen über",
       "copyLink": "Link kopieren",
-      "textToShareLinkedin": "Schließe dich {name} und Tausenden von anderen an, um eine Billion Bäume zu pflanzen und die Klimakrise zu bekämpfen"
+      "textToShareLinkedin": "Schließe dich {name} und Tausenden von anderen an, um eine Billion Bäume zu pflanzen und die Klimakrise zu bekämpfen",
+      "shareOn": "Auf {socialMedia} teilen",
+      "shareViaEmail": "Per E-Mail teilen"
     },
     "progressBar": {
       "treePlanted": "{count, plural, =1 {# Baum gepflanzt} other {# Bäume gepflanzt}}",

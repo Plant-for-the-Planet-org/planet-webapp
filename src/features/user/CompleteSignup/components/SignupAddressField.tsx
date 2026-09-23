@@ -5,6 +5,7 @@ import type { SignupFormData } from '..';
 
 import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';
+import { Autocomplete } from '@mui/material';
 import { MuiTextField } from '..';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useCallback, useMemo, useRef, useState } from 'react';
@@ -109,46 +110,54 @@ const SignupAddressField = ({
             message: tSignup('validationErrors.addressInvalid'),
           },
         }}
-        render={({ field: { onChange, value, onBlur } }) => (
-          <MuiTextField
-            label={tSignup('fieldLabels.address')}
-            error={errors.address !== undefined}
-            helperText={errors.address !== undefined && errors.address.message}
-            onChange={(event) => {
-              setAddressInput(event.target.value);
-              onChange(event.target.value);
+        render={({ field: { onChange, value, onBlur, ref } }) => (
+          <Autocomplete
+            freeSolo
+            fullWidth
+            options={addressSuggestions}
+            // Suggestions are already relevant results from the geocoder, so
+            // keep them all instead of letting MUI filter against the input.
+            filterOptions={(options) => options}
+            getOptionLabel={(option) =>
+              typeof option === 'string' ? option : option.text
+            }
+            value={value ?? ''}
+            onInputChange={(_, newValue, reason) => {
+              if (reason === 'reset') {
+                return;
+              }
+              setAddressInput(newValue);
+              onChange(newValue);
             }}
-            onBlur={() => {
-              setAddressSuggestions([]);
-              onBlur();
+            onChange={(_, newValue) => {
+              const selected =
+                typeof newValue === 'string' ? newValue : newValue?.text ?? '';
+              onChange(selected);
+              // Only fetch address details when a real suggestion object is
+              // chosen, not when free text is committed via Enter.
+              if (newValue && typeof newValue !== 'string') {
+                handleAddressSelection(newValue.text);
+              }
             }}
-            value={value}
+            renderInput={(params) => (
+              <MuiTextField
+                {...params}
+                label={tSignup('fieldLabels.address')}
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: 'street-address',
+                }}
+                error={errors.address !== undefined}
+                helperText={
+                  errors.address !== undefined && errors.address.message
+                }
+                inputRef={ref}
+                onBlur={onBlur}
+              />
+            )}
           />
         )}
       />
-      {addressSuggestions
-        ? addressSuggestions.length > 0 && (
-            <div
-              role="listbox"
-              aria-label={tSignup('addressManagement.addressSuggestions')}
-            >
-              {addressSuggestions.map((suggestion, index) => {
-                return (
-                  <div
-                    key={index}
-                    onMouseDown={() => {
-                      handleAddressSelection(suggestion.text);
-                    }}
-                    role="option"
-                    aria-selected={false}
-                  >
-                    {suggestion.text}
-                  </div>
-                );
-              })}
-            </div>
-          )
-        : null}
       <InlineFormDisplayGroup>
         <Controller
           name="city"
@@ -164,6 +173,7 @@ const SignupAddressField = ({
           render={({ field: { onChange, value, onBlur } }) => (
             <MuiTextField
               label={tSignup('fieldLabels.city')}
+              autoComplete="address-level2"
               error={errors.city !== undefined}
               helperText={errors.city !== undefined && errors.city.message}
               onChange={onChange}
@@ -194,6 +204,7 @@ const SignupAddressField = ({
           render={({ field: { onChange, value, onBlur } }) => (
             <MuiTextField
               label={tSignup('fieldLabels.zipCode')}
+              autoComplete="postal-code"
               error={errors.zipCode !== undefined}
               helperText={
                 errors.zipCode !== undefined && errors.zipCode.message

@@ -7,13 +7,11 @@ import type {
 } from './donationReceiptTypes';
 
 import { handleError } from '@planet-sdk/common';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './DonationReceipt.module.scss';
 import SupportAssistanceInfo from './microComponents/SupportAssistanceInfo';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import YearlyReceiptGroup from './microComponents/YearlyReceiptGroup';
-import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import {
   transformProfileToDonorView,
   transformProfileToPrimaryAddressGuid,
@@ -30,15 +28,25 @@ import {
   getSortedYears,
   getOverviewEligibilityForAllYears,
 } from './receiptGroupingUtils';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+  useDonationReceiptStore,
+} from '../../../stores';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useApi();
-  const { user, contextLoaded } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const tReceipt = useTranslations('DonationReceipt');
-  const { initForIssuance, initForVerification } = useDonationReceiptContext();
+  // store: actions
+  const initForIssuance = useDonationReceiptStore(
+    (state) => state.initForIssuance
+  );
+  const initForVerification = useDonationReceiptStore(
+    (state) => state.initForVerification
+  );
   // local state
   const [donationReceipts, setDonationReceipts] =
     useState<DonationReceiptsStatus | null>(null);
@@ -46,12 +54,15 @@ const DonationReceipts = () => {
   const [overviewLoadingYear, setOverviewLoadingYear] = useState<string | null>(
     null
   );
-
+  // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     (async () => {
-      if (!user || !contextLoaded) return;
+      if (!userProfile || !isAuthResolved) return;
       try {
         const response = await getApiAuthenticated<DonationReceiptsStatus>(
           '/app/donationReceiptsStatus'
@@ -76,12 +87,14 @@ const DonationReceipts = () => {
     if (type === 'unissued') {
       const clickedReceipt = receipt as UnissuedReceiptDataAPI;
 
-      const donorView = user ? transformProfileToDonorView(user) : null;
-      const addressView = user
-        ? transformProfileToPrimaryAddressView(user)
+      const donorView = userProfile
+        ? transformProfileToDonorView(userProfile)
         : null;
-      const addressGuid = user
-        ? transformProfileToPrimaryAddressGuid(user)
+      const addressView = userProfile
+        ? transformProfileToPrimaryAddressView(userProfile)
+        : null;
+      const addressGuid = userProfile
+        ? transformProfileToPrimaryAddressGuid(userProfile)
         : null;
 
       if (!donorView || !addressView || !addressGuid) {
@@ -94,19 +107,19 @@ const DonationReceipts = () => {
         donorView,
         addressView,
         addressGuid,
-        user
+        userProfile
       );
     } else if (type === 'issued') {
       const clickedReceipt = receipt as IssuedReceiptDataApi;
 
-      initForVerification(clickedReceipt, user);
+      initForVerification(clickedReceipt, userProfile);
     }
 
     router.push(localizedPath('/profile/donation-receipt/verify'));
   };
 
   const handleOverviewDownload = async (year: string) => {
-    if (!user || overviewLoadingYear) return;
+    if (!userProfile || overviewLoadingYear) return;
 
     setOverviewLoadingYear(year);
 

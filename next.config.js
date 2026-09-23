@@ -1,35 +1,31 @@
+const fs = require('fs');
+const path = require('path');
+const { PHASE_PRODUCTION_BUILD } = require('next/constants');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
+const { withSentryConfig } = require('@sentry/nextjs/config');
 
-// Use the SentryWebpack plugin to upload the source maps during build step
-const SentryWebpackPlugin = require('@sentry/webpack-plugin');
+// MapLibre v6 loads its worker from public/, put there by scripts/copy-maplibre-worker.js via the postinstall and prebuild hooks.
+// If those files are missing every map renders blank and reports nothing, so fail the build rather than ship it.
+// This check lives here because next.config.js is read inside `next build`, so it still fires if the npm scripts are bypassed.
+const assertMaplibreWorkerCopied = () => {
+  const missing = [
+    'maplibre-gl-worker.mjs',
+    'maplibre-gl-shared.mjs',
+  ].filter((file) => !fs.existsSync(path.join(__dirname, 'public', file)));
 
-const {
-  NEXT_PUBLIC_SENTRY_DSN: SENTRY_DSN,
-  SENTRY_ORG,
-  SENTRY_PROJECT,
-  SENTRY_AUTH_TOKEN,
-  NODE_ENV,
-  VERCEL_GIT_COMMIT_SHA,
-  VERCEL_GITHUB_COMMIT_SHA,
-  VERCEL_GITLAB_COMMIT_SHA,
-  VERCEL_BITBUCKET_COMMIT_SHA,
-  SOURCE_VERSION,
-  COMMIT_REF,
-  SITE_IMAGERY_API_URL,
-} = process.env;
+  if (missing.length) {
+    throw new Error(
+      `Missing MapLibre worker files in public/: ${missing.join(', ')}. ` +
+        'Run `npm run build` rather than `next build`, or run `npm run copy-maplibre-worker` directly. ' +
+        'Without these files every map renders blank with no error.'
+    );
+  }
+};
 
-// allow source map uploads from Vercel, Heroku and Netlify deployments
-const COMMIT_SHA =
-  VERCEL_GIT_COMMIT_SHA ||
-  VERCEL_GITHUB_COMMIT_SHA ||
-  VERCEL_GITLAB_COMMIT_SHA ||
-  VERCEL_BITBUCKET_COMMIT_SHA ||
-  SOURCE_VERSION ||
-  COMMIT_REF;
+const { SITE_IMAGERY_API_URL } = process.env;
 
-process.env.SENTRY_DSN = SENTRY_DSN;
 const basePath = '';
 
 const scheme =
@@ -47,27 +43,7 @@ const hasAssetPrefix =
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   productionBrowserSourceMaps: true,
-  serverRuntimeConfig: {
-    rootDir: __dirname,
-  },
-  webpack: (config, options) => {
-    // In `pages/_app.js`, Sentry is imported from @sentry/browser. While
-    // @sentry/node will run in a Node.js environment. @sentry/node will use
-    // Node.js-only APIs to catch even more unhandled exceptions.
-    //
-    // This works well when Next.js is SSRing your page on a server with
-    // Node.js, but it is not what we want when your client-side bundle is being
-    // executed by a browser.
-    //
-    // Luckily, Next.js will call this webpack function twice, once for the
-    // server and once for the client. Read more:
-    // https://nextjs.org/docs/api-reference/next.config.js/custom-webpack-config
-    //
-    // So ask Webpack to replace @sentry/node imports with @sentry/browser when
-    // building the browser's bundle
-    if (!options.isServer) {
-      config.resolve.alias['@sentry/node'] = '@sentry/browser';
-    }
+  webpack: (config) => {
     // for webpack4 - needs "next": "10.2.0" due to error solved in webpack5
     //config.node = {
     //  fs: 'empty',
@@ -77,30 +53,6 @@ const nextConfig = {
       fs: false,
       path: require.resolve('path-browserify'),
     };
-
-    // When all the Sentry configuration env variables are available/configured
-    // The Sentry webpack plugin gets pushed to the webpack plugins to build
-    // and upload the source maps to sentry.
-    // This is an alternative to manually uploading the source maps
-    // Note: This is disabled in development mode.
-    if (
-      SENTRY_DSN &&
-      SENTRY_ORG &&
-      SENTRY_PROJECT &&
-      SENTRY_AUTH_TOKEN &&
-      COMMIT_SHA &&
-      NODE_ENV === 'production'
-    ) {
-      config.plugins.push(
-        new SentryWebpackPlugin({
-          include: '.next',
-          ignore: ['node_modules'],
-          stripPrefix: ['webpack://_N_E/'],
-          urlPrefix: `~${basePath}/_next`,
-          release: COMMIT_SHA,
-        })
-      );
-    }
     return config;
   },
   basePath,
@@ -129,6 +81,9 @@ const nextConfig = {
   trailingSlash: false,
   reactStrictMode: true,
   poweredByHeader: false,
+  // Sentry's module hook must patch Node's require() at runtime, so it cannot be bundled.
+  // Next currently externalises it anyway; this makes that explicit rather than relying on a default.
+  serverExternalPackages: ['import-in-the-middle', 'require-in-the-middle'],
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -197,7 +152,17 @@ const nextConfig = {
   // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
 };
 
-module.exports = () => {
+module.exports = (phase) => {
+  if (phase === PHASE_PRODUCTION_BUILD) {
+    assertMaplibreWorkerCopied();
+  }
+
   const plugins = [withBundleAnalyzer];
-  return plugins.reduce((config, plugin) => plugin(config), nextConfig);
+  const config = plugins.reduce((config, plugin) => plugin(config), nextConfig);
+  return withSentryConfig(config, {
+    // org, project and authToken are read from the SENTRY_ORG, SENTRY_PROJECT and SENTRY_AUTH_TOKEN env vars by default.
+    widenClientFileUpload: true,
+    // This app uses the Pages Router only, so there's no App Router navigation to instrument.
+    suppressOnRouterTransitionStartWarning: true,
+  });
 };

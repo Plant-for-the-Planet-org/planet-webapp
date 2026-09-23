@@ -17,69 +17,18 @@ import '../src/theme/global.scss';
 // Tailwind utilities take precedence over the legacy global styles.
 import '../src/styles/globals.css';
 import ThemeProvider from '../src/theme/themeContext';
-import * as Sentry from '@sentry/node';
-import { RewriteFrames } from '@sentry/integrations';
-import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
-import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 import dynamic from 'next/dynamic';
-import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
-import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { NextIntlClientProvider } from 'next-intl';
-import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
 
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
   ssr: false,
 });
-
-if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
-  const config = getConfig();
-  const distDir = `${config.serverRuntimeConfig.rootDir}/.next`;
-  Sentry.init({
-    enabled: process.env.NODE_ENV === 'production',
-    integrations: [
-      new RewriteFrames({
-        iteratee: (frame) => {
-          frame.filename = frame.filename?.replace(distDir, 'app:///_next');
-          return frame;
-        },
-      }),
-    ],
-    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-    // from https://gist.github.com/pioug/b006c983538538066ea871d299d8e8bc,
-    // also see https://docs.sentry.io/platforms/javascript/configuration/filtering/#decluttering-sentry
-    ignoreErrors: [
-      /^No error$/,
-      /__show__deepen/,
-      /_avast_submit/,
-      /Access is denied/,
-      /anonymous function: captureException/,
-      /Blocked a frame with origin/,
-      /console is not defined/,
-      /cordova/,
-      /DataCloneError/,
-      /Error: AccessDeny/,
-      /event is not defined/,
-      /feedConf/,
-      /ibFindAllVideos/,
-      /myGloFrameList/,
-      /SecurityError/,
-      /MyIPhoneApp/,
-      /snapchat.com/,
-      /vid_mate_check is not defined/,
-      /win\.document\.body/,
-      /window\._sharedData\.entry_data/,
-      /ztePageScrollModule/,
-    ],
-    denyUrls: [],
-  });
-}
 
 const onRedirectCallback = (appState: any) => {
   // Use Next.js's Router.replace method to replace the url
@@ -124,6 +73,7 @@ const PlanetWeb = ({
   const router = useRouter();
   const { tenantConfig } = pageProps;
   const [browserCompatible, setBrowserCompatible] = useState(false);
+  const locale = (router.query?.locale as string) ?? 'en';
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -147,6 +97,12 @@ const PlanetWeb = ({
     setBrowserCompatible(browserNotCompatible());
   }, []);
 
+  // `_document` sets `<html lang>` at SSR and on every full load, including language switches. This effect is purely defensive: it would re-sync lang if the locale ever changed without a document render, which doesn't happen today. Its `router.isReady` guard avoids overwriting the SSR value in Next's static case where query can be empty pre-hydration.
+  useEffect(() => {
+    if (!router.isReady) return;
+    document.documentElement.lang = locale;
+  }, [locale, router.isReady]);
+
   const isMobile = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return window.innerWidth < 481;
@@ -167,10 +123,7 @@ const PlanetWeb = ({
     return <BrowserNotSupported />;
   } else {
     return tenantConfig ? (
-      <NextIntlClientProvider
-        locale={(router.query?.locale as string) ?? 'en'}
-        messages={pageProps.messages}
-      >
+      <NextIntlClientProvider locale={locale} messages={pageProps.messages}>
         <CacheProvider value={emotionCache}>
           <Auth0Provider
             domain={process.env.AUTH0_CUSTOM_DOMAIN!}
@@ -187,26 +140,11 @@ const PlanetWeb = ({
             onRedirectCallback={onRedirectCallback}
             useRefreshTokens={true}
           >
+            <StoreInitializer isMobile={isMobile} tenantConfig={tenantConfig} />
             <ThemeProvider>
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
-                <UserPropsProvider>
-                  <StoreInitializer
-                    isMobile={isMobile}
-                    tenantConfig={tenantConfig}
-                  />
-                  <PlanetCashProvider>
-                    <PayoutsProvider>
-                      <Layout>
-                        <BulkCodeProvider>
-                          <DonationReceiptProvider>
-                            {pageContent}
-                          </DonationReceiptProvider>
-                        </BulkCodeProvider>
-                      </Layout>
-                    </PayoutsProvider>
-                  </PlanetCashProvider>
-                </UserPropsProvider>
+                <Layout>{pageContent}</Layout>
               </MuiThemeProvider>
             </ThemeProvider>
           </Auth0Provider>

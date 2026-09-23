@@ -10,11 +10,14 @@ import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
 import ViewModeTabs from './microComponents/ViewModeTabs';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useProjectStore, useViewStore } from '../../../stores';
+import {
+  useProjectStore,
+  useViewStore,
+  useUserStore,
+  useQueryParamStore,
+} from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
 interface ProjectListControlForMobileProps {
@@ -34,11 +37,14 @@ const ProjectListControlForMobile = ({
   updateMapOption,
   shouldHideProjectTabs,
 }: ProjectListControlForMobileProps) => {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
-  const { isImpersonationModeOn } = useUserProps();
+  // local state
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  // store: state
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
   const { filteredProjectCount } = useFilteredProjects();
-  //store: state
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
   const selectedMode = useViewStore((state) => state.selectedMode);

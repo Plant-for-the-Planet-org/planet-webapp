@@ -3,7 +3,6 @@ import type { APIError, SerializedError } from '@planet-sdk/common';
 
 import { useState } from 'react';
 import styles from './DeleteProfile.module.scss';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CustomModal from '../../../common/Layout/CustomModal';
 import { useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
@@ -12,10 +11,11 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
+import { useUserStore, useErrorHandlingStore } from '../../../../stores';
 
 export default function DeleteProfileForm() {
-  const { user, logoutUser } = useUserProps();
+  const { logoutUser } = useAuthSession();
   const tCommon = useTranslations('Common');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -24,7 +24,9 @@ export default function DeleteProfileForm() {
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); //true when subscriptions are present
   const [canDeleteAccount, setCanDeleteAccount] = useState(false);
-  // store
+  // store: state
+  const userEmail = useUserStore((state) => state.userProfile?.email);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleChange = (e: ChangeEvent<{}>) => {
@@ -98,7 +100,7 @@ export default function DeleteProfileForm() {
         </p>
         <p className={styles.deleteModalWarning}>
           {tCommon('deleteIrreversible', {
-            email: user?.email,
+            email: userEmail,
           })}
         </p>
       </div>

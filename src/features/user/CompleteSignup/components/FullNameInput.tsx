@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { MuiTextField } from '..';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { useAuthSession } from '../../../../hooks/useAuthSession';
 
 const getNameRules = (
   tSignup: ReturnType<typeof useTranslations>,
@@ -32,7 +32,7 @@ export interface FullNameInputProps {
 
 const FullNameInput = ({ control, errors }: FullNameInputProps) => {
   const tSignup = useTranslations('EditProfile');
-  const { auth0User } = useUserProps();
+  const { auth0User } = useAuthSession();
   return (
     <InlineFormDisplayGroup>
       <Controller
@@ -47,6 +47,7 @@ const FullNameInput = ({ control, errors }: FullNameInputProps) => {
         render={({ field: { onChange, value, onBlur } }) => (
           <MuiTextField
             label={tSignup('fieldLabels.firstName')}
+            autoComplete="given-name"
             error={errors.firstname !== undefined}
             helperText={
               errors.firstname !== undefined && errors.firstname.message
@@ -69,6 +70,7 @@ const FullNameInput = ({ control, errors }: FullNameInputProps) => {
         render={({ field: { onChange, value, onBlur } }) => (
           <MuiTextField
             label={tSignup('fieldLabels.lastName')}
+            autoComplete="family-name"
             error={errors.lastname !== undefined}
             helperText={
               errors.lastname !== undefined && errors.lastname.message

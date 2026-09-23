@@ -24,7 +24,7 @@
   flex-direction: column;
   align-items: flex-start;
 
-  h3 {
+  .exploreTitle {
     font-size: $fontSmall;
     @include xsPhoneView {
       font-size: $fontXXSmall;

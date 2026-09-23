@@ -3,9 +3,11 @@
     "classification": {
       "natural-regeneration": "Natural Regeneration",
       "managed-regeneration": "Managed Regeneration",
+      "restoration-tree-planting": "Large Scale Restoration",
       "large-scale-planting": "Large Scale Restoration",
       "agroforestry": "Agroforestry",
       "urban-planting": "Urban Restoration",
+      "other-restoration": "Restoration",
       "other-planting": "Restoration",
       "mangroves": "Mangroves",
       "conservation": "Conservation"

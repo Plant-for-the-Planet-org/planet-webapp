@@ -8,12 +8,11 @@ import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect'
 import StyledForm from '../../../common/Layout/StyledForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useUserStore, useErrorHandlingStore } from '../../../../stores';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -29,7 +28,6 @@ type FormData = {
 
 const PayoutScheduleForm = (): ReactElement | null => {
   const t = useTranslations('ManagePayouts');
-  const { user, setUser } = useUserProps();
   const { putApiAuthenticated } = useApi();
   const {
     handleSubmit,
@@ -41,7 +39,10 @@ const PayoutScheduleForm = (): ReactElement | null => {
   // local state
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  // store
+  // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const onSubmit = async (data: FormData): Promise<void> => {
@@ -51,7 +52,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
       const res = await putApiAuthenticated<User>('/app/profile', {
         payload: { scheduleFrequency: data.scheduleFrequency },
       });
-      setUser(res);
+      setUserProfile(res);
       setIsSaved(true);
       setIsProcessing(false);
     } catch (err) {
@@ -74,7 +75,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
     setIsSaved(false);
   };
 
-  if (user?.type === 'tpo') {
+  if (userProfile?.type === 'tpo') {
     return (
       <CenteredContainer>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -98,7 +99,9 @@ const PayoutScheduleForm = (): ReactElement | null => {
               name="scheduleFrequency"
               label={t('labels.scheduleFrequency') + '*'}
               control={control}
-              defaultValue={user.scheduleFrequency || PaymentFrequencies.MANUAL}
+              defaultValue={
+                userProfile.scheduleFrequency || PaymentFrequencies.MANUAL
+              }
               rules={{
                 required: t('errors.scheduleFrequencyRequired'),
               }}

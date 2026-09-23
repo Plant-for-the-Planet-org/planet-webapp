@@ -7,20 +7,25 @@ import { useTranslations } from 'next-intl';
 import { Modal } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import { useRouter } from 'next/router';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import styles from './DonationReceipt.module.scss';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import AddAddress from '../Settings/EditProfile/AddressManagement/AddAddress';
 import EditAddress from '../Settings/EditProfile/AddressManagement/EditAddress';
 import { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
 import { useApi } from '../../../hooks/useApi';
-import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import DonorContactForm from './microComponents/DonorContactForm';
 import { transformProfileToDonorView } from './transformers'; // TODO: remove for production
 import { validateOwnership } from './DonationReceiptValidator';
 import EditPermissionDenied from './microComponents/EditPermissionDenied';
 import { RECEIPT_STATUS } from './donationReceiptTypes';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  useUserStore,
+  useErrorHandlingStore,
+  useDonationReceiptStore,
+  selectOperation,
+} from '../../../stores';
 
 type IndividualProfile = {
   firstname: string;
@@ -36,16 +41,8 @@ type CompanyProfile = {
 type ProfileData = IndividualProfile | CompanyProfile;
 
 const DonorContactManagement = () => {
-  const { updateDonorAndAddress, email, tinIsRequired, getOperation } =
-    useDonationReceiptContext();
   const t = useTranslations('DonationReceipt');
   const router = useRouter();
-  const { user, setUser } = useUserProps();
-
-  const isOwner = validateOwnership(email, user);
-  if (!isOwner && getOperation() !== RECEIPT_STATUS.ISSUE)
-    return <EditPermissionDenied />;
-
   const { putApiAuthenticated } = useApi();
   // local state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,8 +54,25 @@ const DonorContactManagement = () => {
   const [checkedAddressGuid, setCheckedAddressGuid] = useState<string | null>(
     null
   );
-  // store
+  // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  const email = useDonationReceiptStore((state) => state.email);
+  const tinIsRequired = useDonationReceiptStore((state) => state.tinIsRequired);
+  const operation = useDonationReceiptStore(selectOperation);
+  const isHydrated = useDonationReceiptStore((state) => state.isHydrated);
+  // store: action
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const updateDonorAndAddress = useDonationReceiptStore(
+    (state) => state.updateDonorAndAddress
+  );
+
+  // Ownership can only be decided once the store has hydrated, otherwise the default (empty) email would read as "not the owner".
+  if (!isHydrated) return <Skeleton height={500} width={600} />;
+
+  const isOwner = validateOwnership(email, userProfile?.email);
+  if (!isOwner && operation !== RECEIPT_STATUS.ISSUE)
+    return <EditPermissionDenied />;
 
   // Navigate back to the verification page
   const navigateToVerificationPage = useCallback(() => {
@@ -70,24 +84,24 @@ const DonorContactManagement = () => {
   // Handle form submission and update user info
   const handleUpdateDonorInfo = async (formData: FormValues) => {
     setIsLoading(true);
-    if (!user || !checkedAddressGuid) {
+    if (!userProfile || !checkedAddressGuid) {
       setErrors([{ message: 'User or address data missing.' }]);
       setIsLoading(false);
       return;
     }
 
     try {
-      let updatedUser = user;
+      let updatedUser = userProfile;
 
       // Update user profile if changed
       if (
-        formData.firstName !== user.firstname ||
-        formData.lastName !== user.lastname ||
-        formData.tin !== user.tin ||
-        formData.companyName !== user.name
+        formData.firstName !== userProfile.firstname ||
+        formData.lastName !== userProfile.lastname ||
+        formData.tin !== userProfile.tin ||
+        formData.companyName !== userProfile.name
       ) {
         const profileData: ProfileData =
-          user.type === 'individual'
+          userProfile.type === 'individual'
             ? {
                 firstname: formData.firstName,
                 lastname: formData.lastName,
@@ -103,11 +117,11 @@ const DonorContactManagement = () => {
         );
 
         if (!updatedUser) throw new Error('Failed to update user profile.');
-        setUser(updatedUser);
+        setUserProfile(updatedUser);
       }
 
       const donorView = transformProfileToDonorView(updatedUser);
-      const selectedAddress = user.addresses.find(
+      const selectedAddress = userProfile.addresses.find(
         (address) => address.id === checkedAddressGuid
       );
       const addressView = {
@@ -172,7 +186,7 @@ const DonorContactManagement = () => {
         </header>
 
         <DonorContactForm
-          user={user}
+          user={userProfile}
           onSubmit={handleUpdateDonorInfo}
           setSelectedAddress={setSelectedAddress}
           setAddressAction={setAddressAction}

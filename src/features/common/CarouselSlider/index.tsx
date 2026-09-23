@@ -12,6 +12,7 @@ import {
   CarouselPrevIcon,
 } from '../../../../public/assets/images/icons/ProfilePageV2Icons';
 import themeProperties from '../../../theme/themeProperties';
+import IconButton from '../IconButton';
 import styles from './CarouselSlider.module.scss';
 
 interface ExtendedInnerSlider extends InnerSlider {
@@ -32,23 +33,20 @@ const CarouselArrow = (props: {
   const iconColor = disabled ? disabledColor : activeColor;
 
   return (
-    <button
-      type="button"
+    <IconButton
       onClick={onClick}
       disabled={disabled}
-      aria-label={direction === 'next' ? t('nextSlide') : t('previousSlide')}
+      label={direction === 'next' ? t('nextSlide') : t('previousSlide')}
       style={{
         cursor: disabled ? 'none' : 'pointer',
       }}
     >
-      <span aria-hidden="true" style={{ display: 'contents' }}>
-        {direction === 'next' ? (
-          <CarouselNextIcon color={iconColor} />
-        ) : (
-          <CarouselPrevIcon color={iconColor} />
-        )}
-      </span>
-    </button>
+      {direction === 'next' ? (
+        <CarouselNextIcon color={iconColor} />
+      ) : (
+        <CarouselPrevIcon color={iconColor} />
+      )}
+    </IconButton>
   );
 };
 

@@ -43,6 +43,7 @@ const RecipientFormFields = ({ control, errors }: Props) => {
               sx={{ minWidth: 100 }}
               size="small"
               {...field}
+              inputProps={{ 'aria-label': t('tableHeaders.recipient_name') }}
               error={errors.recipient_name !== undefined}
               helperText={errors.recipient_name?.message}
             />
@@ -67,6 +68,7 @@ const RecipientFormFields = ({ control, errors }: Props) => {
               size="small"
               sx={{ minWidth: 100 }}
               {...field}
+              inputProps={{ 'aria-label': t('tableHeaders.recipient_email') }}
               error={errors.recipient_email !== undefined}
               helperText={errors.recipient_email?.message}
             />
@@ -98,6 +100,7 @@ const RecipientFormFields = ({ control, errors }: Props) => {
               sx={{ minWidth: 50 }}
               size="small"
               {..._field}
+              inputProps={{ 'aria-label': t('tableHeaders.units') }}
               onChange={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 onChange(e.target.value);
@@ -119,6 +122,7 @@ const RecipientFormFields = ({ control, errors }: Props) => {
               multiline
               maxRows={3}
               {...field}
+              inputProps={{ 'aria-label': t('tableHeaders.recipient_message') }}
             />
           )}
         />

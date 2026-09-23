@@ -13,6 +13,16 @@ type CurrencyList = {
 interface CurrencyStore {
   supportedCurrencies: Set<CurrencyCode>;
   currencyCode: CurrencyCode;
+  /**
+   * Whether `currencyCode` has been resolved against `localStorage`.
+   *
+   * `currencyCode` starts at a placeholder `'EUR'`, which is indistinguishable
+   * from a real choice, so callers that key requests on currency must wait for
+   * this rather than reading the code straight away. `initializeCurrencyCode`
+   * sets it in every browser path, including when nothing is stored and the
+   * placeholder turns out to be the answer.
+   */
+  isCurrencyResolved: boolean;
   isFetching: boolean;
 
   fetchSupportedCurrencies: (
@@ -27,6 +37,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
     (set, get) => ({
       supportedCurrencies: new Set<CurrencyCode>(),
       currencyCode: 'EUR',
+      isCurrencyResolved: false,
       isFetching: false,
 
       fetchSupportedCurrencies: async (getApi) => {
@@ -61,14 +72,21 @@ export const useCurrencyStore = create<CurrencyStore>()(
       initializeCurrencyCode: () => {
         if (typeof window === 'undefined') return;
 
-        const storedCurrency = localStorage.getItem(
-          'currencyCode'
-        ) as CurrencyCode | null;
+        let storedCurrency: CurrencyCode | null = null;
+        try {
+          storedCurrency = localStorage.getItem(
+            'currencyCode'
+          ) as CurrencyCode | null;
+        } catch {
+          // Storage can be blocked outright in a cross-origin embed, keep the default currency in this case
+        }
 
-        if (!storedCurrency) return;
-
+        // Resolve either way. Nothing stored, or no readable storage, means the initial `'EUR'` is the answer. Callers gate their fetches on this, so leaving it false would mean never fetching at all.
         set(
-          { currencyCode: storedCurrency },
+          {
+            isCurrencyResolved: true,
+            ...(storedCurrency ? { currencyCode: storedCurrency } : {}),
+          },
           undefined,
           'currencyStore/initialize_currency_code'
         );

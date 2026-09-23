@@ -9,11 +9,13 @@ import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 import { clsx } from 'clsx';
-import { useTenantStore } from '../../../../stores/tenantStore';
-import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import {
+  useErrorHandlingStore,
+  useCurrencyStore,
+  useTenantStore,
+} from '../../../../stores';
 import { useRouter } from 'next/router';
-import { useCurrencyStore } from '../../../../stores/currencyStore';
+import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
 // cspell:disable
 const MANGROVE_PROJECTS = [

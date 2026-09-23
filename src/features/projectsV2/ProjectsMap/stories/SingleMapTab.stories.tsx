@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
 import SingleTab from '../ProjectMapTabs/SingleTab';

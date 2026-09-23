@@ -7,7 +7,7 @@ import {
 } from '../../../../../../public/assets/images/icons/myForestMapIcons';
 import styles from './common.module.scss';
 import { useTranslations } from 'next-intl';
-import { useMyForestStore } from '../../../../../stores/myForestStore';
+import { useMyForestStore } from '../../../../../stores';
 
 interface StatItemProps {
   icon: ReactElement;

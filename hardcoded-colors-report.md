@@ -824,11 +824,6 @@ File: src/features/common/Layout/Navbar/Navbar.module.scss
 - Line 60: rgba(0, 0, 0, 0.12) in "box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);"
 - Line 284: rgba(0, 0, 0, 0.2) in "box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2);"
 
-File: src/features/common/Layout/RedeemPopup/RedeemPopup.module.scss
---------------------------------------------------------------------
-- Line 7: rgba(50, 50, 93, 0.25) in "box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),"
-- Line 8: rgba(0, 0, 0, 0.3) in "0 8px 16px -8px rgba(0, 0, 0, 0.3);"
-
 File: src/features/common/Layout/UserLayout/UserLayout.module.scss
 ------------------------------------------------------------------
 - Line 85: rgba(150, 150, 150, 0.2) in "box-shadow: rgba(150, 150, 150, 0.2) 0px 0px 4px;"
@@ -1073,8 +1068,8 @@ File: src/utils/mapsV2/mapSettings.config.ts
 
 ## STATISTICS
 
-Total files with hardcoded colors: 189
-Total hardcoded color instances: 498
+Total files with hardcoded colors: 188
+Total hardcoded color instances: 496
 Unique colors (normalized): 175
 
 ## UNIQUE COLORS WITH EQUIVALENT REPRESENTATIONS

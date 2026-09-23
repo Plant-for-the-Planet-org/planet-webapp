@@ -4,7 +4,6 @@ import type { APIError, SerializedError } from '@planet-sdk/common';
 import type { BankAccount } from '../../../common/types/payouts';
 
 import { useState } from 'react';
-import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import { useTranslations } from 'next-intl';
 import BankDetailsForm from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
@@ -15,18 +14,24 @@ import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useManagePayoutStore } from '../../../../stores';
 
 const AddBankAccount = (): ReactElement | null => {
   const t = useTranslations('ManagePayouts');
-  const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
   const { postApiAuthenticated } = useApi();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   // local state
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
-  // store
+  // store: state
+  const hasPayoutMinAmounts = useManagePayoutStore(
+    (state) => state.payoutMinAmounts !== null
+  );
+  const accounts = useManagePayoutStore((state) => state.accounts);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setAccounts = useManagePayoutStore((state) => state.setAccounts);
 
   const closeSnackbar = (): void => {
     setIsAccountCreated(false);
@@ -100,10 +105,11 @@ const AddBankAccount = (): ReactElement | null => {
     }
   };
 
-  return payoutMinAmounts ? (
+  if (!hasPayoutMinAmounts) return null;
+
+  return (
     <CenteredContainer>
       <BankDetailsForm
-        payoutMinAmounts={payoutMinAmounts}
         handleSave={handleSaveAccount}
         isProcessing={isProcessing}
       />
@@ -115,7 +121,7 @@ const AddBankAccount = (): ReactElement | null => {
         />
       )}
     </CenteredContainer>
-  ) : null;
+  );
 };
 
 export default AddBankAccount;

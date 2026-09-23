@@ -1,18 +1,20 @@
 import type { ReactElement } from 'react';
 import type { GiftFund } from '@planet-sdk/common';
 
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useTranslations } from 'next-intl';
 import { Divider, Grid, styled } from '@mui/material';
 import themeProperties from '../../../theme/themeProperties';
+import { useUserStore } from '../../../stores';
 
 interface Props {
   giftFund: GiftFund;
 }
 
 const GiftFundDetails = ({ giftFund }: Props): ReactElement | null => {
-  const { user } = useUserProps();
   const t = useTranslations('GiftFunds');
+  // store: state
+  const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+  if (!userPlanetCash) return null;
 
   const StyledContainer = styled('article')(({ theme }) => ({
     backgroundColor: theme.palette.background.default,
@@ -38,38 +40,32 @@ const GiftFundDetails = ({ giftFund }: Props): ReactElement | null => {
     },
   }));
 
-  if (user?.planetCash) {
-    return (
-      <>
-        <Grid
-          container
-          className="giftFunds_container"
-          direction="column"
-          component={StyledContainer}
-        >
-          <Grid container item className="container_heading">
-            {user.planetCash?.country}/{user.planetCash?.currency} {t('title')}
-          </Grid>
-          <Grid item component={Divider} />
-          <Grid container item className="container_details" direction="row">
-            <Grid item component={SingleDetail}>
-              <b className="detailTitle">{t('project')}</b>
-              <p className="detailInfo">{giftFund.project}</p>
-            </Grid>
-
-            <Grid item component={SingleDetail}>
-              <b className="detailTitle">{t('units')}</b>
-              <p className="detailInfo">
-                {Number(giftFund.openUnits / 100).toFixed(2)}
-              </p>
-            </Grid>
-          </Grid>
+  return (
+    <Grid
+      container
+      className="giftFunds_container"
+      direction="column"
+      component={StyledContainer}
+    >
+      <Grid container item className="container_heading">
+        {userPlanetCash.country}/{userPlanetCash.currency} {t('title')}
+      </Grid>
+      <Grid item component={Divider} />
+      <Grid container item className="container_details" direction="row">
+        <Grid item component={SingleDetail}>
+          <b className="detailTitle">{t('project')}</b>
+          <p className="detailInfo">{giftFund.project}</p>
         </Grid>
-      </>
-    );
-  }
 
-  return null;
+        <Grid item component={SingleDetail}>
+          <b className="detailTitle">{t('units')}</b>
+          <p className="detailInfo">
+            {Number(giftFund.openUnits / 100).toFixed(2)}
+          </p>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
 };
 
 export default GiftFundDetails;
