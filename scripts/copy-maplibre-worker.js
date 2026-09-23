@@ -8,33 +8,41 @@
  *
  * This script runs before development and production builds so the worker files always match the installed MapLibre version.
  *
- * The worker also depends on a shared file, so both files are copied.
- * They are saved as `.js` files so they are served correctly as JavaScript and can be loaded as module workers.
+ * The worker also depends on a shared file, so both files are copied verbatim, keeping their `.mjs` names.
+ * Next serves `.mjs` as `application/javascript`, so the worker loads as a module worker and its relative import of the shared file resolves on its own.
  */
 const fs = require('fs');
 const path = require('path');
 
 const SHARED_SPECIFIER = './maplibre-gl-shared.mjs';
-const SHARED_SPECIFIER_OUT = './maplibre-gl-shared.js';
 
 const publicDir = path.join(__dirname, '..', 'public');
 const workerSource = require.resolve('maplibre-gl/dist/maplibre-gl-worker.mjs');
 const sharedSource = require.resolve('maplibre-gl/dist/maplibre-gl-shared.mjs');
 const { version } = require('maplibre-gl/package.json');
 
+// The worker is copied on its own, so it must not depend on any file beyond the shared chunk copied alongside it.
 const workerCode = fs.readFileSync(workerSource, 'utf8');
-if (!workerCode.includes(SHARED_SPECIFIER)) {
+
+// Covers all three import forms: `from "./x"`, a bare `import "./x"`, and `import("./x")`.
+const relativeImports = [
+  ...workerCode.matchAll(/(?:from|import)\s*\(?\s*["'](\.[^"']*)["']/g),
+].map((match) => match[1]);
+const unexpectedImports = relativeImports.filter(
+  (specifier) => specifier !== SHARED_SPECIFIER
+);
+
+if (!relativeImports.includes(SHARED_SPECIFIER) || unexpectedImports.length) {
   throw new Error(
-    `Expected MapLibre's worker to import "${SHARED_SPECIFIER}". MapLibre ${version} appears to have changed its bundle layout, so scripts/copy-maplibre-worker.js needs updating.`
+    `Expected MapLibre's worker to import only "${SHARED_SPECIFIER}", but found ${JSON.stringify(
+      relativeImports
+    )}. MapLibre ${version} appears to have changed its bundle layout, so scripts/copy-maplibre-worker.js needs updating.`
   );
 }
 
-fs.writeFileSync(
-  path.join(publicDir, 'maplibre-gl-worker.js'),
-  workerCode.split(SHARED_SPECIFIER).join(SHARED_SPECIFIER_OUT)
-);
-fs.copyFileSync(sharedSource, path.join(publicDir, 'maplibre-gl-shared.js'));
+fs.copyFileSync(workerSource, path.join(publicDir, 'maplibre-gl-worker.mjs'));
+fs.copyFileSync(sharedSource, path.join(publicDir, 'maplibre-gl-shared.mjs'));
 
 console.log(
-  `Copied MapLibre ${version} worker and shared chunk to public/ (maplibre-gl-worker.js, maplibre-gl-shared.js)`
+  `Copied MapLibre ${version} worker and shared chunk to public/ (maplibre-gl-worker.mjs, maplibre-gl-shared.mjs)`
 );

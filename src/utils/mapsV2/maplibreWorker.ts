@@ -8,7 +8,7 @@ import { setWorkerUrl } from 'maplibre-gl';
  *
  * Import this module anywhere a map is created, before the map is initialized.
  */
-export const MAPLIBRE_WORKER_URL = '/maplibre-gl-worker.js';
+export const MAPLIBRE_WORKER_URL = '/maplibre-gl-worker.mjs';
 
 if (typeof window !== 'undefined') {
   setWorkerUrl(MAPLIBRE_WORKER_URL);
