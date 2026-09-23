@@ -101,6 +101,8 @@ This spike is disposable; its purpose is to de-risk the dependency strategy, not
 
 ## 0.2 Repair or replace Cypress before upgrading Next.js
 
+**Not a blocker.** The suite is dormant: `cypress.yml` declares `on: pull_request`, but no Cypress check appears on open pull requests, so it cannot fail and cannot produce a false Next.js 16 regression. Nothing below needs doing for this upgrade.
+
 The current Cypress path is already broken independently of Next.js 16:
 
 - Cypress 15 is installed.
@@ -169,6 +171,35 @@ The goal is to detect new type breakage, not to turn this project into a full ty
 
 ---
 
+## 0.5 Repair the Chromatic job, which is already red
+
+Chromatic fails on every push to `develop`. The last twelve runs are all red, going back to 2026-09-15, which is before any of this upgrade work started.
+
+The cause is not snapshot differences. The CLI exits 2 with `Encountered 2 build errors`, meaning two stories throw while Chromatic renders them. Everything else is healthy: all 90 stories across 45 components capture snapshots normally.
+
+Storybook 10 did not introduce this. Build 1163 (2026-09-18, Storybook 8, Chromatic CLI 11) and build 1169 (2026-09-21, Storybook 10, CLI 18) fail the same way with the same counts.
+
+`exitZeroOnChanges: true` does not help here, because it suppresses snapshot changes only.
+
+Which two stories throw is visible only on the build page in the Chromatic UI; the CLI log does not name them.
+
+Two ways out:
+
+- Fix the two stories. Preferred. A story that throws is a real signal, and the point of Phase 0 is to make the upgrade's signal readable.
+- There is no workflow flag that avoids this. `allowConsoleErrors` was removed from the Chromatic CLI before the version this repository uses, and it would not have helped anyway: it concerns console errors, while a story that throws is a render failure.
+
+Do this before Phase 3, so that a Chromatic failure during the Next.js 16 work actually means something.
+
+### Workflow actions are on deprecated Node
+
+Separate and small, but it lands in the same file. GitHub is deprecating Node 20 for actions and already forces runs onto Node 24 with a warning. `chromatic.yml` uses `actions/checkout@v3` and `actions/setup-node@v3`; `codeql-analysis.yml`, `cypress.yml`, and `eslint.yml` use `actions/checkout@v2`. Only `test.yml` is on `v4`.
+
+`v4` is not the fix. Those versions still run on Node 20, which is the deprecated runtime. As of 23 September 2026 the current releases are `actions/checkout@v7` and `actions/setup-node@v7`. Move the workflows to a version that runs on Node 24 while CI is already open, so a forced-runtime failure does not land in the middle of the framework upgrade.
+
+See issue [#3144](https://github.com/Plant-for-the-Planet-org/planet-webapp/issues/3144), which also proposes `node-version-file: '.nvmrc'` so the workflows stop hardcoding a version each.
+
+---
+
 # Phase 1 — Modernize dependencies and tooling while still on Next.js 14
 
 Do dependency/tooling cleanup separately from the Next.js version bump wherever possible.
@@ -231,7 +262,7 @@ This materially reduces the custom webpack surface before the Next.js 16 build-s
 
 ## 2. Fix Storybook before Next.js 16
 
-**Status: Done.** Branch `feature/storybook-10-upgrade`, cut from `feature/nextjs-15-upgrade`. Storybook went from 8.6.18 to 10.6.0, not the 9.x line this section originally named. By the time the work ran, 10.6.0 was the stable release and its `@storybook/nextjs` peer range already covered `next ^16` and `react ^18`, so it met the Next.js 16 requirement while avoiding a second major migration a few months later. The upgrade CLI refuses to skip a major, so it ran as 8 to 9 to 10 in one branch.
+**Status: Done and merged.** PR #3142, branch `feature/storybook-10-upgrade`, cut from `feature/nextjs-15-upgrade`, merged into `develop` on 2026-09-21. Storybook went from 8.6.18 to 10.6.0, not the 9.x line this section originally named. By the time the work ran, 10.6.0 was the stable release and its `@storybook/nextjs` peer range already covered `next ^16` and `react ^18`, so it met the Next.js 16 requirement while avoiding a second major migration a few months later. The upgrade CLI refuses to skip a major, so it ran as 8 to 9 to 10 in one branch.
 
 Storybook is part of CI and must be treated as an upgrade blocker, not optional local tooling.
 
@@ -270,7 +301,15 @@ declared support through Next.js 15, not Next.js 16.
 - `npm test` passes, 68 tests across 6 files.
 - `npm run build` (Next.js 15) still passes.
 
-Still outstanding: the Chromatic workflow itself has only been verified by reasoning, not by an actual run. It fires on pushes to `develop`, so it gets its real test when this merges. Expect that run to report a large number of snapshot differences: going from Storybook 8 to 10 changes the preview runtime, the docs pages, and the addon set, and the stored baseline was captured by CLI 11 against Storybook 8. Those differences are real and need accepting once in Chromatic to set a new baseline. `exitZeroOnChanges: true` keeps that first run from turning `develop` red while the baseline is being re-accepted.
+### The first Chromatic run after merge
+
+This section previously said the workflow had only been verified by reasoning, and predicted a flood of snapshot differences held back by `exitZeroOnChanges`. It has now had its real test: build 1169 ran on the `develop` merge commit for PR #3142 on 2026-09-21. The prediction was wrong in both directions.
+
+What worked: Storybook published, Chromatic found 45 components with 90 stories, and all 90 snapshots captured. `storybookBuildDir: storybook-static` did reuse the existing build rather than building Storybook a second time. The CLI reported no snapshot-difference count at all, so the expected flood never appeared in the job output. Whether the baseline still needs re-accepting is only answerable in the Chromatic UI.
+
+What failed: the job went red anyway, for a reason unrelated to the upgrade. The CLI exited 2 with `Encountered 2 build errors`, which is Chromatic's wording for stories that throw while rendering. `exitZeroOnChanges` suppresses snapshot *changes* only, not component errors, so it could never have kept this run green.
+
+Those two errors predate the upgrade. Build 1163, on `develop` on 2026-09-18 with Storybook 8 and Chromatic CLI 11, failed identically: same exit code, same two component errors, same 90 stories across 45 components. So the Storybook 10 upgrade neither caused the failure nor fixed it, and the red belongs to Phase 0 CI repair rather than to this section. See 0.5.
 
 Keeping Storybook changes in Phase 1 means the Next.js 16 PR is not polluted by an unrelated Storybook major migration.
 
@@ -316,13 +355,15 @@ Upgrade it to a version compatible with the selected Next.js release and verify 
 
 ### `@netlify/plugin-nextjs`
 
+**Status: Done and merged.** PR #3143, branch `feature/remove-netlify`, merged into `develop` on 2026-09-21.
+
 Decided on 2026-09-21: Netlify is not a deployment path any more. Netlify deployments for this repo were blocked a while back and no current version of the app is served from there. Vercel is the deployment path.
 
 So do not upgrade the plugin to v5. Remove `@netlify/plugin-nextjs` from `package.json` and delete `netlify.toml`, instead of carrying a dead deployment adapter through the upgrade.
 
 The removal is safe. All three redirects in `netlify.toml` (`/my-trees`, `/redeem`, `/yucatan-reforestation`) already exist in the `redirects()` block in `next.config.js`, so deleting the file loses nothing. The repo signals agree too: the last 100 GitHub deployments are all Vercel or manual `planet-app-sf` ones, no Netlify check or commit status appears on `develop`, and `netlify.toml` has not been touched since August 2023.
 
-One detail worth keeping in mind while `netlify.toml` is still in the tree: Netlify resolves its build Node version from `.nvmrc` when `NODE_VERSION` is unset, and `netlify.toml` sets none. That is why raising `.nvmrc` from 16 to 24 was checked against Netlify at all. With deployments blocked nothing reads it. Heroku is unaffected either way, because its Node buildpack reads `engines.node` from `package.json`, which already said `24.x`.
+One detail, now historical: Netlify resolved its build Node version from `.nvmrc` when `NODE_VERSION` was unset, and `netlify.toml` set none. That is why raising `.nvmrc` from 16 to 24 was checked against Netlify at all. With `netlify.toml` gone, `.nvmrc` has no deployment consumer left. Heroku was never affected either way, because its Node buildpack reads `engines.node` from `package.json`, which already said `24.x`.
 
 ### `next-intl`
 
@@ -494,7 +535,7 @@ This mattered because Next.js 16/Turbopack detects Babel configuration and conti
 
 # Phase 2 — Upgrade Next.js 14 to Next.js 15
 
-**Status: Done.** Merged into `develop` through PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). `next` is at 15.5.25 and `serverComponentsExternalPackages` moved to the stable `serverExternalPackages` key. The Phase 1.8 Babel decision above was resolved as part of this PR rather than beforehand, since it turned out to be required for the Next 15 build to succeed. Build, unit tests, and lint pass, and the upgrade was verified on staging before merging. Cypress/E2E was not part of that check, because the suite stays broken until item 0.2 is done.
+**Status: Done.** Merged into `develop` through PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). `next` is at 15.5.25 and `serverComponentsExternalPackages` moved to the stable `serverExternalPackages` key. The Phase 1.8 Babel decision above was resolved as part of this PR rather than beforehand, since it turned out to be required for the Next 15 build to succeed. Build, unit tests, and lint pass, and the upgrade was verified on staging before merging. E2E was not part of that check; the Cypress suite is dormant, see item 0.2.
 
 ### Note on sequencing
 
@@ -502,11 +543,10 @@ This PR started Phase 2 before finishing the rest of Phase 0 and Phase 1.
 
 Skipped for now:
 
-- 0.2 Cypress repair
 - 0.4 Typecheck CI baseline
-- 1.2 Storybook upgrade (done since, on branch `feature/storybook-10-upgrade`)
+- 1.2 Storybook upgrade (done since, merged as PR #3142)
 - 1.3 ESLint modernization
-- 1.4 `@next/bundle-analyzer` / Netlify plugin upgrades
+- 1.4 `@next/bundle-analyzer` upgrade (the Netlify half is done: the plugin and `netlify.toml` were removed in PR #3143)
 - 1.5 Dead dependency removal
 - 1.6 `next export` workflow removal
 - 1.7 Heroku/Express decision
@@ -797,8 +837,8 @@ Verify:
 
 - lint passes,
 - non-blocking typecheck baseline does not regress materially,
-- Cypress or Playwright E2E passes,
 - Storybook builds,
+- Cypress or Playwright E2E passes,
 - Chromatic workflow passes,
 - production application build passes,
 - no CI job calls `next export`,
@@ -912,7 +952,6 @@ Phase 0
 Preflight + safety net
 │
 ├─ Day-one Next 16 + React 18 + --webpack spike
-├─ Fix/replace Cypress
 ├─ Add tenant rewrite tests
 ├─ Add locale tests
 ├─ Add donation smoke tests
@@ -927,7 +966,7 @@ Dependency/tooling modernization on Next.js 14
 ├─ Storybook 8 → Storybook 10 (done)
 ├─ ESLint 9 + flat config + @typescript-eslint v8 path
 ├─ Upgrade @next/bundle-analyzer
-├─ Remove Netlify plugin and netlify.toml (Netlify is dead)
+├─ Remove Netlify plugin and netlify.toml (Netlify is dead) (done)
 ├─ Mark next-intl as already compatible
 ├─ Remove dead rate-limiter dependencies/module
 ├─ Remove next-unused
@@ -1050,15 +1089,15 @@ The Next.js 16 upgrade is complete when:
 - [ ] Existing `next/head` behavior works.
 - [ ] Existing `getStaticProps` / `getStaticPaths` behavior works.
 - [x] Storybook builds on the Next.js 16-compatible Storybook version (10.6.0).
-- [ ] Chromatic CI passes.
+- [ ] Chromatic CI passes. Still red, from two component errors that predate the upgrade. See 0.5.
 - [ ] ESLint runs on the modern supported dependency stack and flat config.
 - [ ] The typecheck job exists with a recorded baseline and does not show an unexplained material regression.
-- [ ] Cypress has been migrated successfully, or Playwright has replaced it.
+- [ ] Cypress has been migrated successfully, or Playwright has replaced it. Nice to have rather than a gate; the suite is dormant, see 0.2.
 - [ ] No CI workflow calls `next export`.
 - [ ] CI start commands do not pass duplicate port flags.
 - [ ] `next-unused` and its fragile script are removed.
 - [ ] `@next/bundle-analyzer` is upgraded and works if still used.
-- [ ] `@netlify/plugin-nextjs` and `netlify.toml` are removed, since Netlify is no longer a deployment path.
+- [x] `@netlify/plugin-nextjs` and `netlify.toml` are removed, since Netlify is no longer a deployment path. Done in PR #3143.
 - [ ] `next-intl` is recorded as compatible with the selected Next.js version unless testing proves otherwise.
 - [ ] A deliberate `.babelrc` decision is recorded: removed to use SWC, or retained with a documented requirement.
 - [ ] Emotion SSR remains correct.
