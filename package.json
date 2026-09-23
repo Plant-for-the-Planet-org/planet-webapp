@@ -66,7 +66,7 @@
     "@mui/lab": "^5.0.0-alpha.77",
     "@mui/material": "^5.12.2",
     "@mui/x-date-pickers": "^5.0.15",
-    "@next/bundle-analyzer": "^10.2.3",
+    "@next/bundle-analyzer": "^15.5.25",
     "@planet-sdk/common": "^0.3.0",
     "@sentry/nextjs": "^10.73.0",
     "@turf/turf": "^5.1.6",
