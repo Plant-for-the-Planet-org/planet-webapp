@@ -981,6 +981,8 @@ Reassess separately when there is a concrete architectural reason to adopt:
 
 The Next.js 16 upgrade should not be used as a reason to perform this migration.
 
+The decision and a route-by-route plan for after this upgrade are in [nextjs-app-router-migration-roadmap.md](./nextjs-app-router-migration-roadmap.md).
+
 ---
 
 ## Sass module-system cleanup
