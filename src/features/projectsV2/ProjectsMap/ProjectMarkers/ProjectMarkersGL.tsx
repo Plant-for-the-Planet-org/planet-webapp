@@ -93,9 +93,12 @@ const ProjectMarkersGL = ({ projects }: Props) => {
   useEffect(() => {
     const map = mapInstance?.getMap();
     if (!map) return;
-    map.setMissingStyleImageResolver((id) =>
-      isPointMarkerImageKey(id) ? registerMarkerIcons(map) : undefined
-    );
+    map.setMissingStyleImageResolver(async (id) => {
+      if (!isPointMarkerImageKey(id)) return;
+      await registerMarkerIcons(map);
+      // If the style was replaced while pins were loading, some pins went into the old style. Register again so the new style gets them.
+      if (!map.hasImage(id)) await registerMarkerIcons(map);
+    });
     return () => {
       map.setMissingStyleImageResolver(null);
     };
