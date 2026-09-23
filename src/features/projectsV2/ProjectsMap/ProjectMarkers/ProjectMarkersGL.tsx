@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import ProjectPopup from '../ProjectPopup';
 import {
   getPointMarkerImageKey,
+  isPointMarkerImageKey,
   registerMarkerIcons,
   MARKER_ICON_OFFSET_Y,
 } from './markerImageRegistry';
@@ -87,23 +88,16 @@ const ProjectMarkersGL = ({ projects }: Props) => {
     [localizedPath, isEmbedMode, callbackUrl, router]
   );
 
-  // Register the per-category pin images on the map (idempotent).
+  // Register the pin images when MapLibre needs them. MapLibre waits for them to be ready, so no warning is shown.
+  // This also works after the map style changes, so the pins are added again automatically.
   useEffect(() => {
     const map = mapInstance?.getMap();
     if (!map) return;
-    let cancelled = false;
-    const registerIcons = () => {
-      if (!cancelled) void registerMarkerIcons(map);
-    };
-    if (map.isStyleLoaded()) registerIcons();
-    else map.once('load', registerIcons);
-    // Safety net: re-register if an icon is missing (e.g. after a style reload).
-    // styleimagemissing fires once per missing image (~24 at initial load) - registerMarkerIcons coalesces concurrent calls so only one rasterization runs.
-    map.on('styleimagemissing', registerIcons);
+    map.setMissingStyleImageResolver((id) =>
+      isPointMarkerImageKey(id) ? registerMarkerIcons(map) : undefined
+    );
     return () => {
-      cancelled = true;
-      map.off('load', registerIcons);
-      map.off('styleimagemissing', registerIcons);
+      map.setMissingStyleImageResolver(null);
     };
   }, [mapInstance]);
 
