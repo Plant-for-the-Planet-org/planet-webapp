@@ -78,7 +78,7 @@
     "maplibre-gl": "^6.8.0",
     "material-ui-popup-state": "^4.1.0",
     "negotiator": "^0.6.3",
-    "next": "^15.5.25",
+    "next": "^16.3.6",
     "next-intl": "^4.13.0",
     "papaparse": "^5.5.2",
     "path-browserify": "^1.0.1",
