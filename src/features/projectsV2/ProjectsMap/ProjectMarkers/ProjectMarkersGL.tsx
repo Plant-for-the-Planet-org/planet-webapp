@@ -3,7 +3,7 @@ import type { FeatureCollection, Point } from 'geojson';
 import type { MapLayerMouseEvent, MapGeoJSONFeature } from 'maplibre-gl';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Layer, Source, useMap } from 'react-map-gl-v7/maplibre';
+import { Layer, Source, useMap } from 'react-map-gl/maplibre';
 import { useRouter } from 'next/router';
 import ProjectPopup from '../ProjectPopup';
 import {

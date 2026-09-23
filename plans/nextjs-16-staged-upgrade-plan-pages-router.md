@@ -380,7 +380,7 @@ src/middlewares/rate-limiter.ts
 
 `express-rate-limit` and `express-slow-down` are only referenced by the unused rate-limiter module.
 
-Do **not** remove `express` yet unless the custom server/Heroku path is also removed; `server.js` currently uses it.
+Do **not** remove `express`. Item 1.7 below has since been decided: Heroku is live, so `server.js` stays and it needs `express`.
 
 Also remove:
 
@@ -414,6 +414,8 @@ This issue already exists independently of the Next.js 16 upgrade and should not
 
 ## 7. Decide whether the custom Express/Heroku server is still a real production path
 
+**Status: Decided on 2026-09-21. Heroku is live, so the custom Express server stays.** Evidence and consequences below.
+
 This is a deployment architecture decision that must be made before the Next.js 16 PR.
 
 Current repository signals include:
@@ -426,7 +428,24 @@ heroku-postbuild -> builds the application
 README          -> points to Vercel as production
 ```
 
-### Preferred path if Heroku is dead
+### Evidence that Heroku is still live
+
+The GitHub deployment history settles this. Two Heroku apps are deployed from this repository and both are current:
+
+- `planet-app-sf.herokuapp.com` — 18 of the last 100 deployments, the most recent on 2026-09-21 at 10:52 UTC from commit `4812a059f`, which was `develop` HEAD at that moment.
+- `planet-app-sf-prod.herokuapp.com` — 5 of the last 100 deployments, on 2026-09-21, 09-18, 09-17, 09-16 and 09-15.
+
+These are manual deployments made by team members, not by a bot, which is why no workflow in `.github/workflows/` mentions Heroku. The absence of a Heroku workflow is not evidence that Heroku is dead. The Netlify check in item 1.4 reached the opposite conclusion from similar-looking signals, so the two cases should not be reasoned about together.
+
+The other 77 deployments in that window are Vercel Preview and Production. Vercel remains the main path; Heroku is a second, parallel one.
+
+### Decision
+
+Keep `server.js`, `Procfile`, `app.json`, the Heroku scripts, and `express`.
+
+Do not delete them unless the team separately decides to retire `planet-app-sf` and `planet-app-sf-prod`. That retirement is a product decision and is not part of this upgrade.
+
+### If Heroku is retired later
 
 Delete the unused deployment stack:
 
@@ -440,17 +459,21 @@ express
 
 but only after confirming no live environment depends on it.
 
-Removing this path is safer than carrying an unsupported/untested custom-server branch forward.
+### Required work, now that the custom server stays
 
-### Required path if Heroku/custom server is still live
+Three things follow from the decision, and all of them belong to Phase 3.
 
-Update the programmatic Next.js initialization so Webpack is explicit in Next.js 16:
+First, update the programmatic Next.js initialization so Webpack is explicit in Next.js 16:
 
 ```js
 next({ dir: '.', dev, webpack: true })
 ```
 
-Then verify that the normal request handler path still executes the tenant-routing proxy logic:
+This lives in `server.js`, which currently calls `next({ dir: '.', dev })`.
+
+Second, put `--webpack` in the `build` script in `package.json` rather than only on the local command line. Heroku builds through `heroku-postbuild`, which runs `npm run build`, so a flag typed at a developer's terminal never reaches the Heroku build.
+
+Third, verify that the normal request handler path still executes the tenant-routing proxy logic:
 
 ```text
 Express request
@@ -465,6 +488,12 @@ Pages Router
 ```
 
 Tenant rewriting is the routing model for the application, so this cannot be assumed from a successful build alone.
+
+That third point is the real risk in this decision. `server.js` reaches `getRequestHandler()` through a `server.get('*')` catch-all, so what arrives there is GET and HEAD requests that fall through the `/static` middleware. Whether Next.js middleware or `proxy.ts` runs on that path has not been confirmed for any version this repository has shipped. Verify it against a running Heroku dyno, not only locally.
+
+Requests with other methods never reach the catch-all, so they need a separate check. `pages/api/restor/sync-sites.ts` answers only `POST`, and Heroku starts the app with `node server.js` from the `Procfile`, so that route cannot be reached in production as the server stands today. Confirm on a dyno whether any non-GET path is meant to work, and add an explicit route for it if so.
+
+Note also that `server.js` uses Express 4. The `'*'` catch-all route is not valid in Express 5, so an Express major upgrade is a separate piece of work and should not be folded into the Next.js 16 PR.
 
 ---
 
@@ -610,7 +639,7 @@ Update scripts so both common entry points are explicit, for example:
 }
 ```
 
-If the custom server remains active, also set:
+The custom server remains (item 1.7), so also set:
 
 ```js
 next({ dir: '.', dev, webpack: true })
@@ -938,7 +967,7 @@ Dependency/tooling modernization on Next.js 14
 ├─ Remove dead rate-limiter dependencies/module
 ├─ Remove next-unused
 ├─ Remove dead next export workflow
-├─ Decide Heroku/custom server: delete or support
+├─ Heroku/custom server decided: keep, Heroku is live (done)
 └─ Decide .babelrc: remove for SWC or document why it remains
         │
         ▼
@@ -956,7 +985,7 @@ Next.js 15 → 16
 │
 ├─ Keep React 18 if Phase 0 proved it viable
 ├─ Use --webpack on dev and build
-├─ If custom server remains, set webpack: true there too
+├─ Set webpack: true in server.js, and --webpack in the build script
 ├─ middleware.ts → proxy.ts
 ├─ Validate proxy through every active deployment path
 ├─ Validate sass-loader v16 / CSS ordering behavior
@@ -1042,8 +1071,10 @@ The Next.js 16 upgrade is complete when:
 - [ ] Source maps upload correctly.
 - [ ] `next dev --webpack` works.
 - [ ] `next build --webpack` succeeds.
-- [ ] If `server.js` remains, programmatic Next.js startup explicitly uses `webpack: true` and the custom-server path is regression-tested.
-- [ ] If Heroku is no longer active, `server.js`, `Procfile`, `app.json`, Heroku-only config, and `express` are removed where appropriate.
+- [x] The Heroku/custom-server question is answered with deployment evidence rather than assumption. Heroku is live; see Phase 1.7.
+- [ ] `server.js` starts Next.js with `webpack: true`, and the custom-server path is regression-tested.
+- [ ] The `build` script itself carries `--webpack`, so the Heroku `heroku-postbuild` build gets it too.
+- [ ] Tenant rewrites and `proxy.ts` are confirmed to run through the Express `getRequestHandler()` path on a real Heroku dyno.
 - [ ] `middleware.ts` has been migrated to `proxy.ts`.
 - [ ] Tenant hostname rewrites work through every active deployment path.
 - [ ] Locale redirects and cookies work.

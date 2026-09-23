@@ -5,7 +5,7 @@ import type {
   DonationProperties,
   MyContributionsSingleRegistration,
 } from '../features/common/types/myForest';
-import type { MapRef, ViewState } from 'react-map-gl-v7/maplibre';
+import type { MapRef, ViewState } from 'react-map-gl/maplibre';
 
 import Supercluster from 'supercluster';
 
