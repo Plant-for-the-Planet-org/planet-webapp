@@ -1,7 +1,28 @@
+const fs = require('fs');
+const path = require('path');
+const { PHASE_PRODUCTION_BUILD } = require('next/constants');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 const { withSentryConfig } = require('@sentry/nextjs/config');
+
+// MapLibre v6 loads its worker from public/, put there by scripts/copy-maplibre-worker.js via the postinstall and prebuild hooks.
+// If those files are missing every map renders blank and reports nothing, so fail the build rather than ship it.
+// This check lives here because next.config.js is read inside `next build`, so it still fires if the npm scripts are bypassed.
+const assertMaplibreWorkerCopied = () => {
+  const missing = [
+    'maplibre-gl-worker.mjs',
+    'maplibre-gl-shared.mjs',
+  ].filter((file) => !fs.existsSync(path.join(__dirname, 'public', file)));
+
+  if (missing.length) {
+    throw new Error(
+      `Missing MapLibre worker files in public/: ${missing.join(', ')}. ` +
+        'Run `npm run build` rather than `next build`, or run `npm run copy-maplibre-worker` directly. ' +
+        'Without these files every map renders blank with no error.'
+    );
+  }
+};
 
 const { SITE_IMAGERY_API_URL } = process.env;
 
@@ -131,7 +152,11 @@ const nextConfig = {
   // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
 };
 
-module.exports = () => {
+module.exports = (phase) => {
+  if (phase === PHASE_PRODUCTION_BUILD) {
+    assertMaplibreWorkerCopied();
+  }
+
   const plugins = [withBundleAnalyzer];
   const config = plugins.reduce((config, plugin) => plugin(config), nextConfig);
   return withSentryConfig(config, {

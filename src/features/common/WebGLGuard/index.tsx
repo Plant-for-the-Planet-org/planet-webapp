@@ -106,6 +106,8 @@ const WebGLGuard: FC<WebGLGuardProps> = ({
               })}
             </li>
           </ul>
+
+          <p>{t('notSupportedError.outdatedBrowser')}</p>
         </div>
 
         <div className={styles.contactInfo}>
