@@ -165,6 +165,7 @@ export default function TimeTravel({
       | { message?: string; status?: number; name?: string }
       | undefined;
 
+    // Note: 404 is unlikely to be surfaced here as Maplibre swallows tile 404s
     return (
       error?.message?.includes('Failed to fetch') === true ||
       error?.status === 404 ||
