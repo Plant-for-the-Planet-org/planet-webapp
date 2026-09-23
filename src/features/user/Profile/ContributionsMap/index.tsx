@@ -1,5 +1,4 @@
-import type { StyleSpecification } from 'react-map-gl/maplibre';
-import type { MutableRefObject } from 'react';
+import type { MapRef, StyleSpecification } from 'react-map-gl/maplibre';
 import type { ProfilePageType } from '../../../common/types/myForest';
 import type { ViewState } from 'react-map-gl/maplibre';
 
@@ -38,7 +37,7 @@ function ContributionsMap({
   profilePageType,
   supportedTreecounter,
 }: ContributionsMapProps) {
-  const mapRef: MutableRefObject<null> = useRef(null);
+  const mapRef = useRef<MapRef>(null);
   // mapState and viewState logic will need to be refined and move elsewhere (either context or props) once we fetch data from the API
   const [mapState, setMapState] = useState<MapState>({
     mapStyle: EMPTY_STYLE,
