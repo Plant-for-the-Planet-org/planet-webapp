@@ -2,7 +2,7 @@ import type {
   MapLibreRef,
   ProjectSiteFeatureCollection,
 } from '../../features/common/types/map';
-import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { ViewState } from 'react-map-gl/maplibre';
 import type { Map } from 'maplibre-gl';
 
 import bbox from '@turf/bbox';
