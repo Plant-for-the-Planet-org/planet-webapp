@@ -101,6 +101,8 @@ This spike is disposable; its purpose is to de-risk the dependency strategy, not
 
 ## 0.2 Repair or replace Cypress before upgrading Next.js
 
+**Not a blocker.** The suite is dormant: `cypress.yml` declares `on: pull_request`, but no Cypress check appears on open pull requests, so it cannot fail and cannot produce a false Next.js 16 regression. Nothing below needs doing for this upgrade.
+
 The current Cypress path is already broken independently of Next.js 16:
 
 - Cypress 15 is installed.
@@ -184,13 +186,17 @@ Which two stories throw is visible only on the build page in the Chromatic UI; t
 Two ways out:
 
 - Fix the two stories. Preferred. A story that throws is a real signal, and the point of Phase 0 is to make the upgrade's signal readable.
-- Pass `allowConsoleErrors` in the workflow. This turns the job green while leaving the stories broken, so it hides exactly the class of breakage the Next.js 16 upgrade is most likely to cause.
+- There is no workflow flag that avoids this. `allowConsoleErrors` was removed from the Chromatic CLI before the version this repository uses, and it would not have helped anyway: it concerns console errors, while a story that throws is a render failure.
 
 Do this before Phase 3, so that a Chromatic failure during the Next.js 16 work actually means something.
 
 ### Workflow actions are on deprecated Node
 
-Separate and small, but it lands in the same file. GitHub is deprecating Node 20 for actions and already forces runs onto Node 24 with a warning. `chromatic.yml` uses `actions/checkout@v3` and `actions/setup-node@v3`; `codeql-analysis.yml`, `cypress.yml`, and `eslint.yml` use `actions/checkout@v2`. Only `test.yml` is on `v4`. Move the rest to `v4` while CI is already open, so a forced-runtime failure does not land in the middle of the framework upgrade.
+Separate and small, but it lands in the same file. GitHub is deprecating Node 20 for actions and already forces runs onto Node 24 with a warning. `chromatic.yml` uses `actions/checkout@v3` and `actions/setup-node@v3`; `codeql-analysis.yml`, `cypress.yml`, and `eslint.yml` use `actions/checkout@v2`. Only `test.yml` is on `v4`.
+
+`v4` is not the fix. Those versions still run on Node 20, which is the deprecated runtime. As of 23 September 2026 the current releases are `actions/checkout@v7` and `actions/setup-node@v7`. Move the workflows to a version that runs on Node 24 while CI is already open, so a forced-runtime failure does not land in the middle of the framework upgrade.
+
+See issue [#3144](https://github.com/Plant-for-the-Planet-org/planet-webapp/issues/3144), which also proposes `node-version-file: '.nvmrc'` so the workflows stop hardcoding a version each.
 
 ---
 
@@ -529,7 +535,7 @@ This mattered because Next.js 16/Turbopack detects Babel configuration and conti
 
 # Phase 2 — Upgrade Next.js 14 to Next.js 15
 
-**Status: Done.** Merged into `develop` through PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). `next` is at 15.5.25 and `serverComponentsExternalPackages` moved to the stable `serverExternalPackages` key. The Phase 1.8 Babel decision above was resolved as part of this PR rather than beforehand, since it turned out to be required for the Next 15 build to succeed. Build, unit tests, and lint pass, and the upgrade was verified on staging before merging. Cypress/E2E was not part of that check, because the suite stays broken until item 0.2 is done.
+**Status: Done.** Merged into `develop` through PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). `next` is at 15.5.25 and `serverComponentsExternalPackages` moved to the stable `serverExternalPackages` key. The Phase 1.8 Babel decision above was resolved as part of this PR rather than beforehand, since it turned out to be required for the Next 15 build to succeed. Build, unit tests, and lint pass, and the upgrade was verified on staging before merging. E2E was not part of that check; the Cypress suite is dormant, see item 0.2.
 
 ### Note on sequencing
 
@@ -537,7 +543,6 @@ This PR started Phase 2 before finishing the rest of Phase 0 and Phase 1.
 
 Skipped for now:
 
-- 0.2 Cypress repair
 - 0.4 Typecheck CI baseline
 - 1.2 Storybook upgrade (done since, merged as PR #3142)
 - 1.3 ESLint modernization
@@ -832,8 +837,8 @@ Verify:
 
 - lint passes,
 - non-blocking typecheck baseline does not regress materially,
-- Cypress or Playwright E2E passes,
 - Storybook builds,
+- Cypress or Playwright E2E passes,
 - Chromatic workflow passes,
 - production application build passes,
 - no CI job calls `next export`,
@@ -947,7 +952,6 @@ Phase 0
 Preflight + safety net
 │
 ├─ Day-one Next 16 + React 18 + --webpack spike
-├─ Fix/replace Cypress
 ├─ Add tenant rewrite tests
 ├─ Add locale tests
 ├─ Add donation smoke tests
@@ -1088,7 +1092,7 @@ The Next.js 16 upgrade is complete when:
 - [ ] Chromatic CI passes. Still red, from two component errors that predate the upgrade. See 0.5.
 - [ ] ESLint runs on the modern supported dependency stack and flat config.
 - [ ] The typecheck job exists with a recorded baseline and does not show an unexplained material regression.
-- [ ] Cypress has been migrated successfully, or Playwright has replaced it.
+- [ ] Cypress has been migrated successfully, or Playwright has replaced it. Nice to have rather than a gate; the suite is dormant, see 0.2.
 - [ ] No CI workflow calls `next export`.
 - [ ] CI start commands do not pass duplicate port flags.
 - [ ] `next-unused` and its fragile script are removed.
