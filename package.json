@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "copy-maplibre-worker": "node scripts/copy-maplibre-worker.js",
+    "postinstall": "npm run copy-maplibre-worker",
     "predev-https": "npm run copy-maplibre-worker",
     "dev-https": "next dev --experimental-https",
     "predev": "npm run copy-maplibre-worker",
