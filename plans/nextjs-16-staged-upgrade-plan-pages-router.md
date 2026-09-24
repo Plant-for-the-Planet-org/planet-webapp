@@ -63,7 +63,10 @@ Do this before committing to the dependency strategy.
 
 **Decision: keep React 18.** It works correctly with Next.js 16.3.5 and the app's critical dependencies on Webpack. React 19 is not a required prerequisite for this upgrade.
 
-**New finding, not previously in this plan:** Next.js 16 ships an `agentRules` feature that is on by default. Running `next dev` or `next build` auto-writes an AI-agent-directed block into `CLAUDE.md`, and modifies `next-env.d.ts` (route-types path moves under `.next/dev/types`, adds `root-params.d.ts`) and `tsconfig.json` (`jsx` flips from `"preserve"` to `"react-jsx"`, arrays get reformatted). This repository actively curates `CLAUDE.md`, so the Phase 3 PR needs an explicit decision here: set `agentRules: false` in `next.config.js`, or accept the auto-writes deliberately.
+**New finding, not previously in this plan:** the spike saw Next.js 16 write to three files. These come from two separate behaviors, and the spike notes first treated them as one.
+
+- `CLAUDE.md` and `AGENTS.md` come from `agentRules`, which is on by default. Its doc comment in `next/dist/server/config-shared.d.ts` says `next dev` writes these files when it detects an AI coding agent. This repository keeps its own `CLAUDE.md`, so Phase 3.2 needs a decision.
+- `tsconfig.json` and `next-env.d.ts` come from Next.js's TypeScript setup, which runs on every `next dev` and `next build`. `agentRules: false` does not stop these writes. See Phase 3.5.
 
 Create a throwaway branch and answer the React question immediately, before investing in the staged upgrade.
 
@@ -153,7 +156,9 @@ E2E coverage is not part of this item. See 0.2.
 
 ## 0.4 Make current type debt visible without blocking the upgrade
 
-`tsc --noEmit` currently reports approximately **126 errors**.
+**Status: Still open.** No workflow runs a typecheck yet; `test.yml` runs only `npm run test`.
+
+`tsc --noEmit` currently reports **125 errors** (measured on 2026-09-24 on Next.js 16.3.6). The first assessment counted about 126.
 
 `typescript.ignoreBuildErrors` can remain temporarily because reaching zero is not a prerequisite for the framework upgrade. The problem is that framework-related type regressions can otherwise disappear inside the existing debt.
 
@@ -167,15 +172,22 @@ Initially make it **non-blocking** and record a baseline error count. Fail or wa
 
 The goal is to detect new type breakage, not to turn this project into a full type-cleanup effort.
 
-**The job must run after a build.** From Next.js 15, `next-env.d.ts` references `.next/types/routes.d.ts`, which only exists once the app has been built. Typechecking a clean checkout reports a spurious `TS6053` for the missing file. Measured after a build, the count is **127 errors**, unchanged by the Next.js 15 upgrade.
+**When the job can run.** This changed with the Next.js 16 branch.
+
+- On Next.js 15, `next-env.d.ts` was committed and referenced `.next/types/routes.d.ts`, which only exists after a build. Typechecking a clean checkout reported a spurious `TS6053` for the missing file, so the job had to run after a build. Measured after a build, the count was 127 errors, unchanged by the Next.js 15 upgrade.
+- On Next.js 16, `next-env.d.ts` is no longer committed (see 3.5). A fresh CI checkout has no such file, and `tsc` then reports the same 125 errors as a checkout that has been built. The two error lists were compared and are identical. So the job can run with or without a build first.
+
+The old `TS6053` cannot come back either. Next.js 16 writes `next-env.d.ts` with side-effect `import` lines instead of the old `/// <reference path>` line, and TypeScript does not check side-effect imports unless `noUncheckedSideEffectImports` is on. With the file present and `.next/types` deleted, `tsc` still reported the same 125 errors and nothing about the missing files.
 
 ---
 
 ## 0.5 Repair the Chromatic job, which is already red
 
-Chromatic fails on every push to `develop`. The last twelve runs are all red, going back to 2026-09-15, which is before any of this upgrade work started.
+**Status: Still open (checked 2026-09-24).**
 
-The cause is not snapshot differences. The CLI exits 2 with `Encountered 2 build errors`, meaning two stories throw while Chromatic renders them. Everything else is healthy: all 90 stories across 45 components capture snapshots normally.
+Chromatic fails on every push to `develop`. All 21 runs from 2026-09-15 to 2026-09-23 are red, and 2026-09-15 is before any of this upgrade work started.
+
+The cause is not snapshot differences. The CLI exits 2 with `Encountered 2 build errors`, meaning two stories throw while Chromatic renders them. Everything else is healthy: in the latest run (2026-09-23) all 94 stories across 46 components captured snapshots normally. Earlier runs showed 90 stories across 45 components; the new ones were added since, and the error count stayed at 2.
 
 Storybook 10 did not introduce this. Build 1163 (2026-09-18, Storybook 8, Chromatic CLI 11) and build 1169 (2026-09-21, Storybook 10, CLI 18) fail the same way with the same counts.
 
@@ -317,6 +329,18 @@ Keeping Storybook changes in Phase 1 means the Next.js 16 PR is not polluted by 
 
 ## 3. Modernize ESLint as an independent tooling migration
 
+**Status: Done and merged.** PR [#3150](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3150) (`feature/eslint-flat-config-migration`), merged into `develop` on 2026-09-23.
+
+- `eslint` 8 to 9, and `.eslintrc.js` replaced by `eslint.config.mjs` (flat config).
+- `@typescript-eslint` v5 replaced by `typescript-eslint` v8, plus `@typescript-eslint/parser` v8.
+- `eslint-plugin-react-hooks` 4 to 5, `eslint-plugin-cypress` 2 to 6, and `@eslint/js` and `globals` added for flat config.
+- `eslint-plugin-import` and `eslint-plugin-jsx-a11y` removed. The old config used neither, apart from turning two `import/` rules off.
+- The flat config keeps the same rule sets as the old one: ESLint, typescript-eslint and React recommended, Storybook, Emotion and Cypress.
+
+Some packages in the list below had already gone before this PR. `eslint-config-airbnb`, `eslint-config-next`, `eslint-config-prettier` and `eslint-plugin-prettier` were removed in PR [#3111](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3111) on 2026-09-07.
+
+One small leftover: `eslint-plugin-react-hooks` is installed, but `eslint.config.mjs` does not use it, and the old `.eslintrc.js` did not either. Either turn on its rules or remove the package. That is a separate lint change, not part of the Next.js 16 upgrade.
+
 This is larger than simply renaming `.eslintrc.js` to `eslint.config.mjs`.
 
 The current dependency graph is internally inconsistent and contains several pre-flat-config-era packages. The assessment identified examples including:
@@ -349,6 +373,8 @@ Treat this as tooling-only work and keep it out of the Next.js 16 framework PR.
 
 ### `@next/bundle-analyzer`
 
+**Status: Done.** PR [#3157](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3157) (`feature/upgrade-bundle-analyzer`), merged on 2026-09-23, took it from 10.2.3 to 15.5.25. The `feature/nextjs-16-upgrade` branch then moved it to `^16.3.6` together with `next`, since its version follows the `next` release.
+
 The current package is approximately six major versions behind the target Next.js generation and wraps the exported config via the reducer at the bottom of `next.config.js`.
 
 Upgrade it to a version compatible with the selected Next.js release and verify the analyzer path still works.
@@ -375,6 +401,8 @@ Record this explicitly so the team does not budget unnecessary work for it.
 
 ## 5. Remove dead and fragile dependencies/scripts
 
+**Status: Done and merged.** PR [#3156](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3156) (`feature/remove-dead-tooling`), merged on 2026-09-23. It removed `express-rate-limit`, `express-slow-down`, `@types/express-slow-down`, `src/middlewares/rate-limiter.ts`, `next-unused` with its `find:unused` script and config block, and the `export` script (see 1.6). `next-connect` had already been removed in PR [#3111](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3111) on 2026-09-07. `express` stays, as below.
+
 Verified dead candidates:
 
 ```text
@@ -399,6 +427,8 @@ and the corresponding `find:unused` script. `next-unused@0.0.6` reaches into Nex
 ---
 
 ## 6. Remove the obsolete `next export` workflow
+
+**Status: The package script is done; the workflow part is left with the Cypress work.** PR [#3156](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3156) removed the `export` script from `package.json`. The `cypress.yml` changes below belong to the Cypress work in 0.2, which is not a blocker for this upgrade.
 
 Remove the dead package script:
 
@@ -475,18 +505,18 @@ First, update the programmatic Next.js initialization so Webpack is explicit in 
 next({ dir: '.', dev, webpack: true })
 ```
 
-This lives in `server.js`, which currently calls `next({ dir: '.', dev })`.
+This lives in `server.js`. **Done** on the `feature/nextjs-16-upgrade` branch. It only matters when `server.js` runs in dev mode; see 3.1.
 
-Second, put `--webpack` in the `build` script in `package.json` rather than only on the local command line. Heroku builds through `heroku-postbuild`, which runs `npm run build`, so a flag typed at a developer's terminal never reaches the Heroku build.
+Second, put `--webpack` in the `build` script in `package.json` rather than only on the local command line. Heroku builds through `heroku-postbuild`, which runs `npm run build`, so a flag typed at a developer's terminal never reaches the Heroku build. **Done** on the same branch.
 
-Third, verify that the normal request handler path still executes the tenant-routing proxy logic:
+Third, verify that the normal request handler path still executes the tenant-routing middleware:
 
 ```text
 Express request
     ↓
 next getRequestHandler()
     ↓
-proxy.ts
+middleware.ts (kept; the proxy.ts rename is skipped for now, see 3.3)
     ↓
 tenant / locale rewrite
     ↓
@@ -495,17 +525,28 @@ Pages Router
 
 Tenant rewriting is the routing model for the application, so this cannot be assumed from a successful build alone.
 
-That third point is the real risk in this decision. `server.js` reaches `getRequestHandler()` through a `server.get('*')` catch-all, so what arrives there is GET and HEAD requests that fall through the `/static` middleware. Whether Next.js middleware or `proxy.ts` runs on that path has not been confirmed for any version this repository has shipped. Verify it against a running Heroku dyno, not only locally.
+That third point is the real risk in this decision. `server.js` reaches `getRequestHandler()` through a `server.get('*')` catch-all, so what arrives there is GET and HEAD requests that fall through the `/static` middleware.
+
+**Status: Verified locally on Next.js 16.3.6, still to verify on a Heroku dyno.** After `npm run build`, `server.js` was started as the `Procfile` starts it (`NODE_ENV=production node server.js`), with `WEB_CONCURRENCY=1` and an `x-forwarded-proto: https` header so the HTTPS redirect did not fire. The middleware ran on every request through the Express path:
+
+- `/` with `Accept-Language: de` returned 307 to `/de/`.
+- `/en` returned 200, set `NEXT_LOCALE=en` with `Secure`, and sent the `Strict-Transport-Security` header from `server.js`.
+- `/en/profile` returned 200.
+- The server log showed `Rewritten URL: /sites/planet/en` and `Rewritten URL: /sites/planet/en/profile`.
+
+A local run is not a dyno: it has a different host name, no Heroku router in front, and different env vars. Repeat these checks on `planet-app-sf` before merging.
 
 Requests with other methods never reach the catch-all, so they need a separate check. `pages/api/restor/sync-sites.ts` answers only `POST`, and Heroku starts the app with `node server.js` from the `Procfile`, so that route cannot be reached in production as the server stands today. Confirm on a dyno whether any non-GET path is meant to work, and add an explicit route for it if so.
 
 Note also that `server.js` uses Express 4. The `'*'` catch-all route is not valid in Express 5, so an Express major upgrade is a separate piece of work and should not be folded into the Next.js 16 PR.
 
+`server.js` also prints a Node.js `DEP0169` warning on start, because the catch-all calls `url.parse()`, which Node.js now deprecates. The WHATWG `URL` API replaces it. It is only a warning and is not caused by Next.js 16. Fix it together with the Express 5 work.
+
 ---
 
 ## 8. Audit Babel before the framework bump
 
-**Status: Done.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). Decision: `.babelrc` removed, the app builds on SWC. `@babel/plugin-transform-unicode-regex` and `babel-loader` were removed as dead dependencies alongside it. `@emotion/babel-plugin` was never installed, so there was no Emotion-related Babel dependency to begin with. This turned out to be a Next.js 15 build blocker, not just tooling debt: keeping `.babelrc` broke `npm run build` under Next 15 with a `jsxDEV is not a function` error during page-data collection.
+**Status: Done.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). Decision: `.babelrc` removed, the app builds on SWC. `@babel/plugin-transform-unicode-regex` and `babel-loader` were removed as dead dependencies alongside it. `@emotion/babel-plugin` had already been removed in PR [#3111](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3111) on 2026-09-07, so no Emotion-related Babel dependency was left. This turned out to be a Next.js 15 build blocker, not just tooling debt: keeping `.babelrc` broke `npm run build` under Next 15 with a `jsxDEV is not a function` error during page-data collection.
 
 Before this fix, the application opted out of the normal SWC compilation path by providing:
 
@@ -528,7 +569,7 @@ This mattered because Next.js 16/Turbopack detects Babel configuration and conti
 ### Tasks (resolved)
 
 - `@babel/plugin-transform-unicode-regex` was not required and was removed.
-- `@emotion/babel-plugin` was never installed, so there was nothing to remove.
+- `@emotion/babel-plugin` had already been removed in PR [#3111](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3111), so there was nothing left to remove.
 - `.babelrc` was removed and the application verified on SWC.
 
 ---
@@ -543,13 +584,13 @@ This PR started Phase 2 before finishing the rest of Phase 0 and Phase 1.
 
 Skipped for now:
 
-- 0.4 Typecheck CI baseline
+- 0.4 Typecheck CI baseline (still open)
 - 1.2 Storybook upgrade (done since, merged as PR #3142)
-- 1.3 ESLint modernization
-- 1.4 `@next/bundle-analyzer` upgrade (the Netlify half is done: the plugin and `netlify.toml` were removed in PR #3143)
-- 1.5 Dead dependency removal
-- 1.6 `next export` workflow removal
-- 1.7 Heroku/Express decision
+- 1.3 ESLint modernization (done since, merged as PR #3150)
+- 1.4 `@next/bundle-analyzer` upgrade (done since, merged as PR #3157; the Netlify half was removed in PR #3143)
+- 1.5 Dead dependency removal (done since, merged as PR #3156)
+- 1.6 `next export` workflow removal (the script is done in PR #3156; the `cypress.yml` part stays with the Cypress work in 0.2)
+- 1.7 Heroku/Express decision (decided on 2026-09-21: Heroku stays)
 
 This was a deliberate choice to get a working Next 15 build landed first rather than finish all cleanup up front.
 
@@ -558,7 +599,7 @@ The installed `@sentry/nextjs` and `@storybook/nextjs` versions already declare 
 The repo has no App Router surface for the async-request-API changes to touch.
 Node and React already meet Next 15's minimums.
 
-That merge has happened. These skipped items remain open and are now the queue on top of `develop`.
+That merge has happened, and as of 2026-09-24 every skipped item has been done since, except 0.4 and the `cypress.yml` half of 1.6. 0.4 and the Chromatic repair in 0.5 are the Phase 0 items still open.
 
 Upgrade to the latest appropriate Next.js 15 release before moving to Next.js 16.
 
@@ -625,9 +666,15 @@ Keep the Pages Router intact throughout this phase.
 
 The React 18 feasibility question, Sentry migration, `serverRuntimeConfig` removal, Storybook migration, and ESLint modernization should already be resolved before this PR starts.
 
+**Status (2026-09-24): all five are resolved.** React 18 passed the 0.1 spike, Sentry moved to `@sentry/nextjs` in PR #3121 (which also removed `serverRuntimeConfig`), Storybook 10 merged in PR #3142, and ESLint 9 merged in PR #3150.
+
+Still open from Phase 0: the typecheck job (0.4) and the red Chromatic job (0.5). Neither blocks the Next.js 16 build, but without them a type or story regression from this PR is hard to see.
+
 ---
 
 ## 1. Keep Webpack explicitly for both development and production build
+
+**Status: Done.** On the `feature/nextjs-16-upgrade` branch, `dev`, `dev-https` and `build` in `package.json` all pass `--webpack`, and `server.js` passes `webpack: true`. `next build --webpack` and `next dev --webpack` both work on Next.js 16.3.6.
 
 Next.js 16 defaults to Turbopack, while this project has custom webpack behavior and a custom-server path that may also instantiate Next.js programmatically.
 
@@ -650,7 +697,21 @@ The custom server remains (item 1.7), so also set:
 next({ dir: '.', dev, webpack: true })
 ```
 
-The Sentry work in Phase 1 should already have removed a large portion of the custom webpack surface. Re-audit what remains before declaring Turbopack incompatible.
+This option only matters when `server.js` runs in dev mode. Heroku starts it with `NODE_ENV=production`, where Next.js serves the finished `.next` build and no bundler runs. What protects Heroku is the `--webpack` in the `build` script, because `heroku-postbuild` runs `npm run build`.
+
+### Check the Vercel Build Command
+
+**Status: Checked on 2026-09-24.** The Build Command Override in the Vercel project settings is off, so Vercel runs the `build` script from `package.json`, which is `next build --webpack`.
+
+The repository has no `vercel.json`, so this dashboard setting decides what Vercel runs. With the override off, Vercel's Next.js builder runs the `package.json` `build` script (it checks for a `vercel-build` script first; this repo has none), and uses a plain `next build` only when no script exists. The `next build` shown when the override is switched on is just the value it would use then.
+
+Keep the override off. If it is switched on with a plain `next build`, the `--webpack` flag is skipped and the build fails on Turbopack.
+
+To confirm it on a real build, the first Vercel preview of this branch should log `▲ Next.js 16.3.6 (webpack)`.
+
+### What custom webpack config remains
+
+The Sentry work in Phase 1 removed most of the custom webpack surface. What is left is the `resolve.fallback` block in `next.config.js` (`fs: false` and `path-browserify` for `path`), plus the webpack plugin that `withSentryConfig` adds. Re-audit these before declaring Turbopack incompatible.
 
 ### Initial migration rule
 
@@ -668,12 +729,16 @@ Stabilize the framework first.
 
 ## 2. Decide on the `agentRules` auto-write behavior
 
-Discovered during the Phase 0.1 spike: Next.js 16 ships an `agentRules` feature, on by default, that runs on `next dev` and `next build`. It auto-writes an AI-agent-directed block into `CLAUDE.md`, and modifies `next-env.d.ts` (route-types path moves under `.next/dev/types`, adds `root-params.d.ts`) and `tsconfig.json` (`jsx` flips from `"preserve"` to `"react-jsx"`, arrays get reformatted).
+**Status: Done.** Decided on the `feature/nextjs-16-upgrade` branch: `agentRules: false` is set in `next.config.js`. With it set, `next dev` did not create or change `CLAUDE.md` or `AGENTS.md`.
 
-This repository actively curates `CLAUDE.md` for real governance instructions, so this needs an explicit decision before the Phase 3 PR merges, not a silent auto-write discovered later:
+Discovered during the Phase 0.1 spike: Next.js 16 ships an `agentRules` feature that is on by default. When `next dev` detects an AI coding agent, it generates `CLAUDE.md` and `AGENTS.md` at the project root, pointing the agent at the docs bundled in `node_modules/next/dist/docs/`.
+
+This repository keeps its own `CLAUDE.md` with real team instructions, so the choice was:
 
 - set `agentRules: false` in `next.config.js` to opt out, or
 - accept the auto-writes deliberately and record why.
+
+`agentRules` covers only those two files. The `tsconfig.json` and `next-env.d.ts` changes seen in the spike come from Next.js's TypeScript setup and happen whatever `agentRules` is set to. See 3.5.
 
 ---
 
@@ -693,9 +758,44 @@ proxy.ts
 
 Use the official Next.js codemod where appropriate.
 
-`middleware.ts` remains a deprecated compatibility path in Next.js 16, so the rename is low-risk and should be completed during this upgrade.
+**Status: Skipped for now (decided 2026-09-24).** The Next.js 16 PR keeps `middleware.ts`, and no follow-up PR is planned until one of the triggers below happens. `middleware.ts` still works in Next.js 16.3.6; the build only prints a deprecation warning.
 
-`proxy.ts` uses the Node runtime, which is acceptable for the current tenant lookup behavior.
+### Why it is skipped
+
+- Nothing is broken. The docs mark `middleware` as deprecated but give no removal date, and say that all functionality stays the same and only the file and export names have changed.
+- The code gains nothing from Node. `middleware.ts` and `src/utils/multiTenancy/helpers.ts` use only `fetch`, `URL`, cookies, `negotiator`, `@formatjs/intl-localematcher` and `@vercel/kv`. `@vercel/kv` talks to Redis over HTTP, so all of it already runs on Edge. There is no Node-only API the rename would unlock.
+- It has a real cost on Vercel. Edge middleware runs close to the visitor. Node middleware runs where the Vercel functions run, so visitors far from that region would likely wait longer on every page request. Planet has international tenants and many locales, so this matters.
+- Next.js has not finished this story. The upgrade guide says: "We will follow up on a minor release with further `edge` runtime instructions." Moving to Node now could mean redoing the work once that guidance ships.
+- Heroku gains nothing. Middleware already runs inside the `server.js` process there.
+- The named `middleware` export is also deprecated, but it does not apply here. The function is a default export.
+
+So the only cost of waiting is one deprecation warning in each build.
+
+### When to revisit
+
+- Next.js sets a removal date for `middleware`, or ships the promised `edge` runtime guidance.
+- The middleware needs a Node-only feature, such as a TCP Redis client or server-side Auth0 sessions.
+- Someone measures Node middleware on a Vercel preview and finds it no slower for visitors outside the function region.
+
+### Why this is not just a rename
+
+The rename also changes the runtime. The Next.js 16 upgrade guide (`node_modules/next/dist/docs/01-app/02-guides/upgrading/version-16.md`) says: "The `edge` runtime is **NOT** supported in `proxy`. The `proxy` runtime is `nodejs`, and it cannot be configured. If you want to continue using the `edge` runtime, keep using `middleware`."
+
+`middleware.ts` has no `runtime` export, so it runs on the Edge runtime today. Moving to `proxy.ts` moves every request's tenant and locale lookup from Edge to Node.
+
+- On Vercel, this changes cold starts, which region runs the code, and cost, for every request.
+- It also changes how long the in-memory tenant cache in `src/utils/multiTenancy/helpers.ts` lives, since a Node instance usually lives longer than an Edge one.
+- On Heroku the change is smaller. Self-hosted Next.js already runs middleware inside the Node server process, but in an Edge-style sandbox with only the Edge APIs. After the rename it runs as plain Node code.
+
+The Node runtime should work for the current tenant lookup: `@vercel/kv` and `negotiator` both run on Node. The risk is the runtime change itself, not the code.
+
+When it is done, do the rename in its own PR. That keeps with this plan's rule of not mixing the framework upgrade with other changes, and a runtime regression can then be reverted on its own.
+
+### Tasks, when a trigger happens
+
+- Rename `middleware.ts` to `proxy.ts` with `npx @next/codemod@canary middleware-to-proxy .`. The function is a default export, so its name does not matter.
+- Update `middleware.test.ts`, which imports `./middleware` by path.
+- Compare latency and errors on a Vercel preview against the Edge version before merging.
 
 ### Important
 
@@ -732,12 +832,26 @@ Next.js 16 moves the Sass loader stack forward, including `sass-loader` v16 beha
 This repository has a large legacy Sass surface:
 
 ```text
-138 .scss files
-134 @import usages
-0 @use usages identified during assessment
+140 .scss files
+136 @import usages
+0 @use usages
 ```
 
-There are no identified `~`-prefixed node_modules imports, which avoids one of the most common loader-upgrade failures, but the scale of legacy `@import` usage still warrants deliberate regression testing.
+Recounted on 2026-09-24 across `src/`, `pages/` and `public/`. The first assessment counted 138 files and 134 `@import` usages.
+
+There are no `~`-prefixed node_modules imports, which avoids one of the most common loader-upgrade failures, but the scale of legacy `@import` usage still warrants deliberate regression testing.
+
+### What the Next.js 16 build showed
+
+**Status: Compiles, CSS behavior still to verify.** On the `feature/nextjs-16-upgrade` branch, `npm run build` with Next.js 16.3.6 and `sass` 1.97.2 compiled every stylesheet with no Sass errors.
+
+- It printed 741 Sass deprecation warnings. All 741 are the same kind: "Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0."
+- A few lines in the log contain the word "error", but only because of file names such as `ErrorComponents/AuthFailed.module.scss`. None of them are Sass errors.
+- The same warnings appear on `next dev`.
+
+These warnings are noise for this upgrade, not a blocker. They also have a deadline: `@import` will stop working in Dart Sass 3.0.0. `package.json` has `sass` at `^1.94.2`, so npm will not install 3.x on its own, but a later manual `sass` major bump will need the `@import` to `@use` cleanup first. See "Sass module-system cleanup" below.
+
+The CSS behavior items below have not been checked yet. A clean compile does not prove ordering or hydration are unchanged.
 
 ### Verify
 
@@ -754,7 +868,36 @@ Do not turn this upgrade into a full Sass `@import` → `@use` rewrite unless th
 
 ---
 
-## 5. Run full regression verification
+## 5. Handle the TypeScript config changes Next.js 16 forces
+
+Next.js runs a TypeScript setup step on every `next dev` and `next build`. In Next.js 16 it changes two committed files. `agentRules: false` does not affect this (see 3.2).
+
+### `tsconfig.json`: `jsx` becomes `react-jsx`
+
+**Status: Done.** Accepted on the `feature/nextjs-16-upgrade` branch.
+
+This is a mandatory change, not a suggestion. The build prints: "The following mandatory changes were made to your tsconfig.json: jsx was set to react-jsx (next.js uses the React automatic runtime)". In `node_modules/next/dist/lib/typescript/writeConfigurationDefaults.js`, `jsx` is set with a `value`, which Next.js always enforces, not only with `suggested`, which it fills in only when missing. There is no config option or env var to turn it off.
+
+Next.js 15 enforced the opposite, `jsx: "preserve"`, which is why this setting never changed before. Keeping `preserve` is not an option: every dev or build run, locally and on Vercel and Heroku, would rewrite it.
+
+The impact is small. SWC compiles the app and ignores this setting, and `noEmit: true` means `tsc` never outputs JSX. It only changes how `tsc` type-checks JSX. The typecheck count stayed at 125 errors, and unit tests and the Storybook build pass with it.
+
+When Next.js makes this change it also reformats the arrays in `tsconfig.json`. That reformatting is not required, so the branch keeps only the one-line `jsx` change.
+
+### `next-env.d.ts`: stop committing it
+
+**Decision (2026-09-24): add `next-env.d.ts` to `.gitignore` and remove it from the repository in the Next.js 16 PR.**
+
+Next.js 16 writes different content into this file depending on the command:
+
+- `next build` imports `./.next/types/routes.d.ts` and `./.next/types/root-params.d.ts`.
+- `next dev` imports the same files from `./.next/dev/types/`, because Next.js 16 keeps dev output in its own folder.
+
+So a committed copy shows as modified after every switch between `next dev` and `next build`. New Next.js projects already keep this file out of git, and Next.js recreates it on every dev or build run.
+
+Nothing in CI needs the committed copy. ESLint is not type-aware and already ignores the file in `eslint.config.mjs`, and no workflow references it. `tsc` does not need it either: with no `next-env.d.ts` it reports the same 125 errors as after a build, so the typecheck job from 0.4 can run without building first. See 0.4.
+
+## 6. Run full regression verification
 
 ### Tenant routing
 
@@ -947,36 +1090,39 @@ The hostname/locale rewrite strategy can continue routing requests into this Pag
 
 # Recommended implementation sequence
 
+Status as of 2026-09-24. Phase 2 landed before most of Phase 1, so most Phase 1 work was done on Next.js 15; see the Phase 2 note on sequencing.
+
 ```text
 Phase 0
 Preflight + safety net
 │
-├─ Day-one Next 16 + React 18 + --webpack spike
-├─ Add tenant rewrite tests
-├─ Add locale tests
-├─ Add donation smoke tests
-└─ Add non-blocking typecheck baseline (~126 current errors)
+├─ Day-one Next 16 + React 18 + --webpack spike (done)
+├─ Add tenant rewrite tests (done, #3119)
+├─ Add locale tests (done, #3119)
+├─ Add donation smoke tests (done, #3119)
+├─ Add non-blocking typecheck baseline (open, 125 current errors)
+└─ Repair the red Chromatic job (open, 2 stories throw)
         │
         ▼
 Phase 1
-Dependency/tooling modernization on Next.js 14
+Dependency/tooling modernization
 │
-├─ Sentry → @sentry/nextjs
-│  └─ remove RewriteFrames/getConfig/serverRuntimeConfig
-├─ Storybook 8 → Storybook 10 (done)
-├─ ESLint 9 + flat config + @typescript-eslint v8 path
-├─ Upgrade @next/bundle-analyzer
-├─ Remove Netlify plugin and netlify.toml (Netlify is dead) (done)
-├─ Mark next-intl as already compatible
-├─ Remove dead rate-limiter dependencies/module
-├─ Remove next-unused
-├─ Remove dead next export workflow
+├─ Sentry → @sentry/nextjs (done, #3121)
+│  └─ remove RewriteFrames/getConfig/serverRuntimeConfig (done)
+├─ Storybook 8 → Storybook 10 (done, #3142)
+├─ ESLint 9 + flat config + typescript-eslint v8 (done, #3150)
+├─ Upgrade @next/bundle-analyzer (done, #3157; 16.3.6 in Phase 3)
+├─ Remove Netlify plugin and netlify.toml (done, #3143)
+├─ Mark next-intl as already compatible (done)
+├─ Remove dead rate-limiter dependencies/module (done, #3156)
+├─ Remove next-unused (done, #3156)
+├─ Remove the next export script (done, #3156; cypress.yml part stays with 0.2)
 ├─ Heroku/custom server decided: keep, Heroku is live (done)
-└─ Decide .babelrc: remove for SWC or document why it remains
+└─ .babelrc removed for SWC (done, #3139)
         │
         ▼
 Phase 2
-Next.js 14 → 15
+Next.js 14 → 15 (done, #3139)
 │
 ├─ Upgrade Next.js
 ├─ Run only relevant codemods
@@ -985,18 +1131,23 @@ Next.js 14 → 15
         │
         ▼
 Phase 3
-Next.js 15 → 16
+Next.js 15 → 16 (in progress, feature/nextjs-16-upgrade)
 │
-├─ Keep React 18 if Phase 0 proved it viable
-├─ Use --webpack on dev and build
-├─ Set webpack: true in server.js, and --webpack in the build script
-├─ middleware.ts → proxy.ts
-├─ Validate proxy through every active deployment path
-├─ Validate sass-loader v16 / CSS ordering behavior
-└─ Full app + CI regression testing
+├─ Keep React 18 (done, the spike passed)
+├─ Use --webpack on dev, dev-https and build (done)
+├─ Set webpack: true in server.js (done)
+├─ Set agentRules: false (done)
+├─ Accept jsx: react-jsx, stop tracking next-env.d.ts (done)
+├─ Keep middleware.ts; skip the proxy.ts rename for now (decided, see 3.3)
+├─ Validate middleware through every active deployment path
+│  (local done; Heroku dyno and Vercel preview open)
+├─ Validate Sass / CSS ordering behavior (compiles; ordering open)
+└─ Full app + CI regression testing (open)
         │
         ▼
 DONE
+
+Skipped for now: middleware.ts → proxy.ts (Edge → Node runtime, see 3.3)
 ```
 
 ---
@@ -1011,11 +1162,19 @@ Move from Webpack to Turbopack only after the framework upgrade is stable.
 
 Before doing so, re-evaluate:
 
-- any custom webpack aliases/fallbacks that remain after the Sentry cleanup,
+- the custom webpack config that remains: the `resolve.fallback` block in `next.config.js` (`fs: false` and `path-browserify` for `path`) and the webpack plugin that `withSentryConfig` adds (see 3.1),
 - Sentry source-map behavior,
-- whether `.babelrc` still forces Babel,
+- the webpack opt-ins that must be removed together: `--webpack` in the `dev`, `dev-https` and `build` scripts, and `webpack: true` in `server.js`,
 - custom-server behavior,
 - build performance and correctness.
+
+Babel is no longer a question here: `.babelrc` was removed in PR #3139, so the app already builds on SWC (see 1.8).
+
+---
+
+## `middleware.ts` → `proxy.ts`
+
+Skipped for now. The rename moves every request from the Edge runtime to Node, which likely adds latency on Vercel for no gain in this codebase. See 3.3 for the reasons, the triggers that should bring it back, and the tasks.
 
 ---
 
@@ -1055,7 +1214,17 @@ The Next.js 16 upgrade should not be used as a reason to perform this migration.
 
 A future cleanup can migrate legacy Sass `@import` usage to `@use` / `@forward` if desired or required by future Sass releases.
 
+It will be required, not optional. Every Sass warning in the Next.js 16 build says `@import` "will be removed in Dart Sass 3.0.0" (see 3.4). The `^1.94.2` range in `package.json` keeps npm on Sass 1.x, so there is no deadline until someone moves `sass` to 3.x on purpose. Do this cleanup before that bump.
+
 Do not mix a 100+ file stylesheet migration into the Next.js 16 framework PR unless necessary for compatibility.
+
+---
+
+## Turn on or remove `eslint-plugin-react-hooks`
+
+`eslint-plugin-react-hooks` is installed (`^5.2.0`), but `eslint.config.mjs` does not use it, and the old `.eslintrc.js` did not either. So no lint rule checks the rules of hooks today.
+
+Either turn on its recommended rules, which may bring up new lint findings, or remove the package. This is lint work, not part of the Next.js 16 upgrade. See 1.3.
 
 ---
 
@@ -1063,45 +1232,47 @@ Do not mix a 100+ file stylesheet migration into the Next.js 16 framework PR unl
 
 The Next.js 16 upgrade is complete when:
 
-- [ ] The application runs on Next.js 16.
-- [ ] The Pages Router remains the active routing architecture.
-- [ ] No `app/` migration is required.
+Status as of 2026-09-24, on the `feature/nextjs-16-upgrade` branch. A box is only ticked when it has been checked, not when it is expected to work.
+
+- [ ] The application runs on Next.js 16. Runs locally on 16.3.6 (build, dev, and the custom server); not deployed yet.
+- [x] The Pages Router remains the active routing architecture.
+- [x] No `app/` migration is required. There is still no `app/` directory.
 - [x] The React 18/React 19 decision is based on an actual Next.js 16 spike, not assumptions. Done via Phase 0.1, see that section.
 - [x] React 18 remains in place if it passed the compatibility spike, or React 19 has a separately justified migration. React 18 passed.
-- [ ] `agentRules` in `next.config.js` has an explicit decision recorded (disabled, or accepted deliberately). See Phase 3.2.
-- [ ] `serverRuntimeConfig` has been removed during the Sentry modernization work.
-- [ ] Legacy Sentry webpack aliases/plugin wiring are removed where no longer needed.
+- [x] `agentRules` in `next.config.js` has an explicit decision recorded (disabled, or accepted deliberately). Disabled; see Phase 3.2.
+- [x] `serverRuntimeConfig` has been removed during the Sentry modernization work. Removed in PR #3121.
+- [x] Legacy Sentry webpack aliases/plugin wiring are removed where no longer needed. Removed in PR #3121; none of `@sentry/browser`, `@sentry/node`, `@sentry/webpack-plugin`, `SentryWebpackPlugin` or `RewriteFrames` remain.
 - [ ] Sentry works in production.
 - [ ] Source maps upload correctly.
-- [ ] `next dev --webpack` works.
-- [ ] `next build --webpack` succeeds.
+- [x] `next dev --webpack` works.
+- [x] `next build --webpack` succeeds.
 - [x] The Heroku/custom-server question is answered with deployment evidence rather than assumption. Heroku is live; see Phase 1.7.
-- [ ] `server.js` starts Next.js with `webpack: true`, and the custom-server path is regression-tested.
-- [ ] The `build` script itself carries `--webpack`, so the Heroku `heroku-postbuild` build gets it too.
-- [ ] Tenant rewrites and `proxy.ts` are confirmed to run through the Express `getRequestHandler()` path on a real Heroku dyno.
-- [ ] `middleware.ts` has been migrated to `proxy.ts`.
+- [ ] `server.js` starts Next.js with `webpack: true`, and the custom-server path is regression-tested. `webpack: true` is done and the path was checked locally (1.7); a Heroku dyno check is still needed.
+- [x] The `build` script itself carries `--webpack`, so the Heroku `heroku-postbuild` build gets it too.
+- [ ] Tenant rewrites and the middleware are confirmed to run through the Express `getRequestHandler()` path on a real Heroku dyno. Confirmed locally only; see 1.7.
+- [x] A deliberate `middleware.ts` / `proxy.ts` decision is recorded. Kept `middleware.ts` on Edge; the rename is skipped for now, see 3.3.
 - [ ] Tenant hostname rewrites work through every active deployment path.
-- [ ] Locale redirects and cookies work.
+- [ ] Locale redirects and cookies work. Checked locally on `next dev` and the custom server; not on a deployment yet.
 - [ ] Auth0 login/logout/redirect flows work.
 - [ ] Donation/payment flows pass regression testing.
 - [ ] Embed mode works.
 - [ ] Existing `next/router` behavior works.
 - [ ] Existing `next/head` behavior works.
 - [ ] Existing `getStaticProps` / `getStaticPaths` behavior works.
-- [x] Storybook builds on the Next.js 16-compatible Storybook version (10.6.0).
+- [x] Storybook builds on the Next.js 16-compatible Storybook version (10.6.0). Also checked against Next.js 16.3.6.
 - [ ] Chromatic CI passes. Still red, from two component errors that predate the upgrade. See 0.5.
-- [ ] ESLint runs on the modern supported dependency stack and flat config.
-- [ ] The typecheck job exists with a recorded baseline and does not show an unexplained material regression.
+- [x] ESLint runs on the modern supported dependency stack and flat config. PR #3150.
+- [ ] The typecheck job exists with a recorded baseline and does not show an unexplained material regression. The job does not exist yet; the local count is 125, unchanged by Next.js 16. See 0.4.
 - [ ] Cypress has been migrated successfully, or Playwright has replaced it. Nice to have rather than a gate; the suite is dormant, see 0.2.
 - [ ] No CI workflow calls `next export`.
 - [ ] CI start commands do not pass duplicate port flags.
-- [ ] `next-unused` and its fragile script are removed.
-- [ ] `@next/bundle-analyzer` is upgraded and works if still used.
+- [x] `next-unused` and its fragile script are removed. PR #3156.
+- [x] `@next/bundle-analyzer` is upgraded and works if still used. `^16.3.6`; `ANALYZE=true npm run build` wrote the client, nodejs and edge reports to `.next/analyze/`.
 - [x] `@netlify/plugin-nextjs` and `netlify.toml` are removed, since Netlify is no longer a deployment path. Done in PR #3143.
-- [ ] `next-intl` is recorded as compatible with the selected Next.js version unless testing proves otherwise.
-- [ ] A deliberate `.babelrc` decision is recorded: removed to use SWC, or retained with a documented requirement.
+- [x] `next-intl` is recorded as compatible with the selected Next.js version unless testing proves otherwise. `next-intl@4.13.0` lists `next ^16.0.0` as a peer, and the Next.js 16.3.6 build passes.
+- [x] A deliberate `.babelrc` decision is recorded: removed to use SWC, or retained with a documented requirement. Removed in PR #3139; see 1.8.
 - [ ] Emotion SSR remains correct.
-- [ ] SCSS/Sass compiles under the Next.js 16 loader stack.
+- [x] SCSS/Sass compiles under the Next.js 16 loader stack. No Sass errors, only `@import` deprecation warnings; see 3.4.
 - [ ] SCSS/global CSS ordering remains correct in production.
 - [ ] No unacceptable hydration or flash-of-unstyled-content regression is introduced.
 - [ ] The production deployment path is verified.
@@ -1111,29 +1282,30 @@ The Next.js 16 upgrade is complete when:
 
 # Final scope summary
 
-The intended upgrade is:
+The upgrade as it actually ran:
 
 ```text
 Day-one spike
-Next.js 16 + React 18 + Webpack
-        ↓
-Dependency/tooling cleanup on Next.js 14
+Next.js 16 + React 18 + Webpack (done)
         ↓
 Next.js 14.2.35
         ↓
-Next.js 15.x
+Next.js 15.x (done, 15.5.25)
         ↓
-Next.js 16.x
+Dependency/tooling cleanup, mostly on Next.js 15 (done)
+        ↓
+Next.js 16.x (in progress, 16.3.6)
 
 Pages Router: KEEP
-React 18: KEEP IF VERIFIED
-Webpack: KEEP INITIALLY AND MAKE EXPLICIT
+React 18: KEEP (verified by the spike)
+Webpack: KEEP INITIALLY AND MAKE EXPLICIT (done)
 App Router: DEFER
-React 19: DEFER IF POSSIBLE
+React 19: DEFER
 Turbopack migration: DEFER
 Server-side auth/data migration: DEFER
-Heroku/custom server: EXPLICIT KEEP-OR-DELETE DECISION
-Babel: EXPLICIT KEEP-OR-REMOVE DECISION
+middleware.ts → proxy.ts: SKIP FOR NOW (stays on Edge, see 3.3)
+Heroku/custom server: KEEP (Heroku is live)
+Babel: REMOVED (the app builds on SWC)
 ```
 
 The objective is to make the application **current on Next.js without turning a framework version upgrade into an architectural rewrite**, while also removing pre-existing CI/tooling failures that would otherwise obscure the real migration signal.
