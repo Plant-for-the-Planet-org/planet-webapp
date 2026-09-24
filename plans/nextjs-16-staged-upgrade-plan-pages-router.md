@@ -575,13 +575,13 @@ This PR started Phase 2 before finishing the rest of Phase 0 and Phase 1.
 
 Skipped for now:
 
-- 0.4 Typecheck CI baseline
+- 0.4 Typecheck CI baseline (still open)
 - 1.2 Storybook upgrade (done since, merged as PR #3142)
-- 1.3 ESLint modernization
-- 1.4 `@next/bundle-analyzer` upgrade (the Netlify half is done: the plugin and `netlify.toml` were removed in PR #3143)
-- 1.5 Dead dependency removal
-- 1.6 `next export` workflow removal
-- 1.7 Heroku/Express decision
+- 1.3 ESLint modernization (done since, merged as PR #3150)
+- 1.4 `@next/bundle-analyzer` upgrade (done since, merged as PR #3157; the Netlify half was removed in PR #3143)
+- 1.5 Dead dependency removal (done since, merged as PR #3156)
+- 1.6 `next export` workflow removal (the script is done in PR #3156; the `cypress.yml` part stays with the Cypress work in 0.2)
+- 1.7 Heroku/Express decision (decided on 2026-09-21: Heroku stays)
 
 This was a deliberate choice to get a working Next 15 build landed first rather than finish all cleanup up front.
 
@@ -590,7 +590,7 @@ The installed `@sentry/nextjs` and `@storybook/nextjs` versions already declare 
 The repo has no App Router surface for the async-request-API changes to touch.
 Node and React already meet Next 15's minimums.
 
-That merge has happened. These skipped items remain open and are now the queue on top of `develop`.
+That merge has happened, and as of 2026-09-24 every skipped item has been done since, except 0.4 and the `cypress.yml` half of 1.6. 0.4 and the Chromatic repair in 0.5 are the Phase 0 items still open.
 
 Upgrade to the latest appropriate Next.js 15 release before moving to Next.js 16.
 
@@ -656,6 +656,10 @@ This makes framework regressions easier to bisect without inventing work that th
 Keep the Pages Router intact throughout this phase.
 
 The React 18 feasibility question, Sentry migration, `serverRuntimeConfig` removal, Storybook migration, and ESLint modernization should already be resolved before this PR starts.
+
+**Status (2026-09-24): all five are resolved.** React 18 passed the 0.1 spike, Sentry moved to `@sentry/nextjs` in PR #3121 (which also removed `serverRuntimeConfig`), Storybook 10 merged in PR #3142, and ESLint 9 merged in PR #3150.
+
+Still open from Phase 0: the typecheck job (0.4) and the red Chromatic job (0.5). Neither blocks the Next.js 16 build, but without them a type or story regression from this PR is hard to see.
 
 ---
 
