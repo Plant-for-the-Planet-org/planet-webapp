@@ -320,6 +320,18 @@ Keeping Storybook changes in Phase 1 means the Next.js 16 PR is not polluted by 
 
 ## 3. Modernize ESLint as an independent tooling migration
 
+**Status: Done and merged.** PR [#3150](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3150) (`feature/eslint-flat-config-migration`), merged into `develop` on 2026-09-23.
+
+- `eslint` 8 to 9, and `.eslintrc.js` replaced by `eslint.config.mjs` (flat config).
+- `@typescript-eslint` v5 replaced by `typescript-eslint` v8, plus `@typescript-eslint/parser` v8.
+- `eslint-plugin-react-hooks` 4 to 5, `eslint-plugin-cypress` 2 to 6, and `@eslint/js` and `globals` added for flat config.
+- `eslint-plugin-import` and `eslint-plugin-jsx-a11y` removed. The old config used neither, apart from turning two `import/` rules off.
+- The flat config keeps the same rule sets as the old one: ESLint, typescript-eslint and React recommended, Storybook, Emotion and Cypress.
+
+Some packages in the list below had already gone before this PR. `eslint-config-airbnb`, `eslint-config-next`, `eslint-config-prettier` and `eslint-plugin-prettier` were removed in PR [#3111](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3111) on 2026-09-07.
+
+One small leftover: `eslint-plugin-react-hooks` is installed, but `eslint.config.mjs` does not use it, and the old `.eslintrc.js` did not either. Either turn on its rules or remove the package. That is a separate lint change, not part of the Next.js 16 upgrade.
+
 This is larger than simply renaming `.eslintrc.js` to `eslint.config.mjs`.
 
 The current dependency graph is internally inconsistent and contains several pre-flat-config-era packages. The assessment identified examples including:
@@ -352,6 +364,8 @@ Treat this as tooling-only work and keep it out of the Next.js 16 framework PR.
 
 ### `@next/bundle-analyzer`
 
+**Status: Done.** PR [#3157](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3157) (`feature/upgrade-bundle-analyzer`), merged on 2026-09-23, took it from 10.2.3 to 15.5.25. The `feature/nextjs-16-upgrade` branch then moved it to `^16.3.6` together with `next`, since its version follows the `next` release.
+
 The current package is approximately six major versions behind the target Next.js generation and wraps the exported config via the reducer at the bottom of `next.config.js`.
 
 Upgrade it to a version compatible with the selected Next.js release and verify the analyzer path still works.
@@ -378,6 +392,8 @@ Record this explicitly so the team does not budget unnecessary work for it.
 
 ## 5. Remove dead and fragile dependencies/scripts
 
+**Status: Done and merged.** PR [#3156](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3156) (`feature/remove-dead-tooling`), merged on 2026-09-23. It removed `express-rate-limit`, `express-slow-down`, `@types/express-slow-down`, `src/middlewares/rate-limiter.ts`, `next-unused` with its `find:unused` script and config block, and the `export` script (see 1.6). `next-connect` had already been removed in PR [#3111](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3111) on 2026-09-07. `express` stays, as below.
+
 Verified dead candidates:
 
 ```text
@@ -402,6 +418,8 @@ and the corresponding `find:unused` script. `next-unused@0.0.6` reaches into Nex
 ---
 
 ## 6. Remove the obsolete `next export` workflow
+
+**Status: The package script is done; the workflow part is left with the Cypress work.** PR [#3156](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3156) removed the `export` script from `package.json`. The `cypress.yml` changes below belong to the Cypress work in 0.2, which is not a blocker for this upgrade.
 
 Remove the dead package script:
 
@@ -519,7 +537,7 @@ Note also that `server.js` uses Express 4. The `'*'` catch-all route is not vali
 
 ## 8. Audit Babel before the framework bump
 
-**Status: Done.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). Decision: `.babelrc` removed, the app builds on SWC. `@babel/plugin-transform-unicode-regex` and `babel-loader` were removed as dead dependencies alongside it. `@emotion/babel-plugin` was never installed, so there was no Emotion-related Babel dependency to begin with. This turned out to be a Next.js 15 build blocker, not just tooling debt: keeping `.babelrc` broke `npm run build` under Next 15 with a `jsxDEV is not a function` error during page-data collection.
+**Status: Done.** See PR [#3139](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3139) (`feature/nextjs-15-upgrade`). Decision: `.babelrc` removed, the app builds on SWC. `@babel/plugin-transform-unicode-regex` and `babel-loader` were removed as dead dependencies alongside it. `@emotion/babel-plugin` had already been removed in PR [#3111](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3111) on 2026-09-07, so no Emotion-related Babel dependency was left. This turned out to be a Next.js 15 build blocker, not just tooling debt: keeping `.babelrc` broke `npm run build` under Next 15 with a `jsxDEV is not a function` error during page-data collection.
 
 Before this fix, the application opted out of the normal SWC compilation path by providing:
 
@@ -542,7 +560,7 @@ This mattered because Next.js 16/Turbopack detects Babel configuration and conti
 ### Tasks (resolved)
 
 - `@babel/plugin-transform-unicode-regex` was not required and was removed.
-- `@emotion/babel-plugin` was never installed, so there was nothing to remove.
+- `@emotion/babel-plugin` had already been removed in PR [#3111](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3111), so there was nothing left to remove.
 - `.babelrc` was removed and the application verified on SWC.
 
 ---
