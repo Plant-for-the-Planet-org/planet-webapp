@@ -632,6 +632,8 @@ The React 18 feasibility question, Sentry migration, `serverRuntimeConfig` remov
 
 ## 1. Keep Webpack explicitly for both development and production build
 
+**Status: Done.** On the `feature/nextjs-16-upgrade` branch, `dev`, `dev-https` and `build` in `package.json` all pass `--webpack`, and `server.js` passes `webpack: true`. `next build --webpack` and `next dev --webpack` both work on Next.js 16.3.6.
+
 Next.js 16 defaults to Turbopack, while this project has custom webpack behavior and a custom-server path that may also instantiate Next.js programmatically.
 
 A custom webpack configuration is not just a reason to be cautious: the Next.js 16 build must be told to use Webpack.
@@ -653,7 +655,21 @@ The custom server remains (item 1.7), so also set:
 next({ dir: '.', dev, webpack: true })
 ```
 
-The Sentry work in Phase 1 should already have removed a large portion of the custom webpack surface. Re-audit what remains before declaring Turbopack incompatible.
+This option only matters when `server.js` runs in dev mode. Heroku starts it with `NODE_ENV=production`, where Next.js serves the finished `.next` build and no bundler runs. What protects Heroku is the `--webpack` in the `build` script, because `heroku-postbuild` runs `npm run build`.
+
+### Check the Vercel Build Command
+
+**Status: Checked on 2026-09-24.** The Build Command Override in the Vercel project settings is off, so Vercel runs the `build` script from `package.json`, which is `next build --webpack`.
+
+The repository has no `vercel.json`, so this dashboard setting decides what Vercel runs. With the override off, Vercel's Next.js builder runs the `package.json` `build` script (it checks for a `vercel-build` script first; this repo has none), and uses a plain `next build` only when no script exists. The `next build` shown when the override is switched on is just the value it would use then.
+
+Keep the override off. If it is switched on with a plain `next build`, the `--webpack` flag is skipped and the build fails on Turbopack.
+
+To confirm it on a real build, the first Vercel preview of this branch should log `▲ Next.js 16.3.6 (webpack)`.
+
+### What custom webpack config remains
+
+The Sentry work in Phase 1 removed most of the custom webpack surface. What is left is the `resolve.fallback` block in `next.config.js` (`fs: false` and `path-browserify` for `path`), plus the webpack plugin that `withSentryConfig` adds. Re-audit these before declaring Turbopack incompatible.
 
 ### Initial migration rule
 
