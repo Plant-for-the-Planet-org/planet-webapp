@@ -10,11 +10,8 @@ import { Button, CircularProgress } from '@mui/material';
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import {
-  useAuthStore,
-  useErrorHandlingStore,
-  usePlanetCashStore,
-} from '../../../../stores';
+import { useIsAuthReady } from '../../../../hooks/useAuthReadiness';
+import { useErrorHandlingStore, usePlanetCashStore } from '../../../../stores';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
@@ -29,6 +26,7 @@ const Transactions = ({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { getApiAuthenticated } = useApi();
+  const isAuthReady = useIsAuthReady();
   // local state
   const [transactionHistory, setTransactionHistory] =
     useState<PaymentHistory | null>(null);
@@ -39,9 +37,6 @@ const Transactions = ({
   const hasPlanetCashAccount = usePlanetCashStore(
     (state) =>
       state.planetCashAccounts !== null && state.planetCashAccounts.length > 0
-  );
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
   );
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);

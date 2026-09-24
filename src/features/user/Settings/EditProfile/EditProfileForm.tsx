@@ -28,13 +28,10 @@ import DefaultProfileImageIcon from '../../../../../public/assets/images/icons/h
 import themeProperties from '../../../../theme/themeProperties';
 import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/NewInfoIcon';
 import { useApi } from '../../../../hooks/useApi';
+import { useIsAuthReady } from '../../../../hooks/useAuthReadiness';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import {
-  useAuthStore,
-  useUserStore,
-  useErrorHandlingStore,
-} from '../../../../stores';
+import { useUserStore, useErrorHandlingStore } from '../../../../stores';
 
 type ProfileFormData = {
   address: string;
@@ -83,8 +80,7 @@ export default function EditProfileForm() {
     value: 'individual',
   });
   // store: state
-  const token = useAuthStore((state) => state.token);
-  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const isAuthReady = useIsAuthReady();
   const userProfile = useUserStore((state) => state.userProfile);
   // store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
@@ -205,7 +201,7 @@ export default function EditProfileForm() {
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
         reader.onload = async (event) => {
-          if (isAuthResolved && token) {
+          if (isAuthReady) {
             const profileImagePayload = {
               imageFile: event.target?.result,
             };
@@ -217,7 +213,7 @@ export default function EditProfileForm() {
         };
       });
     },
-    [token]
+    [isAuthReady]
   );
 
   const deleteProfilePicture = (event: MouseEvent<HTMLButtonElement>) => {
@@ -245,7 +241,7 @@ export default function EditProfileForm() {
       ...(type !== 'tpo' ? { type: type } : {}),
     };
 
-    if (isAuthResolved && token) {
+    if (isAuthReady) {
       try {
         const res = await putApiAuthenticated<User, UpdateProfileApiPayload>(
           `/app/profile`,
