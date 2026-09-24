@@ -156,7 +156,9 @@ E2E coverage is not part of this item. See 0.2.
 
 ## 0.4 Make current type debt visible without blocking the upgrade
 
-`tsc --noEmit` currently reports approximately **126 errors**.
+**Status: Still open.** No workflow runs a typecheck yet; `test.yml` runs only `npm run test`.
+
+`tsc --noEmit` currently reports **125 errors** (measured on 2026-09-24 on Next.js 16.3.6). The first assessment counted about 126.
 
 `typescript.ignoreBuildErrors` can remain temporarily because reaching zero is not a prerequisite for the framework upgrade. The problem is that framework-related type regressions can otherwise disappear inside the existing debt.
 
@@ -170,15 +172,22 @@ Initially make it **non-blocking** and record a baseline error count. Fail or wa
 
 The goal is to detect new type breakage, not to turn this project into a full type-cleanup effort.
 
-**The job must run after a build.** From Next.js 15, `next-env.d.ts` references `.next/types/routes.d.ts`, which only exists once the app has been built. Typechecking a clean checkout reports a spurious `TS6053` for the missing file. Measured after a build, the count is **127 errors**, unchanged by the Next.js 15 upgrade.
+**When the job can run.** This changed with the Next.js 16 branch.
+
+- On Next.js 15, `next-env.d.ts` was committed and referenced `.next/types/routes.d.ts`, which only exists after a build. Typechecking a clean checkout reported a spurious `TS6053` for the missing file, so the job had to run after a build. Measured after a build, the count was 127 errors, unchanged by the Next.js 15 upgrade.
+- On Next.js 16, `next-env.d.ts` is no longer committed (see 3.5). A fresh CI checkout has no such file, and `tsc` then reports the same 125 errors as a checkout that has been built. The two error lists were compared and are identical. So the job can run with or without a build first.
+
+The old `TS6053` cannot come back either. Next.js 16 writes `next-env.d.ts` with side-effect `import` lines instead of the old `/// <reference path>` line, and TypeScript does not check side-effect imports unless `noUncheckedSideEffectImports` is on. With the file present and `.next/types` deleted, `tsc` still reported the same 125 errors and nothing about the missing files.
 
 ---
 
 ## 0.5 Repair the Chromatic job, which is already red
 
-Chromatic fails on every push to `develop`. The last twelve runs are all red, going back to 2026-09-15, which is before any of this upgrade work started.
+**Status: Still open (checked 2026-09-24).**
 
-The cause is not snapshot differences. The CLI exits 2 with `Encountered 2 build errors`, meaning two stories throw while Chromatic renders them. Everything else is healthy: all 90 stories across 45 components capture snapshots normally.
+Chromatic fails on every push to `develop`. All 21 runs from 2026-09-15 to 2026-09-23 are red, and 2026-09-15 is before any of this upgrade work started.
+
+The cause is not snapshot differences. The CLI exits 2 with `Encountered 2 build errors`, meaning two stories throw while Chromatic renders them. Everything else is healthy: in the latest run (2026-09-23) all 94 stories across 46 components captured snapshots normally. Earlier runs showed 90 stories across 45 components; the new ones were added since, and the error count stayed at 2.
 
 Storybook 10 did not introduce this. Build 1163 (2026-09-18, Storybook 8, Chromatic CLI 11) and build 1169 (2026-09-21, Storybook 10, CLI 18) fail the same way with the same counts.
 
@@ -869,7 +878,7 @@ Next.js 16 writes different content into this file depending on the command:
 
 So a committed copy shows as modified after every switch between `next dev` and `next build`. New Next.js projects already keep this file out of git, and Next.js recreates it on every dev or build run.
 
-Nothing in CI needs the committed copy. ESLint is not type-aware and already ignores the file in `eslint.config.mjs`, and no workflow references it. The one thing that does need it is `tsc`, for the image import types and route types. The typecheck job from 0.4 must therefore run after a build, which 0.4 already requires.
+Nothing in CI needs the committed copy. ESLint is not type-aware and already ignores the file in `eslint.config.mjs`, and no workflow references it. `tsc` does not need it either: with no `next-env.d.ts` it reports the same 125 errors as after a build, so the typecheck job from 0.4 can run without building first. See 0.4.
 
 ## 6. Run full regression verification
 
