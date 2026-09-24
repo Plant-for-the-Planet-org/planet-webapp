@@ -73,7 +73,11 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
   const token = useAuthStore((state) => state.token);
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
 
-  const addBalanceLink = getDonationUrl(tenantId, 'planetcash', token);
+  const addBalanceLink = getDonationUrl({
+    tenant: tenantId,
+    target: 'planetcash',
+    token,
+  });
 
   return (
     <Grid
