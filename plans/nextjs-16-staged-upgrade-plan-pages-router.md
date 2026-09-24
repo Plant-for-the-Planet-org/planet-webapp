@@ -784,12 +784,26 @@ Next.js 16 moves the Sass loader stack forward, including `sass-loader` v16 beha
 This repository has a large legacy Sass surface:
 
 ```text
-138 .scss files
-134 @import usages
-0 @use usages identified during assessment
+140 .scss files
+136 @import usages
+0 @use usages
 ```
 
-There are no identified `~`-prefixed node_modules imports, which avoids one of the most common loader-upgrade failures, but the scale of legacy `@import` usage still warrants deliberate regression testing.
+Recounted on 2026-09-24 across `src/`, `pages/` and `public/`. The first assessment counted 138 files and 134 `@import` usages.
+
+There are no `~`-prefixed node_modules imports, which avoids one of the most common loader-upgrade failures, but the scale of legacy `@import` usage still warrants deliberate regression testing.
+
+### What the Next.js 16 build showed
+
+**Status: Compiles, CSS behavior still to verify.** On the `feature/nextjs-16-upgrade` branch, `npm run build` with Next.js 16.3.6 and `sass` 1.97.2 compiled every stylesheet with no Sass errors.
+
+- It printed 741 Sass deprecation warnings. All 741 are the same kind: "Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0."
+- A few lines in the log contain the word "error", but only because of file names such as `ErrorComponents/AuthFailed.module.scss`. None of them are Sass errors.
+- The same warnings appear on `next dev`.
+
+These warnings are noise for this upgrade, not a blocker. They also have a deadline: `@import` will stop working in Dart Sass 3.0.0. `package.json` has `sass` at `^1.94.2`, so npm will not install 3.x on its own, but a later manual `sass` major bump will need the `@import` to `@use` cleanup first. See "Sass module-system cleanup" below.
+
+The CSS behavior items below have not been checked yet. A clean compile does not prove ordering or hydration are unchanged.
 
 ### Verify
 
