@@ -1,9 +1,13 @@
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
+import type { CurrencyCode } from '@planet-sdk/common';
 
 import getsessionId from './apiRequests/getSessionId';
 import countriesData from '../utils/countryCurrency/countriesData.json';
+import { useCurrencyStore } from '../stores/currencyStore';
 
 export async function storeConfig(tenantConfig: Tenant) {
+  const { resolveGeoCurrencyCode } = useCurrencyStore.getState();
+
   await fetch(`${process.env.CONFIG_URL}`, {
     headers: {
       'tenant-key': `${tenantConfig?.id}`,
@@ -26,11 +30,23 @@ export async function storeConfig(tenantConfig: Tenant) {
           localStorage.setItem('countryCode', 'DE');
         }
       }
-      if (!localStorage.getItem('currencyCode')) {
-        localStorage.setItem('currencyCode', config.currency);
+
+      // Piggyback on this same fetch for the geo-detected currency rather than
+      // firing a second request. Only used when nothing is stored yet; a
+      // stored or explicitly selected currency always takes precedence.
+      let geoCurrencyCode: CurrencyCode | null = null;
+      if (!localStorage.getItem('currencyCode') && config.currency) {
+        geoCurrencyCode = config.currency as CurrencyCode;
+        localStorage.setItem('currencyCode', geoCurrencyCode);
       }
+      resolveGeoCurrencyCode(geoCurrencyCode);
     })
-    .catch((err) => console.log(`Something went wrong: ${err}`));
+    .catch((err) => {
+      console.log(`Something went wrong: ${err}`);
+      // A missing/failed geo response must still unblock currency-dependent
+      // requests, falling back to the default currency rather than stalling.
+      resolveGeoCurrencyCode(null);
+    });
 }
 
 export function getStoredConfig(key: string) {
