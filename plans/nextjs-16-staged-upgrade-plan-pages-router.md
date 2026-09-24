@@ -700,9 +700,27 @@ proxy.ts
 
 Use the official Next.js codemod where appropriate.
 
-`middleware.ts` remains a deprecated compatibility path in Next.js 16, so the rename is low-risk and should be completed during this upgrade.
+**Status: Deferred to a follow-up PR.** The Next.js 16 PR keeps `middleware.ts`. It still works in Next.js 16; the build only prints a deprecation warning.
 
-`proxy.ts` uses the Node runtime, which is acceptable for the current tenant lookup behavior.
+### Why this is not just a rename
+
+The rename also changes the runtime. The Next.js 16 upgrade guide (`node_modules/next/dist/docs/01-app/02-guides/upgrading/version-16.md`) says: "The `edge` runtime is **NOT** supported in `proxy`. The `proxy` runtime is `nodejs`, and it cannot be configured. If you want to continue using the `edge` runtime, keep using `middleware`."
+
+`middleware.ts` has no `runtime` export, so it runs on the Edge runtime today. Moving to `proxy.ts` moves every request's tenant and locale lookup from Edge to Node.
+
+- On Vercel, this changes cold starts, which region runs the code, and cost, for every request.
+- It also changes how long the in-memory tenant cache in `src/utils/multiTenancy/helpers.ts` lives, since a Node instance usually lives longer than an Edge one.
+- On Heroku the change is smaller. Self-hosted Next.js already runs middleware inside the Node server process, but in an Edge-style sandbox with only the Edge APIs. After the rename it runs as plain Node code.
+
+The Node runtime should work for the current tenant lookup: `@vercel/kv` and `negotiator` both run on Node. The risk is the runtime change itself, not the code.
+
+Doing the rename in its own PR keeps with this plan's rule of not mixing the framework upgrade with other changes, and a runtime regression can then be reverted on its own.
+
+### Follow-up PR tasks
+
+- Rename `middleware.ts` to `proxy.ts` with `npx @next/codemod@canary middleware-to-proxy .`. The function is a default export, so its name does not matter.
+- Update `middleware.test.ts`, which imports `./middleware` by path.
+- Compare latency and errors on a Vercel preview against the Edge version before merging.
 
 ### Important
 
