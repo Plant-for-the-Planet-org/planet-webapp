@@ -5,14 +5,16 @@ import BankAccountDetails from '../components/BankAccountDetails';
 import NoBankAccount from '../components/NoBankAccount';
 import { useManagePayoutStore } from '../../../../stores';
 
-interface Props {
-  isDataLoading: boolean;
-}
-
-const Overview = ({ isDataLoading }: Props): ReactElement | null => {
+const Overview = (): ReactElement | null => {
   const accounts = useManagePayoutStore((state) => state.accounts);
+  const accountsStatus = useManagePayoutStore((state) => state.accountsStatus);
 
-  if (isDataLoading) return <BankAccountLoader />;
+  if (accountsStatus === 'idle' || accountsStatus === 'loading') {
+    return <BankAccountLoader />;
+  }
+
+  // A failed fetch is reported through the global error popup; avoid claiming "no accounts" here.
+  if (accountsStatus === 'error') return null;
 
   if (!accounts || accounts.length === 0) return <NoBankAccount />;
 
