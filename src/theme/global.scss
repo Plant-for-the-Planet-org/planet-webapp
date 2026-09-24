@@ -40,8 +40,14 @@ body {
   border-bottom: 2px solid $primaryColor !important;
 }
 
-:focus {
-  outline: none !important;
+// Hide the focus ring for mouse/programmatic focus, but show a visible ring for keyboard navigation (WCAG 2.4.7). `outline` is used (not `border`) so the ring takes no layout space; modern browsers make it follow the element's radius.
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid $dsPrimaryColor;
+  outline-offset: 2px;
 }
 
 .planet-links {
