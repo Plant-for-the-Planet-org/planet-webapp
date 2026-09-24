@@ -12,7 +12,7 @@ import type {
 } from '../features/user/DonationReceipt/donationReceiptTypes';
 
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { RECEIPT_STATUS } from '../features/user/DonationReceipt/donationReceiptTypes';
 import {
   transformAddress,
@@ -71,7 +71,6 @@ interface DonationReceiptStore extends DonationReceiptState {
     user: User | null
   ) => void;
   clearSessionStorage: () => void;
-  initializeFromSession: () => void;
 }
 
 // Default state
@@ -99,228 +98,178 @@ const defaultState: DonationReceiptState = {
   year: null,
 };
 
-// Extract only the serializable data slice (excludes action functions)
-const getDataState = (state: DonationReceiptStore): DonationReceiptState => ({
-  address: state.address,
-  addressGuid: state.addressGuid,
-  amount: state.amount,
-  challenge: state.challenge,
-  country: state.country,
-  currency: state.currency,
-  donationCount: state.donationCount,
-  donationUids: state.donationUids,
-  donations: state.donations,
-  donor: state.donor,
-  downloadUrl: state.downloadUrl,
-  dtn: state.dtn,
-  email: state.email,
-  isValid: state.isValid,
-  isVerified: state.isVerified,
-  operation: state.operation,
-  paymentDate: state.paymentDate,
-  tinIsRequired: state.tinIsRequired,
-  type: state.type,
-  verificationDate: state.verificationDate,
-  year: state.year,
-});
-
-// Persist the entire state to sessionStorage (mirrors the provider's effect)
-const persistState = (state: DonationReceiptStore): void => {
-  if (typeof window === 'undefined') return;
-  try {
-    sessionStorage.setItem(
-      SESSION_STORAGE_KEY,
-      JSON.stringify(getDataState(state))
-    );
-  } catch (error) {
-    console.error('Failed to persist session storage:', error);
-  }
-};
-
 export const useDonationReceiptStore = create<DonationReceiptStore>()(
   devtools(
-    (set, get) => ({
-      //state
-      ...defaultState,
-      isHydrated: false,
+    persist(
+      (set, get) => ({
+        //state
+        ...defaultState,
+        isHydrated: false,
 
-      //actions
-      // Initialize state for verification
-      initForVerification: (data, user) => {
-        if (!data) return;
+        //actions
+        // Initialize state for verification
+        initForVerification: (data, user) => {
+          if (!data) return;
 
-        const address = transformAddress(data.donor);
-        const donations: DonationView[] =
-          data.donations?.map((item: IssuedDonationApi) =>
-            transformIssuedDonation(item)
-          ) ?? [];
-        const donor = transformDonor(data.donor);
-        const isVerified = !!data.verificationDate;
-        const operation = isVerified
-          ? RECEIPT_STATUS.DOWNLOAD
-          : RECEIPT_STATUS.VERIFY;
-        const tinIsRequired = data.tinIsRequired ?? false;
+          const address = transformAddress(data.donor);
+          const donations: DonationView[] =
+            data.donations?.map((item: IssuedDonationApi) =>
+              transformIssuedDonation(item)
+            ) ?? [];
+          const donor = transformDonor(data.donor);
+          const isVerified = !!data.verificationDate;
+          const operation = isVerified
+            ? RECEIPT_STATUS.DOWNLOAD
+            : RECEIPT_STATUS.VERIFY;
+          const tinIsRequired = data.tinIsRequired ?? false;
 
-        const isValid = validateIssuedReceipt(
-          donor,
-          address,
-          tinIsRequired,
-          user
-        );
-
-        const newState: DonationReceiptState = {
-          address,
-          addressGuid: null,
-          amount: data.amount ?? null,
-          challenge: data.challenge ?? null,
-          country: data.country ?? null,
-          currency: data.currency ?? null,
-          donationCount: data.donationCount ?? null,
-          donationUids: [],
-          donations,
-          donor,
-          downloadUrl: data.downloadUrl ?? null,
-          email: data.donor.email,
-          dtn: data.dtn ?? null,
-          isValid,
-          isVerified,
-          operation,
-          paymentDate: data.paymentDate,
-          tinIsRequired,
-          type: null,
-          verificationDate: data.verificationDate ?? null,
-          year: data.year ?? null,
-        };
-
-        set(
-          { ...newState, isHydrated: true },
-          undefined,
-          'donationReceipt/init_for_verification'
-        );
-        persistState(get());
-      },
-
-      // Initialize state for issuance
-      initForIssuance: (data, donor, address, addressGuid, user) => {
-        if (!data) return;
-
-        const tinIsRequired = data.tinIsRequired ?? false;
-        const isValid = validateUnissuedReceipt(
-          donor,
-          address,
-          tinIsRequired,
-          addressGuid,
-          user
-        );
-
-        const donations: DonationView[] =
-          data.donations?.map((item: UnissuedDonationApi) =>
-            transformUnissuedDonation(item)
-          ) ?? [];
-
-        const newState: DonationReceiptState = {
-          address,
-          addressGuid,
-          amount: data.amount ?? null,
-          challenge: null,
-          country: data.country ?? null,
-          currency: data.currency ?? null,
-          dtn: null,
-          donationCount: data.donationCount ?? null,
-          donationUids: data.uids ?? [],
-          donations,
-          donor,
-          downloadUrl: null,
-          email: null,
-          isValid,
-          isVerified: false,
-          operation: RECEIPT_STATUS.ISSUE,
-          paymentDate: data.paymentDate,
-          tinIsRequired: data.tinIsRequired ?? false,
-          type: data.type,
-          verificationDate: null,
-          year: null,
-        };
-
-        set(
-          { ...newState, isHydrated: true },
-          undefined,
-          'donationReceipt/init_for_issuance'
-        );
-        persistState(get());
-      },
-
-      // Update donor and address
-      updateDonorAndAddress: (donor, address, addressGuid, user) => {
-        const prevState = get();
-        let isValid = prevState.isValid;
-        if (prevState.operation === RECEIPT_STATUS.ISSUE) {
-          isValid = validateUnissuedReceipt(
+          const isValid = validateIssuedReceipt(
             donor,
             address,
-            prevState.tinIsRequired,
+            tinIsRequired,
+            user
+          );
+
+          const newState: DonationReceiptState = {
+            address,
+            addressGuid: null,
+            amount: data.amount ?? null,
+            challenge: data.challenge ?? null,
+            country: data.country ?? null,
+            currency: data.currency ?? null,
+            donationCount: data.donationCount ?? null,
+            donationUids: [],
+            donations,
+            donor,
+            downloadUrl: data.downloadUrl ?? null,
+            email: data.donor.email,
+            dtn: data.dtn ?? null,
+            isValid,
+            isVerified,
+            operation,
+            paymentDate: data.paymentDate,
+            tinIsRequired,
+            type: null,
+            verificationDate: data.verificationDate ?? null,
+            year: data.year ?? null,
+          };
+
+          set(
+            { ...newState, isHydrated: true },
+            undefined,
+            'donationReceipt/init_for_verification'
+          );
+        },
+
+        // Initialize state for issuance
+        initForIssuance: (data, donor, address, addressGuid, user) => {
+          if (!data) return;
+
+          const tinIsRequired = data.tinIsRequired ?? false;
+          const isValid = validateUnissuedReceipt(
+            donor,
+            address,
+            tinIsRequired,
             addressGuid,
             user
           );
-        } else {
-          isValid = validateIssuedReceipt(
-            donor,
+
+          const donations: DonationView[] =
+            data.donations?.map((item: UnissuedDonationApi) =>
+              transformUnissuedDonation(item)
+            ) ?? [];
+
+          const newState: DonationReceiptState = {
             address,
-            prevState.tinIsRequired,
-            user
+            addressGuid,
+            amount: data.amount ?? null,
+            challenge: null,
+            country: data.country ?? null,
+            currency: data.currency ?? null,
+            dtn: null,
+            donationCount: data.donationCount ?? null,
+            donationUids: data.uids ?? [],
+            donations,
+            donor,
+            downloadUrl: null,
+            email: null,
+            isValid,
+            isVerified: false,
+            operation: RECEIPT_STATUS.ISSUE,
+            paymentDate: data.paymentDate,
+            tinIsRequired: data.tinIsRequired ?? false,
+            type: data.type,
+            verificationDate: null,
+            year: null,
+          };
+
+          set(
+            { ...newState, isHydrated: true },
+            undefined,
+            'donationReceipt/init_for_issuance'
           );
-        }
+        },
 
-        set(
-          { donor, address, addressGuid, isValid },
-          undefined,
-          'donationReceipt/update_donor_and_address'
-        );
-        persistState(get());
-      },
-
-      // Clear donation receipt data from sessionStorage (in-memory state is preserved)
-      clearSessionStorage: () => {
-        if (typeof window === 'undefined') return;
-        sessionStorage.removeItem(SESSION_STORAGE_KEY);
-      },
-
-      // Hydrate state from sessionStorage on app startup
-      initializeFromSession: () => {
-        if (typeof window === 'undefined') return;
-        try {
-          const storedState = sessionStorage.getItem(SESSION_STORAGE_KEY);
-          if (storedState) {
-            set(
-              {
-                ...(JSON.parse(storedState) as DonationReceiptState),
-                isHydrated: true,
-              },
-              undefined,
-              'donationReceipt/init_from_session'
+        // Update donor and address
+        updateDonorAndAddress: (donor, address, addressGuid, user) => {
+          const prevState = get();
+          let isValid = prevState.isValid;
+          if (prevState.operation === RECEIPT_STATUS.ISSUE) {
+            isValid = validateUnissuedReceipt(
+              donor,
+              address,
+              prevState.tinIsRequired,
+              addressGuid,
+              user
             );
           } else {
-            set(
-              { isHydrated: true },
-              undefined,
-              'donationReceipt/init_from_session'
+            isValid = validateIssuedReceipt(
+              donor,
+              address,
+              prevState.tinIsRequired,
+              user
             );
           }
-        } catch (error) {
-          console.error('Failed to parse session storage:', error);
-          try {
-            sessionStorage.removeItem(SESSION_STORAGE_KEY);
-          } catch (removeError) {
-            console.error('Failed to clear session storage:', removeError);
-          }
+
           set(
-            { isHydrated: true },
+            { donor, address, addressGuid, isValid },
             undefined,
-            'donationReceipt/init_from_session'
+            'donationReceipt/update_donor_and_address'
           );
-        }
-      },
-    }),
+        },
+
+        // Clear the persisted receipt from sessionStorage, the in-memory state is preserved
+        clearSessionStorage: () => {
+          useDonationReceiptStore.persist.clearStorage();
+        },
+      }),
+      {
+        name: SESSION_STORAGE_KEY,
+        storage: createJSONStorage(() => sessionStorage),
+        // Rehydration needs sessionStorage, which does not exist during SSR, so it is triggered
+        // manually (see useInitializeDonationReceipt) instead of running at store creation.
+        skipHydration: true,
+        // Allowlist against defaultState's keys, not a denylist, so a future store-only
+        // field (action, flag, etc.) is excluded by default instead of leaking into storage.
+        partialize: (state) => {
+          const dataState = {} as DonationReceiptState;
+          // Cast to a plain string-keyed record: TS can't verify a union-keyed
+          // assignment is sound, but each key/value pair here is from defaultState itself.
+          const target = dataState as unknown as Record<string, unknown>;
+          Object.keys(defaultState).forEach((key) => {
+            target[key] = state[key as keyof DonationReceiptState];
+          });
+          return dataState;
+        },
+        onRehydrateStorage: () => (_state, error) => {
+          if (error) {
+            console.error('Failed to rehydrate session storage:', error);
+            useDonationReceiptStore.persist.clearStorage();
+          }
+          useDonationReceiptStore.setState({ isHydrated: true });
+        },
+      }
+    ),
     {
       name: 'DonationReceiptStore',
       enabled: process.env.NODE_ENV === 'development',
