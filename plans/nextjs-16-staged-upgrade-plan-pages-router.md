@@ -478,18 +478,18 @@ First, update the programmatic Next.js initialization so Webpack is explicit in 
 next({ dir: '.', dev, webpack: true })
 ```
 
-This lives in `server.js`, which currently calls `next({ dir: '.', dev })`.
+This lives in `server.js`. **Done** on the `feature/nextjs-16-upgrade` branch. It only matters when `server.js` runs in dev mode; see 3.1.
 
-Second, put `--webpack` in the `build` script in `package.json` rather than only on the local command line. Heroku builds through `heroku-postbuild`, which runs `npm run build`, so a flag typed at a developer's terminal never reaches the Heroku build.
+Second, put `--webpack` in the `build` script in `package.json` rather than only on the local command line. Heroku builds through `heroku-postbuild`, which runs `npm run build`, so a flag typed at a developer's terminal never reaches the Heroku build. **Done** on the same branch.
 
-Third, verify that the normal request handler path still executes the tenant-routing proxy logic:
+Third, verify that the normal request handler path still executes the tenant-routing middleware:
 
 ```text
 Express request
     ↓
 next getRequestHandler()
     ↓
-proxy.ts
+middleware.ts (proxy.ts after the follow-up rename, see 3.3)
     ↓
 tenant / locale rewrite
     ↓
@@ -498,11 +498,22 @@ Pages Router
 
 Tenant rewriting is the routing model for the application, so this cannot be assumed from a successful build alone.
 
-That third point is the real risk in this decision. `server.js` reaches `getRequestHandler()` through a `server.get('*')` catch-all, so what arrives there is GET and HEAD requests that fall through the `/static` middleware. Whether Next.js middleware or `proxy.ts` runs on that path has not been confirmed for any version this repository has shipped. Verify it against a running Heroku dyno, not only locally.
+That third point is the real risk in this decision. `server.js` reaches `getRequestHandler()` through a `server.get('*')` catch-all, so what arrives there is GET and HEAD requests that fall through the `/static` middleware.
+
+**Status: Verified locally on Next.js 16.3.6, still to verify on a Heroku dyno.** After `npm run build`, `server.js` was started as the `Procfile` starts it (`NODE_ENV=production node server.js`), with `WEB_CONCURRENCY=1` and an `x-forwarded-proto: https` header so the HTTPS redirect did not fire. The middleware ran on every request through the Express path:
+
+- `/` with `Accept-Language: de` returned 307 to `/de/`.
+- `/en` returned 200, set `NEXT_LOCALE=en` with `Secure`, and sent the `Strict-Transport-Security` header from `server.js`.
+- `/en/profile` returned 200.
+- The server log showed `Rewritten URL: /sites/planet/en` and `Rewritten URL: /sites/planet/en/profile`.
+
+A local run is not a dyno: it has a different host name, no Heroku router in front, and different env vars. Repeat these checks on `planet-app-sf` before merging.
 
 Requests with other methods never reach the catch-all, so they need a separate check. `pages/api/restor/sync-sites.ts` answers only `POST`, and Heroku starts the app with `node server.js` from the `Procfile`, so that route cannot be reached in production as the server stands today. Confirm on a dyno whether any non-GET path is meant to work, and add an explicit route for it if so.
 
 Note also that `server.js` uses Express 4. The `'*'` catch-all route is not valid in Express 5, so an Express major upgrade is a separate piece of work and should not be folded into the Next.js 16 PR.
+
+`server.js` also prints a Node.js `DEP0169` warning on start, because the catch-all calls `url.parse()`, which Node.js now deprecates. The WHATWG `URL` API replaces it. It is only a warning and is not caused by Next.js 16. Fix it together with the Express 5 work.
 
 ---
 
