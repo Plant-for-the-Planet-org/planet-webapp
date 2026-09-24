@@ -516,7 +516,7 @@ Express request
     ↓
 next getRequestHandler()
     ↓
-middleware.ts (proxy.ts after the follow-up rename, see 3.3)
+middleware.ts (kept; the proxy.ts rename is skipped for now, see 3.3)
     ↓
 tenant / locale rewrite
     ↓
@@ -758,7 +758,24 @@ proxy.ts
 
 Use the official Next.js codemod where appropriate.
 
-**Status: Deferred to a follow-up PR.** The Next.js 16 PR keeps `middleware.ts`. It still works in Next.js 16; the build only prints a deprecation warning.
+**Status: Skipped for now (decided 2026-09-24).** The Next.js 16 PR keeps `middleware.ts`, and no follow-up PR is planned until one of the triggers below happens. `middleware.ts` still works in Next.js 16.3.6; the build only prints a deprecation warning.
+
+### Why it is skipped
+
+- Nothing is broken. The docs mark `middleware` as deprecated but give no removal date, and say that all functionality stays the same and only the file and export names have changed.
+- The code gains nothing from Node. `middleware.ts` and `src/utils/multiTenancy/helpers.ts` use only `fetch`, `URL`, cookies, `negotiator`, `@formatjs/intl-localematcher` and `@vercel/kv`. `@vercel/kv` talks to Redis over HTTP, so all of it already runs on Edge. There is no Node-only API the rename would unlock.
+- It has a real cost on Vercel. Edge middleware runs close to the visitor. Node middleware runs where the Vercel functions run, so visitors far from that region would likely wait longer on every page request. Planet has international tenants and many locales, so this matters.
+- Next.js has not finished this story. The upgrade guide says: "We will follow up on a minor release with further `edge` runtime instructions." Moving to Node now could mean redoing the work once that guidance ships.
+- Heroku gains nothing. Middleware already runs inside the `server.js` process there.
+- The named `middleware` export is also deprecated, but it does not apply here. The function is a default export.
+
+So the only cost of waiting is one deprecation warning in each build.
+
+### When to revisit
+
+- Next.js sets a removal date for `middleware`, or ships the promised `edge` runtime guidance.
+- The middleware needs a Node-only feature, such as a TCP Redis client or server-side Auth0 sessions.
+- Someone measures Node middleware on a Vercel preview and finds it no slower for visitors outside the function region.
 
 ### Why this is not just a rename
 
@@ -772,9 +789,9 @@ The rename also changes the runtime. The Next.js 16 upgrade guide (`node_modules
 
 The Node runtime should work for the current tenant lookup: `@vercel/kv` and `negotiator` both run on Node. The risk is the runtime change itself, not the code.
 
-Doing the rename in its own PR keeps with this plan's rule of not mixing the framework upgrade with other changes, and a runtime regression can then be reverted on its own.
+When it is done, do the rename in its own PR. That keeps with this plan's rule of not mixing the framework upgrade with other changes, and a runtime regression can then be reverted on its own.
 
-### Follow-up PR tasks
+### Tasks, when a trigger happens
 
 - Rename `middleware.ts` to `proxy.ts` with `npx @next/codemod@canary middleware-to-proxy .`. The function is a default export, so its name does not matter.
 - Update `middleware.test.ts`, which imports `./middleware` by path.
@@ -1121,18 +1138,16 @@ Next.js 15 → 16 (in progress, feature/nextjs-16-upgrade)
 ├─ Set webpack: true in server.js (done)
 ├─ Set agentRules: false (done)
 ├─ Accept jsx: react-jsx, stop tracking next-env.d.ts (done)
-├─ Keep middleware.ts; move the proxy.ts rename to a follow-up PR (decided)
+├─ Keep middleware.ts; skip the proxy.ts rename for now (decided, see 3.3)
 ├─ Validate middleware through every active deployment path
 │  (local done; Heroku dyno and Vercel preview open)
 ├─ Validate Sass / CSS ordering behavior (compiles; ordering open)
 └─ Full app + CI regression testing (open)
         │
         ▼
-Follow-up PR
-middleware.ts → proxy.ts (Edge → Node runtime, see 3.3)
-        │
-        ▼
 DONE
+
+Skipped for now: middleware.ts → proxy.ts (Edge → Node runtime, see 3.3)
 ```
 
 ---
@@ -1154,6 +1169,12 @@ Before doing so, re-evaluate:
 - build performance and correctness.
 
 Babel is no longer a question here: `.babelrc` was removed in PR #3139, so the app already builds on SWC (see 1.8).
+
+---
+
+## `middleware.ts` → `proxy.ts`
+
+Skipped for now. The rename moves every request from the Edge runtime to Node, which likely adds latency on Vercel for no gain in this codebase. See 3.3 for the reasons, the triggers that should bring it back, and the tasks.
 
 ---
 
@@ -1229,7 +1250,7 @@ Status as of 2026-09-24, on the `feature/nextjs-16-upgrade` branch. A box is onl
 - [ ] `server.js` starts Next.js with `webpack: true`, and the custom-server path is regression-tested. `webpack: true` is done and the path was checked locally (1.7); a Heroku dyno check is still needed.
 - [x] The `build` script itself carries `--webpack`, so the Heroku `heroku-postbuild` build gets it too.
 - [ ] Tenant rewrites and the middleware are confirmed to run through the Express `getRequestHandler()` path on a real Heroku dyno. Confirmed locally only; see 1.7.
-- [ ] `middleware.ts` has been migrated to `proxy.ts`. Deferred to a follow-up PR, so not a gate for the Next.js 16 PR; see 3.3.
+- [x] A deliberate `middleware.ts` / `proxy.ts` decision is recorded. Kept `middleware.ts` on Edge; the rename is skipped for now, see 3.3.
 - [ ] Tenant hostname rewrites work through every active deployment path.
 - [ ] Locale redirects and cookies work. Checked locally on `next dev` and the custom server; not on a deployment yet.
 - [ ] Auth0 login/logout/redirect flows work.
@@ -1274,8 +1295,6 @@ Next.js 15.x (done, 15.5.25)
 Dependency/tooling cleanup, mostly on Next.js 15 (done)
         ↓
 Next.js 16.x (in progress, 16.3.6)
-        ↓
-proxy.ts rename (follow-up PR)
 
 Pages Router: KEEP
 React 18: KEEP (verified by the spike)
@@ -1284,7 +1303,7 @@ App Router: DEFER
 React 19: DEFER
 Turbopack migration: DEFER
 Server-side auth/data migration: DEFER
-middleware.ts → proxy.ts: DEFER TO A FOLLOW-UP PR
+middleware.ts → proxy.ts: SKIP FOR NOW (stays on Edge, see 3.3)
 Heroku/custom server: KEEP (Heroku is live)
 Babel: REMOVED (the app builds on SWC)
 ```
