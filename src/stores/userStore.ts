@@ -16,13 +16,10 @@ import { APIError } from '@planet-sdk/common';
 // convention in useApi.ts for a synthetic, non-server status code.
 const NON_HTTP_ERROR_STATUS_CODE = 0;
 
-// fetchUserProfile has no single owner - the token effect, the 403 handler,
-// and the impersonation enter/exit screens can all call it around the same
-// time, with no cancellation. This id lets a call detect it has been
-// superseded by a later one, so a slow, stale response cannot overwrite the
-// store with the wrong identity. It is a cheap guard, not real request
-// sequencing (no AbortController, no cancellation) - see review item #14/A3.
-let latestFetchUserProfileRequestId = 0;
+// Multiple callers can start this action at the same time.
+// Starting a new request aborts the previous request.
+// The identity check rejects responses decoded before the abort.
+let activeFetchController: AbortController | null = null;
 
 type FetchUserProfileParams = {
   token: string;
@@ -112,8 +109,10 @@ export const useUserStore = create<UserStore>()(
           );
         }
 
-        const requestId = ++latestFetchUserProfileRequestId;
-        const isStale = () => requestId !== latestFetchUserProfileRequestId;
+        activeFetchController?.abort();
+        const controller = new AbortController();
+        activeFetchController = controller;
+        const isStale = () => activeFetchController !== controller;
 
         try {
           const sessionId = await getsessionId();
@@ -129,6 +128,7 @@ export const useUserStore = create<UserStore>()(
             {
               method: 'GET',
               headers: setHeaderForImpersonation(header, impersonationData),
+              signal: controller.signal,
             }
           );
 
