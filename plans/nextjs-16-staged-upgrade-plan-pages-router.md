@@ -1073,36 +1073,39 @@ The hostname/locale rewrite strategy can continue routing requests into this Pag
 
 # Recommended implementation sequence
 
+Status as of 2026-09-24. Phase 2 landed before most of Phase 1, so most Phase 1 work was done on Next.js 15; see the Phase 2 note on sequencing.
+
 ```text
 Phase 0
 Preflight + safety net
 │
-├─ Day-one Next 16 + React 18 + --webpack spike
-├─ Add tenant rewrite tests
-├─ Add locale tests
-├─ Add donation smoke tests
-└─ Add non-blocking typecheck baseline (~126 current errors)
+├─ Day-one Next 16 + React 18 + --webpack spike (done)
+├─ Add tenant rewrite tests (done, #3119)
+├─ Add locale tests (done, #3119)
+├─ Add donation smoke tests (done, #3119)
+├─ Add non-blocking typecheck baseline (open, 125 current errors)
+└─ Repair the red Chromatic job (open, 2 stories throw)
         │
         ▼
 Phase 1
-Dependency/tooling modernization on Next.js 14
+Dependency/tooling modernization
 │
-├─ Sentry → @sentry/nextjs
-│  └─ remove RewriteFrames/getConfig/serverRuntimeConfig
-├─ Storybook 8 → Storybook 10 (done)
-├─ ESLint 9 + flat config + @typescript-eslint v8 path
-├─ Upgrade @next/bundle-analyzer
-├─ Remove Netlify plugin and netlify.toml (Netlify is dead) (done)
-├─ Mark next-intl as already compatible
-├─ Remove dead rate-limiter dependencies/module
-├─ Remove next-unused
-├─ Remove dead next export workflow
+├─ Sentry → @sentry/nextjs (done, #3121)
+│  └─ remove RewriteFrames/getConfig/serverRuntimeConfig (done)
+├─ Storybook 8 → Storybook 10 (done, #3142)
+├─ ESLint 9 + flat config + typescript-eslint v8 (done, #3150)
+├─ Upgrade @next/bundle-analyzer (done, #3157; 16.3.6 in Phase 3)
+├─ Remove Netlify plugin and netlify.toml (done, #3143)
+├─ Mark next-intl as already compatible (done)
+├─ Remove dead rate-limiter dependencies/module (done, #3156)
+├─ Remove next-unused (done, #3156)
+├─ Remove the next export script (done, #3156; cypress.yml part stays with 0.2)
 ├─ Heroku/custom server decided: keep, Heroku is live (done)
-└─ Decide .babelrc: remove for SWC or document why it remains
+└─ .babelrc removed for SWC (done, #3139)
         │
         ▼
 Phase 2
-Next.js 14 → 15
+Next.js 14 → 15 (done, #3139)
 │
 ├─ Upgrade Next.js
 ├─ Run only relevant codemods
@@ -1111,15 +1114,22 @@ Next.js 14 → 15
         │
         ▼
 Phase 3
-Next.js 15 → 16
+Next.js 15 → 16 (in progress, feature/nextjs-16-upgrade)
 │
-├─ Keep React 18 if Phase 0 proved it viable
-├─ Use --webpack on dev and build
-├─ Set webpack: true in server.js, and --webpack in the build script
-├─ middleware.ts → proxy.ts
-├─ Validate proxy through every active deployment path
-├─ Validate sass-loader v16 / CSS ordering behavior
-└─ Full app + CI regression testing
+├─ Keep React 18 (done, the spike passed)
+├─ Use --webpack on dev, dev-https and build (done)
+├─ Set webpack: true in server.js (done)
+├─ Set agentRules: false (done)
+├─ Accept jsx: react-jsx, stop tracking next-env.d.ts (done)
+├─ Keep middleware.ts; move the proxy.ts rename to a follow-up PR (decided)
+├─ Validate middleware through every active deployment path
+│  (local done; Heroku dyno and Vercel preview open)
+├─ Validate Sass / CSS ordering behavior (compiles; ordering open)
+└─ Full app + CI regression testing (open)
+        │
+        ▼
+Follow-up PR
+middleware.ts → proxy.ts (Edge → Node runtime, see 3.3)
         │
         ▼
 DONE
@@ -1239,29 +1249,32 @@ Status as of 2026-09-24, on the `feature/nextjs-16-upgrade` branch. A box is onl
 
 # Final scope summary
 
-The intended upgrade is:
+The upgrade as it actually ran:
 
 ```text
 Day-one spike
-Next.js 16 + React 18 + Webpack
-        ↓
-Dependency/tooling cleanup on Next.js 14
+Next.js 16 + React 18 + Webpack (done)
         ↓
 Next.js 14.2.35
         ↓
-Next.js 15.x
+Next.js 15.x (done, 15.5.25)
         ↓
-Next.js 16.x
+Dependency/tooling cleanup, mostly on Next.js 15 (done)
+        ↓
+Next.js 16.x (in progress, 16.3.6)
+        ↓
+proxy.ts rename (follow-up PR)
 
 Pages Router: KEEP
-React 18: KEEP IF VERIFIED
-Webpack: KEEP INITIALLY AND MAKE EXPLICIT
+React 18: KEEP (verified by the spike)
+Webpack: KEEP INITIALLY AND MAKE EXPLICIT (done)
 App Router: DEFER
-React 19: DEFER IF POSSIBLE
+React 19: DEFER
 Turbopack migration: DEFER
 Server-side auth/data migration: DEFER
-Heroku/custom server: EXPLICIT KEEP-OR-DELETE DECISION
-Babel: EXPLICIT KEEP-OR-REMOVE DECISION
+middleware.ts → proxy.ts: DEFER TO A FOLLOW-UP PR
+Heroku/custom server: KEEP (Heroku is live)
+Babel: REMOVED (the app builds on SWC)
 ```
 
 The objective is to make the application **current on Next.js without turning a framework version upgrade into an architectural rewrite**, while also removing pre-existing CI/tooling failures that would otherwise obscure the real migration signal.
