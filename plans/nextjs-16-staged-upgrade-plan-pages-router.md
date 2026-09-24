@@ -1189,45 +1189,47 @@ Do not mix a 100+ file stylesheet migration into the Next.js 16 framework PR unl
 
 The Next.js 16 upgrade is complete when:
 
-- [ ] The application runs on Next.js 16.
-- [ ] The Pages Router remains the active routing architecture.
-- [ ] No `app/` migration is required.
+Status as of 2026-09-24, on the `feature/nextjs-16-upgrade` branch. A box is only ticked when it has been checked, not when it is expected to work.
+
+- [ ] The application runs on Next.js 16. Runs locally on 16.3.6 (build, dev, and the custom server); not deployed yet.
+- [x] The Pages Router remains the active routing architecture.
+- [x] No `app/` migration is required. There is still no `app/` directory.
 - [x] The React 18/React 19 decision is based on an actual Next.js 16 spike, not assumptions. Done via Phase 0.1, see that section.
 - [x] React 18 remains in place if it passed the compatibility spike, or React 19 has a separately justified migration. React 18 passed.
-- [ ] `agentRules` in `next.config.js` has an explicit decision recorded (disabled, or accepted deliberately). See Phase 3.2.
-- [ ] `serverRuntimeConfig` has been removed during the Sentry modernization work.
-- [ ] Legacy Sentry webpack aliases/plugin wiring are removed where no longer needed.
+- [x] `agentRules` in `next.config.js` has an explicit decision recorded (disabled, or accepted deliberately). Disabled; see Phase 3.2.
+- [x] `serverRuntimeConfig` has been removed during the Sentry modernization work. Removed in PR #3121.
+- [x] Legacy Sentry webpack aliases/plugin wiring are removed where no longer needed. Removed in PR #3121; none of `@sentry/browser`, `@sentry/node`, `@sentry/webpack-plugin`, `SentryWebpackPlugin` or `RewriteFrames` remain.
 - [ ] Sentry works in production.
 - [ ] Source maps upload correctly.
-- [ ] `next dev --webpack` works.
-- [ ] `next build --webpack` succeeds.
+- [x] `next dev --webpack` works.
+- [x] `next build --webpack` succeeds.
 - [x] The Heroku/custom-server question is answered with deployment evidence rather than assumption. Heroku is live; see Phase 1.7.
-- [ ] `server.js` starts Next.js with `webpack: true`, and the custom-server path is regression-tested.
-- [ ] The `build` script itself carries `--webpack`, so the Heroku `heroku-postbuild` build gets it too.
-- [ ] Tenant rewrites and `proxy.ts` are confirmed to run through the Express `getRequestHandler()` path on a real Heroku dyno.
-- [ ] `middleware.ts` has been migrated to `proxy.ts`.
+- [ ] `server.js` starts Next.js with `webpack: true`, and the custom-server path is regression-tested. `webpack: true` is done and the path was checked locally (1.7); a Heroku dyno check is still needed.
+- [x] The `build` script itself carries `--webpack`, so the Heroku `heroku-postbuild` build gets it too.
+- [ ] Tenant rewrites and the middleware are confirmed to run through the Express `getRequestHandler()` path on a real Heroku dyno. Confirmed locally only; see 1.7.
+- [ ] `middleware.ts` has been migrated to `proxy.ts`. Deferred to a follow-up PR, so not a gate for the Next.js 16 PR; see 3.3.
 - [ ] Tenant hostname rewrites work through every active deployment path.
-- [ ] Locale redirects and cookies work.
+- [ ] Locale redirects and cookies work. Checked locally on `next dev` and the custom server; not on a deployment yet.
 - [ ] Auth0 login/logout/redirect flows work.
 - [ ] Donation/payment flows pass regression testing.
 - [ ] Embed mode works.
 - [ ] Existing `next/router` behavior works.
 - [ ] Existing `next/head` behavior works.
 - [ ] Existing `getStaticProps` / `getStaticPaths` behavior works.
-- [x] Storybook builds on the Next.js 16-compatible Storybook version (10.6.0).
+- [x] Storybook builds on the Next.js 16-compatible Storybook version (10.6.0). Also checked against Next.js 16.3.6.
 - [ ] Chromatic CI passes. Still red, from two component errors that predate the upgrade. See 0.5.
-- [ ] ESLint runs on the modern supported dependency stack and flat config.
-- [ ] The typecheck job exists with a recorded baseline and does not show an unexplained material regression.
+- [x] ESLint runs on the modern supported dependency stack and flat config. PR #3150.
+- [ ] The typecheck job exists with a recorded baseline and does not show an unexplained material regression. The job does not exist yet; the local count is 125, unchanged by Next.js 16. See 0.4.
 - [ ] Cypress has been migrated successfully, or Playwright has replaced it. Nice to have rather than a gate; the suite is dormant, see 0.2.
 - [ ] No CI workflow calls `next export`.
 - [ ] CI start commands do not pass duplicate port flags.
-- [ ] `next-unused` and its fragile script are removed.
-- [ ] `@next/bundle-analyzer` is upgraded and works if still used.
+- [x] `next-unused` and its fragile script are removed. PR #3156.
+- [x] `@next/bundle-analyzer` is upgraded and works if still used. `^16.3.6`; `ANALYZE=true npm run build` wrote the client, nodejs and edge reports to `.next/analyze/`.
 - [x] `@netlify/plugin-nextjs` and `netlify.toml` are removed, since Netlify is no longer a deployment path. Done in PR #3143.
-- [ ] `next-intl` is recorded as compatible with the selected Next.js version unless testing proves otherwise.
-- [ ] A deliberate `.babelrc` decision is recorded: removed to use SWC, or retained with a documented requirement.
+- [x] `next-intl` is recorded as compatible with the selected Next.js version unless testing proves otherwise. `next-intl@4.13.0` lists `next ^16.0.0` as a peer, and the Next.js 16.3.6 build passes.
+- [x] A deliberate `.babelrc` decision is recorded: removed to use SWC, or retained with a documented requirement. Removed in PR #3139; see 1.8.
 - [ ] Emotion SSR remains correct.
-- [ ] SCSS/Sass compiles under the Next.js 16 loader stack.
+- [x] SCSS/Sass compiles under the Next.js 16 loader stack. No Sass errors, only `@import` deprecation warnings; see 3.4.
 - [ ] SCSS/global CSS ordering remains correct in production.
 - [ ] No unacceptable hydration or flash-of-unstyled-content regression is introduced.
 - [ ] The production deployment path is verified.
