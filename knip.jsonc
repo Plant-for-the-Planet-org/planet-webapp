@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/knip/schema.json",
+  // Only confirmed false positives belong here. Real findings stay in the report until they are fixed.
+  "entry": [
+    // Augments next-intl's AppConfig for typed messages. TypeScript picks it up through tsconfig, so nothing imports it.
+    "src/i18n/types.ts"
+  ],
+  "ignoreDependencies": [
+    // Installed on purpose to fix the Chromatic build (1ef1aa06e). Nothing imports it directly.
+    "ajv",
+    // Run by .husky/pre-commit through npx. With core.autocrlf=true, Windows checkouts end the line in CRLF and knip misreads the name.
+    "validate-branch-name"
+  ]
+}
