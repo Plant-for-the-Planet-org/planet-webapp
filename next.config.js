@@ -78,6 +78,8 @@ const nextConfig = {
     ENABLE_EXPLORE: process.env.ENABLE_EXPLORE,
     TREEMAPPER_URL: process.env.TREEMAPPER_URL,
   },
+  // Stops Next.js from writing its own block into CLAUDE.md and AGENTS.md, which this repo maintains by hand.
+  agentRules: false,
   trailingSlash: false,
   reactStrictMode: true,
   poweredByHeader: false,
