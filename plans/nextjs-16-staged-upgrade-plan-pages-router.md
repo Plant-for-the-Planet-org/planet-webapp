@@ -795,7 +795,36 @@ Do not turn this upgrade into a full Sass `@import` → `@use` rewrite unless th
 
 ---
 
-## 5. Run full regression verification
+## 5. Handle the TypeScript config changes Next.js 16 forces
+
+Next.js runs a TypeScript setup step on every `next dev` and `next build`. In Next.js 16 it changes two committed files. `agentRules: false` does not affect this (see 3.2).
+
+### `tsconfig.json`: `jsx` becomes `react-jsx`
+
+**Status: Done.** Accepted on the `feature/nextjs-16-upgrade` branch.
+
+This is a mandatory change, not a suggestion. The build prints: "The following mandatory changes were made to your tsconfig.json: jsx was set to react-jsx (next.js uses the React automatic runtime)". In `node_modules/next/dist/lib/typescript/writeConfigurationDefaults.js`, `jsx` is set with a `value`, which Next.js always enforces, not only with `suggested`, which it fills in only when missing. There is no config option or env var to turn it off.
+
+Next.js 15 enforced the opposite, `jsx: "preserve"`, which is why this setting never changed before. Keeping `preserve` is not an option: every dev or build run, locally and on Vercel and Heroku, would rewrite it.
+
+The impact is small. SWC compiles the app and ignores this setting, and `noEmit: true` means `tsc` never outputs JSX. It only changes how `tsc` type-checks JSX. The typecheck count stayed at 125 errors, and unit tests and the Storybook build pass with it.
+
+When Next.js makes this change it also reformats the arrays in `tsconfig.json`. That reformatting is not required, so the branch keeps only the one-line `jsx` change.
+
+### `next-env.d.ts`: stop committing it
+
+**Decision (2026-09-24): add `next-env.d.ts` to `.gitignore` and remove it from the repository in the Next.js 16 PR.**
+
+Next.js 16 writes different content into this file depending on the command:
+
+- `next build` imports `./.next/types/routes.d.ts` and `./.next/types/root-params.d.ts`.
+- `next dev` imports the same files from `./.next/dev/types/`, because Next.js 16 keeps dev output in its own folder.
+
+So a committed copy shows as modified after every switch between `next dev` and `next build`. New Next.js projects already keep this file out of git, and Next.js recreates it on every dev or build run.
+
+Nothing in CI needs the committed copy. ESLint is not type-aware and already ignores the file in `eslint.config.mjs`, and no workflow references it. The one thing that does need it is `tsc`, for the image import types and route types. The typecheck job from 0.4 must therefore run after a build, which 0.4 already requires.
+
+## 6. Run full regression verification
 
 ### Tenant routing
 
