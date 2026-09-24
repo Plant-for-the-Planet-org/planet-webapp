@@ -1147,11 +1147,13 @@ Move from Webpack to Turbopack only after the framework upgrade is stable.
 
 Before doing so, re-evaluate:
 
-- any custom webpack aliases/fallbacks that remain after the Sentry cleanup,
+- the custom webpack config that remains: the `resolve.fallback` block in `next.config.js` (`fs: false` and `path-browserify` for `path`) and the webpack plugin that `withSentryConfig` adds (see 3.1),
 - Sentry source-map behavior,
-- whether `.babelrc` still forces Babel,
+- the webpack opt-ins that must be removed together: `--webpack` in the `dev`, `dev-https` and `build` scripts, and `webpack: true` in `server.js`,
 - custom-server behavior,
 - build performance and correctness.
+
+Babel is no longer a question here: `.babelrc` was removed in PR #3139, so the app already builds on SWC (see 1.8).
 
 ---
 
@@ -1191,7 +1193,17 @@ The Next.js 16 upgrade should not be used as a reason to perform this migration.
 
 A future cleanup can migrate legacy Sass `@import` usage to `@use` / `@forward` if desired or required by future Sass releases.
 
+It will be required, not optional. Every Sass warning in the Next.js 16 build says `@import` "will be removed in Dart Sass 3.0.0" (see 3.4). The `^1.94.2` range in `package.json` keeps npm on Sass 1.x, so there is no deadline until someone moves `sass` to 3.x on purpose. Do this cleanup before that bump.
+
 Do not mix a 100+ file stylesheet migration into the Next.js 16 framework PR unless necessary for compatibility.
+
+---
+
+## Turn on or remove `eslint-plugin-react-hooks`
+
+`eslint-plugin-react-hooks` is installed (`^5.2.0`), but `eslint.config.mjs` does not use it, and the old `.eslintrc.js` did not either. So no lint rule checks the rules of hooks today.
+
+Either turn on its recommended rules, which may bring up new lint findings, or remove the package. This is lint work, not part of the Next.js 16 upgrade. See 1.3.
 
 ---
 
