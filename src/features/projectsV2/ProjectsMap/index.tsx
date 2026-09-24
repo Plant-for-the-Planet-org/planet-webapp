@@ -43,11 +43,11 @@ import {
   useInterventionStore,
   useProjectStore,
   useSingleProjectStore,
-  useViewStore,
   useQueryParamStore,
   useProjectMapStore,
 } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
+import { useCurrentPage } from '../../../hooks/useCurrentPage';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 
@@ -71,7 +71,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const lastHoveredIdRef = useRef<string | null>(null);
   const { filteredProjects } = useFilteredProjects();
   // store: state
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
   const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
   const isQueryParamsLoaded = useQueryParamStore(
     (state) => state.isContextLoaded
