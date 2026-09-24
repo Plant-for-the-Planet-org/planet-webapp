@@ -44,6 +44,7 @@ export const useInitializeSingleProject = () => {
   );
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
   const singleProject = useSingleProjectStore((state) => state.singleProject);
+  const lastFetch = useSingleProjectStore((state) => state.lastFetch);
   const selectedSite = useSingleProjectStore((state) => state.selectedSite);
   const fetchError = useSingleProjectStore((state) => state.fetchError);
   const selectedIntervention = useInterventionStore(
@@ -118,14 +119,20 @@ export const useInitializeSingleProject = () => {
    * Initialize site selection for project details page.
    * Selects a site only when:
    * - Router is ready
-   * - We are on project-details
+   * - The URL still names a project
    * - No site or intervention is already selected
    * - URL does not explicitly request an intervention
+   *
+   *  Use the project slug from the URL as the guard so this effect only runs on project pages.
+   *  For projects without sites, selectedSite stays null, which would otherwise keep the effect active.
+   *  Without this guard, leaving the project page can trigger the effect again and send the user back to the project. See #3120.
    */
   useEffect(() => {
     if (!router.isReady) return;
-    if (currentPage === 'project-list') return;
+    if (!isString(projectSlug)) return;
     if (!singleProject) return;
+    // The store keeps the previous project while the next one loads, so only sync the URL once the project it holds is the one the URL asks for.
+    if (lastFetch?.slug !== projectSlug) return;
     if (selectedIntervention !== null) return;
     if (selectedSite !== null) return;
     if (hasOnlyRequestedIntervention) return;
@@ -143,8 +150,9 @@ export const useInitializeSingleProject = () => {
     selectSiteAndSyncUrl(siteIndex, locale, router);
   }, [
     router.isReady,
-    currentPage,
+    projectSlug,
     singleProject,
+    lastFetch,
     selectedIntervention,
     selectedSite,
   ]);
