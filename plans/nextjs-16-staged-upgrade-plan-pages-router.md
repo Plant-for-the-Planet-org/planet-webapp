@@ -63,7 +63,10 @@ Do this before committing to the dependency strategy.
 
 **Decision: keep React 18.** It works correctly with Next.js 16.3.5 and the app's critical dependencies on Webpack. React 19 is not a required prerequisite for this upgrade.
 
-**New finding, not previously in this plan:** Next.js 16 ships an `agentRules` feature that is on by default. Running `next dev` or `next build` auto-writes an AI-agent-directed block into `CLAUDE.md`, and modifies `next-env.d.ts` (route-types path moves under `.next/dev/types`, adds `root-params.d.ts`) and `tsconfig.json` (`jsx` flips from `"preserve"` to `"react-jsx"`, arrays get reformatted). This repository actively curates `CLAUDE.md`, so the Phase 3 PR needs an explicit decision here: set `agentRules: false` in `next.config.js`, or accept the auto-writes deliberately.
+**New finding, not previously in this plan:** the spike saw Next.js 16 write to three files. These come from two separate behaviors, and the spike notes first treated them as one.
+
+- `CLAUDE.md` and `AGENTS.md` come from `agentRules`, which is on by default. Its doc comment in `next/dist/server/config-shared.d.ts` says `next dev` writes these files when it detects an AI coding agent. This repository keeps its own `CLAUDE.md`, so Phase 3.2 needs a decision.
+- `tsconfig.json` and `next-env.d.ts` come from Next.js's TypeScript setup, which runs on every `next dev` and `next build`. `agentRules: false` does not stop these writes. See Phase 3.5.
 
 Create a throwaway branch and answer the React question immediately, before investing in the staged upgrade.
 
@@ -668,12 +671,16 @@ Stabilize the framework first.
 
 ## 2. Decide on the `agentRules` auto-write behavior
 
-Discovered during the Phase 0.1 spike: Next.js 16 ships an `agentRules` feature, on by default, that runs on `next dev` and `next build`. It auto-writes an AI-agent-directed block into `CLAUDE.md`, and modifies `next-env.d.ts` (route-types path moves under `.next/dev/types`, adds `root-params.d.ts`) and `tsconfig.json` (`jsx` flips from `"preserve"` to `"react-jsx"`, arrays get reformatted).
+**Status: Done.** Decided on the `feature/nextjs-16-upgrade` branch: `agentRules: false` is set in `next.config.js`. With it set, `next dev` did not create or change `CLAUDE.md` or `AGENTS.md`.
 
-This repository actively curates `CLAUDE.md` for real governance instructions, so this needs an explicit decision before the Phase 3 PR merges, not a silent auto-write discovered later:
+Discovered during the Phase 0.1 spike: Next.js 16 ships an `agentRules` feature that is on by default. When `next dev` detects an AI coding agent, it generates `CLAUDE.md` and `AGENTS.md` at the project root, pointing the agent at the docs bundled in `node_modules/next/dist/docs/`.
+
+This repository keeps its own `CLAUDE.md` with real team instructions, so the choice was:
 
 - set `agentRules: false` in `next.config.js` to opt out, or
 - accept the auto-writes deliberately and record why.
+
+`agentRules` covers only those two files. The `tsconfig.json` and `next-env.d.ts` changes seen in the spike come from Next.js's TypeScript setup and happen whatever `agentRules` is set to. See 3.5.
 
 ---
 
