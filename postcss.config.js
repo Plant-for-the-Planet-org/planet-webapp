@@ -1,6 +1,5 @@
-// Sass runs before PostCSS, so .scss syntax continues to compile.
-// Defining this file replaces Next.js's default PostCSS plugins,
-// so preserve the required defaults alongside Tailwind.
+// Next.js already runs PostCSS on all CSS, after Sass, so .scss syntax still compiles.
+// This file's presence replaces Next.js's default PostCSS plugins, so it repeats those defaults alongside Tailwind.
 module.exports = {
   plugins: [
     'tailwindcss',
@@ -8,9 +7,8 @@ module.exports = {
     [
       'postcss-preset-env',
       {
-        // Matches Next.js 14's own MODERN_BROWSERSLIST_TARGET (used when no
-        // browserslist config exists), so autoprefixer output for existing
-        // SCSS/CSS is unchanged from before this file was introduced.
+        // Matches Next.js 15's default targets (MODERN_BROWSERSLIST_TARGET), so prefixes on existing SCSS stay the same.
+        // Next.js 16 changes these defaults, so update this list when upgrading.
         browsers: [
           'chrome 64',
           'edge 79',

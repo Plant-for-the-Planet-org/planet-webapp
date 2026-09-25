@@ -5,7 +5,7 @@ import type { Config } from 'tailwindcss';
  *
  * Coexistence notes (MUI + Emotion + SCSS modules already power this app):
  * - `preflight` is DISABLED so Tailwind's global reset does not restyle the
- *   113 existing MUI pages. shadcn/ui components only need the CSS variables
+ *   existing MUI and SCSS UI. shadcn/ui components only need the CSS variables
  *   and a handful of base tokens, which we define in src/styles/globals.css.
  * - dark mode is keyed on `.theme-dark`, the class ThemeProvider already puts
  *   on the layout wrapper (src/theme/themeContext.tsx). Tailwind's default
