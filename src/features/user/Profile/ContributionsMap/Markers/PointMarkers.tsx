@@ -34,9 +34,9 @@ const PointMarkers = ({
   profilePageType,
   supportedTreecounter,
 }: PointMarkersProps) => {
-  if (!superclusterResponse) return null;
   const [isCursorOnMarker, setIsCursorOnMarker] = useState(false);
   const [isCursorOnPopup, setIsCursorOnPopup] = useState(false);
+  if (!superclusterResponse) return null;
 
   const donationPopupProps = {
     superclusterResponse:
