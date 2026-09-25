@@ -11,12 +11,11 @@
  * src/theme/themeProperties.ts (designSystem palette). HSL channel format
  * is required by the `hsl(var(--token))` setup in tailwind.config.ts.
  *
- * Values mirror the webapp's own CSS custom properties (--primary-color etc.)
+ * Values mirror the webapp's own CSS custom properties (--ds-primary-color etc.)
  * so shadcn components match the existing app, not the broader PftP CI.
  *
  * Reference (hex -> token):
- *   #68B030 webapp --primary-color (warm green) -> --primary
- *   #007A49 webapp --primary-dark-color         -> --primary hover / green text on light
+ *   #007A49 --ds-primary-color (MUI primary, .primaryButton) -> --primary / --ring / green text on light
  *   #F0FAF4 soft green                          -> --accent / --secondary
  *   #F0F6F5 background base                     -> --muted
  *   #333333 core text                           -> --foreground
@@ -54,7 +53,7 @@
     --card-foreground: 0 0% 20%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 20%;
-    --primary: 94 57% 44%; /* #68B030 webapp --primary-color */
+    --primary: 156 100% 24%; /* #007A49 --ds-primary-color, same green as MUI buttons */
     --primary-foreground: 0 0% 100%; /* white */
     --secondary: 145 50% 96%; /* #F0FAF4 softGreen */
     --secondary-foreground: 156 100% 24%; /* #007A49 dark green text */
@@ -66,7 +65,7 @@
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 89.8%; /* neutral light grey */
     --input: 0 0% 89.8%;
-    --ring: 94 57% 44%; /* #68B030 */
+    --ring: 156 100% 24%; /* #007A49 */
     --radius: 0.5rem;
   }
 
