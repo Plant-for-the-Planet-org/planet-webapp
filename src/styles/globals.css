@@ -51,6 +51,11 @@
     --radius: 0.75rem; /* rounder corners to match the app's existing style */
   }
 
+  /**
+   * Matches the class ThemeProvider puts on the layout wrapper, see src/theme/themeContext.tsx and src/features/common/Layout/index.tsx.
+   * Apart from --primary and --ring, these dark values are placeholders that need review, not the app's own dark palette (src/theme/themeProperties.ts). The dark palette is still to be decided, and dark mode is rarely used.
+   * Portals (Radix Dialog, Sheet, Select) render into <body>, outside the layout wrapper, so they get the light tokens in dark mode. Components that use portals may need adjusting.
+   */
   .dark {
     --background: 160 30% 6%; /* deep green-tinted dark */
     --foreground: 0 0% 98%;
