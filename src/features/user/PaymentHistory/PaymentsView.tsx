@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Loader2, ReceiptText } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { useUserProps } from '@/features/common/Layout/UserPropsContext';
+import { useUserStore } from '@/stores/userStore';
 import getFormattedCurrency from '@/utils/countryCurrency/getFormattedCurrency';
 import useLocalizedPath from '@/hooks/useLocalizedPath';
 
@@ -43,13 +43,15 @@ export default function PaymentsView() {
   const t = useTranslations('Me');
   const tPayments = useTranslations('Payments');
   const locale = useLocale();
-  const { user } = useUserProps();
+  // local state
+  const [filter, setFilter] = useState<FilterKey>('all');
+  const [selectedGuid, setSelectedGuid] = useState<string | null>(null);
+  // store: state
+  const isMember = useUserStore((state) => state.userProfile?.isMember);
+
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-
-  const [filter, setFilter] = useState<FilterKey>('all');
-  const [selectedGuid, setSelectedGuid] = useState<string | null>(null);
 
   // Deep link: /profile/payments?txn={guid} opens that payment's detail.
   useEffect(() => {
@@ -148,13 +150,14 @@ export default function PaymentsView() {
   // donations are not a reliable signal (they don't persist), so we intentionally
   // do NOT check subscriptions here — a proper flag will come from the profile
   // endpoint later; gate on that once available.
-  const showMembershipCta = !user?.isMember;
+  const showMembershipCta = !isMember;
 
   const formatAmount = (amount: number, currency: string) =>
     getFormattedCurrency(locale, currency, amount);
 
   // Empty string (not "—") so the list can omit the date entirely for pending.
-  const formatDateLabel = (iso: string | null) => formatPaymentDate(iso, locale);
+  const formatDateLabel = (iso: string | null) =>
+    formatPaymentDate(iso, locale);
 
   const getStatusLabel = (paymentStatus: PaymentStatus | null) => {
     if (!paymentStatus) return '—';

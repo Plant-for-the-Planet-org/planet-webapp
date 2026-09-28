@@ -31,7 +31,6 @@ export type PaymentStatus =
   | 'pending'
   | 'failed'
   | 'refunded'
-  // eslint-disable-next-line @typescript-eslint/ban-types
   | (string & {});
 
 /** Generic paginated envelope (PaginatedCollection). */

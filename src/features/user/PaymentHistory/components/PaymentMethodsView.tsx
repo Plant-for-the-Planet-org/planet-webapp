@@ -6,7 +6,7 @@ import { CreditCard, Landmark, Trash2 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useUserProps } from '@/features/common/Layout/UserPropsContext';
+import { useUserStore } from '@/stores/userStore';
 
 import { usePaymentMethods } from '../hooks/usePaymentMethods';
 import { PaymentsEmpty } from './PaymentsEmpty';
@@ -32,10 +32,13 @@ const methodLabel = (method: SavedPaymentMethod) => {
 export const PaymentMethodsView = () => {
   const t = useTranslations('Me');
   const tPayments = useTranslations('Payments');
-  const { user } = useUserProps();
+  // local state
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  // store: state
+  const userCountry = useUserStore((state) => state.userProfile?.country);
 
   const country =
-    user?.country ??
+    userCountry ??
     (typeof window !== 'undefined'
       ? localStorage.getItem('countryCode')
       : null) ??
@@ -43,7 +46,6 @@ export const PaymentMethodsView = () => {
 
   const { methods, isLoading, removingId, removeMethod } =
     usePaymentMethods(country);
-  const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
   if (isLoading) return <PaymentsListSkeleton rows={3} />;
   if (methods.length === 0)

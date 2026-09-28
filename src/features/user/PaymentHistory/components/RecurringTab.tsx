@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { handleError } from '@planet-sdk/common';
 
 import { useApi } from '@/hooks/useApi';
-import { useUserProps } from '@/features/common/Layout/UserPropsContext';
+import { useAuthStore } from '@/stores/authStore';
 import { useErrorHandlingStore } from '@/stores/errorHandlingStore';
 
 import { RecurringView } from './recurring/RecurringView';
@@ -17,7 +17,15 @@ import { RecurringView } from './recurring/RecurringView';
  */
 export const RecurringTab = () => {
   const { getApiAuthenticated } = useApi();
-  const { token, contextLoaded } = useUserProps();
+  // local state
+  const [isDataLoading, setIsDataLoading] = useState(true);
+  const [recurrencies, setRecurrencies] = useState<Subscription[] | undefined>(
+    undefined
+  );
+  // store: state
+  const token = useAuthStore((state) => state.token);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const apiRef = useRef(getApiAuthenticated);
@@ -26,11 +34,6 @@ export const RecurringTab = () => {
   setErrorsRef.current = setErrors;
   const tokenRef = useRef(token);
   tokenRef.current = token;
-
-  const [isDataLoading, setIsDataLoading] = useState(true);
-  const [recurrencies, setRecurrencies] = useState<Subscription[] | undefined>(
-    undefined
-  );
 
   const fetchRecurrentDonations = useCallback(async () => {
     if (!tokenRef.current) return;
@@ -46,8 +49,8 @@ export const RecurringTab = () => {
   }, []);
 
   useEffect(() => {
-    if (contextLoaded && token) fetchRecurrentDonations();
-  }, [contextLoaded, token, fetchRecurrentDonations]);
+    if (isAuthResolved && token) fetchRecurrentDonations();
+  }, [isAuthResolved, token, fetchRecurrentDonations]);
 
   return (
     <RecurringView
