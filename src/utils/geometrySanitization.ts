@@ -1,4 +1,5 @@
-import { cleanCoords, truncate } from '@turf/turf';
+import { cleanCoords } from '@turf/clean-coords';
+import { truncate } from '@turf/truncate';
 
 export const STAGE_MAP: Record<string, string> = {
   barren: 'PLANNING',

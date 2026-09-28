@@ -3,7 +3,7 @@ import type { ViewState } from 'react-map-gl/maplibre';
 import type { MapLibreRef } from '../../features/common/types/map';
 
 import { polygon } from '@turf/helpers';
-import bbox from '@turf/bbox';
+import { bbox } from '@turf/bbox';
 
 export function zoomToPolygonIntervention(
   coordinates: Position[],

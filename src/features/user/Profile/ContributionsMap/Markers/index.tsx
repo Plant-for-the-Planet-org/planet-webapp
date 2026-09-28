@@ -15,7 +15,7 @@ import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import DonationClusterMarker from './DonationClusterMarker';
 import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
-import center from '@turf/center';
+import { center } from '@turf/center';
 import { useMyForestStore } from '../../../../../stores';
 
 interface MarkersProps {
@@ -104,7 +104,7 @@ const Markers = ({
 
       if (validFeatures.length > 0) {
         const markersGeojson = {
-          type: 'FeatureCollection',
+          type: 'FeatureCollection' as const,
           features: validFeatures,
         };
 
