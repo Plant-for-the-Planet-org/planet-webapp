@@ -2,9 +2,8 @@
   "compilerOptions": {
     "target": "es2017",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -25,7 +24,7 @@
       }
     ]
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "storybook-static"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
@@ -34,6 +33,7 @@
     "tenant.config.ts",
     "public/assets",
     "folderCrawler.js",
-    "modifyJson.js"
+    "modifyJson.js",
+    "vitest.config.mts"
   ]
 }

@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import styles from './Credits.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useTenantStore } from '../../../../stores/tenantStore';
+import { useQueryParamStore, useTenantStore } from '../../../../stores';
 
 interface Props {
   isMobile?: boolean;
@@ -21,7 +20,7 @@ export default function Credits({ isMobile }: Props): ReactElement {
   const [openLanguageModal, setLanguageModalOpen] = useState(false);
   // store: state
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const tenantSlug = useTenantStore((state) => state.tenantConfig.config.slug);
 
   const handleLanguageModalClose = () => {
     setLanguageModalOpen(false);
@@ -58,9 +57,7 @@ export default function Credits({ isMobile }: Props): ReactElement {
           </div>
         )}
         {separator}
-        {(tenantConfig.config.slug === 'ttc' ||
-          tenantConfig.config.slug === 'planet') &&
-        !isEmbedMode ? (
+        {(tenantSlug === 'ttc' || tenantSlug === 'planet') && !isEmbedMode ? (
           <a
             rel="noopener noreferrer"
             href={`https://www.thegoodshop.org/de/shop/`}

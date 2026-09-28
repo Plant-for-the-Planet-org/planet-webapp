@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { ProjectSiteFeatureCollection } from '../../../common/types/map';
 
-import { Layer, Source } from 'react-map-gl-v7/maplibre';
+import { Layer, Source } from 'react-map-gl/maplibre';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 

@@ -7,6 +7,8 @@ import { mapSettingsConfig } from '../../../../utils/mapsV2/mapSettings.config';
 import styles from './MapFeatureExplorer.module.scss';
 
 type MapSettingsProps = {
+  /** Referenced by the explore toggle's `aria-controls` */
+  id?: string;
   mapOptions: MapOptions;
   updateMapOption: (option: keyof MapOptions, value: boolean) => void;
   isMobile?: boolean;
@@ -14,6 +16,7 @@ type MapSettingsProps = {
 };
 
 const MapSettings = ({
+  id,
   mapOptions,
   updateMapOption,
   isMobile,
@@ -55,14 +58,14 @@ const MapSettings = ({
 
   if (isMobile && setIsOpen) {
     return (
-      <MobileMapSettingsLayout setIsOpen={setIsOpen}>
+      <MobileMapSettingsLayout id={id} setIsOpen={setIsOpen}>
         {content}
       </MobileMapSettingsLayout>
     );
   }
 
   return (
-    <div className={styles.exploreMainContainer}>
+    <div id={id} className={styles.exploreMainContainer}>
       <div className={styles.exploreItemsContainer}>{content}</div>
     </div>
   );

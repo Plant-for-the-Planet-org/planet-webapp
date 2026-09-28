@@ -1,5 +1,5 @@
 import styles from '../styles/AboutProject.module.scss';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import DownArrow from '../../../../../public/assets/images/icons/projectV2/DownArrow';
 import UpArrow from '../../../../../public/assets/images/icons/projectV2/UpArrow';
@@ -14,6 +14,8 @@ const AboutProject = ({ description, wordCount = 60 }: Props) => {
   const tDonate = useTranslations('Donate');
   const tProjectDetails = useTranslations('ProjectDetails');
   const [isExpanded, setIsExpanded] = useState(false);
+  // Associates the Read more/less toggle with the collapsible part of the description
+  const expandableTextId = useId();
   const descriptionWords = description?.split(' ');
   const hasOverflow = descriptionWords?.length > wordCount;
   const startingText = hasOverflow
@@ -22,11 +24,12 @@ const AboutProject = ({ description, wordCount = 60 }: Props) => {
   const endText = descriptionWords?.slice(wordCount - 1).join(' ');
   return (
     <div className={styles.projectDescription}>
-      <div className={styles.infoTitle}>{tDonate('aboutProject')}</div>
+      <h2 className={styles.infoTitle}>{tDonate('aboutProject')}</h2>
       <div className={styles.infoText}>
         {startingText} {hasOverflow && !isExpanded && <span>...</span>}
         {hasOverflow && (
           <span
+            id={expandableTextId}
             className={clsx({
               [styles.showText]: isExpanded,
               [styles.hideText]: !isExpanded,
@@ -37,7 +40,12 @@ const AboutProject = ({ description, wordCount = 60 }: Props) => {
         )}
       </div>
       {hasOverflow && (
-        <button onClick={() => setIsExpanded(!isExpanded)}>
+        <button
+          type="button"
+          aria-expanded={isExpanded}
+          aria-controls={expandableTextId}
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
           <div>
             {isExpanded
               ? tProjectDetails('readLess')

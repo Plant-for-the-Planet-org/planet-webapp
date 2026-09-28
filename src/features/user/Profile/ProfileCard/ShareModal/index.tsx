@@ -5,6 +5,7 @@ import styles from './ShareModal.module.scss';
 import { Modal, Fade, TextField } from '@mui/material';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import CopyToClipboard from '../../../../common/CopyToClipboard';
+import IconButton from '../../../../common/IconButton';
 import {
   FacebookCustomIcon,
   LinkedInCustomIcon,
@@ -18,8 +19,8 @@ import { useTenantStore } from '../../../../../stores/tenantStore';
 const CustomCopyButton = () => {
   const t = useTranslations('Profile');
   return (
-    <button className={styles.copyButton}>
-      <label>{t('shareFeature.copyLink')}</label>
+    <button type="button" className={styles.copyButton}>
+      <span>{t('shareFeature.copyLink')}</span>
     </button>
   );
 };
@@ -78,9 +79,8 @@ const ShareModal = ({
           <div className={styles.socialMediaIconContainer}>
             <h3>{t('shareFeature.shareVia')}</h3>
             <div>
-              <button
-                type="button"
-                aria-label={t('shareFeature.shareOn', {
+              <IconButton
+                label={t('shareFeature.shareOn', {
                   socialMedia: 'Facebook',
                 })}
                 onClick={() =>
@@ -90,13 +90,10 @@ const ShareModal = ({
                 }
                 className={styles.socialMediaIcon}
               >
-                <span aria-hidden="true" style={{ display: 'contents' }}>
-                  <FacebookCustomIcon />
-                </span>
-              </button>
-              <button
-                type="button"
-                aria-label={t('shareFeature.shareOn', {
+                <FacebookCustomIcon />
+              </IconButton>
+              <IconButton
+                label={t('shareFeature.shareOn', {
                   socialMedia: 'LinkedIn',
                 })}
                 onClick={() =>
@@ -106,14 +103,11 @@ const ShareModal = ({
                 }
                 className={styles.socialMediaIcon}
               >
-                <span aria-hidden="true" style={{ display: 'contents' }}>
-                  <LinkedInCustomIcon />
-                </span>
-              </button>
+                <LinkedInCustomIcon />
+              </IconButton>
 
-              <button
-                type="button"
-                aria-label={t('shareFeature.shareOn', {
+              <IconButton
+                label={t('shareFeature.shareOn', {
                   socialMedia: 'WhatsApp',
                 })}
                 onClick={() =>
@@ -121,14 +115,11 @@ const ShareModal = ({
                 }
                 className={styles.socialMediaIcon}
               >
-                <span aria-hidden="true" style={{ display: 'contents' }}>
-                  <WhatsappCustomIcon />
-                </span>
-              </button>
+                <WhatsappCustomIcon />
+              </IconButton>
 
-              <button
-                type="button"
-                aria-label={t('shareFeature.shareOn', { socialMedia: 'X' })}
+              <IconButton
+                label={t('shareFeature.shareOn', { socialMedia: 'X' })}
                 onClick={() =>
                   handleShare(
                     `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`
@@ -136,20 +127,15 @@ const ShareModal = ({
                 }
                 className={styles.socialMediaIcon}
               >
-                <span aria-hidden="true" style={{ display: 'contents' }}>
-                  <XCustomIcon />
-                </span>
-              </button>
-              <button
-                type="button"
-                aria-label={t('shareFeature.shareViaEmail')}
+                <XCustomIcon />
+              </IconButton>
+              <IconButton
+                label={t('shareFeature.shareViaEmail')}
                 onClick={handleMailShare}
                 className={styles.socialMediaIcon}
               >
-                <span aria-hidden="true" style={{ display: 'contents' }}>
-                  <MailCustomIcon />
-                </span>
-              </button>
+                <MailCustomIcon />
+              </IconButton>
             </div>
           </div>
           <div className={styles.shareLinkContainer}>

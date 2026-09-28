@@ -1,13 +1,12 @@
 import type { ReactElement } from 'react';
-import { useState, useEffect } from 'react';
 import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import type { APIError } from '@planet-sdk/common';
 import type { BankAccount, PayoutMinAmounts } from '../../common/types/payouts';
+
+import { useState, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
-import { usePayouts } from '../../common/Layout/PayoutsContext';
 import PayoutScheduleForm from './screens/PayoutScheduleForm';
 import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
@@ -16,7 +15,13 @@ import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+  useManagePayoutStore,
+} from '../../../stores';
+import { useShallow } from 'zustand/react/shallow';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -39,59 +44,77 @@ export default function ManagePayouts({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { token, contextLoaded, user } = useUserProps();
-  const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
-    usePayouts();
   const { getApi, getApiAuthenticated } = useApi();
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
-  // store
+  // store: state
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  const { userId, isTpo } = useUserStore(
+    useShallow((state) => ({
+      userId: state.userProfile?.id,
+      isTpo: state.userProfile?.type === 'tpo',
+    }))
+  );
+  const hasFetchedAccounts = useManagePayoutStore(
+    (state) => state.accounts !== null
+  );
+  const hasPayoutMinAmounts = useManagePayoutStore(
+    (state) => state.payoutMinAmounts !== null
+  );
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setAccounts = useManagePayoutStore((state) => state.setAccounts);
+  const setPayoutMinAmounts = useManagePayoutStore(
+    (state) => state.setPayoutMinAmounts
+  );
 
   const fetchPayoutMinAmounts = async () => {
-    if (!payoutMinAmounts) {
-      try {
-        const res = await getApi<PayoutMinAmounts>('/app/payoutMinAmounts');
-        setPayoutMinAmounts(res);
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-      }
+    if (hasPayoutMinAmounts) return;
+
+    try {
+      const res = await getApi<PayoutMinAmounts>('/app/payoutMinAmounts');
+      setPayoutMinAmounts(res);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
     }
   };
 
   useEffect(() => {
-    if (!payoutMinAmounts && user?.type === 'tpo') fetchPayoutMinAmounts();
-  }, [step, user]);
+    if (!hasPayoutMinAmounts && isTpo) fetchPayoutMinAmounts();
+  }, [step, userId]);
 
   const fetchAccounts = async () => {
-    if (!accounts) {
-      setIsDataLoading(true);
-      setProgress && setProgress(70);
-      try {
-        const res = await getApiAuthenticated<BankAccount[]>('/app/accounts');
-        setAccounts(res);
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-      }
-      setIsDataLoading(false);
-      if (setProgress) {
-        setProgress(100);
-        setTimeout(() => setProgress(0), 1000);
-      }
+    if (hasFetchedAccounts) return;
+
+    setIsDataLoading(true);
+    setProgress && setProgress(70);
+    try {
+      const res = await getApiAuthenticated<BankAccount[]>('/app/accounts');
+      setAccounts(res);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
+    setIsDataLoading(false);
+    if (setProgress) {
+      setProgress(100);
+      setTimeout(() => setProgress(0), 1000);
     }
   };
 
   useEffect(() => {
-    if (user?.type === 'tpo') {
-      if (contextLoaded && token) fetchAccounts();
-    } else {
+    if (!isTpo) {
       router.push(localizedPath('/profile'));
+      return;
     }
-  }, [contextLoaded, token, user]);
+
+    if (isAuthReady) fetchAccounts();
+  }, [isAuthReady, userId, hasFetchedAccounts]);
 
   useEffect(() => {
-    if (user && user.type === 'tpo') {
+    if (isTpo) {
       setTabConfig([
         {
           label: t('tabOverview'),
@@ -110,7 +133,7 @@ export default function ManagePayouts({
         },
       ]);
     }
-  }, [user, locale]);
+  }, [userId, locale]);
 
   const renderStep = () => {
     switch (step) {

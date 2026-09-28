@@ -12,8 +12,7 @@ import { clsx } from 'clsx';
 import { useTenantStore } from '../../../../stores/tenantStore';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
-import { useCurrencyStore } from '../../../../stores/currencyStore';
+import { useErrorHandlingStore, useCurrencyStore } from '../../../../stores';
 
 export default function ProjectGrid() {
   const { getApi } = useApi();

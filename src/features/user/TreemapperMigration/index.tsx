@@ -39,7 +39,7 @@ const TreemapperMigration = (): ReactElement => {
         />
         <div className={styles.spacer} />
         <div className={styles.contentContainer}>
-          <p className={styles.title}>{t('migrationTitle')}</p>
+          <h1 className={styles.title}>{t('migrationTitle')}</h1>
           <p className={styles.subtitle}>{t('migrationSubtitle')}</p>
         </div>
         <div className={styles.spacer} />

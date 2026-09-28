@@ -3,7 +3,7 @@ import type { FeatureCollection, Point } from 'geojson';
 import type { MapLayerMouseEvent, MapGeoJSONFeature } from 'maplibre-gl';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Layer, Source, useMap } from 'react-map-gl-v7/maplibre';
+import { Layer, Source, useMap } from 'react-map-gl/maplibre';
 import { useRouter } from 'next/router';
 import ProjectPopup from '../ProjectPopup';
 import {
@@ -104,6 +104,26 @@ const ProjectMarkersGL = ({ projects }: Props) => {
       cancelled = true;
       map.off('load', registerIcons);
       map.off('styleimagemissing', registerIcons);
+    };
+  }, [mapInstance]);
+
+  // Explore raster layers (e.g. forest cover) are appended to the top of the style when toggled on, which hides the pins. Keep the marker layer last in the draw order.
+  useEffect(() => {
+    const map = mapInstance?.getMap();
+    if (!map) return;
+    const keepMarkersOnTop = () => {
+      const order = map.getLayersOrder();
+      if (
+        order.includes(PROJECT_MARKERS_LAYER) &&
+        order[order.length - 1] !== PROJECT_MARKERS_LAYER
+      ) {
+        map.moveLayer(PROJECT_MARKERS_LAYER);
+      }
+    };
+    keepMarkersOnTop();
+    map.on('styledata', keepMarkersOnTop);
+    return () => {
+      map.off('styledata', keepMarkersOnTop);
     };
   }, [mapInstance]);
 

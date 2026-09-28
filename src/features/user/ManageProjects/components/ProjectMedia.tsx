@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
-import { TextField, Button, IconButton } from '@mui/material';
+import { Alert, TextField, Button, IconButton } from '@mui/material';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
@@ -21,14 +21,14 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError } from '@planet-sdk/common';
+import { parseApiError } from '../../../../utils/parseApiError';
 import { ProjectCreationTabs } from '..';
 import { useApi } from '../../../../hooks/useApi';
 import themeProperties from '../../../../theme/themeProperties';
 import { validateYouTubeUrl } from '../../../../utils/youTubeValidation';
 import { clsx } from 'clsx';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
-import { useRouter } from 'next/router';
-import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 
 type UploadImageApiPayload = {
   imageFile: string;
@@ -62,10 +62,10 @@ export default function ProjectMedia({
   projectDetails,
   setProjectDetails,
   projectGUID,
+  isLocked,
+  onCompletenessChange,
 }: ProjectMediaProps): ReactElement {
   const t = useTranslations('ManageProjects');
-  const router = useRouter();
-  const { localizedPath } = useLocalizedPath();
   const {
     getApiAuthenticated,
     deleteApiAuthenticated,
@@ -83,6 +83,9 @@ export default function ProjectMedia({
   const { colors } = themeProperties.designSystem;
   // local state
   const [uploadedImages, setUploadedImages] = useState<UploadImage[]>([]);
+  const [hasLoadedImages, setHasLoadedImages] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>('');
   // store
@@ -96,16 +99,24 @@ export default function ProjectMedia({
           `/app/profile/projects/${projectGUID}?_scope=images`
         );
         setUploadedImages(result.images);
+        setHasLoadedImages(true);
+        setLoadFailed(false);
       }
     } catch (err) {
-      setErrors(handleError(err as APIError));
-      router.push(localizedPath('/profile'));
+      // Staying put with an error beats navigating away: an empty photo list looks like the photos are gone.
+      setErrors(parseApiError(err as APIError));
+      setLoadFailed(true);
     }
   };
 
   useEffect(() => {
     fetchImages();
-  }, [projectGUID]);
+  }, [projectGUID, retryCount]);
+
+  useEffect(() => {
+    if (!hasLoadedImages) return;
+    onCompletenessChange?.(uploadedImages.length > 0);
+  }, [uploadedImages, hasLoadedImages]);
 
   const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
@@ -123,13 +134,11 @@ export default function ProjectMedia({
       >(`/app/projects/${projectGUID}/images`, {
         payload: imagePayload,
       });
-      let newUploadedImages = [...uploadedImages];
-
-      if (!newUploadedImages) {
-        newUploadedImages = [];
-      }
-      newUploadedImages.push(res);
-      setUploadedImages(newUploadedImages);
+      // Functional update, because onDrop uploads every dropped file in
+      // parallel and each call would otherwise append to the same stale
+      // snapshot of uploadedImages — leaving only the last upload visible even
+      // though all of them reached the server.
+      setUploadedImages((prev) => [...prev, res]);
       setIsUploadingData(false);
       setErrorMessage('');
     } catch (err) {
@@ -174,8 +183,7 @@ export default function ProjectMedia({
   const deleteProjectCertificate = async (id: string) => {
     try {
       await deleteApiAuthenticated(`/app/projects/${projectGUID}/images/${id}`);
-      const uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);
-      setUploadedImages(uploadedFilesTemp);
+      setUploadedImages((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       setErrors(handleError(err as APIError));
     }
@@ -217,12 +225,12 @@ export default function ProjectMedia({
           payload: defaultImagePayload,
         }
       );
-      const tempUploadedData = uploadedImages;
-      tempUploadedData.forEach((image) => {
-        image.isDefault = false;
-      });
-      tempUploadedData[index].isDefault = true;
-      setUploadedImages(tempUploadedData);
+      // Rebuild the list rather than mutating it. The previous version reassigned
+      // fields on the existing objects and handed the same array reference back,
+      // so React saw no change and the star could fail to move.
+      setUploadedImages((prev) =>
+        prev.map((image, i) => ({ ...image, isDefault: i === index }))
+      );
       setIsUploadingData(false);
       setErrorMessage('');
     } catch (err) {
@@ -248,9 +256,11 @@ export default function ProjectMedia({
       >(`/app/projects/${projectGUID}/images/${id}`, {
         payload: uploadCaptionPayload,
       });
-      const tempUploadedData = uploadedImages;
-      tempUploadedData[index].description = res.description;
-      setUploadedImages(tempUploadedData);
+      setUploadedImages((prev) =>
+        prev.map((image, i) =>
+          i === index ? { ...image, description: res.description } : image
+        )
+      );
       setIsUploadingData(false);
       setErrorMessage('');
     } catch (err) {
@@ -262,6 +272,11 @@ export default function ProjectMedia({
   return (
     <CenteredContainer>
       <StyledForm>
+        {projectDetails && (
+          <ProjectLockedBanner
+            verificationStatus={projectDetails.verificationStatus}
+          />
+        )}
         <div
           className={clsx('inputContainer', {
             [styles.shallowOpacity]: isUploadingData,
@@ -293,6 +308,24 @@ export default function ProjectMedia({
             )}
           />
 
+          {loadFailed && (
+            <Alert
+              severity="error"
+              sx={{ mb: 2 }}
+              action={
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={() => setRetryCount((count) => count + 1)}
+                >
+                  {t('tryAgain')}
+                </Button>
+              }
+            >
+              {t('mediaLoadFailed')}
+            </Alert>
+          )}
+
           {/* Change to field array of react hook form  */}
           {uploadedImages && uploadedImages.length > 0 ? (
             <InlineFormDisplayGroup>
@@ -309,51 +342,54 @@ export default function ProjectMedia({
                       onBlur={(e) => uploadCaption(image.id, index, e)}
                       type="text"
                       placeholder={t('addCaption')}
+                      aria-label={t('addCaption')}
                       defaultValue=""
                     />
 
-                    <div className={styles.uploadedImageButtonContainer}>
-                      <IconButton
-                        id={'DelProjCert'}
-                        onClick={() => deleteProjectCertificate(image.id)}
-                        size="small"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      <IconButton
-                        id={'setDefaultImg'}
-                        onClick={() => setDefaultImage(image.id, index)}
-                        size="small"
-                      >
-                        <Star
-                          color={
-                            image.isDefault
-                              ? colors.goldenYellow
-                              : colors.coreText
-                          }
-                          className={clsx({
-                            selected: image.isDefault,
-                          })}
-                        />
-                      </IconButton>
-                    </div>
+                    {!isLocked && (
+                      <div className={styles.uploadedImageButtonContainer}>
+                        <IconButton
+                          id={'DelProjCert'}
+                          onClick={() => deleteProjectCertificate(image.id)}
+                          size="small"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          id={'setDefaultImg'}
+                          onClick={() => setDefaultImage(image.id, index)}
+                          size="small"
+                        >
+                          <Star
+                            color={
+                              image.isDefault
+                                ? colors.goldenYellow
+                                : colors.coreText
+                            }
+                            className={clsx({
+                              selected: image.isDefault,
+                            })}
+                          />
+                        </IconButton>
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </InlineFormDisplayGroup>
           ) : null}
 
-          <div {...getRootProps()}>
-            <label htmlFor="upload" className={styles.fileUploadContainer}>
-              <Button variant="contained">
-                <input {...getInputProps()} />
-                {t('uploadPhotos')}
-              </Button>
-              <p style={{ marginTop: '18px' }}>{t('dragIn')}</p>
-            </label>
-
-            {/* <input type="file" multiple id="upload" style={{ display: 'none' }} /> */}
-          </div>
+          {!isLocked && (
+            <div {...getRootProps()}>
+              <label htmlFor="upload" className={styles.fileUploadContainer}>
+                <Button variant="contained">
+                  <input {...getInputProps()} />
+                  {t('uploadPhotos')}
+                </Button>
+                <p style={{ marginTop: '18px' }}>{t('dragIn')}</p>
+              </label>
+            </div>
+          )}
         </div>
 
         {errorMessage && errorMessage !== '' ? (
@@ -371,26 +407,32 @@ export default function ProjectMedia({
             <p>{t('backToBasic')}</p>
           </Button>
 
-          <Button
-            id={'SaveAndCont'}
-            onClick={handleSubmit(onSubmit)}
-            data-test-id="projMediaCont"
-            variant="contained"
-            className="formButton"
-          >
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              t('saveAndContinue')
-            )}
-          </Button>
-          <Button
-            onClick={() => handleNext(ProjectCreationTabs.DETAILED_ANALYSIS)}
-            variant="contained"
-            className="formButton"
-          >
-            {t('skip')}
-          </Button>
+          {!isLocked && (
+            <>
+              <Button
+                id={'SaveAndCont'}
+                onClick={handleSubmit(onSubmit)}
+                data-test-id="projMediaCont"
+                variant="contained"
+                className="formButton"
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('saveAndContinue')
+                )}
+              </Button>
+              <Button
+                onClick={() =>
+                  handleNext(ProjectCreationTabs.DETAILED_ANALYSIS)
+                }
+                variant="contained"
+                className="formButton"
+              >
+                {t('skip')}
+              </Button>
+            </>
+          )}
         </div>
       </StyledForm>
     </CenteredContainer>

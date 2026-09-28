@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import UNEPLogo from '../../../../../public/assets/images/footer/UNEPLogo';
 import World from '../../../../../public/assets/images/footer/World';
+import IconButton from '../../IconButton';
 import getLanguageName from '../../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
@@ -376,18 +377,17 @@ export default function Footer(): ReactElement | null {
           </div>
         </div>
         <div className={styles.logo_container}>
-          <a
+          <IconButton
+            elementType="link"
             id={'pfpLogoIcon'}
             className={styles.pfp_logo_container}
             href="http://www.plant-for-the-planet.org/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={t('plantForThePlanetWebsite')}
+            label={t('plantForThePlanetWebsite')}
           >
-            <span aria-hidden="true" style={{ display: 'contents' }}>
-              <PlanetCJLogo />
-            </span>
-          </a>
+            <PlanetCJLogo />
+          </IconButton>
 
           {tenantConfig.config.showUNEPLogo && (
             <a
@@ -405,18 +405,17 @@ export default function Footer(): ReactElement | null {
           )}
 
           {tenantConfig.config.showUNDecadeLogo && (
-            <a
+            <IconButton
+              elementType="link"
               id={'unDecadeLogoIcon'}
               className={styles.unDecade_logo_container}
               href="https://www.decadeonrestoration.org/"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={t('unDecadeOnRestoration')}
+              label={t('unDecadeOnRestoration')}
             >
-              <span aria-hidden="true" style={{ display: 'contents' }}>
-                <UNDecadeLogo />
-              </span>
-            </a>
+              <UNDecadeLogo />
+            </IconButton>
           )}
         </div>
         <SelectLanguageAndCountry

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import GiftLabel from '../../MyContributions/GiftLabel';
 
 const meta: Meta<typeof GiftLabel> = {

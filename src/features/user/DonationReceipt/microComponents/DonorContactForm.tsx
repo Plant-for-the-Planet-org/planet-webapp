@@ -5,7 +5,7 @@ import type { AddressAction } from '../../../common/types/profile';
 
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { CircularProgress, TextField } from '@mui/material';
+import { CircularProgress, RadioGroup, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import styles from '../DonationReceipt.module.scss';
 import WebappButton from '../../../common/WebappButton';
@@ -145,21 +145,42 @@ const DonorContactForm = ({
       </InlineFormDisplayGroup>
 
       <section className={styles.donorAddressSection}>
-        {user.addresses.map((address) => (
-          <DonorAddressList
-            key={address.id}
-            address={address}
-            setSelectedAddress={setSelectedAddress}
-            setAddressAction={setAddressAction}
-            setIsModalOpen={setIsModalOpen}
-            checkedAddressGuid={checkedAddressGuid}
-            setCheckedAddressGuid={setCheckedAddressGuid}
-            control={control}
-            setValue={setValue}
-          />
-        ))}
+        <Controller
+          name="addressGuid"
+          control={control}
+          rules={{ required: tReceipt('notifications.addressRequired') }}
+          render={({ field }) => (
+            <RadioGroup
+              {...field}
+              value={checkedAddressGuid ?? ''}
+              onChange={(_, value) => {
+                field.onChange(value);
+                setCheckedAddressGuid(value);
+              }}
+              aria-label={tReceipt('donorInfo.selectAddress')}
+              aria-invalid={errors.addressGuid ? true : undefined}
+              aria-describedby={
+                errors.addressGuid ? 'addressGuid-error' : undefined
+              }
+              sx={{ gap: '10px' }}
+            >
+              {user.addresses.map((address) => (
+                <DonorAddressList
+                  key={address.id}
+                  address={address}
+                  setSelectedAddress={setSelectedAddress}
+                  setAddressAction={setAddressAction}
+                  setIsModalOpen={setIsModalOpen}
+                  checkedAddressGuid={checkedAddressGuid}
+                  setCheckedAddressGuid={setCheckedAddressGuid}
+                  setValue={setValue}
+                />
+              ))}
+            </RadioGroup>
+          )}
+        />
         {errors.addressGuid?.message && (
-          <span className={styles.errorMessage}>
+          <span id="addressGuid-error" className={styles.errorMessage}>
             {errors.addressGuid.message}
           </span>
         )}

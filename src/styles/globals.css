@@ -11,12 +11,11 @@
  * src/theme/themeProperties.ts (designSystem palette). HSL channel format
  * is required by the `hsl(var(--token))` setup in tailwind.config.ts.
  *
- * Values mirror the webapp's own CSS custom properties (--primary-color etc.)
+ * Values mirror the webapp's own CSS custom properties (--ds-primary-color etc.)
  * so shadcn components match the existing app, not the broader PftP CI.
  *
  * Reference (hex -> token):
- *   #68B030 webapp --primary-color (warm green) -> --primary
- *   #007A49 webapp --primary-dark-color         -> --primary hover / green text on light
+ *   #007A49 --ds-primary-color (MUI primary, .primaryButton) -> --primary / --ring / green text on light
  *   #F0FAF4 soft green                          -> --accent / --secondary
  *   #F0F6F5 background base                     -> --muted
  *   #333333 core text                           -> --foreground
@@ -28,6 +27,25 @@
 @tailwind utilities;
 
 @layer base {
+  /**
+   * Preflight is off, so nothing sets a default `border-style`. Tailwind's
+   * `border` utility only sets a width, which means every shadcn border
+   * (outline Button, Card, Input, Table, Select, Dialog) renders invisible:
+   * divs default to `border-style: none`, and global.scss resets buttons with
+   * the `border: 0px` shorthand, which does the same.
+   *
+   * Keyed on the border utility classes rather than `*` on purpose: an
+   * attribute selector matches class specificity, so it beats the `button`
+   * element rule in global.scss. A universal selector would lose to it.
+   * Existing SCSS and MUI styles are untouched, since they use no `border-*`
+   * utility classes.
+   */
+  [class~='border'],
+  [class*='border-'] {
+    border-style: solid;
+    border-color: hsl(var(--border));
+  }
+
   :root {
     --background: 0 0% 100%; /* #FFFFFF */
     --foreground: 0 0% 20%; /* #333333 coreText */
@@ -35,7 +53,7 @@
     --card-foreground: 0 0% 20%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 20%;
-    --primary: 156 100% 24%; /* #007A49 --ds-primary-color (webapp nav hover/active) */
+    --primary: 156 100% 24%; /* #007A49 --ds-primary-color, same green as MUI buttons (webapp nav hover/active) */
     --primary-foreground: 0 0% 100%; /* white — passes WCAG AA on #007A49 */
     --secondary: 145 50% 96%; /* #F0FAF4 softGreen */
     --secondary-foreground: 156 100% 24%; /* #007A49 */
@@ -56,7 +74,7 @@
    * Apart from --primary and --ring, these dark values are placeholders that need review, not the app's own dark palette (src/theme/themeProperties.ts). The dark palette is still to be decided, and dark mode is rarely used.
    * Portals (Radix Dialog, Sheet, Select) render into <body>, outside the layout wrapper, so they get the light tokens in dark mode. Components that use portals may need adjusting.
    */
-  .dark {
+  .theme-dark {
     --background: 160 30% 6%; /* deep green-tinted dark */
     --foreground: 0 0% 98%;
     --card: 160 30% 6%;

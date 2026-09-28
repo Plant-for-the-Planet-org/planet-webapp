@@ -76,6 +76,7 @@ const TargetFormInput = ({
         onChange={handleTargetTextField}
         value={localTarget || ''}
         placeholder={tProfile('enterYourTarget')}
+        inputProps={{ 'aria-label': tProfile('enterYourTarget') }}
       />
     </div>
   );
