@@ -12,7 +12,7 @@ import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 
 export type ProjectTabs = 'topProjects' | 'allProjects';
 
-export interface ProjectListControlsProps {
+interface ProjectListControlsProps {
   tabSelected: ProjectTabs;
   setTabSelected: SetState<ProjectTabs>;
   shouldHideProjectTabs: boolean;
