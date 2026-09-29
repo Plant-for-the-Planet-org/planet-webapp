@@ -21,10 +21,6 @@ import type { ContributionStats } from '../features/common/types/myForest';
 
 import themeProperties from '../theme/themeProperties';
 import getPointCoordinates from './getPointCoordinates';
-export type Accumulator = {
-  maxContributionCount: number;
-  maxContributingObject: ExtractedProjectData | null;
-};
 
 interface MyForestApiResponse {
   stats: ContributionsResponse['stats'];
@@ -56,7 +52,7 @@ interface UseMyForestApiResult {
  * @returns  color
  */
 
-export const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
+const getColor = (purpose: ProjectPurposeTypes, unitType: UnitTypes) => {
   const { forestGreen, deepPurple, warmBlue } =
     themeProperties.designSystem.colors;
   if (unitType === 'm2' && purpose === 'trees') {

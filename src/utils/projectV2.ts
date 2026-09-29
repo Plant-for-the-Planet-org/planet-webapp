@@ -47,7 +47,7 @@ export const MAIN_MAP_LAYERS = {
   DATE_DIFF_LABEL: 'datediff-label',
 };
 
-export const PLANT_LAYERS = [
+const PLANT_LAYERS = [
   MAIN_MAP_LAYERS.PLANT_POLYGON,
   MAIN_MAP_LAYERS.PLANT_POINT,
 ];

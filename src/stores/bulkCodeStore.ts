@@ -13,7 +13,7 @@ import { useErrorHandlingStore } from './errorHandlingStore';
 import { handleError } from '@planet-sdk/common';
 import { filterEligibleProjects } from '../features/user/BulkCodes/utils';
 
-export interface PlanetCashAccount {
+interface PlanetCashAccount {
   guid: string;
   currency: CurrencyCode;
   country: CountryCode;
