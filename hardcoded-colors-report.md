@@ -103,10 +103,6 @@ File: public/assets/images/icons/ExpandIcon.tsx
 -----------------------------------------------
 - Line 3: #2f3336 in "function ExpandIcon({ color = '#2f3336' }: IconProps) {"
 
-File: public/assets/images/icons/ExploreIcon.tsx
-------------------------------------------------
-- Line 3: #2f3336 in "function ExploreIcon({ color = '#2f3336' }: IconProps) {"
-
 File: public/assets/images/icons/EyeDisabled.tsx
 ------------------------------------------------
 - Line 3: #2f3336 in "function EyeDisabled({ color = '#2f3336' }: IconProps) {"
@@ -126,20 +122,6 @@ File: public/assets/images/icons/FileProcessingIcon.tsx
 File: public/assets/images/icons/FileUploadIcon.tsx
 ---------------------------------------------------
 - Line 4: #2f3336 in "function FileUploadIcon({ color = '#2f3336' }: IconProps): ReactElement {"
-
-File: public/assets/images/icons/FilterIcon.tsx
------------------------------------------------
-- Line 3: #2f3336 in "function FilterIcon({ color = '#2f3336' }: IconProps) {"
-
-File: public/assets/images/icons/FilterInlineLoader.tsx
--------------------------------------------------------
-- Line 29: #f3f3f3 in "<stop offset="0.599964" stopColor="#f3f3f3" stopOpacity="1">"
-- Line 38: #ecebeb in "<stop offset="1.59996" stopColor="#ecebeb" stopOpacity="1">"
-
-File: public/assets/images/icons/FilterLoader.tsx
--------------------------------------------------
-- Line 32: #f3f3f3 in "<stop offset="0.599964" stopColor="#f3f3f3" stopOpacity="1">"
-- Line 41: #ecebeb in "<stop offset="1.59996" stopColor="#ecebeb" stopOpacity="1">"
 
 File: public/assets/images/icons/FireIcon.tsx
 ---------------------------------------------
@@ -243,10 +225,6 @@ File: public/assets/images/icons/Sidebar/DonateIcon.tsx
 -------------------------------------------------------
 - Line 3: #000 in "function DonateIcon({ color = '#000' }: IconProps) {"
 
-File: public/assets/images/icons/Sidebar/GiftIcon.tsx
------------------------------------------------------
-- Line 3: #000 in "function GiftIcon({ color = '#000' }: IconProps) {"
-
 File: public/assets/images/icons/Sidebar/Globe.tsx
 --------------------------------------------------
 - Line 3: #000 in "function GlobeIcon({ color = '#000' }: IconProps) {"
@@ -293,10 +271,6 @@ File: public/assets/images/icons/Sidebar/Widget.tsx
 ---------------------------------------------------
 - Line 3: #000 in "function WidgetIcon({ color = '#000' }: IconProps) {"
 
-File: public/assets/images/icons/TransactionIcon.tsx
-----------------------------------------------------
-- Line 3: #2f3336 in "function CancelIcon({ width, color = '#2f3336' }: IconProps) {"
-
 File: public/assets/images/icons/TransactionsNotFound.tsx
 ---------------------------------------------------------
 - Line 15: #007a49 in "fill="#007a49""
@@ -308,16 +282,6 @@ File: public/assets/images/icons/TransactionsNotFound.tsx
 - Line 199: #ffc800 in "<path fill="#ffc800" d="M0 0h-406.238l58.74-333.134H58.74z"></path>"
 - Line 233: #68b030 in "fill="#68b030""
 - Line 433: #375a64 in "fill="#375a64""
-
-File: public/assets/images/icons/TreeIcon.tsx
----------------------------------------------
-- Line 3: #68B030 in "function TreeIcon({ color = '#68B030', width, height }: IconProps) {"
-- Line 22: #fff in "stroke="#fff""
-
-File: public/assets/images/icons/TreesIcon.tsx
-----------------------------------------------
-- Line 3: #68B030 in "function TreesIcon({ color = '#68B030', width, height }: IconProps) {"
-- Line 37: #fff in "stroke="#fff""
 
 File: public/assets/images/icons/UnderMaintenance.tsx
 -----------------------------------------------------
@@ -346,29 +310,6 @@ File: public/assets/images/icons/ViewIcon.tsx
 - Line 4: #6FCF97 in "<circle cx="26" cy="26" r="26" fill="#6FCF97" fillOpacity="0.2" />"
 - Line 8: #219653 in "fill="#219653""
 - Line 17: white in "fill="white""
-
-File: public/assets/images/icons/donation/PaymentFailed.tsx
------------------------------------------------------------
-- Line 11: #e6e6e6 in "fill="#e6e6e6""
-- Line 41: #3f3d56 in "fill="#3f3d56""
-- Line 47: #fff in "fill="#fff""
-- Line 53: #68b030 in "fill="#68b030""
-- Line 59: #168947 in "fill="#168947""
-- Line 65: #2f2e41 in "fill="#2f2e41""
-- Line 95: #a0616a in "fill="#a0616a""
-- Line 125: #ccc in "fill="#ccc""
-- Line 190: #ff5252 in "fill="#ff5252""
-
-File: public/assets/images/icons/donation/PaymentPending.tsx
-------------------------------------------------------------
-- Line 12: #e6e6e6 in "fill="#e6e6e6""
-- Line 42: #3f3d56 in "fill="#3f3d56""
-- Line 48: #fff in "fill="#fff""
-- Line 54: #68b030 in "fill="#68b030""
-- Line 60: #168947 in "fill="#168947""
-- Line 66: #2f2e41 in "fill="#2f2e41""
-- Line 96: #a0616a in "fill="#a0616a""
-- Line 126: #ccc in "fill="#ccc""
 
 File: public/assets/images/icons/headerIcons/BackArrow.tsx
 ----------------------------------------------------------
@@ -408,27 +349,9 @@ File: public/assets/images/icons/manageProjects/AccessDenied.tsx
 - Line 526: #9d9cb5 in "fill="#9d9cb5""
 - Line 23: gray in "<stop offset="0" stopColor="gray" stopOpacity="0.251"></stop>"
 
-File: public/assets/images/icons/manageProjects/AddProject.tsx
---------------------------------------------------------------
-- Line 18: #47a8dc in "<stop offset="0.88" stopColor="#47a8dc" stopOpacity="0"></stop>"
-- Line 28: #46a2d4 in "<stop offset="0" stopColor="#46a2d4"></stop>"
-- Line 29: #000063 in "<stop offset="1" stopColor="#000063"></stop>"
-- Line 39: #6bab35 in "<stop offset="0" stopColor="#6bab35"></stop>"
-- Line 40: #017a49 in "<stop offset="1" stopColor="#017a49"></stop>"
-- Line 97: #2f3336 in "fill="#2f3336""
-- Line 123: #6aac35 in "fill="#6aac35""
-- Line 128: #007b49 in "fill="#007b49""
-- Line 197: #eef0f3 in "fill="#eef0f3""
-- Line 467: #fff in "fill="#fff""
-- Line 472: #68b030 in "fill="#68b030""
-
 File: public/assets/images/icons/manageProjects/Cross.tsx
 ---------------------------------------------------------
 - Line 11: #848484 in "fill="#848484""
-
-File: public/assets/images/icons/manageProjects/Expand.tsx
-----------------------------------------------------------
-- Line 3: #2f3336 in "function Expand({ color = '#2f3336' }: IconProps) {"
 
 File: public/assets/images/icons/manageProjects/NotReviewed.tsx
 ---------------------------------------------------------------
@@ -505,14 +428,6 @@ File: public/assets/images/icons/manageProjects/UnderReview.tsx
 - Line 736: #535461 in "stroke="#535461""
 - Line 29: gray in "<stop offset="0" stopColor="gray" stopOpacity="0.251"></stop>"
 
-File: public/assets/images/icons/manageProjects/changeChocolate.tsx
--------------------------------------------------------------------
-- Line 7: #2f3336 in "fill="#2f3336""
-
-File: public/assets/images/icons/manageProjects/stopTalkingStartPlanting.tsx
-----------------------------------------------------------------------------
-- Line 5: #2f3336 in "fill="#2f3336""
-
 File: public/assets/images/icons/myForestMapIcons/ClusterMarkerIcons.tsx
 ------------------------------------------------------------------------
 - Line 32: white in "fill="white""
@@ -534,10 +449,6 @@ File: public/assets/images/icons/project/Agroforestry.tsx
 ---------------------------------------------------------
 - Line 8: white in "fill="white""
 
-File: public/assets/images/icons/project/Car.tsx
-------------------------------------------------
-- Line 10: #4d5153 in "fill="#4d5153""
-
 File: public/assets/images/icons/project/Conservation.tsx
 ---------------------------------------------------------
 - Line 6: white in "fill="white""
@@ -553,14 +464,6 @@ File: public/assets/images/icons/project/Mangroves.tsx
 File: public/assets/images/icons/project/NaturalRegeneration.tsx
 ----------------------------------------------------------------
 - Line 6: white in "fill="white""
-
-File: public/assets/images/icons/project/Plane.tsx
---------------------------------------------------
-- Line 13: #4d5153 in "fill="#4d5153""
-
-File: public/assets/images/icons/project/RubberDuck.tsx
--------------------------------------------------------
-- Line 10: #4d5153 in "fill="#4d5153""
 
 File: public/assets/images/icons/project/TreePlanting.tsx
 ---------------------------------------------------------
@@ -689,67 +592,9 @@ File: public/assets/images/icons/projectV2/WebsiteLinkIcon.tsx
 --------------------------------------------------------------
 - Line 54: white in "fill="white""
 
-File: public/assets/images/icons/share/Download.tsx
----------------------------------------------------
-- Line 3: black in "function Icon({ color = 'black' }: IconProps) {"
-
-File: public/assets/images/icons/share/DownloadSolid.tsx
---------------------------------------------------------
-- Line 3: black in "function Icon({ color = 'black' }: IconProps) {"
-
-File: public/assets/images/icons/share/Email.tsx
-------------------------------------------------
-- Line 3: black in "function Icon({ color = 'black' }: IconProps) {"
-
-File: public/assets/images/icons/share/EmailSolid.tsx
------------------------------------------------------
-- Line 3: black in "function Icon({ color = 'black' }: IconProps) {"
-
-File: public/assets/images/icons/share/Instagram.tsx
-----------------------------------------------------
-- Line 3: black in "function Icon({ color = 'black' }: IconProps) {"
-
 File: public/assets/images/icons/userProfileIcons/Camera.tsx
 ------------------------------------------------------------
 - Line 23: white in "fill="white""
-
-File: public/assets/images/icons/userProfileIcons/CameraWhite.tsx
------------------------------------------------------------------
-- Line 11: #fff in "stroke="#fff""
-
-File: public/assets/images/icons/userProfileIcons/Redeem.tsx
-------------------------------------------------------------
-- Line 3: black in "function Icon({ color = 'black' }: IconProps) {"
-
-File: public/assets/images/icons/userProfileIcons/ScrollDown.tsx
-----------------------------------------------------------------
-- Line 3: #87b738 in "function Icon({ color = '#87b738' }: IconProps) {"
-
-File: public/assets/images/icons/userProfileIcons/Settings.tsx
---------------------------------------------------------------
-- Line 3: black in "function Icon({ color = 'black' }: IconProps) {"
-
-File: public/assets/images/icons/userProfileIcons/Share.tsx
------------------------------------------------------------
-- Line 12: white in "fill={color ? color : 'white'}"
-
-File: public/assets/images/icons/userProfileIcons/Shovel.tsx
-------------------------------------------------------------
-- Line 15: black in "fill={color ? color : 'black'}"
-
-File: public/assets/images/icons/userProfileIcons/Support.tsx
--------------------------------------------------------------
-- Line 10: white in "fill={props.color ? props.color : 'white'}"
-
-File: public/assets/images/navigation/Moon.tsx
-----------------------------------------------
-- Line 10: #9ecadd in "fill="#9ecadd""
-- Line 12: #000000 in "data-original="#000000""
-
-File: public/assets/images/navigation/Sun.tsx
----------------------------------------------
-- Line 12: #FFD347 in "<g fill="#FFD347">"
-- Line 17: #FFBE31 in "fill="#FFBE31""
 
 File: public/tenants/xiting/config.ts
 -------------------------------------
@@ -1068,9 +913,9 @@ File: src/utils/mapsV2/mapSettings.config.ts
 
 ## STATISTICS
 
-Total files with hardcoded colors: 188
-Total hardcoded color instances: 496
-Unique colors (normalized): 175
+Total files with hardcoded colors: 157
+Total hardcoded color instances: 434
+Unique colors (normalized): 169
 
 ## UNIQUE COLORS WITH EQUIVALENT REPRESENTATIONS
 
@@ -1168,7 +1013,6 @@ Unique colors (normalized): 175
 - #9ACC7D
 - #9B51E0
 - #9d9cb5
-- #9ecadd
 - #a0616a
 - #A0FC84
 - #a2d67a
@@ -1185,7 +1029,6 @@ Unique colors (normalized): 175
 - #C837AB
 - #c8c8c8
 - #CACACA
-- #ccc
 - #CEDFBC
 - #d5d5d5
 - #D9D9D9
@@ -1199,7 +1042,6 @@ Unique colors (normalized): 175
 - #E03301
 - #E0E0E0, #e0e0e0
 - #e5243b
-- #e6e6e6
 - #E86F56
 - #E9F8EF
 - #EB5757
@@ -1229,20 +1071,17 @@ Unique colors (normalized): 175
 - #FEFB27
 - #FEFEFE
 - #FF0000, red
-- #ff5252
 - #FF543E
 - #FFA14E
 - #ffb0b1
 - #ffb8b8
-- #FFBE31
 - #FFC700
 - #ffc800
 - #FFCB00
-- #FFD347
 - #FFDD55
 - #FFFFFF, #fff, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.5), white
 - #FFF59A
-- #000, #000000, black, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)
+- #000, black, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)
 - Blue, blue
 - gray, grey
 - green
