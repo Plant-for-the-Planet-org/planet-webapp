@@ -25,7 +25,7 @@ interface HeaderProps {
   isPlanetCash?: boolean;
 }
 
-export function RecordHeader({
+function RecordHeader({
   record,
   handleRecordToggle,
   index,
@@ -118,7 +118,7 @@ interface DetailProps {
   record: PaymentHistoryRecord;
 }
 
-export function DetailsComponent({ record }: DetailProps): ReactElement {
+function DetailsComponent({ record }: DetailProps): ReactElement {
   const tMe = useTranslations('Me');
   const tCommon = useTranslations('Common');
   const locale = useLocale();
@@ -316,7 +316,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
   );
 }
 
-export const showStatusNote = (record: PaymentHistoryRecord): ReactElement => {
+const showStatusNote = (record: PaymentHistoryRecord): ReactElement => {
   const t = useTranslations('Me');
   const showDonationNote = (): string => {
     switch (record.details.method) {
@@ -355,7 +355,7 @@ interface BankDetailsProps {
   recipientBank: RecipientBank;
 }
 
-export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
+function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
   const t = useTranslations('Me');
   return (
     <>

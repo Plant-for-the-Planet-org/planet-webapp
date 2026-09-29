@@ -10,7 +10,7 @@ import { getStoredConfig } from '../../../../../utils/storeConfig';
 import { useAddressOperations } from './useAddressOperations';
 import { useUserStore } from '../../../../../stores';
 
-export type AddAddressApiPayload = AddressFormData & {
+type AddAddressApiPayload = AddressFormData & {
   country: ExtendedCountryCode | string;
   type: 'other' | 'primary';
 };

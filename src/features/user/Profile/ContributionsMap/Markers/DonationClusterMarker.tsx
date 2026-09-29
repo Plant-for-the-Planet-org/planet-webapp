@@ -19,7 +19,7 @@ import {
 import styles from '../Common/common.module.scss';
 import { useMyForestStore } from '../../../../../stores';
 
-export interface DonationClusterMarkerProps {
+interface DonationClusterMarkerProps {
   superclusterResponse: PointFeature<DonationSuperclusterProperties>;
   viewState: ViewState;
   mapRef: MutableRefObject<null>;
