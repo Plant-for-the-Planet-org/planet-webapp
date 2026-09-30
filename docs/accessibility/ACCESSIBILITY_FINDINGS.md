@@ -1,6 +1,6 @@
 # Accessibility Findings Report
 
-Repository-wide accessibility (a11y) inventory for **planet-webapp** (Next.js 14 pages router, React 18, MUI 5, Emotion).
+Repository-wide accessibility (a11y) inventory for **planet-webapp** (Next.js 15 pages router, React 18, MUI 5, Emotion).
 
 - Scope audited: `src/features/common` (Layout, inputs, loaders, shared), `src/features/donations`, `src/features/projectsV2`, `src/features/user` (Account, Profile, Settings, CompleteSignup, DonationReceipt, BulkCodes, GiftFunds, PlanetCash, ManagePayouts, ManageProjects, Widget, TreemapperMigration), and `pages/`.
 - Only confirmed, evidence-based accessibility issues are listed. Native MUI components are treated as accessible unless props clearly break them.
@@ -1332,8 +1332,11 @@ Good existing patterns to mirror: `ContentLoaders/ButtonLoader.tsx` and `Content
 | **Category** | Links & Buttons |
 | **Effort** | Small |
 | **Priority Score** | 12 / 100 |
+| **Status** | 🟢 Verified (2026-08-21) — dead component deleted |
 
-**File(s) & Line(s):** `src/features/common/Layout/RedeemPopup/index.tsx:69` (`<a onClick>` with no `href`, not focusable), `:61` (unlabeled close). File is annotated "unused" and commented out in `Layout/index.tsx:40`.
+**Remediation:** The recommended fix "delete the dead component" was taken. `RedeemPopup/index.tsx` and `RedeemPopup.module.scss` were removed, along with the commented-out usage in `Layout/index.tsx`. Nothing imported the component, so there was no behaviour change. Both inaccessible controls are gone, so there is nothing left to verify with assistive tech.
+
+**File(s) & Line(s):** `src/features/common/Layout/RedeemPopup/index.tsx:69` (`<a onClick>` with no `href`, not focusable), `:61` (unlabeled close). File is annotated "unused" and commented out in `Layout/index.tsx:40`. Line numbers reflect the pre-deletion code.
 
 **Issue Description:** A login trigger is an `<a>` without `href` (not keyboard focusable, not a real link); the close button is unlabeled. Impact is latent because the component is currently unused.
 

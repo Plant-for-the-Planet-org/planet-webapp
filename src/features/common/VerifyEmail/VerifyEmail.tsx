@@ -4,14 +4,14 @@ import { useContext } from 'react';
 import styles from './VerifyEmail.module.scss';
 import { useTranslations } from 'next-intl';
 import VerifyEmailIcon from '../../../../public/assets/images/icons/VerifyEmail';
-import { useUserProps } from '../Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
+import { useAuthSession } from '../../../hooks/useAuthSession';
 
 function VerifyEmailComponent(): ReactElement {
   const t = useTranslations('Common');
+  const { loginWithRedirect } = useAuthSession();
 
-  const { loginWithRedirect } = useUserProps();
   const { theme } = useContext(ThemeContext);
   return (
     <div

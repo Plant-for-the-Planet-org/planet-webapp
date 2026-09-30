@@ -7,14 +7,16 @@ import { useTranslations } from 'next-intl';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
-import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
+import {
+  useAuthStore,
+  useErrorHandlingStore,
+  usePlanetCashStore,
+} from '../../../../stores';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -24,10 +26,8 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const t = useTranslations('Me');
-  const { token, contextLoaded } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { accounts } = usePlanetCash();
   const { getApiAuthenticated } = useApi();
   // local state
   const [transactionHistory, setTransactionHistory] =
@@ -35,7 +35,15 @@ const Transactions = ({
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // store
+  // store: state
+  const hasPlanetCashAccount = usePlanetCashStore(
+    (state) =>
+      state.planetCashAccounts !== null && state.planetCashAccounts.length > 0
+  );
+  const isAuthReady = useAuthStore(
+    (state) => state.token !== null && state.isAuthResolved
+  );
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const handleRecordToggle = (index: number | undefined): void => {
@@ -99,9 +107,8 @@ const Transactions = ({
   );
 
   useEffect(() => {
-    if (contextLoaded && token && accounts && accounts.length > 0)
-      fetchTransactions();
-  }, [contextLoaded, token, accounts]);
+    if (isAuthReady && hasPlanetCashAccount) fetchTransactions();
+  }, [isAuthReady, hasPlanetCashAccount]);
 
   useEffect(() => {
     // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.
@@ -112,13 +119,29 @@ const Transactions = ({
     };
   }, []);
 
-  return !transactionHistory && isDataLoading ? (
-    <>
-      <TransactionListLoader />
-      <TransactionListLoader />
-      <TransactionListLoader />
-    </>
-  ) : transactionHistory && transactionHistory.items.length > 0 ? (
+  //Initial loading state (no data yet and request in progress)
+  if (!transactionHistory && isDataLoading) {
+    return (
+      <>
+        <TransactionListLoader />
+        <TransactionListLoader />
+        <TransactionListLoader />
+      </>
+    );
+  }
+
+  //No data available (nothing to render)
+  if (!transactionHistory) {
+    return null;
+  }
+
+  //Empty state (data loaded but no transactions found)
+  if (transactionHistory.items.length === 0) {
+    return <NoTransactionsFound />;
+  }
+
+  //Transactions available → render list, pagination, and modal
+  return (
     <>
       {transactionHistory.items.map((record, index) => {
         return (
@@ -132,6 +155,7 @@ const Transactions = ({
           />
         );
       })}
+
       {transactionHistory._links.next && (
         <Button
           variant="contained"
@@ -147,6 +171,7 @@ const Transactions = ({
           )}
         </Button>
       )}
+
       {isModalOpen && selectedRecord !== null && (
         <AccountRecord
           isModal={true}
@@ -157,8 +182,6 @@ const Transactions = ({
         />
       )}
     </>
-  ) : (
-    transactionHistory && <NoTransactionsFound />
   );
 };
 

@@ -4,6 +4,7 @@ import type {
   GetStaticPropsResult,
 } from 'next';
 import type { AbstractIntlMessages } from 'next-intl';
+import type { Tenant } from '@planet-sdk/common';
 
 import Custom404Image from '../public/assets/images/Custom404Image';
 import Head from 'next/head';
@@ -11,6 +12,7 @@ import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import Footer from '../src/features/common/Layout/Footer';
 import getMessagesForPage from '../src/utils/language/getMessagesForPage';
+import { defaultTenant } from '../tenant.config';
 
 interface Props {
   pageProps: PageProps;
@@ -49,6 +51,7 @@ export default function Custom404({ pageProps }: Props) {
 
 interface PageProps {
   messages: AbstractIntlMessages;
+  tenantConfig: Tenant;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (
@@ -62,6 +65,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   return {
     props: {
       messages,
+      tenantConfig: defaultTenant,
     },
   };
 };

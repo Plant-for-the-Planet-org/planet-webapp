@@ -5,10 +5,12 @@ import styles from './ProjectsLayout.module.scss';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import MapFeatureExplorer from '../../../projectsV2/ProjectsMap/MapFeatureExplorer';
-import { useUserProps } from '../UserPropsContext';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useProjectMapStore } from '../../../../stores/projectMapStore';
-import { useViewStore } from '../../../../stores';
+import {
+  useProjectMapStore,
+  useQueryParamStore,
+  useUserStore,
+  useViewStore,
+} from '../../../../stores';
 
 interface ProjectsLayoutProps {
   children: ReactNode;
@@ -22,11 +24,12 @@ const ProjectsLayoutContent = ({ children }: ProjectsLayoutProps) => {
   );
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
   const mapOptions = useProjectMapStore((state) => state.mapOptions);
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
   const currentPage = useViewStore((state) => state.page);
   // store: action
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
-
-  const { isImpersonationModeOn } = useUserProps();
 
   const showContentContainer = useMemo(() => {
     if (currentPage === 'project-list') {

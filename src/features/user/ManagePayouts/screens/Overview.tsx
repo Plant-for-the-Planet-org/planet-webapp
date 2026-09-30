@@ -3,25 +3,25 @@ import type { ReactElement } from 'react';
 import BankAccountLoader from '../../../../../public/assets/images/icons/BankAccountLoader';
 import BankAccountDetails from '../components/BankAccountDetails';
 import NoBankAccount from '../components/NoBankAccount';
-import { usePayouts } from '../../../common/Layout/PayoutsContext';
+import { useManagePayoutStore } from '../../../../stores';
 
 interface Props {
   isDataLoading: boolean;
 }
 
 const Overview = ({ isDataLoading }: Props): ReactElement | null => {
-  const { accounts } = usePayouts();
+  const accounts = useManagePayoutStore((state) => state.accounts);
 
-  return isDataLoading ? (
-    <BankAccountLoader />
-  ) : accounts && accounts.length > 0 ? (
+  if (isDataLoading) return <BankAccountLoader />;
+
+  if (!accounts || accounts.length === 0) return <NoBankAccount />;
+
+  return (
     <>
-      {accounts.map((account, index) => {
-        return <BankAccountDetails account={account} key={index} />;
-      })}
+      {accounts.map((account) => (
+        <BankAccountDetails key={account.id} account={account} />
+      ))}
     </>
-  ) : (
-    <NoBankAccount />
   );
 };
 

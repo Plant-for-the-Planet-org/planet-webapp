@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import type { Filters, PaymentHistory } from '../../common/types/payments';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
@@ -49,18 +49,23 @@ export default function History({
     setFilter(id);
   };
 
+  // Auto-select the first payment only once on initial load.
+  // Running this again could toggle the already-open card closed.
+  const hasAutoSelectedRef = useRef(false);
   useEffect(() => {
+    if (hasAutoSelectedRef.current) return;
+    if (!paymentHistory?.items || paymentHistory.items.length === 0) return;
+
+    hasAutoSelectedRef.current = true;
     const { ref } = router.query;
     let refIndex = !isMobile ? 0 : undefined;
-    if (paymentHistory?.items && paymentHistory.items.length > 0) {
-      if (ref) {
-        const _refIndex = paymentHistory?.items?.findIndex(
-          (item) => item.reference === ref
-        );
-        _refIndex && _refIndex !== -1 && (refIndex = _refIndex);
-      }
-      if (refIndex !== undefined) handleRecordToggle(refIndex);
+    if (ref) {
+      const _refIndex = paymentHistory.items.findIndex(
+        (item) => item.reference === ref
+      );
+      if (_refIndex !== -1) refIndex = _refIndex;
     }
+    if (refIndex !== undefined) handleRecordToggle(refIndex);
   }, [paymentHistory]);
 
   return (

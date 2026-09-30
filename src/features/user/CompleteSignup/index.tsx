@@ -15,7 +15,6 @@ import { Snackbar, Alert, styled, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import { useForm } from 'react-hook-form';
 import { getStoredConfig } from '../../../utils/storeConfig';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
@@ -28,7 +27,12 @@ import CompleteSignupLayout from './components/CompleteSignupLayout';
 import FullNameInput from './components/FullNameInput';
 import OrganizationNameInput from './components/OrganizationNameInput';
 import AccountTypeSelector from './components/AccountTypeSelector';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  useAuthStore,
+  useUserStore,
+  useErrorHandlingStore,
+} from '../../../stores';
+import { useAuthSession } from '../../../hooks/useAuthSession';
 
 export const MuiTextField = styled(TextField)(() => {
   return {
@@ -60,7 +64,8 @@ export default function CompleteSignup(): ReactElement | null {
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('EditProfile');
   const { postApi } = useApi();
-  const { user, setUser, auth0User, contextLoaded, token } = useUserProps();
+  const { auth0User } = useAuthSession();
+
   // local state
   const [isProcessing, setIsProcessing] = useState(false);
   const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
@@ -68,7 +73,12 @@ export default function CompleteSignup(): ReactElement | null {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false); //  snack bars (for warnings, success messages, errors)
-  // store
+  // store: state
+  const token = useAuthStore((state) => state.token);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const isPublic = watch('isPublic');
@@ -79,10 +89,10 @@ export default function CompleteSignup(): ReactElement | null {
   }, [accountType, reset]);
 
   useEffect(() => {
-    if (!contextLoaded) return;
+    if (!isAuthResolved) return;
 
     // Already has profile → go to /profile
-    if (user) {
+    if (userProfile) {
       router.push(localizedPath('/profile'));
       return;
     }
@@ -92,7 +102,7 @@ export default function CompleteSignup(): ReactElement | null {
       router.push(localizedPath('/'));
       return;
     }
-  }, [contextLoaded, token, user]);
+  }, [isAuthResolved, token, userProfile]);
 
   const storedLocation = useMemo(() => getStoredConfig('loc'), []);
   const defaultLocationValues = useMemo(
@@ -116,7 +126,7 @@ export default function CompleteSignup(): ReactElement | null {
         // Delay redirect to show snackbar
         setTimeout(() => {
           router.push(localizedPath('/profile'));
-          setUser(res);
+          setUserProfile(res);
           setIsProcessing(false);
         }, 1000);
       }
@@ -133,7 +143,7 @@ export default function CompleteSignup(): ReactElement | null {
   };
   const handleCreateAccount = async (data: SignupFormData) => {
     setFormSubmitted(true);
-    if (!agreedToTerms || !country || !contextLoaded || !token) return;
+    if (!agreedToTerms || !country || !isAuthResolved || !token) return;
 
     const { isPublic, ...otherData } = data;
     const submitData = {
@@ -156,8 +166,8 @@ export default function CompleteSignup(): ReactElement | null {
   };
 
   // Only show signup form when authenticated but profile doesn't exist
-  if (!contextLoaded || user || !token) return null;
-  const isSubmitting = isProcessing || user !== null;
+  if (!isAuthResolved || userProfile || !token) return null;
+  const isSubmitting = isProcessing || userProfile !== null;
 
   return (
     <CompleteSignupLayout isSubmitting={isSubmitting}>

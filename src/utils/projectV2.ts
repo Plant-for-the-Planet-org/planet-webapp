@@ -6,7 +6,7 @@ import type {
   SingleTreeRegistration,
   TreeProjectClassification,
 } from '@planet-sdk/common';
-import type { MapGeoJSONFeature, PointLike } from 'react-map-gl-v7/maplibre';
+import type { MapGeoJSONFeature, PointLike } from 'react-map-gl/maplibre';
 import type { Position } from 'geojson';
 import type { ParsedUrlQuery } from 'querystring';
 import type {
@@ -129,13 +129,13 @@ export const getProjectCategory = (
 };
 
 export const availableFilters: TreeProjectClassification[] = [
-  'large-scale-planting',
+  'restoration-tree-planting',
   'agroforestry',
   'natural-regeneration',
   'managed-regeneration',
   'urban-planting',
   'mangroves',
-  'other-planting',
+  'other-restoration',
 ];
 
 export const isValidClassification = (
