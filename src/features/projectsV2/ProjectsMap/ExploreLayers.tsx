@@ -5,7 +5,7 @@ import type {
 } from '../../common/types/map';
 import type { MapLayerOptionsType } from '../../../utils/mapsV2/mapSettings.config';
 
-import { Layer, Source } from 'react-map-gl-v7/maplibre';
+import { Layer, Source } from 'react-map-gl/maplibre';
 import { useProjectMapStore } from '../../../stores';
 
 const TILE_SIZE = 128;
