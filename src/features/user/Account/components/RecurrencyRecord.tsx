@@ -35,7 +35,7 @@ interface HeaderProps {
   index?: number;
 }
 
-export function RecordHeader({
+function RecordHeader({
   record,
   handleRecordToggle,
   index,
@@ -199,7 +199,7 @@ interface MixedSubscriptionProjectsProps {
   destinations: MultipleDestinations['items'];
 }
 
-export function MixedSubscriptionProjects({
+function MixedSubscriptionProjects({
   destinations,
 }: MixedSubscriptionProjectsProps): ReactElement {
   const destinationList = destinations.map((destination, index) => (
@@ -221,7 +221,7 @@ interface DetailProps {
   record: Subscription;
 }
 
-export function DetailsComponent({ record }: DetailProps): ReactElement {
+function DetailsComponent({ record }: DetailProps): ReactElement {
   const t = useTranslations('Me');
   const locale = useLocale();
   return (
@@ -317,7 +317,7 @@ interface ManageDonationProps {
   setReactivateDonation: SetState<boolean>;
 }
 
-export function ManageDonation({
+function ManageDonation({
   record,
   setEditDonation,
   setPauseDonation,

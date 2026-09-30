@@ -34,7 +34,7 @@ import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
 import ProjectLockedBanner from './microComponent/ProjectLockedBanner';
 import AnnotationCallout from './microComponent/AnnotationCallout';
 
-export type BaseFormData = {
+type BaseFormData = {
   name: string;
   slug: string;
   website: string;

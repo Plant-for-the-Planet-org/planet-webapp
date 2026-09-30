@@ -21,21 +21,6 @@ export function getCountryDataBy(
 }
 
 /**
- * Sorts the countries array in the required format
- * @param sortBy - can have values
- *    countryName, currencyName, currencyCode, currencyCountryFlag
- */
-export function sortCountriesData(sortBy: keyof Country): Country[] {
-  return [...typedCountriesData].sort((a, b) => {
-    const aVal = a[sortBy];
-    const bVal = b[sortBy];
-    if (aVal > bVal) return 1;
-    if (aVal < bVal) return -1;
-    return 0;
-  });
-}
-
-/**
  * Sorts the countries array for the translated country name
  * @param tCountry - translation function
  * @param language - language to get country names for

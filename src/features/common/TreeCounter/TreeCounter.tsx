@@ -34,7 +34,7 @@ const XCircularProgress = styled(MuiCircularProgress)({
   },
 });
 
-export function ProfileCircularProgress(props: CircularProgressProps) {
+function ProfileCircularProgress(props: CircularProgressProps) {
   return (
     <div className={treeCounterStyles.circularProgressContainer}>
       <CircularProgress
@@ -46,7 +46,7 @@ export function ProfileCircularProgress(props: CircularProgressProps) {
     </div>
   );
 }
-export function HomeCircularProgress(props: CircularProgressProps) {
+function HomeCircularProgress(props: CircularProgressProps) {
   return (
     <div className={treeCounterStyles.circularProgressContainer}>
       <XCircularProgress

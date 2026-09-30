@@ -6,7 +6,7 @@
  * answers. 1950 is the agreed lower bound; the upper bound tracks the current
  * year so it never needs revisiting.
  */
-export const EARLIEST_SITE_YEAR = 1950;
+const EARLIEST_SITE_YEAR = 1950;
 
 export function getSiteYearOptions(
   latestYear: number = new Date().getFullYear()

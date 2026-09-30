@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-export type ViewMode = 'list' | 'map';
+type ViewMode = 'list' | 'map';
 
 /**
  * Pages that support embed mode. Single source of truth for the `Page` type
  * and the `isEmbeddablePage` check.
  */
-export const EMBEDDABLE_PAGES = ['project-list', 'project-details'] as const;
+const EMBEDDABLE_PAGES = ['project-list', 'project-details'] as const;
 export type EmbeddablePage = (typeof EMBEDDABLE_PAGES)[number];
 
 /**

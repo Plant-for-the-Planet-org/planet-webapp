@@ -27,7 +27,7 @@ const classificationItemIcons = {
   mangroves: <Mangroves width={'20'} height={'20'} />,
 };
 
-export const ClassificationDropDown = () => {
+const ClassificationDropDown = () => {
   const tAllProjects = useTranslations('AllProjects');
   // store: state
   const selectedMode = useViewStore((state) => state.selectedMode);
