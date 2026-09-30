@@ -4,7 +4,7 @@ import DownloadsLabel from './DownloadsLabel';
 interface Props {
   progressReports: number[];
 }
-//* This component is not being used anywhere due to a dependency on the backend.
+// Not used right now: progress reports need backend support, so its only use in ProjectDownloads is commented out. Decide later whether to use it once the backend is ready or remove it.
 const ProgressReportItem = ({ progressReports }: Props) => {
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 481;
