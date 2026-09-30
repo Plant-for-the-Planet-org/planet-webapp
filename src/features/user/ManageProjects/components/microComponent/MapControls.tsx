@@ -7,7 +7,7 @@ interface MapControllersProp {
   isDrawing: boolean;
   setIsDrawing: SetState<boolean>;
   coordinates: number[][];
-  setCoordinates: SetState<number[][]>;
+  clearCoordinates: () => void;
   isSatelliteMode: boolean;
   setIsSatelliteMode: SetState<boolean>;
 }
@@ -16,7 +16,7 @@ const MapControls = ({
   isDrawing,
   setIsDrawing,
   coordinates,
-  setCoordinates,
+  clearCoordinates,
   isSatelliteMode,
   setIsSatelliteMode,
 }: MapControllersProp) => {
@@ -26,7 +26,7 @@ const MapControls = ({
         isDrawing={isDrawing}
         setIsDrawing={setIsDrawing}
         coordinates={coordinates}
-        setCoordinates={setCoordinates}
+        clearCoordinates={clearCoordinates}
       />
       <LayerToggle
         isSatelliteMode={isSatelliteMode}

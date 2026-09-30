@@ -1,4 +1,4 @@
-import { Marker } from 'react-map-gl-v7/maplibre';
+import { Marker } from 'react-map-gl/maplibre';
 import { ProjectLocationIcon } from '../../../../../public/assets/images/icons/projectV2/ProjectLocationIcon';
 import themeProperties from '../../../../theme/themeProperties';
 

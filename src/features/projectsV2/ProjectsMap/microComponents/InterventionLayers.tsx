@@ -11,7 +11,7 @@ import type {
 } from '../../../common/types/map';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
+import { Layer, Source, Marker } from 'react-map-gl/maplibre';
 import area from '@turf/area';
 import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';

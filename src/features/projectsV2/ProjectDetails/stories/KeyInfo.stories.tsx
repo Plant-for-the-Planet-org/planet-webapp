@@ -1,5 +1,5 @@
 import type { AllowedSeasonMonths } from '@planet-sdk/common';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import KeyInfo from '../components/KeyInfo';
 
