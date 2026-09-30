@@ -33,6 +33,8 @@
     "prepare": "node ./husky-prepare.js",
     "analyze-css": "node scripts/css-static-analyzer.js",
     "analyze-css:ci": "node scripts/css-static-analyzer.js && echo 'CSS analysis passed'",
+    "analyze-classnames": "node scripts/find-class-patterns.mjs",
+    "analyze-colors": "node scripts/find-hardcoded-colors.js",
     "find-typos": "cspell --words-only --unique . | sort --ignore-case >> project-words.txt"
   },
   "validate-branch-name": {

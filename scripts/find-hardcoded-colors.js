@@ -382,6 +382,7 @@ async function findAllHardcodedColors(rootDir, outputFile, scriptPath) {
   // Save to file
   if (outputFile) {
     try {
+      fs.mkdirSync(path.dirname(outputFile), { recursive: true });
       await writeFile(outputFile, reportContent);
       console.log(`\nReport saved to: ${outputFile}`);
     } catch (error) {
@@ -409,7 +410,7 @@ function parseArgs() {
   const args = process.argv.slice(2);
   const options = {
     projectPath: '.',
-    outputFile: 'hardcoded-colors-report.md',
+    outputFile: 'reports/hardcoded-colors-report.md',
     scriptPath: __filename, // Use __filename instead of process.argv[1] for more reliability
   };
 
