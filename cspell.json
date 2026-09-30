@@ -188,7 +188,8 @@
     "cypress/**",
     "app.json",
     "public/loaderio-518441ea29765d4a97c1e2a9eb8e3a90.txt",
-    "hardcoded-colors-report.md",
+    "reports/hardcoded-colors-report.md",
+    "reports/dynamic-classnames-report.md",
     "cspell.json"
   ],
   "ignoreRegExpList": [

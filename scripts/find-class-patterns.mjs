@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 const directoryToScan = './src';
-const reportFile = './dynamic-classnames-report.md';
+const reportFile = './reports/dynamic-classnames-report.md';
 
 // Regex patterns to detect dynamic className logic (multi-line safe)
 const patterns = [
@@ -77,6 +77,7 @@ function generateMarkdownReport() {
     report += `---\n\n`;
   });
 
+  fs.mkdirSync(path.dirname(reportFile), { recursive: true });
   fs.writeFileSync(reportFile, report, 'utf8');
   console.log(`✅ Markdown report saved to: ${reportFile}`);
 }
