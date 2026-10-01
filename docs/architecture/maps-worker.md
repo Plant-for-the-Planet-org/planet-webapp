@@ -41,10 +41,11 @@ This only bites a **new** map on a route where nothing else already imported the
 
 `scripts/copy-maplibre-worker.js` copies two files out of `node_modules`, the worker and the shared chunk it imports. Both are copied byte for byte, keeping their `.mjs` names, because Next serves `.mjs` as `application/javascript` and the worker's own relative import then resolves without anything being rewritten.
 
-It is wired to two npm hooks:
+It is wired to the `prebuild`, `predev` and `predev-https` npm hooks, so a build or dev start always refreshes them against the installed MapLibre version. Cypress and `next start` run after a build, so they are covered too.
 
-- `postinstall`, so any install produces the files. This covers Storybook, Cypress, a bare `next start` and a fresh clone.
-- `prebuild`, `predev` and `predev-https`, so a build or dev start always refreshes them against the installed MapLibre version.
+Storybook serves `public/` but does not run these hooks. No story renders a map today, so it does not need the files. When a story first renders a map, add `prestorybook` and `prebuild-storybook` hooks that run `npm run copy-maplibre-worker`, or that story will show a map with no tiles.
+
+There is deliberately no `postinstall` hook. `npm install --package-lock-only` runs `postinstall` without populating `node_modules`, so the script cannot find MapLibre and the command fails even though the lockfile was written (#3167).
 
 Both generated files are gitignored. They are build output, not source.
 
