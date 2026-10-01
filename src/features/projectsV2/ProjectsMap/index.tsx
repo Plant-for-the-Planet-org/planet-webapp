@@ -264,7 +264,9 @@ function ProjectsMap(props: ProjectsMapProps) {
         }
       };
 
-      const features = getFeaturesAtPoint(mapRef, e.point);
+      // react-map-gl already queried interactiveLayerIds for this event, so reuse its result instead of querying again.
+      const features = e.features;
+      e.target.getCanvas().style.cursor = features?.length ? 'pointer' : '';
       if (!features?.length) {
         clearHover();
         return;
