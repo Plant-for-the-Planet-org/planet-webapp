@@ -5,7 +5,7 @@ import type {
 import type { ViewState } from 'react-map-gl/maplibre';
 import type { Map } from 'maplibre-gl';
 
-import bbox from '@turf/bbox';
+import { bbox } from '@turf/bbox';
 import { MAIN_MAP_ANIMATION_DURATIONS } from '../projectV2';
 import { DEFAULT_VIEW_STATE } from './mapDefaults';
 

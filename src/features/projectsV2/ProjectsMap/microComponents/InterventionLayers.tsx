@@ -12,7 +12,7 @@ import type {
 
 import { useLocale, useTranslations } from 'next-intl';
 import { Layer, Source, Marker } from 'react-map-gl/maplibre';
-import area from '@turf/area';
+import { area } from '@turf/area';
 import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { FillColor } from '../../../../utils/constants/intervention';

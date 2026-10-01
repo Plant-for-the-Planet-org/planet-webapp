@@ -20,7 +20,7 @@ import type {
   ProjectSiteFeature,
 } from '../features/common/types/map';
 
-import centroid from '@turf/centroid';
+import { centroid } from '@turf/centroid';
 
 type MetaDataValue = {
   value: string;
@@ -305,7 +305,7 @@ export const getValidFeatures = (projects: MapProject[]) =>
  */
 export const calculateCentroid = (features: MapProject[]) => {
   const featureCollection = {
-    type: 'FeatureCollection',
+    type: 'FeatureCollection' as const,
     features,
   };
   return centroid(featureCollection);
