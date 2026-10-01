@@ -19,6 +19,11 @@ const SKIPPED_PREFIXES = ['Country.'];
 
 const verbose = process.argv.includes('--verbose');
 
+// Forward slashes, so the output reads the same on Windows.
+function toDisplayPath(filePath) {
+  return path.relative(ROOT, filePath).split(path.sep).join('/');
+}
+
 function flattenKeys(obj, prefix, out) {
   for (const [key, value] of Object.entries(obj)) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
@@ -36,9 +41,12 @@ function loadTranslationKeys() {
   for (const file of fs
     .readdirSync(LOCALES_DIR)
     .filter((f) => f.endsWith('.json'))) {
-    const json = JSON.parse(
-      fs.readFileSync(path.join(LOCALES_DIR, file), 'utf8')
-    );
+    let json;
+    try {
+      json = JSON.parse(fs.readFileSync(path.join(LOCALES_DIR, file), 'utf8'));
+    } catch (error) {
+      throw new Error(`Could not parse ${file}: ${error.message}`);
+    }
     for (const key of flattenKeys(json, '', [])) keyToFile.set(key, file);
   }
   return keyToFile;
@@ -64,6 +72,26 @@ function isStringNode(node) {
     node &&
     (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node))
   );
+}
+
+// Strips `(...)` and `as Type`, so t('key' as Key) still reads as 'key'.
+function unwrapExpression(node) {
+  while (ts.isParenthesizedExpression(node) || ts.isAsExpression(node)) {
+    node = node.expression;
+  }
+  return node;
+}
+
+// The keys an argument can be when all of them are written out, e.g. t(isOpen ? 'close' : 'open').
+function getLiteralKeys(node) {
+  node = unwrapExpression(node);
+  if (isStringNode(node)) return [node.text];
+  if (ts.isConditionalExpression(node)) {
+    const whenTrue = getLiteralKeys(node.whenTrue);
+    const whenFalse = getLiteralKeys(node.whenFalse);
+    if (whenTrue && whenFalse) return [...whenTrue, ...whenFalse];
+  }
+  return null;
 }
 
 function escapeRegex(text) {
@@ -96,14 +124,13 @@ function getNamespace(call) {
   if (!arg) return '';
   if (isStringNode(arg)) return arg.text;
   if (ts.isObjectLiteralExpression(arg)) {
-    const prop = arg.properties.find(
-      (p) => p.name && p.name.getText() === 'namespace'
-    );
-    if (
-      prop &&
-      ts.isPropertyAssignment(prop) &&
-      isStringNode(prop.initializer)
-    ) {
+    // A spread like { ...options } may hide the namespace.
+    if (arg.properties.some(ts.isSpreadAssignment)) return null;
+    // `.text` matches both namespace: 'NS' and 'namespace': 'NS'.
+    const prop = arg.properties.find((p) => p.name?.text === 'namespace');
+    // getTranslations({ locale }) has no namespace, so keys start from the root.
+    if (!prop) return '';
+    if (ts.isPropertyAssignment(prop) && isStringNode(prop.initializer)) {
       return prop.initializer.text;
     }
   }
@@ -170,15 +197,25 @@ function scanFile(filePath, result) {
 
     if (ts.isCallExpression(node) && node.arguments.length > 0) {
       const namespaces = getCallNamespaces(node.expression);
-      const arg = node.arguments[0];
+      const arg = unwrapExpression(node.arguments[0]);
+      const literalKeys = getLiteralKeys(arg);
       if (namespaces) {
         for (const ns of namespaces) {
           const prefix = ns ? `${ns}.` : '';
-          if (isStringNode(arg)) {
-            result.staticKeys.add(prefix + arg.text);
+          if (literalKeys) {
+            for (const key of literalKeys) result.staticKeys.add(prefix + key);
           } else if (ts.isTemplateExpression(arg)) {
             // t(`units.${type}`) becomes a pattern that matches every key under "units".
             result.dynamicPatterns.push(templateToPattern(arg, prefix, true));
+          } else {
+            // e.g. tMe(record.type), where the key comes from API data.
+            const { line } = sourceFile.getLineAndCharacterOfPosition(
+              node.getStart()
+            );
+            result.runtimeKeyCalls.push({
+              namespace: ns,
+              location: `${toDisplayPath(filePath)}:${line + 1}`,
+            });
           }
         }
       }
@@ -202,6 +239,7 @@ function main() {
     dynamicPatterns: [],
     literals: new Set(),
     literalPatterns: [],
+    runtimeKeyCalls: [],
   };
   for (const file of sourceFiles) scanFile(file, result);
 
@@ -235,24 +273,42 @@ function main() {
     unused.push(key);
   }
 
-  const printGrouped = (keys) => {
+  const runtimeCallsFor = (keys) =>
+    [
+      ...new Set(
+        result.runtimeKeyCalls
+          .filter(({ namespace }) =>
+            keys.some((key) => !namespace || key.startsWith(`${namespace}.`))
+          )
+          .map(({ location }) => location)
+      ),
+    ].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+  const printGrouped = (keys, { showRuntimeCalls = false } = {}) => {
     const byFile = new Map();
     for (const key of keys) {
       const file = keyToFile.get(key);
       if (!byFile.has(file)) byFile.set(file, []);
       byFile.get(file).push(key);
     }
-    for (const [file, fileKeys] of [...byFile].sort()) {
+    const groups = [...byFile].sort(([a], [b]) => a.localeCompare(b));
+    for (const [file, fileKeys] of groups) {
       console.log(`\n  ${file} (${fileKeys.length})`);
+      const runtimeCalls = showRuntimeCalls ? runtimeCallsFor(fileKeys) : [];
+      if (runtimeCalls.length > 0) {
+        console.log(
+          '    ! This namespace is also called with keys picked at runtime, so some of these may be used:'
+        );
+        for (const location of runtimeCalls) console.log(`      ${location}`);
+      }
       for (const key of fileKeys.sort()) console.log(`    ${key}`);
     }
   };
 
   console.log(
-    `Scanned ${keyToFile.size} keys in ${path.relative(
-      ROOT,
-      LOCALES_DIR
-    )} against ${sourceFiles.length} source files.`
+    `Scanned ${keyToFile.size} keys in ${toDisplayPath(LOCALES_DIR)} against ${
+      sourceFiles.length
+    } source files.`
   );
   console.log(
     `Skipped ${skipped} keys under ${SKIPPED_PREFIXES.join(
@@ -264,7 +320,7 @@ function main() {
   console.log(
     'No reference found in code. Review before removing, the value may come from an API or config.'
   );
-  printGrouped(unused);
+  printGrouped(unused, { showRuntimeCalls: true });
 
   console.log(`\nKeys found only as a plain string: ${onlyAsString.length}`);
   console.log('Likely passed to t() through a variable, so probably used.');
