@@ -417,7 +417,10 @@ function ProjectsMap(props: ProjectsMapProps) {
             onMove={onMove}
             onLoad={() => setMapLoaded(true)}
             onMouseMove={onMouseMove}
-            onMouseOut={() => setHoveredIntervention(null)}
+            onMouseOut={() => {
+              lastHoveredIdRef.current = null;
+              setHoveredIntervention(null);
+            }}
             onClick={onClick}
             attributionControl={false}
             ref={mapRef}
