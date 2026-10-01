@@ -12,6 +12,7 @@ interface Props {
   isLoaded: boolean;
 }
 
+// Not used right now: the VTOCampaign2025 page does not import it. Decide later whether to use it or remove it with LeaderBoardSection.module.scss.
 export default function LeaderBoardSection({ leaderboard, isLoaded }: Props) {
   const [selectedTab, setSelectedTab] = useState('recent');
   const isLeaderboardAvailable =

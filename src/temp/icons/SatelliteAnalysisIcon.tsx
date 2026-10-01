@@ -1,5 +1,6 @@
 import type { IconProps } from '../../features/common/types/common';
 
+// Not used right now: the satellite analysis tab in ProjectMapTabs is commented out. Decide later whether to bring the tab back or remove this icon.
 const SatelliteAnalysisIcon = ({ color, width }: IconProps) => {
   return (
     <svg

@@ -350,6 +350,7 @@ export default function Footer(): ReactElement | null {
               </div>
             </div>
             <div className={styles.footer_links_container}>
+              {/* Dark mode switch is not used right now. Decide later whether to bring it back or remove it with DarkModeSwitch and the .switch style. */}
               {/* {tenantConfig.config.darkModeEnabled && (
                 <div className={styles.switch}>
                   <DarkModeSwitch />

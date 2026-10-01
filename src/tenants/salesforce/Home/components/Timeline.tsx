@@ -60,6 +60,7 @@ const moments = [
   },
 ];
 
+// Not used right now: only GrowingImpact uses it, and GrowingImpact is not shown. Keep or remove it together with GrowingImpact.
 export default function Timeline() {
   const [desktopCurrent, setDesktopCurrent] = useState(0);
   const [mobileCurrent, setMobileCurrent] = useState(0);
