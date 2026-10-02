@@ -45,7 +45,9 @@ const POINT_MARKER_MAP = {
 
 type PointMarkerType = keyof typeof POINT_MARKER_MAP;
 
-const getPointMarkerType = (p: MapProjectProperties): PointMarkerType | null => {
+const getPointMarkerType = (
+  p: MapProjectProperties
+): PointMarkerType | null => {
   if (p.purpose === 'conservation') return 'conservation';
   const classification = (p as { classification?: string }).classification;
   if (
@@ -57,6 +59,8 @@ const getPointMarkerType = (p: MapProjectProperties): PointMarkerType | null => 
   return null;
 };
 
+const PIN_KEY_PREFIX = 'pin-';
+
 /**
  * Data-driven `icon-image` key for a project. Returns '' when there is no icon
  * for the project's classification (matches the old behaviour of rendering no pin).
@@ -64,8 +68,11 @@ const getPointMarkerType = (p: MapProjectProperties): PointMarkerType | null => 
 export const getPointMarkerImageKey = (p: MapProjectProperties): string => {
   const markerType = getPointMarkerType(p);
   if (!markerType) return '';
-  return `pin-${markerType}-${getProjectCategory(p)}`;
+  return `${PIN_KEY_PREFIX}${markerType}-${getProjectCategory(p)}`;
 };
+
+export const isPointMarkerImageKey = (id: string): boolean =>
+  id.startsWith(PIN_KEY_PREFIX);
 
 // The old HTML marker was 30px wide (ProjectMarkers.module.scss .marker); the
 // pin viewBox is ~43x49, so height ~= 34px. Rasterize at 2x for retina crispness.
@@ -118,10 +125,12 @@ const rasterizeAllIcons = async (map: MaplibreMap): Promise<void> => {
   const tasks: Promise<void>[] = [];
   (Object.keys(POINT_MARKER_MAP) as PointMarkerType[]).forEach((markerType) => {
     (Object.keys(TIER_COLOR) as Tier[]).forEach((tier) => {
-      const key = `pin-${markerType}-${tier}`;
+      const key = `${PIN_KEY_PREFIX}${markerType}-${tier}`;
       if (map.hasImage(key)) return;
       const IconComponent = POINT_MARKER_MAP[markerType];
-      const svg = renderToStaticMarkup(<IconComponent color={TIER_COLOR[tier]} />);
+      const svg = renderToStaticMarkup(
+        <IconComponent color={TIER_COLOR[tier]} />
+      );
       tasks.push(
         svgToImage(svg)
           .then((img) => {
@@ -137,16 +146,11 @@ const rasterizeAllIcons = async (map: MaplibreMap): Promise<void> => {
   });
   await Promise.all(tasks);
 };
-
-// Coalesce the concurrent calls that fire during initial load: the symbol layer
-// emits one `styleimagemissing` per missing icon (~24 at once), and rasterization
-// is async, so without this each call would re-rasterize the whole set. Callers
-// for the same map share one in-flight registration.
+// MapLibre asks for all missing icons at once. Since creating the icons is async, reuse the same in-progress registration instead of creating them again for each icon.
 const inFlightRegistrations = new WeakMap<MaplibreMap, Promise<void>>();
 
 /**
- * Registers every (shape x tier) pin as a maplibre image. Idempotent and safe to
- * call repeatedly (e.g. on load and on styleimagemissing).
+ * Registers every (shape x tier) pin as a maplibre image. Idempotent and safe to call repeatedly.
  */
 export const registerMarkerIcons = (map: MaplibreMap): Promise<void> => {
   const existing = inFlightRegistrations.get(map);
