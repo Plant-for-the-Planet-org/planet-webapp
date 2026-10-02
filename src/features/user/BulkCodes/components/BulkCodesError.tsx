@@ -34,7 +34,11 @@ const BulkCodesError = (): ReactElement | null => {
     }
 
     if (planetCash.balance + planetCash.creditLimit <= 0) {
-      const donationUrl = getDonationUrl(tenantId, 'planetcash', token);
+      const donationUrl = getDonationUrl({
+        tenant: tenantId,
+        target: 'planetcash',
+        token,
+      });
 
       return (
         <div>
