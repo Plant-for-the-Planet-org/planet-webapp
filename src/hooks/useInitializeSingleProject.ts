@@ -7,12 +7,12 @@ import {
   useInterventionStore,
   useSingleProjectStore,
   useTenantStore,
-  useViewStore,
 } from '../stores';
 import { useLocale } from 'next-intl';
 import { FIRST_SITE_INDEX, hasNoSites, isString } from '../utils/projectV2';
 import { useApi } from './useApi';
 import useLocalizedPath from './useLocalizedPath';
+import { useCurrentPage } from './useCurrentPage';
 
 const getSiteIndexById = (
   sites: ProjectSiteFeature[],
@@ -37,7 +37,7 @@ export const useInitializeSingleProject = () => {
     !requestedSite && requestedIntervention
   );
   // store: state
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
   const isCurrencyResolved = useCurrencyStore(
     (state) => state.isCurrencyResolved

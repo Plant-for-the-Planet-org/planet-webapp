@@ -5,8 +5,8 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import styles from '../styles/ProjectSnippet.module.scss';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useCurrentPage } from '../../../../hooks/useCurrentPage';
 import { clsx } from 'clsx';
-import { useViewStore } from '../../../../stores';
 
 interface TpoNameProps {
   projectTpoName: string;
@@ -27,7 +27,7 @@ const TpoName = ({
 }: TpoNameProps) => {
   const tCommon = useTranslations('Common');
   const { localizedPath } = useLocalizedPath();
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
 
   const tpoNameBackgroundClass = useMemo(() => {
     if (!allowDonations) return `${styles.noDonation}`;

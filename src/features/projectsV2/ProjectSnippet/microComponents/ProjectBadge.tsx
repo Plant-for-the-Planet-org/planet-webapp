@@ -9,7 +9,8 @@ import NewInfoIcon from '../../../../../public/assets/images/icons/projectV2/New
 import styles from '../styles/Badge.module.scss';
 import CustomTooltip from '../../../common/Layout/CustomTooltip';
 import { clsx } from 'clsx';
-import { useViewStore, useTenantStore } from '../../../../stores';
+import { useTenantStore } from '../../../../stores';
+import { useCurrentPage } from '../../../../hooks/useCurrentPage';
 
 interface Props {
   isApproved: boolean;
@@ -54,7 +55,7 @@ const ProjectBadge = ({
 }: Props) => {
   const tCommon = useTranslations('Common');
   const tProjectDetails = useTranslations('ProjectDetails');
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
   const tenantSlug = useTenantStore((state) => state.tenantConfig.config.slug);
 
   const badgeConfigurations: TitleAndIconReturnType | undefined =
