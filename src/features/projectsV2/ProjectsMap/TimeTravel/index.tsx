@@ -19,12 +19,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import { useTranslations } from 'next-intl';
 import { clsx } from 'clsx';
 import { useProjectMapStore, useErrorHandlingStore } from '../../../../stores';
-
-const EMPTY_STYLE = {
-  version: 8 as const,
-  sources: {},
-  layers: [],
-};
+import { EMPTY_STYLE } from '../../../../utils/mapsV2/mapDefaults';
 
 const DEFAULT_SOURCE = 'esri';
 const DEFAULT_BEFORE_YEAR = '2014';
