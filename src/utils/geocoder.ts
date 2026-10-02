@@ -1,6 +1,7 @@
 import type {
   AddressSuggestionsType,
   AddressType,
+  ResolvedAddress,
   ReverseAddress,
 } from '../features/common/types/geocoder';
 
@@ -17,6 +18,14 @@ const geocoder = new GeocoderArcGIS(
 
 /**
  * Provides address suggestions for a given input string and country.
+ *
+ * Absorbs its own failures: a rejected request resolves to an empty list rather
+ * than throwing, so callers cannot tell a failure apart from "no matches".
+ *
+ * @param value - Text to suggest addresses for. 3 characters or fewer returns
+ * an empty list without calling the API.
+ * @param country - Country code the results are scoped to. An empty string
+ * leaves the search unscoped and returns worldwide matches.
  */
 export const getAddressSuggestions = async (
   value: string,
@@ -39,23 +48,22 @@ export const getAddressSuggestions = async (
 
 /**
  * Fetches full address details (short label, city, zip code) for a given input string.
-+ * 
-+ * @dependency ArcGIS API Fields - This function uses 3 specific fields from Attributes:
-+ * - ShortLabel: The formatted address string  
-+ * - City: The city name
-+ * - Postal: The postal/zip code
-+ * See geocoder.d.ts Attributes interface for all 50+ available fields.
-+ *
+ *
+ * Absorbs its own failures: a rejected request resolves to `null` rather than
+ * throwing, so callers cannot tell a failure apart from "no candidates".
+ *
+ * @dependency ArcGIS API Fields - This function uses 3 specific fields from Attributes:
+ * - ShortLabel: The formatted address string
+ * - City: The city name
+ * - Postal: The postal/zip code
+ * See geocoder.d.ts Attributes interface for all 50+ available fields.
+ *
  * @param value - The input string to search for address details
  * @returns Object with address, city, zipCode or null if no results
  */
 export const getAddressDetailsFromText = async (
   value: string
-): Promise<{
-  address: string;
-  city: string;
-  zipCode: string;
-} | null> => {
+): Promise<ResolvedAddress | null> => {
   try {
     const result: AddressType = await geocoder.findAddressCandidates(value, {
       outfields: 'ShortLabel,City,Postal',
