@@ -1,7 +1,7 @@
 import type { SyntheticEvent } from 'react';
 import type { APIError, User } from '@planet-sdk/common';
 
-import { useState, useContext } from 'react';
+import { useId, useState, useContext } from 'react';
 import { Modal, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
@@ -40,6 +40,16 @@ export default function EmbedModal({
   //store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  // Names and describes the dialog using its visible title and note
+  const titleId = useId();
+  const descriptionId = useId();
+
+  // Dismissing the dialog (Escape or the cancel button) leaves the widgets page,
+  // because the page only renders this dialog while the profile stays private
+  const handleCancel = () => {
+    setEmbedModalOpen(false);
+    router.back();
+  };
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -80,14 +90,20 @@ export default function EmbedModal({
         className={'modalContainer' + ' ' + theme}
         open={embedModalOpen}
         hideBackdrop
+        onClose={handleCancel}
       >
-        <div className={styles.modal}>
+        <div
+          className={styles.modal}
+          role="dialog"
+          aria-labelledby={titleId}
+          aria-describedby={descriptionId}
+        >
           <div className={styles.headerDiv}>
-            <div className={styles.editProfileText}>
+            <div className={styles.editProfileText} id={titleId}>
               {' '}
               <b> {t('changeAccountToPublic')} </b>
             </div>
-            <div className={styles.accountPrivacyChangeText}>
+            <div className={styles.accountPrivacyChangeText} id={descriptionId}>
               {t('accountPrivacyChangeText')}
             </div>
           </div>
@@ -107,12 +123,9 @@ export default function EmbedModal({
               )}
             </button>
             <button
-              id={'editProfileSaveProfile'}
+              id={'editProfileCancel'}
               className={styles.cancelButton}
-              onClick={() => {
-                setEmbedModalOpen(false);
-                router.back();
-              }}
+              onClick={handleCancel}
             >
               {t('cancel')}
             </button>

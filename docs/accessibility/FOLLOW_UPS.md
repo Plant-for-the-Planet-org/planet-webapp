@@ -282,3 +282,167 @@ Hoist `handleMouseEnter` (and any other Hooks) above the conditional so they run
 
 - File: `src/features/common/WebappButton/index.tsx` (link branch).
 - Related: shared `isExternalUrl` helper in `src/utils/url.ts`.
+
+## FU-006 — Remaining modals with dangling / inert ARIA label references
+
+**Status:** Open.
+**Origin:** Surfaced during A11Y-011 (modal names, dangling label IDs, Escape, focus management). These modals show the exact same defect but are **not** in the A11Y-011 file list, so they were left untouched to keep that fix reviewable.
+**Priority:** Medium — same WCAG 4.1.2 / 1.3.1 defect as A11Y-011, just on other screens.
+
+### Background
+
+Two things are wrong at each of these sites:
+
+1. The `aria-labelledby` / `aria-describedby` IDREFs point to elements that do not exist (`simple-modal-title`, `transition-modal-title`, `address-action-modal-title`, `simple-modal-description`, `transition-modal-description`).
+2. Even a valid IDREF would not help, because the attributes are passed to MUI's `Modal`, whose root element is `role="presentation"` (see FU-007). ARIA naming attributes on a presentation node are inert.
+
+Affected sites:
+
+| File | Dangling reference |
+| --- | --- |
+| `src/tenants/planet/LeaderBoard/components/Stats.tsx:98`–`99` | `simple-modal-title` / `simple-modal-description` |
+| `src/features/common/Layout/Footer/SelectLanguageAndCountry.tsx:197`–`198` | `transition-modal-title` / `transition-modal-description` |
+| `src/features/user/ManageProjects/components/microComponent/EditSite.tsx:99`–`100` | `transition-modal-title` / `transition-modal-description` |
+| `src/features/user/Settings/EditProfile/AddressManagement/index.tsx:162` | `address-action-modal-title` |
+| `src/features/user/DonationReceipt/DonorContactManagement.tsx:190` | `address-action-modal-title` |
+
+### Proposal
+
+Apply the same fix used for A11Y-011: move `role="dialog"` plus `aria-labelledby`/`aria-describedby` onto the modal's content element, generate the IDs with `useId()`, and put them on the real visible title/description. Add `onClose` where Escape dismissal is missing.
+
+### Suggested acceptance criteria
+
+- [ ] No `aria-labelledby`/`aria-describedby` in the repo points to a missing element (axe `aria-valid-attr-value` clean).
+- [ ] Each of the five dialogs announces its visible title.
+- [ ] Escape dismisses each dialog.
+- [ ] No visual or behavioural change.
+
+### References
+
+- Finding: `ACCESSIBILITY_FINDINGS.md` → A11Y-011 (same pattern, different files), Pattern P5.
+
+## FU-007 — Introduce a reusable `AppModal` component
+
+**Status:** Open.
+**Origin:** Surfaced during A11Y-011. Already listed in `ACCESSIBILITY_FINDINGS.md` → "Shared Component Opportunities" as the global fix for Pattern P5.
+**Priority:** Medium — code-health / regression-prevention, not a user-facing defect once A11Y-011 and FU-006 land.
+
+### Background
+
+A11Y-011 applied the same three-line pattern to eleven modals:
+
+```tsx
+const titleId = useId();
+const descriptionId = useId();
+
+<Modal open={isOpen} onClose={handleClose}>
+  <div role="dialog" aria-labelledby={titleId} aria-describedby={descriptionId}>
+    <h4 id={titleId}>…</h4>
+    <div id={descriptionId}>…</div>
+  </div>
+</Modal>
+```
+
+Two non-obvious constraints make this easy to get wrong on a new modal, which is how the original gaps appeared:
+
+- **MUI's `Modal` root is `role="presentation"`.** `aria-labelledby`/`aria-describedby` passed to `<Modal>` land on that root and do nothing. They must go on the content element together with `role="dialog"`. (`Dialog` differs — it sets `role="dialog"` itself.)
+- **The `Modal` child must accept a ref.** MUI's `FocusTrap` clones the child with a `ref` to focus it on open and to restore focus on close. A fragment or a plain function component silently disables all focus management. A11Y-011 hit both cases (`ImageSliderModal` used a fragment; `MapSettings` was not a `forwardRef`).
+
+### Proposal
+
+A shared primitive that owns the ARIA wiring and guarantees a ref-accepting child:
+
+```tsx
+<AppModal
+  open={isOpen}
+  onClose={handleClose}
+  title={t('cancelTitle')}
+  description={t('cancelDescription')}
+>
+  {/* body */}
+</AppModal>
+```
+
+Responsibilities:
+
+- Renders `role="dialog"` on its own content element with `useId()`-generated `aria-labelledby`/`aria-describedby`.
+- Accepts an `aria-label` alternative for dialogs whose visible title changes with state (as `RedeemModal` needs).
+- Requires `onClose` so Escape always dismisses.
+- Keeps MUI's built-in focus trap working, so callers cannot accidentally break it.
+- Passes through `className`/`sx` and optional transition so existing visuals are preserved.
+
+### Why deferred (not implemented in the A11Y-011 fix)
+
+- **Scope discipline** — A11Y-011 is a bounded, review-driven fix across eleven files; adding a shared primitive and migrating them all is a much larger refactor.
+- **API surface** — the eleven modals vary a lot (with/without `Fade`, `hideBackdrop`, `sx`, custom backdrop timeouts, `closeAfterTransition`). Designing one API for all of them should not block the accessibility fix.
+- **Sequencing** — best landed after A11Y-011 and FU-006 are verified, using those fixes as the reference implementation.
+
+### Suggested acceptance criteria
+
+- [ ] `AppModal` added, with a required accessible name (`title` or `aria-label`) and required `onClose`.
+- [ ] Focus moves into the dialog on open and returns to the trigger on close, in every consumer.
+- [ ] Existing modals migrated incrementally with no visual or behavioural change.
+- [ ] Storybook entry + usage docs.
+
+### References
+
+- Finding: `ACCESSIBILITY_FINDINGS.md` → A11Y-011, A11Y-023, Pattern P5.
+- Related: FU-001 (`IconButton`) — same "shared primitive makes the a11y contract mandatory" approach.
+
+## FU-008 — Global `:focus { outline: none !important }` removes every focus indicator
+
+**Status:** Open.
+**Origin:** Surfaced while restoring the focus ring on the `ImageSliderModal` navigation buttons (regression fix following A11Y-011).
+**Priority:** High — WCAG 2.4.7 failure affecting every interactive control in the app.
+
+### Background
+
+`src/theme/global.scss:43`–`45` contains:
+
+```scss
+:focus {
+  outline: none !important;
+}
+```
+
+This strips the focus indicator from every focusable element app-wide, so keyboard users cannot tell where focus is. Because of the `!important`, no component can override it with specificity alone — a component that wants its ring back has to declare `!important` too, which is what the `ImageSliderModal` slider buttons now do:
+
+```scss
+.sliderButton, .prevMobileSliderButton, .nextMobileSliderButton {
+  &:focus-visible {
+    outline: 2px solid $dsWhite !important;
+    outline-offset: 2px;
+  }
+}
+```
+
+That is a local workaround, not a fix. Every other control in the app is still unindicated.
+
+### Proposal
+
+1. Delete the global `:focus { outline: none !important }` rule.
+2. Add a single global `:focus-visible` treatment using a design-system token, so the ring appears for keyboard/AT users and not on mouse click (which is presumably what the rule was trying to suppress).
+3. Sweep the ~10 component-level `outline: none` declarations (`EmbedModal`, `CustomModal`, `RedeemModal`, `ErrorPopup`, `RedeemPopup`, `CookiePolicy`, `SelectLanguageAndCountry`, `StepForm`, `AccountHistory`) — most are on modal containers, where MUI gives the container `tabIndex="-1"` and focuses it on open. Those want `:focus { outline: none }` on the *container only*, not on their contents.
+4. Remove the now-redundant `!important` from the `ImageSliderModal` slider-button rule.
+
+### Suggested acceptance criteria
+
+- [ ] No global `outline: none` rule remains; a shared `:focus-visible` style is defined once.
+- [ ] Every interactive control shows a visible focus indicator when reached by keyboard, at ≥3:1 contrast against its background (WCAG 1.4.11).
+- [ ] Focus rings do not appear on mouse interaction (no visual change for pointer users).
+- [ ] Modal containers that receive programmatic focus do not show a stray ring.
+- [ ] `ImageSliderModal`'s local `!important` override removed.
+
+### References
+
+- Rule: `src/theme/global.scss:43`–`45`.
+- Local workaround: `src/features/projectsV2/ProjectDetails/styles/Slider.module.scss` (`.sliderButton` / mobile arrows).
+- WCAG: 2.4.7 Focus Visible (AA), 1.4.11 Non-text Contrast (AA).
+
+## FU-009 — Remove the dead `.mobileSliderButtonCommon` class
+
+**Status:** Open.
+**Origin:** Noticed while fixing the `ImageSliderModal` mobile layout regression.
+**Priority:** Low — dead code only.
+
+`.mobileSliderButtonCommon` in `src/features/projectsV2/ProjectDetails/styles/Slider.module.scss` is grouped with `.prevMobileSliderButton` / `.nextMobileSliderButton` but is not referenced anywhere in `src/`. Drop it, or if it was meant as the shared base, have the two directional classes `@extend` it so the grouping is meaningful.

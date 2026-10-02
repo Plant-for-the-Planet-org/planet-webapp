@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { useId } from 'react';
 import Modal from '@mui/material/Modal';
 import styles from './CustomModal.module.scss';
 
@@ -26,15 +27,33 @@ export default function CustomModal({
   modalTitle,
   modalSubtitle,
 }: Props) {
+  // Names and describes the dialog using its visible title and subtitle
+  const titleId = useId();
+  const subtitleId = useId();
+
   return (
-    <Modal open={isOpen} hideBackdrop className={'modalContainer'}>
-      <div className={styles.modal}>
+    // `onClose` only reacts to Escape here, since `hideBackdrop` leaves no
+    // backdrop to click
+    <Modal
+      open={isOpen}
+      hideBackdrop
+      className={'modalContainer'}
+      onClose={handleCancel}
+    >
+      <div
+        className={styles.modal}
+        role="dialog"
+        aria-labelledby={titleId}
+        aria-describedby={subtitleId}
+      >
         <div className={styles.modal__titleContainer}>
-          <div className={styles.modal__titleText}>
+          <div className={styles.modal__titleText} id={titleId}>
             {' '}
             <b> {modalTitle} </b>
           </div>
-          <div className={styles.modal__subtitle}>{modalSubtitle}</div>
+          <div className={styles.modal__subtitle} id={subtitleId}>
+            {modalSubtitle}
+          </div>
         </div>
         <div
           className={styles.buttonContainer}
