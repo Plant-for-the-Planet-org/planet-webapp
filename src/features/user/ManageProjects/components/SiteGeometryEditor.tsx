@@ -9,13 +9,14 @@ import type {
   MapMouseEvent,
   ViewState,
   ViewStateChangeEvent,
-} from 'react-map-gl-v7/maplibre';
+} from 'react-map-gl/maplibre';
 import type { SetState } from '../../../common/types/common';
 import type { MapState } from '../../../../utils/mapsV2/mapDefaults';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import MapGL, { NavigationControl } from 'react-map-gl-v7/maplibre';
+import MapGL, { NavigationControl } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import '../../../../utils/mapsV2/maplibreWorker';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
