@@ -53,24 +53,27 @@
     --card-foreground: 0 0% 20%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 20%;
-    --primary: 156 100% 24%; /* #007A49 --ds-primary-color, same green as MUI buttons */
-    --primary-foreground: 0 0% 100%; /* white */
+    --primary: 156 100% 24%; /* #007A49 --ds-primary-color, same green as MUI buttons (webapp nav hover/active) */
+    --primary-foreground: 0 0% 100%; /* white — passes WCAG AA on #007A49 */
     --secondary: 145 50% 96%; /* #F0FAF4 softGreen */
-    --secondary-foreground: 156 100% 24%; /* #007A49 dark green text */
+    --secondary-foreground: 156 100% 24%; /* #007A49 */
     --muted: 170 25% 95%; /* #F0F6F5 backgroundBase */
     --muted-foreground: 0 0% 51%; /* #828282 softText2 */
     --accent: 145 50% 96%; /* #F0FAF4 softGreen */
-    --accent-foreground: 156 100% 24%; /* #007A49 dark green text */
+    --accent-foreground: 156 100% 24%; /* #007A49 */
     --destructive: 0 79% 63%; /* #EB5757 fireRed */
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 89.8%; /* neutral light grey */
     --input: 0 0% 89.8%;
     --ring: 156 100% 24%; /* #007A49 */
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* rounder corners to match the app's existing style */
   }
 
-  /* Matches the class ThemeProvider puts on the layout wrapper, see
-     src/theme/themeContext.tsx and src/features/common/Layout/index.tsx. */
+  /**
+   * Matches the class ThemeProvider puts on the layout wrapper, see src/theme/themeContext.tsx and src/features/common/Layout/index.tsx.
+   * Apart from --primary and --ring, these dark values are placeholders that need review, not the app's own dark palette (src/theme/themeProperties.ts). The dark palette is still to be decided, and dark mode is rarely used.
+   * Portals (Radix Dialog, Sheet, Select) render into <body>, outside the layout wrapper, so they get the light tokens in dark mode. Components that use portals may need adjusting.
+   */
   .theme-dark {
     --background: 160 30% 6%; /* deep green-tinted dark */
     --foreground: 0 0% 98%;
@@ -78,7 +81,7 @@
     --card-foreground: 0 0% 98%;
     --popover: 160 30% 6%;
     --popover-foreground: 0 0% 98%;
-    --primary: 94 57% 44%; /* #68B030 webapp --primary-color */
+    --primary: 145 63% 42%; /* #27AE60 leafGreen — brighter for dark surfaces */
     --primary-foreground: 0 0% 100%;
     --secondary: 160 15% 14%;
     --secondary-foreground: 0 0% 98%;
@@ -90,6 +93,6 @@
     --destructive-foreground: 0 0% 98%;
     --border: 160 15% 16%;
     --input: 160 15% 16%;
-    --ring: 94 57% 44%; /* #68B030 */
+    --ring: 145 63% 42%; /* #27AE60 */
   }
 }

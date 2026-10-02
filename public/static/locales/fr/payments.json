@@ -1,0 +1,20 @@
+{
+  "Payments": {
+    "loadError": "Impossible de charger vos paiements. Réessayez.",
+    "retry": "Réessayer",
+    "selectPayment": "Sélectionnez un paiement pour voir les détails",
+    "dedicated": "Dédié",
+    "dedicatedTo": "Dédié à",
+    "donationId": "ID du don",
+    "fundraiser": "Collecte",
+    "supports": "Soutient",
+    "supportedProjects": "Projets soutenus",
+    "support": "Soutien",
+    "feeCovered": "Vous avez couvert les frais",
+    "tax": "Taxe",
+    "noPaymentMethods": "Aucun moyen de paiement enregistré",
+    "remove": "Supprimer",
+    "default": "Par défaut",
+    "confirmRemoveMethod": "Supprimer ce moyen de paiement ?"
+  }
+}

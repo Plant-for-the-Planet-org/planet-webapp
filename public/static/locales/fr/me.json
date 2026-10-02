@@ -272,6 +272,11 @@
     "membershipCtaCopy": "Soutenez-nous <highlight>EN DEVENANT MEMBRE</highlight>",
     "shareUrl": "Partager l'URL",
     "treesOfTrees": "{count1} de {count2}",
-    "document": "Documentation de la plate-forme (EN)"
+    "document": "Documentation de la plate-forme (EN)",
+    "transactions": "Transactions",
+    "recurring": "Récurrents",
+    "paymentMethods": "Moyens de paiement",
+    "quarterly": "Trimestriel",
+    "semiyearly": "Semestriel"
   }
 }

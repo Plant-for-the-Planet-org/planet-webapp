@@ -26,6 +26,8 @@ type MessagesManageProjects =
   typeof import('../../public/static/locales/en/manageProjects.json');
 type MessagesMaps = typeof import('../../public/static/locales/en/maps.json');
 type MessagesMe = typeof import('../../public/static/locales/en/me.json');
+type MessagesPayments =
+  typeof import('../../public/static/locales/en/payments.json');
 type MessagesPlanet =
   typeof import('../../public/static/locales/en/planet.json');
 type MessagesPlanetcash =
@@ -57,6 +59,7 @@ type Messages = MessagesAllProjects &
   MessagesManageProjects &
   MessagesMaps &
   MessagesMe &
+  MessagesPayments &
   MessagesPlanet &
   MessagesPlanetcash &
   MessagesProfile &
