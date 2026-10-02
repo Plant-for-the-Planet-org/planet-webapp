@@ -153,7 +153,7 @@ E2E coverage is not part of this item. See 0.2.
 
 ## 0.4 Make current type debt visible without blocking the upgrade
 
-`tsc --noEmit` currently reports approximately **126 errors**.
+`tsc --noEmit` reports **125 errors**, measured 2026-10-02. See the conditions below, because the number moves if they are not met.
 
 `typescript.ignoreBuildErrors` can remain temporarily because reaching zero is not a prerequisite for the framework upgrade. The problem is that framework-related type regressions can otherwise disappear inside the existing debt.
 
@@ -167,7 +167,13 @@ Initially make it **non-blocking** and record a baseline error count. Fail or wa
 
 The goal is to detect new type breakage, not to turn this project into a full type-cleanup effort.
 
-**The job must run after a build.** From Next.js 15, `next-env.d.ts` references `.next/types/routes.d.ts`, which only exists once the app has been built. Typechecking a clean checkout reports a spurious `TS6053` for the missing file. Measured after a build, the count is **127 errors**, unchanged by the Next.js 15 upgrade.
+**The count is only meaningful under two conditions.** Both have produced misleading figures already.
+
+**Run it after a build.** From Next.js 15, `next-env.d.ts` references `.next/types/routes.d.ts`, which only exists once the app has been built. Typechecking a clean checkout adds a spurious `TS6053` for the missing file.
+
+**Run it on an install that matches the lockfile.** On 2026-10-02 a stale `node_modules` reported **180 errors** rather than 125. 36 of the extra errors were `Cannot find module 'react-map-gl/maplibre'`, because the MapLibre v6 upgrade was in the lockfile but not installed, and the rest were downstream failures in the same map files. Run `npm ci` first.
+
+The baseline is **125 errors** after `npm ci` and a build. Only one of those is a missing module, `@testing-library/react`, which is not a dependency and is the known `YearHeader.test.tsx` gap.
 
 ---
 
@@ -1048,6 +1054,8 @@ Reassess separately when there is a concrete architectural reason to adopt:
 - server-rendered SEO-heavy pages.
 
 The Next.js 16 upgrade should not be used as a reason to perform this migration.
+
+The decision and a route-by-route plan for after this upgrade are in [nextjs-app-router-migration-roadmap.md](./nextjs-app-router-migration-roadmap.md).
 
 ---
 
