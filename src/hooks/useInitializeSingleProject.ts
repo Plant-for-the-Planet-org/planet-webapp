@@ -72,8 +72,9 @@ export const useInitializeSingleProject = () => {
    *
    * It does wait on `isCurrencyResolved`, because `currencyCode` starts at a
    * placeholder that would otherwise be fetched with and then immediately
-   * superseded. Waiting here cannot stall: `initializeCurrencyCode` runs
-   * unconditionally on mount in the browser and resolves in every path.
+   * superseded. Waiting here cannot stall: it resolves either immediately from
+   * a stored value, or once `storeConfig`'s geo lookup settles (success or
+   * failure), which always runs when this hook does.
    */
   useEffect(() => {
     if (!router.isReady) return;
