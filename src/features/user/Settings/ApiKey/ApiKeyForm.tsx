@@ -12,7 +12,8 @@ import { Button, InputAdornment, TextField } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore, useErrorHandlingStore } from '../../../../stores';
+import { useIsAuthReady } from '../../../../hooks/useAuthReadiness';
+import { useErrorHandlingStore } from '../../../../stores';
 
 interface EyeButtonParams {
   isVisible: boolean;
@@ -40,14 +41,11 @@ const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
 export default function ApiKey() {
   const t = useTranslations('Me');
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
+  const isAuthReady = useIsAuthReady();
   // local state
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [apiKey, setApiKey] = useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = useState(false);
-  // store: state
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 

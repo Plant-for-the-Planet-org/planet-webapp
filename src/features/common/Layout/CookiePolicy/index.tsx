@@ -4,22 +4,20 @@ import IconButton from '../../IconButton';
 import styles from './CookiePolicy.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';
-import { useAuthStore, useUserStore } from '../../../../stores';
+import { useIsProfileReady } from '../../../../hooks/useAuthReadiness';
 
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(false);
   const t = useTranslations('Common');
   const locale = useLocale();
 
-  //store: state
-  const userProfile = useUserStore((state) => state.userProfile);
-  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const isProfileReady = useIsProfileReady();
 
   useEffect(() => {
-    if (isAuthResolved && userProfile) {
+    if (isProfileReady) {
       setShowCookieNotice(false);
     }
-  }, [isAuthResolved, userProfile]);
+  }, [isProfileReady]);
 
   const isMountedRef = useRef(false);
 
