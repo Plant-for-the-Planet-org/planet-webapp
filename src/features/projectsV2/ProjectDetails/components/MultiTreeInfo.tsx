@@ -42,7 +42,7 @@ const MultiTreeInfo = ({ activeMultiTree, isMobile }: Props) => {
       return {
         id: item.coordinates[0].id,
         image: item.coordinates[0].image ?? '',
-        description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
+        description: tProjectDetails('sampleTreeTag', { tag: item.tag ?? '' }),
       };
     });
     return result;

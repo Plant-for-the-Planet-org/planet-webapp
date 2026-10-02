@@ -51,7 +51,7 @@ const ProjectListTabForMobile = ({
         selectedTab="topProjects"
         icon={<StarIcon width={'12px'} />}
         label={t.rich('top', {
-          noOfProjects: topProjectCount,
+          noOfProjects: topProjectCount ?? 0,
           projectCountContainer: (chunks) => (
             <span className={styles.projectCount}>{chunks}</span>
           ),
@@ -60,7 +60,7 @@ const ProjectListTabForMobile = ({
       <TabItem
         selectedTab="allProjects"
         label={t.rich('allProjects', {
-          noOfProjects: projectCount,
+          noOfProjects: projectCount ?? 0,
           projectCountContainer: (chunks) => (
             <span className={styles.projectCount}>{chunks}</span>
           ),
