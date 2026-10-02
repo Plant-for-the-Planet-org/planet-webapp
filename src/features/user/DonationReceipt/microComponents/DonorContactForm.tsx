@@ -71,7 +71,6 @@ const DonorContactForm = ({
   setCheckedAddressGuid,
   tinIsRequired,
 }: Props) => {
-  if (!user) return null;
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const tReceipt = useTranslations('DonationReceipt');
   const {
@@ -91,6 +90,7 @@ const DonorContactForm = ({
   });
 
   useEffect(() => {
+    if (!user) return;
     reset({
       firstName: user.firstname ?? '',
       lastName: user.lastname ?? '',
@@ -99,6 +99,8 @@ const DonorContactForm = ({
       addressGuid: checkedAddressGuid ?? '',
     });
   }, [user, checkedAddressGuid, reset]);
+
+  if (!user) return null;
 
   const handleAddNewAddress = () => {
     setIsModalOpen(true);

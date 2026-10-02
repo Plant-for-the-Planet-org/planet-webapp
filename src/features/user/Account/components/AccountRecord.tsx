@@ -316,7 +316,11 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
   );
 }
 
-export const showStatusNote = (record: PaymentHistoryRecord): ReactElement => {
+export const StatusNote = ({
+  record,
+}: {
+  record: PaymentHistoryRecord;
+}): ReactElement => {
   const t = useTranslations('Me');
   const showDonationNote = (): string => {
     switch (record.details.method) {
@@ -505,7 +509,7 @@ export default function AccountRecord({
             {record.details?.account && (
               <TransferDetails account={record.details.account} />
             )}
-            {showStatusNote(record)}
+            <StatusNote record={record} />
             {showDownloads && (
               <>
                 <div className={styles.title}>{t('downloads')}</div>
