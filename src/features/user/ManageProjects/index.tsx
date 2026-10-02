@@ -383,14 +383,6 @@ export default function ManageProjects({
     void fetchSitesCompleteness();
   }, [projectDetails, projectGUID]);
 
-  const [userLang, setUserLang] = useState('en');
-  useEffect(() => {
-    if (localStorage.getItem('language')) {
-      const userLang = localStorage.getItem('language');
-      if (userLang) setUserLang(userLang);
-    }
-  }, []);
-
   useEffect(() => {
     if (router.query.purpose) {
       setTabSelected(1);
@@ -655,7 +647,7 @@ export default function ManageProjects({
       case ProjectCreationTabs.DETAILED_ANALYSIS:
         return (
           <DetailedAnalysis
-            userLang={userLang}
+            userLang={locale}
             handleNext={handleNext}
             token={token}
             handleBack={handleBack}
@@ -683,7 +675,7 @@ export default function ManageProjects({
       case ProjectCreationTabs.PROJECT_SPENDING:
         return (
           <ProjectSpending
-            userLang={userLang}
+            userLang={locale}
             handleNext={handleNext}
             token={token}
             handleBack={handleBack}

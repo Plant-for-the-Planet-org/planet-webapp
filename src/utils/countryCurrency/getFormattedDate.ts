@@ -2,7 +2,10 @@ import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 import { localeMapForDate } from '../language/getLanguageName';
 
-export default function formatDate(date: number | Date | string) {
+export default function formatDate(
+  date: number | Date | string,
+  locale: string
+) {
   if (!date) {
     return '';
   }
@@ -31,11 +34,11 @@ export default function formatDate(date: number | Date | string) {
         '0'
       )}`;
       return format(parseISO(isoDateString), 'LLLL d, yyyy', {
-        locale: localeMapForDate[localStorage.getItem('language') || 'en'],
+        locale: localeMapForDate[locale] || localeMapForDate['en'],
       });
     } else {
       return format(date, 'LLLL d, yyyy', {
-        locale: localeMapForDate[localStorage.getItem('language') || 'en'],
+        locale: localeMapForDate[locale] || localeMapForDate['en'],
       });
     }
   } catch (error) {
