@@ -14,6 +14,7 @@ import UserLayout from '../../../../../../../src/features/common/Layout/UserLayo
 import BulkCodes, {
   BulkCodeSteps,
 } from '../../../../../../../src/features/user/BulkCodes';
+import BulkCodesSkeleton from '../../../../../../../src/features/user/BulkCodes/BulkCodesSkeleton';
 import Head from 'next/head';
 import { BulkCodeMethods } from '../../../../../../../src/utils/constants/bulkCodeConstants';
 import { useRouter } from 'next/router';
@@ -61,6 +62,7 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
   const { method } = router.query;
   const isValidMethod =
     method === BulkCodeMethods.GENERIC || method === BulkCodeMethods.IMPORT;
+  const isContentReady = router.isReady && isValidMethod;
 
   // Checks context and sets project; keeps the store's bulk method in sync
   // with the route method, so navigating between methods doesn't leave a
@@ -124,14 +126,22 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
     checkContext();
   }, [checkContext]);
 
-  if (!isInitialized || !router.isReady || !isValidMethod) return <></>;
+  if (!isInitialized) return <></>;
+
+  const skeleton = <BulkCodesSkeleton step={BulkCodeSteps.ISSUE_CODES} />;
 
   return (
-    <UserLayout>
-      <Head>
-        <title>{t('bulkCodesTitleStep3')}</title>
-      </Head>
-      <BulkCodes step={BulkCodeSteps.ISSUE_CODES} />
+    <UserLayout skeleton={skeleton}>
+      {isContentReady ? (
+        <>
+          <Head>
+            <title>{t('bulkCodesTitleStep3')}</title>
+          </Head>
+          <BulkCodes step={BulkCodeSteps.ISSUE_CODES} />
+        </>
+      ) : (
+        skeleton
+      )}
     </UserLayout>
   );
 }

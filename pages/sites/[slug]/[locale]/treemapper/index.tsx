@@ -13,7 +13,7 @@ import Head from 'next/head';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import TreemapperMigration from '../../../../../src/features/user/TreemapperMigration';
 import DashboardView from '../../../../../src/features/common/Layout/DashboardView';
-import { UserProfileLoader } from '../../../../../src/features/common/ContentLoaders/UserProfile/UserProfileLoader';
+import { UserLayoutLoader } from '../../../../../src/features/common/ContentLoaders/UserLayout/UserLayoutLoader';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import {
@@ -28,7 +28,7 @@ import { defaultTenant } from '../../../../../tenant.config';
 function TreemapperDashboardPage(): ReactElement {
   const t = useTranslations('Me');
   const isInitialized = useTenantStore((state) => state.isInitialized);
-  if (!isInitialized) return <UserProfileLoader />;
+  if (!isInitialized) return <UserLayoutLoader />;
 
   return (
     <UserLayout>

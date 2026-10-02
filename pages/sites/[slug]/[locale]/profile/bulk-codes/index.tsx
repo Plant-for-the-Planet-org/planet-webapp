@@ -12,6 +12,7 @@ import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/
 import BulkCodes, {
   BulkCodeSteps,
 } from '../../../../../../src/features/user/BulkCodes';
+import BulkCodesSkeleton from '../../../../../../src/features/user/BulkCodes/BulkCodesSkeleton';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 import {
@@ -29,7 +30,9 @@ export default function BulkCodePage(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={<BulkCodesSkeleton step={BulkCodeSteps.SELECT_METHOD} />}
+    >
       <Head>
         <title>{t('bulkCodesTitle')}</title>
       </Head>
