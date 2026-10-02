@@ -39,10 +39,7 @@ The Next.js 16 upgrade itself, on the Pages Router, is tracked in [nextjs-16-sta
 | React 19 needed for Next 16? | Spike needed | Spike done: Next 16.3.5 builds and runs on React 18 with the Pages Router and Webpack |
 
 Still open:
-- ESLint flat config, bundle analyzer and dead-tooling branches, not merged yet.
-- Cypress is still broken.
-- `typescript.ignoreBuildErrors: true`, hiding about 127 type errors.
-- The Heroku / `server.js` decision.
+- `typescript.ignoreBuildErrors: true`, hiding the type errors counted in [item 0.4 of the staged upgrade plan](./nextjs-16-staged-upgrade-plan-pages-router.md#04-make-current-type-debt-visible-without-blocking-the-upgrade).
 - The `middleware.ts` to `proxy.ts` rename.
 - The `agentRules` decision.
 
@@ -54,9 +51,26 @@ In `pages/_app.tsx`, the whole page tree sits inside `Layout`, which is loaded w
 - `src/utils/getMetaTags/ProjectDetailsMeta.tsx` is rendered by `ProjectDetails`, and also returns `<></>` until `isInitialized`.
 - `GetHomeMeta`, `ProjectsListMeta` and `GetPublicUserProfileMeta` work the same way.
 
-So, going by the code, the server HTML has no project title, description or `og:image`.
-Google runs JavaScript and mostly copes. Facebook, LinkedIn, X, WhatsApp and Slack do not, so a shared project link most likely shows a generic card or none.
-Confirm with `curl` on a project URL and search the output for `og:title`.
+Confirmed on 2026-10-02 with `curl` against production:
+
+```bash
+curl -s https://web.plant-for-the-planet.org/en/yucatan | grep -oE '<(meta|title)[^>]*>'
+```
+
+That project page on the main site returns 200 and 59 KB, with zero `og:` or `<title>` tags. The only head tags are:
+
+```html
+<meta charSet="utf-8" data-next-head=""/>
+<meta name="viewport" content="width=device-width" data-next-head=""/>
+```
+
+plus two Sentry tracing tags. No `og:title`, no `og:image`, no `og:description`, no `twitter:card`, and **no `<title>` either**.
+
+Checked on six URLs: a project page and `/en/home` on each of `web.plant-for-the-planet.org` (the main site), `trees.salesforce.com` (another tenant) and `planet-app-sf` (Heroku). All six are the same, so it is not a hosting, tenant or single-page quirk.
+
+The missing `<title>` matters more than the Open Graph tags. Share cards on Facebook, LinkedIn, X, WhatsApp and Slack show nothing useful, because none of those run JavaScript. But a missing title also affects ordinary search results, and it is a primary ranking signal. Google does run JavaScript, so it mostly copes, though rendering is deferred and budget-limited.
+
+Note that `www.plant-for-the-planet.org` does serve these tags. That is the separate WordPress marketing site, not this app.
 
 This is the one concrete, measurable gain the App Router would bring here. It can also be fixed on the Pages Router, see [Staying on the Pages Router](#staying-on-the-pages-router-with-nextjs-16).
 
@@ -151,7 +165,7 @@ What we give up:
 - Per-section `loading.tsx` and `error.tsx`, and the metadata API.
 - New framework features. These land in the App Router first, and some will never reach the Pages Router. This is a slow, long-term cost, not an urgent one.
 
-What we keep: security patches, Turbopack, and good SEO.
+What we keep: security patches and Turbopack. SEO is not something we keep, because it does not work today. The fix below is what gets it.
 
 The share card gap can be fixed on the Pages Router today:
 - In `getStaticProps` for `[p].tsx`, fetch the public project and set a `revalidate` time.
@@ -171,11 +185,11 @@ Yes as a direction, no as the next step.
 
 ### Stage 0: finish Next.js 16 on the Pages Router
 
-1. Merge `feature/eslint-flat-config-migration`, `feature/upgrade-bundle-analyzer` and `feature/remove-dead-tooling`.
-2. Decide on Heroku. `server.js`, `Procfile` and `app.json` were last touched on 2026-07-28, so something may still use them. If nothing does, delete them. A custom server makes every later step harder.
-3. Upgrade to Next 16 with `--webpack`, set `agentRules: false` (it rewrites `CLAUDE.md`), and rename `middleware.ts` to `proxy.ts` with the codemod.
-4. Fix E2E: move Cypress to the current setup, or replace it with Playwright.
-5. Add the typecheck job and record the baseline of about 127 errors.
+1. **Heroku stays.** Decided 2026-09-21 on deployment evidence, see [item 1.7 of the staged upgrade plan](./nextjs-16-staged-upgrade-plan-pages-router.md#7-decide-whether-the-custom-expressheroku-server-is-still-a-real-production-path). `server.js`, `Procfile`, `app.json` and `express` all remain, so the custom server is a constraint on every later stage rather than something to delete. Three consequences: `server.js` must call `next({ webpack: true })`, `--webpack` belongs in the `build` script rather than only on a local command line, and the tenant rewrite through `getRequestHandler()` needs checking on a real dyno.
+2. Upgrade to Next 16 with `--webpack`, set `agentRules: false` (it rewrites `CLAUDE.md`), and rename `middleware.ts` to `proxy.ts` with the codemod.
+3. Add the typecheck job, using the baseline recorded in [item 0.4 of the staged upgrade plan](./nextjs-16-staged-upgrade-plan-pages-router.md#04-make-current-type-debt-visible-without-blocking-the-upgrade).
+
+Cypress is not part of Stage 0. The suite is dormant and does not run, see [item 0.2 of the staged upgrade plan](./nextjs-16-staged-upgrade-plan-pages-router.md#02-repair-or-replace-cypress-before-upgrading-nextjs).
 
 ### Stage 1: groundwork, still on the Pages Router, no `app/` folder yet
 
@@ -312,4 +326,3 @@ Yes as a direction, no as the next step.
 ## Open questions
 
 1. What is the main reason for the App Router? If it is SEO and share cards, the quick Pages Router fix may be enough for a long time. If it is staying current or nested layouts, step 5 above is a cheap way to test that.
-2. Is Heroku still serving anything? The answer decides how much of Stage 0 can be simplified.
