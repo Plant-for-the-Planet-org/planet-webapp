@@ -1,5 +1,5 @@
 import type { Control, FieldErrors } from 'react-hook-form';
-import type { Recipient } from '../BulkCodesTypes';
+import type { RecipientUploadRow } from '../BulkCodesTypes';
 
 import { TableCell, TextField, MenuItem } from '@mui/material';
 import { Controller } from 'react-hook-form';
@@ -8,15 +8,15 @@ import { isEmailValid } from '../../../../utils/isEmailValid';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 
 interface Props {
-  control: Control<Recipient>;
-  errors: FieldErrors<Recipient>;
+  control: Control<RecipientUploadRow>;
+  errors: FieldErrors<RecipientUploadRow>;
 }
 
 const RecipientFormFields = ({ control, errors }: Props) => {
   const t = useTranslations('BulkCodes');
   const validateRequiredIfNotify = (
     value: string,
-    formValues: Recipient
+    formValues: RecipientUploadRow
   ): string | true => {
     return formValues.recipient_notify === 'yes' && value.length === 0
       ? t('errorAddRecipient.requiredForNotifications')
