@@ -179,6 +179,8 @@ The goal is to detect new type breakage, not to turn this project into a full ty
 
 The old `TS6053` cannot come back either. Next.js 16 writes `next-env.d.ts` with side-effect `import` lines instead of the old `/// <reference path>` line, and TypeScript does not check side-effect imports unless `noUncheckedSideEffectImports` is on. With the file present and `.next/types` deleted, `tsc` still reported the same 125 errors and nothing about the missing files.
 
+**The install must still match the lockfile.** On 2026-10-02 a stale `node_modules` reported **180 errors** rather than 125. 36 of the extra errors were `Cannot find module 'react-map-gl/maplibre'`, because the MapLibre v6 upgrade was in the lockfile but not installed, and the rest were downstream failures in the same map files. Run `npm ci` first. Only one of the 125 is a missing module, `@testing-library/react`, which is not a dependency and is the known `YearHeader.test.tsx` gap.
+
 ---
 
 ## 0.5 Repair the Chromatic job, which is already red
@@ -319,7 +321,7 @@ This section previously said the workflow had only been verified by reasoning, a
 
 What worked: Storybook published, Chromatic found 45 components with 90 stories, and all 90 snapshots captured. `storybookBuildDir: storybook-static` did reuse the existing build rather than building Storybook a second time. The CLI reported no snapshot-difference count at all, so the expected flood never appeared in the job output. Whether the baseline still needs re-accepting is only answerable in the Chromatic UI.
 
-What failed: the job went red anyway, for a reason unrelated to the upgrade. The CLI exited 2 with `Encountered 2 build errors`, which is Chromatic's wording for stories that throw while rendering. `exitZeroOnChanges` suppresses snapshot *changes* only, not component errors, so it could never have kept this run green.
+What failed: the job went red anyway, for a reason unrelated to the upgrade. The CLI exited 2 with `Encountered 2 build errors`, which is Chromatic's wording for stories that throw while rendering. `exitZeroOnChanges` suppresses snapshot _changes_ only, not component errors, so it could never have kept this run green.
 
 Those two errors predate the upgrade. Build 1163, on `develop` on 2026-09-18 with Storybook 8 and Chromatic CLI 11, failed identically: same exit code, same two component errors, same 90 stories across 45 components. So the Storybook 10 upgrade neither caused the failure nor fixed it, and the red belongs to Phase 0 CI repair rather than to this section. See 0.5.
 
@@ -502,7 +504,7 @@ Three things follow from the decision, and all of them belong to Phase 3.
 First, update the programmatic Next.js initialization so Webpack is explicit in Next.js 16:
 
 ```js
-next({ dir: '.', dev, webpack: true })
+next({ dir: '.', dev, webpack: true });
 ```
 
 This lives in `server.js`. **Done** on the `feature/nextjs-16-upgrade` branch. It only matters when `server.js` runs in dev mode; see 3.1.
@@ -694,7 +696,7 @@ Update scripts so both common entry points are explicit, for example:
 The custom server remains (item 1.7), so also set:
 
 ```js
-next({ dir: '.', dev, webpack: true })
+next({ dir: '.', dev, webpack: true });
 ```
 
 This option only matters when `server.js` runs in dev mode. Heroku starts it with `NODE_ENV=production`, where Next.js serves the finished `.next` build and no bundler runs. What protects Heroku is the `--webpack` in the `build` script, because `heroku-postbuild` runs `npm run build`.
@@ -998,7 +1000,7 @@ The following existing patterns should stay in place during this project unless 
 Keep:
 
 ```tsx
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 ```
 
 Do not migrate these usages to `next/navigation` as part of this upgrade.
@@ -1010,7 +1012,7 @@ Do not migrate these usages to `next/navigation` as part of this upgrade.
 Keep:
 
 ```tsx
-import Head from "next/head";
+import Head from 'next/head';
 ```
 
 Do not migrate the existing usages to the App Router Metadata API.
@@ -1037,7 +1039,7 @@ Keep:
 export async function getStaticPaths() {
   return {
     paths: [],
-    fallback: "blocking",
+    fallback: 'blocking',
   };
 }
 ```
@@ -1207,6 +1209,8 @@ Reassess separately when there is a concrete architectural reason to adopt:
 - server-rendered SEO-heavy pages.
 
 The Next.js 16 upgrade should not be used as a reason to perform this migration.
+
+The decision and a route-by-route plan for after this upgrade are in [nextjs-app-router-migration-roadmap.md](./nextjs-app-router-migration-roadmap.md).
 
 ---
 
