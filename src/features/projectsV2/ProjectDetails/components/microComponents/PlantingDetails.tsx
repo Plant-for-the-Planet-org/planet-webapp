@@ -15,7 +15,7 @@ const PlantingDetails = ({ plantingDensity, plantDate }: Props) => {
   const plantingDetails = [
     {
       label: tProjectDetails('plantingDate'),
-      data: plantDate ? formatDate(plantDate) : null,
+      data: plantDate ? formatDate(plantDate, locale) : null,
       shouldRender: plantDate !== null,
     },
     {
