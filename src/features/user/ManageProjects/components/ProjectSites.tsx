@@ -226,12 +226,11 @@ export default function ProjectSites({
     try {
       setIsUploadingData(true);
       await deleteApiAuthenticated(`/app/projects/${projectGUID}/sites/${id}`);
-      setSiteList((prev) => {
-        const updatedList = prev.filter((item) => item.id !== id);
-        // No sites left, so show the form instead of an empty list.
-        if (updatedList.length === 0) setShowForm(true);
-        return updatedList;
-      });
+      // Reads siteList from this render, not prev. Safe because the confirm modal stays open until the delete ends, so the list can't change meanwhile.
+      const updatedList = siteList.filter((item) => item.id !== id);
+      setSiteList(updatedList);
+      // No sites left, so show the form instead of an empty list.
+      if (updatedList.length === 0) setShowForm(true);
     } catch (err) {
       setErrors(handleError(err as APIError));
     } finally {
