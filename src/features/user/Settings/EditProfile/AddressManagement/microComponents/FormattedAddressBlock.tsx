@@ -1,6 +1,5 @@
 import type { Address, CountryCode } from '@planet-sdk/common';
 
-import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { getFormattedAddress } from '../../../../../../utils/addressManagement';
 
@@ -9,13 +8,15 @@ interface Props {
 }
 
 const FormattedAddressBlock = ({ userAddress }: Props) => {
-  if (!userAddress) return null;
   const tCountry = useTranslations('Country');
+  if (!userAddress) return null;
   const { zipCode, city, state, country, address, address2 } = userAddress;
   const countryName = tCountry(country.toLowerCase() as Lowercase<CountryCode>);
-  const cityStatePostalString = useMemo(
-    () => getFormattedAddress(zipCode, city, state, countryName),
-    [zipCode, city, state, countryName]
+  const cityStatePostalString = getFormattedAddress(
+    zipCode,
+    city,
+    state,
+    countryName
   );
   return (
     <address>

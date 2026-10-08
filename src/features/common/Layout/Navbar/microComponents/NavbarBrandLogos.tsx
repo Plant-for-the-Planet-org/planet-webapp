@@ -1,7 +1,7 @@
 import PlanetLogo from './PlanetLogo';
 import SecondaryLogo from './SecondaryLogo';
 import { useEffect, useState } from 'react';
-import { useMobileDetection } from '../../../../../utils/navbarUtils';
+import { subscribeToMobileDetection } from '../../../../../utils/navbarUtils';
 import styles from '../Navbar.module.scss';
 
 const NavbarBrandLogos = () => {
@@ -11,9 +11,12 @@ const NavbarBrandLogos = () => {
 
   useEffect(() => {
     const maxWidth = '481px';
-    const cleanup = useMobileDetection(maxWidth, (isMobile: boolean) => {
-      setIsMobile(isMobile);
-    });
+    const cleanup = subscribeToMobileDetection(
+      maxWidth,
+      (isMobile: boolean) => {
+        setIsMobile(isMobile);
+      }
+    );
     return () => {
       if (cleanup) cleanup();
     };

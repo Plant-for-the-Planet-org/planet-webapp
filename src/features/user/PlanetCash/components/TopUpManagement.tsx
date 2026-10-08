@@ -34,11 +34,9 @@ interface TopUpManagementProps {
   account: PlanetCashAccount;
 }
 
-const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
-  if (!account.paymentMethods || account.paymentMethods.length === 0) {
-    return <></>;
-  }
-
+const TopUpManagementForm = ({
+  account,
+}: TopUpManagementProps): ReactElement => {
   const tTopUp = useTranslations('PlanetCash.topUpManagement');
   const locale = useLocale();
   const { putApiAuthenticated, deleteApiAuthenticated } = useApi();
@@ -397,6 +395,14 @@ const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
       />
     </StyledForm>
   );
+};
+
+// Kept separate so the form's hooks never run for an account without payment methods.
+const TopUpManagement = ({ account }: TopUpManagementProps): ReactElement => {
+  if (!account.paymentMethods || account.paymentMethods.length === 0) {
+    return <></>;
+  }
+  return <TopUpManagementForm account={account} />;
 };
 
 export default TopUpManagement;

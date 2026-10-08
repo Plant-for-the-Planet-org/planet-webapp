@@ -26,8 +26,6 @@ const SingleLayerOption = ({
   mapOptions,
   updateMapOption,
 }: Props) => {
-  if (!layerConfig.isAvailable) return null;
-
   const tExplore = useTranslations('Maps.exploreLayers');
   const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
 
@@ -56,6 +54,8 @@ const SingleLayerOption = ({
       handleClose();
     }
   }, []);
+
+  if (!layerConfig.isAvailable) return null;
 
   const singleLayerOptionStyles = clsx(styles.singleLayerOption, {
     [styles.legendVisible]: isLegendVisible,

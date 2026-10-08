@@ -67,19 +67,19 @@ const DonorContactManagement = () => {
     (state) => state.updateDonorAndAddress
   );
 
-  // Ownership can only be decided once the store has hydrated, otherwise the default (empty) email would read as "not the owner".
-  if (!isHydrated) return <Skeleton height={500} width={600} />;
-
-  const isOwner = validateOwnership(email, userProfile?.email);
-  if (!isOwner && operation !== RECEIPT_STATUS.ISSUE)
-    return <EditPermissionDenied />;
-
   // Navigate back to the verification page
   const navigateToVerificationPage = useCallback(() => {
     router
       .push('/profile/donation-receipt/verify')
       .then(() => setIsLoading(false));
   }, [router]);
+
+  // Ownership can only be decided once the store has hydrated, otherwise the default (empty) email would read as "not the owner".
+  if (!isHydrated) return <Skeleton height={500} width={600} />;
+
+  const isOwner = validateOwnership(email, userProfile?.email);
+  if (!isOwner && operation !== RECEIPT_STATUS.ISSUE)
+    return <EditPermissionDenied />;
 
   // Handle form submission and update user info
   const handleUpdateDonorInfo = async (formData: FormValues) => {
