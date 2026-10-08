@@ -24,6 +24,8 @@ interface TabbedViewProps {
   children: ReactNode;
   step: number | string;
   tabItems: TabItem[];
+  /** Show a per-tab completion disc. See TabSteps. */
+  showCompletionStatus?: boolean;
 }
 
 /**
@@ -35,6 +37,7 @@ export default function TabbedView({
   children,
   step,
   tabItems,
+  showCompletionStatus = false,
 }: TabbedViewProps): ReactElement {
   const [isStepFound, setIsStepFound] = useState(false);
   const [stepToRender, setStepToRender] = useState<string | number | false>(
@@ -61,7 +64,13 @@ export default function TabbedView({
         item
         xs={12}
         md={3}
-        component={() => <TabSteps step={stepToRender} tabItems={tabItems} />}
+        component={() => (
+          <TabSteps
+            step={stepToRender}
+            tabItems={tabItems}
+            showCompletionStatus={showCompletionStatus}
+          />
+        )}
       ></Grid>
       <Grid
         item

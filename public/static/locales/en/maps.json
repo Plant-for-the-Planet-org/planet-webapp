@@ -266,6 +266,7 @@
         "solutionChrome": "<strong>Chrome:</strong> Settings → Advanced → System → Enable \"Use graphics acceleration when available\"",
         "solutionFirefox": "<strong>Firefox:</strong> Settings → General → Performance → Uncheck \"Use recommended performance settings\"",
         "solutionEdge": "<strong>Edge:</strong> Settings → System → Enable \"Use hardware acceleration when available\"",
+        "outdatedBrowser": "If these steps do not help, your browser or device may be too old to show the map. Updating your browser or operating system may fix it.",
         "contactInfo": "If you continue to have issues, please contact us at support@plant-for-the-planet.org for assistance.",
         "technicalDetails": "Technical details"
       }
