@@ -98,11 +98,12 @@ target files that PR creates. See the sections above for detail.
 - [x] Stand up the runner: vitest + jsdom, `test` / `test:watch` / `test:verbose` / `typecheck` scripts, `vitest.config.mts`, one passing test. The config is `.mts` because the repo has no `"type": "module"`, so a `.ts` config loads as CommonJS and Vite warns about it.
 - [x] Pure-logic tests: `validateToken.ts`, then `setHeader.ts`.
 - [x] CI job for tests: `.github/workflows/test.yml` runs `npm run test` on every pull request, and on pushes to `develop` so merges are covered too. Not a required check yet, see below.
-- [ ] Make the test job a required check. Blocked: six `setHeader` tests assert the behaviour we want and fail on purpose until #3041 and #3056 land.
+- [x] Project page tests (#3016): `@testing-library/react`, shared helpers in `src/test-utils/`, store tests for `singleProjectStore` and `projectStore`, and hook tests for `useInitializeSingleProject`, `useInitializeProject` and `useInitializeLanguage`. Includes regression tests for #3010, #3011 and #3015.
+- [ ] Make the test job a required check. No longer blocked: #3041 and #3056 are closed and the suite is green. Needs a repo admin to turn it on.
 - [ ] Typecheck in CI. Deferred on purpose: `tsc --noEmit` reports 131 pre-existing errors, measured on 2026-08-11. Fix those first, or baseline the count, otherwise the gate is noise.
 - [ ] Store tests (needs 2837): `userStore` actions, `authStore`.
-- [ ] Add `@testing-library/react`; init-hook tests (needs 2837): `useInitializeUser`,
+- [ ] Init-hook tests (needs 2837): `useInitializeUser`,
       `useInitializeAuth`, `useProfileErrorHandler`.
-- [ ] `renderWithProviders` helper, then page render tests.
+- [ ] `renderWithProviders` helper, then page render tests. First candidate: the `ProjectsLayout` content gate that caused #3010, which needs `@testing-library/jest-dom`.
 - [ ] Decide Cypress: migrate (per `cypress/MIGRATION_NEEDED.md`) or retire.
 - [ ] Later: Playwright for a few critical-path end-to-end smoke flows.
