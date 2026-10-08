@@ -241,8 +241,8 @@ export default function ProjectSites({
   };
 
   const uploadProjectSiteNext = async (data: ProjectSitesFormData) => {
-    // No new site is being drafted.
-    if (!geoJson || geoJson.features.length === 0) {
+    // The form is hidden, so no new site is being drafted. Don't check geoJson: editSite also writes to it.
+    if (!showForm) {
       handleNext(ProjectCreationTabs.PROJECT_SPENDING);
       return;
     }
