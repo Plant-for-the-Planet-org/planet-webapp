@@ -163,7 +163,9 @@ const IssueCodesForm = (): ReactElement | null => {
           // which resets the form state and shows the empty form again
           // before the redirect.
           setTimeout(async () => {
-            await router.push(localizedPath(`/profile/history?ref=${res.uid}`));
+            //TODO: adapt to handle ref and open the correct item in the history tab
+            // await router.push(localizedPath(`/profile/history?ref=${res.uid}`));
+            await router.push(localizedPath('/profile/payments'));
             resetBulkCodeStore();
             refetchUserProfile();
           }, 5000);
