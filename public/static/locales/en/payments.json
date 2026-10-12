@@ -1,0 +1,20 @@
+{
+  "Payments": {
+    "loadError": "Couldn't load your payments. Try again.",
+    "retry": "Try again",
+    "selectPayment": "Select a payment to see its details",
+    "dedicated": "Dedicated",
+    "dedicatedTo": "Dedicated to",
+    "donationId": "Donation ID",
+    "fundraiser": "Fundraiser",
+    "supports": "Supports",
+    "supportedProjects": "Supported projects",
+    "support": "Support",
+    "feeCovered": "You covered the fee",
+    "tax": "Tax",
+    "noPaymentMethods": "No saved payment methods",
+    "remove": "Remove",
+    "default": "Default",
+    "confirmRemoveMethod": "Remove this payment method?"
+  }
+}

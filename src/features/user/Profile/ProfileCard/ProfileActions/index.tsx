@@ -39,7 +39,7 @@ const ProfileActions = ({ profilePageType, userProfile }: ProfileV2Props) => {
         icon={<AllDonations />}
         text={t('feature.allDonations')}
         elementType={'link'}
-        href={'/profile/history'}
+        href={'/profile/payments'}
       />
       <WebappButton
         icon={<RedeemIcon />}
