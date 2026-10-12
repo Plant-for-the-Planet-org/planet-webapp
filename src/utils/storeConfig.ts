@@ -37,12 +37,13 @@ export async function storeConfig(tenantConfig: Tenant) {
     // Piggyback on this same fetch for the geo-detected currency rather than
     // firing a second request. Only used when nothing is stored yet; a
     // stored or explicitly selected currency always takes precedence.
-    let geoCurrencyCode: CurrencyCode | null = null;
     if (!localStorage.getItem('currencyCode') && config.currency) {
-      geoCurrencyCode = config.currency as CurrencyCode;
-      localStorage.setItem('currencyCode', geoCurrencyCode);
+      localStorage.setItem('currencyCode', config.currency);
     }
-    resolveGeoCurrencyCode(geoCurrencyCode);
+    // Read back from storage: the geo currency on a first visit, or the visitor's saved one. If this ever runs before `initializeCurrencyCode`, a returning visitor still gets their own currency, not the EUR placeholder.
+    resolveGeoCurrencyCode(
+      localStorage.getItem('currencyCode') as CurrencyCode | null
+    );
   } catch (err) {
     console.log(`Something went wrong: ${err}`);
     // Any failure, including the session lookup before the fetch starts, must still unblock currency-dependent requests. A `.catch` on the fetch would miss that one.
