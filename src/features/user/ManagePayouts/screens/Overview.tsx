@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import BankAccountLoader from '../../../../../public/assets/images/icons/BankAccountLoader';
 import BankAccountDetails from '../components/BankAccountDetails';
 import NoBankAccount from '../components/NoBankAccount';
+import BankAccountsLoadError from '../components/BankAccountsLoadError';
 import { useManagePayoutStore } from '../../../../stores';
 
 const Overview = (): ReactElement | null => {
@@ -13,8 +14,7 @@ const Overview = (): ReactElement | null => {
     return <BankAccountLoader />;
   }
 
-  // A failed fetch is reported through the global error popup; avoid claiming "no accounts" here.
-  if (accountsStatus === 'error') return null;
+  if (accountsStatus === 'error') return <BankAccountsLoadError />;
 
   if (!accounts || accounts.length === 0) return <NoBankAccount />;
 

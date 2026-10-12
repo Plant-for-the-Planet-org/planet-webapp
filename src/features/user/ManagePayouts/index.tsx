@@ -114,13 +114,6 @@ export default function ManagePayouts({
     if (isAuthReady) fetchAccounts();
   }, [isAuthReady, userId, accountsStatus]);
 
-  // The store outlives this page, so give an earlier failure one retry per visit. Not in the effect above: it re-runs on every status change, so a broken API would retry in a loop.
-  useEffect(() => {
-    if (useManagePayoutStore.getState().accountsStatus === 'error') {
-      setAccountsStatus('idle');
-    }
-  }, []);
-
   useEffect(() => {
     if (isTpo) {
       setTabConfig([
