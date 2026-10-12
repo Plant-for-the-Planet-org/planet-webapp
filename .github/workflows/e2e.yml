@@ -1,0 +1,47 @@
+name: 'E2E tests'
+# Runs when Vercel reports a finished deployment, so the tests hit the preview Vercel already built instead of building the app again here.
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+jobs:
+  playwright:
+    name: 'Playwright on Ubuntu'
+    # Vercel also reports `planet-app-sf`, `Production` and `planet-app-sf-prod` deployments. Only PR previews are tested.
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Preview'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: 'Checkout the repository'
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+          cache: 'npm'
+
+      - name: 'Install Node Modules'
+        run: npm ci
+        env:
+          # This job never runs Cypress, so skip downloading its app. Remove this line together with Cypress.
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: 'Install Playwright Chromium'
+        run: npx playwright install --with-deps chromium
+
+      - name: 'Run E2E tests'
+        run: npm run test:e2e
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ github.event.deployment_status.environment_url }}
+
+      - name: 'Upload the Playwright report'
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          # The HTML report includes the trace of each failed test.
+          path: playwright-report/
+          retention-days: 14
