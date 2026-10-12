@@ -7,6 +7,9 @@ import { useCurrencyStore } from '../stores/currencyStore';
 
 export async function storeConfig(tenantConfig: Tenant) {
   const { resolveGeoCurrencyCode } = useCurrencyStore.getState();
+  // On a first visit the project pages wait for this request, so cap the wait. Not `AbortSignal.timeout`: it needs Safari 16, and we support Safari 13.
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
 
   try {
     const res = await fetch(`${process.env.CONFIG_URL}`, {
@@ -14,6 +17,7 @@ export async function storeConfig(tenantConfig: Tenant) {
         'tenant-key': `${tenantConfig?.id}`,
         'X-SESSION-ID': await getsessionId(),
       },
+      signal: controller.signal,
     });
     const config = await res.json();
     localStorage.setItem('config', JSON.stringify(config));
@@ -43,6 +47,8 @@ export async function storeConfig(tenantConfig: Tenant) {
     console.log(`Something went wrong: ${err}`);
     // Any failure, including the session lookup before the fetch starts, must still unblock currency-dependent requests. A `.catch` on the fetch would miss that one.
     resolveGeoCurrencyCode(null);
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 
