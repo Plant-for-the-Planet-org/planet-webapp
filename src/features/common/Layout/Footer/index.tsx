@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import UNEPLogo from '../../../../../public/assets/images/footer/UNEPLogo';
 import World from '../../../../../public/assets/images/footer/World';
 import IconButton from '../../IconButton';
@@ -19,7 +19,6 @@ export default function Footer(): ReactElement | null {
   const locale = useLocale();
   // local state
   const [openModal, setOpenModal] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState('DE');
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
@@ -82,16 +81,6 @@ export default function Footer(): ReactElement | null {
       link: `https://www.plant-for-the-planet.org/${locale}/faq`,
     },
   };
-
-  // changes the language and selected country as found in local storage
-  useEffect(() => {
-    if (typeof Storage !== 'undefined') {
-      if (localStorage.getItem('countryCode')) {
-        const countryCode = localStorage.getItem('countryCode');
-        if (countryCode) setSelectedCountry(countryCode);
-      }
-    }
-  }, []);
 
   return (
     <footer>
@@ -418,8 +407,6 @@ export default function Footer(): ReactElement | null {
         <SelectLanguageAndCountry
           openModal={openModal}
           handleModalClose={handleModalClose}
-          selectedCountry={selectedCountry}
-          setSelectedCountry={setSelectedCountry}
         />
       </div>
     </footer>

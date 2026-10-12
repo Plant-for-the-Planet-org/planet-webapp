@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLocale } from 'next-intl';
 import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
 import GlobeIcon from '../../../../../public/assets/images/icons/Sidebar/Globe';
@@ -10,19 +10,8 @@ function LanguageSwitcher() {
   const locale = useLocale();
 
   const [openModal, setOpenModal] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState('DE');
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
-
-  useEffect(() => {
-    if (typeof Storage !== 'undefined') {
-      //fetching country code from browser's localstorage
-      if (localStorage.getItem('countryCode')) {
-        const countryCode = localStorage.getItem('countryCode');
-        if (countryCode) setSelectedCountry(countryCode);
-      }
-    }
-  }, []);
 
   return (
     <>
@@ -42,8 +31,6 @@ function LanguageSwitcher() {
       <SelectLanguageAndCountry
         openModal={openModal}
         handleModalClose={() => setOpenModal(false)}
-        selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry}
       />
     </>
   );

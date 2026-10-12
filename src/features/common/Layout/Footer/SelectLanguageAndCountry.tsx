@@ -34,8 +34,6 @@ interface MapLanguageProps {
 interface TransitionsModalProps {
   openModal: boolean;
   handleModalClose: () => void;
-  selectedCountry: string;
-  setSelectedCountry: Function;
 }
 
 // Maps the radio buttons for language
@@ -120,8 +118,6 @@ function MapCountry({ value, handleChange }: MapCountryProps) {
 export default function TransitionsModal({
   openModal,
   handleModalClose,
-  selectedCountry,
-  setSelectedCountry,
 }: TransitionsModalProps) {
   const tCommon = useTranslations('Common');
   const locale = useLocale();
@@ -146,7 +142,6 @@ export default function TransitionsModal({
   // changes the language and currency code in footer state and local storage when user clicks on OK
   function handleOKClick() {
     window.localStorage.setItem('countryCode', selectedModalCountry);
-    setSelectedCountry(selectedModalCountry);
 
     const country = getCountryDataBy('countryCode', selectedModalCountry);
 
@@ -179,13 +174,12 @@ export default function TransitionsModal({
     }
   }, [locale]);
 
-  // changes the selected country in local state whenever the currency changes
-  // in Footer state
+  // Read on open, not on mount: on a first visit, storeConfig writes the geo country after the page has mounted.
   useEffect(() => {
-    if (selectedCountry) {
-      setSelectedModalCountry(selectedCountry);
-    }
-  }, [selectedCountry]);
+    if (!openModal) return;
+    const storedCountry = localStorage.getItem('countryCode');
+    if (storedCountry) setSelectedModalCountry(storedCountry);
+  }, [openModal]);
 
   return (
     <Modal

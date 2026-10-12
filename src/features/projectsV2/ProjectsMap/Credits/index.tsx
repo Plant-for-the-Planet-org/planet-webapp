@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './Credits.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
@@ -17,7 +17,6 @@ export default function Credits({ isMobile }: Props): ReactElement {
   const tMaps = useTranslations('Maps');
   const locale = useLocale();
   // local state
-  const [selectedCountry, setSelectedCountry] = useState('DE');
   const [openLanguageModal, setLanguageModalOpen] = useState(false);
   // store: state
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
@@ -27,16 +26,6 @@ export default function Credits({ isMobile }: Props): ReactElement {
   const handleLanguageModalClose = () => {
     setLanguageModalOpen(false);
   };
-
-  useEffect(() => {
-    if (typeof Storage !== 'undefined') {
-      //fetching country code from browser's localstorage
-      if (localStorage.getItem('countryCode')) {
-        const countryCode = localStorage.getItem('countryCode');
-        if (countryCode) setSelectedCountry(countryCode);
-      }
-    }
-  }, []);
 
   const separator = isMobile && !isEmbedMode ? '|' : null;
 
@@ -152,8 +141,6 @@ export default function Credits({ isMobile }: Props): ReactElement {
       <SelectLanguageAndCountry
         openModal={openLanguageModal}
         handleModalClose={handleLanguageModalClose}
-        selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry}
       />
     </>
   );
