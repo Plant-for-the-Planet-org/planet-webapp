@@ -12,13 +12,10 @@ import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import { useIsAuthReady } from '../../../hooks/useAuthReadiness';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import {
-  useAuthStore,
-  useErrorHandlingStore,
-  usePlanetCashStore,
-} from '../../../stores';
+import { useErrorHandlingStore, usePlanetCashStore } from '../../../stores';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -40,15 +37,13 @@ export default function PlanetCash({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const locale = useLocale();
+  const isAuthReady = useIsAuthReady();
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
   // store: state
   const planetCashAccounts = usePlanetCashStore(
     (state) => state.planetCashAccounts
-  );
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
   );
   // store: action
   const setPlanetCashAccounts = usePlanetCashStore(
