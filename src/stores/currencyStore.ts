@@ -16,15 +16,9 @@ interface CurrencyStore {
   /**
    * Whether `currencyCode` is settled and safe to key requests on.
    *
-   * `currencyCode` starts at a placeholder `'EUR'`, which is indistinguishable
-   * from a real choice, so callers that key requests on currency must wait for
-   * this rather than reading the code straight away. It becomes `true` as soon
-   * as one of these settles: a stored `localStorage` value (`initializeCurrencyCode`),
-   * an explicit user selection (`setCurrencyCode`), or the geo-lookup piggybacked
-   * on the tenant config fetch, success or failure (`resolveGeoCurrencyCode`,
-   * called from `storeConfig`). On a first visit with nothing stored, this stays
-   * `false` until the geo lookup settles, so no request goes out with the EUR
-   * placeholder.
+   * `currencyCode` starts at a placeholder `'EUR'`, which is indistinguishable from a real choice, so callers that key requests on currency must wait for this rather than reading the code straight away.
+   * It becomes `true` as soon as one of these settles: a stored `localStorage` value (`initializeCurrencyCode`), an explicit user selection (`setCurrencyCode`), or the geo lookup piggybacked on the tenant config fetch, success or failure (`resolveGeoCurrencyCode`, called from `storeConfig`).
+   * On a first visit with nothing stored, this stays `false` until the geo lookup settles, so no request goes out with the EUR placeholder.
    */
   isCurrencyResolved: boolean;
   isFetching: boolean;
@@ -88,12 +82,10 @@ export const useCurrencyStore = create<CurrencyStore>()(
             'currencyCode'
           ) as CurrencyCode | null;
         } catch {
-          // Storage can be blocked outright in a cross-origin embed. `resolveGeoCurrencyCode`
-          // still resolves this to the default once `storeConfig`'s fetch settles.
+          // Storage can be blocked outright in a cross-origin embed. `resolveGeoCurrencyCode` still resolves this to the default once `storeConfig`'s fetch settles.
         }
 
-        // Resolve immediately only when a stored or explicitly selected currency exists.
-        // Otherwise, wait for `resolveGeoCurrencyCode` to avoid using the EUR placeholder.
+        // Resolve immediately only when a stored or explicitly selected currency exists. Otherwise, wait for `resolveGeoCurrencyCode` to avoid using the EUR placeholder.
         if (!storedCurrency) return;
 
         set(
@@ -104,8 +96,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
       },
 
       resolveGeoCurrencyCode: (code) => {
-        // A stored value or an explicit selection already resolved this in the
-        // meantime, the geo lookup is stale and must not override it.
+        // A stored value or an explicit selection already resolved this in the meantime, so the geo lookup is stale and must not override it.
         if (get().isCurrencyResolved) return;
 
         set(

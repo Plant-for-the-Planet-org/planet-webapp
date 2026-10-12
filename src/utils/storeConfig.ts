@@ -34,9 +34,8 @@ export async function storeConfig(tenantConfig: Tenant) {
       }
     }
 
-    // Piggyback on this same fetch for the geo-detected currency rather than
-    // firing a second request. Only used when nothing is stored yet; a
-    // stored or explicitly selected currency always takes precedence.
+    // Piggyback on this same fetch for the geo-detected currency rather than firing a second request.
+    // Only used when nothing is stored yet; a stored or explicitly selected currency always takes precedence.
     if (!localStorage.getItem('currencyCode') && config.currency) {
       localStorage.setItem('currencyCode', config.currency);
     }
