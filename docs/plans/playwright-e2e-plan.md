@@ -3,7 +3,7 @@
 Findings and a proposed plan for adding Playwright end-to-end (E2E) tests to this repo.
 It expands the "Later: Playwright" item in [testing-roadmap.md](./testing-roadmap.md), which already says to prefer Playwright over reviving the broken Cypress suite and to keep E2E to a few critical-path smoke flows.
 
-> Status (2026-10-12): Playwright is set up on `feature/playwright-e2e`, and the project search tests pass locally and against a Vercel preview. CI, the "list opens a project" test, the Cypress removal, and logged-in tests are still to do. See the tasks at the bottom.
+> Status (2026-10-12): Playwright is set up on `feature/playwright-e2e`, and the project search tests pass locally and against a Vercel preview. The CI workflow, [e2e.yml](../../.github/workflows/e2e.yml), is written but has not run yet. The "list opens a project" test, the Cypress removal, and logged-in tests are still to do. See the tasks at the bottom.
 
 ## Summary
 
@@ -112,6 +112,7 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 - `PLAYWRIGHT_CHANNEL` picks an installed browser instead of Playwright's own Chromium, for example `msedge`. Only Windows machines with Smart App Control need it (see [Windows: Smart App Control](#windows-smart-app-control)). CI leaves it unset.
 - Locally, Playwright starts `npm run dev`, or reuses a dev server that is already running. It uses the developer's existing `.env.local`, so there is nothing new to set up.
 - Phase 2 adds `E2E_USER_EMAIL` and `E2E_USER_PASSWORD`: in a gitignored file locally, and in GitHub secrets for CI.
+- Before adding those secrets, check who can trigger `e2e.yml`. Unlike `pull_request`, a `deployment_status` run gets the repo's secrets, and it runs the workflow from the deployed commit, which for a fork PR is the fork's code.
 - Localhost and previews both fall back to the `planet` tenant. Testing other tenants needs their real domains, so it is out of scope for now.
 
 ## 5. Setup
@@ -168,12 +169,16 @@ Where to find a failed test's recording: `test-results/<test name>/trace.zip`, o
 
 ### Running in CI
 
-- A new workflow, `e2e.yml`, triggered by `deployment_status`, which fires when Vercel finishes a preview.
-- It runs only when the state is `success` and the environment is `Preview`. There is also a `planet-app-sf` environment, which it should skip.
-- Steps: checkout, Node 24 with npm cache, `npm ci`, install Chromium (`npx playwright install --with-deps chromium`), run the tests against the deployment's `environment_url`, and upload the HTML report and traces when a test fails.
+- The workflow is [e2e.yml](../../.github/workflows/e2e.yml), triggered by `deployment_status`, which fires when Vercel reports a deployment to GitHub.
+- It runs only when the state is `success` and the environment is exactly `Preview`. Vercel also reports `planet-app-sf`, `Production`, and `planet-app-sf-prod` deployments, which it skips.
+- Steps: check out the deployed commit, Node 24 with npm cache, `npm ci`, install Chromium (`npx playwright install --with-deps chromium`), run `npm run test:e2e` with `PLAYWRIGHT_BASE_URL` set to the deployment's `environment_url`, and upload the HTML report (which holds the traces) when a test fails. The report is kept for 14 days.
+- `npm ci` sets `CYPRESS_INSTALL_BINARY=0`, so it skips the large Cypress app download. Remove that line together with Cypress.
+- The workflow token is read-only (`contents: read`), and the job stops after 20 minutes.
+- GitHub reads the workflow from the deployed commit, so it only runs for branches that contain `e2e.yml`.
 - Checked on 2026-10-12: Vercel previews are public (a preview returned 200 with no login wall), and the project search tests passed against one in about 30 seconds. That preview was built from another branch, so it proved the setup, not this branch's code.
+- Checked on 2026-10-12 with the GitHub API: Vercel sends one `success` status per preview, with `environment_url` set to the public preview URL. The deployment's `ref` is the commit SHA, not the branch name.
 - Why not build the app in GitHub Actions: Vercel already builds every PR. A second build would need Redis, Auth0, and API secrets (in production mode the app throws on start without Redis, see [redis-client.ts](../../src/redis-client.ts)) and would add minutes. Testing the preview also covers real Vercel hosting.
-- Start as a non-required check, like the unit tests. Make it required once it has been stable for a few weeks.
+- Start as a non-required check, like the unit tests. A check is only required when it is listed in the branch protection or ruleset of `develop`, and `develop` lists no required checks today, so nothing needs to change. Make it required once it has been stable for a few weeks.
 
 ### Cypress
 
@@ -228,12 +233,13 @@ Done:
 - [x] Fail every test on an uncaught page error.
 - [x] Project search tests, passing locally (Chromium and Edge) and against a Vercel preview.
 - [x] Let a Windows machine use Edge through `PLAYWRIGHT_CHANNEL`, for Smart App Control.
+- [x] Add `e2e.yml` running against Vercel previews, as a non-required check.
 
 Pending:
 - [ ] Answer the open questions.
 - [ ] Add the "list opens a project" test.
 - [ ] Push `feature/playwright-e2e` and open a PR to `develop`.
-- [ ] Add `e2e.yml` running against Vercel previews, as a non-required check.
+- [ ] Check that `e2e.yml` runs and passes on this branch's first preview.
 - [ ] Make the E2E check required after a few stable weeks.
 - [ ] Remove Cypress (separate PR).
 - [ ] Phase 2: test account, login setup, and the logged-in tests.
