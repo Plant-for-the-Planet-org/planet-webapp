@@ -10,8 +10,8 @@ export type AccountsFetchStatus = 'idle' | 'loading' | 'ready' | 'error';
 
 interface ManagePayoutStore {
   accounts: BankAccount[] | null;
-  accountsStatus: AccountsFetchStatus;
   setAccounts: (accounts: BankAccount[] | null) => void;
+  accountsStatus: AccountsFetchStatus;
   setAccountsStatus: (status: AccountsFetchStatus) => void;
   payoutMinAmounts: PayoutMinAmounts | null;
   setPayoutMinAmounts: (payoutMinAmounts: PayoutMinAmounts | null) => void;
