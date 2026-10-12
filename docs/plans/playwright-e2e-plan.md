@@ -3,12 +3,12 @@
 Findings and a proposed plan for adding Playwright end-to-end (E2E) tests to this repo.
 It expands the "Later: Playwright" item in [testing-roadmap.md](./testing-roadmap.md), which already says to prefer Playwright over reviving the broken Cypress suite and to keep E2E to a few critical-path smoke flows.
 
-> Status: proposed on 2026-10-09. Nothing is installed yet. See the open questions and tasks at the bottom.
+> Status (2026-10-12): Playwright is set up on `feature/playwright-e2e`, and the project search tests pass locally and against a Vercel preview. CI, the "list opens a project" test, the Cypress removal, and logged-in tests are still to do. See the tasks at the bottom.
 
 ## Summary
 
 - Add Playwright for a few smoke tests of the most important user flows. The goal is confidence in key journeys, not coverage.
-- Start with 5 public, read-only tests. Add logged-in tests in a second phase.
+- Start with public, read-only tests: project search (done) and opening a project from the list. Add logged-in tests in a second phase.
 - In CI, run the tests against the Vercel preview that is already built for every PR, instead of building the app again in GitHub Actions.
 - Remove the broken Cypress setup in a separate PR, so the repo has one E2E tool.
 
@@ -45,7 +45,7 @@ Playwright opens a real browser, clicks and types like a person, and checks what
 It is free, made by Microsoft, and comes with its own test runner (`@playwright/test`).
 
 The problem it solves: Vitest checks small pieces alone, with everything around them faked. It cannot tell us whether a page still works when middleware, tenant config, translations, Auth0, and the API all run together. Playwright can.
-Example: the crash fixed in 6c6f2fad0 ("guard against null project name in project snippet") is the kind of bug a simple "home page shows projects" test catches against staging data.
+Example: the crash fixed in 6c6f2fad0 ("guard against null project name in project snippet") is the kind of bug the project search tests catch against staging data, because they load the project list and fail on any uncaught page error.
 
 | Tool | What it checks | Real browser | Time per test |
 |---|---|---|---|
@@ -70,15 +70,14 @@ Terms you will see:
 ## 3. User flows worth testing
 
 Public, no login (phase 1):
-1. Home: `/` goes to `/en` and the project list loads. This needs middleware, tenant config, translations, and the API to all work.
-2. Project page: open a project from the list, or go to one directly (for example `/en/yucatan`).
-3. Donate hand-off: the Donate link points to the donate app with the right project and tenant. This is the money path. We check the link; we do not pay.
-4. Language: `/de` shows German.
-5. Login gate: a logged-out user opening `/en/profile` is sent to the Auth0 login page.
+1. Project search: a donor finds a project by name, even when typed without its accents, sees a message when nothing matches, and gets the list back after clearing the search. Done.
+2. Project page: open a project from the list. Pending.
+
+Not planned: the home redirect (`/` to `/en`), the Donate link hand-off, the German locale, and the login gate.
 
 Logged in (phase 2):
-6. The profile loads for a logged-in user.
-7. A project owner (TPO) sees their projects list.
+3. The profile loads for a logged-in user.
+4. A project owner (TPO) sees their projects list.
 
 Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and redeeming codes. They matter a lot, but they write data and need special accounts.
 
@@ -102,44 +101,51 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 
 ### Test data
 
-- Phase 1 tests are read-only. They need data that stays put, so they use a well-known staging project. `yucatan` exists on staging today.
+- Phase 1 tests are read-only. They need data that stays put, so they use a well-known staging project: `Yucatán Restoration` (slug `yucatan`), set in [e2e/projects.ts](../../e2e/projects.ts).
 - Check shape, not exact values: "a project name is visible", not "1,234,567 trees", since counts change.
+- Do not rely on the order of the project list. The staging API order changed between two runs on 2026-10-12, which broke a test that assumed which projects were listed first.
 - Tests that create data come later. They need a dedicated account, unique names, and cleanup through the API after each test.
 
 ### Environment config
 
 - One variable picks the target: `PLAYWRIGHT_BASE_URL`. When unset it is `http://localhost:3000`. CI sets it to the Vercel preview URL. Same tests, different target.
+- `PLAYWRIGHT_CHANNEL` picks an installed browser instead of Playwright's own Chromium, for example `msedge`. Only Windows machines with Smart App Control need it (see [Windows: Smart App Control](#windows-smart-app-control)). CI leaves it unset.
 - Locally, Playwright starts `npm run dev`, or reuses a dev server that is already running. It uses the developer's existing `.env.local`, so there is nothing new to set up.
 - Phase 2 adds `E2E_USER_EMAIL` and `E2E_USER_PASSWORD`: in a gitignored file locally, and in GitHub secrets for CI.
 - Localhost and previews both fall back to the `planet` tenant. Testing other tenants needs their real domains, so it is out of scope for now.
 
-## 5. Proposed setup
+## 5. Setup
 
 ### Files and scripts
 
-- One new dev dependency: `@playwright/test`. Chromium only at first.
-- New `playwright.config.ts` and an `e2e/` folder for the tests.
+- One dev dependency: `@playwright/test` 1.64. Chromium only.
+- [playwright.config.ts](../../playwright.config.ts) and an `e2e/` folder for the tests:
+  - [e2e/fixtures.ts](../../e2e/fixtures.ts): specs import `test` from here, so every test also fails when the page throws an uncaught error.
+  - [e2e/projects.ts](../../e2e/projects.ts): the staging project the tests use, and a locator for the cards in the project list.
+  - [e2e/project-search.spec.ts](../../e2e/project-search.spec.ts): the project search tests.
 - Two scripts, named like the existing ones: `test:e2e` and `test:e2e:ui`.
 - `.gitignore` entries: `test-results/`, `playwright-report/`, `playwright/.auth/`.
 - No Vitest change. [vitest.config.mts](../../vitest.config.mts) only picks up `*.test.ts`, so `e2e/*.spec.ts` stays separate.
 
-Config sketch (for illustration, to be finalised in the implementation PR):
+### Current config
 
-```ts
-export default defineConfig({
-  testDir: './e2e',
-  retries: process.env.CI ? 2 : 0,
-  use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000',
-    locale: 'en-US',
-    trace: 'on-first-retry',
-  },
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  webServer: process.env.PLAYWRIGHT_BASE_URL
-    ? undefined
-    : { command: 'npm run dev', url: 'http://localhost:3000', reuseExistingServer: true, timeout: 180_000 },
-});
-```
+Checked against [playwright.config.ts](../../playwright.config.ts) on 2026-10-12. "Local" means `PLAYWRIGHT_BASE_URL` is unset, so the tests run against the local dev server.
+
+| Setting | Value | Why |
+|---|---|---|
+| `workers` | 1 locally. Against a deployed URL, Playwright's default (half the CPU cores). | When several workers hit the dev server at once, it can corrupt `.next/dev/prerender-manifest.json` and answer 500 to every page until restarted. A deployed preview can take parallel tests. `fullyParallel` is off, so tests inside one file always run one after another. |
+| `timeout` (per test) | 120 s locally, 30 s against a deployed URL | The dev server builds each page on its first visit, which can take close to a minute. |
+| `expect.timeout` | 10 s | Auto-retrying checks wait up to this long. Search, for example, updates the list about 1 s after typing stops. |
+| `retries` | 2 in CI, 0 otherwise | Smooths over a staging blip in CI. Locally, a failure should show at once. |
+| `forbidOnly` | On in CI | A `test.only` left in the code fails the CI run instead of silently skipping the other tests. |
+| `trace` | `retain-on-failure` | Every test is recorded, and the recording is kept only when the test fails. The first sketch used `on-first-retry`, but local runs have no retries, so it would never record a local failure. |
+| `reporter` | `list` + `html` locally, `github` + `html` in CI | `html` never opens on its own (`open: 'never'`). |
+| `locale` | `en-US` | Fixes the `Accept-Language` header, so the middleware sends `/` to `/en`. |
+| `channel` | `PLAYWRIGHT_CHANNEL`, or Playwright's Chromium when unset | Lets a Windows machine use the signed Edge. See [Windows: Smart App Control](#windows-smart-app-control). |
+| `projects` | One, `chromium`, with `devices['Desktop Chrome']` | Desktop size, 1280 x 720. |
+| `webServer` | Local only: `npm run dev`, reusing a server already on port 3000, 180 s to start | Against a deployed URL there is no server to start. |
+
+Where to find a failed test's recording: `test-results/<test name>/trace.zip`, or open the HTML report with `npx playwright show-report`, which lists each failure with its trace.
 
 ### Running locally
 
@@ -147,11 +153,25 @@ export default defineConfig({
 - Run `npm run test:e2e` to run the tests, or `npm run test:e2e:ui` to watch and debug them.
 - The dev server builds each page on its first visit, so the first run is slow. Later runs are fast.
 
+### Windows: Smart App Control
+
+- Symptom: any run with a visible browser fails at the start with `browserType.launch: spawn UNKNOWN` (`--headed`) or `browserType.connect: spawn UNKNOWN` (the VS Code extension with "Show browser" on). No test reaches the page.
+- Cause: Windows 11 Smart App Control blocks unsigned programs, and Playwright's full Chromium (`%LOCALAPPDATA%\ms-playwright\chromium-<version>\chrome-win64\chrome.exe`) is unsigned. Headless runs still work, because they use a separate headless Chromium that is not blocked.
+- To confirm: Event Viewer, then Applications and Services Logs > Microsoft > Windows > CodeIntegrity > Operational, shows event 3077 for that `chrome.exe`.
+- Fix: set `PLAYWRIGHT_CHANNEL=msedge`. Playwright then uses the installed Microsoft Edge, which is signed, so Windows lets it run. `chrome` (an installed Google Chrome) also works.
+  - PowerShell: `$env:PLAYWRIGHT_CHANNEL = 'msedge'; npm run test:e2e -- --headed`
+  - Git Bash: `PLAYWRIGHT_CHANNEL=msedge npm run test:e2e -- --headed`
+  - VS Code Playwright extension: add `"playwright.env": { "PLAYWRIGHT_CHANNEL": "msedge" }` to `.vscode/settings.json`, which is gitignored, then run "Developer: Reload Window".
+- When the variable is unset, nothing changes. CI and other machines keep using Playwright's Chromium.
+- UI mode and the trace viewer open in Playwright's own Chromium window, so they can hit the same block. Add `--ui-port=0` (UI mode) or `--port=0` (`npx playwright show-trace`) to open them in your normal browser instead.
+- Do not turn off Smart App Control to fix this. Windows cannot turn it back on without a full reset.
+
 ### Running in CI
 
 - A new workflow, `e2e.yml`, triggered by `deployment_status`, which fires when Vercel finishes a preview.
 - It runs only when the state is `success` and the environment is `Preview`. There is also a `planet-app-sf` environment, which it should skip.
-- Steps: checkout, Node 24 with npm cache, `npm ci`, install Chromium, run the tests against the deployment's `environment_url`, and upload the HTML report and traces when a test fails.
+- Steps: checkout, Node 24 with npm cache, `npm ci`, install Chromium (`npx playwright install --with-deps chromium`), run the tests against the deployment's `environment_url`, and upload the HTML report and traces when a test fails.
+- Checked on 2026-10-12: Vercel previews are public (a preview returned 200 with no login wall), and the project search tests passed against one in about 30 seconds. That preview was built from another branch, so it proved the setup, not this branch's code.
 - Why not build the app in GitHub Actions: Vercel already builds every PR. A second build would need Redis, Auth0, and API secrets (in production mode the app throws on start without Redis, see [redis-client.ts](../../src/redis-client.ts)) and would add minutes. Testing the preview also covers real Vercel hosting.
 - Start as a non-required check, like the unit tests. Make it required once it has been stable for a few weeks.
 
@@ -162,7 +182,7 @@ export default defineConfig({
 
 ## 6. Drawbacks and risks
 
-- Flaky tests: staging data changes, staging goes down, and the dev server builds pages slowly on first visit. A red check that is not caused by the PR teaches people to ignore red. To limit this: few tests, loose checks, 2 retries in CI, and non-blocking at first.
+- Flaky tests: staging data changes (the project list order already has), staging goes down, and the dev server builds pages slowly on first visit. A red check that is not caused by the PR teaches people to ignore red. To limit this: few tests, loose checks, 2 retries in CI, and non-blocking at first.
 - Slower than unit tests: seconds per test, not milliseconds. Expect about 3 to 5 minutes per CI run, including install.
 - Upkeep: UI changes can break locators. Text comes in 7 languages, so tests fix the locale to English. Prefer roles and labels; add `data-testid` only where nothing else works (the app has none today).
 - Login is fragile: bot checks, MFA, password changes, and token expiry. Someone must own the test account.
@@ -173,37 +193,48 @@ export default defineConfig({
 
 ## 7. First tests
 
-Phase 1: no login, read-only. Each test also fails if the page throws an uncaught error (Playwright's `pageerror` event), which catches React crashes.
+Phase 1: no login, read-only. Each test also fails if the page throws an uncaught error (Playwright's `pageerror` event, set up in [e2e/fixtures.ts](../../e2e/fixtures.ts)), which catches React crashes.
 
-| # | Test | What it checks |
-|---|---|---|
-| 1 | Home shows projects | `/` goes to `/en`, the page language is `en`, and at least one project card is visible. Middleware, tenant config, translations, and the API all work. |
-| 2 | List opens a project | Clicking a project card opens its page and shows its name. Navigation inside the app works. |
-| 3 | Project page and Donate link | `/en/yucatan` shows the project name and a Donate link. The link goes to the donate app with `to=yucatan` and a `tenant=` value. Guards the money hand-off without paying. |
-| 4 | German locale | `/de` loads with the page language `de` and German text in the navigation. Translations load for real (the middleware unit tests only check the logic). |
-| 5 | Login gate | When logged out, `/en/profile` goes to `/en/login` and then to the Auth0 login page (the host set in `AUTH0_CUSTOM_DOMAIN`). Private pages are protected. No account needed. |
+| # | Test | Status | What it checks |
+|---|---|---|---|
+| 1 | Project search | Done | Search finds the right project and hides the others, shows a message when nothing matches, and brings the list back when cleared. |
+| 2 | List opens a project | Pending | Clicking a project card opens its page and shows its name. Navigation inside the app works. |
+
+The project search tests, in [e2e/project-search.spec.ts](../../e2e/project-search.spec.ts):
+- `yucatan restoration`, typed without the accent, shows "Yucatán Restoration", and every other card that was on screen disappears.
+- A search with no match shows "Oops! No project found" and no cards.
+- Emptying the search box brings back the cards that were listed before.
+- The Clear search button closes the search, keeps the Top Projects tab selected, and brings back the earlier cards. The next search starts from an empty box.
 
 Phase 2: after phase 1 is stable.
 
 | # | Test | What it checks |
 |---|---|---|
-| 6 | Login setup | Logs in once and saves the session file. |
-| 7 | Profile loads | A logged-in user sees their name on `/en/profile`. |
-| 8 | Projects list | A TPO test user sees their projects on `/en/profile/projects`. |
+| 3 | Login setup | Logs in once and saves the session file. |
+| 4 | Profile loads | A logged-in user sees their name on `/en/profile`. |
+| 5 | Projects list | A TPO test user sees their projects on `/en/profile/projects`. |
 
 ## Open questions
 
-1. CI target: run E2E against Vercel previews (recommended), or build the app in GitHub Actions?
+1. CI target: run E2E against Vercel previews (recommended, since previews are public and the tests pass against them), or build the app in GitHub Actions?
 2. Cypress: remove it before the Playwright PR, after it, or not yet?
 3. Phase 2 login: is there a staging test account to use (the old Cypress one was `test-tpo@plant-for-the-planet.org`), and who owns Auth0? Logged-in tests on previews also need preview URLs in Auth0's allowed callback URLs, which has not been checked yet.
-4. First PR scope: phase 1 only (5 public tests, local and CI setup)?
+4. First PR scope: the setup and the search tests only, or also "list opens a project"? And `e2e.yml` in the same PR, or a follow-up?
 
 ## Tasks
 
-- [ ] Agree on this plan and answer the open questions.
-- [ ] Remove Cypress (separate PR).
-- [ ] Add Playwright: dependency, config, scripts, `.gitignore` entries, and the 5 phase 1 tests, passing locally.
+Done:
+- [x] Add Playwright: dependency, config, scripts, and `.gitignore` entries.
+- [x] Fail every test on an uncaught page error.
+- [x] Project search tests, passing locally (Chromium and Edge) and against a Vercel preview.
+- [x] Let a Windows machine use Edge through `PLAYWRIGHT_CHANNEL`, for Smart App Control.
+
+Pending:
+- [ ] Answer the open questions.
+- [ ] Add the "list opens a project" test.
+- [ ] Push `feature/playwright-e2e` and open a PR to `develop`.
 - [ ] Add `e2e.yml` running against Vercel previews, as a non-required check.
 - [ ] Make the E2E check required after a few stable weeks.
+- [ ] Remove Cypress (separate PR).
 - [ ] Phase 2: test account, login setup, and the logged-in tests.
 - [ ] Update [testing-roadmap.md](./testing-roadmap.md) when Cypress is retired and Playwright is in place.
