@@ -1,14 +1,12 @@
 import type { ReactElement } from 'react';
 
-import { useTranslations } from 'next-intl';
 import AccountListLoader from '../../../../../public/assets/images/icons/AccountListLoader';
 import AccountDetails from '../components/AccountDetails';
-import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { usePlanetCashStore } from '../../../../stores';
 import NoPlanetCashAccount from '../components/NoPlanetCashAccount';
+import PlanetCashLoadError from '../components/PlanetCashLoadError';
 
 const Accounts = (): ReactElement | null => {
-  const t = useTranslations('PlanetCash');
   const planetCashAccounts = usePlanetCashStore(
     (state) => state.planetCashAccounts
   );
@@ -16,13 +14,7 @@ const Accounts = (): ReactElement | null => {
 
   if (status === 'idle' || status === 'loading') return <AccountListLoader />;
 
-  if (status === 'error') {
-    return (
-      <CenteredContainer>
-        <p className="centered-text">{t('loadAccountsError')}</p>
-      </CenteredContainer>
-    );
-  }
+  if (status === 'error') return <PlanetCashLoadError />;
 
   if (planetCashAccounts && planetCashAccounts.length > 0) {
     return (

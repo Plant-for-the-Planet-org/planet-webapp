@@ -22,6 +22,7 @@ interface PlanetCashStore {
       config?: ApiConfigBase
     ) => Promise<T>
   ) => Promise<void>;
+  retryFetchAfterError: () => void;
   setPlanetCashAccounts: (accounts: PlanetCashAccount[] | null) => void;
   setIsPlanetCashActive: (isActive: boolean) => void;
   updateAccount: (updatedAccount: PlanetCashAccount) => void;
@@ -74,6 +75,12 @@ export const usePlanetCashStore = create<PlanetCashStore>()(
             .setErrors(handleError(err as APIError));
           set({ status: 'error' }, undefined, 'planetCash/fetch_error');
         }
+      },
+
+      // Back to 'idle' lets the page's fetch effect run again.
+      retryFetchAfterError: () => {
+        if (get().status !== 'error') return;
+        set({ status: 'idle' }, undefined, 'planetCash/retry_fetch');
       },
 
       setPlanetCashAccounts: (accounts) =>
