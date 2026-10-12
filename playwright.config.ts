@@ -20,6 +20,8 @@ export default defineConfig({
     // Fixes the Accept-Language header, so the middleware sends `/` to `/en`.
     locale: 'en-US',
     trace: 'retain-on-failure',
+    // Lets one machine use an installed, signed browser such as `msedge`, for example where Windows Smart App Control blocks Playwright's own Chromium. Unset, tests use Playwright's Chromium.
+    channel: process.env.PLAYWRIGHT_CHANNEL,
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: usesLocalDevServer
