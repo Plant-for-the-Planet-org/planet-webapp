@@ -9,11 +9,20 @@ permissions:
 jobs:
   playwright:
     name: 'Playwright on Ubuntu'
-    # Vercel also reports `planet-app-sf`, `Production` and `planet-app-sf-prod` deployments. Only PR previews are tested.
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Preview'
+    # Only Vercel PR previews are tested. Vercel also reports `Production`, and Heroku deploys report `planet-app-sf` and `planet-app-sf-prod`.
+    # Keep the deployment state out of this `if`. GitHub counts a job skipped by `if` as passed, so a failed preview would pass the check.
+    if: github.event.deployment.environment == 'Preview' && github.event.deployment.creator.login == 'vercel[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - name: 'Fail when the Vercel preview failed'
+        if: github.event.deployment_status.state != 'success'
+        env:
+          STATE: ${{ github.event.deployment_status.state }}
+        run: |
+          echo "::error::Vercel reported '$STATE', so there is no preview to test."
+          exit 1
+
       - name: 'Checkout the repository'
         uses: actions/checkout@v4
 
@@ -33,12 +42,14 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: 'Run E2E tests'
+        id: tests
         run: npm run test:e2e
         env:
           PLAYWRIGHT_BASE_URL: ${{ github.event.deployment_status.environment_url }}
 
       - name: 'Upload the Playwright report'
-        if: failure()
+        # Only when the tests ran. A failed preview or install leaves no report to upload.
+        if: failure() && steps.tests.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
