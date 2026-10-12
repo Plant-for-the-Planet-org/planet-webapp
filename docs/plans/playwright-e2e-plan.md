@@ -170,15 +170,18 @@ Where to find a failed test's recording: `test-results/<test name>/trace.zip`, o
 ### Running in CI
 
 - The workflow is [e2e.yml](../../.github/workflows/e2e.yml), triggered by `deployment_status`, which fires when Vercel reports a deployment to GitHub.
-- It runs only when the state is `success` and the environment is exactly `Preview`. Vercel also reports `planet-app-sf`, `Production`, and `planet-app-sf-prod` deployments, which it skips.
-- Steps: check out the deployed commit, Node 24 with npm cache, `npm ci`, install Chromium (`npx playwright install --with-deps chromium`), run `npm run test:e2e` with `PLAYWRIGHT_BASE_URL` set to the deployment's `environment_url`, and upload the HTML report (which holds the traces) when a test fails. The report is kept for 14 days.
+- The job runs only for `Preview` deployments created by `vercel[bot]`. Vercel also reports `Production`. Heroku deploys report `planet-app-sf` and `planet-app-sf-prod`, created by team members on `develop` and release commits. The job skips all of those.
+- When Vercel reports `failure`, the first step fails the job. The job must not skip it instead: GitHub counts a job skipped by `if:` as passed, even for a required check, so a PR that breaks the Vercel build would pass E2E with no tests run. 5 of the last 120 previews failed (checked 2026-10-12).
+- Steps: fail if the preview failed, check out the deployed commit, Node 24 with npm cache, `npm ci`, install Chromium (`npx playwright install --with-deps chromium`), run `npm run test:e2e` with `PLAYWRIGHT_BASE_URL` set to the deployment's `environment_url`, and upload the HTML report (which holds the traces) when the tests fail. The report is kept for 14 days.
 - `npm ci` sets `CYPRESS_INSTALL_BINARY=0`, so it skips the large Cypress app download. Remove that line together with Cypress.
 - The workflow token is read-only (`contents: read`), and the job stops after 20 minutes.
 - GitHub reads the workflow from the deployed commit, so it only runs for branches that contain `e2e.yml`.
 - Checked on 2026-10-12: Vercel previews are public (a preview returned 200 with no login wall), and the project search tests passed against one in about 30 seconds. That preview was built from another branch, so it proved the setup, not this branch's code.
-- Checked on 2026-10-12 with the GitHub API: Vercel sends one `success` status per preview, with `environment_url` set to the public preview URL. The deployment's `ref` is the commit SHA, not the branch name.
+- Checked on 2026-10-12 with the GitHub API: Vercel sends exactly one status per preview, `success` or `failure`, never `pending`. `environment_url` is set to the public preview URL. The deployment's `ref` is the commit SHA, not the branch name.
 - Why not build the app in GitHub Actions: Vercel already builds every PR. A second build would need Redis, Auth0, and API secrets (in production mode the app throws on start without Redis, see [redis-client.ts](../../src/redis-client.ts)) and would add minutes. Testing the preview also covers real Vercel hosting.
 - Start as a non-required check, like the unit tests. A check is only required when it is listed in the branch protection or ruleset of `develop`, and `develop` lists no required checks today, so nothing needs to change. Make it required once it has been stable for a few weeks.
+- Each Heroku deploy still starts the workflow and leaves a skipped `Playwright on Ubuntu` run on its commit. Feature PRs into `develop` never have one, so requiring the check on `develop` is safe. Release PRs (`develop` to `main`) do: the head commits of #3198 and #3193 have both a Heroku and a Vercel deployment. It is not confirmed which run branch protection uses when two runs share a name, so a later skipped run might hide a red one.
+- So before requiring the check on `main`, have the job write its own commit status (for example `e2e/preview`, which needs `statuses: write`) and require that status instead. Skipped runs never write it.
 
 ### Cypress
 
@@ -243,7 +246,7 @@ Pending:
 - [ ] Answer the open questions.
 - [ ] Add the "list opens a project" test.
 - [ ] Check that `e2e.yml` runs and passes on this branch's first preview.
-- [ ] Make the E2E check required after a few stable weeks.
+- [ ] Make the E2E check required on `develop` after a few stable weeks. For `main`, switch to a commit status first (see [Running in CI](#running-in-ci)).
 - [ ] Remove Cypress (separate PR).
 - [ ] Phase 2: test account, login setup, and the logged-in tests.
 - [ ] Update [testing-roadmap.md](./testing-roadmap.md) when Cypress is retired and Playwright is in place.
