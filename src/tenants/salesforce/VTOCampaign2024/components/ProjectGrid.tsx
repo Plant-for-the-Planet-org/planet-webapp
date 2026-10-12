@@ -9,11 +9,13 @@ import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { useApi } from '../../../../hooks/useApi';
 import { useLocale } from 'next-intl';
 import { clsx } from 'clsx';
-import { useTenantStore } from '../../../../stores/tenantStore';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import {
+  useErrorHandlingStore,
+  useCurrencyStore,
+  useTenantStore,
+} from '../../../../stores';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useCurrencyStore } from '../../../../stores/currencyStore';
 
 export default function ProjectGrid() {
   const { getApi } = useApi();

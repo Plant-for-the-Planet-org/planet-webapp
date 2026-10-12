@@ -6,8 +6,11 @@ import ProjectListControls, { type ProjectTabs } from './ProjectListControls';
 import ProjectListControlForMobile from './ProjectListControls/ProjectListControlForMobile';
 import ProjectList from './ProjectList';
 import ProjectsListMeta from '../../utils/getMetaTags/ProjectsListMeta';
-import { useProjectMapStore } from '../../stores/projectMapStore';
-import { useProjectStore, useTenantStore } from '../../stores';
+import {
+  useProjectMapStore,
+  useProjectStore,
+  useTenantStore,
+} from '../../stores';
 import { useFilteredProjects } from '../../hooks/useFilteredProjects';
 
 interface ProjectsSectionProps {

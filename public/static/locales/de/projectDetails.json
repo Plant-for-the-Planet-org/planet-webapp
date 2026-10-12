@@ -1,5 +1,6 @@
 {
   "ProjectDetails": {
+    "expandImages": "Bilder vergrößern",
     "satelliteAnalysis": "Satellitenanalyse",
     "diveIntoTheProject": "Ins Projekt eintauchen",
     "firePopupText": "Wir zeigen nur Brände an, die sich innerhalb der letzten 12 Monate ereignet haben.",

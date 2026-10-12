@@ -12,9 +12,10 @@
  * @dependencies
  *  - State / Stores:
  *   - `useTenantStore`: Retrieves tenant-specific configuration (e.g. tenant key).
- * - React Contexts:
- *   - `useUserProps`: To access the current user's token and handle logout on invalid tokens.
- *   - `useLocale` : To get the current locale for setting the `x-locale` header.
+ *   - `useAuthStore`: Retrieves the current auth token.
+ * - Hooks:
+ *   - `useAuthSession`: To handle logout on invalid tokens.
+ *   - `useLocale`: To get the current locale for setting the `x-locale` header.
  * - Utilities:
  *   - `apiClient`: A utility to make HTTP requests.
  *   - `validateToken`: To check if the provided token is valid.
@@ -63,7 +64,7 @@
  * - `deleteApiAuthenticated`: Makes a DELETE request with authentication.
  *
  * @notes
- * - Ensure that `useUserProps` contexts are properly configured in your application.
+ * - Auth token is sourced from `useAuthStore`; no React Context is required.
  * - Tenant configuration is sourced from `useTenantStore`; no Tenant React Context is required.
  */
 import type { RequestOptions } from '../utils/apiRequests/apiClient';
@@ -72,10 +73,10 @@ import apiClient from '../utils/apiRequests/apiClient';
 import getSessionId from '../utils/apiRequests/getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { setHeaderForImpersonation } from '../utils/apiRequests/setHeader';
-import { useUserProps } from '../features/common/Layout/UserPropsContext';
 import { validateToken } from '../utils/apiRequests/validateToken';
 import { useLocale } from 'next-intl';
-import { useTenantStore } from '../stores/tenantStore';
+import { useAuthStore, useTenantStore } from '../stores';
+import { useAuthSession } from './useAuthSession';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
@@ -86,6 +87,11 @@ export type ApiConfigBase = {
   additionalHeaders?: Record<string, string>;
   version?: string;
 };
+
+export type ApiRequestFn = <T>(
+  url: string,
+  config?: ApiConfigBase
+) => Promise<T>;
 
 type ApiConfigWithPayload<P extends Record<string, unknown>> = {
   payload: P;
@@ -101,10 +107,11 @@ type ApiConfig<
   : ApiConfigWithoutPayload;
 
 export const useApi = () => {
-  const { token, logoutUser } = useUserProps();
+  const { logoutUser } = useAuthSession();
   const locale = useLocale();
-  // store: state
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  //store: state
+  const token = useAuthStore((state) => state.token);
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
 
   const callApi = async <T>({
     method,
@@ -114,12 +121,13 @@ export const useApi = () => {
     authRequired = false,
     version,
     additionalHeaders,
+    responseType,
   }: RequestOptions & {
     version?: string;
   }): Promise<T> => {
     const headers: Record<string, string> = {
       'x-locale': locale,
-      'tenant-key': tenantConfig?.id || '',
+      'tenant-key': tenantId || '',
       'X-SESSION-ID': await getSessionId(),
       ...(additionalHeaders ? additionalHeaders : {}),
     };
@@ -142,8 +150,21 @@ export const useApi = () => {
     const finalHeader = setHeaderForImpersonation(headers);
     const requestOptions =
       method === 'POST' || method === 'PUT'
-        ? { method, url, data, queryParams, additionalHeaders: finalHeader }
-        : { method, url, queryParams, additionalHeaders: finalHeader };
+        ? {
+            method,
+            url,
+            data,
+            queryParams,
+            additionalHeaders: finalHeader,
+            responseType,
+          }
+        : {
+            method,
+            url,
+            queryParams,
+            additionalHeaders: finalHeader,
+            responseType,
+          };
 
     try {
       return await apiClient<T>(requestOptions);
@@ -202,6 +223,30 @@ export const useApi = () => {
       data: config.payload,
       queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
+    });
+  };
+
+  /**
+   * Performs an authenticated GET request that returns the raw bytes rather than JSON.
+   *
+   * Goes through callApi so a download carries the same headers as every other
+   * request, impersonation included. A hand-rolled fetch does not.
+   *
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<never, 'GET'>} [config={}] Optional configuration for the request
+   * @returns {Promise<Blob>} The response body
+   */
+  const getApiBlobAuthenticated = async (
+    url: string,
+    config: ApiConfig<never, 'GET'> = {}
+  ): Promise<Blob> => {
+    return callApi<Blob>({
+      method: 'GET',
+      url,
+      authRequired: true,
+      queryParams: config.queryParams,
+      additionalHeaders: config.additionalHeaders,
+      responseType: 'blob',
     });
   };
 
@@ -327,6 +372,7 @@ export const useApi = () => {
   return {
     getApi,
     getApiAuthenticated,
+    getApiBlobAuthenticated,
     postApi,
     postApiAuthenticated,
     putApi,

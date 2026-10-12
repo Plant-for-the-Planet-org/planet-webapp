@@ -22,7 +22,7 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   const router = useRouter();
 
   const { p: projectSlug } = router.query;
-  //local state
+  // local state
   const [hasVideoConsent, setHasVideoConsent] = useState(false);
   // store: state
   const singleProject = useSingleProjectStore((state) => state.singleProject);

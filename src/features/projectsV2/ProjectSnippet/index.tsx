@@ -24,8 +24,7 @@ import {
 import TpoName from './microComponents/TpoName';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useViewStore } from '../../../stores';
+import { useViewStore, useQueryParamStore } from '../../../stores';
 
 interface Props {
   project:
@@ -115,7 +114,7 @@ const ProjectSnippetContent = ({
   };
   const imageProps: ImageSectionProps = {
     ...commonProps,
-    projectName: project.name,
+    projectName: project.name ?? '', // API returns null when the project has no translation for the locale
     image: project.image,
     ecosystem,
     showTooltipPopups,

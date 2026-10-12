@@ -79,10 +79,9 @@ survived long enough to be reviewed.
 
 ## Remaining contexts
 
-As of 2026-07-29:
+As of 2026-08-05:
 
 ```
-src/features/common/Layout/UserPropsContext.tsx
 src/features/common/Layout/PlanetCashContext.tsx
 src/features/common/Layout/BulkCodeContext.tsx
 src/features/common/Layout/DonationReceiptContext.tsx

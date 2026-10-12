@@ -13,70 +13,22 @@ import TagManager from 'react-gtm-module';
 import Router from 'next/router';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/theme/global.scss';
+// After global.scss on purpose: on equal specificity the later sheet wins, so
+// Tailwind utilities take precedence over the legacy global styles.
+import '../src/styles/globals.css';
 import ThemeProvider from '../src/theme/themeContext';
-import * as Sentry from '@sentry/node';
-import { RewriteFrames } from '@sentry/integrations';
-import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
-import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 import dynamic from 'next/dynamic';
-import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
-import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { NextIntlClientProvider } from 'next-intl';
-import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
 
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
   ssr: false,
 });
-
-if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
-  const config = getConfig();
-  const distDir = `${config.serverRuntimeConfig.rootDir}/.next`;
-  Sentry.init({
-    enabled: process.env.NODE_ENV === 'production',
-    integrations: [
-      new RewriteFrames({
-        iteratee: (frame) => {
-          frame.filename = frame.filename?.replace(distDir, 'app:///_next');
-          return frame;
-        },
-      }),
-    ],
-    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-    // from https://gist.github.com/pioug/b006c983538538066ea871d299d8e8bc,
-    // also see https://docs.sentry.io/platforms/javascript/configuration/filtering/#decluttering-sentry
-    ignoreErrors: [
-      /^No error$/,
-      /__show__deepen/,
-      /_avast_submit/,
-      /Access is denied/,
-      /anonymous function: captureException/,
-      /Blocked a frame with origin/,
-      /console is not defined/,
-      /cordova/,
-      /DataCloneError/,
-      /Error: AccessDeny/,
-      /event is not defined/,
-      /feedConf/,
-      /ibFindAllVideos/,
-      /myGloFrameList/,
-      /SecurityError/,
-      /MyIPhoneApp/,
-      /snapchat.com/,
-      /vid_mate_check is not defined/,
-      /win\.document\.body/,
-      /window\._sharedData\.entry_data/,
-      /ztePageScrollModule/,
-    ],
-    denyUrls: [],
-  });
-}
 
 const onRedirectCallback = (appState: any) => {
   // Use Next.js's Router.replace method to replace the url
@@ -188,26 +140,11 @@ const PlanetWeb = ({
             onRedirectCallback={onRedirectCallback}
             useRefreshTokens={true}
           >
+            <StoreInitializer isMobile={isMobile} tenantConfig={tenantConfig} />
             <ThemeProvider>
               <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
-                <UserPropsProvider>
-                  <StoreInitializer
-                    isMobile={isMobile}
-                    tenantConfig={tenantConfig}
-                  />
-                  <PlanetCashProvider>
-                    <PayoutsProvider>
-                      <Layout>
-                        <BulkCodeProvider>
-                          <DonationReceiptProvider>
-                            {pageContent}
-                          </DonationReceiptProvider>
-                        </BulkCodeProvider>
-                      </Layout>
-                    </PayoutsProvider>
-                  </PlanetCashProvider>
-                </UserPropsProvider>
+                <Layout>{pageContent}</Layout>
               </MuiThemeProvider>
             </ThemeProvider>
           </Auth0Provider>

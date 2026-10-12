@@ -1,6 +1,6 @@
 import type { MapProject } from '../../../common/types/projectv2';
 
-import { Popup } from 'react-map-gl-v7/maplibre';
+import { Popup } from 'react-map-gl/maplibre';
 import styles from './ProjectPopup.module.scss';
 import ProjectSnippet from '../../ProjectSnippet';
 import { MARKER_PIN_HEIGHT } from '../ProjectMarkers/markerImageRegistry';

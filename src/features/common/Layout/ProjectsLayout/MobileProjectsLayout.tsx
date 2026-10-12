@@ -4,10 +4,12 @@ import { useEffect } from 'react';
 import styles from './ProjectsLayout.module.scss';
 import ProjectsMap from '../../../projectsV2/ProjectsMap';
 import Credits from '../../../projectsV2/ProjectsMap/Credits';
-import { useUserProps } from '../UserPropsContext';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useViewStore } from '../../../../stores';
+import {
+  useQueryParamStore,
+  useUserStore,
+  useViewStore,
+} from '../../../../stores';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
@@ -23,13 +25,14 @@ const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
     (state) => state.showProjectDetails
   );
   const isContextLoaded = useQueryParamStore((state) => state.isContextLoaded);
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
   const currentPage = useViewStore((state) => state.page);
-  const selectedMode = useViewStore((state) => state.selectedMode);
+  const isMapMode = useViewStore((state) => state.selectedMode === 'map');
+
   // store: action
   const setSelectedMode = useViewStore((state) => state.setSelectedMode);
-
-  const isMapMode = selectedMode === 'map';
-  const { isImpersonationModeOn } = useUserProps();
 
   useEffect(() => {
     if (isEmbedded && isContextLoaded) {

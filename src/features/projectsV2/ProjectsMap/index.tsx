@@ -1,7 +1,7 @@
 import type {
   MapLayerMouseEvent,
   ViewStateChangeEvent,
-} from 'react-map-gl-v7/maplibre';
+} from 'react-map-gl/maplibre';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { SingleTreeRegistration } from '@planet-sdk/common';
 import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
@@ -9,7 +9,8 @@ import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import Map, { NavigationControl } from 'react-map-gl-v7/maplibre';
+import '../../../utils/mapsV2/maplibreWorker';
+import Map, { NavigationControl } from 'react-map-gl/maplibre';
 import { useFetchLayers } from '../../../utils/mapsV2/useFetchLayers';
 import MultipleProjectsView from './MultipleProjectsView';
 import SingleProjectView from './SingleProjectView';
@@ -38,13 +39,13 @@ import { PLANTATION_TYPES } from '../../../utils/constants/intervention';
 import ExploreLayers from './ExploreLayers';
 import WebGLGuard from '../../common/WebGLGuard';
 import { clsx } from 'clsx';
-import { useProjectMapStore } from '../../../stores/projectMapStore';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
 import {
   useInterventionStore,
   useProjectStore,
   useSingleProjectStore,
   useViewStore,
+  useQueryParamStore,
+  useProjectMapStore,
 } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 import { useLocale } from 'next-intl';
