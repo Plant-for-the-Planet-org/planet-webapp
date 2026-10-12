@@ -8,45 +8,42 @@ import { useCurrencyStore } from '../stores/currencyStore';
 export async function storeConfig(tenantConfig: Tenant) {
   const { resolveGeoCurrencyCode } = useCurrencyStore.getState();
 
-  await fetch(`${process.env.CONFIG_URL}`, {
-    headers: {
-      'tenant-key': `${tenantConfig?.id}`,
-      'X-SESSION-ID': await getsessionId(),
-    },
-  })
-    .then(async (res) => {
-      const config = await res.json();
-      localStorage.setItem('config', JSON.stringify(config));
-      const countryCode = localStorage.getItem('countryCode');
-      const found = countriesData.some(
-        (arrayCountry) =>
-          arrayCountry.countryCode?.toUpperCase() ===
-          config.country.toUpperCase()
-      );
-      if (!countryCode || !found) {
-        if (found) {
-          localStorage.setItem('countryCode', config.country);
-        } else {
-          localStorage.setItem('countryCode', 'DE');
-        }
-      }
-
-      // Piggyback on this same fetch for the geo-detected currency rather than
-      // firing a second request. Only used when nothing is stored yet; a
-      // stored or explicitly selected currency always takes precedence.
-      let geoCurrencyCode: CurrencyCode | null = null;
-      if (!localStorage.getItem('currencyCode') && config.currency) {
-        geoCurrencyCode = config.currency as CurrencyCode;
-        localStorage.setItem('currencyCode', geoCurrencyCode);
-      }
-      resolveGeoCurrencyCode(geoCurrencyCode);
-    })
-    .catch((err) => {
-      console.log(`Something went wrong: ${err}`);
-      // A missing/failed geo response must still unblock currency-dependent
-      // requests, falling back to the default currency rather than stalling.
-      resolveGeoCurrencyCode(null);
+  try {
+    const res = await fetch(`${process.env.CONFIG_URL}`, {
+      headers: {
+        'tenant-key': `${tenantConfig?.id}`,
+        'X-SESSION-ID': await getsessionId(),
+      },
     });
+    const config = await res.json();
+    localStorage.setItem('config', JSON.stringify(config));
+    const countryCode = localStorage.getItem('countryCode');
+    const found = countriesData.some(
+      (arrayCountry) =>
+        arrayCountry.countryCode?.toUpperCase() === config.country.toUpperCase()
+    );
+    if (!countryCode || !found) {
+      if (found) {
+        localStorage.setItem('countryCode', config.country);
+      } else {
+        localStorage.setItem('countryCode', 'DE');
+      }
+    }
+
+    // Piggyback on this same fetch for the geo-detected currency rather than
+    // firing a second request. Only used when nothing is stored yet; a
+    // stored or explicitly selected currency always takes precedence.
+    let geoCurrencyCode: CurrencyCode | null = null;
+    if (!localStorage.getItem('currencyCode') && config.currency) {
+      geoCurrencyCode = config.currency as CurrencyCode;
+      localStorage.setItem('currencyCode', geoCurrencyCode);
+    }
+    resolveGeoCurrencyCode(geoCurrencyCode);
+  } catch (err) {
+    console.log(`Something went wrong: ${err}`);
+    // Any failure, including the session lookup before the fetch starts, must still unblock currency-dependent requests. A `.catch` on the fetch would miss that one.
+    resolveGeoCurrencyCode(null);
+  }
 }
 
 export function getStoredConfig(key: string) {
