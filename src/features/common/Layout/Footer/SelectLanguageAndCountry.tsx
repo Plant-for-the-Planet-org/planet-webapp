@@ -34,7 +34,6 @@ interface MapLanguageProps {
 interface TransitionsModalProps {
   openModal: boolean;
   handleModalClose: () => void;
-  setSelectedCurrency: Function;
   selectedCountry: string;
   setSelectedCountry: Function;
 }
@@ -121,7 +120,6 @@ function MapCountry({ value, handleChange }: MapCountryProps) {
 export default function TransitionsModal({
   openModal,
   handleModalClose,
-  setSelectedCurrency,
   selectedCountry,
   setSelectedCountry,
 }: TransitionsModalProps) {
@@ -154,7 +152,6 @@ export default function TransitionsModal({
 
     if (country?.currencyCode) {
       window.localStorage.setItem('currencyCode', country.currencyCode);
-      setSelectedCurrency(country.currencyCode);
       setCurrencyCode(country.currencyCode);
     }
 
