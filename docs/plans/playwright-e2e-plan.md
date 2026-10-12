@@ -221,10 +221,13 @@ Phase 2: after phase 1 is stable.
 
 ## Open questions
 
-1. CI target: run E2E against Vercel previews (recommended, since previews are public and the tests pass against them), or build the app in GitHub Actions?
-2. Cypress: remove it before the Playwright PR, after it, or not yet?
-3. Phase 2 login: is there a staging test account to use (the old Cypress one was `test-tpo@plant-for-the-planet.org`), and who owns Auth0? Logged-in tests on previews also need preview URLs in Auth0's allowed callback URLs, which has not been checked yet.
-4. First PR scope: the setup and the search tests only, or also "list opens a project"? And `e2e.yml` in the same PR, or a follow-up?
+Decided:
+- CI target: run E2E against Vercel previews, not a build in GitHub Actions. Previews are public and the tests pass against them.
+- First PR scope: the setup, the project search tests, and `e2e.yml`. The "list opens a project" test comes in a follow-up.
+
+Still open:
+1. Cypress: it comes out in its own PR, not this one. Remove it right after this PR, or later?
+2. Phase 2 login: is there a staging test account to use (the old Cypress one was `test-tpo@plant-for-the-planet.org`), and who owns Auth0? Logged-in tests on previews also need preview URLs in Auth0's allowed callback URLs, which has not been checked yet.
 
 ## Tasks
 
@@ -234,11 +237,11 @@ Done:
 - [x] Project search tests, passing locally (Chromium and Edge) and against a Vercel preview.
 - [x] Let a Windows machine use Edge through `PLAYWRIGHT_CHANNEL`, for Smart App Control.
 - [x] Add `e2e.yml` running against Vercel previews, as a non-required check.
+- [x] Push `feature/playwright-e2e` and open a PR to `develop` ([#3203](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3203)).
 
 Pending:
 - [ ] Answer the open questions.
 - [ ] Add the "list opens a project" test.
-- [ ] Push `feature/playwright-e2e` and open a PR to `develop`.
 - [ ] Check that `e2e.yml` runs and passes on this branch's first preview.
 - [ ] Make the E2E check required after a few stable weeks.
 - [ ] Remove Cypress (separate PR).
