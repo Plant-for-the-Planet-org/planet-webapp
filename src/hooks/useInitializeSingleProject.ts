@@ -62,7 +62,7 @@ export const useInitializeSingleProject = () => {
   /**
    * Fetch the project whenever the URL names one.
    *
-   * This lives here rather than in `ProjectDetails` because that component is not rendered when the details pane is hidden (`embed=true` with `project_details=false`), which used to leave the map, interventions and time travel config with no data at all.
+   * This lives here rather than in `ProjectDetails` because that component is not rendered when the details pane is hidden (`embed=true` with `project_details=false`), which used to leave the map, interventions and time travel config with no data at all.
    *
    * `router.query.p` is used as the signal rather than `viewStore.page`, since the page is derived from that same param but only after an effect, and this fetch should not wait on it.
    *
