@@ -44,7 +44,7 @@ export default function ManagePayouts({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { getApi, getApiAuthenticated } = useApi();
+  const { getApiAuthenticated } = useApi();
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   // store: state
@@ -75,7 +75,9 @@ export default function ManagePayouts({
     if (hasPayoutMinAmounts) return;
 
     try {
-      const res = await getApi<PayoutMinAmounts>('/app/payoutMinAmounts');
+      const res = await getApiAuthenticated<PayoutMinAmounts>(
+        '/app/payoutMinAmounts'
+      );
       setPayoutMinAmounts(res);
     } catch (err) {
       setErrors(handleError(err as APIError));
