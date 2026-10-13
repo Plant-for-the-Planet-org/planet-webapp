@@ -123,6 +123,7 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 - [playwright.config.ts](../../playwright.config.ts) and an `e2e/` folder for the tests:
   - [e2e/fixtures.ts](../../e2e/fixtures.ts): specs import `test` from here, so every test also fails when the page throws an uncaught error.
   - [e2e/projects.ts](../../e2e/projects.ts): the staging project the tests use, and a locator for the cards in the project list.
+  - [e2e/i18n.ts](../../e2e/i18n.ts): the locale the tests open (`LOCALE`), and the app's UI text for it, read from `public/static/locales` with the same English fallback the app uses.
   - [e2e/project-search.spec.ts](../../e2e/project-search.spec.ts): the project search tests.
 - Two scripts, named like the existing ones: `test:e2e` and `test:e2e:ui`.
 - `.gitignore` entries: `test-results/`, `playwright-report/`, `playwright/.auth/`.
@@ -192,7 +193,9 @@ Where to find a failed test's recording: `test-results/<test name>/trace.zip`, o
 
 - Flaky tests: staging data changes (the project list order already has), staging goes down, and the dev server builds pages slowly on first visit. A red check that is not caused by the PR teaches people to ignore red. To limit this: few tests, loose checks, 2 retries in CI, and non-blocking at first.
 - Slower than unit tests: seconds per test, not milliseconds. Expect about 3 to 5 minutes per CI run, including install.
-- Upkeep: UI changes can break locators. Text comes in 7 languages, so tests fix the locale to English. Prefer roles and labels; add `data-testid` only where nothing else works (the app has none today).
+- Upkeep: UI changes can break locators. Prefer roles and labels, and take their text from [e2e/i18n.ts](../../e2e/i18n.ts) instead of typing it, so a wording change or another locale does not break them.
+- Add `data-testid` only where no role fits. Today there is one: `project-list-item`, on each card in the project list. Each card is a link that wraps its own Donate link, which is invalid HTML (React warns about it), so a locator built on that would break once the markup is fixed.
+- Tests run in English. Setting `LOCALE` to `de` or `fr` works for the UI text (checked 2026-10-13), but the accent search test then fails, because staging gives the project a name per locale (German: "Yucatán Renaturierung").
 - Login is fragile: bot checks, MFA, password changes, and token expiry. Someone must own the test account.
 - Outside dependencies: if staging or Vercel is down, the E2E check fails.
 - Maps: MapLibre needs WebGL, and CI browsers draw it slowly in software. Tests check the project list and panels, not the map itself.
