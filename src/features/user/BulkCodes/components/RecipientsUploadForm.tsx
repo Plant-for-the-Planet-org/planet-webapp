@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import type { ParseResult } from 'papaparse';
 import type { SetState } from '../../../common/types/common';
 import type {
-  Recipient,
+  RecipientUploadRow,
   TableHeader,
   FileImportError,
   UploadStates,
@@ -17,7 +17,7 @@ import RecipientsTable from './RecipientsTable';
 import styles from '../BulkCodes.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 
-const acceptedHeaders: (keyof Recipient)[] = [
+const acceptedHeaders: (keyof RecipientUploadRow)[] = [
   'recipient_name',
   'recipient_email',
   'recipient_notify',
@@ -30,8 +30,8 @@ const MAX_RECIPIENTS = 1000;
 const RECIPIENT_NAME_MAX_LENGTH = 35;
 
 interface RecipientsUploadFormProps {
-  setLocalRecipients: SetState<Recipient[]>;
-  localRecipients: Recipient[];
+  setLocalRecipients: SetState<RecipientUploadRow[]>;
+  localRecipients: RecipientUploadRow[];
   setIsAddingRecipient: SetState<boolean>;
   setIsEditingRecipient: SetState<boolean>;
 }
@@ -81,7 +81,7 @@ const RecipientsUploadForm = ({
 
   const validateRecipients = (
     recipients: ExtendedRecipient[]
-  ): Recipient[] | false => {
+  ): RecipientUploadRow[] | false => {
     //   Check recipient data is present
     if (!recipients.length) {
       setParseError({

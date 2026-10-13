@@ -1,6 +1,8 @@
 import '../src/theme/global.scss';
+// Same order as pages/_app.tsx, so shadcn components render in Storybook too.
+import '../src/styles/globals.css';
 import './storybook.scss';
-import { ThemeProvider as MUIThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider as MUIThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { ThemeProvider } from 'storybook/theming';
 import { useTheme } from '../src/theme/themeContext';
@@ -32,6 +34,8 @@ export const decorators = [
           style={{ backgroundColor: 'transparent' }}
         >
           <MUIThemeProvider theme={materialTheme}>
+            {/* Matches pages/_app.tsx. Preflight is off, so this is what gives stories border-box sizing. */}
+            <CssBaseline />
             <ThemeProvider theme={materialTheme}>
               <Story />
             </ThemeProvider>
