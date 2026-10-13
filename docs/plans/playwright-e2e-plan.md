@@ -109,6 +109,7 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 ### Environment config
 
 - One variable picks the target: `PLAYWRIGHT_BASE_URL`. When unset it is `http://localhost:3000`. CI sets it to the Vercel preview URL. Same tests, different target.
+- Set but empty, `PLAYWRIGHT_BASE_URL` stops the run with a clear error. It does not fall back to the dev server, so CI never tests the wrong target if a preview URL is missing.
 - `PLAYWRIGHT_CHANNEL` picks an installed browser instead of Playwright's own Chromium, for example `msedge`. Only Windows machines with Smart App Control need it (see [Windows: Smart App Control](#windows-smart-app-control)). CI leaves it unset.
 - Locally, Playwright starts `npm run dev`, or reuses a dev server that is already running. It uses the developer's existing `.env.local`, so there is nothing new to set up.
 - Phase 2 adds `E2E_USER_EMAIL` and `E2E_USER_PASSWORD`: in a gitignored file locally, and in GitHub secrets for CI.

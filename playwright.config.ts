@@ -1,5 +1,12 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// `??` keeps an empty string, which Playwright cannot use as a base URL. Falling back to the dev server instead would let CI test the wrong target.
+if (process.env.PLAYWRIGHT_BASE_URL === '') {
+  throw new Error(
+    'PLAYWRIGHT_BASE_URL is empty. Unset it to use the local dev server, or set it to a deployed URL.'
+  );
+}
+
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000';
 const usesLocalDevServer = process.env.PLAYWRIGHT_BASE_URL === undefined;
 
