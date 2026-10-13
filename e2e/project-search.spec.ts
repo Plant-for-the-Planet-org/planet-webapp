@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 
 import { test, expect } from './fixtures';
-import { LOCALE, allProjectsText as text } from './i18n';
+import { LOCALE, allProjectsText as text, countryText } from './i18n';
 import { PROJECT, projectCards } from './projects';
 
 const NO_RESULTS = text.noProjectFound;
@@ -54,6 +54,22 @@ test('a project name typed without its accent finds the project and hides the re
   for (const name of otherNames) {
     await expect(projectImage(page, name)).toBeHidden();
   }
+});
+
+test('a country name finds the projects in that country and hides the rest', async ({
+  page,
+}) => {
+  // On staging, Italy is in no project's name, location or TPO, so any result can only come from the country name.
+  const italy = countryText.it;
+  // The list starts with projects from many countries, so the check for other cards below cannot pass before the search applies.
+  await expect(projectCards(page).first()).toBeVisible();
+
+  await searchFor(page, italy);
+
+  await expect(projectCards(page).filter({ hasNotText: italy })).toHaveCount(0);
+  await expect(
+    projectCards(page).filter({ hasText: italy }).first()
+  ).toBeVisible();
 });
 
 test('a search with no match shows the no-results message and no projects', async ({

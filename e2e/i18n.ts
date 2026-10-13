@@ -1,4 +1,5 @@
 import type englishAllProjects from '../public/static/locales/en/allProjects.json';
+import type englishCountry from '../public/static/locales/en/country.json';
 
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -7,6 +8,7 @@ import path from 'node:path';
 export const LOCALE = 'en';
 
 type AllProjectsText = (typeof englishAllProjects)['AllProjects'];
+type CountryText = (typeof englishCountry)['Country'];
 
 const readMessages = (locale: string, file: string) =>
   JSON.parse(
@@ -17,7 +19,18 @@ const readMessages = (locale: string, file: string) =>
   );
 
 // Like the app, a string the locale does not translate falls back to English.
-export const allProjectsText: AllProjectsText = {
-  ...readMessages('en', 'allProjects').AllProjects,
-  ...readMessages(LOCALE, 'allProjects').AllProjects,
-};
+const readWithEnglishFallback = (file: string, namespace: string) => ({
+  ...readMessages('en', file)[namespace],
+  ...readMessages(LOCALE, file)[namespace],
+});
+
+export const allProjectsText: AllProjectsText = readWithEnglishFallback(
+  'allProjects',
+  'AllProjects'
+);
+
+// Country names, keyed by lowercase country code, as the project cards show them.
+export const countryText: CountryText = readWithEnglishFallback(
+  'country',
+  'Country'
+);

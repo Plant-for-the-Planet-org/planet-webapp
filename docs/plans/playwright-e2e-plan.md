@@ -70,7 +70,7 @@ Terms you will see:
 ## 3. User flows worth testing
 
 Public, no login (phase 1):
-1. Project search: a donor finds a project by name, even when typed without its accents, sees a message when nothing matches, and gets the list back after clearing the search. Done.
+1. Project search: a donor finds a project by name, even when typed without its accents, finds the projects in a country by its name, sees a message when nothing matches, and gets the list back after clearing the search. Done.
 2. Project page: open a project from the list. Pending.
 
 Not planned: the home redirect (`/` to `/en`), the Donate link hand-off, the German locale, and the login gate.
@@ -215,6 +215,8 @@ Phase 1: no login, read-only. Each test also fails if the page throws an uncaugh
 
 The project search tests, in [e2e/project-search.spec.ts](../../e2e/project-search.spec.ts):
 - `yucatan restoration`, typed without the accent, shows "Yucatán Restoration", and every other card that was on screen disappears.
+- `Italy` shows only cards from Italy. On staging, no project has Italy in its name, location or TPO, so a result proves the country name is searched. The name comes from the locale's `country.json`.
+- Country names match only in the site's language, on purpose: on the English site, "Mexiko" finds nothing. No test covers this.
 - A search with no match shows "Oops! No project found" and no cards.
 - Emptying the search box brings back the cards that were listed before.
 - The Clear search button closes the search, keeps the Top Projects tab selected, and brings back the earlier cards. The next search starts from an empty box.
