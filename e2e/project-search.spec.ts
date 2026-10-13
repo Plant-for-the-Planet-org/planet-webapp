@@ -1,13 +1,19 @@
 import type { Page } from '@playwright/test';
 
 import { test, expect } from './fixtures';
+import { LOCALE, allProjectsText as text } from './i18n';
 import { PROJECT, projectCards } from './projects';
 
-const NO_RESULTS = 'Oops! No project found';
+const NO_RESULTS = text.noProjectFound;
 const NO_MATCH_QUERY = 'zzqx no such project';
 
+// Role locators, not test IDs: they also check that each control has a label a screen reader can read.
 const searchBox = (page: Page) =>
-  page.getByRole('textbox', { name: 'Search Project' });
+  page.getByRole('textbox', { name: text.searchProject });
+
+// The tab label ends with a project count, so match only the words before it.
+const topProjectsTab = (page: Page) =>
+  page.getByRole('tab', { name: text.topProjects.split('<')[0].trim() });
 
 // The project image's alt text is the full project name.
 const projectImage = (page: Page, name: string) =>
@@ -24,12 +30,12 @@ const listedProjectNames = async (page: Page) => {
 
 // The list applies the typed text about a second after the last key press, so check results with auto-retrying assertions only.
 const searchFor = async (page: Page, query: string) => {
-  await page.getByRole('button', { name: 'Search Project' }).click();
+  await page.getByRole('button', { name: text.searchProject }).click();
   await searchBox(page).fill(query);
 };
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/en');
+  await page.goto(`/${LOCALE}`);
 });
 
 test('a project name typed without its accent finds the project and hides the rest', async ({
@@ -81,17 +87,15 @@ test('Clear search closes the search and brings back the Top Projects list', asy
   await searchFor(page, NO_MATCH_QUERY);
   await expect(page.getByText(NO_RESULTS)).toBeVisible();
 
-  await page.getByRole('button', { name: 'Clear search' }).click();
+  await page.getByRole('button', { name: text.clearSearch }).click();
 
   await expect(searchBox(page)).toBeHidden();
-  await expect(
-    page.getByRole('tab', { name: /^Top Projects/ })
-  ).toHaveAttribute('aria-selected', 'true');
+  await expect(topProjectsTab(page)).toHaveAttribute('aria-selected', 'true');
   for (const name of listedNames) {
     await expect(projectImage(page, name)).toBeVisible();
   }
 
   // The next search starts from an empty box, not the old query.
-  await page.getByRole('button', { name: 'Search Project' }).click();
+  await page.getByRole('button', { name: text.searchProject }).click();
   await expect(searchBox(page)).toHaveValue('');
 });
