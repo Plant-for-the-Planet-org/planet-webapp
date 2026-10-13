@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import WebappButton from '../../../WebappButton';
 import IconButton from '../../../IconButton';
 import { useEffect, useState } from 'react';
-import { useMobileDetection } from '../../../../../utils/navbarUtils';
+import { subscribeToMobileDetection } from '../../../../../utils/navbarUtils';
 import Me from '../../../../../../public/assets/images/icons/headerIcons/Me';
 import styles from '../Navbar.module.scss';
 import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
@@ -24,9 +24,12 @@ export const SignInButton = () => {
 
   useEffect(() => {
     const maxWidth = '481px';
-    const cleanup = useMobileDetection(maxWidth, (isMobile: boolean) => {
-      setIsMobile(isMobile);
-    });
+    const cleanup = subscribeToMobileDetection(
+      maxWidth,
+      (isMobile: boolean) => {
+        setIsMobile(isMobile);
+      }
+    );
     return () => {
       if (cleanup) cleanup();
     };

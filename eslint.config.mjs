@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
 import storybook from 'eslint-plugin-storybook';
 import cypress from 'eslint-plugin-cypress';
 import { rules as emotionRules } from '@emotion/eslint-plugin';
@@ -31,6 +32,7 @@ export default [
     plugins: {
       '@emotion': emotion,
       cypress,
+      'react-hooks': reactHooks,
     },
     languageOptions: {
       ecmaVersion: 2020,
@@ -108,6 +110,8 @@ export default [
       '@emotion/styled-import': 'error',
       '@typescript-eslint/no-require-imports': 'off',
       'react/prop-types': 'off',
+      'react-hooks/rules-of-hooks': 'warn',
+      'react-hooks/exhaustive-deps': 'warn',
       'cypress/no-assigning-return-values': 'error',
       'cypress/no-unnecessary-waiting': 'error',
       'cypress/assertion-before-screenshot': 'warn',
