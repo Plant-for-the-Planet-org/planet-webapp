@@ -70,6 +70,8 @@
     "accountTitleText": "Überweisung in {currency}",
     "addBankDetailsButton": "Bankverbindung hinzufügen",
     "noBankAccountText": "Du hast noch keine Bankverbindung angegeben.",
+    "bankAccountsLoadErrorText": "Die Bankdaten konnten nicht geladen werden. Bitte versuche es nochmal.",
+    "tryAgainButton": "Nochmal versuchen",
     "editBankAccountTitle": "Konto bearbeiten",
     "minPayoutText": "Min. Auszahlung: {amount}"
   }
