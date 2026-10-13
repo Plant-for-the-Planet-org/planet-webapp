@@ -25,6 +25,9 @@ jobs:
 
       - name: 'Checkout the repository'
         uses: actions/checkout@v4
+        with:
+          # Nothing after checkout uses git, so keep the token out of `.git/config`, where `npm ci` scripts and test code could read it.
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -39,7 +42,8 @@ jobs:
           CYPRESS_INSTALL_BINARY: 0
 
       - name: 'Install Playwright Chromium'
-        run: npx playwright install --with-deps chromium
+        # Headless runs only use the headless shell, so skip the full Chrome for Testing download. Drop `--only-shell` if CI ever runs headed.
+        run: npx playwright install --with-deps --only-shell chromium
 
       - name: 'Run E2E tests'
         id: tests
@@ -48,11 +52,11 @@ jobs:
           PLAYWRIGHT_BASE_URL: ${{ github.event.deployment_status.environment_url }}
 
       - name: 'Upload the Playwright report'
-        # Only when the tests ran. A failed preview or install leaves no report to upload.
-        if: failure() && steps.tests.outcome == 'failure'
+        # Also after a green run, so a test that passed only on a retry keeps the trace of its failed try. A failed preview or install skips the tests and leaves no report.
+        if: ${{ !cancelled() && steps.tests.outcome != 'skipped' }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          # The HTML report includes the trace of each failed test.
+          # The HTML report includes the trace of each failed try.
           path: playwright-report/
           retention-days: 14
