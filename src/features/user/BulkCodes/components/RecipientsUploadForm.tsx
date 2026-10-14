@@ -259,33 +259,38 @@ const RecipientsUploadForm = ({
         hasIgnoredColumns={hasIgnoredColumns}
         shouldWarn={localRecipients.length > 0}
       />
-      <p className={styles.uploadInstructions}>
-        {t.rich('importInstructions', {
-          docsLink: (chunks) => (
-            <a
-              target="_blank"
-              href="https://plantfortheplanet.notion.site/Bulk-Codes-Public-Documentation-edbcb42b80db415d87245ffc0aecd1e8"
-              rel="noreferrer"
-            >
-              {chunks}
-            </a>
-          ),
-          excelLink: (chunks) => (
-            <a href="/assets/recipient-upload-sample.xlsx">{chunks}</a>
-          ),
-          csvLink: (chunks) => (
-            <a href="/assets/recipient-upload-sample.csv">{chunks}</a>
-          ),
-        })}
-      </p>
-      {selfGiftRows.length > 0 && (
-        <p className={styles.selfGiftWarning} role="alert">
-          {t('selfGiftWarning', {
-            count: selfGiftRows.length,
-            rowList: selfGiftRows.join(', '),
+      <div>
+        <p className={styles.uploadInstructions}>
+          {t.rich('importInstructions', {
+            docsLink: (chunks) => (
+              <a
+                target="_blank"
+                href="https://plantfortheplanet.notion.site/Bulk-Codes-Public-Documentation-edbcb42b80db415d87245ffc0aecd1e8"
+                rel="noreferrer"
+              >
+                {chunks}
+              </a>
+            ),
+            excelLink: (chunks) => (
+              <a href="/assets/recipient-upload-sample.xlsx">{chunks}</a>
+            ),
+            csvLink: (chunks) => (
+              <a href="/assets/recipient-upload-sample.csv">{chunks}</a>
+            ),
           })}
         </p>
-      )}
+        {/* Keep the status region mounted so screen readers announce changes to its content. It shares a wrapper with the instructions so it adds no flex gap when empty. */}
+        <div role="status">
+          {selfGiftRows.length > 0 && (
+            <p className={styles.selfGiftWarning}>
+              {t('selfGiftWarning', {
+                count: selfGiftRows.length,
+                rowList: selfGiftRows.join(', '),
+              })}
+            </p>
+          )}
+        </div>
+      </div>
       <RecipientsTable
         headers={headers}
         localRecipients={localRecipients}
