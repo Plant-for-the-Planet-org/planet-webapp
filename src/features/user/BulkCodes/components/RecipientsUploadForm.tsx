@@ -16,6 +16,8 @@ import UploadWidget from './UploadWidget';
 import RecipientsTable from './RecipientsTable';
 import styles from '../BulkCodes.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
+import { useUserStore } from '../../../../stores';
+import { getSelfGiftRows } from '../utils';
 
 const acceptedHeaders: (keyof RecipientUploadRow)[] = [
   'recipient_name',
@@ -47,6 +49,11 @@ const RecipientsUploadForm = ({
   const [status, setStatus] = useState<UploadStates>('empty');
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
+  // store: state
+  const giverEmail = useUserStore((state) => state.userProfile?.email);
+  const selfGiftRows = giverEmail
+    ? getSelfGiftRows(localRecipients, giverEmail)
+    : [];
   const headers = useMemo<TableHeader[]>(() => {
     return acceptedHeaders.map((header) => ({
       key: header,
@@ -271,6 +278,14 @@ const RecipientsUploadForm = ({
           ),
         })}
       </p>
+      {selfGiftRows.length > 0 && (
+        <p className={styles.selfGiftWarning} role="alert">
+          {t('selfGiftWarning', {
+            count: selfGiftRows.length,
+            rowList: selfGiftRows.join(', '),
+          })}
+        </p>
+      )}
       <RecipientsTable
         headers={headers}
         localRecipients={localRecipients}

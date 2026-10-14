@@ -19,6 +19,8 @@ import AddRecipient from './AddRecipient';
 import UpdateRecipient from './UpdateRecipient';
 import ActionContainer from './ActionContainer';
 import RecipientHeader from './RecipientHeader';
+import { useUserStore } from '../../../../stores';
+import { isSelfGift } from '../utils';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
@@ -41,6 +43,8 @@ const RecipientsTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isEditActive, setIsEditActive] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  // store: state
+  const giverEmail = useUserStore((state) => state.userProfile?.email);
 
   const enterEditMode = (index: number): void => {
     setIsEditActive(true);
@@ -156,7 +160,18 @@ const RecipientsTable = ({
                     </TableCell>
                     {headers.map((header) => {
                       const value = recipient[header.key];
-                      return <TableCell key={header.key}>{value}</TableCell>;
+                      const isSelfGiftEmail =
+                        header.key === 'recipient_email' &&
+                        giverEmail !== undefined &&
+                        isSelfGift(value, giverEmail);
+                      return (
+                        <TableCell
+                          key={header.key}
+                          sx={isSelfGiftEmail ? { color: 'error.main' } : {}}
+                        >
+                          {value}
+                        </TableCell>
+                      );
                     })}
                   </TableRow>
                 );
