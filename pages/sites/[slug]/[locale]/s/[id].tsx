@@ -21,8 +21,12 @@ import getMessagesForPage from '../../../../../src/utils/language/getMessagesFor
 import { useApi } from '../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
+import { useAuthStore, useUserStore } from '../../../../../src/stores';
 import { defaultTenant } from '../../../../../tenant.config';
-import { storeDirectGift } from '../../../../../src/utils/directGift';
+import {
+  isSelfDirectGift,
+  storeDirectGift,
+} from '../../../../../src/utils/directGift';
 
 export default function DirectGiftCheckPage(): ReactElement {
   const router = useRouter();
@@ -30,6 +34,7 @@ export default function DirectGiftCheckPage(): ReactElement {
   const { getApi } = useApi();
   // store: state
   const isInitialized = useTenantStore((state) => state.isInitialized);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
@@ -39,11 +44,16 @@ export default function DirectGiftCheckPage(): ReactElement {
         `/app/profiles/${router.query.id}`
       );
       if (newProfile.type !== 'tpo') {
-        storeDirectGift({
+        const directGift = {
           id: newProfile.slug,
           displayName: newProfile.displayName,
           type: newProfile.type,
-        });
+        };
+        // Read the latest slug at write time, so a late or repeated call cannot store a self-gift.
+        const userSlug = useUserStore.getState().userProfile?.slug;
+        if (!userSlug || !isSelfDirectGift(directGift, userSlug)) {
+          storeDirectGift(directGift);
+        }
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -52,11 +62,12 @@ export default function DirectGiftCheckPage(): ReactElement {
     }
   }
 
+  // Wait for auth so a logged-in user's profile is loaded before the self-gift check.
   useEffect(() => {
-    if (router.isReady && router.query.id) {
+    if (isAuthResolved && router.isReady && router.query.id) {
       loadPublicUserData();
     }
-  }, [router.isReady, router.query.id]);
+  }, [isAuthResolved, router.isReady, router.query.id]);
 
   return isInitialized ? <div></div> : <></>;
 }

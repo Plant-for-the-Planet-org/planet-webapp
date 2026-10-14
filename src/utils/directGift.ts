@@ -10,6 +10,12 @@ export const storeDirectGift = (directGift: DirectGiftType): void => {
   localStorage.setItem(DIRECT_GIFT_KEY, JSON.stringify(directGift));
 };
 
+// A user cannot send a direct gift to their own profile.
+export const isSelfDirectGift = (
+  directGift: DirectGiftType,
+  userSlug: string
+): boolean => directGift.id === userSlug;
+
 export const clearStoredDirectGift = (): void => {
   localStorage.removeItem(DIRECT_GIFT_KEY);
 };

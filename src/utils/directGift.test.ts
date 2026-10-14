@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import {
   clearStoredDirectGift,
+  isSelfDirectGift,
   readStoredDirectGift,
   storeDirectGift,
 } from './directGift';
@@ -65,6 +66,16 @@ describe('storeDirectGift', () => {
     storeDirectGift(VALID_GIFT);
 
     expect(readStoredDirectGift()).toEqual(VALID_GIFT);
+  });
+});
+
+describe('isSelfDirectGift', () => {
+  it('returns true when the gift is to the user', () => {
+    expect(isSelfDirectGift(VALID_GIFT, 'jane-doe')).toBe(true);
+  });
+
+  it('returns false when the gift is to someone else', () => {
+    expect(isSelfDirectGift(VALID_GIFT, 'john-doe')).toBe(false);
   });
 });
 
