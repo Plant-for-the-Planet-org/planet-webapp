@@ -6,7 +6,7 @@ import type {
 } from 'next/types';
 import type { ReactElement } from 'react';
 import type { NextPageWithLayout, PageComponentProps } from '../../../_app';
-import type { DirectGiftI } from '../../../../src/features/donations/components/DirectGift';
+import type { DirectGiftType } from '../../../../src/utils/directGift';
 import type { AbstractIntlMessages } from 'next-intl';
 import type { Tenant } from '@planet-sdk/common';
 
@@ -22,30 +22,15 @@ import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection
 import DirectGift from '../../../../src/features/donations/components/DirectGift';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
 import { defaultTenant } from '../../../../tenant.config';
+import { readStoredDirectGift } from '../../../../src/utils/directGift';
 
 const ProjectListPage: NextPageWithLayout = ({ isMobile }) => {
   const isInitialized = useTenantStore((state) => state.isInitialized);
 
-  const [directGift, setDirectGift] = useState<DirectGiftI | null>(null);
+  const [directGift, setDirectGift] = useState<DirectGiftType | null>(null);
 
   useEffect(() => {
-    const storedDirectGift = localStorage.getItem('directGift');
-    if (!storedDirectGift) return;
-    try {
-      const parsedDirectGift = JSON.parse(storedDirectGift);
-      if (
-        parsedDirectGift &&
-        typeof parsedDirectGift.id === 'string' &&
-        typeof parsedDirectGift.displayName === 'string' &&
-        typeof parsedDirectGift.type === 'string'
-      ) {
-        setDirectGift(parsedDirectGift);
-      } else {
-        localStorage.removeItem('directGift');
-      }
-    } catch {
-      localStorage.removeItem('directGift');
-    }
+    setDirectGift(readStoredDirectGift());
   }, []);
 
   if (!isInitialized) return <></>;

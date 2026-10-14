@@ -1,3 +1,5 @@
+import { readStoredDirectGift } from './directGift';
+
 // calling this function before window is loaded may cause an error
 export const getDonationUrl = (
   tenant: string | undefined,
@@ -11,22 +13,13 @@ export const getDonationUrl = (
   const country = localStorage.getItem('countryCode') || 'DE';
   const language = localStorage.getItem('language') || 'en';
 
-  const storedDirectGift = localStorage.getItem('directGift');
-  let directGift: { id?: string } | null = null;
-  if (storedDirectGift) {
-    try {
-      directGift = JSON.parse(storedDirectGift);
-    } catch {
-      directGift = null;
-    }
-  }
+  const directGift = readStoredDirectGift();
 
   const callbackUrlValue =
     embed === 'true' ? callbackUrl : window.location.href;
 
-  // directGift.id, when present, takes precedence over slug for the 's' param
-  const giftSlug =
-    directGift && directGift.id !== undefined ? directGift.id : slug;
+  // A stored direct gift takes precedence over slug for the 's' param
+  const giftSlug = directGift !== null ? directGift.id : slug;
 
   const queryParams = [
     `to=${encodeURIComponent(id)}`,

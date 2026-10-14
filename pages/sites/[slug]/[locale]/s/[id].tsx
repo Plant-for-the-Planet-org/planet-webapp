@@ -22,6 +22,7 @@ import { useApi } from '../../../../../src/hooks/useApi';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import { useErrorHandlingStore } from '../../../../../src/stores/errorHandlingStore';
 import { defaultTenant } from '../../../../../tenant.config';
+import { storeDirectGift } from '../../../../../src/utils/directGift';
 
 export default function DirectGiftCheckPage(): ReactElement {
   const router = useRouter();
@@ -38,14 +39,11 @@ export default function DirectGiftCheckPage(): ReactElement {
         `/app/profiles/${router.query.id}`
       );
       if (newProfile.type !== 'tpo') {
-        localStorage.setItem(
-          'directGift',
-          JSON.stringify({
-            id: newProfile.slug,
-            displayName: newProfile.displayName,
-            type: newProfile.type,
-          })
-        );
+        storeDirectGift({
+          id: newProfile.slug,
+          displayName: newProfile.displayName,
+          type: newProfile.type,
+        });
       }
     } catch (err) {
       setErrors(handleError(err as APIError));
