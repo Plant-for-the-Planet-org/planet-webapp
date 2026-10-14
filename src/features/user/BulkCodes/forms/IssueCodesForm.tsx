@@ -28,6 +28,7 @@ import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { useUserStore, useErrorHandlingStore } from '../../../../stores';
 import { useBulkCodeStore } from '../../../../stores/bulkCodeStore';
+import { getSelfGiftRows } from '../utils';
 
 type SubmissionStatus = 'idle' | 'submitting' | 'success';
 
@@ -51,6 +52,7 @@ const IssueCodesForm = (): ReactElement | null => {
   const [notificationLocale, setNotificationLocale] = useState('');
   // store: state
   const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+  const giverEmail = useUserStore((state) => state.userProfile?.email);
   const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
   const planetCashAccount = useBulkCodeStore(
     (state) => state.planetCashAccount
@@ -247,9 +249,13 @@ const IssueCodesForm = (): ReactElement | null => {
     const hasEnteredRequiredData =
       localRecipients.length > 0 ||
       (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
+    const hasSelfGift =
+      giverEmail !== undefined &&
+      getSelfGiftRows(localRecipients, giverEmail).length > 0;
 
     return (
       !hasSufficientFunds ||
+      hasSelfGift ||
       status === 'submitting' ||
       !hasEnteredRequiredData ||
       !totalAmount ||
@@ -257,6 +263,7 @@ const IssueCodesForm = (): ReactElement | null => {
     );
   }, [
     userPlanetCash,
+    giverEmail,
     status,
     localRecipients,
     codeQuantity,

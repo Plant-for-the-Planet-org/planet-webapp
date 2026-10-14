@@ -6,6 +6,8 @@ import { Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
+import { useUserStore } from '../../../../stores';
+import { isSelfGift } from '../utils';
 
 interface Props {
   control: Control<RecipientUploadRow>;
@@ -14,6 +16,8 @@ interface Props {
 
 const RecipientFormFields = ({ control, errors }: Props) => {
   const t = useTranslations('BulkCodes');
+  // store: state
+  const giverEmail = useUserStore((state) => state.userProfile?.email);
   const validateRequiredIfNotify = (
     value: string,
     formValues: RecipientUploadRow
@@ -61,6 +65,10 @@ const RecipientFormFields = ({ control, errors }: Props) => {
                 value.length === 0 ||
                 isEmailValid(value) ||
                 t('errorAddRecipient.emailInvalid'),
+              notSelfGift: (value) =>
+                !giverEmail ||
+                !isSelfGift(value, giverEmail) ||
+                t('errorAddRecipient.selfGift'),
             },
           }}
           render={({ field }) => (
