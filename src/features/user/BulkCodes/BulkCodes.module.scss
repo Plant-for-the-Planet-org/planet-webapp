@@ -42,6 +42,11 @@
   text-decoration: underline;
 }
 
+.selfGiftWarning {
+  margin-top: 24px;
+  color: $dsFireRed;
+}
+
 .issueCodeTermsAndWarnings {
   font-size: $fontSmall;
   font-style: italic;

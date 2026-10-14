@@ -16,6 +16,8 @@ import UploadWidget from './UploadWidget';
 import RecipientsTable from './RecipientsTable';
 import styles from '../BulkCodes.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
+import { useUserStore } from '../../../../stores';
+import { getSelfGiftRows } from '../utils';
 
 const acceptedHeaders: (keyof RecipientUploadRow)[] = [
   'recipient_name',
@@ -47,6 +49,11 @@ const RecipientsUploadForm = ({
   const [status, setStatus] = useState<UploadStates>('empty');
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
+  // store: state
+  const giverEmail = useUserStore((state) => state.userProfile?.email);
+  const selfGiftRows = giverEmail
+    ? getSelfGiftRows(localRecipients, giverEmail)
+    : [];
   const headers = useMemo<TableHeader[]>(() => {
     return acceptedHeaders.map((header) => ({
       key: header,
@@ -252,25 +259,38 @@ const RecipientsUploadForm = ({
         hasIgnoredColumns={hasIgnoredColumns}
         shouldWarn={localRecipients.length > 0}
       />
-      <p className={styles.uploadInstructions}>
-        {t.rich('importInstructions', {
-          docsLink: (chunks) => (
-            <a
-              target="_blank"
-              href="https://plantfortheplanet.notion.site/Bulk-Codes-Public-Documentation-edbcb42b80db415d87245ffc0aecd1e8"
-              rel="noreferrer"
-            >
-              {chunks}
-            </a>
-          ),
-          excelLink: (chunks) => (
-            <a href="/assets/recipient-upload-sample.xlsx">{chunks}</a>
-          ),
-          csvLink: (chunks) => (
-            <a href="/assets/recipient-upload-sample.csv">{chunks}</a>
-          ),
-        })}
-      </p>
+      <div>
+        <p className={styles.uploadInstructions}>
+          {t.rich('importInstructions', {
+            docsLink: (chunks) => (
+              <a
+                target="_blank"
+                href="https://plantfortheplanet.notion.site/Bulk-Codes-Public-Documentation-edbcb42b80db415d87245ffc0aecd1e8"
+                rel="noreferrer"
+              >
+                {chunks}
+              </a>
+            ),
+            excelLink: (chunks) => (
+              <a href="/assets/recipient-upload-sample.xlsx">{chunks}</a>
+            ),
+            csvLink: (chunks) => (
+              <a href="/assets/recipient-upload-sample.csv">{chunks}</a>
+            ),
+          })}
+        </p>
+        {/* Keep the status region mounted so screen readers announce changes to its content. It shares a wrapper with the instructions so it adds no flex gap when empty. */}
+        <div role="status">
+          {selfGiftRows.length > 0 && (
+            <p className={styles.selfGiftWarning}>
+              {t('selfGiftWarning', {
+                count: selfGiftRows.length,
+                rowList: selfGiftRows.join(', '),
+              })}
+            </p>
+          )}
+        </div>
+      </div>
       <RecipientsTable
         headers={headers}
         localRecipients={localRecipients}
