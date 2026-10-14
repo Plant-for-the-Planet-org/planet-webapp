@@ -6,8 +6,13 @@ export type DirectGiftType = {
 
 const DIRECT_GIFT_KEY = 'directGift';
 
+// Storage access can throw when the browser blocks it, so every helper here is best-effort.
 export const storeDirectGift = (directGift: DirectGiftType): void => {
-  localStorage.setItem(DIRECT_GIFT_KEY, JSON.stringify(directGift));
+  try {
+    localStorage.setItem(DIRECT_GIFT_KEY, JSON.stringify(directGift));
+  } catch {
+    // Without storage the gift is simply not kept.
+  }
 };
 
 // A user cannot send a direct gift to their own profile.
@@ -17,14 +22,18 @@ export const isSelfDirectGift = (
 ): boolean => directGift.id === userSlug;
 
 export const clearStoredDirectGift = (): void => {
-  localStorage.removeItem(DIRECT_GIFT_KEY);
+  try {
+    localStorage.removeItem(DIRECT_GIFT_KEY);
+  } catch {
+    // Nothing to clear when storage is blocked.
+  }
 };
 
 // Clears the stored value when it is malformed, so a bad entry does not linger.
 export const readStoredDirectGift = (): DirectGiftType | null => {
-  const storedDirectGift = localStorage.getItem(DIRECT_GIFT_KEY);
-  if (!storedDirectGift) return null;
   try {
+    const storedDirectGift = localStorage.getItem(DIRECT_GIFT_KEY);
+    if (!storedDirectGift) return null;
     const parsedDirectGift = JSON.parse(storedDirectGift);
     if (
       parsedDirectGift &&
@@ -34,10 +43,9 @@ export const readStoredDirectGift = (): DirectGiftType | null => {
     ) {
       return parsedDirectGift;
     }
-    clearStoredDirectGift();
-    return null;
   } catch {
-    clearStoredDirectGift();
-    return null;
+    // Blocked storage or malformed JSON; both are treated as no gift.
   }
+  clearStoredDirectGift();
+  return null;
 };

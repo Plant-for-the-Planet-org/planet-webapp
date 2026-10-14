@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
   clearStoredDirectGift,
@@ -86,5 +86,38 @@ describe('clearStoredDirectGift', () => {
     clearStoredDirectGift();
 
     expect(localStorage.getItem('directGift')).toBeNull();
+  });
+});
+
+describe('when storage is blocked', () => {
+  const blockStorage = (method: 'getItem' | 'setItem' | 'removeItem') =>
+    vi.spyOn(Storage.prototype, method).mockImplementation(() => {
+      throw new DOMException('Storage is blocked', 'SecurityError');
+    });
+
+  it('readStoredDirectGift returns null instead of throwing', () => {
+    blockStorage('getItem');
+    blockStorage('removeItem');
+
+    expect(readStoredDirectGift()).toBeNull();
+  });
+
+  it('readStoredDirectGift returns null when clearing malformed data fails', () => {
+    writeRawDirectGift('{not json');
+    blockStorage('removeItem');
+
+    expect(readStoredDirectGift()).toBeNull();
+  });
+
+  it('storeDirectGift does not throw', () => {
+    blockStorage('setItem');
+
+    expect(() => storeDirectGift(VALID_GIFT)).not.toThrow();
+  });
+
+  it('clearStoredDirectGift does not throw', () => {
+    blockStorage('removeItem');
+
+    expect(() => clearStoredDirectGift()).not.toThrow();
   });
 });
