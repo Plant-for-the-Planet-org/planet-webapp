@@ -25,11 +25,13 @@ const DonorName = ({ donor }: { donor: DonorView }) => {
   return (
     <div className={styles.donorName}>
       <span className={styles.header}>
-        {tReceipt('donorInfo.name', { type: donor.type })}
+        {tReceipt('donorInfo.name', { type: donor.type ?? '' })}
       </span>
       {!donor.name ? (
         <ErrorMessage
-          message={tReceipt('notifications.nameMissing', { type: donor.type })}
+          message={tReceipt('notifications.nameMissing', {
+            type: donor.type ?? '',
+          })}
         />
       ) : (
         <span>{donor.name}</span>

@@ -34,7 +34,7 @@ const PlantInfoCard = ({
     {
       label: tProjectDetails('treeTag'),
       data: tProjectDetails('tag', {
-        number: tag,
+        number: tag ?? '',
       }),
       shouldRender: Boolean(tag),
     },
