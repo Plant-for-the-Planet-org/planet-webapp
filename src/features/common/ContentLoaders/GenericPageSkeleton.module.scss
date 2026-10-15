@@ -1,0 +1,16 @@
+@import '../../../theme/theme';
+
+// Clears the fixed 80px header, same offset every profile page content area uses.
+.container {
+  margin-top: 80px;
+  padding: 20px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1060px;
+
+  @include xsPhoneView {
+    margin-top: 142px;
+    padding: 20px;
+  }
+}

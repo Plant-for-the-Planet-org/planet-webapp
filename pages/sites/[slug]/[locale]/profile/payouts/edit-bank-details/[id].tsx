@@ -13,6 +13,7 @@ import Head from 'next/head';
 import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../../../../../src/features/user/ManagePayouts';
+import PayoutsSkeleton from '../../../../../../../src/features/user/ManagePayouts/PayoutsSkeleton';
 import { useTranslations } from 'next-intl';
 import {
   constructPathsForTenantSlug,
@@ -31,7 +32,7 @@ export default function EditBankDetailsPage(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout skeleton={<PayoutsSkeleton />}>
       <Head>
         <title>{t('managePayouts.titleEditBankDetails')}</title>
       </Head>

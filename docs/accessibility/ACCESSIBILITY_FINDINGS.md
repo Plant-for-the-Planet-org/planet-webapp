@@ -1207,7 +1207,7 @@ useEffect(() => {
 ```tsx
 <CancelIcon aria-hidden="true" focusable="false" />
 ```
-Good existing patterns to mirror: `ContentLoaders/ButtonLoader.tsx` and `ContentLoaders/UserProfile/UserProfileLoader.tsx`.
+Good existing patterns to mirror: `ContentLoaders/ButtonLoader.tsx` and `ContentLoaders/UserLayout/UserLayoutLoader.tsx`.
 
 **Testing Steps:** Screen reader skips decorative icons. Automated: axe `svg-img-alt`.
 
