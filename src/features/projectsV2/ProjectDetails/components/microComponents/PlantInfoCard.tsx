@@ -1,7 +1,7 @@
 import type { Measurements } from '@planet-sdk/common';
 
 import styles from '../../styles/InterventionInfo.module.scss';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { clsx } from 'clsx';
 import { useInterventionStore } from '../../../../../stores';
@@ -22,13 +22,14 @@ const PlantInfoCard = ({
   type,
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
+  const locale = useLocale();
   const setSelectedSampleIntervention = useInterventionStore(
     (state) => state.setSelectedSampleIntervention
   );
   const sampleTreeConfig = [
     {
       label: tProjectDetails('plantingDate'),
-      data: plantDate ? formatDate(plantDate) : null,
+      data: plantDate ? formatDate(plantDate, locale) : null,
       shouldRender: Boolean(plantDate),
     },
     {
