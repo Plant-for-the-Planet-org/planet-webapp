@@ -19,7 +19,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import '../../../../utils/mapsV2/maplibreWorker';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
-import tj from '@mapbox/togeojson';
+import { kml } from '@tmcw/togeojson';
 import { useTranslations } from 'next-intl';
 import gjv from 'geojson-validation';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
@@ -70,7 +70,7 @@ const isValidGeoJSON = (geo: unknown): geo is ProjectSiteFeatureCollection => {
 const parseGeoFile = (content: string, fileType: string) => {
   if (fileType === 'kml') {
     const dom = new DOMParser().parseFromString(content, 'text/xml');
-    return tj.kml(dom);
+    return kml(dom);
   }
   return JSON.parse(content);
 };
