@@ -1,7 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../common/types/payments';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useId, useState, useContext } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
@@ -69,6 +69,9 @@ export const EditModal = ({
   const [disabled, setDisabled] = useState(false);
   //store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  // Names and describes the dialog using its visible title and note
+  const titleId = useId();
+  const descriptionId = useId();
 
   useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -130,8 +133,6 @@ export const EditModal = ({
       open={editModalOpen}
       onClose={handleEditModalClose}
       closeAfterTransition
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
       BackdropProps={{
         timeout: 500,
       }}
@@ -139,6 +140,9 @@ export const EditModal = ({
       <Fade in={editModalOpen}>
         <div
           className={clsx(styles.manageDonationModal, styles.editDonationModal)}
+          role="dialog"
+          aria-labelledby={titleId}
+          aria-describedby={descriptionId}
         >
           <div className={styles.modalTexts}>
             <div
@@ -149,7 +153,7 @@ export const EditModal = ({
                 width: '100%',
               }}
             >
-              <h4 style={{ marginRight: '64px' }}>
+              <h4 id={titleId} style={{ marginRight: '64px' }}>
                 {t('editDonationConfirmation')}
               </h4>
               <IconButton
@@ -160,7 +164,7 @@ export const EditModal = ({
                 <Close color={'#4d5153'} />
               </IconButton>
             </div>
-            <div className={styles.note}>
+            <div className={styles.note} id={descriptionId}>
               <p>{t('editDonationDescription')}</p>
             </div>
           </div>

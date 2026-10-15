@@ -1,7 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../common/types/payments';
 
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useId, useState, useEffect } from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
@@ -54,6 +54,9 @@ export const PauseModal = ({
   const [disabled, setDisabled] = useState(false);
   // store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  // Names and describes the dialog using its visible title and note
+  const titleId = useId();
+  const descriptionId = useId();
 
   useEffect(() => {
     setdate(
@@ -98,14 +101,17 @@ export const PauseModal = ({
       open={pauseModalOpen}
       onClose={handlePauseModalClose}
       closeAfterTransition
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
       BackdropProps={{
         timeout: 500,
       }}
     >
       <Fade in={pauseModalOpen}>
-        <div className={styles.manageDonationModal}>
+        <div
+          className={styles.manageDonationModal}
+          role="dialog"
+          aria-labelledby={titleId}
+          aria-describedby={descriptionId}
+        >
           <div style={{ marginBottom: '10px' }} />
           <div className={styles.modalTexts}>
             <div
@@ -116,7 +122,7 @@ export const PauseModal = ({
                 width: '100%',
               }}
             >
-              <h4>{t('pauseDonationConfirmation')}</h4>
+              <h4 id={titleId}>{t('pauseDonationConfirmation')}</h4>
               <IconButton
                 label={`${tCommon('close')} ${t('pauseDonationConfirmation')}`}
                 onClick={handlePauseModalClose}
@@ -125,7 +131,7 @@ export const PauseModal = ({
                 <Close color={'#4d5153'} />
               </IconButton>
             </div>
-            <div className={styles.note}>
+            <div className={styles.note} id={descriptionId}>
               <p>{t('pauseDonationDescription')}</p>
             </div>
           </div>

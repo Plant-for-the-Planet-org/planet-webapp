@@ -1,7 +1,7 @@
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../common/types/payments';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useId, useState, useContext } from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
@@ -54,6 +54,9 @@ export const CancelModal = ({
   const [disabled, setDisabled] = useState(false);
   //store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  // Names and describes the dialog using its visible title and note
+  const titleId = useId();
+  const descriptionId = useId();
 
   useEffect(() => {
     setDisabled(false);
@@ -91,14 +94,17 @@ export const CancelModal = ({
       open={cancelModalOpen}
       onClose={handleCancelModalClose}
       closeAfterTransition
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
       BackdropProps={{
         timeout: 500,
       }}
     >
       <Fade in={cancelModalOpen}>
-        <div className={styles.manageDonationModal}>
+        <div
+          className={styles.manageDonationModal}
+          role="dialog"
+          aria-labelledby={titleId}
+          aria-describedby={descriptionId}
+        >
           <div className={styles.modalTexts}>
             <div
               style={{
@@ -108,7 +114,7 @@ export const CancelModal = ({
                 width: '100%',
               }}
             >
-              <h4>{t('cancelDonationConfirmation')}</h4>
+              <h4 id={titleId}>{t('cancelDonationConfirmation')}</h4>
               <IconButton
                 label={`${tCommon('close')} ${t('cancelDonationConfirmation')}`}
                 onClick={handleCancelModalClose}
@@ -117,7 +123,7 @@ export const CancelModal = ({
                 <Close color={'#4d5153'} />
               </IconButton>
             </div>
-            <div className={styles.note}>
+            <div className={styles.note} id={descriptionId}>
               {record?.method === 'paypal' ? (
                 <p>{t('cancelDonationPaypalDescription')}</p>
               ) : (
