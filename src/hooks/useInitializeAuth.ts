@@ -14,6 +14,7 @@ export const useInitializeAuth = () => {
     getAccessTokenSilently,
   } = useAuthSession();
   // store: action
+  const token = useAuthStore((state) => state.token);
   const setToken = useAuthStore((state) => state.setToken);
   const setIsAuthResolved = useAuthStore((state) => state.setIsAuthResolved);
   const setHasAuthFailed = useAuthStore((state) => state.setHasAuthFailed);
@@ -72,6 +73,11 @@ export const useInitializeAuth = () => {
       return;
     }
 
+    // Skip if a token already exists.
+    // If auth expiry clears it while Auth0 is still authenticated,
+    // run again to fetch a fresh token.
+    if (token !== null) return;
+
     loadToken();
-  }, [isAuthLoading, isAuthenticated, loadToken]);
+  }, [isAuthLoading, isAuthenticated, token, loadToken]);
 };
