@@ -179,28 +179,15 @@ export function getFeaturesAtPoint(
 ): MapGeoJSONFeature[] | undefined {
   if (!mapRef.current) return;
   const map = mapRef.current.getMap();
-  const canvas = map.getCanvas();
 
   const availableLayers = INTERACTIVE_LAYERS.filter((layerId) =>
     map.getLayer(layerId)
   );
+  if (availableLayers.length === 0) return [];
 
-  if (availableLayers.length === 0) {
-    canvas.style.cursor = '';
-    return [];
-  }
-
-  const features = map.queryRenderedFeatures(point, {
+  return map.queryRenderedFeatures(point, {
     layers: availableLayers,
   });
-
-  if (features.length === 0) {
-    canvas.style.cursor = '';
-    return [];
-  }
-
-  canvas.style.cursor = 'pointer';
-  return features;
 }
 
 /**
