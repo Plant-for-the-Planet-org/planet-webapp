@@ -1,10 +1,10 @@
-import type { AddressSuggestionsType } from '../../../../../common/types/geocoder';
 import type { ExtendedCountryCode } from '../../../../../common/types/country';
 import type { SetState } from '../../../../../common/types/common';
 import type { Nullable } from '@planet-sdk/common/build/types/util';
 import type { AddressType } from '@planet-sdk/common';
+import type { ResolvedAddress } from '../../../../../common/types/geocoder';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { CircularProgress, TextField } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm } from 'react-hook-form';
@@ -14,16 +14,12 @@ import {
 } from '../../../../../../utils/addressManagement';
 import InlineFormDisplayGroup from '../../../../../common/Layout/Forms/InlineFormDisplayGroup';
 import styles from '../AddressManagement.module.scss';
-import AddressInput from './AddressInput';
+import AddressAutocomplete from '../../../../../common/InputTypes/AddressAutocomplete';
 import CountrySelect from '../../../../../common/InputTypes/AutoCompleteCountry';
 import { allCountries } from '../../../../../../utils/constants/countries';
 import AddressFormButtons from './AddressFormButtons';
-import { useDebouncedEffect } from '../../../../../../utils/useDebouncedEffect';
 import PrimaryAddressToggle from './PrimaryAddressToggle';
-import {
-  getAddressDetailsFromText,
-  getAddressSuggestions,
-} from '../../../../../../utils/geocoder';
+import { useAddressSuggestions } from '../../../../../../hooks/useAddressSuggestions';
 import { getPostalRegex } from '../../../../../../utils/addressManagement';
 
 export type AddressFormData = {
@@ -60,9 +56,6 @@ const AddressForm = ({
   setPrimaryAddressChecked,
 }: Props) => {
   const t = useTranslations('EditProfile');
-  const [addressSuggestions, setAddressSuggestions] = useState<
-    AddressSuggestionsType[]
-  >([]);
   const {
     control,
     handleSubmit,
@@ -73,80 +66,31 @@ const AddressForm = ({
     mode: 'onBlur',
     defaultValues: defaultAddressDetail,
   });
-  const [inputValue, setInputValue] = useState('');
-  const latestRequestIdRef = useRef(0);
   const postalRegex = useMemo(() => getPostalRegex(country), [country]);
 
-  const handleInputChange = (value: string) => {
-    setInputValue(value);
-  };
-  const handleSuggestAddress = useCallback(
-    async (value: string) => {
-      // Bump request ID to track the latest API call
-      latestRequestIdRef.current++;
-      const currentRequestId = latestRequestIdRef.current;
-      try {
-        const suggestions = await getAddressSuggestions(value, country);
-        // Only update if this is still the latest request
-        if (currentRequestId === latestRequestIdRef.current) {
-          setAddressSuggestions(suggestions);
-        }
-      } catch (error) {
-        console.error('Failed to fetch address suggestions:', error);
-        // Prevent outdated error responses from affecting UI
-        if (currentRequestId === latestRequestIdRef.current) {
-          setAddressSuggestions([]);
-        }
-      }
-    },
-    [country]
-  );
-
-  useDebouncedEffect(
-    () => {
-      const trimmedInput = inputValue.trim();
-
-      // Clear suggestions if input is empty or just whitespace
-      if (trimmedInput === '') {
-        setAddressSuggestions([]);
-        return;
-      }
-
-      // Fetch suggestions only if input is meaningful (e.g., length > 3)
-      handleSuggestAddress(trimmedInput);
-    },
-    700,
-    [inputValue]
-  );
-
-  const selectAndParseAddress = useCallback(
-    async (value: string) => {
-      try {
-        const details = await getAddressDetailsFromText(value);
-        if (details) {
-          setValue('address', details.address, { shouldValidate: true });
-          setValue('city', details.city, { shouldValidate: true });
-          setValue('zipCode', details.zipCode, { shouldValidate: true });
-        }
-        setAddressSuggestions([]);
-      } catch (error) {
-        console.error('Failed to fetch address details:', error);
-      }
+  const applyResolvedAddress = useCallback(
+    (details: ResolvedAddress) => {
+      setValue('address', details.address, { shouldValidate: true });
+      setValue('city', details.city, { shouldValidate: true });
+      setValue('zipCode', details.zipCode, { shouldValidate: true });
     },
     [setValue]
   );
-  const handleAddressSelect = (address: string) => {
-    selectAndParseAddress(address);
-  };
+
+  const { suggestions, handleInputChange, selectSuggestion, clearSuggestions } =
+    useAddressSuggestions({
+      country,
+      onAddressResolved: applyResolvedAddress,
+    });
 
   const resetForm = () => {
     reset(defaultAddressDetail);
-    setAddressSuggestions([]);
+    clearSuggestions();
   };
 
   return (
     <form className={styles.addressForm}>
-      <AddressInput
+      <AddressAutocomplete<AddressFormData>
         name="address"
         control={control}
         label={t('fieldLabels.address')}
@@ -156,20 +100,19 @@ const AddressForm = ({
           required: t('validationErrors.addressRequired'),
           invalid: t('validationErrors.addressInvalid'),
         }}
-        suggestions={addressSuggestions}
+        suggestions={suggestions}
         onInputChange={handleInputChange}
-        onAddressSelect={handleAddressSelect}
+        onSuggestionSelect={selectSuggestion}
       />
-      <AddressInput
+      <AddressAutocomplete<AddressFormData>
         name="address2"
         control={control}
         label={t('addressManagement.addressForm.address2')}
         validationPattern={validationPattern.address}
         validationMessages={{
-          required: t('validationErrors.addressRequired'),
           invalid: t('validationErrors.addressInvalid'),
         }}
-        suggestions={addressSuggestions}
+        suggestions={suggestions}
         onInputChange={handleInputChange}
       />
       <InlineFormDisplayGroup>
