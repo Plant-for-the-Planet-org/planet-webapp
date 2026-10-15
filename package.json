@@ -32,7 +32,8 @@
     "prepare": "node ./husky-prepare.js",
     "analyze-css": "node scripts/css-static-analyzer.js",
     "analyze-css:ci": "node scripts/css-static-analyzer.js && echo 'CSS analysis passed'",
-    "find-typos": "cspell --words-only --unique . | sort --ignore-case >> project-words.txt"
+    "find-typos": "cspell --words-only --unique . | sort --ignore-case >> project-words.txt",
+    "find-unused-translation-keys": "node scripts/find-unused-translation-keys.js"
   },
   "validate-branch-name": {
     "pattern": "^(main|develop){1}$|^(feature|hotfix|fix)/[a-z0-9-_]+$",
