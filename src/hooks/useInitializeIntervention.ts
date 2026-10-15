@@ -1,14 +1,11 @@
 import type { Intervention } from '@planet-sdk/common';
 
 import { useEffect } from 'react';
-import {
-  useInterventionStore,
-  useSingleProjectStore,
-  useViewStore,
-} from '../stores';
+import { useInterventionStore, useSingleProjectStore } from '../stores';
 import { useRouter } from 'next/router';
 import { useLocale } from 'next-intl';
 import { FIRST_SITE_INDEX, hasNoSites, isString } from '../utils/projectV2';
+import { useCurrentPage } from './useCurrentPage';
 
 const getInterventionByHid = (
   interventions: Intervention[] | null,
@@ -25,7 +22,7 @@ export const useInitializeIntervention = () => {
     requestedSite && requestedIntervention
   );
   // store: state
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
   const singleProject = useSingleProjectStore((state) => state.singleProject);
   const selectedIntervention = useInterventionStore(
     (state) => state.selectedIntervention

@@ -19,6 +19,7 @@ import {
   useQueryParamStore,
 } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
+import { useCurrentPage } from '../../../hooks/useCurrentPage';
 
 interface ProjectListControlForMobileProps {
   tabSelected?: ProjectTabs;
@@ -48,7 +49,7 @@ const ProjectListControlForMobile = ({
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
   const selectedMode = useViewStore((state) => state.selectedMode);
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
   const isFilterApplied = useProjectStore(
     (state) =>
       state.selectedClassification.length > 0 || state.showDonatableProjects
