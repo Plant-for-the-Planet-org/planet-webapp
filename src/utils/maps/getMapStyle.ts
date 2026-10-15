@@ -1,6 +1,4 @@
 import defaultStyle from '../../../public/data/styles/root.json';
-import openStreetMap from '../../../public/data/styles/OpenStreetMap.json';
-import myForestMapStyle from '../../../public/data/styles/MyForestMapStyles.json';
 
 // cspell:ignore tilejson
 function format(style: any, metadata: any, metadataUrl: string) {
@@ -45,18 +43,27 @@ export default async function getMapStyle(
         'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
       );
       return result;
-    case 'openStreetMap':
+    // Loaded on demand to keep these styles out of the _app chunk, since only the manage-projects and profile maps use them.
+    case 'openStreetMap': {
+      const { default: openStreetMap } = await import(
+        '../../../public/data/styles/OpenStreetMap.json'
+      );
       result = await fetchTiles(
         openStreetMap,
         'https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer'
       );
       return result;
-    case 'myForestMap':
+    }
+    case 'myForestMap': {
+      const { default: myForestMapStyle } = await import(
+        '../../../public/data/styles/MyForestMapStyles.json'
+      );
       result = await fetchTiles(
         myForestMapStyle,
         'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
       );
       return result;
+    }
     default:
       return result;
   }
