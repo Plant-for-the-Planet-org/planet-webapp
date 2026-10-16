@@ -1,11 +1,7 @@
 import type { Intervention } from '@planet-sdk/common';
 
 import { useEffect } from 'react';
-import {
-  useInterventionStore,
-  useSingleProjectStore,
-  useViewStore,
-} from '../stores';
+import { useInterventionStore, useSingleProjectStore } from '../stores';
 import { useRouter } from 'next/router';
 import { useLocale } from 'next-intl';
 import { FIRST_SITE_INDEX, hasNoSites, isString } from '../utils/projectV2';
@@ -20,12 +16,15 @@ const getInterventionByHid = (
 export const useInitializeIntervention = () => {
   const locale = useLocale();
   const router = useRouter();
-  const { site: requestedSite, ploc: requestedIntervention } = router.query;
+  const {
+    p: requestedProjectSlug,
+    site: requestedSite,
+    ploc: requestedIntervention,
+  } = router.query;
   const hasRequestedBothTogether = Boolean(
     requestedSite && requestedIntervention
   );
   // store: state
-  const currentPage = useViewStore((state) => state.page);
   const singleProject = useSingleProjectStore((state) => state.singleProject);
   const selectedIntervention = useInterventionStore(
     (state) => state.selectedIntervention
@@ -50,7 +49,7 @@ export const useInitializeIntervention = () => {
    * Initialize intervention selection for project details page.
    * Selects an intervention only when:
    * - Router is ready
-   * - We are on project-details
+   * - The URL names a project
    * - Interventions are loaded
    * - No site or intervention is already selected
    * - URL explicitly requests an intervention
@@ -58,7 +57,7 @@ export const useInitializeIntervention = () => {
    */
   useEffect(() => {
     if (!router.isReady) return;
-    if (currentPage === 'project-list') return;
+    if (!isString(requestedProjectSlug)) return;
     if (!hasInterventions) return;
     if (selectedSite !== null) return;
     if (hasRequestedBothTogether) return;
@@ -81,15 +80,12 @@ export const useInitializeIntervention = () => {
         router
       );
     }
-  }, [
-    router.isReady,
-    currentPage,
-    selectedIntervention,
-    interventions,
-    selectedSite,
-  ]);
+    // `requestedProjectSlug` is left out on purpose. On a direct project-to-project navigation, running when it changes would match the new `ploc` against the previous project's interventions.
+  }, [router.isReady, selectedIntervention, interventions, selectedSite]);
 
+  // Clear together with the single-project state, whenever the URL no longer names a project. See #3200.
   useEffect(() => {
-    if (currentPage === 'project-list') clearInterventionStates();
-  }, [currentPage]);
+    if (!router.isReady) return;
+    if (!isString(requestedProjectSlug)) clearInterventionStates();
+  }, [router.isReady, requestedProjectSlug, clearInterventionStates]);
 };
