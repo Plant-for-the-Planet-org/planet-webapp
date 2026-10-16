@@ -7,7 +7,6 @@ import {
   useInterventionStore,
   useSingleProjectStore,
   useTenantStore,
-  useViewStore,
 } from '../stores';
 import { useLocale } from 'next-intl';
 import { FIRST_SITE_INDEX, hasNoSites, isString } from '../utils/projectV2';
@@ -37,7 +36,6 @@ export const useInitializeSingleProject = () => {
     !requestedSite && requestedIntervention
   );
   // store: state
-  const currentPage = useViewStore((state) => state.page);
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
   const isCurrencyResolved = useCurrencyStore(
     (state) => state.isCurrencyResolved
@@ -150,8 +148,12 @@ export const useInitializeSingleProject = () => {
     selectedSite,
   ]);
 
-  // Clear single-project state when navigating back to the project list.
+  /**
+   * Clear single-project state whenever the URL no longer names a project, so the last project does not outlive the project pages. See #3200.
+   * This uses the URL, not `viewStore.page`: the page is `null` on the first render of a fresh load, so a page check could clear a fetch that has just started.
+   */
   useEffect(() => {
-    if (currentPage === 'project-list') clearProjectStates();
-  }, [currentPage]);
+    if (!router.isReady) return;
+    if (!isString(projectSlug)) clearProjectStates();
+  }, [router.isReady, projectSlug, clearProjectStates]);
 };
