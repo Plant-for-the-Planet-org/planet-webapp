@@ -23,8 +23,8 @@ const ProjectTypeIcon = ({ projectType }: Props) => {
       return <UrbanRestoration />;
     case 'conservation':
       return <Conservation />;
-    case 'large-scale-planting':
-    case 'other-planting':
+    case 'restoration-tree-planting':
+    case 'other-restoration':
       return <TreePlanting />;
     default:
       return null;

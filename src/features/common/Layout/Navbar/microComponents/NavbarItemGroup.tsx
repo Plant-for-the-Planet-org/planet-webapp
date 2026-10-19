@@ -43,8 +43,6 @@ const NavbarItemGroup = ({
   setOpenMenuKey,
   openMenuKey,
 }: NavbarItemProps) => {
-  if (!navbarItem.visible) return null;
-
   const { primaryColor } = themeProperties.designSystem.colors;
   const tNavbarItem = useTranslations('Common');
   const { localizedPath } = useLocalizedPath();
@@ -65,6 +63,8 @@ const NavbarItemGroup = ({
       isMenuItemActive
     );
   }, [navbarItem.link, router.pathname, isNavMenuOpen, isMenuItemActive]);
+
+  if (!navbarItem.visible) return null;
 
   const activeNavbarItemStyles = isActive ? styles.activeItem : '';
 

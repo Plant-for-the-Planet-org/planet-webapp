@@ -88,6 +88,11 @@ export type ApiConfigBase = {
   version?: string;
 };
 
+export type ApiRequestFn = <T>(
+  url: string,
+  config?: ApiConfigBase
+) => Promise<T>;
+
 type ApiConfigWithPayload<P extends Record<string, unknown>> = {
   payload: P;
 } & ApiConfigBase;
@@ -116,6 +121,7 @@ export const useApi = () => {
     authRequired = false,
     version,
     additionalHeaders,
+    responseType,
   }: RequestOptions & {
     version?: string;
   }): Promise<T> => {
@@ -148,8 +154,21 @@ export const useApi = () => {
       : headers;
     const requestOptions =
       method === 'POST' || method === 'PUT'
-        ? { method, url, data, queryParams, additionalHeaders: finalHeader }
-        : { method, url, queryParams, additionalHeaders: finalHeader };
+        ? {
+            method,
+            url,
+            data,
+            queryParams,
+            additionalHeaders: finalHeader,
+            responseType,
+          }
+        : {
+            method,
+            url,
+            queryParams,
+            additionalHeaders: finalHeader,
+            responseType,
+          };
 
     try {
       return await apiClient<T>(requestOptions);
@@ -208,6 +227,30 @@ export const useApi = () => {
       data: config.payload,
       queryParams: config.queryParams,
       additionalHeaders: config.additionalHeaders,
+    });
+  };
+
+  /**
+   * Performs an authenticated GET request that returns the raw bytes rather than JSON.
+   *
+   * Goes through callApi so a download carries the same headers as every other
+   * request, impersonation included. A hand-rolled fetch does not.
+   *
+   * @param {string} url The endpoint URL
+   * @param {ApiConfig<never, 'GET'>} [config={}] Optional configuration for the request
+   * @returns {Promise<Blob>} The response body
+   */
+  const getApiBlobAuthenticated = async (
+    url: string,
+    config: ApiConfig<never, 'GET'> = {}
+  ): Promise<Blob> => {
+    return callApi<Blob>({
+      method: 'GET',
+      url,
+      authRequired: true,
+      queryParams: config.queryParams,
+      additionalHeaders: config.additionalHeaders,
+      responseType: 'blob',
     });
   };
 
@@ -333,6 +376,7 @@ export const useApi = () => {
   return {
     getApi,
     getApiAuthenticated,
+    getApiBlobAuthenticated,
     postApi,
     postApiAuthenticated,
     putApi,

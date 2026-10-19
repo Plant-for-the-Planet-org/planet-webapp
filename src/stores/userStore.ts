@@ -10,7 +10,6 @@ import {
   storeImpersonationData,
 } from '../utils/impersonation';
 import { APIError } from '@planet-sdk/common';
-import { useAuthStore } from './authStore';
 
 // No real HTTP response was involved (network failure, JSON parsing, a
 // session-id/localStorage failure, ...). Mirrors the INVALID_TOKEN_STATUS_CODE
@@ -116,12 +115,7 @@ export const useUserStore = create<UserStore>()(
         const requestId = ++latestFetchUserProfileRequestId;
         const isStale = () => requestId !== latestFetchUserProfileRequestId;
 
-        const { setIsAuthResolved } = useAuthStore.getState();
-        setIsAuthResolved(false);
-
         try {
-          // Inside the try so a localStorage failure still resolves auth
-          // via the finally block below.
           const sessionId = await getsessionId();
           const header = {
             'tenant-key': `${tenantId}`,
@@ -226,8 +220,6 @@ export const useUserStore = create<UserStore>()(
           // The global flow still runs via the `profileApiError` state above;
           // callers that only rely on that state can ignore this rejection.
           throw error;
-        } finally {
-          setIsAuthResolved(true);
         }
       },
 

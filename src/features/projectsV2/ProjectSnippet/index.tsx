@@ -114,7 +114,7 @@ const ProjectSnippetContent = ({
   };
   const imageProps: ImageSectionProps = {
     ...commonProps,
-    projectName: project.name,
+    projectName: project.name ?? '', // API returns null when the project has no translation for the locale
     image: project.image,
     ecosystem,
     showTooltipPopups,

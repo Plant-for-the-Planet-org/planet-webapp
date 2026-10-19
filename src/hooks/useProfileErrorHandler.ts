@@ -6,6 +6,10 @@ import { useLocale } from 'next-intl';
 import { useAuthStore, useTenantStore, useUserStore } from '../stores';
 import useLocalizedPath from './useLocalizedPath';
 import { useAuthSession } from './useAuthSession';
+import {
+  hasExceededRedirectLimit,
+  registerRedirectAttempt,
+} from '../utils/authRedirectGuard';
 
 const useProfileErrorHandler = () => {
   const router = useRouter();
@@ -16,6 +20,7 @@ const useProfileErrorHandler = () => {
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
   const setToken = useAuthStore((state) => state.setToken);
+  const setHasAuthFailed = useAuthStore((state) => state.setHasAuthFailed);
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
   const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
 
@@ -33,6 +38,21 @@ const useProfileErrorHandler = () => {
         case 401:
           exitImpersonation();
           setToken(null);
+
+          // Use the same redirect counter as token failures.
+          // If the token keeps working but the profile keeps returning 401,
+          // the counter will eventually stop the repeated login redirects.
+          //
+          // Once the limit is reached, show the failed-sign-in screen instead of redirecting again.
+          if (hasExceededRedirectLimit()) {
+            console.error(
+              '[Profile API] Redirect limit reached after repeated 401s, stopping login redirects.'
+            );
+            setHasAuthFailed(true);
+            break;
+          }
+          registerRedirectAttempt();
+
           loginWithRedirect({
             redirectUri: `${window.location.origin}/login`,
             ui_locales: localStorage.getItem('language') || 'en',
@@ -78,6 +98,7 @@ const useProfileErrorHandler = () => {
       loginWithRedirect,
       localizedPath,
       setToken,
+      setHasAuthFailed,
       exitImpersonation,
       fetchUserProfile,
       tenantId,
