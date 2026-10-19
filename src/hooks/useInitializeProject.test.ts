@@ -24,9 +24,13 @@ const renderOnPage = (page: Page) => {
   renderHook(() => useInitializeProject());
 };
 
-// What `useInitializeCurrency` does on mount in the browser.
+// Mirrors app start-up: use the saved currency if there is one, otherwise settle it the way storeConfig does when its config request fails, which keeps EUR.
+// Blocked storage takes the same path, since storeConfig's first storage write throws.
 const resolveCurrency = () =>
-  act(() => useCurrencyStore.getState().initializeCurrencyCode());
+  act(() => {
+    useCurrencyStore.getState().initializeCurrencyCode();
+    useCurrencyStore.getState().resolveGeoCurrencyCode(null);
+  });
 
 const requestedCurrencies = () =>
   requestsTo(getApi, '/app/projects').map(
@@ -55,6 +59,13 @@ describe('useInitializeProject', () => {
     await waitForFetchWith('USD');
 
     expect(requestedCurrencies()).toEqual(['USD']);
+  });
+
+  it('waits for the config request when no currency is stored', () => {
+    renderOnPage('project-list');
+    act(() => useCurrencyStore.getState().initializeCurrencyCode());
+
+    expect(getApi).not.toHaveBeenCalled();
   });
 
   it('fetches once with EUR when no currency is stored', async () => {
