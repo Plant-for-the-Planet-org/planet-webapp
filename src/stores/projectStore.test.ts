@@ -24,7 +24,7 @@ const fetchProjects = (getApi: ApiRequestFn, params: Request) =>
     .getState()
     .fetchProjects(getApi, { queryParams: { _scope: 'map', ...params } });
 
-const listRequests = (getApi: ReturnType<typeof createGetApi>) =>
+const projectListRequests = (getApi: ReturnType<typeof createGetApi>) =>
   requestsTo(getApi, '/app/projects');
 
 const heldSlugs = () =>
@@ -46,7 +46,7 @@ describe('projectStore.fetchProjects', () => {
     await fetchProjects(getApi, DEFAULT);
     await fetchProjects(getApi, DEFAULT);
 
-    expect(listRequests(getApi)).toHaveLength(1);
+    expect(projectListRequests(getApi)).toHaveLength(1);
     expect(heldSlugs()).toEqual(['yucatan']);
   });
 
@@ -59,7 +59,7 @@ describe('projectStore.fetchProjects', () => {
     response.resolve([createMapProject('yucatan')]);
     await Promise.all([first, second]);
 
-    expect(listRequests(getApi)).toHaveLength(1);
+    expect(projectListRequests(getApi)).toHaveLength(1);
   });
 
   it.each<[string, Partial<Request>]>([
@@ -72,7 +72,7 @@ describe('projectStore.fetchProjects', () => {
     await fetchProjects(getApi, DEFAULT);
     await fetchProjects(getApi, { ...DEFAULT, ...change });
 
-    expect(listRequests(getApi)).toHaveLength(2);
+    expect(projectListRequests(getApi)).toHaveLength(2);
   });
 
   it('drops a superseded response, so a slow earlier request cannot overwrite newer data', async () => {
@@ -121,7 +121,7 @@ describe('projectStore.fetchProjects', () => {
 
     await fetchProjects(getApi, DEFAULT);
 
-    expect(listRequests(getApi)).toHaveLength(2);
+    expect(projectListRequests(getApi)).toHaveLength(2);
     expect(heldSlugs()).toEqual(['yucatan']);
     expect(useProjectStore.getState().isProjectsError).toBe(false);
   });
