@@ -81,6 +81,14 @@ export const createProject = (overrides: Partial<ExtendedProject> = {}) =>
     ...overrides,
   } as unknown as ExtendedProject);
 
+/** The smallest project site with a shape, so it counts as selectable. */
+export const createSite = (id: string) =>
+  ({
+    type: 'Feature',
+    geometry: { type: 'Polygon', coordinates: [] },
+    properties: { id },
+  } as unknown as NonNullable<ExtendedProject['sites']>[number]);
+
 /** The smallest project list entry, as returned by `/app/projects`. */
 export const createMapProject = (slug: string) =>
   ({
