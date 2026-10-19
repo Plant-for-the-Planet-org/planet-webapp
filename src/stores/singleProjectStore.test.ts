@@ -4,11 +4,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useSingleProjectStore } from './singleProjectStore';
 import { useErrorHandlingStore } from './errorHandlingStore';
 import {
-  callsTo,
   createDeferred,
   createGetApi,
   createProject,
+  requestsTo,
   resetAllStores,
+  SINGLE_PROJECT_PATH,
 } from '../test-utils';
 
 // Time travel looks up imagery from Esri Wayback, which tests must not call.
@@ -40,7 +41,7 @@ const fetchProject = (getApi: ApiRequestFn, { slug, ...params }: Request) =>
     );
 
 const projectRequests = (getApi: ReturnType<typeof createGetApi>) =>
-  callsTo(getApi, '/app/projects/');
+  requestsTo(getApi, SINGLE_PROJECT_PATH);
 
 const heldSlug = () => useSingleProjectStore.getState().singleProject?.slug;
 

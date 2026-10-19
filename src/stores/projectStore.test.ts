@@ -4,10 +4,10 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { useProjectStore } from './projectStore';
 import { useErrorHandlingStore } from './errorHandlingStore';
 import {
-  callsTo,
   createDeferred,
   createGetApi,
   createMapProject,
+  requestsTo,
   resetAllStores,
 } from '../test-utils';
 
@@ -25,7 +25,7 @@ const fetchProjects = (getApi: ApiRequestFn, params: Request) =>
     .fetchProjects(getApi, { queryParams: { _scope: 'map', ...params } });
 
 const listRequests = (getApi: ReturnType<typeof createGetApi>) =>
-  callsTo(getApi, '/app/projects');
+  requestsTo(getApi, '/app/projects');
 
 const heldSlugs = () =>
   useProjectStore

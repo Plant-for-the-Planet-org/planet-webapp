@@ -8,10 +8,11 @@ import {
   useTenantStore,
 } from '../stores';
 import {
-  callsTo,
   createMockRouter,
   createProject,
+  requestsTo,
   resetAllStores,
+  SINGLE_PROJECT_PATH,
 } from '../test-utils';
 import { useInitializeSingleProject } from './useInitializeSingleProject';
 
@@ -32,7 +33,7 @@ const renderAtQuery = (query: Record<string, string>) => {
   return router;
 };
 
-const projectRequests = () => callsTo(getApi, '/app/projects/');
+const projectRequests = () => requestsTo(getApi, SINGLE_PROJECT_PATH);
 
 const waitForProject = () =>
   waitFor(() =>

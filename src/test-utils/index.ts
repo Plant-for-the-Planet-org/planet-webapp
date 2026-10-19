@@ -48,10 +48,15 @@ export const createGetApi = () => {
   return getApi as typeof getApi & ApiRequestFn;
 };
 
-/** The calls to a mocked `getApi` whose URL starts with `path`, so unrelated requests such as interventions do not skew a count. */
-export const callsTo = (getApi: Mock, path: string) =>
+/** `/app/projects/<slug>`, but not the project list or a sub-path such as `/app/projects/<slug>/sites`. */
+export const SINGLE_PROJECT_PATH = /^\/app\/projects\/[^/]+$/;
+
+/** The calls to a mocked `getApi` for `path`, so unrelated requests such as interventions do not skew a count. A string matches the exact path; use a pattern for a path with a changing part, such as a slug. */
+export const requestsTo = (getApi: Mock, path: string | RegExp) =>
   getApi.mock.calls.filter(
-    ([url]) => typeof url === 'string' && url.startsWith(path)
+    ([calledPath]) =>
+      typeof calledPath === 'string' &&
+      (typeof path === 'string' ? calledPath === path : path.test(calledPath))
   );
 
 /** A promise the test settles by hand, to control the order responses arrive in. */

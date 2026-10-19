@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useCurrencyStore, useProjectStore, useViewStore } from '../stores';
 import {
-  callsTo,
   createMapProject,
   createMockRouter,
+  requestsTo,
   resetAllStores,
 } from '../test-utils';
 import { useInitializeProject } from './useInitializeProject';
@@ -29,7 +29,7 @@ const resolveCurrency = () =>
   act(() => useCurrencyStore.getState().initializeCurrencyCode());
 
 const requestedCurrencies = () =>
-  callsTo(getApi, '/app/projects').map(
+  requestsTo(getApi, '/app/projects').map(
     ([, config]) => config.queryParams.currency
   );
 
