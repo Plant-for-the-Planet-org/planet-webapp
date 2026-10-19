@@ -39,6 +39,18 @@ const renderAtQuery = (query: Record<string, string>) => {
   return router;
 };
 
+/** Renders at a query, and returns a function that moves the same hook to another query, like a client-side navigation. */
+const renderWithNavigation = (query: Record<string, string>) => {
+  vi.mocked(useRouter).mockReturnValue(createMockRouter({ query }));
+  const { rerender } = renderHook(() => useInitializeSingleProject());
+  return (nextQuery: Record<string, string>) => {
+    vi.mocked(useRouter).mockReturnValue(
+      createMockRouter({ query: nextQuery })
+    );
+    rerender();
+  };
+};
+
 const projectRequests = () => requestsTo(getApi, SINGLE_PROJECT_PATH);
 
 const waitForProject = () =>
@@ -201,6 +213,22 @@ describe('useInitializeSingleProject', () => {
       await waitFor(() => expect(selectedSite()).toBe(0));
 
       expect(shownUrls(router)).toEqual(['/en/yucatan?site=site_a']);
+    });
+  });
+
+  // #3200: the last project used to outlive the project pages.
+  describe('leaving the project', () => {
+    it('clears the project when the URL no longer names one', async () => {
+      getApi.mockResolvedValue(createProject({ sites: SITES }));
+      const navigateTo = renderWithNavigation({ p: 'yucatan' });
+      await waitFor(() => expect(selectedSite()).toBe(0));
+
+      navigateTo({});
+
+      const { singleProject, lastFetch } = useSingleProjectStore.getState();
+      expect(singleProject).toBeNull();
+      expect(lastFetch).toBeNull();
+      expect(selectedSite()).toBeNull();
     });
   });
 });
