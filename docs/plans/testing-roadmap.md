@@ -101,6 +101,7 @@ target files that PR creates. See the sections above for detail.
 - [x] Project page tests (#3016, #3199): `@testing-library/react`, shared helpers in `src/test-utils/`, store tests for `singleProjectStore` and `projectStore`, hook tests for `useInitializeSingleProject` (fetch, redirect, site selection, clearing), `useInitializeProject` and `useInitializeLanguage`, and `storeConfig` currency tests. Includes regression tests for #3010, #3011, #3015, #3120 and #3200.
 - [x] Unmount rendered hooks after each test: `src/test-utils/setup.ts`, loaded through `setupFiles`. Testing Library does this by itself only with Vitest globals on, and they stay off because the Cypress types already define a global `expect`.
 - [ ] Evaluate the remaining store and list hook gaps from the #3199 review: #3223.
+- [ ] `useApi` tests beyond the impersonation headers covered in #3073: logout on a missing or expired token, the version header, error wrapping, and blob responses.
 - [ ] Make the test job a required check. No longer blocked: #3041 and #3056 are closed and the suite is green. Needs a repo admin to turn it on.
 - [ ] Typecheck in CI. Deferred on purpose: `tsc --noEmit` reports 131 pre-existing errors, measured on 2026-08-11. Fix those first, or baseline the count, otherwise the gate is noise.
 - [ ] Store tests (needs 2837): `userStore` actions, `authStore`.
