@@ -24,8 +24,8 @@ const renderOnPage = (page: Page) => {
   renderHook(() => useInitializeProject());
 };
 
-// Mirrors app start-up: use the saved currency if there is one, otherwise settle it the way storeConfig does when its config request fails, which keeps EUR.
-// Blocked storage takes the same path, since storeConfig's first storage write throws.
+// Mirrors app start-up: use the saved currency if there is one, otherwise settle it the way storeConfig does when its config request fails, which keeps the default currency EUR.
+// Blocked storage takes the same path, since storeConfig's session lookup reads storage first and throws.
 const resolveCurrency = () =>
   act(() => {
     useCurrencyStore.getState().initializeCurrencyCode();
@@ -49,7 +49,7 @@ describe('useInitializeProject', () => {
     getApi.mockResolvedValue([createMapProject('yucatan')]);
   });
 
-  it('waits for the stored currency, then fetches once with it', async () => {
+  it('waits for the stored currency to resolve, then fetches once with it', async () => {
     localStorage.setItem('currencyCode', 'USD');
     renderOnPage('project-list');
 
@@ -68,7 +68,7 @@ describe('useInitializeProject', () => {
     expect(getApi).not.toHaveBeenCalled();
   });
 
-  it('fetches once with EUR when no currency is stored', async () => {
+  it('fetches once with default currency (EUR) when no currency is stored and config request fails', async () => {
     renderOnPage('project-list');
     resolveCurrency();
     await waitForFetchWith('EUR');
@@ -76,7 +76,7 @@ describe('useInitializeProject', () => {
     expect(requestedCurrencies()).toEqual(['EUR']);
   });
 
-  // #3011: reading blocked storage used to throw before the currency was marked resolved, so no request ever went out.
+  // #3011: in a cross-origin embed every storage access throws, so no currency is read and storeConfig's catch resolves to EUR. The list must still load.
   it('fetches once with EUR when storage is blocked, as in a cross-origin embed', async () => {
     vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
       throw new Error('storage blocked');
@@ -88,7 +88,7 @@ describe('useInitializeProject', () => {
     expect(requestedCurrencies()).toEqual(['EUR']);
   });
 
-  it('fetches once more for each currency change', async () => {
+  it('fetches again, once, for each currency change', async () => {
     renderOnPage('project-list');
     resolveCurrency();
     await waitForFetchWith('EUR');
