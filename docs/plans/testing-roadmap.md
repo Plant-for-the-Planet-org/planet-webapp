@@ -40,10 +40,7 @@ Target the risk map, not a coverage number. In order:
    caught (render with `userProfile: null` vs set). It tests the client render only, not SSR,
    `getServerSideProps`, routing, or middleware. Feasible, but do it after the priority 1 and 2
    wins.
-4. End-to-end (a real browser at a URL): highest fidelity, highest cost. Needs a running app, a
-   way through Auth0 login (programmatic token injection, not driving the login UI), backend
-   data or network stubbing, and tenant and env config. Prefer Playwright over reviving the
-   broken Cypress suite. Reserve it for a few critical-path smoke flows, not many pages. Started early, see [playwright-e2e-plan.md](./playwright-e2e-plan.md).
+4. End-to-end (a real browser at a URL): highest fidelity, highest cost. Needs a running app, a way through Auth0 login (programmatic token injection, not driving the login UI), backend data or network stubbing, and tenant and env config. Prefer Playwright over reviving the broken Cypress suite. Reserve it for a few critical-path smoke flows, not many pages. Started early, see [playwright-e2e-plan.md](./playwright-e2e-plan.md).
 
 Test behavior, not implementation (assert outcomes, not internal calls), so tests survive the
 next refactor, which is the whole point.
