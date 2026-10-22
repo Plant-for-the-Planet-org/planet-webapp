@@ -15,6 +15,7 @@ import Head from 'next/head';
 import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../../../../src/features/user/ManagePayouts';
+import PayoutsSkeleton from '../../../../../../src/features/user/ManagePayouts/PayoutsSkeleton';
 import { useTranslations } from 'next-intl';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
@@ -41,7 +42,7 @@ export default function OverviewPage(): ReactElement {
           <TopProgressBar progress={progress} />
         </div>
       )}
-      <UserLayout>
+      <UserLayout skeleton={<PayoutsSkeleton />}>
         <Head>
           <title>{t('managePayouts.titleOverview')}</title>
         </Head>

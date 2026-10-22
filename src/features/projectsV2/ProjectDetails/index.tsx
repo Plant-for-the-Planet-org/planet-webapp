@@ -8,8 +8,7 @@ import { useRouter } from 'next/router';
 import ProjectSnippet from '../ProjectSnippet';
 import ProjectInfo from './components/ProjectInfo';
 import styles from './ProjectDetails.module.scss';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import ProjectDetailsSkeleton from './ProjectDetailsSkeleton';
 import MultiTreeInfo from './components/MultiTreeInfo';
 import SingleTreeInfo from './components/SingleTreeInfo';
 import { getActiveSingleTree } from '../../../utils/projectV2';
@@ -85,7 +84,7 @@ const ProjectDetails = ({ isMobile }: { isMobile: boolean }) => {
   );
 
   if (singleProject === null) {
-    return <Skeleton className={styles.projectDetailsSkeleton} />;
+    return <ProjectDetailsSkeleton isMobile={isMobile} />;
   }
 
   return (

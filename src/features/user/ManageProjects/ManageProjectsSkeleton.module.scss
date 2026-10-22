@@ -1,0 +1,18 @@
+.ctaRow {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.cardGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
