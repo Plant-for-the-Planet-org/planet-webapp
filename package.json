@@ -25,6 +25,7 @@
     "test:verbose": "vitest run --reporter=verbose",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
     "typecheck": "tsc --noEmit",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
