@@ -40,10 +40,7 @@ Target the risk map, not a coverage number. In order:
    caught (render with `userProfile: null` vs set). It tests the client render only, not SSR,
    `getServerSideProps`, routing, or middleware. Feasible, but do it after the priority 1 and 2
    wins.
-4. End-to-end (a real browser at a URL): highest fidelity, highest cost. Needs a running app, a
-   way through Auth0 login (programmatic token injection, not driving the login UI), backend
-   data or network stubbing, and tenant and env config. Prefer Playwright over reviving the
-   broken Cypress suite. Reserve it for a few critical-path smoke flows, not many pages. Defer.
+4. End-to-end (a real browser at a URL): highest fidelity, highest cost. Needs a running app, a way through Auth0 login (programmatic token injection, not driving the login UI), backend data or network stubbing, and tenant and env config. Prefer Playwright over reviving the broken Cypress suite. Reserve it for a few critical-path smoke flows, not many pages. Started early, see [playwright-e2e-plan.md](./playwright-e2e-plan.md).
 
 Test behavior, not implementation (assert outcomes, not internal calls), so tests survive the
 next refactor, which is the whole point.
@@ -108,4 +105,4 @@ target files that PR creates. See the sections above for detail.
 - [ ] Init-hook tests (needs 2837): `useInitializeUser`, `useInitializeAuth`, `useProfileErrorHandler`.
 - [ ] `renderWithProviders` helper, then page render tests. First candidate: the `ProjectsLayout` content gate that caused #3010, which needs `@testing-library/jest-dom`.
 - [ ] Decide Cypress: migrate (per `cypress/MIGRATION_NEEDED.md`) or retire.
-- [ ] Later: Playwright for a few critical-path end-to-end smoke flows.
+- [ ] Playwright for a few critical-path end-to-end smoke flows. Phase 1 is in (#3203): the setup, project search tests, and a non-required CI check on Vercel previews. Next steps are in [playwright-e2e-plan.md](./playwright-e2e-plan.md).

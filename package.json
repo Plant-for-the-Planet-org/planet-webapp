@@ -23,6 +23,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:verbose": "vitest run --reporter=verbose",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
     "typecheck": "tsc --noEmit",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
@@ -116,6 +119,7 @@
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.12.0",
     "@eslint/js": "^9.39.5",
+    "@playwright/test": "^1.64.0",
     "@storybook/addon-docs": "10.6.0",
     "@storybook/nextjs": "10.6.0",
     "@testing-library/dom": "^10.4.2",
