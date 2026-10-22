@@ -75,12 +75,14 @@ PLAYWRIGHT_BASE_URL=https://<preview-url> npm run test:e2e
 | Setting | Local dev server | Deployed URL from your machine | GitHub CI |
 |---|---|---|---|
 | Starts the dev server | Yes, or reuses one | No | No |
-| Tests at once | 1 | Playwright default | Playwright default |
+| Tests at once | 1 | 1 per spec file, see below | 1 per spec file, see below |
 | Time limit per test | 120 s | 30 s | 30 s |
 | Retries | 0 | 0 | 2 |
 | `test.only` | Allowed | Allowed | Fails the run |
 
 The config file explains the reason for each setting.
+
+On a deployed URL, Playwright may run several workers, but it spreads only test files across them. Tests in the same file run one after another. With one spec file today, every run uses 1 worker. More start by themselves as spec files are added.
 
 ### Read a failure
 
