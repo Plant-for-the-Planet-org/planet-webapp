@@ -3,7 +3,7 @@
 Findings and a proposed plan for adding Playwright end-to-end (E2E) tests to this repo.
 It expands the "Later: Playwright" item in [testing-roadmap.md](./testing-roadmap.md), which already says to prefer Playwright over reviving the broken Cypress suite and to keep E2E to a few critical-path smoke flows.
 
-> Status (2026-10-12): Playwright is set up on `feature/playwright-e2e`, and the project search tests pass locally and against a Vercel preview. The CI workflow, [e2e.yml](../../.github/workflows/e2e.yml), is written but has not run yet. The "list opens a project" test, the Cypress removal, and logged-in tests are still to do. See the tasks at the bottom.
+> Status (2026-10-22): Playwright is set up on `feature/playwright-e2e`, and the project search tests pass locally and against a Vercel preview. The CI workflow, [e2e.yml](../../.github/workflows/e2e.yml), has run on 4 of this branch's previews, and all 4 passed. The "list opens a project" test, the Cypress removal, and logged-in tests are still to do. See the tasks at the bottom.
 
 ## Summary
 
@@ -202,6 +202,7 @@ Where to find a failed test's recording: `test-results/<test name>/trace.zip`, o
 - Outside dependencies: if staging or Vercel is down, the E2E check fails.
 - Maps: MapLibre needs WebGL, and CI browsers draw it slowly in software. Tests check the project list and panels, not the map itself.
 - Secrets: the test password lives in GitHub secrets. The saved session file holds tokens, so it must be gitignored.
+- Traces: a trace records network calls with their headers and the page's storage, so a logged-in trace holds the Auth0 token. `e2e.yml` uploads the report on every run, and this repo is public, so anyone with a GitHub account can download it. Before phase 2, turn traces off for logged-in tests, or do not upload their reports.
 - CI minutes: one run per preview, so one per push to a PR branch.
 
 ## 7. First tests
@@ -248,12 +249,13 @@ Done:
 - [x] Let a Windows machine use Edge through `PLAYWRIGHT_CHANNEL`, for Smart App Control.
 - [x] Add `e2e.yml` running against Vercel previews, as a non-required check.
 - [x] Push `feature/playwright-e2e` and open a PR to `develop` ([#3203](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3203)).
+- [x] Check that `e2e.yml` runs and passes on this branch's previews: 4 of 4 runs passed.
+- [x] Link this plan from [testing-roadmap.md](./testing-roadmap.md).
 
 Pending:
 - [ ] Answer the open questions.
 - [ ] Add the "list opens a project" test.
-- [ ] Check that `e2e.yml` runs and passes on this branch's first preview.
 - [ ] Make the E2E check required on `develop` after a few stable weeks. For `main`, switch to a commit status first (see [Running in CI](#running-in-ci)).
 - [ ] Remove Cypress (separate PR).
-- [ ] Phase 2: test account, login setup, and the logged-in tests.
-- [ ] Update [testing-roadmap.md](./testing-roadmap.md) when Cypress is retired and Playwright is in place.
+- [ ] Phase 2: test account, login setup, and the logged-in tests. Keep login tokens out of the uploaded report first (see [Drawbacks and risks](#6-drawbacks-and-risks)).
+- [ ] Tick the Playwright task in [testing-roadmap.md](./testing-roadmap.md) when Cypress is retired.

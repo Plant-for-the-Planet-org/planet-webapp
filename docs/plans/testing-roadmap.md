@@ -43,7 +43,7 @@ Target the risk map, not a coverage number. In order:
 4. End-to-end (a real browser at a URL): highest fidelity, highest cost. Needs a running app, a
    way through Auth0 login (programmatic token injection, not driving the login UI), backend
    data or network stubbing, and tenant and env config. Prefer Playwright over reviving the
-   broken Cypress suite. Reserve it for a few critical-path smoke flows, not many pages. Defer.
+   broken Cypress suite. Reserve it for a few critical-path smoke flows, not many pages. Started early, see [playwright-e2e-plan.md](./playwright-e2e-plan.md).
 
 Test behavior, not implementation (assert outcomes, not internal calls), so tests survive the
 next refactor, which is the whole point.
@@ -105,4 +105,4 @@ target files that PR creates. See the sections above for detail.
       `useInitializeAuth`, `useProfileErrorHandler`.
 - [ ] `renderWithProviders` helper, then page render tests.
 - [ ] Decide Cypress: migrate (per `cypress/MIGRATION_NEEDED.md`) or retire.
-- [ ] Later: Playwright for a few critical-path end-to-end smoke flows.
+- [ ] Playwright for a few critical-path end-to-end smoke flows. Phase 1 is in (#3203): the setup, project search tests, and a non-required CI check on Vercel previews. Next steps are in [playwright-e2e-plan.md](./playwright-e2e-plan.md).
