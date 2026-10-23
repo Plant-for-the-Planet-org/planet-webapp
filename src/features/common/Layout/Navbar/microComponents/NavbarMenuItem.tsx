@@ -77,23 +77,24 @@ const NavbarMenuItem = ({
   visible,
   onlyIcon,
 }: MenuItem) => {
-  if (!visible) return null;
-
   const router = useRouter();
   const locale = useLocale();
   const { localizedPath } = useLocalizedPath();
 
   const tNavbarMenuItem = useTranslations('Common.navbarMenu.menuitem');
-  const titleTranslation = tNavbarMenuItem(title as MenuItemTitle);
-  const descriptionTranslation =
-    description !== undefined
-      ? tNavbarMenuItem(description as MenuItemDescription)
-      : undefined;
 
   const menuIcon = useMemo(
     () => navbarMenuIcons[menuKey as MenuItemTitle] || null,
     [menuKey]
   );
+
+  if (!visible) return null;
+
+  const titleTranslation = tNavbarMenuItem(title as MenuItemTitle);
+  const descriptionTranslation =
+    description !== undefined
+      ? tNavbarMenuItem(description as MenuItemDescription)
+      : undefined;
 
   const isExternal = isAbsoluteUrl(link);
   const activeMenuStyle =

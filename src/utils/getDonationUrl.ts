@@ -9,6 +9,7 @@ type DonationUrlOptions = {
   recipientSlug?: string;
   utmCampaign?: string;
 };
+import { readStoredDirectGift } from './directGift';
 
 // calling this function before window is loaded may cause an error
 export const getDonationUrl = (options: DonationUrlOptions): string => {
@@ -23,24 +24,16 @@ export const getDonationUrl = (options: DonationUrlOptions): string => {
   } = options;
 
   const country = localStorage.getItem('countryCode') || 'DE';
+  // Legacy compatibility read, kept until the donation widget URL is migrated off localStorage.language (see issue #3234).
   const language = localStorage.getItem('language') || 'en';
 
-  const storedDirectGift = localStorage.getItem('directGift');
-  let directGift: { id?: string } | null = null;
-  if (storedDirectGift) {
-    try {
-      directGift = JSON.parse(storedDirectGift);
-    } catch {
-      directGift = null;
-    }
-  }
+  const directGift = readStoredDirectGift();
 
   const callbackUrlValue =
     embed === 'true' ? callbackUrl : window.location.href;
 
-  // directGift.id, when present, takes precedence over recipientSlug for the 's' param
-  const giftSlug =
-    directGift && directGift.id !== undefined ? directGift.id : recipientSlug;
+  // A stored direct gift takes precedence over recipientSlug for the 's' param
+  const giftSlug = directGift !== null ? directGift.id : recipientSlug;
 
   const queryParams = [
     `to=${encodeURIComponent(target)}`,

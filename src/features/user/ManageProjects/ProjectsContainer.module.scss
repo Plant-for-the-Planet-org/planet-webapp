@@ -46,9 +46,43 @@
   flex-grow: 1;
   padding: 16px;
 }
+.projectHeader {
+  display: flex;
+  flex-direction: column;
+  // Keeps the chip hugging its label instead of stretching to the card width.
+  align-items: flex-start;
+  gap: 4px;
+}
 .projectName {
   font-weight: bold;
   font-size: $fontSixteen;
+}
+.statusChip {
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: $fontXSmall;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.statusNeutral {
+  background-color: $dsBaseGrey;
+  color: $dsSoftText;
+}
+.statusInfo {
+  background-color: $dsWarmBlueTransparent10;
+  color: $dsWarmBlue;
+}
+.statusWarning {
+  background-color: $dsSunriseOrangeTransparent10;
+  color: $dsSunriseOrange;
+}
+.statusSuccess {
+  background-color: $dsWarmGreenTransparent10;
+  color: $dsWarmGreen;
+}
+.statusDanger {
+  background-color: $dsFireRedTransparent10;
+  color: $dsFireRed;
 }
 .projectClassification {
   text-transform: capitalize;

@@ -133,7 +133,11 @@ describe('getDonationUrl', () => {
 
   describe('the s param', () => {
     it('prefers the stored direct gift id over the slug', () => {
-      storeDirectGift({ id: 'gift-1' });
+      storeDirectGift({
+        id: 'gift-1',
+        displayName: 'Gift One',
+        type: 'individual',
+      });
 
       const query = queryOf(
         getDonationUrl({
@@ -158,6 +162,24 @@ describe('getDonationUrl', () => {
       );
 
       expect(query.get('s')).toBe('slug-1');
+    });
+
+    it('uses the slug and clears the stored direct gift when a field is missing', () => {
+      storeDirectGift({ id: 'gift-1' });
+
+      const query = queryOf(
+        getDonationUrl(
+          undefined,
+          'project-1',
+          null,
+          undefined,
+          undefined,
+          'slug-1'
+        )
+      );
+
+      expect(query.get('s')).toBe('slug-1');
+      expect(localStorage.getItem('directGift')).toBeNull();
     });
 
     it('uses the slug when there is no stored direct gift', () => {
