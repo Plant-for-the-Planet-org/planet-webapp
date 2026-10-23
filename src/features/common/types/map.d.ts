@@ -30,7 +30,6 @@ export type ProjectSiteFeature = Feature<
 
 export interface InterventionProperties {
   id: string;
-  highlightLine?: boolean;
   opacity?: number;
   dateDiff?: string;
   type?:

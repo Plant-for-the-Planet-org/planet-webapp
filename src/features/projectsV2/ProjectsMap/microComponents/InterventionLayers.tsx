@@ -212,17 +212,10 @@ export default function InterventionLayers(): ReactElement {
             intervention.type === 'single-tree-registration'))
     )
     .map((intervention) => {
-      const isSelected =
-        selectedIntervention !== null &&
-        selectedIntervention.id === intervention.id;
-      const isHovered =
-        hoveredIntervention !== null &&
-        hoveredIntervention.id === intervention.id;
       const GeoJSON = makeInterventionGeoJson(
         intervention.geometry,
         intervention.id,
         {
-          highlightLine: isSelected || isHovered,
           opacity:
             intervention.type === 'multi-tree-registration'
               ? getPolygonColor(intervention)
@@ -233,6 +226,12 @@ export default function InterventionLayers(): ReactElement {
       );
       return GeoJSON;
     });
+
+  // Kept in its own small source so a hover change only resends these features, not the whole project.
+  const highlightedIds = [selectedIntervention?.id, hoveredIntervention?.id];
+  const highlightFeatures = features.filter((feature) =>
+    highlightedIds.includes(feature.properties.id)
+  );
 
   const isValidInterventionType = [
     'multi-tree-registration',
@@ -285,6 +284,15 @@ export default function InterventionLayers(): ReactElement {
           }}
           filter={['==', ['geometry-type'], 'Point']}
         />
+      </Source>
+      <Source
+        id={'highlight-source'}
+        type="geojson"
+        data={{
+          type: 'FeatureCollection',
+          features: highlightFeatures,
+        }}
+      >
         <Layer
           id={MAIN_MAP_LAYERS.SELECTED_LINE}
           type="line"
@@ -292,34 +300,33 @@ export default function InterventionLayers(): ReactElement {
             'line-color': isSatelliteView ? colors.white : FillColor,
             'line-width': 4,
           }}
-          filter={['==', ['get', 'highlightLine'], true]}
         />
-        <Layer
-          id={MAIN_MAP_LAYERS.DATE_DIFF_LABEL}
-          type="symbol"
-          layout={{
-            'text-field': ['get', 'dateDiff'],
-            'text-anchor': 'center',
-            'text-font': ['Ubuntu Regular'],
-          }}
-          paint={{
-            'text-color': isSatelliteView ? colors.white : colors.coreText,
-          }}
-          filter={['!=', ['get', 'dateDiff'], '']}
-        />
-        {shouldRenderMarkers
-          ? selectedIntervention.sampleInterventions.map(
-              (sampleIntervention) => (
-                <SampleInterventionMarker
-                  key={sampleIntervention.id}
-                  sampleIntervention={sampleIntervention}
-                  selectedSampleIntervention={selectedSampleIntervention}
-                  togglePointIntervention={togglePointIntervention}
-                />
-              )
-            )
-          : null}
       </Source>
+      {/* Placed after the highlight source so the label stays drawn above the highlight line, as before. */}
+      <Layer
+        id={MAIN_MAP_LAYERS.DATE_DIFF_LABEL}
+        source="display-source"
+        type="symbol"
+        layout={{
+          'text-field': ['get', 'dateDiff'],
+          'text-anchor': 'center',
+          'text-font': ['Ubuntu Regular'],
+        }}
+        paint={{
+          'text-color': isSatelliteView ? colors.white : colors.coreText,
+        }}
+        filter={['!=', ['get', 'dateDiff'], '']}
+      />
+      {shouldRenderMarkers
+        ? selectedIntervention.sampleInterventions.map((sampleIntervention) => (
+            <SampleInterventionMarker
+              key={sampleIntervention.id}
+              sampleIntervention={sampleIntervention}
+              selectedSampleIntervention={selectedSampleIntervention}
+              togglePointIntervention={togglePointIntervention}
+            />
+          ))
+        : null}
     </>
   );
 }
