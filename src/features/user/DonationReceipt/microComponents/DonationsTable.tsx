@@ -1,6 +1,6 @@
 import type { Donation } from '../donationReceiptTypes';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import styles from '../DonationReceipt.module.scss';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
@@ -12,6 +12,7 @@ type Props = {
 
 const DonationsTable = ({ donations, amount, currency }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
+  const locale = useLocale();
   return (
     <table
       className={styles.donationsTable}
@@ -42,7 +43,9 @@ const DonationsTable = ({ donations, amount, currency }: Props) => {
                 })}
               </td>
               <td className={styles.date}>
-                <time dateTime={paymentDate}>{formatDate(paymentDate)}</time>
+                <time dateTime={paymentDate}>
+                  {formatDate(paymentDate, locale)}
+                </time>
               </td>
             </tr>
           );
