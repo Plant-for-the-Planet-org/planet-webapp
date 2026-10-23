@@ -168,14 +168,11 @@ describe('getDonationUrl', () => {
       storeDirectGift({ id: 'gift-1' });
 
       const query = queryOf(
-        getDonationUrl(
-          undefined,
-          'project-1',
-          null,
-          undefined,
-          undefined,
-          'slug-1'
-        )
+        getDonationUrl({
+          target: 'project-1',
+          token: null,
+          recipientSlug: 'slug-1',
+        })
       );
 
       expect(query.get('s')).toBe('slug-1');

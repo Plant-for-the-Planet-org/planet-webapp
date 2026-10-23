@@ -1,3 +1,5 @@
+import { readStoredDirectGift } from './directGift';
+
 type DonationUrlOptions = {
   tenant?: string;
   /** Project slug, or 'planetcash' to top up a PlanetCash balance. */
@@ -9,7 +11,6 @@ type DonationUrlOptions = {
   recipientSlug?: string;
   utmCampaign?: string;
 };
-import { readStoredDirectGift } from './directGift';
 
 // calling this function before window is loaded may cause an error
 export const getDonationUrl = (options: DonationUrlOptions): string => {
