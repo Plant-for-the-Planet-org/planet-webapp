@@ -9,7 +9,7 @@ export const getDonationUrl = (
   utmCampaign?: string
 ): string => {
   const country = localStorage.getItem('countryCode') || 'DE';
-  // Legacy compatibility read, kept until the donation widget URL is migrated off localStorage.language (see issue #3020).
+  // Legacy compatibility read, kept until the donation widget URL is migrated off localStorage.language (see issue #3234).
   const language = localStorage.getItem('language') || 'en';
 
   const storedDirectGift = localStorage.getItem('directGift');
