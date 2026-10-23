@@ -647,7 +647,7 @@ export default function ManageProjects({
       case ProjectCreationTabs.DETAILED_ANALYSIS:
         return (
           <DetailedAnalysis
-            userLang={locale}
+            locale={locale}
             handleNext={handleNext}
             token={token}
             handleBack={handleBack}
@@ -675,7 +675,7 @@ export default function ManageProjects({
       case ProjectCreationTabs.PROJECT_SPENDING:
         return (
           <ProjectSpending
-            userLang={locale}
+            locale={locale}
             handleNext={handleNext}
             token={token}
             handleBack={handleBack}
