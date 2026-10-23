@@ -1,10 +1,10 @@
 import { readStoredDirectGift } from './directGift';
 
 type DonationUrlOptions = {
-  tenant?: string;
+  tenant: string;
   /** Project slug, or 'planetcash' to top up a PlanetCash balance. */
   target: string;
-  token?: string | null;
+  token: string | null;
   embed?: string;
   callbackUrl?: string;
   /** Direct-gift recipient slug, used for the `s` param. */

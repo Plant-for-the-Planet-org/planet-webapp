@@ -32,7 +32,7 @@ describe('getDonationUrl', () => {
   describe('country and locale', () => {
     it('falls back to DE and en when localStorage is empty', () => {
       const query = queryOf(
-        getDonationUrl({ target: 'project-1', token: null })
+        getDonationUrl({ tenant: 'ten-1', target: 'project-1', token: null })
       );
 
       expect(query.get('country')).toBe('DE');
@@ -44,7 +44,7 @@ describe('getDonationUrl', () => {
       localStorage.setItem('language', 'de');
 
       const query = queryOf(
-        getDonationUrl({ target: 'project-1', token: null })
+        getDonationUrl({ tenant: 'ten-1', target: 'project-1', token: null })
       );
 
       expect(query.get('country')).toBe('IN');
@@ -58,6 +58,7 @@ describe('getDonationUrl', () => {
 
       const query = queryOf(
         getDonationUrl({
+          tenant: 'ten-1',
           target: 'project-1',
           token: null,
           embed: 'true',
@@ -92,6 +93,7 @@ describe('getDonationUrl', () => {
 
       const query = queryOf(
         getDonationUrl({
+          tenant: 'ten-1',
           target: 'project-1',
           token: null,
           embed: 'true',
@@ -107,6 +109,7 @@ describe('getDonationUrl', () => {
 
       const query = queryOf(
         getDonationUrl({
+          tenant: 'ten-1',
           target: 'project-1',
           token: null,
           callbackUrl: 'https://host.example/embedded',
@@ -120,6 +123,7 @@ describe('getDonationUrl', () => {
     it('omits the param in embed mode when no callback url is given', () => {
       const query = queryOf(
         getDonationUrl({
+          tenant: 'ten-1',
           target: 'project-1',
           token: null,
           embed: 'true',
@@ -141,6 +145,7 @@ describe('getDonationUrl', () => {
 
       const query = queryOf(
         getDonationUrl({
+          tenant: 'ten-1',
           target: 'project-1',
           token: null,
           recipientSlug: 'slug-1',
@@ -155,6 +160,7 @@ describe('getDonationUrl', () => {
 
       const query = queryOf(
         getDonationUrl({
+          tenant: 'ten-1',
           target: 'project-1',
           token: null,
           recipientSlug: 'slug-1',
@@ -169,6 +175,7 @@ describe('getDonationUrl', () => {
 
       const query = queryOf(
         getDonationUrl({
+          tenant: 'ten-1',
           target: 'project-1',
           token: null,
           recipientSlug: 'slug-1',
@@ -182,6 +189,7 @@ describe('getDonationUrl', () => {
     it('uses the slug when there is no stored direct gift', () => {
       const query = queryOf(
         getDonationUrl({
+          tenant: 'ten-1',
           target: 'project-1',
           token: null,
           recipientSlug: 'slug-1',
@@ -193,7 +201,7 @@ describe('getDonationUrl', () => {
 
     it('omits the param when there is neither a direct gift nor a slug', () => {
       const query = queryOf(
-        getDonationUrl({ target: 'project-1', token: null })
+        getDonationUrl({ tenant: 'ten-1', target: 'project-1', token: null })
       );
 
       expect(query.has('s')).toBe(false);
@@ -204,6 +212,7 @@ describe('getDonationUrl', () => {
 
       expect(() =>
         getDonationUrl({
+          tenant: 'ten-1',
           target: 'project-1',
           token: null,
           recipientSlug: 'slug-1',
@@ -212,6 +221,7 @@ describe('getDonationUrl', () => {
       expect(
         queryOf(
           getDonationUrl({
+            tenant: 'ten-1',
             target: 'project-1',
             token: null,
             recipientSlug: 'slug-1',
@@ -222,13 +232,12 @@ describe('getDonationUrl', () => {
   });
 
   describe('optional params', () => {
-    it('omits token, tenant and utm_campaign when they are absent', () => {
+    it('omits token and utm_campaign when they are absent', () => {
       const query = queryOf(
-        getDonationUrl({ target: 'project-1', token: null })
+        getDonationUrl({ tenant: 'ten-1', target: 'project-1', token: null })
       );
 
       expect(query.has('token')).toBe(false);
-      expect(query.has('tenant')).toBe(false);
       expect(query.has('utm_campaign')).toBe(false);
     });
 
