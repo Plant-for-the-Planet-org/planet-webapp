@@ -5,8 +5,7 @@ import type {
   Donation,
   PrepaidDonationRequest,
 } from '@planet-sdk/common';
-import type { Recipient } from '../../../../stores/bulkCodeStore';
-import type { Recipient as LocalRecipient } from '../BulkCodesTypes';
+import type { RecipientPayload, RecipientUploadRow } from '../BulkCodesTypes';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -29,6 +28,7 @@ import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { useUserStore, useErrorHandlingStore } from '../../../../stores';
 import { useBulkCodeStore } from '../../../../stores/bulkCodeStore';
+import { getSelfGiftRows } from '../utils';
 
 type SubmissionStatus = 'idle' | 'submitting' | 'success';
 
@@ -39,7 +39,9 @@ const IssueCodesForm = (): ReactElement | null => {
   const { localizedPath } = useLocalizedPath();
   const { postApiAuthenticated } = useApi();
   // local state
-  const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
+  const [localRecipients, setLocalRecipients] = useState<RecipientUploadRow[]>(
+    []
+  );
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
   const [codeQuantity, setCodeQuantity] = useState('');
@@ -50,6 +52,7 @@ const IssueCodesForm = (): ReactElement | null => {
   const [notificationLocale, setNotificationLocale] = useState('');
   // store: state
   const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+  const giverEmail = useUserStore((state) => state.userProfile?.email);
   const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
   const planetCashAccount = useBulkCodeStore(
     (state) => state.planetCashAccount
@@ -85,8 +88,8 @@ const IssueCodesForm = (): ReactElement | null => {
     }
   };
 
-  const getProcessedRecipients = (): Recipient[] => {
-    const recipients: Recipient[] = [];
+  const getProcessedRecipients = (): RecipientPayload[] => {
+    const recipients: RecipientPayload[] = [];
     localRecipients.forEach((recipient) => {
       const temp = {
         recipientName: recipient.recipient_name,
@@ -246,9 +249,13 @@ const IssueCodesForm = (): ReactElement | null => {
     const hasEnteredRequiredData =
       localRecipients.length > 0 ||
       (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
+    const hasSelfGift =
+      giverEmail !== undefined &&
+      getSelfGiftRows(localRecipients, giverEmail).length > 0;
 
     return (
       !hasSufficientFunds ||
+      hasSelfGift ||
       status === 'submitting' ||
       !hasEnteredRequiredData ||
       !totalAmount ||
@@ -256,6 +263,7 @@ const IssueCodesForm = (): ReactElement | null => {
     );
   }, [
     userPlanetCash,
+    giverEmail,
     status,
     localRecipients,
     codeQuantity,

@@ -106,7 +106,7 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
                   <label className={styles.sitesLabel}>
                     <span className={styles.siteId}>
                       {tProjectDetails('siteCount', {
-                        siteId: getId(selectedSiteData?.id),
+                        siteId: getId(selectedSiteData?.id) ?? 0,
                         totalCount: siteList.length,
                       })}
                     </span>

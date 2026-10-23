@@ -83,8 +83,10 @@
       "unitsNotProvided": "Mandatory",
       "requiredForNotifications": "Required (to email recipients)",
       "emailInvalid": "Invalid email",
-      "longRecipientName": "Max length - 35 characters"
+      "longRecipientName": "Max length - 35 characters",
+      "selfGift": "You cannot send a gift to yourself"
     },
+    "selfGiftWarning": "{count, plural, one {Row {rowList} uses your own email. You cannot send a gift to yourself. Edit or delete this row to continue.} other {Rows {rowList} use your own email. You cannot send a gift to yourself. Edit or delete these rows to continue.}}",
     "successUploadCSV": {
       "ignoredColumns": "Extra columns were ignored"
     },

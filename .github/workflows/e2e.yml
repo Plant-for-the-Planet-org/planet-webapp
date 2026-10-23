@@ -1,0 +1,62 @@
+name: 'E2E tests'
+# Runs when Vercel reports a finished deployment, so the tests hit the preview Vercel already built instead of building the app again here.
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+jobs:
+  playwright:
+    name: 'Playwright on Ubuntu'
+    # Only Vercel PR previews are tested. Vercel also reports `Production`, and Heroku deploys report `planet-app-sf` and `planet-app-sf-prod`.
+    # Keep the deployment state out of this `if`. GitHub counts a job skipped by `if` as passed, so a failed preview would pass the check.
+    if: github.event.deployment.environment == 'Preview' && github.event.deployment.creator.login == 'vercel[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: 'Fail when the Vercel preview failed'
+        if: github.event.deployment_status.state != 'success'
+        env:
+          STATE: ${{ github.event.deployment_status.state }}
+        run: |
+          echo "::error::Vercel reported '$STATE', so there is no preview to test."
+          exit 1
+
+      - name: 'Checkout the repository'
+        uses: actions/checkout@v7
+        with:
+          # Nothing after checkout uses git, so do not save the token on disk, where `npm ci` scripts and test code could read it.
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24.x'
+          cache: 'npm'
+
+      - name: 'Install Node Modules'
+        run: npm ci
+        env:
+          # This job never runs Cypress, so skip downloading its app. Remove this line together with Cypress.
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: 'Install Playwright Chromium'
+        # Headless runs only use the headless shell, so skip the full Chrome for Testing download. Drop `--only-shell` if CI ever runs headed.
+        run: npx playwright install --with-deps --only-shell chromium
+
+      - name: 'Run E2E tests'
+        id: tests
+        run: npm run test:e2e
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ github.event.deployment_status.environment_url }}
+
+      - name: 'Upload the Playwright report'
+        # Also after a green run, so a test that passed only on a retry keeps the trace of its failed try. A failed preview or install skips the tests and leaves no report.
+        if: ${{ !cancelled() && steps.tests.outcome != 'skipped' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          # The HTML report includes the trace of each failed try.
+          path: playwright-report/
+          retention-days: 14
