@@ -3,7 +3,7 @@ import type { Page } from '../stores/viewStore';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useCurrencyStore, useProjectStore, useViewStore } from '../stores';
+import { useCurrencyStore, useProjectStore } from '../stores';
 import {
   createMapProject,
   createMockRouter,
@@ -18,9 +18,15 @@ vi.mock('next/router', () => ({ useRouter: vi.fn() }));
 vi.mock('next-intl', () => ({ useLocale: () => 'en' }));
 vi.mock('./useApi', () => ({ useApi: () => ({ getApi }) }));
 
-const renderOnPage = (page: Page) => {
-  useViewStore.setState({ page });
-  vi.mocked(useRouter).mockReturnValue(createMockRouter());
+const PATHNAMES: Record<NonNullable<Page>, string> = {
+  'project-list': '/sites/[slug]/[locale]',
+  'project-details': '/sites/[slug]/[locale]/[p]',
+};
+
+const renderOnPage = (page: NonNullable<Page>) => {
+  vi.mocked(useRouter).mockReturnValue(
+    createMockRouter({ pathname: PATHNAMES[page] })
+  );
   renderHook(() => useInitializeProject());
 };
 

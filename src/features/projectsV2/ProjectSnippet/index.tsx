@@ -23,8 +23,9 @@ import {
 } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useCurrentPage } from '../../../hooks/useCurrentPage';
 import { clsx } from 'clsx';
-import { useViewStore, useQueryParamStore } from '../../../stores';
+import { useQueryParamStore } from '../../../stores';
 
 interface Props {
   project:
@@ -160,7 +161,7 @@ export default function ProjectSnippet({
 
   const embed = useQueryParamStore((state) => state.embed);
   const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
 
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
