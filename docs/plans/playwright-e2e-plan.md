@@ -136,7 +136,7 @@ Checked against [playwright.config.ts](../../playwright.config.ts) on 2026-10-12
 
 | Setting | Value | Why |
 |---|---|---|
-| `workers` | 1 locally. Against a deployed URL, Playwright's default (half the CPU cores). | When several workers hit the dev server at once, it can corrupt `.next/dev/prerender-manifest.json` and answer 500 to every page until restarted. A deployed preview can take parallel tests. `fullyParallel` is off, so tests inside one file always run one after another. |
+| `workers` | 1 locally. Against a deployed URL, Playwright's default (half the CPU cores), capped at one per spec file. With one spec file, CI runs use 1 worker. | When several workers hit the dev server at once, it can corrupt `.next/dev/prerender-manifest.json` and answer 500 to every page until restarted. A deployed preview can take parallel tests. `fullyParallel` is off, so tests inside one file always run one after another. |
 | `timeout` (per test) | 120 s locally, 30 s against a deployed URL | The dev server builds each page on its first visit, which can take close to a minute. |
 | `expect.timeout` | 10 s | Auto-retrying checks wait up to this long. Search, for example, updates the list about 1 s after typing stops. |
 | `retries` | 2 in CI, 0 otherwise | Smooths over a staging blip in CI. Locally, a failure should show at once. |
