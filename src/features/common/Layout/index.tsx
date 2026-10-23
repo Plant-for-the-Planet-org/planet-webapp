@@ -31,6 +31,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
   // The profile fetch runs globally, so a sign-in can fail on any page. Swapping the content here reaches the user wherever they are, with no redirect.
   const hasAuthFailed = useAuthStore((state) => state.hasAuthFailed);
 
+  const hasTracking = Boolean(process.env.NEXT_PUBLIC_GA_TRACKING_ID);
+
   return (
     <>
       <Header />
@@ -41,7 +43,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
         <div>
           <div className="notificationContainer">
-            {!isEmbedMode && <CookiePolicy />}
+            {!isEmbedMode && hasTracking && <CookiePolicy />}
 
             <ErrorPopup />
           </div>

@@ -4,7 +4,7 @@ import type {
 } from '../donationReceiptTypes';
 
 import { Popover } from '@mui/material';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
 import IconButton from '../../../common/IconButton';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -28,6 +28,7 @@ const DonationInfoPopover = ({
 }: Props) => {
   const tReceipt = useTranslations('DonationReceipt');
   const tCommon = useTranslations('Common');
+  const locale = useLocale();
   const open = Boolean(popoverAnchor);
   const id = open ? 'donation-info-popOver' : undefined;
   return (
@@ -64,7 +65,7 @@ const DonationInfoPopover = ({
           {donations.map((item) => (
             <tr key={getDonationReference(item)}>
               <td>{getDonationReference(item)}</td>
-              <td>{formatDate(item.paymentDate)}</td>
+              <td>{formatDate(item.paymentDate, locale)}</td>
             </tr>
           ))}
         </tbody>

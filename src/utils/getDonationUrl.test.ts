@@ -31,7 +31,9 @@ describe('getDonationUrl', () => {
 
   describe('country and locale', () => {
     it('falls back to DE and en when localStorage is empty', () => {
-      const query = queryOf(getDonationUrl(undefined, 'project-1', null));
+      const query = queryOf(
+        getDonationUrl({ tenant: 'ten-1', target: 'project-1', token: null })
+      );
 
       expect(query.get('country')).toBe('DE');
       expect(query.get('locale')).toBe('en');
@@ -41,7 +43,9 @@ describe('getDonationUrl', () => {
       localStorage.setItem('countryCode', 'IN');
       localStorage.setItem('language', 'de');
 
-      const query = queryOf(getDonationUrl(undefined, 'project-1', null));
+      const query = queryOf(
+        getDonationUrl({ tenant: 'ten-1', target: 'project-1', token: null })
+      );
 
       expect(query.get('country')).toBe('IN');
       expect(query.get('locale')).toBe('de');
@@ -53,7 +57,13 @@ describe('getDonationUrl', () => {
       const callbackUrl = 'https://host.example/page?ref=abc&utm_source=news';
 
       const query = queryOf(
-        getDonationUrl(undefined, 'project-1', null, 'true', callbackUrl)
+        getDonationUrl({
+          tenant: 'ten-1',
+          target: 'project-1',
+          token: null,
+          embed: 'true',
+          callbackUrl,
+        })
       );
 
       expect(query.get('callback_url')).toBe(callbackUrl);
@@ -64,13 +74,13 @@ describe('getDonationUrl', () => {
 
     it('does not let a callback url override another param', () => {
       const query = queryOf(
-        getDonationUrl(
-          'real-tenant',
-          'project-1',
-          null,
-          'true',
-          'https://host.example/page?tenant=spoofed&token=spoofed'
-        )
+        getDonationUrl({
+          tenant: 'real-tenant',
+          target: 'project-1',
+          token: null,
+          embed: 'true',
+          callbackUrl: 'https://host.example/page?tenant=spoofed&token=spoofed',
+        })
       );
 
       expect(query.get('tenant')).toBe('real-tenant');
@@ -82,13 +92,13 @@ describe('getDonationUrl', () => {
       setCurrentUrl('/current-page');
 
       const query = queryOf(
-        getDonationUrl(
-          undefined,
-          'project-1',
-          null,
-          'true',
-          'https://host.example/embedded'
-        )
+        getDonationUrl({
+          tenant: 'ten-1',
+          target: 'project-1',
+          token: null,
+          embed: 'true',
+          callbackUrl: 'https://host.example/embedded',
+        })
       );
 
       expect(query.get('callback_url')).toBe('https://host.example/embedded');
@@ -98,13 +108,12 @@ describe('getDonationUrl', () => {
       setCurrentUrl('/current-page');
 
       const query = queryOf(
-        getDonationUrl(
-          undefined,
-          'project-1',
-          null,
-          undefined,
-          'https://host.example/embedded'
-        )
+        getDonationUrl({
+          tenant: 'ten-1',
+          target: 'project-1',
+          token: null,
+          callbackUrl: 'https://host.example/embedded',
+        })
       );
 
       expect(query.get('callback_url')).toBe(window.location.href);
@@ -113,7 +122,13 @@ describe('getDonationUrl', () => {
 
     it('omits the param in embed mode when no callback url is given', () => {
       const query = queryOf(
-        getDonationUrl(undefined, 'project-1', null, 'true', undefined)
+        getDonationUrl({
+          tenant: 'ten-1',
+          target: 'project-1',
+          token: null,
+          embed: 'true',
+          callbackUrl: undefined,
+        })
       );
 
       expect(query.has('callback_url')).toBe(false);
@@ -129,14 +144,12 @@ describe('getDonationUrl', () => {
       });
 
       const query = queryOf(
-        getDonationUrl(
-          undefined,
-          'project-1',
-          null,
-          undefined,
-          undefined,
-          'slug-1'
-        )
+        getDonationUrl({
+          tenant: 'ten-1',
+          target: 'project-1',
+          token: null,
+          recipientSlug: 'slug-1',
+        })
       );
 
       expect(query.get('s')).toBe('gift-1');
@@ -146,14 +159,12 @@ describe('getDonationUrl', () => {
       storeDirectGift({ recipientName: 'Someone' });
 
       const query = queryOf(
-        getDonationUrl(
-          undefined,
-          'project-1',
-          null,
-          undefined,
-          undefined,
-          'slug-1'
-        )
+        getDonationUrl({
+          tenant: 'ten-1',
+          target: 'project-1',
+          token: null,
+          recipientSlug: 'slug-1',
+        })
       );
 
       expect(query.get('s')).toBe('slug-1');
@@ -163,14 +174,12 @@ describe('getDonationUrl', () => {
       storeDirectGift({ id: 'gift-1' });
 
       const query = queryOf(
-        getDonationUrl(
-          undefined,
-          'project-1',
-          null,
-          undefined,
-          undefined,
-          'slug-1'
-        )
+        getDonationUrl({
+          tenant: 'ten-1',
+          target: 'project-1',
+          token: null,
+          recipientSlug: 'slug-1',
+        })
       );
 
       expect(query.get('s')).toBe('slug-1');
@@ -179,21 +188,21 @@ describe('getDonationUrl', () => {
 
     it('uses the slug when there is no stored direct gift', () => {
       const query = queryOf(
-        getDonationUrl(
-          undefined,
-          'project-1',
-          null,
-          undefined,
-          undefined,
-          'slug-1'
-        )
+        getDonationUrl({
+          tenant: 'ten-1',
+          target: 'project-1',
+          token: null,
+          recipientSlug: 'slug-1',
+        })
       );
 
       expect(query.get('s')).toBe('slug-1');
     });
 
     it('omits the param when there is neither a direct gift nor a slug', () => {
-      const query = queryOf(getDonationUrl(undefined, 'project-1', null));
+      const query = queryOf(
+        getDonationUrl({ tenant: 'ten-1', target: 'project-1', token: null })
+      );
 
       expect(query.has('s')).toBe(false);
     });
@@ -202,50 +211,44 @@ describe('getDonationUrl', () => {
       storeDirectGift('not json');
 
       expect(() =>
-        getDonationUrl(
-          undefined,
-          'project-1',
-          null,
-          undefined,
-          undefined,
-          'slug-1'
-        )
+        getDonationUrl({
+          tenant: 'ten-1',
+          target: 'project-1',
+          token: null,
+          recipientSlug: 'slug-1',
+        })
       ).not.toThrow();
       expect(
         queryOf(
-          getDonationUrl(
-            undefined,
-            'project-1',
-            null,
-            undefined,
-            undefined,
-            'slug-1'
-          )
+          getDonationUrl({
+            tenant: 'ten-1',
+            target: 'project-1',
+            token: null,
+            recipientSlug: 'slug-1',
+          })
         ).get('s')
       ).toBe('slug-1');
     });
   });
 
   describe('optional params', () => {
-    it('omits token, tenant and utm_campaign when they are absent', () => {
-      const query = queryOf(getDonationUrl(undefined, 'project-1', null));
+    it('omits token and utm_campaign when they are absent', () => {
+      const query = queryOf(
+        getDonationUrl({ tenant: 'ten-1', target: 'project-1', token: null })
+      );
 
       expect(query.has('token')).toBe(false);
-      expect(query.has('tenant')).toBe(false);
       expect(query.has('utm_campaign')).toBe(false);
     });
 
     it('includes token, tenant and utm_campaign when they are given', () => {
       const query = queryOf(
-        getDonationUrl(
-          'ten-1',
-          'project-1',
-          'tok-1',
-          undefined,
-          undefined,
-          undefined,
-          'camp-1'
-        )
+        getDonationUrl({
+          tenant: 'ten-1',
+          target: 'project-1',
+          token: 'tok-1',
+          utmCampaign: 'camp-1',
+        })
       );
 
       expect(query.get('token')).toBe('tok-1');
@@ -255,7 +258,12 @@ describe('getDonationUrl', () => {
 
     it('encodes reserved characters in a value', () => {
       const query = queryOf(
-        getDonationUrl('ten&1', 'project 1', null, undefined, undefined, 'a=b')
+        getDonationUrl({
+          tenant: 'ten&1',
+          target: 'project 1',
+          token: null,
+          recipientSlug: 'a=b',
+        })
       );
 
       expect(query.get('to')).toBe('project 1');
@@ -270,15 +278,15 @@ describe('getDonationUrl', () => {
     localStorage.setItem('language', 'de');
 
     expect(
-      getDonationUrl(
-        'ten-1',
-        'project-1',
-        'tok-1',
-        'true',
-        'https://host.example/page',
-        'slug-1',
-        'camp-1'
-      )
+      getDonationUrl({
+        tenant: 'ten-1',
+        target: 'project-1',
+        token: 'tok-1',
+        embed: 'true',
+        callbackUrl: 'https://host.example/page',
+        recipientSlug: 'slug-1',
+        utmCampaign: 'camp-1',
+      })
     ).toBe(
       `${DONATION_URL}/?to=project-1&callback_url=https%3A%2F%2Fhost.example%2Fpage&country=IN&locale=de&token=tok-1&tenant=ten-1&s=slug-1&utm_campaign=camp-1`
     );
