@@ -26,7 +26,7 @@ const PlantingDetails = ({ plantingDensity, plantDate }: Props) => {
             ? localizedAbbreviatedNumber(locale, plantingDensity, 1)
             : '',
       }),
-      shouldRender: plantingDensity !== null,
+      shouldRender: plantingDensity !== null && plantingDensity > 0,
     },
   ];
   return (
