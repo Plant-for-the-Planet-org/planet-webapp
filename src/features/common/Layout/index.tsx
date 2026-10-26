@@ -13,8 +13,10 @@ import {
   useQueryParamStore,
   useTenantStore,
 } from '../../../stores';
-import { isEmbeddablePage } from '../../../stores/viewStore';
-import { useCurrentPage } from '../../../hooks/useCurrentPage';
+import {
+  isEmbeddablePage,
+  useCurrentPage,
+} from '../../../hooks/useCurrentPage';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { theme: themeType } = useTheme();

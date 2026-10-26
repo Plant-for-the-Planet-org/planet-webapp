@@ -2,7 +2,7 @@ import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { DropdownType } from '../../common/types/projectv2';
 import type { InterventionTypes } from '@planet-sdk/common';
-import type { Page } from '../../../stores/viewStore';
+import type { Page } from '../../../hooks/useCurrentPage';
 
 import { useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';

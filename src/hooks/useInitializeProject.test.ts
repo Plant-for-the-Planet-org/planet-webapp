@@ -1,4 +1,4 @@
-import type { Page } from '../stores/viewStore';
+import type { Page } from './useCurrentPage';
 
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/router';
