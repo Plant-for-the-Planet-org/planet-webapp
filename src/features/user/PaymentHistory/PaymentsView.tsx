@@ -1,3 +1,4 @@
+import type { PaymentTitleLabels } from './lib/getPaymentTitle';
 import type { PaymentListItem, PaymentStatus } from './types';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -8,9 +9,11 @@ import { Loader2, ReceiptText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserStore } from '@/stores/userStore';
 import getFormattedCurrency from '@/utils/countryCurrency/getFormattedCurrency';
+import { getFormattedNumber } from '@/utils/getFormattedNumber';
 import useLocalizedPath from '@/hooks/useLocalizedPath';
 
 import { formatPaymentDate } from './lib/formatPaymentDate';
+import { getPaymentTitle } from './lib/getPaymentTitle';
 
 import { usePayments } from './hooks/usePayments';
 import { useMediaQuery } from './hooks/useMediaQuery';
@@ -42,6 +45,7 @@ const FILTERS: { key: FilterKey; status?: string; method?: string }[] = [
 export default function PaymentsView() {
   const t = useTranslations('Me');
   const tPayments = useTranslations('Payments');
+  const tCommon = useTranslations('Common');
   const locale = useLocale();
   // local state
   const [filter, setFilter] = useState<FilterKey>('all');
@@ -173,9 +177,39 @@ export default function PaymentsView() {
     return labels[paymentStatus] ?? paymentStatus;
   };
 
-  // Always "Donation"; dedication ("Dedicated to …") surfaces via the trailing
-  // marker in the list and the detail view.
-  const getTypeLabel = (_item: PaymentListItem) => t('donation');
+  // Literal keys, so next-intl's typed messages hold; an unknown purpose reads
+  // as a plain donation.
+  const purposeLabels: Record<string, string> = {
+    trees: tPayments('purposes.trees'),
+    conservation: tPayments('purposes.conservation'),
+    restoration: tPayments('purposes.restoration'),
+    funds: tPayments('purposes.funds'),
+    membership: tPayments('purposes.membership'),
+    academy: tPayments('purposes.academy'),
+    'planet-cash': tPayments('purposes.planet-cash'),
+    sponsorship: tPayments('purposes.sponsorship'),
+    endowment: tPayments('purposes.endowment'),
+    'forest-protection': tPayments('purposes.forest-protection'),
+    bouquet: tPayments('purposes.bouquet'),
+  };
+
+  const titleLabels: PaymentTitleLabels = {
+    purpose: (purpose) => purposeLabels[purpose ?? ''] ?? t('donation'),
+    units: (units, unitType) =>
+      tCommon(`unitTypes.${unitType}`, {
+        count: units,
+        formattedCount: getFormattedNumber(locale, units),
+      }),
+    withSupport: (label) => tPayments('withSupport', { label }),
+    list: (labels) =>
+      new Intl.ListFormat(locale, { type: 'conjunction' }).format(labels),
+  };
+
+  // What the payment was for, e.g. "5 Trees • Yucatán Restoration". Dedication
+  // ("Dedicated to …") still surfaces via the trailing marker in the list and
+  // the detail view.
+  const getTitle = (item: PaymentListItem) =>
+    getPaymentTitle(item, titleLabels);
 
   const listContent = isLoading ? (
     <PaymentsListSkeleton />
@@ -195,7 +229,7 @@ export default function PaymentsView() {
         formatAmount={formatAmount}
         formatDate={formatDateLabel}
         getStatusLabel={getStatusLabel}
-        getTypeLabel={getTypeLabel}
+        getTitle={getTitle}
         dedicatedLabel={tPayments('dedicated')}
         selectedGuid={selectedGuid}
         compact={isDesktop}

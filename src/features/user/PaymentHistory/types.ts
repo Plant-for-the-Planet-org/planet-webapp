@@ -78,6 +78,34 @@ export interface PaymentListItem {
    * the Donation/Gift label defensively.
    */
   isGift?: boolean;
+  /**
+   * Donation purpose, e.g. "trees", "membership", "planet-cash", "composite".
+   * Use the line items for the title: a "composite" donation can have a single
+   * line item.
+   */
+  purpose?: string | null;
+  /**
+   * What the payment was for, one entry per line item. Empty only for an old
+   * composite donation that was never split into line items.
+   */
+  lineItems?: PaymentListLineItem[];
+}
+
+/**
+ * One line item of a list row.
+ * @see PaymentListTransformer::getLineItems()
+ */
+export interface PaymentListLineItem {
+  /** "trees", "funds", "membership", "academy", "planet-cash", … */
+  purpose: string | null;
+  /** Project or PlanetCash account name. */
+  caption: string | null;
+  /** Normalized units (5 trees = 5). */
+  units: number | null;
+  /** "tree" | "m2" | "currency" */
+  unitType: string | null;
+  /** Decimal amount of this line item. */
+  amount: number | null;
 }
 
 export type PaymentsListResponse = PaginatedResponse<PaymentListItem>;

@@ -15,6 +15,20 @@
     "noPaymentMethods": "Nessun metodo di pagamento salvato",
     "remove": "Rimuovi",
     "default": "Predefinito",
-    "confirmRemoveMethod": "Rimuovere questo metodo di pagamento?"
+    "confirmRemoveMethod": "Rimuovere questo metodo di pagamento?",
+    "purposes": {
+      "trees": "Alberi",
+      "conservation": "Conservazione",
+      "restoration": "Ripristino",
+      "funds": "Donazione",
+      "membership": "Iscrizione",
+      "academy": "Accademia",
+      "planet-cash": "PlanetCash",
+      "sponsorship": "Sponsorizzazione",
+      "endowment": "Fondo di dotazione",
+      "forest-protection": "Protezione delle foreste",
+      "bouquet": "Bouquet"
+    },
+    "withSupport": "{label} + sostegno"
   }
 }

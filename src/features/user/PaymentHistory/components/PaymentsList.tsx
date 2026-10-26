@@ -13,8 +13,8 @@ interface PaymentsListProps {
   /** Returns '' when there is no date (e.g. pending payments). */
   formatDate: (iso: string | null) => string;
   getStatusLabel: (status: PaymentStatus | null) => string;
-  /** Row label — always "Donation" now; dedication is shown via a trailing icon. */
-  getTypeLabel: (item: PaymentListItem) => string;
+  /** Row title saying what the payment was for; dedication is shown via a trailing icon. */
+  getTitle: (item: PaymentListItem) => string;
   /** Accessible label for the trailing dedication marker (e.g. "Dedicated"). */
   dedicatedLabel: string;
   /** Highlights the active row (desktop master-detail). */
@@ -27,8 +27,9 @@ interface PaymentsListProps {
 }
 
 /**
- * "Donation" label with a trailing dedication marker. No leading icon: rows read
- * "Donation", and dedicated donations get a small heart AFTER the word.
+ * Row title with a trailing dedication marker. No leading icon: dedicated
+ * donations get a small marker AFTER the title. The title truncates so a long
+ * project name never pushes the amount out of the row.
  */
 const PaymentTypeLabel = ({
   label,
@@ -39,8 +40,10 @@ const PaymentTypeLabel = ({
   isDedicated?: boolean;
   dedicatedLabel: string;
 }) => (
-  <span className="flex items-center gap-1.5 truncate text-foreground">
-    {label}
+  <span className="flex min-w-0 items-center gap-1.5 text-foreground">
+    <span className="truncate" title={label}>
+      {label}
+    </span>
     {isDedicated && (
       <UserRound
         className="size-3.5 shrink-0 text-primary"
@@ -61,7 +64,7 @@ export const PaymentsList = ({
   formatAmount,
   formatDate,
   getStatusLabel,
-  getTypeLabel,
+  getTitle,
   dedicatedLabel,
   selectedGuid,
   compact = false,
@@ -85,7 +88,7 @@ export const PaymentsList = ({
             >
               <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <PaymentTypeLabel
-                  label={getTypeLabel(item)}
+                  label={getTitle(item)}
                   isDedicated={item.isGift}
                   dedicatedLabel={dedicatedLabel}
                 />
