@@ -3,7 +3,7 @@ import { devtools } from 'zustand/middleware';
 
 export type ViewMode = 'list' | 'map';
 
-interface ViewStore {
+interface MobileViewModeStore {
   /**
    * View mode is primarily used for mobile layouts
    * (e.g. map ↔ list toggle on project details, project list page).
@@ -13,16 +13,20 @@ interface ViewStore {
   setSelectedMode: (viewMode: ViewMode) => void;
 }
 
-export const useViewStore = create<ViewStore>()(
+export const useMobileViewModeStore = create<MobileViewModeStore>()(
   devtools(
     (set) => ({
       selectedMode: 'list',
 
       setSelectedMode: (viewMode) =>
-        set({ selectedMode: viewMode }, undefined, 'viewStore/set_view_mode'),
+        set(
+          { selectedMode: viewMode },
+          undefined,
+          'mobileViewModeStore/set_view_mode'
+        ),
     }),
     {
-      name: 'ViewStore',
+      name: 'MobileViewModeStore',
       enabled: process.env.NODE_ENV === 'development',
     }
   )

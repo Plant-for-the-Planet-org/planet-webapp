@@ -17,7 +17,7 @@ import { clsx } from 'clsx';
 import {
   useInterventionStore,
   useSingleProjectStore,
-  useViewStore,
+  useMobileViewModeStore,
   useProjectMapStore,
   useQueryParamStore,
 } from '../../../stores';
@@ -60,7 +60,9 @@ const MapControls = ({
     (state) => state.setIsSatelliteView
   );
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
-  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
+  const setSelectedMode = useMobileViewModeStore(
+    (state) => state.setSelectedMode
+  );
 
   const availableInterventionTypes = useMemo(() => {
     if (!interventions) return [];

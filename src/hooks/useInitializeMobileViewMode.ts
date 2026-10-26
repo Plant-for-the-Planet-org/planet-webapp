@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
-import { useViewStore } from '../stores/viewStore';
+import { useMobileViewModeStore } from '../stores/mobileViewModeStore';
 import { useCurrentPage } from './useCurrentPage';
 
-export const useInitializeView = (isMobile: boolean) => {
+export const useInitializeMobileViewMode = (isMobile: boolean) => {
   const currentPage = useCurrentPage();
   // store: action
-  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
+  const setSelectedMode = useMobileViewModeStore(
+    (state) => state.setSelectedMode
+  );
 
   useEffect(() => {
     if (!isMobile) return;

@@ -8,7 +8,7 @@ import styles from '../styles/ProjectListControls.module.scss';
 import ListIcon from '../../../../../public/assets/images/icons/projectV2/ListIcon';
 import LocationIconOutline from '../../../../../public/assets/images/icons/projectV2/LocationIconOutline';
 import { clsx } from 'clsx';
-import { useProjectStore, useViewStore } from '../../../../stores';
+import { useProjectStore, useMobileViewModeStore } from '../../../../stores';
 
 interface ViewModeTabsProps {
   setIsFilterOpen: SetState<boolean> | undefined;
@@ -27,10 +27,12 @@ const getIconColor = (mode: ViewMode, selectMode: ViewMode) => {
 const ViewModeTabs = ({ setIsFilterOpen }: ViewModeTabsProps) => {
   const t = useTranslations('AllProjects');
   // store: state
-  const selectedMode = useViewStore((state) => state.selectedMode);
+  const selectedMode = useMobileViewModeStore((state) => state.selectedMode);
   const isSearching = useProjectStore((state) => state.isSearching);
   // store: action
-  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
+  const setSelectedMode = useMobileViewModeStore(
+    (state) => state.setSelectedMode
+  );
 
   const selectTab = (tab: ViewMode) => {
     if (setIsFilterOpen) {

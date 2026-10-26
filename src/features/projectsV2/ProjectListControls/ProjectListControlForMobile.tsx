@@ -14,7 +14,7 @@ import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { clsx } from 'clsx';
 import {
   useProjectStore,
-  useViewStore,
+  useMobileViewModeStore,
   useUserStore,
   useQueryParamStore,
 } from '../../../stores';
@@ -48,7 +48,7 @@ const ProjectListControlForMobile = ({
   const { filteredProjectCount } = useFilteredProjects();
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
-  const selectedMode = useViewStore((state) => state.selectedMode);
+  const selectedMode = useMobileViewModeStore((state) => state.selectedMode);
   const currentPage = useCurrentPage();
   const isFilterApplied = useProjectStore(
     (state) =>
