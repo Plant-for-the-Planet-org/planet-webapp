@@ -41,12 +41,233 @@
     "daysAgo": "{days} dias atrás",
     "today": "Hoje",
     "yesterday": "Ontem",
-    "clickForDetails": "Clique para Detalhes",
     "treeMapper": "TreeMapper",
-    "showProjectList": "Mostrar lista de projetos",
-    "showProjectDetails": "Mostrar detalhes do projeto",
-    "hideProjectList": "Ocultar lista de projetos",
-    "hideProjectDetails": "Ocultar detalhes do projeto",
-    "countries": "Países"
+    "countries": "Países",
+    "exploreLayers": {
+      "title": "Explorar",
+      "subtitle": "Camadas de dados ecológicos",
+      "closeButton": "Fechar",
+      "groups": {
+        "forests": "Floresta",
+        "soil": "Solo",
+        "biodiversity": "Biodiversidade",
+        "risks": "Riscos"
+      },
+      "settingsLabels": {
+        "projects": "Projetos",
+        "forestCover": "Cobertura florestal",
+        "forestBiomass": "Biomassa florestal",
+        "biomassPotential": "Potencial de biomassa florestal adicional",
+        "deforestation": "Desmatamento",
+        "canopyHeight": "Altura do dossel",
+        "soilNitrogen": "Nitrogênio do solo",
+        "soilPH": "PH do solo",
+        "soilOrganicCarbon": "Carbono orgânico do solo",
+        "soilBulkDensity": "Densidade do solo",
+        "treeSpeciesDensity": "Densidade de espécies de árvores",
+        "birdDensity": "Densidade de aves",
+        "mammalDensity": "Densidade de mamíferos",
+        "amphibianDensity": "Densidade de anfíbios",
+        "fireRisk": "Risco de incêndio",
+        "deforestationRisk": "Risco de desmatamento"
+      },
+      "legends": {
+        "veryLow": "Muito baixo",
+        "low": "Baixa",
+        "medium": "Médio",
+        "high": "Alta",
+        "veryHigh": "Muito alta",
+        "extreme": "Extremo"
+      },
+      "additionalInfo": {
+        "labels": {
+          "dataYears": "Anos de dados",
+          "resolution": "Resolução",
+          "description": "Descrição",
+          "underlyingData": "Dados subjacentes",
+          "source": "Fonte"
+        },
+        "forestCover": {
+          "resolution": "~500 m (em escala reduzida)",
+          "dataYears": "2023",
+          "description": "Cobertura de árvores como um mapa binário",
+          "underlyingData": "Modelo de IA criado pelo Google para classificar imagens do Sentinel II em 9 classes diferentes de uso e cobertura da terra",
+          "source": {
+            "text": "Mundo dinâmico",
+            "url": "https://dynamicworld.app/"
+          }
+        },
+        "forestBiomass": {
+          "resolution": "~500m",
+          "dataYears": "2016",
+          "description": "Mapas atuais de biomassa nas regiões florestais",
+          "underlyingData": "Modelos de aprendizado de máquina baseados em sensoriamento remoto (MODIS, LiDAR)",
+          "source": {
+            "text": "Walker et al. 2022",
+            "url": "https://www.pnas.org/doi/10.1073/pnas.2111312119"
+          }
+        },
+        "biomassPotential": {
+          "resolution": "~500m",
+          "dataYears": "2016",
+          "description": "Densidade de biomassa acima do solo potencial não realizada restrita (megagramas de carbono por hectare) sob o clima de referência. As áreas críticas para a produção de alimentos e habitação humana foram definidas como zero.",
+          "underlyingData": "Modelos de aprendizado de máquina baseados em sensoriamento remoto (MODIS, LiDAR)",
+          "source": {
+            "text": "Walker et al. 2022",
+            "url": "https://www.pnas.org/doi/10.1073/pnas.2111312119"
+          }
+        },
+        "deforestation": {
+          "resolution": "~30m",
+          "dataYears": "2023",
+          "description": "Local do desmatamento no ano anterior",
+          "underlyingData": "Programas de satélite Landsat",
+          "source": {
+            "text": "Hansen et al. 2013",
+            "url": "https://www.science.org/doi/10.1126/science.1244693"
+          }
+        },
+        "canopyHeight": {
+          "resolution": "~1m",
+          "dataYears": "2018-2020",
+          "description": "Altura global do dossel entre os anos de 2018 e 2020",
+          "underlyingData": "Mapas globais de altura do dossel com base no modelo de IA (DinoV2) e em dados de sensoriamento remoto (MAXAR e GEDI) da Meta",
+          "source": {
+            "text": "Tolan et al. 2024",
+            "url": "https://sustainability.atmeta.com/blog/2024/04/22/using-artificial-intelligence-to-map-the-earths-forests/"
+          }
+        },
+        "soilNitrogen": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Concentração média ponderada de nitrogênio (cg/kg) na profundidade de 0-200 cm do solo, obtida pela média proporcional dos valores de nitrogênio do ISRIC SoilGrids de seis intervalos de profundidade (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm e 100-200 cm), com cada faixa ponderada de acordo com sua respectiva espessura de profundidade.",
+          "underlyingData": "150.000 perfis de solo e 158 covariáveis de solo baseadas em sensoriamento remoto (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilPH": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Concentração média ponderada de pH em toda a profundidade do solo de 0 a 200 cm, derivada da média proporcional dos valores de nitrogênio do ISRIC SoilGrids de seis intervalos de profundidade (0 a 5 cm, 5 a 15 cm, 15 a 30 cm, 30 a 60 cm, 60 a 100 cm e 100 a 200 cm), com cada faixa ponderada de acordo com sua respectiva espessura de profundidade.",
+          "underlyingData": "150.000 perfis de solo e 158 covariáveis de solo baseadas em sensoriamento remoto (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilOrganicCarbon": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Concentração média ponderada de carbono orgânico do solo (dg/kg) na profundidade de 0-200 cm do solo, derivada da média proporcional dos valores de nitrogênio do ISRIC SoilGrids de seis intervalos de profundidade (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm e 100-200 cm), com cada faixa ponderada de acordo com sua respectiva espessura de profundidade.",
+          "underlyingData": "150.000 perfis de solo e 158 covariáveis de solo baseadas em sensoriamento remoto (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilBulkDensity": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Concentração média ponderada da densidade aparente do solo (cg/cm3) na profundidade de 0-200 cm do solo, obtida pela média proporcional dos valores de nitrogênio do ISRIC SoilGrids de seis intervalos de profundidade (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm e 100-200 cm), com cada faixa ponderada de acordo com sua respectiva espessura de profundidade.",
+          "underlyingData": "150.000 perfis de solo e 158 covariáveis de solo baseadas em sensoriamento remoto (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "treeSpeciesDensity": {
+          "resolution": "~3km",
+          "dataYears": "2005-2015",
+          "description": "Mostra o número médio de espécies de árvores em todo o mundo",
+          "underlyingData": "iniciativa Global de Biodiversidade Florestal [GFBI] e conjunto de dados TREECHANGE",
+          "source": {
+            "text": "Gatti et al. 2022",
+            "url": "https://www.pnas.org/doi/full/10.1073/pnas.2115329119"
+          }
+        },
+        "birdDensity": {
+          "resolution": "~10km",
+          "dataYears": "2013-2018",
+          "description": "Número de espécies de aves em diferentes locais (número de aves por 100 km2)",
+          "underlyingData": "IUCN (mamíferos, anfíbios e espécies marinhas), em conjunto com a BirdLife International e a NatureServe (aves), com a NatureServe (répteis e peixes de água doce dos EUA)",
+          "source": {
+            "text": "Mapeamento da biodiversidade",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "mammalDensity": {
+          "resolution": "~10km",
+          "dataYears": "2013-2018",
+          "description": "Número de espécies de mamíferos em diferentes locais",
+          "underlyingData": "IUCN (mamíferos, anfíbios e espécies marinhas), em conjunto com a BirdLife International e a NatureServe (aves), com a NatureServe (répteis e peixes de água doce dos EUA)",
+          "source": {
+            "text": "Mapeamento da biodiversidade",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "amphibianDensity": {
+          "resolution": "~10km",
+          "dataYears": "2013-2018",
+          "description": "Número de espécies de anfíbios em diferentes locais",
+          "underlyingData": "IUCN (mamíferos, anfíbios e espécies marinhas), em conjunto com a BirdLife International e a NatureServe (aves), com a NatureServe (répteis e peixes de água doce dos EUA)",
+          "source": {
+            "text": "Mapeamento da biodiversidade",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "fireRisk": {
+          "resolution": "~55km",
+          "dataYears": "1980-2023",
+          "description": "Risco de início de incêndio com base em dados meteorológicos",
+          "underlyingData": "Índice de clima de incêndio",
+          "source": {
+            "text": "por Plant-for-the-Planet, análise baseada no Índice de Clima de Incêndio para os últimos 25 anos (percentil 90) com base nos dados da API do Climate Data Store",
+            "url": "https://cds.climate.copernicus.eu/home"
+          }
+        },
+        "deforestationRisk": {
+          "resolution": "~30m",
+          "dataYears": "2023",
+          "description": "Fator de risco de desmatamento com base no desmatamento anterior, na floresta atual e na direção do desmatamento",
+          "underlyingData": "Com base nas localizações de florestas baseadas no LANDSAT e no padrão de desmatamento",
+          "source": {
+            "text": "por Plant-for-the-Planet, modelagem de risco de desmatamento baseada em LANDSAT com base em uma metodologia VERRA",
+            "url": "https://verra.org/wp-content/uploads/2021/04/DRAFT_JNR_Risk_Mapping_Tool_15APR2021.pdf"
+          }
+        }
+      }
+    },
+    "timeTravel": {
+      "errors": {
+        "imageryNotAvailable": "{year} as imagens não estão disponíveis neste nível de zoom. Tente reduzir o zoom.",
+        "invalidGeoJson": "Dados GeoJSON inválidos ou ausentes",
+        "configNotAvailable": "Configuração de viagem no tempo não disponível",
+        "yearNotFoundInSource": "Ano {year} não encontrado na fonte {source}",
+        "configNotFoundForYear": "Configuração não encontrada para o ano {year}",
+        "containerNotFound": "Elemento do contêiner do mapa não encontrado",
+        "mapInitializationFailed": "Falha ao inicializar mapas",
+        "comparisonInitializationFailed": "Falha ao inicializar a comparação",
+        "mapError": "Erro no mapa: {message}",
+        "layerLoadFailed": "Falha ao carregar as camadas do mapa",
+        "unsupportedSourceType": "Tipo de fonte não suportado: {source}"
+      },
+      "loading": "Carregando...",
+      "genericHistoricalYear": "Histórico"
+    },
+    "mapFeatureSupport": {
+      "loadingMap": "Carregando o mapa...",
+      "notSupportedError": {
+        "title": "É necessária aceleração gráfica",
+        "message": "Este mapa requer aceleração gráfica para funcionar corretamente. Esse recurso pode estar desativado nas configurações do seu navegador ou indisponível em seu ambiente atual (como conexões de área de trabalho remota).",
+        "solutionTitle": "Para ativar a aceleração gráfica:",
+        "solutionChrome": "<strong>Chrome:</strong> Configurações → Avançado → Sistema → Ativar \"Usar aceleração gráfica quando disponível\"",
+        "solutionFirefox": "<strong>Firefox:</strong> Configurações → Geral → Desempenho → Desmarque \"Usar configurações de desempenho recomendadas\"",
+        "solutionEdge": "<strong>Edge:</strong> Settings → System → Habilitar \"Use hardware acceleration when available\" (Usar aceleração de hardware quando disponível)",
+        "contactInfo": "Se continuar a ter problemas, entre em contato conosco pelo e-mail support@plant-for-the-planet.org para obter assistência.",
+        "technicalDetails": "Detalhes técnicos"
+      }
+    }
   }
 }

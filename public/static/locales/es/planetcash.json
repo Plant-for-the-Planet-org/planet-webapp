@@ -8,7 +8,7 @@
     "labelCreditLimit": "Límite",
     "deactivateAccountButton": "Desactivar",
     "activateAccountButton": "Activar",
-    "accountInactiveHelpText": "Esta cuenta está inactiva y no puede utilizarse para realizar contribuciones. Para activar esta cuenta, póngase en contacto con support@plant-for-the-planet.org.",
+    "accountInactiveHelpText": "Esta cuenta está inactiva y no puede utilizarse para realizar contribuciones. Para activar esta cuenta, póngase en contacto con <supportLink> support@plant-for-the-planet.org</supportLink>.",
     "noAccountsText": "Parece que aún no has creado una cuenta PlanetCash.",
     "createPlanetCashButton": "Crear una cuenta Planet Cash",
     "accountQuotaReachedText": "No puede crear más cuentas porque ha agotado su cuota de cuentas.",
@@ -16,11 +16,45 @@
     "labelCountry": "País",
     "planetCashTerms1": "Al hacer clic en \"Crear cuenta PlanetCash\", acepto los Términos y Condiciones de Plant-for-the-Planet y PlanetCash.",
     "planetCashTerms2": "Entiendo que las donaciones PlanetCash no son reembolsables, y que los pagos no asignados serán autoasignados a proyectos en la Plataforma después de seis meses de un Pago.",
-    "planetCashTerms3": "Las donaciones a la Cuenta PlanetCash por motivos personales son generalmente deducibles de impuestos en el país seleccionado en este paso. El uso comercial de PlanetCash puede no ser elegible para deducciones fiscales. Si tiene alguna pregunta, póngase en contacto con support@plant-for-the-planet.org o con su asesor fiscal.",
+    "planetCashTerms3": "Las donaciones a la Cuenta PlanetCash por motivos personales son generalmente deducibles de impuestos en el país seleccionado en este paso. El uso comercial de PlanetCash puede no ser elegible para deducciones fiscales. Si tiene alguna pregunta, póngase en contacto con <supportLink>support@plant-for-the-planet.org </supportLink> o con su asesor fiscal.",
     "accountError": {
       "active_account_exists": "Ya existe una cuenta activa. Desactive esa cuenta antes de activar otra.",
       "duplicate_account": "Ya ha creado una cuenta para {country}",
       "default": "Algo ha ido mal al crear una cuenta. Por favor, inténtelo después de un rato."
+    },
+    "topUpManagement": {
+      "labelToggle": "Recarga automática PlanetCash cuando queda poco saldo",
+      "labelThreshold": "Cuando el saldo es inferior a ({currency})",
+      "labelRefillAmount": "Cantidad a rellenar ({currency})",
+      "labelStatus": "Estado",
+      "labelPaymentMethod": "Forma de pago",
+      "statusActive": "Activo",
+      "statusInactive": "Inactivo",
+      "paymentMethodInfo": {
+        "sepa_debit": "IBAN terminado en {last4}",
+        "card": "Tarjeta terminada en {last4}",
+        "unknown": "Forma de pago desconocida"
+      },
+      "validationErrors": {
+        "thresholdRequired": "Introduzca un importe umbral",
+        "amountRequired": "Introduzca un importe de recarga",
+        "thresholdMinimum": "El umbral debe ser positivo",
+        "amountMinimum": "El importe de la recarga debe ser positivo"
+      },
+      "apiErrors": {
+        "paymentMethodNotFound": "Hay un problema con el método de pago seleccionado. Seleccione otro método de pago. También puedes ponerte en contacto con support@plant-for-the-planet.org para obtener ayuda.",
+        "topUpAmountTooLow": "La cantidad de recarga debe ser de al menos {minAmountWithCurrency}.",
+        "topUpThresholdTooLow": "El importe del umbral debe ser como mínimo {minThresholdWithCurrency}.",
+        "default": "Algo ha ido mal al guardar los ajustes de recarga. Si el problema persiste, ponte en contacto con support@plant-for-the-planet.org."
+      },
+      "saveButton": "Guardar ajustes de recarga",
+      "disableConfirmationDialog": {
+        "confirmButtonText": "Confirme",
+        "cancelButtonText": "Cancelar",
+        "title": "¿Desactivar la recarga automática?",
+        "subtitle": "¿Estás seguro de que quieres desactivar la recarga automática? Esto eliminará la configuración actual de recarga automática."
+      },
+      "successMessage": "Ajustes de recarga automática guardados correctamente"
     }
   }
 }

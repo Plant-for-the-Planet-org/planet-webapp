@@ -16,7 +16,7 @@
     "labelCreditLimit": "Limite",
     "deactivateAccountButton": "Disattivare",
     "activateAccountButton": "Attivare",
-    "accountInactiveHelpText": "Questo conto è inattivo e non può essere utilizzato per versare contributi. Per attivare questo conto, contattare support@plant-for-the-planet.org.",
+    "accountInactiveHelpText": "Questo conto è inattivo e non può essere utilizzato per versare contributi. Per attivare questo conto, contattare <supportLink>support@plant-for-the-planet.org</supportLink>.",
     "noAccountsText": "Sembra che non abbiate ancora creato un conto PlanetCash.",
     "createPlanetCashButton": "Creare un conto Planet Cash",
     "accountQuotaReachedText": "Non è possibile creare altri account perché la quota di account è esaurita.",
@@ -24,11 +24,45 @@
     "labelCountry": "Paese",
     "planetCashTerms1": "Facendo clic su \"Crea un conto PlanetCash\", accetto i termini e le condizioni di Plant-for-the-Planet e PlanetCash.",
     "planetCashTerms2": "Sono a conoscenza del fatto che le donazioni di PlanetCash non sono rimborsabili e che i pagamenti non allocati saranno assegnati automaticamente ai progetti della Piattaforma dopo sei mesi di pagamento.",
-    "planetCashTerms3": "Le donazioni al conto PlanetCash per motivi personali sono generalmente deducibili dalle tasse nel Paese selezionato in questa fase. L'uso commerciale di PlanetCash potrebbe non essere ammesso alle detrazioni fiscali. In caso di domande, contattare support@plant-for-the-planet.org o il proprio consulente fiscale.",
+    "planetCashTerms3": "Le donazioni al conto PlanetCash per motivi personali sono generalmente deducibili dalle tasse nel Paese selezionato in questa fase. L'uso commerciale di PlanetCash potrebbe non essere ammesso alle detrazioni fiscali. In caso di domande, contattare <supportLink>support@plant-for-the-planet.org</supportLink> o il proprio consulente fiscale.",
     "accountError": {
       "active_account_exists": "Esiste già un account attivo. Disattivare l'account prima di attivarne un altro.",
       "duplicate_account": "Avete già creato un account per {country}",
       "default": "Qualcosa è andato storto durante la creazione di un account. Riprovare dopo un po'."
+    },
+    "topUpManagement": {
+      "labelToggle": "Ricarica automatica PlanetCash quando il saldo è basso",
+      "labelThreshold": "Quando il saldo scende al di sotto di ({currency})",
+      "labelRefillAmount": "Quantità da ricaricare ({currency})",
+      "labelStatus": "Stato",
+      "labelPaymentMethod": "Metodo di pagamento",
+      "statusActive": "Attivo",
+      "statusInactive": "Inattivo",
+      "paymentMethodInfo": {
+        "sepa_debit": "IBAN che termina con {last4}",
+        "card": "Scheda che termina in {last4}",
+        "unknown": "Metodo di pagamento sconosciuto"
+      },
+      "validationErrors": {
+        "thresholdRequired": "Inserire un importo soglia",
+        "amountRequired": "Inserire l'importo della ricarica",
+        "thresholdMinimum": "L'importo della soglia deve essere positivo",
+        "amountMinimum": "La quantità di ricarica deve essere positiva"
+      },
+      "apiErrors": {
+        "paymentMethodNotFound": "Si è verificato un problema con il metodo di pagamento selezionato. Selezionare un altro metodo di pagamento. È inoltre possibile contattare support@plant-for-the-planet.org per chiedere aiuto.",
+        "topUpAmountTooLow": "La quantità di ricarica deve essere almeno pari a {minAmountWithCurrency}.",
+        "topUpThresholdTooLow": "L'importo della soglia deve essere almeno pari a {minThresholdWithCurrency}.",
+        "default": "Qualcosa è andato storto durante il salvataggio delle impostazioni di ricarica. Se il problema persiste, contattare support@plant-for-the-planet.org."
+      },
+      "saveButton": "Salvare le impostazioni di ricarica",
+      "disableConfirmationDialog": {
+        "confirmButtonText": "Confermare",
+        "cancelButtonText": "Annullamento",
+        "title": "Disattivare la ricarica automatica?",
+        "subtitle": "Siete sicuri di voler disabilitare la ricarica automatica? Questa operazione rimuoverà le impostazioni di ricarica automatica correnti."
+      },
+      "successMessage": "Impostazioni di ricarica automatica salvate con successo"
     }
   }
 }

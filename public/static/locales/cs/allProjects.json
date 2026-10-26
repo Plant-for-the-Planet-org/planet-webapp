@@ -1,1 +1,32 @@
-{ }
+{
+  "AllProjects": {
+    "currentForests": "Současné lesy",
+    "restorationPotential": "Potenciál obnovy",
+    "deforestation": "Odlesňování",
+    "projects": "Projekty",
+    "classificationTypes": {
+      "restoration-tree-planting": "Obnova velkého rozsahu",
+      "agroforestry": "Agrolesnictví",
+      "natural-regeneration": "Přirozená regenerace",
+      "managed-regeneration": "Řízená regenerace",
+      "urban-planting": "Městská výsadba",
+      "other-restoration": "Ostatní výsadba",
+      "mangroves": "Mangrovy"
+    },
+    "noFilterApplied": "Bez použitého filtru",
+    "acceptingDonations": "Přijímání darů",
+    "clearFilter": "Vymazat filtr",
+    "allProjects": "Všechny <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "searchProject": "Vyhledávací projekt",
+    "topProjects": "Top projekty <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "top": "Top <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "list": "Seznam",
+    "map": "Mapa",
+    "treeDonated": "{count, plural, =1 {# Tree donated} other {{formattedCount} Trees donated}}",
+    "areaRestored": "{area, plural, =1 {# m² restored} other {{formattedCount} m² restored}}",
+    "areaConserved": "{area, plural, =1 {# m² conserved} other {{formattedCount} m² conserved}}",
+    "ratePerUnit": "{amount} na {unit, select, tree {tree} m2 {m²} other {tree} }",
+    "noProjectFound": "Ups! Nebyl nalezen žádný projekt",
+    "filterResult": "{count, plural, =1 {# Project} other {# Projects}} nalezeno "
+  }
+}

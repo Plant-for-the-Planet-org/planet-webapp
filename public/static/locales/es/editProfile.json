@@ -13,6 +13,7 @@
     "profileCreationError": "Error en la creación del perfil.",
     "edit": "Editar el perfil",
     "save": "Guardar",
+    "viewPublicProfile": "Ver perfil público",
     "profilePicUpdated": "La foto del perfil está siendo actualizada...",
     "profileSaved": "¡Guardado con éxito!",
     "profileSaveFailed": "Error en la actualización del perfil.",
@@ -23,6 +24,13 @@
     "cancel": "Cancelar",
     "termAndCondition": "Acepto los términos y condiciones <termsLink></termsLink> de la plataforma Plant-for-the-Planet.",
     "termAndConditionError": "Acepte las condiciones generales",
+    "profileConsentSettingsTitle": "Personalizar el perfil público",
+    "publicProfileExplanation": "Al hacer público tu perfil, puedes optar por compartir tu información y conectar con otras personas.",
+    "leaderboardTooltipExplanation": "La clasificación muestra todas las contribuciones que otros han hecho a tu perfil. Puede tratarse de árboles que te han regalado o de donaciones que han hecho otras personas mientras visitaban tu perfil. Si activas esta opción, cualquiera en Internet podrá ver quién ha hecho las mayores contribuciones",
+    "profilePictureButtonLabels": {
+      "upload": "Cargar una nueva foto",
+      "delete": "Borrar foto"
+    },
     "fieldLabels": {
       "profileType": "Soy un",
       "firstName": "Nombre",
@@ -31,11 +39,15 @@
       "email": "Correo electrónico",
       "address": "Dirección",
       "city": "Ciudad",
+      "state": "Estado",
       "zipCode": "Código postal",
       "country": "País",
       "bio": "Descripción del perfil",
       "website": "Página web",
-      "subscribe": "Suscríbete a las noticias por correo electrónico"
+      "isPublic": "Hacer público el perfil",
+      "subscribe": "Suscríbete a las noticias por correo electrónico",
+      "exposeCommunity": "Mostrar mi clasificación",
+      "showTreegame": "Mostrar TreeGame"
     },
     "validationErrors": {
       "maxChars": "Debe tener {max} caracteres o menos",
@@ -50,11 +62,48 @@
       "addressInvalid": "La dirección no es válida. Sólo se permiten estos caracteres especiales: espacio . , # - /",
       "cityRequired": "Se requiere la ciudad",
       "cityInvalid": "Ciudad no es válido. Sólo se permiten letras y estos caracteres especiales: espacio . , ( ) -",
+      "stateInvalid": "Estado no es válido. Sólo se permiten letras y estos caracteres especiales: espacio . , ( ) -",
       "zipCodeRequired": "Código postal obligatorio",
       "zipCodeInvalid": "El código postal no es válido",
       "websiteInvalid": "Por favor, introduzca una URL válida",
       "countryRequired": "País obligatorio",
       "companyRequired": "El nombre de la empresa es obligatorio"
+    },
+    "addressManagement": {
+      "labels": {
+        "actionMenu": "Menú Acción"
+      },
+      "addressManagementTitle": "Dirección",
+      "addressType": {
+        "primary": "Dirección principal",
+        "mailing": "Dirección de facturación"
+      },
+      "actions": {
+        "edit": "Editar",
+        "delete": "Borrar",
+        "setAsPrimaryAddress": "Establecer como dirección principal",
+        "setAsBillingAddress": "Establecer como dirección de facturación",
+        "unsetBillingAddress": "Dirección de facturación no fijada",
+        "addAddress": "Añadir nueva dirección"
+      },
+      "deleteAction": {
+        "title": "Borrar dirección",
+        "deleteButton": "Borrar",
+        "deleteAddressConfirmationMessage": "¿Está seguro de que desea eliminar esta dirección? Si desea volver a utilizarla, añádala como nueva dirección."
+      },
+      "updateAddressType": {
+        "setAddressConfirmation": "¿Está seguro de que desea establecer esta dirección como su {addressType}?",
+        "replaceAddressWarning": "Esto sustituirá a su actual {addressType}.",
+        "confirmButton": "Confirme",
+        "unsetBillingAddressMessage": "¿Desea desactivar su dirección de facturación? Su dirección principal se utilizará como dirección de facturación."
+      },
+      "maxAddressesMessage": "Ha alcanzado el número máximo de direcciones Elimine una para añadir una nueva dirección.",
+      "addressForm": {
+        "addAddress": "Añadir dirección",
+        "editAddress": "Editar dirección",
+        "saveChanges": "Guardar cambios",
+        "address2": "Dirección 2 (opcional)"
+      }
     }
   }
 }

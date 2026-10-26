@@ -1,12 +1,17 @@
 {
   "Profile": {
     "myProfile": {
-      "memberSince": "Membre depuis {date}"
+      "memberSince": "Membre depuis {date}",
+      "donorCircleMember": "Membre du cercle des donateurs"
     },
     "feature": {
       "redeem": "Racheter",
       "registerTree": "Enregistrer l'arbre",
-      "share": "Partager"
+      "share": "Partager",
+      "allDonations": "Tous les dons",
+      "supportUserTextIndividual": "Soutenez {username} en faisant un don",
+      "supportUserTextGeneric": "Soutenez-les en faisant un don",
+      "website": "Mon site web"
     },
     "myPublicProfile": {
       "support": "Soutien",
@@ -14,6 +19,7 @@
     },
     "myForestMap": {
       "plantedTree": "{count, plural, =1 {# Arbre} other {# Arbres}}",
+      "savedArea": "{area} m²",
       "treesPlanted": "Arbres plantés",
       "restored": "Restauré",
       "registered": "Enregistré",
@@ -32,6 +38,8 @@
       "editTarget": "Modifier la cible"
     },
     "myContributions": {
+      "titlePrivate": "Mes contributions",
+      "titlePublic": "{name}contributions de la Commission",
       "treesPlantedAndAreaRestored": "Arbres plantés et zones restaurées",
       "treeRegistered": "{count, plural, =1 {# Arbre enregistré} other {# Arbres enregistrés}}",
       "receivedFrom": "Reçu de {name}",
@@ -42,7 +50,90 @@
       "conservedSmall": "conservé",
       "restoredSmall": "restauré",
       "areaType": "{areaConserved} m² {type}",
-      "areaConserved": "Zones conservées"
+      "areaConserved": "Zones conservées",
+      "unused": "traductions v2 ci-dessous",
+      "treesContributed": "{count, plural, =1 {# tree} other {# trees}}",
+      "areaContributed": "{projectPurpose, select, trees {{count}m² restored} other {{count}m² conserved}}",
+      "giftReceivedInfo": "Cadeau de {name}",
+      "giftGivenInfo": "Cadeau à {name}",
+      "anonymousUser": "un utilisateur anonyme",
+      "contributionCountOverflow": "+{additionalCount, plural, =1 {# contribution} other {# contributions}}",
+      "treesRegisteredHeadline": "{count, plural, =1 {# Tree} other {# Trees}}",
+      "registrationLabel": "Enregistré"
+    },
+    "donatePopup": {
+      "totalContribution": "+{count, plural, =1 {# Contribution} other {# Contributions}}",
+      "projectName": "{name}",
+      "classification": "{classification}"
+    },
+    "shareFeature": {
+      "shareTextTitle": "Stop talking. Start planting.",
+      "textToShare": "Rejoignez {name} et des milliers d'autres pour planter un trillion d'arbres afin de lutter contre la crise climatique #StopTalkingStartPlanting #TrillionTrees",
+      "shareVia": "Partager via",
+      "copyLink": "Copier le lien",
+      "textToShareLinkedin": "Rejoignez {name} et des milliers d'autres personnes pour planter un trillion d'arbres afin de lutter contre la crise climatique"
+    },
+    "progressBar": {
+      "treePlanted": "{count, plural, =1 {# tree planted} other {# trees planted}}",
+      "treePlantedAgainstTarget": "{count, number} de {total, plural, =1 {# tree} other {# trees}} plantés",
+      "restoredArea": "{unit, number} m² restaurés",
+      "restoredAreaAgainstTarget": "{count, number} de {unit, number} m² restauré",
+      "conservedArea": "{unit, number} m² conservés",
+      "conservedAreaAgainstTarget": "{count, number} de {unit, number} m² conservés",
+      "totalGiftFromCommunity": "{quantity, number} de votre communauté",
+      "editTarget": "Modifier la cible",
+      "setTarget": "Fixer un objectif",
+      "plantedTreesTarget": "Objectif d'arbres plantés",
+      "areaConservedTarget": "Objectif de superficie conservée",
+      "areaRestoredTarget": "Objectif de superficie restaurée",
+      "save": "Économiser",
+      "setTargets": "Fixer des objectifs",
+      "emptyProgressInformation": "Fixer des objectifs pour les arbres plantés, les zones conservées et les zones restaurées",
+      "enterYourTarget": "Saisissez votre objectif"
+    },
+    "mapStats": {
+      "countryStats": "{count, plural, =1 {# Country} other {# Countries}} ",
+      "projectStats": "{count, plural, =1 {# Project} other {# Projects}} "
+    },
+    "communityContributions": {
+      "title": "Contributions communautaires",
+      "tooltipText": "Les contributions de la communauté sont toutes les donations d'arbres, de restauration ou de conservation qui vous sont dédiées, par exemple en faisant un don via votre profil",
+      "tooltipTextPublic": "Les contributions de la communauté sont toutes les donations d'arbres, de restauration ou de conservation qui sont dédiées à ce profil",
+      "mostRecentTabLabel": "Les plus récents",
+      "mostTreesTabLabel": "La plupart des arbres",
+      "restorationPurpose": "restauré",
+      "conservationPurpose": "conservé",
+      "treesPurpose": "Arbres",
+      "noContributionPrivateProfileText": "Oups ! Aucune contribution à afficher pour l'instant",
+      "noContributionPublicProfileText": "Faites un don pour soutenir les efforts de {name}"
+    },
+    "unitType": {
+      "m2": "m²"
+    },
+    "infoAndCtaContainer": {
+      "sdgSectionHeadingPrimary": "Restaurer les écosystèmes et lutter contre la crise climatique.",
+      "sdgSectionHeadingSecondary": "Contribuer aux objectifs de développement durable.",
+      "pfpDonorCircleMember": "Plant-for-the-Planet membre du cercle des donateurs",
+      "publicProfileActions": {
+        "becomeAMember": "Devenir membre",
+        "youthEmpowermentTitle": "Autonomisation des jeunes",
+        "youthEmpowermentSubtext": "les enfants et les jeunes pour lutter contre la crise climatique",
+        "restorationToolsTitle": "Outils de restauration",
+        "restorationToolsSubtext": "financer, restaurer, surveiller et conserver les forêts",
+        "restorationAdviceTitle": "Conseils en matière de restauration",
+        "restorationAdviceSubtext": "& Recherche",
+        "restorationAndConservationTitle": "Restauration et conservation des forêts",
+        "restorationAndConservationSubtext": "au Mexique, au Ghana et en Espagne"
+      },
+      "sdgCardAlternativeText": {
+        "qualityEducation": "Une éducation de qualité",
+        "economicGrowth": "Travail décent et croissance économique",
+        "industryInfrastructureAndInnovation": "Industrie, innovation et infrastructure",
+        "reducedInequalities": "Réduire les inégalités",
+        "climateAction": "Action pour le climat",
+        "lifeOnLand": "La vie sur terre",
+        "partnership": "Partenariats pour les objectifs"
+      }
     }
   }
 }

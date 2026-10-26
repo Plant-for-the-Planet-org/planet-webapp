@@ -49,6 +49,7 @@
     "ownerName": "Nombre del propietario",
     "acquisitionDate": "Fecha de adquisición",
     "yearOfDegradation": "Año de degradación",
+    "degradationYear": "Degradación Año",
     "causeOfDegradation": "Causa de la degradación",
     "longTermPlan": "Plan a largo plazo para el sitio",
     "isCertified": "Este proyecto ha sido certificado",
@@ -127,13 +128,13 @@
     "addProject": "Añadir proyecto",
     "addNewProject": "Añadir nuevo proyecto",
     "conservationProject": "Proyecto de conservación",
-    "conservationProjectDescription": "Un proyecto que protege un ecosistema nativo existente que aún no ha sido degradado ni destruido, pero que está en riesgo.",
     "abandonment": "Abandono",
     "survivalRate": "Tasa de supervivencia",
     "survivalRateInfo": "Porcentaje de árboles que sobreviven al primer año de la plantación",
     "employees": "Empleados",
     "siteOwnership": "Propiedad del sitio",
     "longTermProtection": "Protección a largo plazo",
+    "ownerShipTenure": "Propiedad Tenencia",
     "externalCertifications": "Certificaciones externas",
     "projectSpendingFinancial": "Gastos de proyectos financieros",
     "issueDate": "Fecha de emisión",
@@ -146,7 +147,6 @@
     "otherPlanting": "Otras plantaciones",
     "projectType": "Tipo de proyecto",
     "protectionSeasons": "Temporadas de protección",
-    "polygonRequired": "Se requiere un polígono",
     "fileSizeLimit": "El archivo es mayor de 10 mb",
     "fileImageOnly": "El archivo debe ser imagen",
     "filePDFOnly": "El archivo debe ser PDF",
@@ -193,9 +193,11 @@
     "temperateConiferousForests": "Temperate Coniferous Forests",
     "ecosystemTypes": {
       "tropical-moist-forests": "Tropical Moist Forests",
+      "tropical-forests": "Bosques tropicales",
       "tropical-dry-forests": "Tropical Dry Forests",
       "tropical-coniferous-forests": "Tropical Coniferous Forests",
       "tropical-grasslands-forests": "Tropical Grasslands Forests",
+      "temperate": "Templado",
       "temperate-broadleaf-forests": "Temperate Broadleaf Forests",
       "temperate-coniferous-forests": "Temperate Coniferous Forests",
       "temperate-grasslands-forests": "Temperate Grassland Forests",
@@ -213,19 +215,18 @@
       "tree": "árbol",
       "m2": "m²"
     },
+    "unitTypeInfo": "Seleccione la unidad para donaciones antes de enviarla para su revisión. Para realizar cambios, póngase en contacto con el servicio de asistencia.",
     "tenure": "Tenencia",
     "rent": "Alquiler",
     "ownershipType": "Tipo de propiedad",
     "landOwnershipType": "Tipo de propiedad",
     "restorationProject": "Proyecto de restauración",
-    "restorationProjectDescription": "Un proyecto que apoya la recuperación de un ecosistema nativo que ha sido degradado, dañado o destruido.",
-    "backToProjectType": "Atrás",
     "addProjectDescription": "Estás a pocos pasos de exponer tu trabajo en la plataforma Plant-for-the-Planet.",
-    "wrongCoordinates": "Coordenadas erróneas",
+    "createProjectsEnglishOnly": "<noteLabel>Importante: </noteLabel>Por favor, cree proyectos sólo en inglés.",
+    "contactSupportEmail": "Si necesita ayuda, póngase en contacto con nosotros en <supportLink>support@plant-for-the-planet.org</supportLink> ",
     "actionInfo": "Las acciones que su organización está llevando a cabo para conservar el ecosistema.",
     "mainChallengeInfo": "El mayor reto al que se enfrenta este proyecto.",
     "motivationInfo": "La motivación para proteger este ecosistema concreto.",
-    "hectar": "hectar",
     "validation": "{fieldName} no es válido",
     "date": "Fecha",
     "plantingDensityValidation": "Introduzca la densidad de plantación",
@@ -237,11 +238,58 @@
     "errorForMaxPlantingDensity": "Este valor debe ser superior a la densidad de plantación",
     "managePayoutsButton": "Gestionar los pagos",
     "siteNameValidation": "Introduzca el nombre del sitio",
-    "reviewNote": "<bold>Nota importante</bold>: Plant-for-the-Planet revisará y validará sus datos. Para continuar con el proceso de incorporación y verificación, y para aprobar su proyecto para donaciones, se deben proporcionar varios Documentos:",
-    "legalAccreditation": "Acreditación legal (certificado de registro/número de registro) que demuestre la condición benéfica/sin ánimo de lucro de su organización, con una antigüedad máxima de 2 años",
-    "taxExemption": "Documentación de exención fiscal (si procede en su país)",
-    "annualReport": "Último informe anual",
-    "financialReport": "Último informe financiero auditado",
-    "PlantingReport": "Informe de situación del proyecto"
+    "siteCount": "Sitio {siteId} de {totalCount}",
+    "delete": "Borrar",
+    "deleteSite": "Borrar sitio",
+    "cancel": "Cancelar",
+    "siteDeleteConfirmation": "¿Estás seguro de que quieres borrar {siteName}?",
+    "mapView": {
+      "map": "Mapa",
+      "satellite": "Satélite"
+    },
+    "drawing": {
+      "polygon": {
+        "start": "Empezar a dibujar polígonos (seleccionar al menos 3 puntos)",
+        "stop": "Detener el dibujo de polígonos",
+        "active": "Modo de dibujo activo (haz clic para detenerlo)",
+        "delete": "Borrar polígono"
+      }
+    },
+    "errors": {
+      "polygon": {
+        "minimumPoints": "Un polígono requiere al menos 3 puntos",
+        "required": "El contorno de su sitio debe ser un polígono cerrado. Para cerrar el contorno, haga doble clic en el punto de partida."
+      },
+      "file": {
+        "invalidKml": "Archivo KML no válido. Compruebe el formato del archivo.",
+        "invalidGeojson": "Archivo GeoJSON no válido. Compruebe el formato del archivo.",
+        "readAborted": "Carga de archivos cancelada. Por favor, inténtelo de nuevo.",
+        "readFailed": "No se ha podido leer el archivo. Por favor, inténtelo de nuevo."
+      },
+      "coordinates": {
+        "seaCoordinates": "El lugar seleccionado parece estar en el mar. Por favor, elija un punto cercano en tierra.",
+        "latitudeRange": "La latitud debe estar comprendida entre -90 y 90.",
+        "longitudeRange": "La longitud debe estar comprendida entre -180 y 180."
+      }
+    },
+    "editSite": "Editar sitio",
+    "syncSites": {
+      "modal": {
+        "title": "Enviar datos del sitio a Restor.eco",
+        "terms": "Al hacer clic en <highlightedAction>Enviar</highlightedAction>, los datos de su sitio se enviarán a <restorLink>Restor.eco</restorLink>. Tenga en cuenta que la política de privacidad de <privacyPolicyLink>Restor.eco</privacyPolicyLink> se aplica a todos los datos compartidos.",
+        "requirements": {
+          "title": "Requisitos:",
+          "activeAccount": "<bold>Cuenta activa:</bold> Asegúrese de tener una cuenta activa en Restor.eco antes de continuar.",
+          "consultation": "<bold>Consulta:</bold> Utilice esta función únicamente si ya ha consultado con el equipo de Plant-for-the-Planet."
+        },
+        "helpText": "Si tiene alguna pregunta sobre esta integración, póngase en contacto con <emailLink>{email}</emailLink>."
+      },
+      "send": "Enviar",
+      "cancel": "Cancelar",
+      "syncing": "Sincronización...",
+      "syncSitesToRestorEco": "Sincronizar sitios con Restor.eco",
+      "success": "Sus sitios se han sincronizado correctamente con Restor.eco",
+      "error": "Error al sincronizar los datos del sitio. Vuelva a intentarlo más tarde."
+    }
   }
 }

@@ -1,5 +1,10 @@
 {
   "Common": {
+    "unitTypes": {
+      "tree": "{count, plural, one {{formattedCount} Tree} other {{formattedCount} Trees}}",
+      "m2": "{formattedCount} m²"
+    },
+    "and": "e",
     "tree": "{count, plural,   =1 {Árvore} other {Árvores}}",
     "m2": "m²",
     "by": "Por {tpoName}",
@@ -18,6 +23,9 @@
     "me": "Eu",
     "signIn": "Inscreva-se",
     "home": "Início",
+    "vtoChallenge": "Desafio VTO",
+    "mangroves": "Manguezais",
+    "campaigns": "Campanhas",
     "donate_gift": "Doar/Presente",
     "plant": "Plantar",
     "donate": "Doar",
@@ -53,7 +61,6 @@
     "continueToLogin": "Continuar para Iniciar Sessão",
     "supportsUNEP": "Apoia o PNUMA",
     "plantedBy": "Plantado por",
-    "redeemPopup": "Recebeu um presente de árvore? Por favor, faça o login para resgatar as suas árvores.",
     "login": "Login/Signup",
     "shop": "Loja",
     "downloads": "Downloads",
@@ -62,7 +69,6 @@
     "blogs": "Blogs",
     "faqs": "FAQs",
     "annualReports": "Relatórios anuais",
-    "skipIntroVideo": "Pular Introdução",
     "mapInfo": "Créditos do Mapa",
     "aboutUs": "Sobre nós",
     "alternativelyEditProfile": "Alternativamente, você pode marcar seu perfil como privado, visitando Editar Perfil.",
@@ -72,7 +78,6 @@
     "deleteAccountMessage": "Para continuar com a exclusão, por favor digite `{delete}`",
     "deleteAccountLabel": "Tipo: {delete}",
     "edit": "Editar",
-    "howDoesThisWork": "Como que funciona?",
     "copiedToClipboard": "Copiado para o clipboard!",
     "close": "Fechar",
     "logout": "Sair",
@@ -131,6 +136,41 @@
     "top_project_standards_fulfilled": "A inspeção do projeto revelou que esse projeto cumpriu pelo menos 12 dos 19 <standardsLink>padrões</standardsLink> do Top Project.",
     "disabledDonateButtonText": "O projeto não aceita doações no momento. Isso pode ocorrer porque ele é totalmente financiado, ainda não foi revisado ou não atende a todos os nossos padrões de projeto, ou porque opta por usar a plataforma exclusivamente para suas ferramentas de transparência.",
     "notDonatable": "Não pode ser doado",
-    "salesforceDisabledDonateButtonText": "No momento, o projeto não aceita doações."
+    "salesforceDisabledDonateButtonText": "No momento, o projeto não aceita doações.",
+    "tools": "Ferramentas",
+    "navbarMenu": {
+      "all": "Todos",
+      "platform": "Sobre a plataforma",
+      "organization": "Sobre Plant-for-the-Planet",
+      "tools": "Mais <highlight>forest cloud</highlight> tools",
+      "organizationDescription": "Desde 2007, nossa comunidade de 11 organizações trabalha para capacitar os jovens a combater a crise climática e restaurar as florestas.",
+      "menuitem": {
+        "platform": "A plataforma",
+        "platformDescription": "Por que criamos isso e como funciona",
+        "redeemCode": "Código de resgate",
+        "redeemCodeDescription": "Do Tree Certificate ou The Change Chocolate",
+        "support": "Apoie-nos com uma doação",
+        "supportDescription": "Mantenha nossas ferramentas gratuitas para todos",
+        "organization": "A organização",
+        "transparency": "Transparência",
+        "partner": "Seja nosso parceiro",
+        "treeMapper": "TreeMapper",
+        "treeMapperDescription": "para monitorar a restauração florestal",
+        "fireAlert": "Alerta de incêndio",
+        "fireAlertDescription": "para interromper rapidamente os incêndios florestais",
+        "tracer": "Tracer",
+        "tracerDescription": "para cadeias de suprimentos livres de desmatamento",
+        "restorationAdvice": "Conselhos sobre restauração",
+        "restorationAdviceDescription": "consultoria gratuita para programas de restauração e conservação",
+        "restorationStandards": "Padrões de restauração",
+        "restorationStandardsDescription": "Padrões quantificáveis para restauração",
+        "instagram": "Instagram",
+        "youtube": "Youtube",
+        "linkedin": "LinkedIn",
+        "facebook": "Facebook",
+        "vtoChallenge": "VTO Challenge",
+        "mangroves": "Manguezais"
+      }
+    }
   }
 }

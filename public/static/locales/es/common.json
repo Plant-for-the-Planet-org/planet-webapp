@@ -1,5 +1,10 @@
 {
   "Common": {
+    "unitTypes": {
+      "tree": "{count, plural, one {{formattedCount} Tree} other {{formattedCount} Trees}}",
+      "m2": "{formattedCount} m²"
+    },
+    "and": "y",
     "tree": "{count, plural,   =1 {Árbol} other {Árboles}}",
     "m2": "m²",
     "by": "Por {tpoName}",
@@ -18,6 +23,9 @@
     "me": "Yo",
     "signIn": "Iniciar sesión",
     "home": "Inicio",
+    "vtoChallenge": "Desafío VTO",
+    "mangroves": "Manglares",
+    "campaigns": "Campañas",
     "donate_gift": "Donaciones/Regalos",
     "plant": "Planta",
     "donate": "Donaciones",
@@ -53,7 +61,6 @@
     "continueToLogin": "Continuar con el inicio de sesión",
     "supportsUNEP": "Apoya al PNUMA",
     "plantedBy": "Plantado por",
-    "redeemPopup": "¿Recibió un Árbol de regalo? Por favor, inicie sesión para canjear sus árboles.",
     "login": "Inicio de sesión/registro",
     "shop": "Tienda",
     "downloads": "Descargas",
@@ -62,7 +69,6 @@
     "blogs": "Blogs",
     "faqs": "Preguntas frecuentes",
     "annualReports": "Informes anuales",
-    "skipIntroVideo": "Saltar la introducción",
     "mapInfo": "Créditos del mapa",
     "aboutUs": "Sobre nosotros",
     "alternativelyEditProfile": "También puede marcar su perfil como privado visitando Editar perfil.",
@@ -72,7 +78,6 @@
     "deleteAccountMessage": "Para continuar con el borrado, escriba `{delete}`",
     "deleteAccountLabel": "Tipo: {delete}",
     "edit": "Editar",
-    "howDoesThisWork": "¿Cómo funciona esto?",
     "copiedToClipboard": "Copiado en el portapapeles",
     "close": "Cerrar",
     "logout": "Cerrar Sesión",
@@ -131,6 +136,38 @@
     "top_project_standards_fulfilled": "La inspección del proyecto reveló que éste cumplía al menos 12 de las 19 normas de Top Project <standardsLink>.</standardsLink>",
     "disabledDonateButtonText": "El proyecto no acepta actualmente donaciones. Esto puede deberse a que está totalmente financiado, aún no ha sido revisado o no cumple actualmente todas nuestras normas para proyectos, o bien opta por utilizar la plataforma exclusivamente por sus herramientas de transparencia.",
     "notDonatable": "No donable",
-    "salesforceDisabledDonateButtonText": "Actualmente el proyecto no acepta donaciones."
+    "salesforceDisabledDonateButtonText": "Actualmente el proyecto no acepta donaciones.",
+    "navbarMenu": {
+      "all": "Todos",
+      "platform": "Acerca de la plataforma",
+      "organization": "Acerca de Plant-for-the-Planet",
+      "tools": "Más <highlight>forest cloud</highlight> herramientas",
+      "organizationDescription": "Desde 2007, nuestra comunidad de 11 organizaciones trabaja para capacitar a los jóvenes para luchar contra la crisis climática y restaurar los bosques.",
+      "menuitem": {
+        "platform": "La Plataforma",
+        "platformDescription": "Por qué lo hemos creado y cómo funciona",
+        "redeemCode": "Canjear código",
+        "redeemCodeDescription": "Del Certificado de Árbol o El Chocolate del Cambio",
+        "support": "Apóyenos con una donación",
+        "supportDescription": "Mantener nuestras herramientas gratuitas para todos",
+        "organization": "La Organización",
+        "transparency": "Transparencia",
+        "partner": "Asóciese con nosotros",
+        "treeMapper": "TreeMapper",
+        "treeMapperDescription": "supervisar la restauración forestal",
+        "fireAlert": "FireAlert",
+        "fireAlertDescription": "detener rápidamente los incendios forestales",
+        "tracer": "Tracer",
+        "tracerDescription": "por unas cadenas de suministro sin deforestación",
+        "restorationAdvice": "Consejos de restauración",
+        "restorationAdviceDescription": "asesoramiento gratuito para programas de restauración y conservación",
+        "restorationStandards": "Normas de restauración",
+        "restorationStandardsDescription": "Normas cuantificables para la restauración",
+        "instagram": "Instagram",
+        "youtube": "Youtube",
+        "linkedin": "LinkedIn",
+        "facebook": "Facebook"
+      }
+    }
   }
 }

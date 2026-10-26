@@ -1,1 +1,74 @@
-{ }
+{
+  "DonationReceipt": {
+    "donorInfo": {
+      "firstName": "Jméno",
+      "lastName": "Příjmení",
+      "tin": "Daňové identifikační číslo (TIN)",
+      "companyName": "Název společnosti",
+      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
+      "address": "Adresa"
+    },
+    "donationDetails": {
+      "referenceNumber": "Referenční číslo",
+      "reference": "Odkaz",
+      "amountDonated": "Darovaná částka",
+      "paymentDate": "Datum platby",
+      "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
+      "taxIdentificationNumber": "Daňové identifikační číslo (TIN)"
+    },
+    "errors": {
+      "invalidReceipt": "<b>Chyba:</b> Nelze zpracovat požadavek z důvodu chybějících nebo nesprávných údajů. Zkontrolujte prosím odkaz a zkuste to znovu.",
+      "missingReceiptInformation": "<b>Chyba:</b> Na účtence chybí některé údaje. Kontaktujte nás prosím pomocí níže uvedených údajů.",
+      "editPermissionDeniedMessage": "<b>Chyba:</b> Vypadá to, že nemáte oprávnění k úpravě těchto kontaktních údajů. Pokud potřebujete pomoc, kontaktujte prosím podporu.",
+      "accessDeniedMessage": "<b>Chyba:</b> Zdá se, že nemáte potřebná oprávnění pro přístup k tomuto odkazu. Pokud potřebujete pomoc, kontaktujte prosím podporu."
+    },
+    "notifications": {
+      "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} chybí/je neplatný",
+      "addressMissing": "Chybí/neplatná adresa",
+      "firstNameRequired": "Pole Křestní jméno je povinné",
+      "lastNameRequired": "Pole Příjmení je povinné",
+      "companyRequired": "Pole Název společnosti je povinné",
+      "tinRequired": "Je vyžadováno DIČ",
+      "addressRequired": "Pro pokračování vyberte adresu.",
+      "invalidContactInfoMessage": "Vaše kontaktní údaje jsou neplatné. Aktualizujte je prosím kliknutím na tlačítko Upravit kontaktní údaje níže.",
+      "addressLimitReached": "Dosáhli jste limitu adres. Stávající adresy můžete aktualizovat, ale přidání nové není možné.",
+      "missingTIN": "<b>UPOZORNĚNÍ:</b> Chybí vaše daňové identifikační číslo, přidejte ho kliknutím na tlačítko níže.",
+      "loginRequired": "<b>DŮLEŽITÉ:</b> Chcete-li upravit své údaje, musíte se přihlásit do svého profilu. Pokud se setkáte s problémy, kontaktujte nás prostřednictvím informací uvedených v dolní části této stránky. "
+    },
+    "verifyDonationHeaderPrimary": "Ověření údajů a stažení potvrzení o daru",
+    "verifyDonationHeaderSecondary": "Upozornění: Jakmile jsou údaje jednou ověřeny, nelze je u této účtenky znovu měnit",
+    "downloadDonationReceipt": "Stáhněte si potvrzení o daru",
+    "recipientInfoHeader": "Potvrzení o přijetí bude vystaveno na adresu",
+    "modifyContactInformation": "Úprava kontaktních údajů",
+    "confirm": "Potvrďte",
+    "download": "Stáhnout",
+    "viewAllDonationReceipts": "Zobrazení všech potvrzení o darech",
+    "donationReceiptsManagementInfo": "Snadný přístup ke všem potvrzením o darech a jejich správa. Prohlédněte si vydané účtenky připravené ke stažení a zkontrolujte, zda nejsou ještě zpracovávány.",
+    "donationReceiptsManagementLogin": "K tomu je třeba se přihlásit.",
+    "contactSupportMessage": "V případě jakýchkoli dotazů nebo problémů nás prosím kontaktujte",
+    "emailDetails": "<strong>E-mail:</strong> <supportLink>spende@plant-for-the-planet.org</supportLink>",
+    "phoneDetails": "<strong>Telefon:</strong> +49 8808 9345",
+    "receipts": "Příjmy",
+    "donorContactManagement": "Správa kontaktů dárců",
+    "contactManagementHeader": "Aktualizace profilu a adresy",
+    "saveDataAndReturn": "Uložení dat a návrat",
+    "donationReceipt": "Potvrzení o daru",
+    "verifyAndDownload": "Ověřit a stáhnout",
+    "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Item} other {# Items}}</u>",
+    "itemsReferenceDateSingleDonation": "Odkaz {reference} - {date}",
+    "itemsReferenceDateSingleEndowment": "Odkaz {reference} - Dotační fond - {date}",
+    "pendingReceipt": "Nevyřízené účtenky",
+    "noReceiptFound": "Ups! Nebyla nalezena žádná účtenka",
+    "overviewReceipt": {
+      "download": "Přehled ke stažení",
+      "available": "Přehled k dispozici",
+      "notAvailable": "Přehled zatím není k dispozici",
+      "downloadOverviewFor": "Stáhnout přehled pro {year}",
+      "statusInfo": {
+        "verifyBeforeDownload": "Před stažením přehledu účtenek si prosím ověřte všechny účtenky.",
+        "availableSoon": "Přehledná účtenka bude brzy k dispozici.",
+        "download": "Stáhněte si potvrzení o konsolidovaném přehledu za letošní rok."
+      }
+    }
+  }
+}

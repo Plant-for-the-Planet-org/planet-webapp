@@ -16,7 +16,7 @@
     "labelCreditLimit": "Limite",
     "deactivateAccountButton": "Desativar",
     "activateAccountButton": "Ativar",
-    "accountInactiveHelpText": "Essa conta está inativa e não pode ser usada para fazer contribuições. Para ativar essa conta, entre em contato com support@plant-for-the-planet.org.",
+    "accountInactiveHelpText": "Essa conta está inativa e não pode ser usada para fazer contribuições. Para ativar essa conta, entre em contato com <supportLink>support@plant-for-the-planet.org</supportLink>.",
     "noAccountsText": "Parece que você ainda não criou uma conta PlanetCash.",
     "createPlanetCashButton": "Criar uma conta Planet Cash",
     "accountQuotaReachedText": "Não é possível criar mais contas porque a cota de contas foi esgotada.",
@@ -24,11 +24,45 @@
     "labelCountry": "País",
     "planetCashTerms1": "Ao clicar em \"Criar conta PlanetCash\", eu concordo com os Termos e Condições do Plant-for-the-Planet e do PlanetCash.",
     "planetCashTerms2": "Entendo que as doações PlanetCash não são reembolsáveis e que os pagamentos não alocados serão automaticamente alocados a projetos na Plataforma após seis meses de um Pagamento.",
-    "planetCashTerms3": "As doações para a Conta PlanetCash por motivos pessoais geralmente são dedutíveis de impostos no país selecionado nesta etapa. O uso comercial do PlanetCash pode não ser elegível para deduções fiscais. Em caso de dúvidas, entre em contato com support@plant-for-the-planet.org ou com seu consultor fiscal.",
+    "planetCashTerms3": "As doações para a Conta PlanetCash por motivos pessoais geralmente são dedutíveis de impostos no país selecionado nesta etapa. O uso comercial do PlanetCash pode não ser elegível para deduções fiscais. Em caso de dúvidas, entre em contato com <supportLink>support@plant-for-the-planet.org</supportLink> ou com seu consultor fiscal.",
     "accountError": {
       "active_account_exists": "Já existe uma conta ativa. Desative essa conta antes de ativar outra conta.",
       "duplicate_account": "Você já criou uma conta para {country}",
       "default": "Algo deu errado ao criar uma conta. Por favor, tente depois de algum tempo."
+    },
+    "topUpManagement": {
+      "labelToggle": "Auto Refil PlanetCash quando o saldo estiver baixo",
+      "labelThreshold": "Quando o saldo for inferior a ({currency})",
+      "labelRefillAmount": "Quantidade a ser recarregada ({currency})",
+      "labelStatus": "Status",
+      "labelPaymentMethod": "Método de pagamento",
+      "statusActive": "Ativo",
+      "statusInactive": "Inativo",
+      "paymentMethodInfo": {
+        "sepa_debit": "IBAN terminado em {last4}",
+        "card": "Cartão terminado em {last4}",
+        "unknown": "Método de pagamento desconhecido"
+      },
+      "validationErrors": {
+        "thresholdRequired": "Digite um valor limite",
+        "amountRequired": "Digite o valor do refil",
+        "thresholdMinimum": "O valor do limite deve ser positivo",
+        "amountMinimum": "O valor do refil deve ser positivo"
+      },
+      "apiErrors": {
+        "paymentMethodNotFound": "Há um problema com o método de pagamento selecionado. Selecione um método de pagamento diferente. Você também pode entrar em contato com support@plant-for-the-planet.org para obter ajuda.",
+        "topUpAmountTooLow": "A quantidade de refil deve ser de pelo menos {minAmountWithCurrency}.",
+        "topUpThresholdTooLow": "O valor limite deve ser de pelo menos {minThresholdWithCurrency}.",
+        "default": "Algo deu errado ao salvar as configurações de recarga. Se o problema persistir, entre em contato com support@plant-for-the-planet.org."
+      },
+      "saveButton": "Salvar configurações de recarga",
+      "disableConfirmationDialog": {
+        "confirmButtonText": "Confirmar",
+        "cancelButtonText": "Cancelar",
+        "title": "Desativar o Auto Refil?",
+        "subtitle": "Tem certeza de que deseja desativar o reabastecimento automático? Isso removerá suas configurações atuais de recarga automática."
+      },
+      "successMessage": "Configurações do Auto Refil salvas com sucesso"
     }
   }
 }

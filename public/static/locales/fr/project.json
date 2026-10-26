@@ -1,1 +1,54 @@
-{ }
+{
+  "Project": {
+    "classification": {
+      "natural-regeneration": "Régénération naturelle",
+      "managed-regeneration": "Régénération gérée",
+      "restoration-tree-planting": "Restauration à grande échelle",
+      "large-scale-planting": "Restauration à grande échelle",
+      "agroforestry": "Agroforesterie",
+      "urban-planting": "Restauration urbaine",
+      "other-restoration": "Restauration",
+      "other-planting": "Restauration",
+      "mangroves": "Mangroves",
+      "conservation": "Conservation"
+    },
+    "ecosystem": {
+      "tropical-moist-forests": "Forêts tropicales humides",
+      "tropical-forests": "Forêts tropicales",
+      "tropical-dry-forests": "Forêts tropicales sèches",
+      "tropical-coniferous-forests": "Forêts tropicales de conifères",
+      "tropical-grasslands-forests": "Prairies tropicales Forêts",
+      "temperate": "Tempéré",
+      "temperate-broadleaf-forests": "Forêts tempérées à feuilles larges",
+      "temperate-coniferous-forests": "Forêts de conifères tempérées",
+      "temperate-grasslands-forests": "Forêts de prairies tempérées",
+      "mediterranean-forests": "Forêts méditerranéennes",
+      "mangroves": "Mangroves",
+      "deserts": "Déserts",
+      "flooded-grasslands": "Prairies inondées",
+      "montane-grasslands": "Prairies montagnardes",
+      "boreal-forests": "Forêts boréales",
+      "tundra": "Toundra"
+    },
+    "interventionTypes": {
+      "assisting-seed-rain": "Aide à la pluie de semences",
+      "control-remove-livestock": "Contrôle/élimination du bétail",
+      "cut-suppressing-grass": "Coupe/suppression de l'herbe",
+      "direct-seeding": "Semis direct",
+      "enrichment-planting": "Plantation d'enrichissement",
+      "establish-firebreaks": "Établir des coupe-feu",
+      "fire-patrols": "Patrouilles de pompiers",
+      "fire-suppression-team": "Équipe de lutte contre les incendies",
+      "liberating-regenerants": "Régénérants libérateurs",
+      "maintenance": "Maintenance",
+      "marking-regenerants": "Marquage des régénérants",
+      "other-interventions": "Autres interventions",
+      "planting-trees": "Plantation d'arbres",
+      "removal-contaminated-soil": "Élimination des sols contaminés",
+      "removal-invasive-species": "Élimination des espèces envahissantes",
+      "soil-improvement": "Amélioration des sols",
+      "stop-tree-harvesting": "Arrêter la récolte d'arbres"
+    },
+    "tpoName": "Par {tpoName}"
+  }
+}

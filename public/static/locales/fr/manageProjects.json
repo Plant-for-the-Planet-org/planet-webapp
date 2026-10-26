@@ -19,7 +19,7 @@
     "conservationImpacts": "Impacts sur la conservation",
     "website": "Site web",
     "websiteValidationRequired": "Entrer l'URL du site web",
-    "websiteValidationInvalid": "URL du site web invalide",
+    "websiteValidationInvalid": "L'UR du site web n'est pas valide. Doit commencer par http:// ou https://",
     "aboutProject": "À propos du projet",
     "aboutProjectValidation": "Compléter À propos du projet",
     "receiveDonations": "Recevoir des dons",
@@ -49,6 +49,7 @@
     "ownerName": "Nom du propriétaire",
     "acquisitionDate": "Date d'acquisition",
     "yearOfDegradation": "Année de dégradation",
+    "degradationYear": "Année de dégradation",
     "causeOfDegradation": "Cause de la dégradation",
     "longTermPlan": "Plan à long terme pour le site",
     "isCertified": "Ce projet a été certifié",
@@ -127,15 +128,15 @@
     "addProject": "Ajouter un projet",
     "addNewProject": "Ajouter un nouveau projet",
     "conservationProject": "Projet de conservation",
-    "conservationProjectDescription": "Un projet qui protège un écosystème natif existant qui n'a pas encore été dégradé ou détruit mais qui est menacé.",
     "abandonment": "Abandon",
     "survivalRate": "Taux de reprise",
     "survivalRateInfo": "Pourcentage d'arbres qui survivent à la première année de plantation",
     "employees": "Employés",
     "siteOwnership": "Propriété du site",
     "longTermProtection": "Protection à long terme",
+    "ownerShipTenure": "Régime de propriété",
     "externalCertifications": "Certifications externes",
-    "projectSpendingFinancial": "Dépenses financières des projets",
+    "projectSpendingFinancial": "Dépenses des projets financiers",
     "issueDate": "Date d'émission",
     "acquisitionYear": "Année d'acquisition",
     "largeScalePlanting": "Plantation à grande échelle",
@@ -146,7 +147,6 @@
     "otherPlanting": "Other Planting",
     "projectType": "Type de projet",
     "protectionSeasons": "Saisons de protection",
-    "polygonRequired": "Le polygone est nécessaire",
     "fileSizeLimit": "Le fichier est supérieur à 10 mb",
     "fileImageOnly": "Le type de fichier doit être une image",
     "filePDFOnly": "Le type de fichier doit être PDF",
@@ -193,9 +193,11 @@
     "temperateConiferousForests": "Temperate Coniferous Forests",
     "ecosystemTypes": {
       "tropical-moist-forests": "Tropical Moist Forests",
+      "tropical-forests": "Forêts tropicales",
       "tropical-dry-forests": "Tropical Dry Forests",
       "tropical-coniferous-forests": "Tropical Coniferous Forests",
       "tropical-grasslands-forests": "Tropical Grasslands Forests",
+      "temperate": "Tempéré",
       "temperate-broadleaf-forests": "Temperate Broadleaf Forests",
       "temperate-coniferous-forests": "Temperate Coniferous Forests",
       "temperate-grasslands-forests": "Temperate Grassland Forests",
@@ -213,19 +215,18 @@
       "tree": "arbre",
       "m2": "m²"
     },
+    "unitTypeInfo": "Sélectionnez l'unité pour les dons avant de la soumettre pour examen. Pour toute modification, il est nécessaire de contacter le service d'assistance.",
     "tenure": "Titularisation",
     "rent": "Loyer",
     "ownershipType": "Type de propriété",
     "landOwnershipType": "Type de propriété foncière",
     "restorationProject": "Projet de restauration",
-    "restorationProjectDescription": "Un projet qui soutient la restauration d'un écosystème natif qui a été dégradé, endommagé ou détruit.",
-    "backToProjectType": "Retour",
     "addProjectDescription": "Vous n'êtes plus qu'à quelques pas de présenter votre travail sur la plateforme Plant-for-the-Planet.",
-    "wrongCoordinates": "Coordonnées erronées",
+    "createProjectsEnglishOnly": "<noteLabel>Important : </noteLabel>Veuillez créer des projets en anglais uniquement.",
+    "contactSupportEmail": "Si vous avez besoin d'aide, contactez-nous à l'adresse suivante <supportLink>support@plant-for-the-planet.org</supportLink> ",
     "actionInfo": "Les mesures prises par votre organisation pour préserver l'écosystème.",
     "mainChallengeInfo": "Le plus grand défi auquel ce projet est confronté.",
     "motivationInfo": "Motivation de la protection de cet écosystème spécifique.",
-    "hectar": "hectare",
     "validation": "{fieldName} est invalide",
     "date": "Date",
     "plantingDensityValidation": "Veuillez saisir la densité de plantation",
@@ -237,11 +238,58 @@
     "errorForMaxPlantingDensity": "Cette valeur doit être supérieure à la densité de plantation",
     "managePayoutsButton": "Gérer les paiements",
     "siteNameValidation": "Veuillez saisir un nom de site",
-    "reviewNote": "<bold>Note importante</bold>: Plant-for-the-Planet examinera et validera vos données. Afin de poursuivre le processus d'intégration et de vérification, et d'approuver votre projet pour les dons, plusieurs documents doivent être fournis :",
-    "legalAccreditation": "Accréditation légale (certificat d'enregistrement/numéro d'enregistrement) attestant du statut d'organisation caritative/à but non lucratif de votre organisation - datant de moins de 2 ans !",
-    "taxExemption": "Documentation relative à l'exonération fiscale (si applicable dans votre pays)",
-    "annualReport": "Dernier rapport annuel",
-    "financialReport": "Dernier rapport financier audité",
-    "PlantingReport": "Rapport sur l'état d'avancement du projet"
+    "siteCount": "Site {siteId} de {totalCount}",
+    "delete": "Supprimer",
+    "deleteSite": "Supprimer le site",
+    "cancel": "Annuler",
+    "siteDeleteConfirmation": "Êtes-vous sûr de vouloir supprimer {siteName}?",
+    "mapView": {
+      "map": "Carte",
+      "satellite": "Satellite"
+    },
+    "drawing": {
+      "polygon": {
+        "start": "Commencer à dessiner un polygone (sélectionner au moins 3 points)",
+        "stop": "Arrêter le dessin des polygones",
+        "active": "Mode dessin actif (cliquer pour arrêter)",
+        "delete": "Supprimer un polygone"
+      }
+    },
+    "errors": {
+      "polygon": {
+        "minimumPoints": "Un polygone nécessite au moins 3 points",
+        "required": "Le contour de votre site doit être un polygone fermé. Pour fermer le contour, double-cliquez sur le point de départ."
+      },
+      "file": {
+        "invalidKml": "Fichier KML non valide. Veuillez vérifier le format du fichier.",
+        "invalidGeojson": "Fichier GeoJSON non valide. Veuillez vérifier le format du fichier.",
+        "readAborted": "Le téléchargement du fichier a été annulé. Veuillez réessayer.",
+        "readFailed": "Échec de la lecture du fichier. Veuillez réessayer."
+      },
+      "coordinates": {
+        "seaCoordinates": "Le lieu sélectionné semble être en mer. Veuillez choisir un point proche sur la terre ferme.",
+        "latitudeRange": "La latitude doit être comprise entre -90 et 90.",
+        "longitudeRange": "La longitude doit être comprise entre -180 et 180."
+      }
+    },
+    "editSite": "Editer le site",
+    "syncSites": {
+      "modal": {
+        "title": "Envoyer les données du site à Restor.eco",
+        "terms": "En cliquant sur <highlightedAction>Send</highlightedAction>, les données de votre site seront transmises à <restorLink>Restor.eco</restorLink>. Veuillez noter que la politique de confidentialité de <privacyPolicyLink>Restor.eco</privacyPolicyLink> s'applique à toutes les données partagées.",
+        "requirements": {
+          "title": "Exigences :",
+          "activeAccount": "<bold>Compte actif :</bold> Assurez-vous d'avoir un compte actif sur Restor.eco avant de procéder.",
+          "consultation": "<bold>Consultation :</bold> N'utilisez cette fonction que si vous avez déjà consulté l'équipe Plant-for-the-Planet."
+        },
+        "helpText": "Si vous avez des questions concernant cette intégration, veuillez contacter <emailLink>{email}</emailLink>."
+      },
+      "send": "Envoyer",
+      "cancel": "Annuler",
+      "syncing": "Synchronisation...",
+      "syncSitesToRestorEco": "Synchroniser les sites avec Restor.eco",
+      "success": "Vos sites ont été synchronisés avec succès avec Restor.eco !",
+      "error": "Échec de la synchronisation des données du site. Veuillez réessayer plus tard."
+    }
   }
 }

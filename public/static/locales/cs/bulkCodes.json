@@ -36,6 +36,7 @@
       "tree": " strom",
       "m2": "m²"
     },
+    "summaryTotal": "{formattedAmount} pro {units} {pluralizedUnitType}",
     "unitsPerCode": "Jednotky za kód*",
     "totalNumberOfCodes": "Celkový počet kódů*",
     "occasion": "Příležitost",
@@ -75,12 +76,14 @@
       "notifyNotPossible": "U některých příjemců, kteří mají být upozorněni, chybí e-mail a jméno.",
       "instructionRowError": "Došlo k chybě v prvním řádku. Zkontrolujte, zda jste pokyny smazali, nebo zda existují další údaje.",
       "invalidEmails": "recipient_email obsahuje figuríny/neplatné e-maily v následujících řádcích: {rowList}. Odstraňte prosím neplatné e-maily nebo přidejte platné e-maily.",
+      "longRecipientNames": "jméno_příjemce je příliš dlouhé v následujících řádcích: {rowList}. Uveďte jména, která mají maximálně 35 znaků.",
       "generalError": "Něco se pokazilo. Zkuste to prosím o chvíli."
     },
     "errorAddRecipient": {
       "unitsNotProvided": "Povinné",
       "requiredForNotifications": "Povinné (pro příjemce e-mailu)",
-      "emailInvalid": "Neplatný e-mail"
+      "emailInvalid": "Neplatný e-mail",
+      "longRecipientName": "Maximální délka - 35 znaků"
     },
     "successUploadCSV": {
       "ignoredColumns": "Další sloupce byly ignorovány"
@@ -97,7 +100,7 @@
       "recipient_name": "Volitelně. Jméno příjemce, které se zobrazí na certifikátu a v případě volby i v poště zaslané příjemci. Povinné, pokud chcete odesílat e-maily.",
       "recipient_email": "Volitelně. Povinné pro zaslání certifikátu příjemci e-mailem.",
       "recipient_notify": "Volitelně. Pokud chcete, aby Plant-for-the-Planet automaticky informoval příjemce e-mailem, vyberte možnost Ano.",
-      "units": "Povinné. Počet stromů, které jsou předány příjemci, např. 5 za 5 stromů",
+      "units": "Povinné. Počet jednotek (stromů nebo m²), které jsou příjemci poskytnuty, např. 5 za 5 stromů nebo 5 m².",
       "recipient_message": "Volitelně. Zpráva pro příjemce, která je zahrnuta do e-mailu, pokud je možnost notify yes. Pokud není uvedena, bude odeslána výchozí zpráva."
     },
     "donationSuccess": "Váš dar byl úspěšný. Přesměrování na zobrazení podrobností o darování brzy...",

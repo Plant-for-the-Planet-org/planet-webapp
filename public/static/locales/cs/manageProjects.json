@@ -19,7 +19,7 @@
     "conservationImpacts": "Dopady na ochranu přírody",
     "website": "Webové stránky",
     "websiteValidationRequired": "Zadejte prosím URL adresu webové stránky",
-    "websiteValidationInvalid": "Neplatná URL adresa webové stránky",
+    "websiteValidationInvalid": "Neplatné webové stránky UR. Mělo by začínat http:// nebo https://",
     "aboutProject": "O projektu",
     "aboutProjectValidation": "Zadejte prosím O projektu",
     "receiveDonations": "Přijímání darů",
@@ -49,6 +49,7 @@
     "ownerName": "Jméno vlastníka",
     "acquisitionDate": "Datum pořízení",
     "yearOfDegradation": "Rok degradace",
+    "degradationYear": "Degradace Rok",
     "causeOfDegradation": "Příčina degradace",
     "longTermPlan": "Dlouhodobý plán pro lokalitu",
     "isCertified": "Tento projekt byl certifikován",
@@ -127,15 +128,15 @@
     "addProject": "Přidat projekt",
     "addNewProject": "Přidat nový projekt",
     "conservationProject": "Projekt ochrany přírody",
-    "conservationProjectDescription": "Projekt chránící stávající původní ekosystém, který dosud nebyl degradován ani zničen, ale je ohrožen.",
     "abandonment": "Spuštění",
     "survivalRate": "Míra přežití",
     "survivalRateInfo": "Procento stromů, které přežijí první rok výsadby",
     "employees": "Zaměstnanci",
     "siteOwnership": "Vlastnictví lokace",
     "longTermProtection": "Dlouhodobá ochrana",
+    "ownerShipTenure": "Vlastnické právo",
     "externalCertifications": "Externí certifikace",
-    "projectSpendingFinancial": "Výdaje na finanční projekty",
+    "projectSpendingFinancial": "Finanční výdaje na projekt",
     "issueDate": "Výdaje na finanční projekty",
     "acquisitionYear": "Rok akvizice",
     "largeScalePlanting": "Výsadba ve velkém měřítku",
@@ -146,7 +147,6 @@
     "otherPlanting": "Ostatní výsadba",
     "projectType": "Typ projektu",
     "protectionSeasons": "Období ochrany",
-    "polygonRequired": "Polygon je vyžadován",
     "fileSizeLimit": "Soubor je větší než 10 mb",
     "fileImageOnly": "Typ souboru musí být obrázek",
     "filePDFOnly": "Typ souboru musí být PDF",
@@ -193,9 +193,11 @@
     "temperateConiferousForests": "Mírné jehličnaté lesy",
     "ecosystemTypes": {
       "tropical-moist-forests": "Tropical Moist Forests",
+      "tropical-forests": "Tropické lesy",
       "tropical-dry-forests": "Tropical Moist Forests",
       "tropical-coniferous-forests": "Tropical Coniferous Forests",
       "tropical-grasslands-forests": "Tropical Grasslands Forests",
+      "temperate": "Mírný pás",
       "temperate-broadleaf-forests": "Temperate Broadleaf Forests",
       "temperate-coniferous-forests": "Temperate Coniferous Forests",
       "temperate-grasslands-forests": "Temperate Grassland Forests",
@@ -213,19 +215,18 @@
       "tree": "strom",
       "m2": "m²"
     },
+    "unitTypeInfo": "Před odesláním ke kontrole vyberte jednotku pro dary. Změny vyžadují kontaktování podpory.",
     "tenure": "Držení",
     "rent": "Nájemné",
     "ownershipType": "Typ vlastnictví",
     "landOwnershipType": "Typ vlastnictví půdy",
     "restorationProject": "Projekt obnovy",
-    "restorationProjectDescription": "Projekt podporující obnovu původního ekosystému, který byl degradován, poškozen nebo zničen.",
-    "backToProjectType": "Zpět",
     "addProjectDescription": "Od předvedení své práce na platformě Plant-for-the-Planet vás dělí jen pár kroků. Důležité: Vytvářejte projekty pouze v angličtině",
-    "wrongCoordinates": "Špatné souřadnice",
+    "createProjectsEnglishOnly": "<noteLabel>Důležité: </noteLabel>Vytvářejte prosím projekty pouze s anglickým jazykovým nastavením.",
+    "contactSupportEmail": "Pokud potřebujete pomoc, kontaktujte nás na adrese <supportLink>support@plant-for-the-planet.org</supportLink> ",
     "actionInfo": "Akce, které vaše organizace podniká k ochraně ekosystému.",
     "mainChallengeInfo": "Největší výzvou, které tento projekt čelí.",
     "motivationInfo": "Motivace k ochraně tohoto specifického ekosystému.",
-    "hectar": "hektar",
     "validation": "{fieldName} je neplatný",
     "date": "Datum",
     "plantingDensityValidation": "Zadejte prosím hustotu výsadby",
@@ -237,11 +238,58 @@
     "errorForMaxPlantingDensity": "Tato hodnota by měla být větší než hustota výsadby",
     "managePayoutsButton": "Správa plateb",
     "siteNameValidation": "Zadejte prosím název webu",
-    "reviewNote": "<bold>Důležitá poznámka</bold>: Společnost Plant-for-the-Planet vaše údaje zkontroluje a ověří. Aby bylo možné pokračovat v přijímacím a ověřovacím procesu a schválit váš projekt pro dárcovství, je třeba předložit několik Dokumentů:",
-    "legalAccreditation": "Právní akreditace (osvědčení o registraci/registrační číslo) prokazující charitativní/neziskový status vaší organizace - ne starší než 2 roky!",
-    "taxExemption": "Dokumentace o osvobození od daně (pokud je ve vaší zemi platná)",
-    "annualReport": "Poslední výroční zpráva",
-    "financialReport": "Poslední auditovaná finanční zpráva",
-    "PlantingReport": "Zpráva o průběhu projektu"
+    "siteCount": "Stránky {siteId} {totalCount}",
+    "delete": "Odstranit",
+    "deleteSite": "Odstranit stránku",
+    "cancel": "Zrušit",
+    "siteDeleteConfirmation": "Jste si jisti, že chcete odstranit adresu {siteName}?",
+    "mapView": {
+      "map": "Mapa",
+      "satellite": "Satelit"
+    },
+    "drawing": {
+      "polygon": {
+        "start": "Spusťte kreslení polygonů (vyberte alespoň 3 body)",
+        "stop": "Zastavení kreslení polygonů",
+        "active": "Aktivní režim kreslení (kliknutím na tlačítko zastavíte)",
+        "delete": "Odstranění polygonu"
+      }
+    },
+    "errors": {
+      "polygon": {
+        "minimumPoints": "Mnohoúhelník vyžaduje alespoň 3 body",
+        "required": "Obrys vašeho webu musí být uzavřený polygon. Chcete-li obrys uzavřít, dvakrát klikněte na počáteční bod."
+      },
+      "file": {
+        "invalidKml": "Neplatný soubor KML. Zkontrolujte prosím formát souboru.",
+        "invalidGeojson": "Neplatný soubor GeoJSON. Zkontrolujte prosím formát souboru.",
+        "readAborted": "Odesílání souborů zrušeno. Zkuste to prosím znovu.",
+        "readFailed": "Soubor se nepodařilo přečíst. Zkuste to prosím znovu."
+      },
+      "coordinates": {
+        "seaCoordinates": "Vybrané místo se nachází v moři. Zvolte prosím blízký bod na pevnině.",
+        "latitudeRange": "Zeměpisná šířka musí být mezi -90 a 90.",
+        "longitudeRange": "Zeměpisná délka musí být mezi -180 a 180."
+      }
+    },
+    "editSite": "Upravit stránky",
+    "syncSites": {
+      "modal": {
+        "title": "Odeslání dat o webu do služby Restor.eco",
+        "terms": "Kliknutím na tlačítko <highlightedAction>Odeslat</highlightedAction> budou údaje o vašich stránkách odeslány na adresu <restorLink>Restor.eco</restorLink>. Upozorňujeme, že na všechna sdílená data se vztahují zásady ochrany osobních údajů <privacyPolicyLink>Restor.eco</privacyPolicyLink>.",
+        "requirements": {
+          "title": "Požadavky:",
+          "activeAccount": "<bold>Aktivní účet:</bold> Před pokračováním se ujistěte, že máte aktivní účet na Restor.eco.",
+          "consultation": "<bold>Konzultace:</bold> Tuto funkci použijte pouze v případě, že jste již konzultovali s týmem Plant-for-the-Planet."
+        },
+        "helpText": "Máte-li dotazy k této integraci, obraťte se na adresu <emailLink>{email}</emailLink>."
+      },
+      "send": "Odeslat",
+      "cancel": "Zrušit",
+      "syncing": "Synchronizace...",
+      "syncSitesToRestorEco": "Synchronizace webů s Restor.eco",
+      "success": "Vaše stránky byly úspěšně synchronizovány s aplikací Restor.eco!",
+      "error": "Nepodařilo se synchronizovat data webu. Zkuste to prosím později."
+    }
   }
 }

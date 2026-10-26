@@ -16,6 +16,8 @@
     "redeemingCode": "Uplatnění kódu...",
     "redeem": "Uplatnit",
     "redeemDescription": "Uplatněte svůj stromový poukaz a další kódy.",
+    "redeemSuccessMessage": "<line1>Úžasné!</line1><line2>Přidali jsme příspěvek do vašeho profilu!</line2>",
+    "membershipRedeemSuccessMessage": "<line1>Úžasné!</line1><line2>Nyní jste členem dárcovského kruhu!</line2>",
     "successfullyRedeemed": "Úspěšně uplatněn",
     "redeemAnotherCode": "Uplatnit jiný kód"
   }

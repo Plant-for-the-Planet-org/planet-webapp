@@ -13,6 +13,7 @@
     "profileCreationError": "Erreur dans la création du profil.",
     "edit": "Modifier le profil",
     "save": "Sauvegarder",
+    "viewPublicProfile": "Voir le profil public",
     "profilePicUpdated": "La photo du profil est en cours d'actualisation...",
     "profileSaved": "Sauvé avec succès !",
     "profileSaveFailed": "Erreur dans la mise à jour du profil.",
@@ -23,6 +24,13 @@
     "cancel": "Annuler",
     "termAndCondition": "J'accepte les <termsLink>conditions générales </termsLink> de la plateforme Plant-for-the-Planet",
     "termAndConditionError": "Veuillez accepter les conditions générales",
+    "profileConsentSettingsTitle": "Personnaliser le profil public",
+    "publicProfileExplanation": "En rendant votre profil public, vous pouvez choisir de partager vos informations et d'entrer en contact avec d'autres personnes.",
+    "leaderboardTooltipExplanation": "Le classement montre toutes les contributions que d'autres personnes ont apportées à votre profil. Il peut s'agir d'arbres qui vous ont été offerts ou de dons faits par des personnes qui ont visité votre profil. En activant cette option, vous permettez à n'importe quel internaute de voir qui a fait les plus grosses contributions",
+    "profilePictureButtonLabels": {
+      "upload": "Télécharger une nouvelle photo",
+      "delete": "Supprimer la photo"
+    },
     "fieldLabels": {
       "profileType": "Je suis un",
       "firstName": "Prénom",
@@ -31,11 +39,15 @@
       "email": "Courriel",
       "address": "Adresse",
       "city": "Ville",
+      "state": "État",
       "zipCode": "Code postal",
       "country": "Pays",
-      "bio": "Description du profil",
+      "bio": "Votre description",
       "website": "Site web",
-      "subscribe": "S'abonner aux actualités par email"
+      "isPublic": "Rendre le profil public",
+      "subscribe": "S'abonner aux actualités par email",
+      "exposeCommunity": "Afficher mon classement",
+      "showTreegame": "Afficher TreeGame"
     },
     "validationErrors": {
       "maxChars": "Doit être {max} caractères ou moins",
@@ -50,11 +62,48 @@
       "addressInvalid": "L'adresse n'est pas valide. Seuls les caractères spéciaux suivants sont autorisés : espace . , # - /",
       "cityRequired": "La ville est requise",
       "cityInvalid": "La ville n'est pas valide. Seules les lettres et les caractères spéciaux suivants sont autorisés : espace . , ( ) -",
+      "stateInvalid": "L'État n'est pas valide. Seules les lettres et les caractères spéciaux suivants sont autorisés : espace . , ( ) -",
       "zipCodeRequired": "Le code postal est requis",
       "zipCodeInvalid": "Le code postal n'est pas valide",
-      "websiteInvalid": "Veuillez entrer une URL de site web valide",
+      "websiteInvalid": "Veuillez saisir une URL de site web valide commençant par http:// ou https://",
       "countryRequired": "Le pays est requis",
       "companyRequired": "Le nom de l'entreprise est obligatoire"
+    },
+    "addressManagement": {
+      "labels": {
+        "actionMenu": "Menu d'action"
+      },
+      "addressManagementTitle": "Adresse",
+      "addressType": {
+        "primary": "Adresse principale",
+        "mailing": "Adresse de facturation"
+      },
+      "actions": {
+        "edit": "Editer",
+        "delete": "Supprimer",
+        "setAsPrimaryAddress": "Définir comme adresse principale",
+        "setAsBillingAddress": "Définir comme adresse de facturation",
+        "unsetBillingAddress": "Adresse de facturation non définie",
+        "addAddress": "Ajouter une nouvelle adresse"
+      },
+      "deleteAction": {
+        "title": "Supprimer l'adresse",
+        "deleteButton": "Supprimer",
+        "deleteAddressConfirmationMessage": "Êtes-vous sûr de vouloir supprimer cette adresse ? Si vous souhaitez l'utiliser à nouveau, veuillez l'ajouter en tant que nouvelle adresse."
+      },
+      "updateAddressType": {
+        "setAddressConfirmation": "Êtes-vous sûr de vouloir définir cette adresse comme votre {addressType}?",
+        "replaceAddressWarning": "Il remplacera votre site actuel {addressType}.",
+        "confirmButton": "Confirmer",
+        "unsetBillingAddressMessage": "Souhaitez-vous désactiver votre adresse de facturation ? Votre adresse principale sera utilisée comme adresse de facturation."
+      },
+      "maxAddressesMessage": "Vous avez atteint le nombre maximum d'adresses ! Supprimez-en une pour ajouter une nouvelle adresse.",
+      "addressForm": {
+        "addAddress": "Ajouter une adresse",
+        "editAddress": "Modifier l'adresse",
+        "saveChanges": "Enregistrer les modifications",
+        "address2": "Adresse 2 (facultatif)"
+      }
     }
   }
 }

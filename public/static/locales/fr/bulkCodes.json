@@ -36,6 +36,7 @@
       "tree": "arbre",
       "m2": "m²"
     },
+    "summaryTotal": "{formattedAmount} pour {units} {pluralizedUnitType}",
     "unitsPerCode": "Unités par code*",
     "totalNumberOfCodes": "Nombre total de codes*",
     "occasion": "Occasion",
@@ -75,12 +76,14 @@
       "notifyNotPossible": "L'adresse électronique et le nom manquent pour certains destinataires à notifier.",
       "instructionRowError": "Une erreur s'est produite sur la première ligne. Veuillez vérifier si vous avez supprimé les instructions ou s'il y a des données supplémentaires.",
       "invalidEmails": "recipient_email contient des e-mails factices/invalides sur les lignes suivantes : {rowList}. Veuillez supprimer les courriels non valides ou ajouter des courriels valides.",
+      "longRecipientNames": "le nom du destinataire est trop long pour les lignes suivantes : {rowList}. Veuillez fournir des noms de 35 caractères ou moins.",
       "generalError": "Un problème s'est produit. Veuillez réessayer après un certain temps."
     },
     "errorAddRecipient": {
       "unitsNotProvided": "Obligatoire",
       "requiredForNotifications": "Obligatoire (pour les destinataires du courrier électronique)",
-      "emailInvalid": "Courriel non valide"
+      "emailInvalid": "Courriel non valide",
+      "longRecipientName": "Longueur maximale - 35 caractères"
     },
     "successUploadCSV": {
       "ignoredColumns": "Les colonnes supplémentaires ont été ignorées"
@@ -97,7 +100,7 @@
       "recipient_name": "Facultatif. Nom du destinataire, figurant sur le certificat et, en cas d'acceptation, dans le courrier envoyé au destinataire. Obligatoire si vous souhaitez envoyer des courriers électroniques.",
       "recipient_email": "Facultatif. Requis pour envoyer le certificat au destinataire par courrier électronique.",
       "recipient_notify": "Optionnel. Sélectionnez Oui si vous souhaitez que Plant-for-the-Planet informe automatiquement le destinataire par courrier électronique.",
-      "units": "Obligatoire. Nombre d'arbres remis au bénéficiaire, par exemple 5 pour 5 arbres",
+      "units": "Obligatoire. Nombre d'unités (arbres ou m²) qui sont données au bénéficiaire, par exemple 5 pour 5 arbres ou 5 m².",
       "recipient_message": "Facultatif. Message destiné au destinataire qui est inclus dans le courrier électronique si le mot \"notify\" (notifier) a la valeur \"yes\" (oui). Un message par défaut sera envoyé s'il n'est pas fourni."
     },
     "donationSuccess": "Votre don a été effectué avec succès. Nous vous redirigeons vers les détails de votre don sous peu...",

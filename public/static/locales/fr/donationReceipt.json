@@ -1,1 +1,74 @@
-{ }
+{
+  "DonationReceipt": {
+    "donorInfo": {
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "tin": "Numéro d'identification fiscale (NIF)",
+      "companyName": "Nom de l'entreprise",
+      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
+      "address": "Adresse"
+    },
+    "donationDetails": {
+      "referenceNumber": "Numéro de référence",
+      "reference": "Référence",
+      "amountDonated": "Montant du don",
+      "paymentDate": "Date de paiement",
+      "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
+      "taxIdentificationNumber": "Numéro d'identification fiscale (NIF)"
+    },
+    "errors": {
+      "invalidReceipt": "<b>Erreur :</b> Impossible de traiter la demande en raison d'informations manquantes ou incorrectes. Veuillez vérifier le lien et réessayer.",
+      "missingReceiptInformation": "<b>Erreur :</b> Certaines informations sont manquantes dans le reçu. Veuillez nous contacter en utilisant les coordonnées ci-dessous.",
+      "editPermissionDeniedMessage": "<b>Erreur :</b> Il semble que vous n'ayez pas la permission de modifier ces informations de contact. Si vous avez besoin d'aide, veuillez contacter le support.",
+      "accessDeniedMessage": "<b>Erreur :</b> Il semble que vous n'ayez pas les autorisations nécessaires pour accéder à ce lien. Si vous avez besoin d'aide, veuillez contacter le support."
+    },
+    "notifications": {
+      "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} est manquant/invalide",
+      "addressMissing": "Adresse manquante/invalide",
+      "firstNameRequired": "Le champ Prénom est obligatoire",
+      "lastNameRequired": "Le champ Nom de famille est obligatoire",
+      "companyRequired": "Le champ Nom de l'entreprise est obligatoire",
+      "tinRequired": "Le numéro d'identification personnel (NIP) est requis",
+      "addressRequired": "Veuillez choisir une adresse pour continuer.",
+      "invalidContactInfoMessage": "Vos coordonnées ne sont pas valides. Veuillez les mettre à jour en cliquant sur Modifier les informations de contact ci-dessous.",
+      "addressLimitReached": "Vous avez atteint la limite d'adresses. Vous pouvez mettre à jour vos adresses existantes, mais il n'est pas possible d'en ajouter une nouvelle.",
+      "missingTIN": "<b>AVIS :</b> Votre numéro d'identification fiscale est manquant, veuillez cliquer sur le bouton ci-dessous pour l'ajouter.",
+      "loginRequired": "<b>IMPORTANT :</b> Pour modifier vos données, vous devez vous connecter à votre profil. Si vous rencontrez des problèmes, veuillez nous contacter via les informations figurant au bas de cette page. "
+    },
+    "verifyDonationHeaderPrimary": "Vérifiez vos données et téléchargez le reçu de don",
+    "verifyDonationHeaderSecondary": "Remarque : une fois que les données ont été vérifiées, elles ne peuvent plus être modifiées pour ce reçu",
+    "downloadDonationReceipt": "Télécharger le reçu de don",
+    "recipientInfoHeader": "Le reçu sera délivré à",
+    "modifyContactInformation": "Modifier les informations de contact",
+    "confirm": "Confirmer",
+    "download": "Télécharger",
+    "viewAllDonationReceipts": "Voir tous les reçus de dons",
+    "donationReceiptsManagementInfo": "Accédez facilement à tous vos reçus de dons et gérez-les. Consultez les reçus émis prêts à être téléchargés et vérifiez les reçus en attente de traitement.",
+    "donationReceiptsManagementLogin": "Vous devez vous connecter pour cela.",
+    "contactSupportMessage": "Pour toute question ou problème, veuillez nous contacter",
+    "emailDetails": "<strong>Courriel :</strong> <supportLink>spende@plant-for-the-planet.org</supportLink>",
+    "phoneDetails": "<strong>Téléphone :</strong> +49 8808 9345",
+    "receipts": "Recettes",
+    "donorContactManagement": "Gestion des contacts avec les donateurs",
+    "contactManagementHeader": "Mise à jour du profil et de l'adresse",
+    "saveDataAndReturn": "Sauvegarde des données et retour",
+    "donationReceipt": "Reçu de don",
+    "verifyAndDownload": "Vérifier et télécharger",
+    "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Item} other {# Items}}</u>",
+    "itemsReferenceDateSingleDonation": "Référence {reference} - {date}",
+    "itemsReferenceDateSingleEndowment": "Référence {reference} - Dotation - {date}",
+    "pendingReceipt": "Réception(s) en attente",
+    "noReceiptFound": "Oups ! Aucun reçu n'a été trouvé",
+    "overviewReceipt": {
+      "download": "Télécharger l'aperçu",
+      "available": "Aperçu disponible",
+      "notAvailable": "L'aperçu n'est pas encore disponible",
+      "downloadOverviewFor": "Télécharger l'aperçu pour {year}",
+      "statusInfo": {
+        "verifyBeforeDownload": "Veuillez vérifier tous vos reçus avant de télécharger l'aperçu du reçu.",
+        "availableSoon": "Le récapitulatif sera bientôt disponible.",
+        "download": "Téléchargez votre récapitulatif consolidé pour cette année."
+      }
+    }
+  }
+}

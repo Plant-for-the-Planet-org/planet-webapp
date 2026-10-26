@@ -13,6 +13,7 @@
     "profileCreationError": "Errore nella creazione del profilo.",
     "edit": "Modifica profilo",
     "save": "Salva",
+    "viewPublicProfile": "Visualizza il profilo pubblico",
     "profilePicUpdated": "L'immagine del profilo è in fase di aggiornamento...",
     "profileSaved": "Salvato con successo!",
     "profileSaveFailed": "Errore nell'aggiornamento del profilo.",
@@ -23,6 +24,13 @@
     "cancel": "Annulla",
     "termAndCondition": "Accetto i <termsLink>Termini e le Condizioni</termsLink> della piattaforma Plant-for-the-Planet.",
     "termAndConditionError": "Accettare i termini e le condizioni",
+    "profileConsentSettingsTitle": "Personalizzare il profilo pubblico",
+    "publicProfileExplanation": "Rendendo pubblico il proprio profilo, si può scegliere di condividere le proprie informazioni e di connettersi con gli altri.",
+    "leaderboardTooltipExplanation": "La classifica mostra tutti i contributi che gli altri hanno dato al vostro profilo. Può trattarsi di alberi regalati o di donazioni fatte da persone che visitano il vostro profilo. Attivando questa funzione, permetterete a chiunque su Internet di vedere chi ha dato i maggiori contributi",
+    "profilePictureButtonLabels": {
+      "upload": "Caricare una nuova foto",
+      "delete": "Cancellare la foto"
+    },
     "fieldLabels": {
       "profileType": "Sono un",
       "firstName": "Nome",
@@ -31,11 +39,15 @@
       "email": "Email",
       "address": "Indirizzo",
       "city": "Città",
+      "state": "Stato",
       "zipCode": "Codice postale",
       "country": "Paese",
       "bio": "Descrizione del profilo",
       "website": "Sito web",
-      "subscribe": "Iscriviti alle notizie via e-mail"
+      "isPublic": "Rendere pubblico il profilo",
+      "subscribe": "Iscriviti alle notizie via e-mail",
+      "exposeCommunity": "Mostra la mia classifica",
+      "showTreegame": "Mostra TreeGame"
     },
     "validationErrors": {
       "maxChars": "Deve essere al massimo di {max} caratteri",
@@ -50,11 +62,48 @@
       "addressInvalid": "L'indirizzo non è valido. Sono ammessi solo questi caratteri speciali: spazio . , # - /",
       "cityRequired": "La città è richiesta",
       "cityInvalid": "La città non è valida. Sono ammessi solo lettere e questi caratteri speciali: spazio . , ( ) -",
+      "stateInvalid": "Lo stato non è valido. Sono ammessi solo lettere e questi caratteri speciali: spazio . , ( ) -",
       "zipCodeRequired": "Il codice postale è obbligatorio",
       "zipCodeInvalid": "Il codice postale non è valido",
       "websiteInvalid": "Inserire l'URL del sito web valido",
       "countryRequired": "Il paese è richiesto",
       "companyRequired": "Il nome della società è obbligatorio"
+    },
+    "addressManagement": {
+      "labels": {
+        "actionMenu": "Menu Azione"
+      },
+      "addressManagementTitle": "Indirizzo",
+      "addressType": {
+        "primary": "Indirizzo primario",
+        "mailing": "Indirizzo di fatturazione"
+      },
+      "actions": {
+        "edit": "Modifica",
+        "delete": "Cancellare",
+        "setAsPrimaryAddress": "Impostare come indirizzo primario",
+        "setAsBillingAddress": "Imposta come indirizzo di fatturazione",
+        "unsetBillingAddress": "Indirizzo di fatturazione non impostato",
+        "addAddress": "Aggiungi nuovo indirizzo"
+      },
+      "deleteAction": {
+        "title": "Cancellare l'indirizzo",
+        "deleteButton": "Cancellare",
+        "deleteAddressConfirmationMessage": "Siete sicuri di voler cancellare questo indirizzo? Se si desidera utilizzarlo di nuovo, aggiungerlo come nuovo indirizzo."
+      },
+      "updateAddressType": {
+        "setAddressConfirmation": "Sei sicuro di voler impostare questo indirizzo come {addressType}?",
+        "replaceAddressWarning": "Questo sostituirà il vostro attuale {addressType}.",
+        "confirmButton": "Confermare",
+        "unsetBillingAddressMessage": "Desidera disattivare l'indirizzo di fatturazione? L'indirizzo principale verrà utilizzato come indirizzo di fatturazione."
+      },
+      "maxAddressesMessage": "È stato raggiunto il numero massimo di indirizzi! Rimuoverne uno per aggiungere un nuovo indirizzo.",
+      "addressForm": {
+        "addAddress": "Aggiungi indirizzo",
+        "editAddress": "Modifica indirizzo",
+        "saveChanges": "Salva le modifiche",
+        "address2": "Indirizzo 2 (opzionale)"
+      }
     }
   }
 }

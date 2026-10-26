@@ -16,6 +16,8 @@
     "redeemingCode": "Code d'échange...",
     "redeem": "Racheter",
     "redeemDescription": "Échangez votre bon d'arbre et d'autres codes.",
+    "redeemSuccessMessage": "<line1>Génial !</line1><line2>Nous avons ajouté la contribution à votre profil !</line2>",
+    "membershipRedeemSuccessMessage": "<line1>Génial !</line1><line2>Vous êtes maintenant un membre du cercle des donateurs !</line2>",
     "successfullyRedeemed": "Remboursé avec succès",
     "redeemAnotherCode": "Utiliser un autre code"
   }

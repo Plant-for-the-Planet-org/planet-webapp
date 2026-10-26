@@ -16,6 +16,8 @@
     "redeemingCode": "Codice di riscatto...",
     "redeem": "Riscatto",
     "redeemDescription": "Riscatta il tuo buono per l'albero e altri codici.",
+    "redeemSuccessMessage": "<line1>Fantastico!</line1><line2>Abbiamo aggiunto il contributo al tuo profilo!</line2>",
+    "membershipRedeemSuccessMessage": "<line1>Fantastico!</line1><line2>Ora sei un membro del Circolo dei donatori!</line2>",
     "successfullyRedeemed": "Riscattato con successo",
     "redeemAnotherCode": "Riscattare un altro codice"
   }

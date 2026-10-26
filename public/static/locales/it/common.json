@@ -1,5 +1,10 @@
 {
   "Common": {
+    "unitTypes": {
+      "tree": "{count, plural, one {{formattedCount} Tree} other {{formattedCount} Trees}}",
+      "m2": "{formattedCount} m²"
+    },
+    "and": "e",
     "tree": "{count, plural,   =1 {Albero} other {Alberi}}",
     "m2": "m²",
     "by": "Di {tpoName}",
@@ -18,6 +23,9 @@
     "me": "Io",
     "signIn": "Accedi",
     "home": "Home",
+    "vtoChallenge": "VTO Challenge",
+    "mangroves": "Mangrovie",
+    "campaigns": "Campagne",
     "donate_gift": "Donazione/Dono",
     "plant": "Impianto",
     "donate": "Dona",
@@ -53,7 +61,6 @@
     "continueToLogin": "Continua a Login",
     "supportsUNEP": "Sostiene l'UNEP",
     "plantedBy": "Piantato da",
-    "redeemPopup": "Hai ricevuto un Tree Gift? Effettua il login per riscattare i tuoi alberi.",
     "login": "Login/Signup",
     "shop": "Negozio",
     "downloads": "Scaricare",
@@ -62,7 +69,6 @@
     "blogs": "Blog",
     "faqs": "FAQ",
     "annualReports": "Rapporti annuali",
-    "skipIntroVideo": "Salta l'introduzione",
     "mapInfo": "Esri",
     "aboutUs": "Chi siamo",
     "alternativelyEditProfile": "In alternativa puoi marcare il tuo profilo come privato visitando Modifica profilo.",
@@ -72,7 +78,6 @@
     "deleteAccountMessage": "Per continuare la cancellazione, digita `{delete}`",
     "deleteAccountLabel": "Tipo: {delete}",
     "edit": "Modifica",
-    "howDoesThisWork": "Come funziona?",
     "copiedToClipboard": "Copiato negli appunti!",
     "close": "Chiudere",
     "logout": "Disconnessione",
@@ -131,6 +136,41 @@
     "top_project_standards_fulfilled": "L'ispezione del progetto ha rivelato che questo progetto soddisfa almeno 12 dei 19 <standardsLink>standard</standardsLink> Top Project.",
     "disabledDonateButtonText": "Il progetto non accetta attualmente donazioni. Ciò può essere dovuto al fatto che è completamente finanziato, che non è ancora stato esaminato o che non soddisfa al momento tutti i nostri standard di progetto, oppure che sceglie di utilizzare la piattaforma esclusivamente per i suoi strumenti di trasparenza.",
     "notDonatable": "Non donabile",
-    "salesforceDisabledDonateButtonText": "Il progetto non accetta attualmente donazioni."
+    "salesforceDisabledDonateButtonText": "Il progetto non accetta attualmente donazioni.",
+    "tools": "Strumenti",
+    "navbarMenu": {
+      "all": "Tutti",
+      "platform": "Informazioni sulla piattaforma",
+      "organization": "Circa Plant-for-the-Planet",
+      "tools": "Altri strumenti <highlight>forest cloud</highlight> ",
+      "organizationDescription": "Dal 2007, la nostra comunità di 11 organizzazioni lavora per responsabilizzare i giovani nella lotta alla crisi climatica e nel ripristino delle foreste.",
+      "menuitem": {
+        "platform": "La piattaforma",
+        "platformDescription": "Perché l'abbiamo costruito e come funziona",
+        "redeemCode": "Codice di riscatto",
+        "redeemCodeDescription": "Dal Certificato dell'albero o dal Cioccolato del cambiamento",
+        "support": "Sosteneteci con una donazione",
+        "supportDescription": "Mantenere i nostri strumenti gratuiti per tutti",
+        "organization": "L'organizzazione",
+        "transparency": "Trasparenza",
+        "partner": "Collabora con noi",
+        "treeMapper": "TreeMapper",
+        "treeMapperDescription": "per monitorare il restauro delle foreste",
+        "fireAlert": "Allarme antincendio",
+        "fireAlertDescription": "per fermare rapidamente gli incendi boschivi",
+        "tracer": "Tracciante",
+        "tracerDescription": "per catene di approvvigionamento prive di deforestazione",
+        "restorationAdvice": "Consigli per il restauro",
+        "restorationAdviceDescription": "consulenza gratuita per programmi di restauro e conservazione",
+        "restorationStandards": "Standard di restauro",
+        "restorationStandardsDescription": "Standard quantificabili per il restauro",
+        "instagram": "Instagram",
+        "youtube": "Youtube",
+        "linkedin": "LinkedIn",
+        "facebook": "Facebook",
+        "vtoChallenge": "VTO Challenge",
+        "mangroves": "Mangrovie"
+      }
+    }
   }
 }

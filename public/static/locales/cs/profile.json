@@ -1,12 +1,17 @@
 {
   "Profile": {
     "myProfile": {
-      "memberSince": "Členem od {date}"
+      "memberSince": "Členem od {date}",
+      "donorCircleMember": "Dárcovský kruh - člen"
     },
     "feature": {
       "redeem": "Vykoupit",
       "registerTree": "Strom registrace",
-      "share": "Sdílet"
+      "share": "Sdílet",
+      "allDonations": "Všechny dary",
+      "supportUserTextIndividual": "Podpořte {username} darováním",
+      "supportUserTextGeneric": "Podpořte je darováním",
+      "website": "Moje webové stránky"
     },
     "myPublicProfile": {
       "support": "Podpora",
@@ -14,6 +19,7 @@
     },
     "myForestMap": {
       "plantedTree": "{count, plural, =1 {# strom} other {# stromů}}",
+      "savedArea": "{area} m²",
       "treesPlanted": "Vysazené stromy",
       "restored": "Obnovené stránky",
       "registered": "Registrováno",
@@ -32,6 +38,8 @@
       "editTarget": "Upravit cíl"
     },
     "myContributions": {
+      "titlePrivate": "Moje příspěvky",
+      "titlePublic": "{name}příspěvky",
       "treesPlantedAndAreaRestored": "Vysazené stromy a obnovené plochy",
       "treeRegistered": "{count, plural, =1 {# Registrovaný strom} other {#  Registrovaných stromů}}",
       "receivedFrom": "Přijato od {name}",
@@ -42,7 +50,90 @@
       "conservedSmall": "konzervované",
       "restoredSmall": "restaurováno",
       "areaType": "{areaConserved} m² {type}",
-      "areaConserved": "Zachované oblasti"
+      "areaConserved": "Zachované oblasti",
+      "unused": "v2 překlady níže",
+      "treesContributed": "{count, plural, =1 {# tree} other {# trees}}",
+      "areaContributed": "{projectPurpose, select, trees {{count}m² restored} other {{count}m² conserved}}",
+      "giftReceivedInfo": "Dárek od {name}",
+      "giftGivenInfo": "Dárek pro {name}",
+      "anonymousUser": "anonymní uživatel",
+      "contributionCountOverflow": "+{additionalCount, plural, =1 {# contribution} other {# contributions}}",
+      "treesRegisteredHeadline": "{count, plural, =1 {# Tree} other {# Trees}}",
+      "registrationLabel": "Registrováno"
+    },
+    "donatePopup": {
+      "totalContribution": "+{count, plural, =1 {# Contribution} other {# Contributions}}",
+      "projectName": "{name}",
+      "classification": "{classification}"
+    },
+    "shareFeature": {
+      "shareTextTitle": "Stop talking. Start planting.",
+      "textToShare": "Připojte se k {name} a tisícům dalších, abyste vysadili bilion stromů a vyřešili tak klimatickou krizi #StopTalkingStartPlanting #TrillionTrees",
+      "shareVia": "Sdílet prostřednictvím",
+      "copyLink": "Kopírovat odkaz",
+      "textToShareLinkedin": "Připojte se k {name} a tisícům dalších, kteří vysadí bilion stromů, aby řešili klimatickou krizi"
+    },
+    "progressBar": {
+      "treePlanted": "{count, plural, =1 {# tree planted} other {# trees planted}}",
+      "treePlantedAgainstTarget": "{count, number} z {total, plural, =1 {# tree} other {# trees}} vysázeny",
+      "restoredArea": "{unit, number} m² zrestaurováno",
+      "restoredAreaAgainstTarget": "{count, number} z {unit, number} m² obnoveno",
+      "conservedArea": "{unit, number} m² zachováno",
+      "conservedAreaAgainstTarget": "{count, number} z {unit, number} m² zachováno",
+      "totalGiftFromCommunity": "{quantity, number} z vaší komunity",
+      "editTarget": "Upravit cíl",
+      "setTarget": "Nastavit cíl",
+      "plantedTreesTarget": "Cílová hodnota vysazených stromů",
+      "areaConservedTarget": "Zachovaná cílová plocha",
+      "areaRestoredTarget": "Cílová obnovená plocha",
+      "save": "Uložit",
+      "setTargets": "Stanovení cílů",
+      "emptyProgressInformation": "Stanovení cílů pro vysazené stromy, zachované plochy a obnovené plochy",
+      "enterYourTarget": "Zadejte svůj cíl"
+    },
+    "mapStats": {
+      "countryStats": "{count, plural, =1 {# Country} other {# Countries}} ",
+      "projectStats": "{count, plural, =1 {# Project} other {# Projects}} "
+    },
+    "communityContributions": {
+      "title": "Příspěvky Společenství",
+      "tooltipText": "Příspěvky komunity jsou všechny příspěvky na stromy, obnovu nebo ochranu přírody, které jsou věnovány vám, například darováním prostřednictvím vašeho profilu",
+      "tooltipTextPublic": "Příspěvky Společenství jsou všechny dary na stromy, obnovu nebo zachování, které jsou určeny pro tento profil",
+      "mostRecentTabLabel": "Nejnovější",
+      "mostTreesTabLabel": "Většina stromů",
+      "restorationPurpose": "restaurováno",
+      "conservationPurpose": "konzervované",
+      "treesPurpose": "Stromy",
+      "noContributionPrivateProfileText": "Ups! Zatím se nezobrazují žádné příspěvky",
+      "noContributionPublicProfileText": "Přispějte na podporu úsilí {name}"
+    },
+    "unitType": {
+      "m2": "m²"
+    },
+    "infoAndCtaContainer": {
+      "sdgSectionHeadingPrimary": "Obnova ekosystémů a boj proti klimatické krizi.",
+      "sdgSectionHeadingSecondary": "Příspěvek k cílům udržitelného rozvoje.",
+      "pfpDonorCircleMember": "Plant-for-the-Planet člen kruhu dárců",
+      "publicProfileActions": {
+        "becomeAMember": "Staňte se členem",
+        "youthEmpowermentTitle": "Posílení postavení mládeže",
+        "youthEmpowermentSubtext": "děti a mládež v boji proti klimatické krizi",
+        "restorationToolsTitle": "Nástroje pro restaurování",
+        "restorationToolsSubtext": "financovat, obnovovat, monitorovat a chránit lesy",
+        "restorationAdviceTitle": "Poradenství v oblasti restaurování",
+        "restorationAdviceSubtext": "& Výzkum",
+        "restorationAndConservationTitle": "Obnova a ochrana lesů",
+        "restorationAndConservationSubtext": "v Mexiku, Ghaně a Španělsku"
+      },
+      "sdgCardAlternativeText": {
+        "qualityEducation": "Kvalitní vzdělávání",
+        "economicGrowth": "Důstojná práce a hospodářský růst",
+        "industryInfrastructureAndInnovation": "Průmysl, inovace a infrastruktura",
+        "reducedInequalities": "Snížení nerovností",
+        "climateAction": "Opatření v oblasti klimatu",
+        "lifeOnLand": "Život na souši",
+        "partnership": "Partnerství pro dosažení cílů"
+      }
     }
   }
 }

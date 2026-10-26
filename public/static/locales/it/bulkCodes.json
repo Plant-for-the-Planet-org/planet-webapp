@@ -36,6 +36,7 @@
       "tree": "albero",
       "m2": "m²"
     },
+    "summaryTotal": "{formattedAmount} per {units} {pluralizedUnitType}",
     "unitsPerCode": "Unità per codice*",
     "totalNumberOfCodes": "Numero totale di codici*",
     "occasion": "Occasione",
@@ -75,12 +76,14 @@
       "notifyNotPossible": "L'e-mail e il nome mancano per alcuni destinatari che devono essere avvisati.",
       "instructionRowError": "Si è verificato un errore nella 1ª riga. Verificare se le istruzioni sono state cancellate o se ci sono dati aggiuntivi.",
       "invalidEmails": "recipient_email contiene email fittizie/invalide nelle seguenti righe: {rowList}. Rimuovere le e-mail non valide o aggiungere quelle valide.",
+      "longRecipientNames": "il nome del destinatario è troppo lungo nelle righe seguenti: {rowList}. Si prega di fornire nomi di 35 caratteri o meno.",
       "generalError": "Qualcosa è andato storto. Provare dopo un po'."
     },
     "errorAddRecipient": {
       "unitsNotProvided": "Obbligatorio",
       "requiredForNotifications": "Richiesto (ai destinatari dell'e-mail)",
-      "emailInvalid": "Email non valida"
+      "emailInvalid": "Email non valida",
+      "longRecipientName": "Lunghezza massima: 35 caratteri"
     },
     "successUploadCSV": {
       "ignoredColumns": "Le colonne extra sono state ignorate"

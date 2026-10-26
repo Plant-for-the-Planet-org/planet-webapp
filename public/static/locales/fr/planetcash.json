@@ -16,7 +16,7 @@
     "labelCreditLimit": "Limite",
     "deactivateAccountButton": "Désactiver",
     "activateAccountButton": "Activer",
-    "accountInactiveHelpText": "Ce compte est inactif et ne peut pas être utilisé pour verser des contributions. Pour activer ce compte, veuillez contacter support@plant-for-the-planet.org.",
+    "accountInactiveHelpText": "Ce compte est inactif et ne peut pas être utilisé pour verser des contributions. Pour activer ce compte, veuillez contacter <supportLink>support@plant-for-the-planet.org</supportLink>.",
     "noAccountsText": "Vous ne semblez pas avoir créé de compte PlanetCash.",
     "createPlanetCashButton": "Créer un compte Planet Cash",
     "accountQuotaReachedText": "Vous ne pouvez pas créer d'autres comptes car vous avez épuisé votre quota de comptes.",
@@ -24,11 +24,45 @@
     "labelCountry": "Pays",
     "planetCashTerms1": "En cliquant sur \"Créer un compte PlanetCash\", j'accepte les conditions générales de Plant-for-the-Planet et de PlanetCash.",
     "planetCashTerms2": "Je comprends que les dons de PlanetCash ne sont pas remboursables et que les paiements non attribués seront automatiquement alloués à des projets sur la plateforme après six mois de paiement.",
-    "planetCashTerms3": "Les dons au compte PlanetCash pour des raisons personnelles sont généralement déductibles des impôts dans le pays sélectionné à cette étape. L'utilisation commerciale de PlanetCash peut ne pas donner droit à des déductions fiscales. Si vous avez des questions, veuillez contacter support@plant-for-the-planet.org ou votre conseiller fiscal.",
+    "planetCashTerms3": "Les dons au compte PlanetCash pour des raisons personnelles sont généralement déductibles des impôts dans le pays sélectionné à cette étape. L'utilisation commerciale de PlanetCash peut ne pas donner droit à des déductions fiscales. Si vous avez des questions, veuillez contacter <supportLink>support@plant-for-the-planet.org</supportLink> ou votre conseiller fiscal.",
     "accountError": {
       "active_account_exists": "Un compte actif existe déjà. Désactivez ce compte avant d'en activer un autre.",
       "duplicate_account": "Vous avez déjà créé un compte pour {country}",
       "default": "Un problème s'est produit lors de la création d'un compte. Veuillez réessayer après un certain temps."
+    },
+    "topUpManagement": {
+      "labelToggle": "Recharge automatique PlanetCash lorsque le solde est faible",
+      "labelThreshold": "Lorsque le solde est inférieur à ({currency})",
+      "labelRefillAmount": "Quantité à remplir ({currency})",
+      "labelStatus": "Statut",
+      "labelPaymentMethod": "Mode de paiement",
+      "statusActive": "Actif",
+      "statusInactive": "Inactif",
+      "paymentMethodInfo": {
+        "sepa_debit": "IBAN se terminant par {last4}",
+        "card": "Carte se terminant par {last4}",
+        "unknown": "Méthode de paiement inconnue"
+      },
+      "validationErrors": {
+        "thresholdRequired": "Veuillez saisir un montant seuil",
+        "amountRequired": "Veuillez indiquer le montant de la recharge",
+        "thresholdMinimum": "Le montant du seuil doit être positif",
+        "amountMinimum": "Le montant de la recharge doit être positif"
+      },
+      "apiErrors": {
+        "paymentMethodNotFound": "Il y a un problème avec la méthode de paiement sélectionnée. Veuillez sélectionner une autre méthode de paiement. Vous pouvez également contacter support@plant-for-the-planet.org pour obtenir de l'aide.",
+        "topUpAmountTooLow": "Le montant de la recharge doit être d'au moins {minAmountWithCurrency}.",
+        "topUpThresholdTooLow": "Le montant du seuil doit être au moins égal à {minThresholdWithCurrency}.",
+        "default": "Un problème s'est produit lors de l'enregistrement des paramètres de recharge. Si ce problème persiste, veuillez contacter support@plant-for-the-planet.org."
+      },
+      "saveButton": "Sauvegarder les paramètres de recharge",
+      "disableConfirmationDialog": {
+        "confirmButtonText": "Confirmer",
+        "cancelButtonText": "Annuler",
+        "title": "Désactiver la recharge automatique ?",
+        "subtitle": "Êtes-vous sûr de vouloir désactiver la recharge automatique ? Cela supprimera vos paramètres actuels de recharge automatique."
+      },
+      "successMessage": "Les paramètres de recharge automatique ont été enregistrés avec succès"
     }
   }
 }

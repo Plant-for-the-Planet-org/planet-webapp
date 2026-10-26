@@ -13,6 +13,7 @@
     "profileCreationError": "Chyba při vytváření profilu.",
     "edit": "Editovat profil",
     "save": "Uložit",
+    "viewPublicProfile": "Zobrazit veřejný profil",
     "profilePicUpdated": "Profilový obrázek se aktualizuje...",
     "profileSaved": "Úspěšně uloženo!",
     "profileSaveFailed": "Chyba při aktualizaci profilu.",
@@ -23,6 +24,13 @@
     "cancel": "Zrušit",
     "termAndCondition": "Souhlasím s <termsLink>podmínkami</termsLink> platformy Plant-for-the-Planet.",
     "termAndConditionError": "Přijměte prosím Smluvní podmínky",
+    "profileConsentSettingsTitle": "Přizpůsobení veřejného profilu",
+    "publicProfileExplanation": "Když svůj profil zveřejníte, můžete se rozhodnout sdílet své informace a spojit se s ostatními.",
+    "leaderboardTooltipExplanation": "V žebříčku se zobrazují všechny příspěvky, které ostatní přidali k vašemu profilu. Může se jednat o stromy, které vám byly darovány, nebo o dary, které lidé poskytli při návštěvě vašeho profilu. Zapnutím této funkce umožníte komukoli na internetu zjistit, kdo přispěl největším počtem příspěvků",
+    "profilePictureButtonLabels": {
+      "upload": "Nahrání nové fotografie",
+      "delete": "Smazat fotografii"
+    },
     "fieldLabels": {
       "profileType": "Já jsem",
       "firstName": "Jméno",
@@ -31,11 +39,15 @@
       "email": "E-mail",
       "address": "Adresa",
       "city": "Město",
+      "state": "Stát",
       "zipCode": "Poštovní/poštovní směrovací číslo",
       "country": "Země",
-      "bio": "Popis profilu",
+      "bio": "Váš popis",
       "website": "Webstránka",
-      "subscribe": "Přihlášení k odběru novinek e-mailem"
+      "isPublic": "Zveřejnění profilu",
+      "subscribe": "Přihlášení k odběru novinek e-mailem",
+      "exposeCommunity": "Zobrazit můj žebříček",
+      "showTreegame": "Zobrazit hru TreeGame"
     },
     "validationErrors": {
       "maxChars": "Mělo by mít maximálně {max} znaků",
@@ -50,11 +62,48 @@
       "addressInvalid": "Adresa je neplatná. Povoleny jsou pouze tyto speciální znaky: mezera . , # - /",
       "cityRequired": "Město je povinno",
       "cityInvalid": "Město je neplatné. Povolena jsou pouze písmena a tyto speciální znaky: mezera . , ( ) -",
+      "stateInvalid": "Stav je neplatný. Povolena jsou pouze písmena a tyto speciální znaky: mezera . , ( ) -",
       "zipCodeRequired": "Vyžaduje se poštovní směrovací číslo",
       "zipCodeInvalid": "PSČ je neplatné",
-      "websiteInvalid": "Zadejte prosím platnou adresu URL",
+      "websiteInvalid": "Zadejte prosím platnou adresu URL webové stránky začínající na http:// nebo https://",
       "countryRequired": "Země je vyžadována",
       "companyRequired": "Vyžaduje se název společnosti"
+    },
+    "addressManagement": {
+      "labels": {
+        "actionMenu": "Akční nabídka"
+      },
+      "addressManagementTitle": "Adresa",
+      "addressType": {
+        "primary": "Primární adresa",
+        "mailing": "Fakturační adresa"
+      },
+      "actions": {
+        "edit": "Upravit",
+        "delete": "Odstranit",
+        "setAsPrimaryAddress": "Nastavit jako primární adresu",
+        "setAsBillingAddress": "Nastavit jako fakturační adresu",
+        "unsetBillingAddress": "Nenastavená fakturační adresa",
+        "addAddress": "Přidání nové adresy"
+      },
+      "deleteAction": {
+        "title": "Smazat adresu",
+        "deleteButton": "Odstranit",
+        "deleteAddressConfirmationMessage": "Opravdu chcete tuto adresu odstranit? Pokud ji chcete znovu použít, přidejte ji jako novou adresu."
+      },
+      "updateAddressType": {
+        "setAddressConfirmation": "Jste si jisti, že chcete tuto adresu nastavit jako adresu {addressType}?",
+        "replaceAddressWarning": "Nahradí váš současný web {addressType}.",
+        "confirmButton": "Potvrďte",
+        "unsetBillingAddressMessage": "Chcete zrušit nastavení fakturační adresy? Jako fakturační adresa bude použita vaše primární adresa."
+      },
+      "maxAddressesMessage": "Dosáhli jste maximálního počtu adres! Odeberte jednu a přidejte novou adresu.",
+      "addressForm": {
+        "addAddress": "Přidat adresu",
+        "editAddress": "Upravit adresu",
+        "saveChanges": "Uložení změn",
+        "address2": "Adresa 2 (nepovinné)"
+      }
     }
   }
 }

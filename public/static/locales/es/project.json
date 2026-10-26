@@ -1,1 +1,54 @@
-{ }
+{
+  "Project": {
+    "classification": {
+      "natural-regeneration": "Regeneración natural",
+      "managed-regeneration": "Regeneración gestionada",
+      "restoration-tree-planting": "Large Scale Restoration",
+      "large-scale-planting": "Restauración a gran escala",
+      "agroforestry": "Agroforestería",
+      "urban-planting": "Restauración urbana",
+      "other-restoration": "Restoration",
+      "other-planting": "Restauración",
+      "mangroves": "Manglares",
+      "conservation": "Conservación"
+    },
+    "ecosystem": {
+      "tropical-moist-forests": "Bosques húmedos tropicales",
+      "tropical-forests": "Bosques tropicales",
+      "tropical-dry-forests": "Bosques secos tropicales",
+      "tropical-coniferous-forests": "Bosques tropicales de coníferas",
+      "tropical-grasslands-forests": "Pastizales tropicales Bosques",
+      "temperate": "Templado",
+      "temperate-broadleaf-forests": "Bosques templados de frondosas",
+      "temperate-coniferous-forests": "Bosques templados de coníferas",
+      "temperate-grasslands-forests": "Bosques templados de pastizales",
+      "mediterranean-forests": "Bosques mediterráneos",
+      "mangroves": "Manglares",
+      "deserts": "Desiertos",
+      "flooded-grasslands": "Praderas inundadas",
+      "montane-grasslands": "Pastizales de montaña",
+      "boreal-forests": "Bosques boreales",
+      "tundra": "Tundra"
+    },
+    "interventionTypes": {
+      "assisting-seed-rain": "Ayuda a la lluvia de semillas",
+      "control-remove-livestock": "Control/Eliminación del ganado",
+      "cut-suppressing-grass": "Hierba cortada/suprimida",
+      "direct-seeding": "Siembra directa",
+      "enrichment-planting": "Plantación de enriquecimiento",
+      "establish-firebreaks": "Establecer cortafuegos",
+      "fire-patrols": "Patrullas de bomberos",
+      "fire-suppression-team": "Equipo de extinción de incendios",
+      "liberating-regenerants": "Regenerantes liberadores",
+      "maintenance": "Mantenimiento",
+      "marking-regenerants": "Regenerantes de marcado",
+      "other-interventions": "Otras intervenciones",
+      "planting-trees": "Plantar árboles",
+      "removal-contaminated-soil": "Eliminación de suelos contaminados",
+      "removal-invasive-species": "Eliminación de especies invasoras",
+      "soil-improvement": "Mejora del suelo",
+      "stop-tree-harvesting": "Detener la tala de árboles"
+    },
+    "tpoName": "Por {tpoName}"
+  }
+}

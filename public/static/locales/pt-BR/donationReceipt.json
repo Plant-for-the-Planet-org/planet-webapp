@@ -1,1 +1,74 @@
-{ }
+{
+  "DonationReceipt": {
+    "donorInfo": {
+      "firstName": "Primeiro nome",
+      "lastName": "Sobrenome",
+      "tin": "Número de identificação fiscal (TIN)",
+      "companyName": "Nome da empresa",
+      "name": "{type, select, individual {Name} organization {Company Name} other {Name}}",
+      "address": "Endereço"
+    },
+    "donationDetails": {
+      "referenceNumber": "Número de referência",
+      "reference": "Referência",
+      "amountDonated": "Valor doado",
+      "paymentDate": "Data de pagamento",
+      "donationAmount": "{currency, select, EUR {€} USD {$} other {}} {amount}",
+      "taxIdentificationNumber": "Número de identificação fiscal (TIN)"
+    },
+    "errors": {
+      "invalidReceipt": "<b>Erro:</b> Não foi possível processar a solicitação devido a detalhes ausentes ou incorretos. Verifique o link e tente novamente.",
+      "missingReceiptInformation": "<b>Erro:</b> Algumas informações estão faltando no recibo. Entre em contato conosco usando os detalhes abaixo.",
+      "editPermissionDeniedMessage": "<b>Erro:</b> Parece que você não tem permissão para modificar essas informações de contato. Se precisar de ajuda, entre em contato com o suporte.",
+      "accessDeniedMessage": "<b>Erro:</b> Parece que você não tem as permissões necessárias para acessar este link. Se precisar de ajuda, entre em contato com o suporte."
+    },
+    "notifications": {
+      "nameMissing": "{type, select, individual {Name} organization {Company Name} other {Name}} está faltando/inválido",
+      "addressMissing": "O endereço está ausente/inválido",
+      "firstNameRequired": "O campo First Name é obrigatório",
+      "lastNameRequired": "O campo Sobrenome é obrigatório",
+      "companyRequired": "O campo Nome da empresa é obrigatório",
+      "tinRequired": "É necessário ter um TIN",
+      "addressRequired": "Escolha um endereço para prosseguir.",
+      "invalidContactInfoMessage": "Suas informações de contato são inválidas. Atualize-as clicando em Modificar informações de contato abaixo.",
+      "addressLimitReached": "Você atingiu o limite de endereços. Você pode atualizar seus endereços existentes, mas não é possível adicionar um novo.",
+      "missingTIN": "<b>AVISO:</b> Seu número de identificação fiscal está faltando, clique no botão abaixo para adicioná-lo.",
+      "loginRequired": "<b>IMPORTANTE:</b> Para modificar seus dados, será necessário fazer login no seu perfil. Se tiver problemas, entre em contato conosco por meio das informações na parte inferior desta página. "
+    },
+    "verifyDonationHeaderPrimary": "Verifique seus dados e faça o download do recibo de doação",
+    "verifyDonationHeaderSecondary": "Observação: uma vez verificados os dados, eles não poderão ser alterados novamente para esse recibo",
+    "downloadDonationReceipt": "Download do recibo de doação",
+    "recipientInfoHeader": "O recibo será emitido para",
+    "modifyContactInformation": "Modificar informações de contato",
+    "confirm": "Confirmar",
+    "download": "Baixar",
+    "viewAllDonationReceipts": "Ver todos os recibos de doação",
+    "donationReceiptsManagementInfo": "Acesse e gerencie facilmente todos os seus recibos de doação. Veja os recibos emitidos prontos para download e verifique os recibos pendentes que ainda estão sendo processados.",
+    "donationReceiptsManagementLogin": "Você precisa fazer login para isso.",
+    "contactSupportMessage": "Para qualquer dúvida ou problema, entre em contato conosco",
+    "emailDetails": "<strong>E-mail:</strong> <supportLink>spende@plant-for-the-planet.org</supportLink>",
+    "phoneDetails": "<strong>Telefone:</strong> +49 8808 9345",
+    "receipts": "Recebimentos",
+    "donorContactManagement": "Gerenciamento de contatos com doadores",
+    "contactManagementHeader": "Atualizar perfil e endereço",
+    "saveDataAndReturn": "Salvar dados e retornar",
+    "donationReceipt": "Recibo de doação",
+    "verifyAndDownload": "Verificar e fazer download",
+    "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Item} other {# Items}}</u>",
+    "itemsReferenceDateSingleDonation": "Referência {reference} - {date}",
+    "itemsReferenceDateSingleEndowment": "Referência {reference} - Dotação - {date}",
+    "pendingReceipt": "Recibo(s) pendente(s)",
+    "noReceiptFound": "Ops! Nenhum recibo encontrado",
+    "overviewReceipt": {
+      "download": "Visão geral do download",
+      "available": "Visão geral disponível",
+      "notAvailable": "Visão geral ainda não disponível",
+      "downloadOverviewFor": "Faça o download da visão geral para {year}",
+      "statusInfo": {
+        "verifyBeforeDownload": "Verifique todos os seus recibos antes de fazer o download do recibo de visão geral.",
+        "availableSoon": "O recibo de visão geral estará disponível em breve.",
+        "download": "Faça o download de seu recibo de visão geral consolidada para este ano."
+      }
+    }
+  }
+}

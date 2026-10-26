@@ -41,12 +41,233 @@
     "daysAgo": "{days} dní zpět",
     "today": "Dnes",
     "yesterday": "Včera",
-    "clickForDetails": "Kliknutím zobrazíte podrobnosti",
     "treeMapper": "TreeMapper",
-    "showProjectList": "Zobrazit seznam projektů",
-    "showProjectDetails": "Zobrazit podrobnosti projektu",
-    "hideProjectList": "Skrýt seznam projektů",
-    "hideProjectDetails": "Skrýt detaily projektu",
-    "countries": "Země"
+    "countries": "Země",
+    "exploreLayers": {
+      "title": "Prozkoumat",
+      "subtitle": "Vrstvy ekologických dat",
+      "closeButton": "Zavřít",
+      "groups": {
+        "forests": "Forest",
+        "soil": "Půda",
+        "biodiversity": "Biodiverzita",
+        "risks": "Rizika"
+      },
+      "settingsLabels": {
+        "projects": "Projekty",
+        "forestCover": "Lesní porosty",
+        "forestBiomass": "Lesní biomasa",
+        "biomassPotential": "Potenciální další lesní biomasa",
+        "deforestation": "Odlesňování",
+        "canopyHeight": "Výška stříšky",
+        "soilNitrogen": "Dusík v půdě",
+        "soilPH": "PH půdy",
+        "soilOrganicCarbon": "Organický uhlík v půdě",
+        "soilBulkDensity": "Objemová hustota půdy",
+        "treeSpeciesDensity": "Hustota druhů stromů",
+        "birdDensity": "Hustota ptáků",
+        "mammalDensity": "Hustota savců",
+        "amphibianDensity": "Hustota obojživelníků",
+        "fireRisk": "Riziko požáru",
+        "deforestationRisk": "Riziko odlesňování"
+      },
+      "legends": {
+        "veryLow": "Velmi nízká",
+        "low": "Nízká",
+        "medium": "Střední",
+        "high": "Vysoká",
+        "veryHigh": "Velmi vysoká",
+        "extreme": "Extrémní"
+      },
+      "additionalInfo": {
+        "labels": {
+          "dataYears": "Datové roky",
+          "resolution": "Rozlišení",
+          "description": "Popis",
+          "underlyingData": "Podkladové údaje",
+          "source": "Zdroj"
+        },
+        "forestCover": {
+          "resolution": "~500m (zmenšeno)",
+          "dataYears": "2023",
+          "description": "Stromový porost jako binární mapa",
+          "underlyingData": "Model umělé inteligence vytvořený společností Google pro klasifikaci snímků Sentinel II do 9 různých tříd využití půdy a půdního pokryvu",
+          "source": {
+            "text": "Dynamic World",
+            "url": "https://dynamicworld.app/"
+          }
+        },
+        "forestBiomass": {
+          "resolution": "~500m",
+          "dataYears": "2016",
+          "description": "Aktuální mapy biomasy v zalesněných oblastech",
+          "underlyingData": "Modely strojového učení založené na dálkovém průzkumu Země (MODIS, LiDAR)",
+          "source": {
+            "text": "Walker et al. 2022",
+            "url": "https://www.pnas.org/doi/10.1073/pnas.2111312119"
+          }
+        },
+        "biomassPotential": {
+          "resolution": "~500m",
+          "dataYears": "2016",
+          "description": "Omezená nerealizovaná potenciální hustota nadzemní biomasy (v megagramech uhlíku na hektar) při základním klimatu. Oblasti kritické pro produkci potravin a lidská obydlí byly stanoveny na nulu.",
+          "underlyingData": "Modely strojového učení založené na dálkovém průzkumu Země (MODIS, LiDAR)",
+          "source": {
+            "text": "Walker et al. 2022",
+            "url": "https://www.pnas.org/doi/10.1073/pnas.2111312119"
+          }
+        },
+        "deforestation": {
+          "resolution": "~30m",
+          "dataYears": "2023",
+          "description": "Místo odlesnění v předchozím roce",
+          "underlyingData": "Satelitní programy Landsat",
+          "source": {
+            "text": "Hansen et al. 2013",
+            "url": "https://www.science.org/doi/10.1126/science.1244693"
+          }
+        },
+        "canopyHeight": {
+          "resolution": "~1m",
+          "dataYears": "2018-2020",
+          "description": "Globální výška korun stromů v letech 2018-2020",
+          "underlyingData": "Globální mapy výšky korun stromů založené na modelu umělé inteligence (DinoV2) a datech dálkového průzkumu Země (MAXAR a GEDI) od společnosti Meta",
+          "source": {
+            "text": "Tolan et al. 2024",
+            "url": "https://sustainability.atmeta.com/blog/2024/04/22/using-artificial-intelligence-to-map-the-earths-forests/"
+          }
+        },
+        "soilNitrogen": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Vážená průměrná koncentrace dusíku (cg/kg) v hloubce 0-200 cm, získaná poměrným zprůměrováním hodnot dusíku ISRIC SoilGrids ze šesti hloubkových intervalů (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm a 100-200 cm), přičemž každé pásmo je váženo podle příslušné hloubky.",
+          "underlyingData": "150 000 půdních profilů a 158 kovariátů půdy na základě dálkového průzkumu Země (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilPH": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Vážená průměrná koncentrace pH v hloubce 0-200 cm, získaná poměrným zprůměrováním hodnot dusíku ISRIC SoilGrids ze šesti hloubkových intervalů (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm a 100-200 cm), přičemž každé pásmo je váženo podle příslušné hloubky.",
+          "underlyingData": "150 000 půdních profilů a 158 kovariátů půdy na základě dálkového průzkumu Země (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilOrganicCarbon": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Vážená průměrná koncentrace organického uhlíku v půdě (dg/kg) v hloubce 0-200 cm, získaná poměrným zprůměrováním hodnot dusíku ISRIC SoilGrids ze šesti hloubkových intervalů (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm a 100-200 cm), přičemž každé pásmo je váženo podle příslušné hloubky.",
+          "underlyingData": "150 000 půdních profilů a 158 kovariátů půdy na základě dálkového průzkumu Země (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilBulkDensity": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Vážená průměrná koncentrace objemové hustoty půdy (cg/cm3;) v hloubce 0-200 cm, získaná poměrným zprůměrováním hodnot dusíku ISRIC SoilGrids ze šesti hloubkových intervalů (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm a 100-200 cm), přičemž každé pásmo bylo váženo podle příslušné hloubky.",
+          "underlyingData": "150 000 půdních profilů a 158 kovariátů půdy na základě dálkového průzkumu Země (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "treeSpeciesDensity": {
+          "resolution": "~3km",
+          "dataYears": "2005-2015",
+          "description": "Zobrazuje průměrný počet druhů stromů na celém světě",
+          "underlyingData": "Global Forest Biodiversity Initiative [GFBI] a soubor dat TREECHANGE",
+          "source": {
+            "text": "Gatti et al. 2022",
+            "url": "https://www.pnas.org/doi/full/10.1073/pnas.2115329119"
+          }
+        },
+        "birdDensity": {
+          "resolution": "~10 km",
+          "dataYears": "2013-2018",
+          "description": "Počet druhů ptáků na různých místech (počet ptáků na 100 km2)",
+          "underlyingData": "IUCN (savci, obojživelníci a mořské druhy), společně BirdLife International a NatureServe (ptáci), NatureServe (plazi a sladkovodní ryby USA)",
+          "source": {
+            "text": "Biodiversity Mapping",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "mammalDensity": {
+          "resolution": "~10 km",
+          "dataYears": "2013-2018",
+          "description": "Počet druhů savců v různých lokalitách",
+          "underlyingData": "IUCN (savci, obojživelníci a mořské druhy), společně BirdLife International a NatureServe (ptáci), NatureServe (plazi a sladkovodní ryby USA)",
+          "source": {
+            "text": "Biodiversity Mapping",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "amphibianDensity": {
+          "resolution": "~10 km",
+          "dataYears": "2013-2018",
+          "description": "Počet druhů obojživelníků na různých lokalitách",
+          "underlyingData": "IUCN (savci, obojživelníci a mořské druhy), společně BirdLife International a NatureServe (ptáci), NatureServe (plazi a sladkovodní ryby USA)",
+          "source": {
+            "text": "Biodiversity Mapping",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "fireRisk": {
+          "resolution": "~55 km",
+          "dataYears": "1980-2023",
+          "description": "Riziko vypuknutí požáru na základě údajů o počasí",
+          "underlyingData": "Index požárního počasí",
+          "source": {
+            "text": "podle Plant-for-the-Planet, analýza indexu požárního počasí za posledních 25 let (90. percentil) na základě údajů z rozhraní API Climate Data Store",
+            "url": "https://cds.climate.copernicus.eu/home"
+          }
+        },
+        "deforestationRisk": {
+          "resolution": "~30m",
+          "dataYears": "2023",
+          "description": "Rizikový faktor odlesnění na základě předchozího odlesnění, současného lesa a směru odlesnění",
+          "underlyingData": "Na základě lokalizace lesů a struktury odlesňování na základě dat LANDSAT",
+          "source": {
+            "text": "Plant-for-the-Planet, modelování rizika odlesnění na základě metodiky VERRA založené na systému LANDSAT",
+            "url": "https://verra.org/wp-content/uploads/2021/04/DRAFT_JNR_Risk_Mapping_Tool_15APR2021.pdf"
+          }
+        }
+      }
+    },
+    "timeTravel": {
+      "errors": {
+        "imageryNotAvailable": "{year} snímky nejsou při této úrovni přiblížení k dispozici. Zkuste prosím zvětšení zmenšit.",
+        "invalidGeoJson": "Neplatná nebo chybějící data GeoJSON",
+        "configNotAvailable": "Konfigurace cestování v čase není k dispozici",
+        "yearNotFoundInSource": "Rok {year} nenalezen ve zdroji {source}",
+        "configNotFoundForYear": "Konfigurace nebyla nalezena pro rok {year}",
+        "containerNotFound": "Prvek kontejneru mapy nebyl nalezen",
+        "mapInitializationFailed": "Nepodařilo se inicializovat mapy",
+        "comparisonInitializationFailed": "Nepodařilo se inicializovat porovnání",
+        "mapError": "Chyba na mapě: {message}",
+        "layerLoadFailed": "Nepodařilo se načíst vrstvy mapy",
+        "unsupportedSourceType": "Nepodporovaný typ zdroje: {source}"
+      },
+      "loading": "Načítání...",
+      "genericHistoricalYear": "Historické stránky"
+    },
+    "mapFeatureSupport": {
+      "loadingMap": "Načítání mapy...",
+      "notSupportedError": {
+        "title": "Vyžaduje se grafická akcelerace",
+        "message": "Tato mapa vyžaduje ke správné funkci grafickou akceleraci. Tato funkce může být v nastavení prohlížeče vypnuta nebo může být ve vašem aktuálním prostředí nedostupná (např. připojení ke vzdálené ploše).",
+        "solutionTitle": "Povolení grafické akcelerace:",
+        "solutionChrome": "<strong>Chrome:</strong> Nastavení → Rozšířené → Systém → Povolit \"Použít grafickou akceleraci, je-li k dispozici\"",
+        "solutionFirefox": "<strong>Firefox:</strong> Nastavení → Obecné → Výkon → Zrušte zaškrtnutí políčka \"Použít doporučené nastavení výkonu\"",
+        "solutionEdge": "<strong>Edge:</strong> Nastavení → Systém → Povolit \"Použít hardwarovou akceleraci, je-li k dispozici\"",
+        "contactInfo": "Pokud budete mít i nadále problémy, kontaktujte nás na adrese support@plant-for-the-planet.org a požádejte o pomoc.",
+        "technicalDetails": "Technické detaily"
+      }
+    }
   }
 }

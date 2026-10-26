@@ -16,6 +16,8 @@
     "redeemingCode": "Código de resgate...",
     "redeem": "Resgatar",
     "redeemDescription": "Resgate o seu voucher de árvore e outros códigos.",
+    "redeemSuccessMessage": "<line1>Incrível!</line1><line2>Adicionamos a contribuição ao seu perfil!</line2>",
+    "membershipRedeemSuccessMessage": "<line1>Incrível!</line1><line2>Agora você é um membro do Donor-Circle!</line2>",
     "successfullyRedeemed": "Resgatado com sucesso",
     "redeemAnotherCode": "Resgatar outro código"
   }
