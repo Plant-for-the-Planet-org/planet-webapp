@@ -1,9 +1,11 @@
-import { useViewStore } from '../../../../stores';
+import { useMobileViewModeStore } from '../../../../stores';
 import styles from '../styles/MapPreview.module.scss';
 import ShowMapButton from './microComponents/ShowMapButton';
 
 const MapPreview = () => {
-  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
+  const setSelectedMode = useMobileViewModeStore(
+    (state) => state.setSelectedMode
+  );
 
   return (
     <div className={styles.mapPreviewContainer}>

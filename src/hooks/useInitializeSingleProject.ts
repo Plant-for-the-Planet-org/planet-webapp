@@ -62,7 +62,7 @@ export const useInitializeSingleProject = () => {
    *
    * This lives here rather than in `ProjectDetails` because that component is not rendered when the details pane is hidden (`embed=true` with `project_details=false`), which used to leave the map, interventions and time travel config with no data at all.
    *
-   * `router.query.p` is used as the signal rather than `viewStore.page`, since the page is derived from that same param but only after an effect, and this fetch should not wait on it.
+   * `router.query.p` is the signal because it is also the slug the fetch needs.
    *
    * It does wait on `isCurrencyResolved`, because `currencyCode` starts at a placeholder that would otherwise be fetched with and then immediately superseded.
    * Waiting cannot stall: a saved currency resolves it at once, and otherwise `storeConfig` resolves it on every path, including a failed or timed-out request.
@@ -150,7 +150,7 @@ export const useInitializeSingleProject = () => {
 
   /**
    * Clear single-project state whenever the URL no longer names a project, so the last project does not outlive the project pages. See #3200.
-   * This uses the URL, not `viewStore.page`: the page is `null` on the first render of a fresh load, so a page check could clear a fetch that has just started.
+   * This uses the same signal as the fetch above, `router.query.p`, so the two effects cannot disagree about whether a project is named.
    */
   useEffect(() => {
     if (!router.isReady) return;
