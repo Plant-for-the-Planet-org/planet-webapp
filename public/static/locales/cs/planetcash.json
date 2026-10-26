@@ -16,7 +16,7 @@
     "labelCreditLimit": "Limit",
     "deactivateAccountButton": "Deaktivovat",
     "activateAccountButton": "Aktivovat",
-    "accountInactiveHelpText": "Tento účet je neaktivní a nelze jej použít k vytváření příspěvků. Chcete-li aktivovat tento účet, kontaktujte prosím support@plant-for-the-planet.org.",
+    "accountInactiveHelpText": "Tento účet je neaktivní a nelze na něj přispívat. Chcete-li tento účet aktivovat, kontaktujte prosím <supportLink>support@plant-for-the-planet.org</supportLink>.",
     "noAccountsText": "Zdá se, že jste si ještě nevytvořili účet PlanetCash.",
     "createPlanetCashButton": "Vytvořit účet PlanetCash",
     "accountQuotaReachedText": "Nemůžete vytvářet další účty, protože jste vyčerpali kvótu účtu.",
@@ -24,11 +24,45 @@
     "labelCountry": "Země",
     "planetCashTerms1": "Kliknutím na „Vytvořit účet PlanetCash“ souhlasím s podmínkami Plant-for-the-Planet a PlanetCash.",
     "planetCashTerms2": "Rozumím tomu, že dary PlanetCash jsou nevratné a nepřidělené platby budou automaticky přiděleny projektům na platformě po šesti měsících od platby.",
-    "planetCashTerms3": "Dary na účet PlanetCash z osobních důvodů jsou obecně odečitatelné z daní v zemi vybrané v tomto kroku. Komerční využití PlanetCash nemusí být způsobilé pro daňové odpočty. Máte-li dotazy, kontaktujte prosím support@plant-for-the-planet.org nebo svého daňového poradce.",
+    "planetCashTerms3": "Dary na účet PlanetCash z osobních důvodů jsou v zemi, kterou si v tomto kroku vyberete, obecně daňově uznatelné. Komerční využití PlanetCash nemusí být způsobilé pro daňové odpočty. V případě dotazů se obraťte na <supportLink>support@plant-for-the-planet.org</supportLink> nebo na svého daňového poradce.",
     "accountError": {
       "active_account_exists": "Aktivní účet již existuje. Deaktivujte tento účet před aktivací jiného účtu.",
       "duplicate_account": "Již jste vytvořili účet pro {country}",
       "default": "Při vytváření účtu se něco pokazilo. Zkuste to prosím o chvíli."
+    },
+    "topUpManagement": {
+      "labelToggle": "Automatické doplňování PlanetCash při nízkém zůstatku",
+      "labelThreshold": "Když zůstatek klesne pod ({currency})",
+      "labelRefillAmount": "Částka k doplnění ({currency})",
+      "labelStatus": "Stav",
+      "labelPaymentMethod": "Způsob platby",
+      "statusActive": "Aktivní",
+      "statusInactive": "Neaktivní",
+      "paymentMethodInfo": {
+        "sepa_debit": "IBAN končící na {last4}",
+        "card": "Karta končící na {last4}",
+        "unknown": "Neznámý způsob platby"
+      },
+      "validationErrors": {
+        "thresholdRequired": "Zadejte prosím prahovou hodnotu",
+        "amountRequired": "Zadejte prosím množství náplně",
+        "thresholdMinimum": "Prahová hodnota by měla být kladná",
+        "amountMinimum": "Výše náplně by měla být kladná"
+      },
+      "apiErrors": {
+        "paymentMethodNotFound": "Došlo k problému s vybraným způsobem platby. Zvolte prosím jiný způsob platby. Můžete se také obrátit na support@plant-for-the-planet.org a požádat o pomoc.",
+        "topUpAmountTooLow": "Množství náplně musí být alespoň {minAmountWithCurrency}.",
+        "topUpThresholdTooLow": "Prahová částka musí být alespoň {minThresholdWithCurrency}.",
+        "default": "Při ukládání nastavení dobíjení se něco pokazilo. Pokud tento problém přetrvává, kontaktujte prosím support@plant-for-the-planet.org."
+      },
+      "saveButton": "Uložení nastavení dobíjení",
+      "disableConfirmationDialog": {
+        "confirmButtonText": "Potvrďte",
+        "cancelButtonText": "Zrušit",
+        "title": "Zakázat automatické doplňování?",
+        "subtitle": "Jste si jisti, že chcete vypnout automatické doplňování? Tím odstraníte aktuální nastavení automatického doplňování."
+      },
+      "successMessage": "Úspěšné uložení nastavení automatického doplňování"
     }
   }
 }

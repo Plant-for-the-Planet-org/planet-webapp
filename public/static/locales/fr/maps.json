@@ -41,12 +41,233 @@
     "daysAgo": "{days} jours",
     "today": "Aujourd'hui",
     "yesterday": "Hier",
-    "clickForDetails": "Cliquez pour plus de détails",
     "treeMapper": "TreeMapper",
-    "showProjectList": "Afficher la liste des projets",
-    "showProjectDetails": "Afficher les détails du projet",
-    "hideProjectList": "Masquer la liste des projets",
-    "hideProjectDetails": "Cacher les détails du projet",
-    "countries": "Pays"
+    "countries": "Pays",
+    "exploreLayers": {
+      "title": "Explorer",
+      "subtitle": "Couches de données écologiques",
+      "closeButton": "Fermer",
+      "groups": {
+        "forests": "Forêt",
+        "soil": "Sol",
+        "biodiversity": "Biodiversité",
+        "risks": "Risques"
+      },
+      "settingsLabels": {
+        "projects": "Projets",
+        "forestCover": "Couverture forestière",
+        "forestBiomass": "Biomasse forestière",
+        "biomassPotential": "Biomasse forestière supplémentaire potentielle",
+        "deforestation": "Déforestation",
+        "canopyHeight": "Hauteur de l'auvent",
+        "soilNitrogen": "Azote du sol",
+        "soilPH": "PH du sol",
+        "soilOrganicCarbon": "Carbone organique du sol",
+        "soilBulkDensity": "Densité apparente du sol",
+        "treeSpeciesDensity": "Densité des espèces d'arbres",
+        "birdDensity": "Densité d'oiseaux",
+        "mammalDensity": "Densité des mammifères",
+        "amphibianDensity": "Densité des amphibiens",
+        "fireRisk": "Risque d'incendie",
+        "deforestationRisk": "Risque de déforestation"
+      },
+      "legends": {
+        "veryLow": "Très faible",
+        "low": "Faible",
+        "medium": "Moyen",
+        "high": "Haut",
+        "veryHigh": "Très élevé",
+        "extreme": "Extrême"
+      },
+      "additionalInfo": {
+        "labels": {
+          "dataYears": "Années de données",
+          "resolution": "Résolution",
+          "description": "Description",
+          "underlyingData": "Données sous-jacentes",
+          "source": "Source"
+        },
+        "forestCover": {
+          "resolution": "~500m (réduction d'échelle)",
+          "dataYears": "2023",
+          "description": "Le couvert végétal sous forme de carte binaire",
+          "underlyingData": "Modèle d'IA construit par Google pour classer les images Sentinel II dans 9 classes différentes d'utilisation et d'occupation des sols",
+          "source": {
+            "text": "Monde dynamique",
+            "url": "https://dynamicworld.app/"
+          }
+        },
+        "forestBiomass": {
+          "resolution": "~500m",
+          "dataYears": "2016",
+          "description": "Cartes actuelles de la biomasse dans les régions forestières",
+          "underlyingData": "Modèles d'apprentissage automatique basés sur la télédétection (MODIS, LiDAR)",
+          "source": {
+            "text": "Walker et al. 2022",
+            "url": "https://www.pnas.org/doi/10.1073/pnas.2111312119"
+          }
+        },
+        "biomassPotential": {
+          "resolution": "~500m",
+          "dataYears": "2016",
+          "description": "Densité potentielle non réalisée de la biomasse aérienne (mégagrammes de carbone par hectare) dans un climat de référence. Les zones critiques pour la production alimentaire et l'habitat humain ont été mises à zéro.",
+          "underlyingData": "Modèles d'apprentissage automatique basés sur la télédétection (MODIS, LiDAR)",
+          "source": {
+            "text": "Walker et al. 2022",
+            "url": "https://www.pnas.org/doi/10.1073/pnas.2111312119"
+          }
+        },
+        "deforestation": {
+          "resolution": "~30m",
+          "dataYears": "2023",
+          "description": "Localisation de la déforestation au cours de l'année précédente",
+          "underlyingData": "Programmes de satellites Landsat",
+          "source": {
+            "text": "Hansen et al. 2013",
+            "url": "https://www.science.org/doi/10.1126/science.1244693"
+          }
+        },
+        "canopyHeight": {
+          "resolution": "~1m",
+          "dataYears": "2018-2020",
+          "description": "Hauteur de la canopée mondiale entre 2018 et 2020",
+          "underlyingData": "Cartes de la hauteur de la canopée mondiale basées sur le modèle d'IA (DinoV2) et les données de télédétection (MAXAR et GEDI) par Meta",
+          "source": {
+            "text": "Tolan et al. 2024",
+            "url": "https://sustainability.atmeta.com/blog/2024/04/22/using-artificial-intelligence-to-map-the-earths-forests/"
+          }
+        },
+        "soilNitrogen": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Concentration moyenne pondérée d'azote (cg/kg) sur une profondeur de sol de 0 à 200 cm, obtenue en calculant la moyenne proportionnelle des valeurs d'azote ISRIC SoilGrids de six intervalles de profondeur (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm et 100-200 cm), chaque bande étant pondérée en fonction de l'épaisseur de son sol respectif.",
+          "underlyingData": "150 000 profils pédologiques et 158 covariables pédologiques basées sur la télédétection (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilPH": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Concentration moyenne pondérée du pH sur une profondeur de sol de 0 à 200 cm, obtenue en faisant la moyenne proportionnelle des valeurs d'azote ISRIC SoilGrids sur six intervalles de profondeur (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm et 100-200 cm), chaque bande étant pondérée en fonction de l'épaisseur de son sol respectif.",
+          "underlyingData": "150 000 profils pédologiques et 158 covariables pédologiques basées sur la télédétection (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilOrganicCarbon": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Concentration moyenne pondérée de carbone organique du sol (dg/kg) sur une profondeur de 0 à 200 cm, obtenue en faisant la moyenne proportionnelle des valeurs d'azote ISRIC SoilGrids sur six intervalles de profondeur (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm et 100-200 cm), chaque bande étant pondérée en fonction de l'épaisseur de son sol.",
+          "underlyingData": "150 000 profils pédologiques et 158 covariables pédologiques basées sur la télédétection (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "soilBulkDensity": {
+          "resolution": "~250m",
+          "dataYears": "2016",
+          "description": "Concentration moyenne pondérée de la densité apparente du sol (cg/cm3 ;) sur une profondeur de 0 à 200 cm, obtenue en faisant la moyenne proportionnelle des valeurs d'azote ISRIC SoilGrids de six intervalles de profondeur (0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm et 100-200 cm), chaque bande étant pondérée en fonction de l'épaisseur respective du sol.",
+          "underlyingData": "150 000 profils pédologiques et 158 covariables pédologiques basées sur la télédétection (soilgrids.org)",
+          "source": {
+            "text": "Hengl et al. 2017",
+            "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169748"
+          }
+        },
+        "treeSpeciesDensity": {
+          "resolution": "~3km",
+          "dataYears": "2005-2015",
+          "description": "Indique le nombre moyen d'espèces d'arbres dans le monde entier",
+          "underlyingData": "l'initiative mondiale pour la biodiversité des forêts [GFBI] et l'ensemble de données TREECHANGE",
+          "source": {
+            "text": "Gatti et al. 2022",
+            "url": "https://www.pnas.org/doi/full/10.1073/pnas.2115329119"
+          }
+        },
+        "birdDensity": {
+          "resolution": "~10km",
+          "dataYears": "2013-2018",
+          "description": "Nombre d'espèces d'oiseaux à différents endroits (nombre d'oiseaux par 100 km2)",
+          "underlyingData": "UICN (mammifères, amphibiens et espèces marines), conjointement avec BirdLife International et NatureServe (oiseaux), avec NatureServe (reptiles et poissons d'eau douce des États-Unis)",
+          "source": {
+            "text": "Cartographie de la biodiversité",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "mammalDensity": {
+          "resolution": "~10km",
+          "dataYears": "2013-2018",
+          "description": "Nombre d'espèces de mammifères à différents endroits",
+          "underlyingData": "UICN (mammifères, amphibiens et espèces marines), conjointement avec BirdLife International et NatureServe (oiseaux), avec NatureServe (reptiles et poissons d'eau douce des États-Unis)",
+          "source": {
+            "text": "Cartographie de la biodiversité",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "amphibianDensity": {
+          "resolution": "~10km",
+          "dataYears": "2013-2018",
+          "description": "Nombre d'espèces d'amphibiens à différents endroits",
+          "underlyingData": "UICN (mammifères, amphibiens et espèces marines), conjointement avec BirdLife International et NatureServe (oiseaux), avec NatureServe (reptiles et poissons d'eau douce des États-Unis)",
+          "source": {
+            "text": "Cartographie de la biodiversité",
+            "url": "https://biodiversitymapping.org/"
+          }
+        },
+        "fireRisk": {
+          "resolution": "~55km",
+          "dataYears": "1980-2023",
+          "description": "Risque d'incendie en fonction des données météorologiques",
+          "underlyingData": "Indice météo des incendies",
+          "source": {
+            "text": "par Plant-for-the-Planet, analyse de l'indice météo des incendies pour les 25 dernières années (90e percentile) basée sur les données du Climate Data Store API",
+            "url": "https://cds.climate.copernicus.eu/home"
+          }
+        },
+        "deforestationRisk": {
+          "resolution": "~30m",
+          "dataYears": "2023",
+          "description": "Facteur de risque de déforestation basé sur la déforestation antérieure, la forêt actuelle et la direction de la déforestation",
+          "underlyingData": "Sur la base de la localisation des forêts et du schéma de déforestation établis par LANDSAT",
+          "source": {
+            "text": "par Plant-for-the-Planet, modélisation du risque de déforestation basée sur LANDSAT et sur une méthodologie VERRA",
+            "url": "https://verra.org/wp-content/uploads/2021/04/DRAFT_JNR_Risk_Mapping_Tool_15APR2021.pdf"
+          }
+        }
+      }
+    },
+    "timeTravel": {
+      "errors": {
+        "imageryNotAvailable": "{year} l'imagerie n'est pas disponible à ce niveau de zoom. Veuillez essayer de dézoomer.",
+        "invalidGeoJson": "Données GeoJSON invalides ou manquantes",
+        "configNotAvailable": "La configuration du voyage dans le temps n'est pas disponible",
+        "yearNotFoundInSource": "Année {year} non trouvée dans la source {source}",
+        "configNotFoundForYear": "Configuration non trouvée pour l'année {year}",
+        "containerNotFound": "L'élément conteneur de la carte n'a pas été trouvé",
+        "mapInitializationFailed": "Échec de l'initialisation des cartes",
+        "comparisonInitializationFailed": "Échec de l'initialisation de la comparaison",
+        "mapError": "Erreur de carte : {message}",
+        "layerLoadFailed": "Échec du chargement des couches de la carte",
+        "unsupportedSourceType": "Type de source non pris en charge : {source}"
+      },
+      "loading": "Chargement...",
+      "genericHistoricalYear": "Historique"
+    },
+    "mapFeatureSupport": {
+      "loadingMap": "Chargement de la carte...",
+      "notSupportedError": {
+        "title": "Accélération graphique requise",
+        "message": "Cette carte nécessite une accélération graphique pour fonctionner correctement. Cette fonction peut être désactivée dans les paramètres de votre navigateur ou ne pas être disponible dans votre environnement actuel (comme les connexions de bureau à distance).",
+        "solutionTitle": "Pour activer l'accélération graphique :",
+        "solutionChrome": "<strong>Chrome :</strong> Paramètres → Avancé → Système → Activer \"Utiliser l'accélération graphique lorsqu'elle est disponible\"",
+        "solutionFirefox": "<strong>Firefox :</strong> Paramètres → Général → Performance → Décocher \"Utiliser les paramètres de performance recommandés\"",
+        "solutionEdge": "<strong>Edge :</strong> Settings → System → Enable \"Use hardware acceleration when available\" (Utiliser l'accélération matérielle lorsqu'elle est disponible)",
+        "contactInfo": "Si le problème persiste, veuillez nous contacter à l'adresse support@plant-for-the-planet.org pour obtenir de l'aide.",
+        "technicalDetails": "Détails techniques"
+      }
+    }
   }
 }

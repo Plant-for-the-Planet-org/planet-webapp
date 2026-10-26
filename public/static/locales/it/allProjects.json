@@ -1,1 +1,32 @@
-{ }
+{
+  "AllProjects": {
+    "currentForests": "Foreste attuali",
+    "restorationPotential": "Potenziale di restauro",
+    "deforestation": "Deforestazione",
+    "projects": "Progetti",
+    "classificationTypes": {
+      "restoration-tree-planting": "Restauro su larga scala",
+      "agroforestry": "Agroforestale",
+      "natural-regeneration": "Rigenerazione naturale",
+      "managed-regeneration": "Rigenerazione gestita",
+      "urban-planting": "Piantagione urbana",
+      "other-restoration": "Altri impianti",
+      "mangroves": "Mangrovie"
+    },
+    "noFilterApplied": "Nessun filtro applicato",
+    "acceptingDonations": "Accettazione di donazioni",
+    "clearFilter": "Filtro trasparente",
+    "allProjects": "Tutti <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "searchProject": "Progetto di ricerca",
+    "topProjects": "Top Projects <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "top": "Top <projectCountContainer>({noOfProjects})</projectCountContainer>",
+    "list": "Elenco",
+    "map": "Mappa",
+    "treeDonated": "{count, plural, =1 {# Tree donated} other {{formattedCount} Trees donated}}",
+    "areaRestored": "{area, plural, =1 {# m² restored} other {{formattedCount} m² restored}}",
+    "areaConserved": "{area, plural, =1 {# m² conserved} other {{formattedCount} m² conserved}}",
+    "ratePerUnit": "{amount} per {unit, select, tree {tree} m2 {m²} other {tree} }",
+    "noProjectFound": "Ops! Nessun progetto trovato",
+    "filterResult": "{count, plural, =1 {# Project} other {# Projects}} trovato "
+  }
+}

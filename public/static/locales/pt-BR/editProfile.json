@@ -13,6 +13,7 @@
     "profileCreationError": "Erro na criação do perfil.",
     "edit": "Editar Perfil",
     "save": "Salvar",
+    "viewPublicProfile": "Exibir perfil público",
     "profilePicUpdated": "A foto do perfil está sendo atualizada",
     "profileSaved": "Salvo com sucesso!",
     "profileSaveFailed": "Erro na atualização do perfil.",
@@ -23,6 +24,13 @@
     "cancel": "Cancelar",
     "termAndCondition": "Concordo com os <termsLink>Termos e Condições</termsLink> da plataforma Plant-for-the-Planet.",
     "termAndConditionError": "Por favor Aceite os Termos e Condições",
+    "profileConsentSettingsTitle": "Personalizar o perfil público",
+    "publicProfileExplanation": "Ao tornar seu perfil público, você pode optar por compartilhar suas informações e se conectar com outras pessoas.",
+    "leaderboardTooltipExplanation": "A tabela de classificação mostra todas as contribuições que outras pessoas fizeram ao seu perfil. Podem ser árvores presenteadas a você ou doações feitas por pessoas que visitaram seu perfil. Ao ativar essa opção, você permitirá que qualquer pessoa na Internet veja quem fez as maiores contribuições",
+    "profilePictureButtonLabels": {
+      "upload": "Fazer upload de uma nova foto",
+      "delete": "Excluir foto"
+    },
     "fieldLabels": {
       "profileType": "Eu sou um(a)",
       "firstName": "Primeiro nome",
@@ -31,11 +39,15 @@
       "email": "E-mail",
       "address": "Endereço",
       "city": "Cidade",
+      "state": "Estado",
       "zipCode": "Código postal",
       "country": "País",
       "bio": "Descrição do perfil",
       "website": "Website",
-      "subscribe": "Inscreva-se para receber notícias por e-mail"
+      "isPublic": "Tornar o perfil público",
+      "subscribe": "Inscreva-se para receber notícias por e-mail",
+      "exposeCommunity": "Mostrar minha tabela de classificação",
+      "showTreegame": "Mostrar TreeGame"
     },
     "validationErrors": {
       "maxChars": "Deve ter {max} caracteres ou menos",
@@ -50,11 +62,48 @@
       "addressInvalid": "O endereço é inválido. Somente estes caracteres especiais são permitidos: espaço . , # - /",
       "cityRequired": "A cidade é necessária",
       "cityInvalid": "Cidade é inválido. Somente letras e estes caracteres especiais são permitidos: espaço . , ( ) -",
+      "stateInvalid": "Estado é inválido. Somente letras e estes caracteres especiais são permitidos: espaço . , ( ) -",
       "zipCodeRequired": "O CEP é obrigatório",
       "zipCodeInvalid": "O CEP é inválido",
       "websiteInvalid": "Por favor, digite o URL válido do site",
       "countryRequired": "O país é obrigatório",
       "companyRequired": "O nome da empresa é obrigatório"
+    },
+    "addressManagement": {
+      "labels": {
+        "actionMenu": "Menu de ação"
+      },
+      "addressManagementTitle": "Endereço",
+      "addressType": {
+        "primary": "Endereço principal",
+        "mailing": "Endereço de cobrança"
+      },
+      "actions": {
+        "edit": "Editar",
+        "delete": "Excluir",
+        "setAsPrimaryAddress": "Definir como endereço principal",
+        "setAsBillingAddress": "Definir como endereço de cobrança",
+        "unsetBillingAddress": "Endereço de cobrança não definido",
+        "addAddress": "Adicionar novo endereço"
+      },
+      "deleteAction": {
+        "title": "Excluir endereço",
+        "deleteButton": "Excluir",
+        "deleteAddressConfirmationMessage": "Tem certeza de que deseja excluir este endereço? Se quiser usá-lo novamente, adicione-o como um novo endereço."
+      },
+      "updateAddressType": {
+        "setAddressConfirmation": "Tem certeza de que deseja definir esse endereço como seu {addressType}?",
+        "replaceAddressWarning": "Isso substituirá seu site atual {addressType}.",
+        "confirmButton": "Confirmar",
+        "unsetBillingAddressMessage": "Deseja desmarcar seu endereço de cobrança? Seu endereço principal será usado como endereço de cobrança."
+      },
+      "maxAddressesMessage": "Você atingiu o número máximo de endereços! Remova um para adicionar um novo endereço.",
+      "addressForm": {
+        "addAddress": "Adicionar endereço",
+        "editAddress": "Editar endereço",
+        "saveChanges": "Salvar alterações",
+        "address2": "Endereço 2 (opcional)"
+      }
     }
   }
 }

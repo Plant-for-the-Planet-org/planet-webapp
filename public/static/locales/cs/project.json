@@ -1,1 +1,54 @@
-{ }
+{
+  "Project": {
+    "classification": {
+      "natural-regeneration": "Přirozená regenerace",
+      "managed-regeneration": "Řízená regenerace",
+      "restoration-tree-planting": "Large Scale Restoration",
+      "large-scale-planting": "Obnova velkého rozsahu",
+      "agroforestry": "Agrolesnictví",
+      "urban-planting": "Obnova měst",
+      "other-restoration": "Restoration",
+      "other-planting": "Restaurování",
+      "mangroves": "Mangrovy",
+      "conservation": "Ochrana přírody"
+    },
+    "ecosystem": {
+      "tropical-moist-forests": "Tropické vlhké lesy",
+      "tropical-forests": "Tropické lesy",
+      "tropical-dry-forests": "Tropické suché lesy",
+      "tropical-coniferous-forests": "Tropické jehličnaté lesy",
+      "tropical-grasslands-forests": "Tropické travnaté plochy Lesy",
+      "temperate": "Mírný pás",
+      "temperate-broadleaf-forests": "Listnaté lesy mírného pásma",
+      "temperate-coniferous-forests": "Jehličnaté lesy mírného pásma",
+      "temperate-grasslands-forests": "Lesy mírného pásu",
+      "mediterranean-forests": "Středomořské lesy",
+      "mangroves": "Mangrovy",
+      "deserts": "Pouště",
+      "flooded-grasslands": "Zaplavené pastviny",
+      "montane-grasslands": "Horské travnaté porosty",
+      "boreal-forests": "Boreální lesy",
+      "tundra": "Tundra"
+    },
+    "interventionTypes": {
+      "assisting-seed-rain": "Asistence při dešti ze semen",
+      "control-remove-livestock": "Kontrola/odstranění hospodářských zvířat",
+      "cut-suppressing-grass": "Sekání/potlačování trávy",
+      "direct-seeding": "Přímý výsev",
+      "enrichment-planting": "Obohacení výsadby",
+      "establish-firebreaks": "Vytváření protipožárních pásů",
+      "fire-patrols": "Požární hlídky",
+      "fire-suppression-team": "Tým pro hašení požárů",
+      "liberating-regenerants": "Osvobozující regenerační látky",
+      "maintenance": "Údržba",
+      "marking-regenerants": "Označování regeneračních látek",
+      "other-interventions": "Další zásahy",
+      "planting-trees": "Výsadba stromů",
+      "removal-contaminated-soil": "Odstranění kontaminované půdy",
+      "removal-invasive-species": "Odstraňování invazních druhů",
+      "soil-improvement": "Zlepšení půdy",
+      "stop-tree-harvesting": "Zastavení kácení stromů"
+    },
+    "tpoName": "Podle {tpoName}"
+  }
+}
