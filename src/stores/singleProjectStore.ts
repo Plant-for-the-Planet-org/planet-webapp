@@ -236,11 +236,8 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
 
         router?.push(
           {
-            // Keep the actual route pattern here, not the tenant-facing
-            // display path. Passing the display path instead corrupts
-            // `router.pathname` after this shallow push (it no longer
-            // matches '/sites/[slug]/[locale]/[p]'), which broke page
-            // detection that relies on `router.pathname` (see useCurrentPage).
+            // Pass the route pattern, not the display path, so `router.pathname` still matches '/sites/[slug]/[locale]/[p]' after this shallow push.
+            // `useCurrentPage` reads `router.pathname` to detect the page.
             pathname: router.pathname,
             query: queryParams,
           },
