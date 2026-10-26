@@ -25,8 +25,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
   );
 
   const embed = useQueryParamStore((state) => state.embed);
-  const embeddablePage = useCurrentPage();
-  const isEmbedMode = embed === 'true' && isEmbeddablePage(embeddablePage);
+  const currentPage = useCurrentPage();
+  const isEmbedMode = embed === 'true' && isEmbeddablePage(currentPage);
 
   // The profile fetch runs globally, so a sign-in can fail on any page. Swapping the content here reaches the user wherever they are, with no redirect.
   const hasAuthFailed = useAuthStore((state) => state.hasAuthFailed);
