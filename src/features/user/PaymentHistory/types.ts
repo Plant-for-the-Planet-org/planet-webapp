@@ -6,7 +6,7 @@
  *   - GET /app/payments          -> payments() list callback
  *   - GET /app/payments/{guid}   -> paymentDetail() / buildPaymentDetails()
  *   src/Pagination/PaginatedCollection.php (envelope)
- *   src/Model/LineItem/LineItemDto.php (lineItems shape)
+ *   src/Service/PaymentHistory/PaymentListTransformer.php (rows + lineItems shape)
  *
  * These are the NEW clean endpoints (the redesign target), kept separate from
  * the legacy Elasticsearch-shaped types in
@@ -88,14 +88,14 @@ export interface PaymentListItem {
    * What the payment was for, one entry per line item. Empty only for an old
    * composite donation that was never split into line items.
    */
-  lineItems?: PaymentListLineItem[];
+  lineItems?: PaymentLineItem[];
 }
 
 /**
- * One line item of a list row.
+ * One line item of a payment, the same in a list row and in the detail.
  * @see PaymentListTransformer::getLineItems()
  */
-export interface PaymentListLineItem {
+export interface PaymentLineItem {
   /** "trees", "funds", "membership", "academy", "planet-cash", … */
   purpose: string | null;
   /** Project or PlanetCash account name. */
@@ -109,32 +109,6 @@ export interface PaymentListLineItem {
 }
 
 export type PaymentsListResponse = PaginatedResponse<PaymentListItem>;
-
-/**
- * A single line item inside a payment detail.
- * @see LineItemDto::serialize() (amount + units re-normalized in the controller)
- */
-export interface PaymentLineItem {
-  /** Decimal amount for this line. */
-  amount: number | null;
-  absorbedFee?: number | null;
-  caption?: string | null;
-  currency?: string | null;
-  /** Destination project name or identifier. */
-  destination?: string | null;
-  destinationCurrency?: string | null;
-  destinationExchangeRate?: number | null;
-  isSupport?: boolean | null;
-  paymentType?: string | null;
-  position?: number | null;
-  purpose?: string | null;
-  skipValidation?: boolean | null;
-  tax?: number | null;
-  unitCost?: number | null;
-  unitType?: string | null;
-  /** Quantity of units (trees, m², etc.), normalized. */
-  units?: number | null;
-}
 
 /**
  * Gift metadata block. Present only for gift donations; individual fields are
@@ -189,7 +163,8 @@ export interface PaymentDetail {
   gift?: PaymentGift;
   /** Present only once the backend exposes it (see PaymentFundraiser). */
   fundraiser?: PaymentFundraiser;
-  lineItems: PaymentLineItem[];
+  /** Dropped by array_filter when the donation has none. */
+  lineItems?: PaymentLineItem[];
 }
 
 /**

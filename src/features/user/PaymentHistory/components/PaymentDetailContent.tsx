@@ -9,9 +9,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 import getFormattedCurrency from '@/utils/countryCurrency/getFormattedCurrency';
 
 import { formatPaymentDate } from '../lib/formatPaymentDate';
+import { getLineLabel, getPaymentTitle } from '../lib/getPaymentTitle';
 import { getFundraiserUrl } from '@/utils/constants/fundraiser';
 
 import { usePaymentDetail } from '../hooks/usePaymentDetail';
+import { usePaymentTitleLabels } from '../hooks/usePaymentTitleLabels';
 import { PaymentStatusBadge } from './PaymentStatusBadge';
 
 const Section = ({
@@ -37,14 +39,9 @@ const DetailRow = ({ label, value }: { label: string; value: ReactNode }) => {
   );
 };
 
-const sum = (
-  items: PaymentLineItem[],
-  pick: (li: PaymentLineItem) => number | null | undefined
-) => items.reduce((total, li) => total + (pick(li) ?? 0), 0);
-
 /**
- * The payment detail body (title + amount, meta, fundraiser, causes supported,
- * fees, dedication, downloads). Rendered inside the Sheet on small screens and
+ * The payment detail body (title + amount, meta, fundraiser, line items,
+ * dedication, downloads). Rendered inside the Sheet on small screens and
  * the inline pane on large screens. Fetches its own data from the guid.
  */
 export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
@@ -52,6 +49,7 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
   const tPayments = useTranslations('Payments');
   const locale = useLocale();
   const { detail, isLoading } = usePaymentDetail(guid);
+  const titleLabels = usePaymentTitleLabels();
 
   const money = (amount: number) =>
     getFormattedCurrency(locale, detail?.currency ?? '', amount);
@@ -86,11 +84,21 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
     return labels[method] ?? method;
   };
 
-  const unitLabel = (li: PaymentLineItem) => {
-    if (li.units == null) return '';
-    if (li.unitType === 'm2') return `${li.units} m²`;
-    if (li.unitType === 'tree') return `${li.units} ${t('trees')}`;
-    return '';
+  // The project or account first, then what it was ("50 Trees",
+  // "Membership"), unless the caption already says it ("PlanetCash - Jane").
+  const lineText = (li: PaymentLineItem) => {
+    const label = getLineLabel(li, titleLabels);
+    const caption = li.caption?.trim();
+    const showLabel =
+      caption && !caption.toLowerCase().includes(label.toLowerCase());
+    return (
+      <div className="min-w-0">
+        <p className="text-sm text-foreground">{caption || label}</p>
+        {showLabel && (
+          <p className="mt-0.5 text-xs text-muted-foreground">{label}</p>
+        )}
+      </div>
+    );
   };
 
   if (!guid) return null;
@@ -107,13 +115,6 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
   }
 
   const lineItems = detail.lineItems ?? [];
-  const projectLines = lineItems.filter((li) => !li.isSupport);
-  const supportTotal = sum(
-    lineItems.filter((li) => li.isSupport),
-    (li) => li.amount
-  );
-  const feeCoveredTotal = sum(lineItems, (li) => li.absorbedFee);
-  const taxTotal = sum(lineItems, (li) => li.tax);
   const dedicatedTo = detail.gift?.recipient;
 
   const fundraiser = detail.fundraiser;
@@ -122,7 +123,9 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
 
   return (
     <div className="flex flex-col">
-      <p className="text-sm text-muted-foreground">{t('donation')}</p>
+      <p className="text-sm text-muted-foreground">
+        {getPaymentTitle(detail, titleLabels)}
+      </p>
 
       <div className="flex items-center justify-between gap-4 py-3">
         <span className="text-2xl font-medium tabular-nums text-foreground">
@@ -164,39 +167,23 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
         </Section>
       )}
 
-      {projectLines.length === 1 && (
+      {lineItems.length === 1 && (
         <Section title={tPayments('supports')}>
-          <p className="text-sm text-foreground">
-            {projectLines[0].caption ?? t('project')}
-          </p>
-          {unitLabel(projectLines[0]) && (
-            <p className="mt-0.5 text-xs text-muted-foreground">
-              {unitLabel(projectLines[0])}
-            </p>
-          )}
+          {lineText(lineItems[0])}
         </Section>
       )}
 
-      {projectLines.length > 1 && (
-        <Section title={tPayments('supportedProjects')}>
+      {lineItems.length > 1 && (
+        <Section title={tPayments('supports')}>
           <div className="overflow-hidden rounded-lg border border-border">
-            {projectLines.map((li, index) => (
+            {lineItems.map((li, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between gap-3 border-b border-border p-3 text-sm last:border-b-0"
+                className="flex items-center justify-between gap-3 border-b border-border p-3 last:border-b-0"
               >
-                <div className="min-w-0">
-                  <div className="truncate text-foreground">
-                    {li.caption ?? t('project')}
-                  </div>
-                  {unitLabel(li) && (
-                    <div className="text-xs text-muted-foreground">
-                      {unitLabel(li)}
-                    </div>
-                  )}
-                </div>
+                {lineText(li)}
                 {li.amount != null && (
-                  <span className="shrink-0 tabular-nums text-foreground">
+                  <span className="shrink-0 text-sm tabular-nums text-foreground">
                     {money(li.amount)}
                   </span>
                 )}
@@ -204,26 +191,6 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
             ))}
           </div>
         </Section>
-      )}
-
-      {(supportTotal > 0 || feeCoveredTotal > 0 || taxTotal > 0) && (
-        <div className="pt-2">
-          {supportTotal > 0 && (
-            <DetailRow
-              label={tPayments('support')}
-              value={money(supportTotal)}
-            />
-          )}
-          {feeCoveredTotal > 0 && (
-            <DetailRow
-              label={tPayments('feeCovered')}
-              value={money(feeCoveredTotal)}
-            />
-          )}
-          {taxTotal > 0 && (
-            <DetailRow label={tPayments('tax')} value={money(taxTotal)} />
-          )}
-        </div>
       )}
 
       {dedicatedTo && (

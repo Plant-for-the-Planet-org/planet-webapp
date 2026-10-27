@@ -1,4 +1,4 @@
-import type { PaymentListItem, PaymentListLineItem } from '../types';
+import type { PaymentListItem, PaymentLineItem } from '../types';
 
 export type PaymentTitleLabels = {
   /** "Trees", "Membership", "Donation", … for a line item purpose. */
@@ -13,8 +13,17 @@ export type PaymentTitleLabels = {
 
 const FUNDS = 'funds';
 
-const isUnitBased = (line: PaymentListLineItem) =>
+const isUnitBased = (line: PaymentLineItem) =>
   line.units != null && (line.unitType === 'tree' || line.unitType === 'm2');
+
+/** "50 Trees" or "120 m²" for a line counted in units, else its purpose. */
+export const getLineLabel = (
+  line: PaymentLineItem,
+  labels: PaymentTitleLabels
+): string =>
+  isUnitBased(line)
+    ? labels.units(line.units as number, line.unitType as 'tree' | 'm2')
+    : labels.purpose(line.purpose);
 
 /**
  * One line item, as explicit as it gets: "50 Trees • Plant-for-Ghana",
@@ -24,13 +33,11 @@ const isUnitBased = (line: PaymentListLineItem) =>
  * never hides it.
  */
 const describeLine = (
-  line: PaymentListLineItem,
+  line: PaymentLineItem,
   labels: PaymentTitleLabels,
   withSupport = false
 ): string => {
-  const label = isUnitBased(line)
-    ? labels.units(line.units as number, line.unitType as 'tree' | 'm2')
-    : labels.purpose(line.purpose);
+  const label = getLineLabel(line, labels);
   const caption = line.caption?.trim();
   const lead = withSupport ? labels.withSupport(label) : label;
 
@@ -45,7 +52,7 @@ const describeLine = (
  * A mixed donation is the older shape that is still created by subscriptions:
  * one line supports the organization (funds) and the other plants trees.
  */
-const getMixedTreeLine = (lines: PaymentListLineItem[]) => {
+const getMixedTreeLine = (lines: PaymentLineItem[]) => {
   if (lines.length !== 2) return null;
   const funds = lines.find((line) => line.purpose === FUNDS);
   const trees = lines.find((line) => line.purpose === 'trees');

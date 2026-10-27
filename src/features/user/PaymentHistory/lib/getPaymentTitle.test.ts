@@ -1,4 +1,4 @@
-import type { PaymentListLineItem } from '../types';
+import type { PaymentLineItem } from '../types';
 import type { PaymentTitleLabels } from './getPaymentTitle';
 
 import { describe, expect, it } from 'vitest';
@@ -27,9 +27,9 @@ const line = (
   caption: string | null,
   units: number | null = null,
   unitType: string | null = 'currency'
-): PaymentListLineItem => ({ purpose, caption, units, unitType, amount: 5 });
+): PaymentLineItem => ({ purpose, caption, units, unitType, amount: 5 });
 
-const title = (purpose: string | null, lineItems: PaymentListLineItem[]) =>
+const title = (purpose: string | null, lineItems: PaymentLineItem[]) =>
   getPaymentTitle({ purpose, lineItems }, labels);
 
 describe('getPaymentTitle', () => {
