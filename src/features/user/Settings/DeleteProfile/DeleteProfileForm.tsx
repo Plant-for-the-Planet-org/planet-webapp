@@ -100,7 +100,7 @@ export default function DeleteProfileForm() {
         </p>
         <p className={styles.deleteModalWarning}>
           {tCommon('deleteIrreversible', {
-            email: userEmail,
+            email: userEmail ?? '',
           })}
         </p>
       </div>

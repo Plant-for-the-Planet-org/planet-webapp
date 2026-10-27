@@ -8,8 +8,9 @@ import { clsx } from 'clsx';
 import {
   useQueryParamStore,
   useUserStore,
-  useViewStore,
+  useMobileViewModeStore,
 } from '../../../../stores';
+import { useCurrentPage } from '../../../../hooks/useCurrentPage';
 
 export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
@@ -28,11 +29,15 @@ const MobileProjectsLayout = ({ children, isMobile }: ProjectsLayoutProps) => {
   const isImpersonationModeOn = useUserStore(
     (state) => state.isImpersonationModeOn
   );
-  const currentPage = useViewStore((state) => state.page);
-  const isMapMode = useViewStore((state) => state.selectedMode === 'map');
+  const currentPage = useCurrentPage();
+  const isMapMode = useMobileViewModeStore(
+    (state) => state.selectedMode === 'map'
+  );
 
   // store: action
-  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
+  const setSelectedMode = useMobileViewModeStore(
+    (state) => state.setSelectedMode
+  );
 
   useEffect(() => {
     if (isEmbedded && isContextLoaded) {

@@ -1,6 +1,6 @@
 import type { ReactElement, ChangeEvent } from 'react';
 import type { SetState } from '../../../common/types/common';
-import type { Recipient, TableHeader } from '../BulkCodesTypes';
+import type { RecipientUploadRow, TableHeader } from '../BulkCodesTypes';
 
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';
@@ -19,11 +19,13 @@ import AddRecipient from './AddRecipient';
 import UpdateRecipient from './UpdateRecipient';
 import ActionContainer from './ActionContainer';
 import RecipientHeader from './RecipientHeader';
+import { useUserStore } from '../../../../stores';
+import { isSelfGift } from '../utils';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
-  localRecipients: Recipient[];
-  setLocalRecipients: SetState<Recipient[]>;
+  localRecipients: RecipientUploadRow[];
+  setLocalRecipients: SetState<RecipientUploadRow[]>;
   canAddRecipients?: boolean;
   setIsAddingRecipient: SetState<boolean>;
   setIsEditingRecipient: SetState<boolean>;
@@ -41,6 +43,8 @@ const RecipientsTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isEditActive, setIsEditActive] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  // store: state
+  const giverEmail = useUserStore((state) => state.userProfile?.email);
 
   const enterEditMode = (index: number): void => {
     setIsEditActive(true);
@@ -67,7 +71,7 @@ const RecipientsTable = ({
     exitEditMode();
   };
 
-  const updateRecipient = (updatedRecipient: Recipient): void => {
+  const updateRecipient = (updatedRecipient: RecipientUploadRow): void => {
     if (editIndex !== null) {
       const absoluteEditIndex = page * rowsPerPage + editIndex;
       const _localRecipients = [...localRecipients];
@@ -156,7 +160,18 @@ const RecipientsTable = ({
                     </TableCell>
                     {headers.map((header) => {
                       const value = recipient[header.key];
-                      return <TableCell key={header.key}>{value}</TableCell>;
+                      const isSelfGiftEmail =
+                        header.key === 'recipient_email' &&
+                        giverEmail !== undefined &&
+                        isSelfGift(value, giverEmail);
+                      return (
+                        <TableCell
+                          key={header.key}
+                          sx={isSelfGiftEmail ? { color: 'error.main' } : {}}
+                        >
+                          {value}
+                        </TableCell>
+                      );
                     })}
                   </TableRow>
                 );

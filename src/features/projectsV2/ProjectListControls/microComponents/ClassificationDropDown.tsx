@@ -15,7 +15,7 @@ import {
 } from '../../../../../public/assets/images/icons/projectV2/PointMarkerIconsSymbol';
 import DollarIcon from '../../../../../public/assets/images/icons/projectV2/DollarIcon';
 import { clsx } from 'clsx';
-import { useProjectStore, useViewStore } from '../../../../stores';
+import { useProjectStore, useMobileViewModeStore } from '../../../../stores';
 
 const classificationItemIcons = {
   'restoration-tree-planting': <TreePlanting width={'20'} height={'20'} />,
@@ -30,7 +30,7 @@ const classificationItemIcons = {
 export const ClassificationDropDown = () => {
   const tAllProjects = useTranslations('AllProjects');
   // store: state
-  const selectedMode = useViewStore((state) => state.selectedMode);
+  const selectedMode = useMobileViewModeStore((state) => state.selectedMode);
   const selectedClassification = useProjectStore(
     (state) => state.selectedClassification
   );
