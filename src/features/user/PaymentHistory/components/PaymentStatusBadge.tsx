@@ -19,9 +19,11 @@ export const getStatusTone = (status: PaymentStatus | null): StatusTone => {
     case 'pending':
     case 'in-progress':
     case 'processing':
+    case 'in-dispute':
       return 'warning';
     case 'failed':
     case 'refunded':
+    case 'dispute-lost':
       return 'destructive';
     default:
       return 'neutral';

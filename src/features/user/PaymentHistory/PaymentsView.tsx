@@ -26,14 +26,14 @@ import { PaymentsListSkeleton } from './components/PaymentsListSkeleton';
 
 type FilterKey = 'all' | 'completed' | 'pending' | 'failed' | 'planetCash';
 
-// Status chips are mutually exclusive; PlanetCash is a payment-method quick
-// filter (method=planet-cash) that lives in the same single-select row.
-const FILTERS: { key: FilterKey; status?: string; method?: string }[] = [
+// Status chips are mutually exclusive; PlanetCash (paid from a PlanetCash
+// account or a top-up into one) lives in the same single-select row.
+const FILTERS: { key: FilterKey; status?: string; planetCash?: boolean }[] = [
   { key: 'all' },
   { key: 'completed', status: 'paid,complete' },
   { key: 'pending', status: 'pending' },
   { key: 'failed', status: 'failed' },
-  { key: 'planetCash', method: 'planet-cash' },
+  { key: 'planetCash', planetCash: true },
 ];
 
 /**
@@ -116,10 +116,10 @@ export default function PaymentsView() {
 
   const activeFilter = FILTERS.find((f) => f.key === filter);
   const status = activeFilter?.status;
-  const method = activeFilter?.method;
+  const planetCash = activeFilter?.planetCash;
   const params = useMemo(
-    () => ({ status, method, limit: 50 }),
-    [status, method]
+    () => ({ status, planetCash, limit: 50 }),
+    [status, planetCash]
   );
 
   // Chip labels via literal keys (all/completed/pending/failed + the PlanetCash
@@ -171,6 +171,8 @@ export default function PaymentsView() {
       pending: t('pending'),
       failed: t('failed'),
       refunded: t('refunded'),
+      'in-dispute': t('in-dispute'),
+      'dispute-lost': t('dispute-lost'),
     };
     return labels[paymentStatus] ?? paymentStatus;
   };

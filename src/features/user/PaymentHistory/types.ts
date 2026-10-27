@@ -165,6 +165,20 @@ export interface PaymentDetail {
   fundraiser?: PaymentFundraiser;
   /** Dropped by array_filter when the donation has none. */
   lineItems?: PaymentLineItem[];
+  /** Where to send the money; only for a pending bank transfer. */
+  transferDetails?: PaymentTransferDetails;
+}
+
+/**
+ * The bank account a pending bank transfer goes to. Empty fields are dropped.
+ * @see BankAccount::serialize()
+ */
+export interface PaymentTransferDetails {
+  beneficiary?: string;
+  iban?: string;
+  bic?: string;
+  bankName?: string;
+  swift?: string;
 }
 
 /**
@@ -203,6 +217,8 @@ export interface PaymentsListParams {
   purpose?: string;
   /** Maps to d.uid. */
   reference?: string;
+  /** Paid from a PlanetCash account or a top-up into one. */
+  planetCash?: boolean;
   /** e.g. "-created" (default), "created", "amount", "paymentDate". */
   sortBy?: string;
 }

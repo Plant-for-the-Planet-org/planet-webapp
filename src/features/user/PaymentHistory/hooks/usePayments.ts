@@ -22,8 +22,17 @@ const buildQueryParams = (
   params: PaymentsListParams
 ): Record<string, string> => {
   const q: Record<string, string> = {};
-  const { page, limit, status, provider, method, purpose, reference, sortBy } =
-    params;
+  const {
+    page,
+    limit,
+    status,
+    provider,
+    method,
+    purpose,
+    reference,
+    planetCash,
+    sortBy,
+  } = params;
 
   q.limit = String(limit ?? DEFAULT_LIMIT);
   if (page != null) q.page = String(page);
@@ -35,6 +44,7 @@ const buildQueryParams = (
   if (method) q.method = method;
   if (purpose) q.purpose = purpose;
   if (reference) q.reference = reference;
+  if (planetCash) q.planetCash = 'true';
   if (sortBy) q.sortBy = sortBy;
 
   return q;

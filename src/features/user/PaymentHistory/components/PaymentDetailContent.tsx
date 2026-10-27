@@ -41,13 +41,15 @@ const DetailRow = ({ label, value }: { label: string; value: ReactNode }) => {
 };
 
 /**
- * The payment detail body (title + amount, meta, fundraiser, line items,
- * gift, downloads). Rendered inside the Sheet on small screens and
+ * The payment detail body (title + amount, meta, status note, transfer
+ * details, fundraiser, line items, gift, downloads). Rendered inside the Sheet
+ * on small screens and
  * the inline pane on large screens. Fetches its own data from the guid.
  */
 export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
   const t = useTranslations('Me');
   const tPayments = useTranslations('Payments');
+  const tCommon = useTranslations('Common');
   const locale = useLocale();
   const { detail, isLoading } = usePaymentDetail(guid);
   const titleLabels = usePaymentTitleLabels();
@@ -67,8 +69,34 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
       pending: t('pending'),
       failed: t('failed'),
       refunded: t('refunded'),
+      'in-dispute': t('in-dispute'),
+      'dispute-lost': t('dispute-lost'),
     };
     return labels[status] ?? status;
+  };
+
+  // What happens next for a payment that is not settled yet, as on the old
+  // payment history: how long a transfer takes, or whom to ask about a dispute.
+  const statusNote = (): ReactNode => {
+    if (detail?.status === 'in-dispute') {
+      return t.rich('donationNote.in-dispute', {
+        supportLink: (chunk) => (
+          <a
+            href="mailto:support@plant-for-the-planet.org"
+            className="text-primary hover:underline"
+          >
+            {chunk}
+          </a>
+        ),
+      });
+    }
+    if (detail?.status !== 'pending') return null;
+    if (detail.gateway === 'offline') return t('donationNote.offline-offline');
+    if (detail.method === 'sepa_debit' || detail.method === 'stripe-sepa_debit')
+      return t('donationNote.stripe-sepa_debit');
+    if (detail.method === 'sofort' || detail.method === 'stripe-sofort')
+      return t('donationNote.stripe-sofort');
+    return null;
   };
 
   // Payment method codes ("offline" / "planet-cash" / "stripe-card" …) mapped
@@ -133,6 +161,32 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
   const fundraiserRef = fundraiser?.slug ?? fundraiser?.guid;
   const fundraiserUrl = fundraiserRef ? getFundraiserUrl(fundraiserRef) : null;
 
+  // The cost of one tree or m², for a payment with a single such line item.
+  const unitLine =
+    lineItems.length === 1 &&
+    (lineItems[0].unitType === 'tree' || lineItems[0].unitType === 'm2') &&
+    lineItems[0].units &&
+    lineItems[0].amount
+      ? lineItems[0]
+      : null;
+  const unitCostLabel =
+    unitLine?.unitType === 'tree'
+      ? t('unitCost', { unitType: tCommon('tree', { count: 1 }) })
+      : t('unitCost', { unitType: tCommon('m2') });
+
+  // The last update only adds something when it falls on another day.
+  const created = formatPaymentDate(detail.created, locale);
+  const updated = formatPaymentDate(detail.updated, locale);
+
+  const note = statusNote();
+  const transfer = detail.transferDetails;
+  const hasTransfer = Boolean(
+    transfer?.beneficiary ||
+      transfer?.iban ||
+      transfer?.bic ||
+      transfer?.bankName
+  );
+
   return (
     <div className="flex flex-col">
       <p className="text-sm text-muted-foreground">
@@ -155,11 +209,39 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
           label={t('paymentDate')}
           value={formatPaymentDate(detail.paymentDate, locale)}
         />
+        <DetailRow label={t('created')} value={created} />
+        {updated !== created && (
+          <DetailRow label={t('lastUpdate')} value={updated} />
+        )}
         <DetailRow label={tPayments('donationId')} value={detail.reference} />
         {detail.method && (
           <DetailRow label={t('method')} value={methodLabel(detail.method)} />
         )}
+        {unitLine && (
+          <DetailRow
+            label={unitCostLabel}
+            value={money((unitLine.amount ?? 0) / (unitLine.units ?? 1))}
+          />
+        )}
       </div>
+
+      {note && (
+        <p className="mt-2 rounded-lg bg-muted p-3 text-sm text-foreground">
+          {note}
+        </p>
+      )}
+
+      {hasTransfer && transfer && (
+        <Section title={t('transferDetails')}>
+          <DetailRow label={t('beneficiary')} value={transfer.beneficiary} />
+          <DetailRow label={t('iban')} value={transfer.iban} />
+          <DetailRow label={t('bic')} value={transfer.bic} />
+          <DetailRow label={t('bankName')} value={transfer.bankName} />
+          {transfer.swift !== 'swift' && (
+            <DetailRow label={t('swift')} value={transfer.swift} />
+          )}
+        </Section>
+      )}
 
       {fundraiser?.name && (
         <Section title={tPayments('fundraiser')}>
