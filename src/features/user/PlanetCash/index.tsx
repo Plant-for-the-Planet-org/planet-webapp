@@ -94,7 +94,7 @@ export default function PlanetCash({
     if (step === PlanetCashTabs.TRANSACTIONS) {
       router.replace(localizedPath('/profile/payments?filter=planetCash'));
     }
-  }, [step]);
+  }, [step, router, localizedPath]);
 
   const renderStep = () => {
     switch (step) {
