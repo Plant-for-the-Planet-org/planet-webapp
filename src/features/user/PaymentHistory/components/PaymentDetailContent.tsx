@@ -104,6 +104,8 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
   const methodLabel = (method: string) => {
     const labels: Record<string, string> = {
       offline: t('offline'),
+      transfer: t('offline-transfer'),
+      paypal: t('paypal-paypal'),
       card: t('card'),
       sepa_debit: t('sepa_debit'),
       'planet-cash': t('planet-cash'),
