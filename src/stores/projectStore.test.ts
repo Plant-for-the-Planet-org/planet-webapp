@@ -126,3 +126,22 @@ describe('projectStore.fetchProjects', () => {
     expect(useProjectStore.getState().isProjectsError).toBe(false);
   });
 });
+
+describe('projectStore.setDebouncedSearchValue', () => {
+  beforeEach(() => {
+    resetAllStores();
+  });
+
+  const storeSearch = (value: string) => {
+    useProjectStore.getState().setDebouncedSearchValue(value);
+    return useProjectStore.getState().debouncedSearchValue;
+  };
+
+  it('stores a spaces-only search as an empty one', () => {
+    expect(storeSearch('   ')).toBe('');
+  });
+
+  it('trims the ends of a search but keeps the spaces between words', () => {
+    expect(storeSearch('  plant for ghana ')).toBe('plant for ghana');
+  });
+});
