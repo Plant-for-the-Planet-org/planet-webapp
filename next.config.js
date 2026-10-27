@@ -143,6 +143,18 @@ const nextConfig = {
         destination: '/:locale/treemapper?source=import',
         permanent: false,
       },
+      // The old payment history pages, replaced by the Payments hub; keeps
+      // bookmarks and old email links working.
+      {
+        source: '/:locale/profile/history',
+        destination: '/:locale/profile/payments',
+        permanent: true,
+      },
+      {
+        source: '/:locale/profile/recurrency',
+        destination: '/:locale/profile/payments/recurring',
+        permanent: true,
+      },
     ];
   },
   assetPrefix: hasAssetPrefix
