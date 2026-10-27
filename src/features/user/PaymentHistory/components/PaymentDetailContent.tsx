@@ -14,6 +14,7 @@ import { getFundraiserUrl } from '@/utils/constants/fundraiser';
 
 import { usePaymentDetail } from '../hooks/usePaymentDetail';
 import { usePaymentTitleLabels } from '../hooks/usePaymentTitleLabels';
+import { DownloadCodesButton } from './DownloadCodesButton';
 import { PaymentStatusBadge } from './PaymentStatusBadge';
 
 const Section = ({
@@ -41,7 +42,7 @@ const DetailRow = ({ label, value }: { label: string; value: ReactNode }) => {
 
 /**
  * The payment detail body (title + amount, meta, fundraiser, line items,
- * dedication, downloads). Rendered inside the Sheet on small screens and
+ * gift, downloads). Rendered inside the Sheet on small screens and
  * the inline pane on large screens. Fetches its own data from the guid.
  */
 export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
@@ -115,7 +116,18 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
   }
 
   const lineItems = detail.lineItems ?? [];
-  const dedicatedTo = detail.gift?.recipient;
+  const gift = detail.gift;
+  const hasGift = Boolean(
+    gift?.recipient || gift?.message || gift?.occasion || gift?.comment
+  );
+  // As on the old payment history: a bouquet or composite donation offers no
+  // gift certificate or codes.
+  const canHaveGiftDownloads =
+    detail.purpose !== 'bouquet' && detail.purpose !== 'composite';
+  const giftCertificate = canHaveGiftDownloads ? gift?.certificate : undefined;
+  const codesUrl = canHaveGiftDownloads ? gift?.codesUrl : undefined;
+  const linkClass =
+    'inline-flex items-center gap-2 text-sm text-primary hover:underline';
 
   const fundraiser = detail.fundraiser;
   const fundraiserRef = fundraiser?.slug ?? fundraiser?.guid;
@@ -193,31 +205,51 @@ export const PaymentDetailContent = ({ guid }: { guid: string | null }) => {
         </Section>
       )}
 
-      {dedicatedTo && (
-        <Section title={tPayments('dedicatedTo')}>
-          <div className="flex items-center gap-2">
-            <UserRound className="size-4 shrink-0 text-primary" aria-hidden />
-            <span className="text-sm text-foreground">{dedicatedTo}</span>
-          </div>
-          {detail.gift?.message && (
+      {hasGift && gift && (
+        <Section title={gift.recipient ? tPayments('dedicatedTo') : t('gift')}>
+          {gift.recipient && (
+            <div className="flex items-center gap-2">
+              <UserRound className="size-4 shrink-0 text-primary" aria-hidden />
+              <span className="text-sm text-foreground">{gift.recipient}</span>
+            </div>
+          )}
+          {gift.message && (
             <p className="mt-2 rounded-lg bg-muted p-3 text-sm text-foreground">
-              {detail.gift.message}
+              {gift.message}
             </p>
           )}
+          <DetailRow label={t('giftOccasion')} value={gift.occasion} />
+          <DetailRow label={t('giftComment')} value={gift.comment} />
         </Section>
       )}
 
-      {detail.certificate && (
+      {(detail.certificate || giftCertificate || codesUrl) && (
         <Section title={t('downloads')}>
-          <a
-            href={detail.certificate}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
-          >
-            <ExternalLink className="size-4" aria-hidden />
-            {t('donorCertificate')}
-          </a>
+          <div className="flex flex-col items-start gap-2">
+            {detail.certificate && (
+              <a
+                href={detail.certificate}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                <ExternalLink className="size-4" aria-hidden />
+                {t('donorCertificate')}
+              </a>
+            )}
+            {giftCertificate && (
+              <a
+                href={giftCertificate}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                <ExternalLink className="size-4" aria-hidden />
+                {t('giftCertificate')}
+              </a>
+            )}
+            {codesUrl && <DownloadCodesButton codesUrl={codesUrl} />}
+          </div>
         </Section>
       )}
     </div>
