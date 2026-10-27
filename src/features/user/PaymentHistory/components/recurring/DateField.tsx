@@ -1,7 +1,16 @@
-import { useRef } from 'react';
-import { Calendar } from 'lucide-react';
+import type { CalendarProps } from '@/components/ui/calendar';
 
-import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { useLocale } from 'next-intl';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { cs, de, enUS, es, fr, it, ptBR } from 'react-day-picker/locale';
+
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 interface DateFieldProps {
   id?: string;
@@ -11,13 +20,38 @@ interface DateFieldProps {
   max?: string;
 }
 
+// One calendar locale per app language; month names, weekday names and the
+// first day of the week come from it.
+const CALENDAR_LOCALES: Record<string, NonNullable<CalendarProps['locale']>> = {
+  cs,
+  de,
+  en: enUS,
+  es,
+  fr,
+  it,
+  'pt-BR': ptBR,
+};
+
+/** `YYYY-MM-DD` to a local date, so the day does not shift with the timezone. */
+const toDate = (value: string | undefined): Date | undefined => {
+  if (!value) return undefined;
+  const [year, month, day] = value.split('-').map(Number);
+  if (!year || !month || !day) return undefined;
+  return new Date(year, month - 1, day);
+};
+
+const toValue = (date: Date): string =>
+  [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, '0'),
+    String(date.getDate()).padStart(2, '0'),
+  ].join('-');
+
 /**
- * A native date input with the calendar icon in FRONT of the text. The browser's
- * default indicator sits on the right; here it's stretched invisibly across the
- * field (so a click anywhere opens the picker) and a leading lucide Calendar is
- * shown instead. `showPicker()` is also called on click for browsers without the
- * webkit indicator. Native input keeps the value as YYYY-MM-DD — exactly what the
- * subscription payloads expect.
+ * A date field that opens a calendar in the app language, unlike a native date
+ * input, whose picker follows the browser language. The value stays
+ * `YYYY-MM-DD`, exactly what the subscription payloads expect; `min` and `max`
+ * limit which days can be picked.
  */
 export const DateField = ({
   id,
@@ -26,28 +60,54 @@ export const DateField = ({
   min,
   max,
 }: DateFieldProps) => {
-  const ref = useRef<HTMLInputElement>(null);
+  const locale = useLocale();
+  const [open, setOpen] = useState(false);
+
+  const selected = toDate(value);
+  const minDate = toDate(min);
+  const maxDate = toDate(max);
+  const label = selected
+    ? new Intl.DateTimeFormat(locale, {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }).format(selected)
+    : '';
 
   return (
-    <div className="relative">
-      <Calendar
-        className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-        aria-hidden
-      />
-      <input
-        ref={ref}
-        id={id}
-        type="date"
-        value={value}
-        min={min}
-        max={max}
-        onChange={(event) => onChange(event.target.value)}
-        onClick={() => ref.current?.showPicker?.()}
-        className={cn(
-          'flex h-10 w-full rounded-md border border-solid border-input bg-background py-2 pl-9 pr-3 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-          '[&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0'
-        )}
-      />
-    </div>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          id={id}
+          type="button"
+          className="flex h-10 w-full items-center gap-2 rounded-md border border-solid border-input bg-background px-3 py-2 text-left text-sm text-foreground ring-offset-background [font-family:inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          <CalendarIcon
+            className="size-4 shrink-0 text-muted-foreground"
+            aria-hidden
+          />
+          {label}
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          locale={CALENDAR_LOCALES[locale] ?? enUS}
+          selected={selected}
+          defaultMonth={selected ?? minDate}
+          startMonth={minDate}
+          endMonth={maxDate}
+          disabled={[
+            ...(minDate ? [{ before: minDate }] : []),
+            ...(maxDate ? [{ after: maxDate }] : []),
+          ]}
+          onSelect={(date) => {
+            if (!date) return;
+            onChange(toValue(date));
+            setOpen(false);
+          }}
+        />
+      </PopoverContent>
+    </Popover>
   );
 };
