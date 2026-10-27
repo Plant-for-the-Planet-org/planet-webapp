@@ -1,12 +1,15 @@
 import type { ReactNode } from 'react';
 import type { Subscription } from '@/features/common/types/payments';
 
+import { useRouter } from 'next/router';
 import { useLocale, useTranslations } from 'next-intl';
 import { ChevronDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import getFormattedCurrency from '@/utils/countryCurrency/getFormattedCurrency';
+import { generateProjectLink } from '@/utils/projectV2';
+import useLocalizedPath from '@/hooks/useLocalizedPath';
 
 import { formatPaymentDate } from '../../lib/formatPaymentDate';
 
@@ -52,9 +55,23 @@ export const RecurringRecord = ({
 }: RecurringRecordProps) => {
   const t = useTranslations('Me');
   const locale = useLocale();
+  const router = useRouter();
+  const { localizedPath } = useLocalizedPath();
 
   const money = (amount: number) =>
     getFormattedCurrency(locale, record.currency, amount);
+  // A project name links to its project page, as on the old recurring page.
+  const projectName = (name: string, id: string | undefined): ReactNode =>
+    id?.startsWith('proj_') ? (
+      <a
+        href={localizedPath(generateProjectLink(id, router.asPath))}
+        className="text-primary hover:underline"
+      >
+        {name}
+      </a>
+    ) : (
+      name
+    );
   const fmt = (date: string | Date | null | undefined) =>
     formatPaymentDate(date, locale);
 
@@ -132,13 +149,17 @@ export const RecurringRecord = ({
     }
     if (status === 'paused') {
       if (endsAtFuture)
-        return `${t('willBeCancelledOn')} ${fmt(record.endsAt)} • ${frequencyLabel}`;
+        return `${t('willBeCancelledOn')} ${fmt(
+          record.endsAt
+        )} • ${frequencyLabel}`;
       return record.pauseUntil
         ? `${t('pausedUntil')} ${fmt(record.pauseUntil)} • ${frequencyLabel}`
         : t('pausedUntilResumed');
     }
     if (status === 'past_due') {
-      return `${t('lastDueOn')} ${fmt(record.currentPeriodEnd)} • ${frequencyLabel}`;
+      return `${t('lastDueOn')} ${fmt(
+        record.currentPeriodEnd
+      )} • ${frequencyLabel}`;
     }
     if (status === 'canceled' && record.endsAt) {
       return `${t('cancelledOn')} ${fmt(record.endsAt)} • ${frequencyLabel}`;
@@ -222,8 +243,7 @@ export const RecurringRecord = ({
             <Detail
               label={t('totalDonated')}
               value={
-                record.totalDonated == null ||
-                Number.isNaN(record.totalDonated)
+                record.totalDonated == null || Number.isNaN(record.totalDonated)
                   ? null
                   : money(record.totalDonated)
               }
@@ -253,7 +273,7 @@ export const RecurringRecord = ({
                     className="flex items-center justify-between gap-3 border-b border-solid border-border/60 px-3 py-2 text-sm last:border-b-0"
                   >
                     <span className="min-w-0 truncate text-foreground">
-                      {item.name}
+                      {item.name ? projectName(item.name, item.id) : null}
                     </span>
                     {item.amount != null && (
                       <span className="shrink-0 tabular-nums text-muted-foreground">
@@ -269,14 +289,21 @@ export const RecurringRecord = ({
               <p className="mb-1 text-xs text-muted-foreground">
                 {t('planet-cash')}
               </p>
-              <p className="text-sm text-foreground">{t('planetCashPayment')}</p>
+              <p className="text-sm text-foreground">
+                {t('planetCashPayment')}
+              </p>
             </div>
           ) : singleName ? (
             <div className="mt-4">
               <p className="mb-1 text-xs text-muted-foreground">
                 {t('project')}
               </p>
-              <p className="text-sm text-foreground">{singleName}</p>
+              <p className="text-sm text-foreground">
+                {projectName(
+                  singleName,
+                  dest?.type === 'project' ? dest.id : undefined
+                )}
+              </p>
             </div>
           ) : null}
 
