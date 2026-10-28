@@ -15,13 +15,22 @@ export interface UsePaymentMethodsResult {
   removingId: string | null;
   removeMethod: (id: string) => Promise<boolean>;
   reload: () => void;
+  /** True while waiting for a newly added method to appear in the list. */
+  isSyncing: boolean;
+  /** Resolves true once the method is listed, false if it did not appear in time. */
+  waitForMethod: (id: string) => Promise<boolean>;
 }
+
+// The platform stores a new method when Stripe's webhook arrives, so it can be missing from the list for a few seconds after it was saved.
+const SYNC_ATTEMPTS = 6;
+const SYNC_DELAY_MS = 1500;
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
  * Lists and removes the profile's saved payment methods for a country via
  * GET/DELETE /app/profile/paymentMethods/{country}[/ {id}] (Bearer auth).
- * Adding a method is intentionally NOT here — it needs Stripe Elements, which
- * the webapp does not yet have (see the payment-history-redesign notes).
+ * Adding a method lives in AddPaymentMethodDialog, which calls `waitForMethod` once Stripe has saved it.
  */
 export const usePaymentMethods = (
   country: string | null
@@ -88,5 +97,44 @@ export const usePaymentMethods = (
 
   const reload = useCallback(() => setReloadToken((token) => token + 1), []);
 
-  return { methods, isLoading, error, removingId, removeMethod, reload };
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const waitForMethod = useCallback(
+    async (id: string): Promise<boolean> => {
+      if (!country) return false;
+      setIsSyncing(true);
+      try {
+        for (let attempt = 0; attempt < SYNC_ATTEMPTS; attempt++) {
+          if (attempt > 0) await wait(SYNC_DELAY_MS);
+          const res = await apiRef.current
+            .getApiAuthenticated<SavedPaymentMethod[]>(
+              `/app/profile/paymentMethods/${country}`
+            )
+            .catch(() => null);
+          if (res?.some((method) => method.id === id)) {
+            // Drop any load still in flight so it cannot overwrite this list.
+            requestIdRef.current++;
+            setIsLoading(false);
+            setMethods(res);
+            return true;
+          }
+        }
+        return false;
+      } finally {
+        setIsSyncing(false);
+      }
+    },
+    [country]
+  );
+
+  return {
+    methods,
+    isLoading,
+    error,
+    removingId,
+    removeMethod,
+    reload,
+    isSyncing,
+    waitForMethod,
+  };
 };

@@ -202,6 +202,21 @@ export interface SavedPaymentMethod {
   expires?: string | null;
 }
 
+/** Payment method types a SetupIntent can save for later use. */
+export type SetupIntentMethod = 'card' | 'sepa_debit';
+
+/**
+ * A SetupIntent for saving a payment method without paying.
+ * @see UserProfileController::createSetupIntent
+ *   POST /app/profile/paymentMethods/{country}/setupIntent
+ */
+export interface SetupIntentResponse {
+  clientSecret: string;
+  /** Publishable key of the country's Stripe account, the only key that can confirm the secret. */
+  publishableKey: string | null;
+  methods: SetupIntentMethod[];
+}
+
 /** Query params accepted by GET /app/payments (see controller filter/order maps). */
 export interface PaymentsListParams {
   page?: number;
