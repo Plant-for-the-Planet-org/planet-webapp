@@ -107,6 +107,15 @@ On a deployed URL, Playwright may run several workers, but it spreads only test 
 - Staging data changes. Check the shape of a result, not exact counts or list order.
 - `test.only` is fine while you work, but CI fails the run if one is committed.
 
+### Map tests
+
+Project markers are drawn on a WebGL canvas, so they are not in the page for Playwright to find. [e2e/project-filter.spec.ts](e2e/project-filter.spec.ts) shows the pattern, using helpers from [e2e/map.ts](e2e/map.ts).
+
+- Call `allowSoftwareWebGL(page)` before `page.goto`. Without a GPU, as in CI, Chromium renders WebGL in software (SwiftShader), and the app's WebGL check would show "Graphics acceleration required" instead of the map. MapLibre draws fine in software, so the helper hides the renderer's name from that check.
+- Read markers with `waitForProjectMarkers(page)` and `projectMarkers(page)`. They call `window.__planetE2E.getProjectMarkers()` from [src/utils/e2eHooks.ts](src/utils/e2eHooks.ts), which returns each marker's `slug` and `iconKey`, such as `pin-mangroves-regularProject`.
+- The hook is on in local development by itself. A deployed preview needs `NEXT_PUBLIC_E2E_HOOKS=true` in Vercel, set for the Preview environment only, before the build. Without it, map tests fail with a message saying so. Never set it for production.
+- Call `test.slow()` in map tests. Software rendering is slow, and the map alone can take over 10 s to appear.
+
 ### In CI
 
 - `.github/workflows/e2e.yml` runs when Vercel reports a finished preview, and tests that preview. It does not build the app again.
