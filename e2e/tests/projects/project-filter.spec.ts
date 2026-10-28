@@ -140,3 +140,51 @@ test('Accepting Donations alone hides non-donatable projects from the map withou
     )
   ).toBeVisible();
 });
+
+test('two project types show the projects of either type, and unpicking one leaves only the other', async ({
+  page,
+}) => {
+  test.slow();
+  const AGROFORESTRY = 'agroforestry';
+
+  const startMarkers = await waitForProjectMarkers(page);
+  // A third type on the map means the two-type check below cannot pass before the filters apply.
+  const start = summarize(startMarkers);
+  expect(start.types).toEqual(
+    expect.arrayContaining([MANGROVES, AGROFORESTRY])
+  );
+  expect(start.types.length).toBeGreaterThan(2);
+
+  // Expected counts come from this page's own start markers, not fixed numbers, so changing staging data cannot break them.
+  const startCount = (type: string) =>
+    startMarkers.filter((marker) => markerType(marker) === type).length;
+  const mapState = async () => {
+    const markers = await projectMarkers(page);
+    return { types: summarize(markers).types.sort(), count: markers.length };
+  };
+
+  await page.getByRole('button', { name: text.filterProjects }).click();
+  const mangroves = filterOption(page, text.classificationTypes.mangroves);
+  const agroforestry = filterOption(
+    page,
+    text.classificationTypes.agroforestry
+  );
+
+  await mangroves.click();
+  await agroforestry.click();
+  await expect(mangroves).toHaveAttribute('aria-pressed', 'true');
+  await expect(agroforestry).toHaveAttribute('aria-pressed', 'true');
+  await expect
+    .poll(mapState, { message: 'every mangrove and agroforestry project' })
+    .toEqual({
+      types: [AGROFORESTRY, MANGROVES],
+      count: startCount(MANGROVES) + startCount(AGROFORESTRY),
+    });
+
+  await mangroves.click();
+  await expect(mangroves).toHaveAttribute('aria-pressed', 'false');
+  await expect(agroforestry).toHaveAttribute('aria-pressed', 'true');
+  await expect
+    .poll(mapState, { message: 'every agroforestry project, and nothing else' })
+    .toEqual({ types: [AGROFORESTRY], count: startCount(AGROFORESTRY) });
+});
