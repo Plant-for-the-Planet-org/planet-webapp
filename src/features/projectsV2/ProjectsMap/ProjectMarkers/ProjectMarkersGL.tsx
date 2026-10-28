@@ -1,6 +1,10 @@
 import type { MapProject } from '../../../common/types/projectv2';
 import type { FeatureCollection, Point } from 'geojson';
-import type { MapLayerMouseEvent, MapGeoJSONFeature } from 'maplibre-gl';
+import type {
+  GeoJSONSource,
+  MapLayerMouseEvent,
+  MapGeoJSONFeature,
+} from 'maplibre-gl';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Layer, Source, useMap } from 'react-map-gl/maplibre';
@@ -14,12 +18,14 @@ import {
 import { getProjectCategory } from '../../../../utils/projectV2';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { areE2EHooksEnabled } from '../../../../utils/e2eHooks';
 
 interface Props {
   projects: MapProject[];
 }
 
 export const PROJECT_MARKERS_LAYER = 'project-markers-gl';
+const PROJECT_MARKERS_SOURCE = 'project-markers-source';
 
 // Draw order by tier: lower value renders first (underneath). Top projects on top, non donatable at bottom
 const TIER_DRAW_ORDER: Record<string, number> = {
@@ -127,6 +133,29 @@ const ProjectMarkersGL = ({ projects }: Props) => {
     };
   }, [mapInstance]);
 
+  // Markers are drawn on a canvas, so E2E tests read them from the map's own source data instead of the page.
+  useEffect(() => {
+    const map = mapInstance?.getMap();
+    if (!map || !areE2EHooksEnabled()) return;
+    window.__planetE2E = {
+      getProjectMarkers: async () => {
+        const source = map.getSource<GeoJSONSource>(PROJECT_MARKERS_SOURCE);
+        if (!source) return null;
+        const data = (await source.getData()) as FeatureCollection<
+          Point,
+          ProjectMarkerProperties
+        >;
+        return data.features.map(({ properties: { slug, iconKey } }) => ({
+          slug,
+          iconKey,
+        }));
+      },
+    };
+    return () => {
+      delete window.__planetE2E;
+    };
+  }, [mapInstance]);
+
   // Hover/click interactions on the marker layer.
   const [popupProject, setPopupProject] = useState<MapProject | null>(null);
   const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -188,7 +217,7 @@ const ProjectMarkersGL = ({ projects }: Props) => {
   return (
     <>
       <Source
-        id="project-markers-source"
+        id={PROJECT_MARKERS_SOURCE}
         type="geojson"
         data={featureCollection}
       >
