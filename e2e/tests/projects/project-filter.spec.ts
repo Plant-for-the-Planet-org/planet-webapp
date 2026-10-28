@@ -106,3 +106,37 @@ test('Mangroves, then Accepting Donations, narrow the project list and the map m
     })
     .toBe(startMarkers.length);
 });
+
+test('Accepting Donations alone hides non-donatable projects from the map without filtering by project type', async ({
+  page,
+}) => {
+  test.slow();
+
+  const start = summarize(await waitForProjectMarkers(page));
+  expect(start.nonDonatable).toBeGreaterThan(0);
+  expect(start.types.length).toBeGreaterThan(1);
+
+  await page.getByRole('button', { name: text.filterProjects }).click();
+  const donations = filterOption(page, text.acceptingDonations);
+  await donations.click();
+  await expect(donations).toHaveAttribute('aria-pressed', 'true');
+
+  await expect
+    .poll(async () => summarize(await projectMarkers(page)).nonDonatable, {
+      message: 'no non-donatable projects on the map',
+    })
+    .toBe(0);
+  const donatableMarkers = await projectMarkers(page);
+  // Catches a donation filter that also filters by type.
+  expect(summarize(donatableMarkers).types.length).toBeGreaterThan(1);
+
+  // Holds while every staging project has a known type: a project without one is counted in the header but gets no pin.
+  await expect(
+    page.getByText(
+      formatMessage(text.filterResult, {
+        count: donatableMarkers.length,
+      }).trim(),
+      { exact: true }
+    )
+  ).toBeVisible();
+});
