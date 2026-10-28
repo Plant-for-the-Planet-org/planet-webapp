@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import type { E2EProjectMarker } from '../src/utils/e2eHooks';
+import type { E2EProjectMarker } from '../../src/utils/e2eHooks';
 
 import { expect } from './fixtures';
 

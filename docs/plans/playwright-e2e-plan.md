@@ -101,7 +101,7 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 
 ### Test data
 
-- Phase 1 tests are read-only. They need data that stays put, so they use a well-known staging project: `Yucatán Restoration` (slug `yucatan`), set in [e2e/projects.ts](../../e2e/projects.ts).
+- Phase 1 tests are read-only. They need data that stays put, so they use a well-known staging project: `Yucatán Restoration` (slug `yucatan`), set in [e2e/support/projects.ts](../../e2e/support/projects.ts).
 - Check shape, not exact values: "a project name is visible", not "1,234,567 trees", since counts change.
 - Do not rely on the order of the project list. The staging API order changed between two runs on 2026-10-12, which broke a test that assumed which projects were listed first.
 - Tests that create data come later. They need a dedicated account, unique names, and cleanup through the API after each test.
@@ -121,14 +121,14 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 ### Files and scripts
 
 - One dev dependency: `@playwright/test` 1.64. Chromium only.
-- [playwright.config.ts](../../playwright.config.ts) and an `e2e/` folder for the tests:
-  - [e2e/fixtures.ts](../../e2e/fixtures.ts): specs import `test` from here, so every test also fails when the page throws an uncaught error.
-  - [e2e/projects.ts](../../e2e/projects.ts): the staging project the tests use, and a locator for the cards in the project list.
-  - [e2e/i18n.ts](../../e2e/i18n.ts): the locale the tests open (`LOCALE`), and the app's UI text for it, read from `public/static/locales` with the same English fallback the app uses.
-  - [e2e/project-search.spec.ts](../../e2e/project-search.spec.ts): the project search tests.
+- [playwright.config.ts](../../playwright.config.ts) and an `e2e/` folder for the tests, with specs in `e2e/tests/<feature>/` and shared helpers in `e2e/support/`:
+  - [e2e/support/fixtures.ts](../../e2e/support/fixtures.ts): specs import `test` from here, so every test also fails when the page throws an uncaught error.
+  - [e2e/support/projects.ts](../../e2e/support/projects.ts): the staging project the tests use, and a locator for the cards in the project list.
+  - [e2e/support/i18n.ts](../../e2e/support/i18n.ts): the locale the tests open (`LOCALE`), and the app's UI text for it, read from `public/static/locales` with the same English fallback the app uses.
+  - [e2e/tests/projects/project-search.spec.ts](../../e2e/tests/projects/project-search.spec.ts): the project search tests.
 - Two scripts, named like the existing ones: `test:e2e` and `test:e2e:ui`.
 - `.gitignore` entries: `test-results/`, `playwright-report/`, `playwright/.auth/`.
-- No Vitest change. [vitest.config.mts](../../vitest.config.mts) only picks up `*.test.ts`, so `e2e/*.spec.ts` stays separate.
+- No Vitest change. [vitest.config.mts](../../vitest.config.mts) only picks up `*.test.ts`, so `e2e/**/*.spec.ts` stays separate.
 
 ### Current config
 
@@ -196,7 +196,7 @@ Where to find a failed test's recording: `test-results/<test name>/trace.zip`, o
 
 - Flaky tests: staging data changes (the project list order already has), staging goes down, and the dev server builds pages slowly on first visit. A red check that is not caused by the PR teaches people to ignore red. To limit this: few tests, loose checks, 2 retries in CI, and non-blocking at first.
 - Slower than unit tests: seconds per test, not milliseconds. Expect about 3 to 5 minutes per CI run, including install.
-- Upkeep: UI changes can break locators. Prefer roles and labels, and take their text from [e2e/i18n.ts](../../e2e/i18n.ts) instead of typing it, so a wording change or another locale does not break them.
+- Upkeep: UI changes can break locators. Prefer roles and labels, and take their text from [e2e/support/i18n.ts](../../e2e/support/i18n.ts) instead of typing it, so a wording change or another locale does not break them.
 - Add `data-testid` only where no role fits. Today there is one: `project-list-item`, on each card in the project list. Each card is a link that wraps its own Donate link, which is invalid HTML (React warns about it), so a locator built on that would break once the markup is fixed.
 - Tests run in English. Setting `LOCALE` to `de` or `fr` works for the UI text (checked 2026-10-13), but the accent search test then fails, because staging gives the project a name per locale (German: "Yucatán Renaturierung").
 - Login is fragile: bot checks, MFA, password changes, and token expiry. Someone must own the test account.
@@ -208,14 +208,14 @@ Where to find a failed test's recording: `test-results/<test name>/trace.zip`, o
 
 ## 7. First tests
 
-Phase 1: no login, read-only. Each test also fails if the page throws an uncaught error (Playwright's `pageerror` event, set up in [e2e/fixtures.ts](../../e2e/fixtures.ts)), which catches React crashes.
+Phase 1: no login, read-only. Each test also fails if the page throws an uncaught error (Playwright's `pageerror` event, set up in [e2e/support/fixtures.ts](../../e2e/support/fixtures.ts)), which catches React crashes.
 
 | # | Test | Status | What it checks |
 |---|---|---|---|
 | 1 | Project search | Done | Search finds the right project and hides the others, shows a message when nothing matches, and brings the list back when cleared. |
 | 2 | List opens a project | Pending | Clicking a project card opens its page and shows its name. Navigation inside the app works. |
 
-The project search tests, in [e2e/project-search.spec.ts](../../e2e/project-search.spec.ts):
+The project search tests, in [e2e/tests/projects/project-search.spec.ts](../../e2e/tests/projects/project-search.spec.ts):
 - `yucatan restoration`, typed without the accent, shows "Yucatán Restoration", and every other card that was on screen disappears.
 - `Italy` shows only cards from Italy. On staging, no project has Italy in its name, location or TPO, so a result proves the country name is searched. The name comes from the locale's `country.json`.
 - Country names match only in the site's language, on purpose: on the English site, "Mexiko" finds nothing. No test covers this.

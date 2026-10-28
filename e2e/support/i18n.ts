@@ -1,6 +1,6 @@
-import type englishAllProjects from '../public/static/locales/en/allProjects.json';
-import type englishCountry from '../public/static/locales/en/country.json';
-import type englishProject from '../public/static/locales/en/project.json';
+import type englishAllProjects from '../../public/static/locales/en/allProjects.json';
+import type englishCountry from '../../public/static/locales/en/country.json';
+import type englishProject from '../../public/static/locales/en/project.json';
 
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -16,7 +16,12 @@ type ProjectText = (typeof englishProject)['Project'];
 const readMessages = (locale: string, file: string) =>
   JSON.parse(
     readFileSync(
-      path.join(__dirname, '../public/static/locales', locale, `${file}.json`),
+      path.join(
+        __dirname,
+        '../../public/static/locales',
+        locale,
+        `${file}.json`
+      ),
       'utf8'
     )
   );

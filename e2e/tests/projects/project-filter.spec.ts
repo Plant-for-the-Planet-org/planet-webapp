@@ -1,30 +1,26 @@
 import type { Page } from '@playwright/test';
-import type { E2EProjectMarker } from '../src/utils/e2eHooks';
+import type { E2EProjectMarker } from '../../../src/utils/e2eHooks';
 
-import { test, expect } from './fixtures';
+import { test, expect } from '../../support/fixtures';
 import {
   LOCALE,
   allProjectsText as text,
   formatMessage,
   projectText,
-} from './i18n';
-import { projectCards } from './projects';
+} from '../../support/i18n';
+import { projectCards, projectListTab } from '../../support/projects';
 import {
   allowSoftwareWebGL,
   markerTier,
   markerType,
   projectMarkers,
   waitForProjectMarkers,
-} from './map';
+} from '../../support/map';
 
 const MANGROVES = 'mangroves';
 
 const filterOption = (page: Page, name: string) =>
   page.getByRole('button', { name, exact: true });
-
-// The tab label ends with a project count, so match only the words before it.
-const allProjectsTab = (page: Page) =>
-  page.getByRole('tab', { name: text.allProjects.split('<')[0].trim() });
 
 // Summed up so a failure shows what the map held, not just "false".
 const summarize = (markers: E2EProjectMarker[]) => ({
@@ -87,7 +83,7 @@ test('the Mangroves and Accepting Donations filters update both the project list
 
   await expect(mangroves).toHaveAttribute('aria-pressed', 'false');
   await expect(donations).toHaveAttribute('aria-pressed', 'false');
-  await expect(allProjectsTab(page)).toBeVisible();
+  await expect(projectListTab(page, text.allProjects)).toBeVisible();
   await expect
     .poll(async () => (await projectMarkers(page)).length, {
       message: 'all project markers back on the map',
