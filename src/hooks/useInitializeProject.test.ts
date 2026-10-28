@@ -1,3 +1,4 @@
+import type { ParsedUrlQuery } from 'querystring';
 import type { Page } from './useCurrentPage';
 
 import { act, renderHook, waitFor } from '@testing-library/react';
@@ -23,9 +24,9 @@ const PATHNAMES: Record<NonNullable<Page>, string> = {
   'project-details': '/sites/[slug]/[locale]/[p]',
 };
 
-const renderOnPage = (page: NonNullable<Page>) => {
+const renderOnPage = (page: NonNullable<Page>, query: ParsedUrlQuery = {}) => {
   vi.mocked(useRouter).mockReturnValue(
-    createMockRouter({ pathname: PATHNAMES[page] })
+    createMockRouter({ pathname: PATHNAMES[page], query })
   );
   renderHook(() => useInitializeProject());
 };
@@ -112,5 +113,61 @@ describe('useInitializeProject', () => {
     resolveCurrency();
 
     expect(getApi).not.toHaveBeenCalled();
+  });
+});
+
+describe('useInitializeProject filters', () => {
+  const filterState = () => {
+    const state = useProjectStore.getState();
+    return {
+      classifications: state.selectedClassification,
+      donatableOnly: state.showDonatableProjects,
+    };
+  };
+
+  beforeEach(() => {
+    resetAllStores();
+  });
+
+  // The Salesforce Mangroves tenant page links to the list this way.
+  it('reads a classification and the donation filter from the URL on the list page', () => {
+    renderOnPage('project-list', {
+      filter: 'mangroves',
+      donatable_projects_only: 'true',
+    });
+
+    expect(filterState()).toEqual({
+      classifications: ['mangroves'],
+      donatableOnly: true,
+    });
+  });
+
+  it('keeps only the valid classifications when the URL repeats the filter, and needs "true" for the donation filter', () => {
+    renderOnPage('project-list', {
+      filter: ['mangroves', 'not-a-classification', 'agroforestry'],
+      donatable_projects_only: 'false',
+    });
+
+    expect(filterState()).toEqual({
+      classifications: ['mangroves', 'agroforestry'],
+      donatableOnly: false,
+    });
+  });
+
+  it('clears search and filters when the page becomes project details', () => {
+    useProjectStore.setState({
+      selectedClassification: ['mangroves'],
+      showDonatableProjects: true,
+      debouncedSearchValue: 'yucatan',
+      isSearching: true,
+    });
+
+    renderOnPage('project-details');
+
+    const state = useProjectStore.getState();
+    expect(state.selectedClassification).toEqual([]);
+    expect(state.showDonatableProjects).toBe(false);
+    expect(state.debouncedSearchValue).toBe('');
+    expect(state.isSearching).toBe(false);
   });
 });
