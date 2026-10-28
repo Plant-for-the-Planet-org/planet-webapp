@@ -340,6 +340,11 @@
       "outstandingTitle": "Die folgenden Informationen fehlen:",
       "submitWaiting": "Wir haben die Einreichung erhalten und prüfen sie. In der Zwischenzeit kann weiteres hochgeladen werden.",
       "submit": "Zur Prüfung einreichen"
-    }
+    },
+    "transactions": "Transaktionen",
+    "recurring": "Wiederkehrend",
+    "paymentMethods": "Zahlungsmethoden",
+    "quarterly": "Vierteljährlich",
+    "semiyearly": "Halbjährlich"
   }
 }

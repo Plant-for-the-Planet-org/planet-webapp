@@ -18,6 +18,7 @@ type TRANSLATION_FILE_NAMES =
   | 'manageProjects'
   | 'maps'
   | 'me'
+  | 'payments'
   | 'planet'
   | 'planetcash'
   | 'profile'

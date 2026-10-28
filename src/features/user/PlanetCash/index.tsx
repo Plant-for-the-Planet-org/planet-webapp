@@ -8,7 +8,6 @@ import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
-import Transactions from './screens/Transactions';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
@@ -60,7 +59,6 @@ export default function PlanetCash({
           }
           break;
         case PlanetCashTabs.ACCOUNTS:
-        case PlanetCashTabs.TRANSACTIONS:
           if (!accounts.length) {
             router.push(localizedPath('/profile/planetcash/new'));
           }
@@ -74,7 +72,7 @@ export default function PlanetCash({
 
   useEffect(() => {
     if (!isAuthReady || status !== 'idle') return;
-    setProgress && setProgress(70);
+    if (setProgress) setProgress(70);
     fetchPlanetCashAccounts(getApiAuthenticated).finally(() => {
       if (setProgress) {
         setProgress(100);
@@ -89,10 +87,20 @@ export default function PlanetCash({
     }
   }, [status, planetCashAccounts, redirectIfNeeded]);
 
+  // PlanetCash transactions now live in the Payments hub, pre-filtered to
+  // PlanetCash. The tab links there directly; this handles any direct hit /
+  // bookmark on /profile/planetcash/transactions.
+  useEffect(() => {
+    if (step === PlanetCashTabs.TRANSACTIONS) {
+      router.replace(localizedPath('/profile/payments?filter=planetCash'));
+    }
+  }, [step, router, localizedPath]);
+
   const renderStep = () => {
     switch (step) {
       case PlanetCashTabs.TRANSACTIONS:
-        return <Transactions setProgress={setProgress} />;
+        // Redirecting to the Payments hub (see effect above) — render nothing.
+        return null;
       case PlanetCashTabs.CREATE_ACCOUNT:
         return <CreateAccount />;
       case PlanetCashTabs.ACCOUNTS:
@@ -119,7 +127,7 @@ export default function PlanetCash({
           },
           {
             label: t('tabTransactions'),
-            link: '/profile/planetcash/transactions',
+            link: '/profile/payments?filter=planetCash',
             step: PlanetCashTabs.TRANSACTIONS,
           },
         ]);

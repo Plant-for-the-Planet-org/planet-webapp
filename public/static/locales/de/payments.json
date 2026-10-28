@@ -1,0 +1,30 @@
+{
+  "Payments": {
+    "loadError": "Zahlungen konnten nicht geladen werden. Bitte erneut versuchen.",
+    "retry": "Erneut versuchen",
+    "selectPayment": "Wähle eine Zahlung, um die Details zu sehen",
+    "dedicated": "Gewidmet",
+    "dedicatedTo": "Gewidmet an",
+    "donationId": "Spenden-ID",
+    "fundraiser": "Spendenaktion",
+    "supports": "Unterstützt",
+    "noPaymentMethods": "Keine gespeicherten Zahlungsmethoden",
+    "remove": "Entfernen",
+    "default": "Standard",
+    "confirmRemoveMethod": "Diese Zahlungsmethode entfernen?",
+    "purposes": {
+      "trees": "Bäume",
+      "conservation": "Naturschutz",
+      "restoration": "Wiederherstellung",
+      "funds": "Spende",
+      "membership": "Mitgliedschaft",
+      "academy": "Akademie",
+      "planet-cash": "PlanetCash",
+      "sponsorship": "Patenschaft",
+      "endowment": "Zustiftung",
+      "forest-protection": "Waldschutz",
+      "bouquet": "Bouquet"
+    },
+    "withSupport": "{label} + Unterstützung"
+  }
+}

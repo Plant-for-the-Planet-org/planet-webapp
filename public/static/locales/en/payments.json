@@ -1,0 +1,30 @@
+{
+  "Payments": {
+    "loadError": "Couldn't load your payments. Try again.",
+    "retry": "Try again",
+    "selectPayment": "Select a payment to see its details",
+    "dedicated": "Dedicated",
+    "dedicatedTo": "Dedicated to",
+    "donationId": "Donation ID",
+    "fundraiser": "Fundraiser",
+    "supports": "Supports",
+    "noPaymentMethods": "No saved payment methods",
+    "remove": "Remove",
+    "default": "Default",
+    "confirmRemoveMethod": "Remove this payment method?",
+    "purposes": {
+      "trees": "Trees",
+      "conservation": "Conservation",
+      "restoration": "Restoration",
+      "funds": "Donation",
+      "membership": "Membership",
+      "academy": "Academy",
+      "planet-cash": "PlanetCash",
+      "sponsorship": "Sponsorship",
+      "endowment": "Endowment",
+      "forest-protection": "Forest protection",
+      "bouquet": "Bouquet"
+    },
+    "withSupport": "{label} + support"
+  }
+}

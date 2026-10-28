@@ -1,0 +1,30 @@
+{
+  "Payments": {
+    "loadError": "Platby se nepodařilo načíst. Zkuste to znovu.",
+    "retry": "Zkusit znovu",
+    "selectPayment": "Vyberte platbu pro zobrazení podrobností",
+    "dedicated": "Věnováno",
+    "dedicatedTo": "Věnováno",
+    "donationId": "ID daru",
+    "fundraiser": "Sbírka",
+    "supports": "Podporuje",
+    "noPaymentMethods": "Žádné uložené platební metody",
+    "remove": "Odebrat",
+    "default": "Výchozí",
+    "confirmRemoveMethod": "Odebrat tuto platební metodu?",
+    "purposes": {
+      "trees": "Stromy",
+      "conservation": "Ochrana přírody",
+      "restoration": "Obnova",
+      "funds": "Dar",
+      "membership": "Členství",
+      "academy": "Akademie",
+      "planet-cash": "PlanetCash",
+      "sponsorship": "Sponzorství",
+      "endowment": "Nadační jmění",
+      "forest-protection": "Ochrana lesů",
+      "bouquet": "Bouquet"
+    },
+    "withSupport": "{label} + podpora"
+  }
+}
