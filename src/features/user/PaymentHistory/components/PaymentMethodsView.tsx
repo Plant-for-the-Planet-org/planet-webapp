@@ -3,7 +3,6 @@ import { useTranslations } from 'next-intl';
 import { Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { useUserStore } from '@/stores/userStore';
 
 import { usePaymentMethods } from '../hooks/usePaymentMethods';
 import { AddPaymentMethodPanel } from './paymentMethods/AddPaymentMethodPanel';
@@ -14,25 +13,16 @@ import { PaymentsListSkeleton } from './PaymentsListSkeleton';
 type SyncNotice = 'syncing' | 'delayed' | null;
 
 /**
- * Lists the profile's saved payment methods (card / SEPA) for the profile's country, and lets the donor add and remove them.
+ * Lists the profile's saved payment methods (card / SEPA) and lets the donor add and remove them.
  */
 export const PaymentMethodsView = () => {
   const t = useTranslations('Payments');
   // local state
   const [isAdding, setIsAdding] = useState(false);
   const [syncNotice, setSyncNotice] = useState<SyncNotice>(null);
-  // store: state
-  const userCountry = useUserStore((state) => state.userProfile?.country);
-
-  const country =
-    userCountry ??
-    (typeof window !== 'undefined'
-      ? localStorage.getItem('countryCode')
-      : null) ??
-    'DE';
 
   const { methods, isLoading, removingId, removeMethod, waitForMethod } =
-    usePaymentMethods(country);
+    usePaymentMethods();
 
   const handleAdded = async (paymentMethodId: string) => {
     setIsAdding(false);
@@ -98,7 +88,6 @@ export const PaymentMethodsView = () => {
 
       {isAdding && (
         <AddPaymentMethodPanel
-          country={country}
           onClose={() => setIsAdding(false)}
           onAdded={handleAdded}
         />

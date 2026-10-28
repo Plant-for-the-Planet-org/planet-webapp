@@ -1,4 +1,5 @@
 import type { SetupIntentMethod, SetupIntentResponse } from '../../types';
+import type { OpenSetupIntent } from '../../hooks/useSetupIntent';
 import type { SetupFormHandle } from './stripeFields';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -15,7 +16,6 @@ import { CardSetupForm } from './CardSetupForm';
 import { SepaSetupForm } from './SepaSetupForm';
 
 interface AddPaymentMethodPanelProps {
-  country: string;
   onClose: () => void;
   /** Called with the Stripe payment method id once Stripe has saved it. */
   onAdded: (paymentMethodId: string) => void;
@@ -29,7 +29,6 @@ type LoadState = 'loading' | 'ready' | 'error' | 'unavailable';
  * Leaving without saving cancels the SetupIntent, so open ones do not pile up on the customer.
  */
 export const AddPaymentMethodPanel = ({
-  country,
   onClose,
   onAdded,
 }: AddPaymentMethodPanelProps) => {
@@ -39,7 +38,7 @@ export const AddPaymentMethodPanel = ({
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
 
-  const { createSetupIntent, cancelSetupIntent } = useSetupIntent(country);
+  const { createSetupIntent, cancelSetupIntent } = useSetupIntent();
   const cancelRef = useRef(cancelSetupIntent);
   cancelRef.current = cancelSetupIntent;
 
@@ -52,7 +51,7 @@ export const AddPaymentMethodPanel = ({
   const [attempt, setAttempt] = useState(0);
 
   const formRef = useRef<SetupFormHandle>(null);
-  const openSecretRef = useRef<string | null>(null);
+  const openIntentRef = useRef<OpenSetupIntent | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -60,10 +59,10 @@ export const AddPaymentMethodPanel = ({
     createSetupIntent()
       .then((res) => {
         if (!active) {
-          cancelRef.current(res.clientSecret).catch(() => undefined);
+          cancelRef.current(res).catch(() => undefined);
           return;
         }
-        openSecretRef.current = res.clientSecret;
+        openIntentRef.current = res;
         // A platform without the publishable key in this response cannot be confirmed against, so it reads as unavailable.
         const methods = res.methods ?? [];
         setIntent({ ...res, methods });
@@ -83,8 +82,8 @@ export const AddPaymentMethodPanel = ({
   // Cancel an unconfirmed SetupIntent when the panel goes away.
   useEffect(
     () => () => {
-      if (openSecretRef.current) {
-        cancelRef.current(openSecretRef.current).catch(() => undefined);
+      if (openIntentRef.current) {
+        cancelRef.current(openIntentRef.current).catch(() => undefined);
       }
     },
     []
@@ -118,7 +117,7 @@ export const AddPaymentMethodPanel = ({
       return;
     }
     // Saved: the SetupIntent is spent and must not be cancelled.
-    openSecretRef.current = null;
+    openIntentRef.current = null;
     onAdded(result.paymentMethodId);
   };
 
@@ -192,7 +191,7 @@ export const AddPaymentMethodPanel = ({
                 defaultName={defaultName}
                 email={userProfile?.email ?? ''}
                 onEscape={handleClose}
-                country={country}
+                country={intent.accountCountry}
               />
             )}
           </Elements>
