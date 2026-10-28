@@ -188,3 +188,45 @@ test('two project types show the projects of either type, and unpicking one leav
     .poll(mapState, { message: 'every agroforestry project, and nothing else' })
     .toEqual({ types: [AGROFORESTRY], count: startCount(AGROFORESTRY) });
 });
+
+// The Salesforce Mangroves tenant page links to the project list this way.
+test('a link with filters in its URL opens the project list already filtered', async ({
+  page,
+}) => {
+  test.slow();
+
+  await page.goto(
+    `/${LOCALE}?filter=${MANGROVES}&donatable_projects_only=true`
+  );
+
+  await waitForProjectMarkers(page);
+  await expect
+    .poll(async () => summarize(await projectMarkers(page)), {
+      message: 'only donatable mangrove projects on the map',
+    })
+    .toEqual({ types: [MANGROVES], nonDonatable: 0 });
+  const filteredCount = (await projectMarkers(page)).length;
+
+  // The header shows this count only while a filter is on, so it also proves the URL turned the filters on.
+  await expect(
+    page.getByText(
+      formatMessage(text.filterResult, { count: filteredCount }).trim(),
+      { exact: true }
+    )
+  ).toBeVisible();
+  await expect(projectCards(page).first()).toBeVisible();
+  await expect(
+    projectCards(page).filter({
+      hasNotText: projectText.classification.mangroves,
+    })
+  ).toHaveCount(0);
+
+  await page.getByRole('button', { name: text.filterProjects }).click();
+  await expect(
+    filterOption(page, text.classificationTypes.mangroves)
+  ).toHaveAttribute('aria-pressed', 'true');
+  await expect(filterOption(page, text.acceptingDonations)).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+});
