@@ -5,6 +5,7 @@ import { test, expect } from '../../support/fixtures';
 import {
   LOCALE,
   allProjectsText as text,
+  countryText,
   formatMessage,
   projectText,
 } from '../../support/i18n';
@@ -229,4 +230,57 @@ test('a link with filters in its URL opens the project list already filtered', a
     'aria-pressed',
     'true'
   );
+});
+
+test('a search narrows the filtered projects, and clearing the search keeps the filter', async ({
+  page,
+}) => {
+  test.slow();
+  // On staging, Kenya has a few mangrove projects, many projects of other types, and most mangrove projects are elsewhere. Every mangrove project that matches "Kenya" is in Kenya.
+  const kenya = countryText.ke;
+
+  await waitForProjectMarkers(page);
+  await page.getByRole('button', { name: text.filterProjects }).click();
+  await filterOption(page, text.classificationTypes.mangroves).click();
+  await expect
+    .poll(async () => summarize(await projectMarkers(page)).types, {
+      message: 'only mangrove projects on the map',
+    })
+    .toEqual([MANGROVES]);
+  const mangroveCount = (await projectMarkers(page)).length;
+
+  // While the search box is open, the filter panel is hidden, but the filter stays on.
+  await page.getByRole('button', { name: text.searchProject }).click();
+  await page.getByRole('textbox', { name: text.searchProject }).fill(kenya);
+
+  // The search applies about a second after typing stops.
+  await expect
+    .poll(async () => (await projectMarkers(page)).length, {
+      message: 'fewer markers once the search applies',
+    })
+    .toBeLessThan(mangroveCount);
+  const searchedMarkers = await projectMarkers(page);
+  expect(searchedMarkers.length).toBeGreaterThan(0);
+  expect(summarize(searchedMarkers).types).toEqual([MANGROVES]);
+  await expect(projectCards(page).first()).toBeVisible();
+  await expect(
+    projectCards(page).filter({
+      hasNotText: projectText.classification.mangroves,
+    })
+  ).toHaveCount(0);
+  await expect(projectCards(page).filter({ hasNotText: kenya })).toHaveCount(0);
+
+  await page.getByRole('button', { name: text.clearSearch }).click();
+
+  await expect
+    .poll(async () => (await projectMarkers(page)).length, {
+      message: 'every mangrove project back on the map',
+    })
+    .toBe(mangroveCount);
+  await expect(
+    page.getByText(
+      formatMessage(text.filterResult, { count: mangroveCount }).trim(),
+      { exact: true }
+    )
+  ).toBeVisible();
 });
