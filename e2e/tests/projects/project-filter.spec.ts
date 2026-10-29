@@ -207,22 +207,37 @@ test('a link with filters in its URL opens the project list already filtered', a
 }) => {
   test.slow();
 
+  // The unfiltered page from beforeEach gives the projects the link should keep. The link then gets a fresh page load, as when it is opened from another site.
+  const startMarkers = await waitForProjectMarkers(page);
+  const startMangroves = startMarkers.filter(
+    (marker) => markerType(marker) === MANGROVES
+  );
+  const donatableMangroves = startMangroves.filter(
+    (marker) => marker.allowDonations
+  );
+  // Without a non-donatable mangrove project, the check below would pass even if the URL did not turn on the donation filter.
+  expect(
+    summarize(startMangroves).nonDonatable,
+    'non-donatable mangrove projects without the filters'
+  ).toBeGreaterThan(0);
+
   await page.goto(
     `/${LOCALE}?filter=${MANGROVES}&donatable_projects_only=true`
   );
 
   await waitForProjectMarkers(page);
   await expect
-    .poll(async () => summarize(await projectMarkers(page)), {
-      message: 'only donatable mangrove projects on the map',
+    .poll(() => mapSlugs(page), {
+      message: 'every donatable mangrove project, and nothing else, on the map',
     })
-    .toEqual({ types: [MANGROVES], nonDonatable: 0 });
-  const filteredCount = (await projectMarkers(page)).length;
+    .toEqual(slugs(donatableMangroves));
 
   // The header shows this count only while a filter is on, so it also proves the URL turned the filters on.
   await expect(
     page.getByText(
-      formatMessage(text.filterResult, { count: filteredCount }).trim(),
+      formatMessage(text.filterResult, {
+        count: donatableMangroves.length,
+      }).trim(),
       { exact: true }
     )
   ).toBeVisible();
