@@ -28,6 +28,12 @@ const summarize = (markers: E2EProjectMarker[]) => ({
   nonDonatable: markers.filter((marker) => !marker.allowDonations).length,
 });
 
+// Sorted, so two sets of markers compare equal whatever order the map holds them in.
+const slugs = (markers: E2EProjectMarker[]) =>
+  markers.map((marker) => marker.slug).sort();
+
+const mapSlugs = async (page: Page) => slugs(await projectMarkers(page));
+
 test.beforeEach(async ({ page }) => {
   await allowSoftwareWebGL(page);
   await page.goto(`/${LOCALE}`);
@@ -45,6 +51,19 @@ test('Mangroves, then Accepting Donations, narrow the project list and the map m
   expect(start.types).toContain(MANGROVES);
   expect(start.types.length).toBeGreaterThan(1);
 
+  // Expected results come from the start markers, so a filter that hides a project it should keep fails too.
+  const startMangroves = startMarkers.filter(
+    (marker) => markerType(marker) === MANGROVES
+  );
+  const donatableMangroves = startMangroves.filter(
+    (marker) => marker.allowDonations
+  );
+  // Staging data changes. Without a non-donatable mangrove project here, the donation check below would pass even if that filter did nothing.
+  expect(
+    summarize(startMangroves).nonDonatable,
+    'non-donatable mangrove projects before Accepting Donations'
+  ).toBeGreaterThan(0);
+
   await page.getByRole('button', { name: text.filterProjects }).click();
   const mangroves = filterOption(page, text.classificationTypes.mangroves);
   const donations = filterOption(page, text.acceptingDonations);
@@ -52,31 +71,27 @@ test('Mangroves, then Accepting Donations, narrow the project list and the map m
   await mangroves.click();
   await expect(mangroves).toHaveAttribute('aria-pressed', 'true');
   await expect
-    .poll(async () => summarize(await projectMarkers(page)).types, {
-      message: 'only mangrove projects on the map',
+    .poll(() => mapSlugs(page), {
+      message: 'every mangrove project, and nothing else, on the map',
     })
-    .toEqual([MANGROVES]);
-  // Staging data changes. Without a non-donatable mangrove project here, the donation check below would pass even if that filter did nothing.
-  expect(
-    summarize(await projectMarkers(page)).nonDonatable,
-    'non-donatable mangrove projects before Accepting Donations'
-  ).toBeGreaterThan(0);
+    .toEqual(slugs(startMangroves));
 
   await donations.click();
   await expect(donations).toHaveAttribute('aria-pressed', 'true');
 
   // Donation is checked on the map, not the list: the list puts donatable projects first, so its top cards are donatable even without the filter.
   await expect
-    .poll(async () => summarize(await projectMarkers(page)), {
-      message: 'only donatable mangrove projects on the map',
+    .poll(() => mapSlugs(page), {
+      message: 'every donatable mangrove project, and nothing else, on the map',
     })
-    .toEqual({ types: [MANGROVES], nonDonatable: 0 });
-  const filteredCount = (await projectMarkers(page)).length;
+    .toEqual(slugs(donatableMangroves));
 
   // The header counts the same projects the map shows. Every mangrove project has a pin, so the numbers match exactly.
   await expect(
     page.getByText(
-      formatMessage(text.filterResult, { count: filteredCount }).trim(),
+      formatMessage(text.filterResult, {
+        count: donatableMangroves.length,
+      }).trim(),
       { exact: true }
     )
   ).toBeVisible();
@@ -99,10 +114,10 @@ test('Mangroves, then Accepting Donations, narrow the project list and the map m
       .first()
   ).toBeVisible();
   await expect
-    .poll(async () => (await projectMarkers(page)).length, {
-      message: 'all project markers back on the map',
+    .poll(() => mapSlugs(page), {
+      message: 'every project back on the map',
     })
-    .toBe(startMarkers.length);
+    .toEqual(slugs(startMarkers));
 });
 
 test('Accepting Donations alone hides non-donatable projects from the map without filtering by project type', async ({
@@ -110,9 +125,11 @@ test('Accepting Donations alone hides non-donatable projects from the map withou
 }) => {
   test.slow();
 
-  const start = summarize(await waitForProjectMarkers(page));
-  expect(start.nonDonatable).toBeGreaterThan(0);
-  expect(start.types.length).toBeGreaterThan(1);
+  const startMarkers = await waitForProjectMarkers(page);
+  expect(summarize(startMarkers).nonDonatable).toBeGreaterThan(0);
+  const startDonatable = startMarkers.filter((marker) => marker.allowDonations);
+  // More than one type, so a donation filter that also filters by type fails the check below.
+  expect(summarize(startDonatable).types.length).toBeGreaterThan(1);
 
   await page.getByRole('button', { name: text.filterProjects }).click();
   const donations = filterOption(page, text.acceptingDonations);
@@ -120,19 +137,16 @@ test('Accepting Donations alone hides non-donatable projects from the map withou
   await expect(donations).toHaveAttribute('aria-pressed', 'true');
 
   await expect
-    .poll(async () => summarize(await projectMarkers(page)).nonDonatable, {
-      message: 'no non-donatable projects on the map',
+    .poll(() => mapSlugs(page), {
+      message: 'every donatable project, and nothing else, on the map',
     })
-    .toBe(0);
-  const donatableMarkers = await projectMarkers(page);
-  // Catches a donation filter that also filters by type.
-  expect(summarize(donatableMarkers).types.length).toBeGreaterThan(1);
+    .toEqual(slugs(startDonatable));
 
   // Holds while every staging project has a known type: a project without one is counted in the header but gets no pin.
   await expect(
     page.getByText(
       formatMessage(text.filterResult, {
-        count: donatableMarkers.length,
+        count: startDonatable.length,
       }).trim(),
       { exact: true }
     )
