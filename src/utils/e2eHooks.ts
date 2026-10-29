@@ -1,5 +1,12 @@
-/** A project marker as the map holds it. `iconKey` encodes the project type and tier, such as `pin-mangroves-regularProject`. */
-export type E2EProjectMarker = { slug: string; iconKey: string };
+import type { TreeProjectClassification } from '@planet-sdk/common';
+
+/** A project marker as the map holds it, with the project fields the filters use. `classification` is `null` for conservation projects. */
+export type E2EProjectMarker = {
+  slug: string;
+  allowDonations: boolean;
+  purpose: 'trees' | 'conservation';
+  classification: TreeProjectClassification | null;
+};
 
 declare global {
   interface Window {

@@ -45,9 +45,6 @@ export const waitForProjectMarkers = async (page: Page) => {
   return markers;
 };
 
-// An iconKey reads `pin-<type>-<tier>`, such as `pin-mangroves-regularProject`. Types can contain hyphens, tiers cannot.
-export const markerType = ({ iconKey }: E2EProjectMarker) =>
-  iconKey.slice('pin-'.length, iconKey.lastIndexOf('-'));
-
-export const markerTier = ({ iconKey }: E2EProjectMarker) =>
-  iconKey.slice(iconKey.lastIndexOf('-') + 1);
+// The project type a pin shows: the classification of a tree project, such as `mangroves`, or `conservation`.
+export const markerType = ({ purpose, classification }: E2EProjectMarker) =>
+  classification ?? purpose;

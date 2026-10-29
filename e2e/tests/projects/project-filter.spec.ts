@@ -12,7 +12,6 @@ import {
 import { projectCards, projectListTab } from '../../support/projects';
 import {
   allowSoftwareWebGL,
-  markerTier,
   markerType,
   projectMarkers,
   waitForProjectMarkers,
@@ -26,9 +25,7 @@ const filterOption = (page: Page, name: string) =>
 // Summed up so a failure shows what the map held, not just "false".
 const summarize = (markers: E2EProjectMarker[]) => ({
   types: [...new Set(markers.map(markerType))],
-  nonDonatable: markers.filter(
-    (marker) => markerTier(marker) === 'nonDonatableProject'
-  ).length,
+  nonDonatable: markers.filter((marker) => !marker.allowDonations).length,
 });
 
 test.beforeEach(async ({ page }) => {

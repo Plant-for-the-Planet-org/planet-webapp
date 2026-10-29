@@ -1,3 +1,4 @@
+import type { TreeProjectClassification } from '@planet-sdk/common';
 import type { MapProject } from '../../../common/types/projectv2';
 import type { FeatureCollection, Point } from 'geojson';
 import type {
@@ -39,6 +40,9 @@ type ProjectMarkerProperties = {
   slug: string;
   iconKey: string;
   sortKey: number;
+  allowDonations: boolean;
+  purpose: MapProject['properties']['purpose'];
+  classification: TreeProjectClassification | null;
 };
 
 const ProjectMarkersGL = ({ projects }: Props) => {
@@ -64,6 +68,13 @@ const ProjectMarkersGL = ({ projects }: Props) => {
             iconKey,
             sortKey:
               TIER_DRAW_ORDER[getProjectCategory(project.properties)] ?? 0,
+            // Not used for drawing. E2E tests read these to check the filters.
+            allowDonations: project.properties.allowDonations,
+            purpose: project.properties.purpose,
+            classification:
+              project.properties.purpose === 'trees'
+                ? project.properties.classification
+                : null,
           } as ProjectMarkerProperties,
         };
       })
@@ -145,10 +156,11 @@ const ProjectMarkersGL = ({ projects }: Props) => {
           Point,
           ProjectMarkerProperties
         >;
-        return data.features.map(({ properties: { slug, iconKey } }) => ({
-          slug,
-          iconKey,
-        }));
+        return data.features.map(
+          ({
+            properties: { slug, allowDonations, purpose, classification },
+          }) => ({ slug, allowDonations, purpose, classification })
+        );
       },
     };
     return () => {
