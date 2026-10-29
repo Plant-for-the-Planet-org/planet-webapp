@@ -41,6 +41,28 @@
   }
 }
 
+// Fill the MUI modal so it takes up the full viewport. This keeps the image
+// container and slider buttons inside a full-screen flex layout. Without it,
+// the container would size itself to its content, preventing it from shrinking
+// below 800px and causing the mobile arrow buttons to appear outside the screen.
+//
+// The 20px side padding matches the spacing that previously came from the modal
+// root. It preserves the same layout now that the flex container is one level
+// deeper.
+.imageSliderDialog {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  gap: 20px;
+  padding: 0 20px;
+}
+
 .expandedImageSliderContainer {
   position: relative;
   width: 800px;
@@ -94,4 +116,15 @@
 }
 .nextMobileSliderButton {
   right: 116px;
+}
+// `theme/global.scss` removes focus outlines globally, so restore the focus
+// ring for these buttons here (`!important` overrides the global rule). White
+// is clearly visible on both the mobile image and the desktop backdrop.
+.sliderButton,
+.prevMobileSliderButton,
+.nextMobileSliderButton {
+  &:focus-visible {
+    outline: 2px solid $dsWhite !important;
+    outline-offset: 2px;
+  }
 }
