@@ -8,7 +8,7 @@ It expands the "Later: Playwright" item in [testing-roadmap.md](./testing-roadma
 ## Summary
 
 - Add Playwright for a few smoke tests of the most important user flows. The goal is confidence in key journeys, not coverage.
-- Start with public, read-only tests: project search (done) and opening a project from the list. Add logged-in tests in a second phase.
+- Start with public, read-only tests: project search and project filters (done), and opening a project from the list. Add logged-in tests in a second phase.
 - In CI, run the tests against the Vercel preview that is already built for every PR, instead of building the app again in GitHub Actions.
 - Remove the broken Cypress setup in a separate PR, so the repo has one E2E tool.
 
@@ -71,13 +71,14 @@ Terms you will see:
 
 Public, no login (phase 1):
 1. Project search: a donor finds a project by name, even when typed without its accents, finds the projects in a country by its name, sees a message when nothing matches, and gets the list back after clearing the search. Done.
-2. Project page: open a project from the list. Pending.
+2. Project filters: a donor narrows the list and the map by project type and Accepting Donations, combines them with a search, opens a link with filters in its URL, and gets every project back after Clear Filter. Done.
+3. Project page: open a project from the list. Pending.
 
 Not planned: the home redirect (`/` to `/en`), the Donate link hand-off, the German locale, and the login gate.
 
 Logged in (phase 2):
-3. The profile loads for a logged-in user.
-4. A project owner (TPO) sees their projects list.
+4. The profile loads for a logged-in user.
+5. A project owner (TPO) sees their projects list.
 
 Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and redeeming codes. They matter a lot, but they write data and need special accounts.
 
@@ -125,7 +126,9 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
   - [e2e/support/fixtures.ts](../../e2e/support/fixtures.ts): specs import `test` from here, so every test also fails when the page throws an uncaught error.
   - [e2e/support/projects.ts](../../e2e/support/projects.ts): the staging project the tests use, and a locator for the cards in the project list.
   - [e2e/support/i18n.ts](../../e2e/support/i18n.ts): the locale the tests open (`LOCALE`), and the app's UI text for it, read from `public/static/locales` with the same English fallback the app uses.
+  - [e2e/support/map.ts](../../e2e/support/map.ts): lets the map draw without a GPU, and reads the project markers from the map.
   - [e2e/tests/projects/project-search.spec.ts](../../e2e/tests/projects/project-search.spec.ts): the project search tests.
+  - [e2e/tests/projects/project-filter.spec.ts](../../e2e/tests/projects/project-filter.spec.ts): the project filter tests.
 - Two scripts, named like the existing ones: `test:e2e` and `test:e2e:ui`.
 - `.gitignore` entries: `test-results/`, `playwright-report/`, `playwright/.auth/`.
 - No Vitest change. [vitest.config.mts](../../vitest.config.mts) only picks up `*.test.ts`, so `e2e/**/*.spec.ts` stays separate.
@@ -136,7 +139,7 @@ Checked against [playwright.config.ts](../../playwright.config.ts) on 2026-10-12
 
 | Setting | Value | Why |
 |---|---|---|
-| `workers` | 1 locally. Against a deployed URL, Playwright's default (half the CPU cores), capped at one per spec file. With one spec file, CI runs use 1 worker. | When several workers hit the dev server at once, it can corrupt `.next/dev/prerender-manifest.json` and answer 500 to every page until restarted. A deployed preview can take parallel tests. `fullyParallel` is off, so tests inside one file always run one after another. |
+| `workers` | 1 locally. Against a deployed URL, Playwright's default (half the CPU cores), capped at one per spec file. | When several workers hit the dev server at once, it can corrupt `.next/dev/prerender-manifest.json` and answer 500 to every page until restarted. A deployed preview can take parallel tests. `fullyParallel` is off, so tests inside one file always run one after another. |
 | `timeout` (per test) | 120 s locally, 30 s against a deployed URL | The dev server builds each page on its first visit, which can take close to a minute. |
 | `expect.timeout` | 10 s | Auto-retrying checks wait up to this long. Search, for example, updates the list about 1 s after typing stops. |
 | `retries` | 2 in CI, 0 otherwise | Smooths over a staging blip in CI. Locally, a failure should show at once. |
@@ -201,7 +204,7 @@ Where to find a failed test's recording: `test-results/<test name>/trace.zip`, o
 - Tests run in English. Setting `LOCALE` to `de` or `fr` works for the UI text (checked 2026-10-13), but the accent search test then fails, because staging gives the project a name per locale (German: "Yucatán Renaturierung").
 - Login is fragile: bot checks, MFA, password changes, and token expiry. Someone must own the test account.
 - Outside dependencies: if staging or Vercel is down, the E2E check fails.
-- Maps: MapLibre needs WebGL, and CI browsers draw it slowly in software. Tests check the project list and panels, not the map itself.
+- Maps: MapLibre needs WebGL, and CI browsers draw it slowly in software. Map tests read the markers through a test hook instead of the canvas, need `NEXT_PUBLIC_E2E_HOOKS=true` on Vercel previews, and call `test.slow()`. See [TESTING.md](../../TESTING.md#map-tests).
 - Secrets: the test password lives in GitHub secrets. The saved session file holds tokens, so it must be gitignored.
 - Traces: a trace records network calls with their headers and the page's storage, so a logged-in trace holds the Auth0 token. `e2e.yml` uploads the report on every run, and this repo is public, so anyone with a GitHub account can download it. Before phase 2, turn traces off for logged-in tests, or do not upload their reports.
 - CI minutes: one run per preview, so one per push to a PR branch.
@@ -213,7 +216,8 @@ Phase 1: no login, read-only. Each test also fails if the page throws an uncaugh
 | # | Test | Status | What it checks |
 |---|---|---|---|
 | 1 | Project search | Done | Search finds the right project and hides the others, shows a message when nothing matches, and brings the list back when cleared. |
-| 2 | List opens a project | Pending | Clicking a project card opens its page and shows its name. Navigation inside the app works. |
+| 2 | Project filters | Done | Filters narrow the list and the map markers, work together and with search, load from the URL, and Clear Filter brings everything back. |
+| 3 | List opens a project | Pending | Clicking a project card opens its page and shows its name. Navigation inside the app works. |
 
 The project search tests, in [e2e/tests/projects/project-search.spec.ts](../../e2e/tests/projects/project-search.spec.ts):
 - `yucatan restoration`, typed without the accent, shows "Yucatán Restoration", and every other card that was on screen disappears.
@@ -223,13 +227,21 @@ The project search tests, in [e2e/tests/projects/project-search.spec.ts](../../e
 - Emptying the search box brings back the cards that were listed before.
 - The Clear search button closes the search, keeps the Top Projects tab selected, and brings back the earlier cards. The next search starts from an empty box.
 
+The project filter tests, in [e2e/tests/projects/project-filter.spec.ts](../../e2e/tests/projects/project-filter.spec.ts):
+- Mangroves, then Accepting Donations, leave only donatable mangrove markers and cards. The header count matches the markers. Clear Filter brings every marker back.
+- Accepting Donations alone hides non-donatable markers but keeps more than one project type.
+- Mangroves plus Agroforestry show exactly the markers of both types. Unpicking Mangroves leaves only Agroforestry.
+- A link with `?filter=mangroves&donatable_projects_only=true` opens the list already filtered, with both options marked as pressed. The Salesforce Mangroves tenant page links this way.
+- A search for Kenya narrows the mangrove results. Clearing the search keeps the filter.
+- Expected counts come from the map at page load, not fixed numbers, and each test first checks that staging has the data it needs, so a check cannot pass by luck.
+
 Phase 2: after phase 1 is stable.
 
 | # | Test | What it checks |
 |---|---|---|
-| 3 | Login setup | Logs in once and saves the session file. |
-| 4 | Profile loads | A logged-in user sees their name on `/en/profile`. |
-| 5 | Projects list | A TPO test user sees their projects on `/en/profile/projects`. |
+| 4 | Login setup | Logs in once and saves the session file. |
+| 5 | Profile loads | A logged-in user sees their name on `/en/profile`. |
+| 6 | Projects list | A TPO test user sees their projects on `/en/profile/projects`. |
 
 ## Open questions
 
@@ -247,6 +259,7 @@ Done:
 - [x] Add Playwright: dependency, config, scripts, and `.gitignore` entries.
 - [x] Fail every test on an uncaught page error.
 - [x] Project search tests, passing locally (Chromium and Edge) and against a Vercel preview.
+- [x] Project filter tests, with map marker checks through a test hook, passing locally.
 - [x] Let a Windows machine use Edge through `PLAYWRIGHT_CHANNEL`, for Smart App Control.
 - [x] Add `e2e.yml` running against Vercel previews, as a non-required check.
 - [x] Push `feature/playwright-e2e` and open a PR to `develop` ([#3203](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3203)).
