@@ -16,6 +16,10 @@
     "expired": "Platnost vypršela",
     "expiringSoon": "Brzy vyprší",
     "expires": "Platí do {date}",
+    "usedBySubscription": "Používá se pro váš {frequency, select, yearly {roční} quarterly {čtvrtletní} semiyearly {pololetní} other {měsíční}} dar {amount}",
+    "usedBySubscriptionTo": "Používá se pro váš {frequency, select, yearly {roční} quarterly {čtvrtletní} semiyearly {pololetní} other {měsíční}} dar {amount} pro {project}",
+    "usedByTopUp": "Používá se pro automatické dobíjení PlanetCash",
+    "inUse": "Používá se, nelze odebrat",
     "methodLabel": {
       "card": "Karta",
       "sepa": "SEPA",

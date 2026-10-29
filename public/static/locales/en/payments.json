@@ -16,6 +16,10 @@
     "expired": "Expired",
     "expiringSoon": "Expires soon",
     "expires": "Expires {date}",
+    "usedBySubscription": "Used by your {frequency, select, yearly {yearly} quarterly {quarterly} semiyearly {half-yearly} other {monthly}} recurring donation of {amount}",
+    "usedBySubscriptionTo": "Used by your {frequency, select, yearly {yearly} quarterly {quarterly} semiyearly {half-yearly} other {monthly}} recurring donation of {amount} to {project}",
+    "usedByTopUp": "Used by PlanetCash auto top-up",
+    "inUse": "In use, so it can't be removed",
     "methodLabel": {
       "card": "Card",
       "sepa": "SEPA",

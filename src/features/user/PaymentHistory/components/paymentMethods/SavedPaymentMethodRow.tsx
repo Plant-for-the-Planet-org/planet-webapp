@@ -1,12 +1,13 @@
-import type { SavedPaymentMethod } from '../../types';
+import type { PaymentMethodUsage, SavedPaymentMethod } from '../../types';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Trash2, TriangleAlert } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import getFormattedCurrency from '@/utils/countryCurrency/getFormattedCurrency';
 
 import {
   capitalize,
@@ -26,6 +27,7 @@ interface SavedPaymentMethodRowProps {
 /**
  * One saved card or SEPA account: its mark, last four digits, expiry and state, with remove behind a confirm step.
  * The display follows the fundraisers donate form. Expired cards stay listed here, unlike there, so the donor can remove them.
+ * A method that a recurring donation or PlanetCash auto top-up charges lists them and cannot be removed.
  */
 export const SavedPaymentMethodRow = ({
   method,
@@ -34,8 +36,21 @@ export const SavedPaymentMethodRow = ({
 }: SavedPaymentMethodRowProps) => {
   const t = useTranslations('Payments');
   const tMe = useTranslations('Me');
+  const locale = useLocale();
   // local state
   const [isConfirming, setIsConfirming] = useState(false);
+
+  const usedBy = method.usedBy ?? [];
+  const usageLabel = (usage: PaymentMethodUsage) => {
+    if (usage.type === 'planetCashTopUp') return t('usedByTopUp');
+    const values = {
+      frequency: usage.frequency ?? 'monthly',
+      amount: getFormattedCurrency(locale, usage.currency, usage.amount),
+    };
+    return usage.projectName
+      ? t('usedBySubscriptionTo', { ...values, project: usage.projectName })
+      : t('usedBySubscription', values);
+  };
 
   const isSepa = isSepaMethod(method);
   const last4 = method.last4 ?? '••••';
@@ -87,9 +102,16 @@ export const SavedPaymentMethodRow = ({
             {t('expires', { date: expiry.date })}
           </span>
         )}
+        {usedBy.map((usage) => (
+          <span key={usage.id} className="text-xs text-muted-foreground">
+            {usageLabel(usage)}
+          </span>
+        ))}
       </div>
 
-      {isConfirming ? (
+      {usedBy.length > 0 ? (
+        <span className="text-xs text-muted-foreground">{t('inUse')}</span>
+      ) : isConfirming ? (
         <div className="flex items-center gap-2">
           <span className="hidden text-sm text-muted-foreground sm:inline">
             {t('confirmRemoveMethod')}

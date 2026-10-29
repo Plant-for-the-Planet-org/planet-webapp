@@ -200,7 +200,27 @@ export interface SavedPaymentMethod {
   country?: string | null;
   /** Cards only: "MM/YYYY". */
   expires?: string | null;
+  /** What charges this method. The platform refuses to remove a method while this is not empty. */
+  usedBy?: PaymentMethodUsage[];
 }
+
+export type PaymentMethodUsage =
+  | {
+      type: 'subscription';
+      /** Subscription guid. */
+      id: string;
+      status: string;
+      amount: number;
+      currency: string;
+      frequency: string | null;
+      projectName: string | null;
+    }
+  | {
+      type: 'planetCashTopUp';
+      /** PlanetCash account guid. */
+      id: string;
+      country: string | null;
+    };
 
 /** Payment method types a SetupIntent can save for later use. */
 export type SetupIntentMethod = 'card' | 'sepa_debit';

@@ -16,6 +16,10 @@
     "expired": "Expirado",
     "expiringSoon": "Expira em breve",
     "expires": "Expira em {date}",
+    "usedBySubscription": "Usado na sua doação {frequency, select, yearly {anual} quarterly {trimestral} semiyearly {semestral} other {mensal}} de {amount}",
+    "usedBySubscriptionTo": "Usado na sua doação {frequency, select, yearly {anual} quarterly {trimestral} semiyearly {semestral} other {mensal}} de {amount} para {project}",
+    "usedByTopUp": "Usado na recarga automática do PlanetCash",
+    "inUse": "Em uso, não pode ser removido",
     "methodLabel": {
       "card": "Cartão",
       "sepa": "SEPA",
