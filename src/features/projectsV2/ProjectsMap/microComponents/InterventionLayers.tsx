@@ -11,7 +11,7 @@ import type {
 } from '../../../common/types/map';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { Layer, Source, Marker } from 'react-map-gl-v7/maplibre';
+import { Layer, Source, Marker } from 'react-map-gl/maplibre';
 import area from '@turf/area';
 import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
@@ -19,8 +19,7 @@ import { FillColor } from '../../../../utils/constants/intervention';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 import { clsx } from 'clsx';
-import { useProjectMapStore } from '../../../../stores/projectMapStore';
-import { useInterventionStore } from '../../../../stores';
+import { useProjectMapStore, useInterventionStore } from '../../../../stores';
 
 interface SampleInterventionMarkerProps {
   sampleIntervention: SampleTreeRegistration;

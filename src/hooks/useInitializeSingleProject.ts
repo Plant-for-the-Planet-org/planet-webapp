@@ -3,12 +3,15 @@ import type { ProjectSiteFeature } from '../features/common/types/map';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import {
+  useCurrencyStore,
   useInterventionStore,
   useSingleProjectStore,
-  useViewStore,
+  useTenantStore,
 } from '../stores';
 import { useLocale } from 'next-intl';
 import { FIRST_SITE_INDEX, hasNoSites, isString } from '../utils/projectV2';
+import { useApi } from './useApi';
+import useLocalizedPath from './useLocalizedPath';
 
 const getSiteIndexById = (
   sites: ProjectSiteFeature[],
@@ -22,24 +25,82 @@ const getSiteIndexById = (
 export const useInitializeSingleProject = () => {
   const locale = useLocale();
   const router = useRouter();
-  const { site: requestedSite, ploc: requestedIntervention } = router.query;
+  const { getApi } = useApi();
+  const { localizedPath } = useLocalizedPath();
+  const {
+    p: projectSlug,
+    site: requestedSite,
+    ploc: requestedIntervention,
+  } = router.query;
   const hasOnlyRequestedIntervention = Boolean(
     !requestedSite && requestedIntervention
   );
   // store: state
-  const currentPage = useViewStore((state) => state.page);
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  const isCurrencyResolved = useCurrencyStore(
+    (state) => state.isCurrencyResolved
+  );
+  const tenantId = useTenantStore((state) => state.tenantConfig.id);
   const singleProject = useSingleProjectStore((state) => state.singleProject);
+  const lastFetch = useSingleProjectStore((state) => state.lastFetch);
   const selectedSite = useSingleProjectStore((state) => state.selectedSite);
+  const fetchError = useSingleProjectStore((state) => state.fetchError);
   const selectedIntervention = useInterventionStore(
     (state) => state.selectedIntervention
   );
   // store: action
+  const fetchProject = useSingleProjectStore((state) => state.fetchProject);
   const selectSiteAndSyncUrl = useSingleProjectStore(
     (state) => state.selectSiteAndSyncUrl
   );
   const clearProjectStates = useSingleProjectStore(
     (state) => state.clearProjectStates
   );
+
+  /**
+   * Fetch the project whenever the URL names one.
+   *
+   * This lives here rather than in `ProjectDetails` because that component is not rendered when the details pane is hidden (`embed=true` with `project_details=false`), which used to leave the map, interventions and time travel config with no data at all.
+   *
+   * `router.query.p` is the signal because it is also the slug the fetch needs.
+   *
+   * It does wait on `isCurrencyResolved`, because `currencyCode` starts at a placeholder that would otherwise be fetched with and then immediately superseded.
+   * Waiting cannot stall: a saved currency resolves it at once, and otherwise `storeConfig` resolves it on every path, including a failed or timed-out request.
+   */
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (!isString(projectSlug)) return;
+    if (!isCurrencyResolved || !currencyCode) return;
+
+    fetchProject(
+      getApi,
+      {
+        queryParams: {
+          _scope: 'extended',
+          currency: currencyCode,
+          //passing locale/tenant as a query param to break cache when locale changes,
+          //as the browser uses the cached response even though the x-locale header is different
+          locale,
+          tenant: tenantId,
+        },
+      },
+      projectSlug
+    );
+  }, [
+    router.isReady,
+    projectSlug,
+    locale,
+    currencyCode,
+    isCurrencyResolved,
+    tenantId,
+  ]);
+
+  // Redirect home if the project fails to load. The store handles the error message, and this prevents an endless loading state.
+  useEffect(() => {
+    if (fetchError) {
+      router.push(localizedPath('/'));
+    }
+  }, [fetchError]);
 
   const projectSites = singleProject?.sites ?? [];
   // A project has no sites if all site geometries are null.
@@ -49,14 +110,20 @@ export const useInitializeSingleProject = () => {
    * Initialize site selection for project details page.
    * Selects a site only when:
    * - Router is ready
-   * - We are on project-details
+   * - The URL still names a project
    * - No site or intervention is already selected
    * - URL does not explicitly request an intervention
+   *
+   *  Use the project slug from the URL as the guard so this effect only runs on project pages.
+   *  For projects without sites, selectedSite stays null, which would otherwise keep the effect active.
+   *  Without this guard, leaving the project page can trigger the effect again and send the user back to the project. See #3120.
    */
   useEffect(() => {
     if (!router.isReady) return;
-    if (currentPage === 'project-list') return;
+    if (!isString(projectSlug)) return;
     if (!singleProject) return;
+    // The store keeps the previous project while the next one loads, so only sync the URL once the project it holds is the one the URL asks for.
+    if (lastFetch?.slug !== projectSlug) return;
     if (selectedIntervention !== null) return;
     if (selectedSite !== null) return;
     if (hasOnlyRequestedIntervention) return;
@@ -74,14 +141,19 @@ export const useInitializeSingleProject = () => {
     selectSiteAndSyncUrl(siteIndex, locale, router);
   }, [
     router.isReady,
-    currentPage,
+    projectSlug,
     singleProject,
+    lastFetch,
     selectedIntervention,
     selectedSite,
   ]);
 
-  // Clear single-project state when navigating back to the project list.
+  /**
+   * Clear single-project state whenever the URL no longer names a project, so the last project does not outlive the project pages. See #3200.
+   * This uses the same signal as the fetch above, `router.query.p`, so the two effects cannot disagree about whether a project is named.
+   */
   useEffect(() => {
-    if (currentPage === 'project-list') clearProjectStates();
-  }, [currentPage]);
+    if (!router.isReady) return;
+    if (!isString(projectSlug)) clearProjectStates();
+  }, [router.isReady, projectSlug, clearProjectStates]);
 };

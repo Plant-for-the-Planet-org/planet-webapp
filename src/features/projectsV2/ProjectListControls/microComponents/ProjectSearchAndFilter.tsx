@@ -5,7 +5,7 @@ import FilterIcon from '../../../../../public/assets/images/icons/projectV2/Filt
 import IconButton from '../../../common/IconButton';
 import styles from '../styles/ProjectListControls.module.scss';
 import { clsx } from 'clsx';
-import { useProjectStore, useViewStore } from '../../../../stores';
+import { useProjectStore, useMobileViewModeStore } from '../../../../stores';
 
 interface ProjectSearchAndFilterProps {
   isFilterOpen: boolean;
@@ -21,7 +21,7 @@ export const SearchAndFilter = ({
   const t = useTranslations('AllProjects');
 
   // store: state
-  const selectedMode = useViewStore((state) => state.selectedMode);
+  const selectedMode = useMobileViewModeStore((state) => state.selectedMode);
   const isFilterApplied = useProjectStore(
     (state) =>
       state.showDonatableProjects || state.selectedClassification.length > 0

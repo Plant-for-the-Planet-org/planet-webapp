@@ -11,7 +11,7 @@ import type {
   CurrencyCode,
 } from '@planet-sdk/common';
 
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ProjectInfoSection from './microComponents/ProjectInfoSection';
@@ -23,9 +23,9 @@ import {
 } from '../../../utils/projectV2';
 import TpoName from './microComponents/TpoName';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { useCurrentPage } from '../../../hooks/useCurrentPage';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useViewStore } from '../../../stores';
+import { useQueryParamStore } from '../../../stores';
 
 interface Props {
   project:
@@ -115,7 +115,7 @@ const ProjectSnippetContent = ({
   };
   const imageProps: ImageSectionProps = {
     ...commonProps,
-    projectName: project.name,
+    projectName: project.name ?? '', // API returns null when the project has no translation for the locale
     image: project.image,
     ecosystem,
     showTooltipPopups,
@@ -161,7 +161,7 @@ export default function ProjectSnippet({
 
   const embed = useQueryParamStore((state) => state.embed);
   const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
 
   const isTopProject = project.purpose === 'trees' && project.isTopProject;
   const isApproved = project.purpose === 'trees' && project.isApproved;
@@ -204,19 +204,6 @@ export default function ProjectSnippet({
     return path;
   }, [project.slug, embed, callbackUrl, router.asPath]);
 
-  // The useEffect hook checks if the backNavigationUrl query parameter exists and is a string, and if so,
-  // it decodes this value and stores it in session storage
-  useEffect(() => {
-    if (
-      router.query.backNavigationUrl &&
-      typeof router.query.backNavigationUrl === 'string'
-    ) {
-      sessionStorage.setItem(
-        'backNavigationUrl',
-        decodeURIComponent(router.query.backNavigationUrl)
-      );
-    }
-  }, [router.query]);
   return (
     <>
       <div className={projectSnippetContainerClasses}>

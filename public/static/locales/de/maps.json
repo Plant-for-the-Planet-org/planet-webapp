@@ -12,6 +12,7 @@
     "forestInfo": "Derzeit gibt es weltweit 3040 Milliarden Bäume. Es gab 6000 Milliarde Bäume, bevor der Mensch vor etwa 11.000 Jahren begann Wälder abzuholzen.",
     "restorationInfo": " Eine halbe Milliarde Hektar eignen sich für die großflächige Wiederherstellung von geschlossenen Wäldern. Weitere anderthalb Milliarden Hektar eignen sich am besten für die Mosaikrestaurierung, bei der Wälder mit anderen Landnutzungen wie Agroforstwirtschaft, kleinbäuerlicher Landwirtschaft und Siedlungen kombiniert werden.",
     "location": "Ort",
+    "layerInfo": "Ebeneninformationen anzeigen",
     "timeTravelTab": "Zeitreise",
     "vegetationChange": "Vegetationsänderung",
     "beta": "BETA",
@@ -265,6 +266,7 @@
         "solutionChrome": "<strong>Chrome:</strong> Einstellungen → Erweitert → System → Aktivieren Sie \"Grafikbeschleunigung verwenden, wenn verfügbar\"",
         "solutionFirefox": "<strong>Firefox:</strong> Einstellungen → Allgemein → Leistung → \"Empfohlene Leistungseinstellungen verwenden\" deaktivieren",
         "solutionEdge": "<strong>Edge:</strong> Einstellungen → System → Aktivieren Sie \"Hardwarebeschleunigung verwenden, wenn verfügbar\"",
+        "outdatedBrowser": "Sollten diese Schritte nicht helfen, ist dein Browser oder Gerät möglicherweise zu alt, um die Karte anzuzeigen. Ein Browser- oder Betriebssystem-Update könnte das Problem lösen.",
         "contactInfo": "Sollten Sie weiterhin Probleme haben, kontaktieren Sie uns bitte unter support@plant-for-the-planet.org.",
         "technicalDetails": "Technische Details"
       }

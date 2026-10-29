@@ -5,29 +5,28 @@ import { useState } from 'react';
 import { Button } from '@mui/material';
 import SelectorOption from '../components/SelectorOption';
 import BulkCodesError from '../components/BulkCodesError';
-import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import { useTranslations } from 'next-intl';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useUserStore } from '../../../../stores';
+import { useBulkCodeStore } from '../../../../stores/bulkCodeStore';
 
 const CreationMethodForm = (): ReactElement | null => {
-  const {
-    bulkMethod,
-    setBulkMethod,
-    setProject,
-    setBulkGiftData,
-    setTotalUnits,
-  } = useBulkCode();
-  const [method, setMethod] = useState<BulkCodeMethods | null>(bulkMethod);
   const tCommon = useTranslations('Common');
   const tBulkCodes = useTranslations('BulkCodes');
-  const { user } = useUserProps();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  // store: state
+  const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+  const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
+  // store: action
+  const setBulkMethod = useBulkCodeStore((state) => state.setBulkMethod);
+  const setProject = useBulkCodeStore((state) => state.setProject);
+  // local state
+  const [method, setMethod] = useState<BulkCodeMethods | null>(bulkMethod);
 
   const selectorOptions: SelectorOptionProps[] = [
     {
@@ -68,12 +67,10 @@ const CreationMethodForm = (): ReactElement | null => {
 
   const handleFormSubmit = () => {
     // Clear form data stored in context if method is changed
-    if (bulkMethod) {
-      if (method !== bulkMethod) {
-        setProject(null);
-        setBulkGiftData(null);
-        setTotalUnits(null);
-      }
+    const isMethodChanged = method !== bulkMethod;
+
+    if (isMethodChanged) {
+      setProject(null);
     }
     setBulkMethod(method);
     router.push(localizedPath(`/profile/bulk-codes/${method}`));
@@ -92,8 +89,8 @@ const CreationMethodForm = (): ReactElement | null => {
           className="formButton"
           disabled={
             !(
-              user?.planetCash &&
-              !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+              userPlanetCash &&
+              !(userPlanetCash.balance + userPlanetCash.creditLimit <= 0)
             ) || method === null
           }
           onClick={handleFormSubmit}

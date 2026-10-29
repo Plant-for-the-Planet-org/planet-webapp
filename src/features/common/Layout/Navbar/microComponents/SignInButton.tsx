@@ -1,19 +1,22 @@
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../UserPropsContext';
 import WebappButton from '../../../WebappButton';
 import IconButton from '../../../IconButton';
 import { useEffect, useState } from 'react';
-import { useMobileDetection } from '../../../../../utils/navbarUtils';
+import { subscribeToMobileDetection } from '../../../../../utils/navbarUtils';
 import Me from '../../../../../../public/assets/images/icons/headerIcons/Me';
 import styles from '../Navbar.module.scss';
 import useLocalizedPath from '../../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
+import { useAuthSession } from '../../../../../hooks/useAuthSession';
+import { useUserStore } from '../../../../../stores';
 
 export const SignInButton = () => {
-  const { user, loginWithRedirect } = useUserProps();
+  const { loginWithRedirect } = useAuthSession();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Common');
+  //store: state
+  const userProfile = useUserStore((state) => state.userProfile);
 
   const [isMobile, setIsMobile] = useState(
     window !== undefined && window.matchMedia('(max-width: 481px)').matches
@@ -21,9 +24,12 @@ export const SignInButton = () => {
 
   useEffect(() => {
     const maxWidth = '481px';
-    const cleanup = useMobileDetection(maxWidth, (isMobile: boolean) => {
-      setIsMobile(isMobile);
-    });
+    const cleanup = subscribeToMobileDetection(
+      maxWidth,
+      (isMobile: boolean) => {
+        setIsMobile(isMobile);
+      }
+    );
     return () => {
       if (cleanup) cleanup();
     };
@@ -31,13 +37,14 @@ export const SignInButton = () => {
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
-    if (user) {
+    if (userProfile) {
       if (typeof window !== 'undefined') {
         router.push(localizedPath('/profile'));
       }
     } else {
       loginWithRedirect({
         redirectUri: `${window.location.origin}/login`,
+        // Legacy compatibility read, kept until Auth0 redirects are migrated off localStorage.language (see issue #3234).
         ui_locales: localStorage.getItem('language') || 'en',
       });
     }

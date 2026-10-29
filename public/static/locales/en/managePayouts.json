@@ -70,6 +70,8 @@
     "accountTitleText": "Transfer for {currency}",
     "addBankDetailsButton": "Add Bank Details",
     "noBankAccountText": "You haven't added any bank details yet.",
+    "bankAccountsLoadErrorText": "We couldn't load your bank details. Please try again.",
+    "tryAgainButton": "Try Again",
     "editBankAccountTitle": "Edit Account",
     "minPayoutText": "Min. Payout: {amount}"
   }

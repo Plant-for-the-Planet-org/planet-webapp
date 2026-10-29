@@ -1,11 +1,14 @@
 import type { ReactElement } from 'react';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './Credits.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useTenantStore } from '../../../../stores/tenantStore';
+import {
+  useQueryParamStore,
+  useTenantStore,
+  useCurrencyStore,
+} from '../../../../stores';
 
 interface Props {
   isMobile?: boolean;
@@ -16,31 +19,15 @@ export default function Credits({ isMobile }: Props): ReactElement {
   const tMaps = useTranslations('Maps');
   const locale = useLocale();
   // local state
-  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedCountry, setSelectedCountry] = useState('DE');
   const [openLanguageModal, setLanguageModalOpen] = useState(false);
   // store: state
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
-  const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
+  const tenantSlug = useTenantStore((state) => state.tenantConfig.config.slug);
 
   const handleLanguageModalClose = () => {
     setLanguageModalOpen(false);
   };
-
-  useEffect(() => {
-    if (typeof Storage !== 'undefined') {
-      //fetching currency code from browser's localstorage
-      if (localStorage.getItem('currencyCode')) {
-        const currencyCode = localStorage.getItem('currencyCode');
-        if (currencyCode) setSelectedCurrency(currencyCode);
-      }
-      //fetching country code from browser's localstorage
-      if (localStorage.getItem('countryCode')) {
-        const countryCode = localStorage.getItem('countryCode');
-        if (countryCode) setSelectedCountry(countryCode);
-      }
-    }
-  }, []);
 
   const separator = isMobile && !isEmbedMode ? '|' : null;
 
@@ -54,13 +41,11 @@ export default function Credits({ isMobile }: Props): ReactElement {
             }}
             className={styles.languageModalButton}
           >
-            {`🌐 ${locale ? locale.toUpperCase() : ''} • ${selectedCurrency}`}
+            {`🌐 ${locale ? locale.toUpperCase() : ''} • ${currencyCode}`}
           </div>
         )}
         {separator}
-        {(tenantConfig.config.slug === 'ttc' ||
-          tenantConfig.config.slug === 'planet') &&
-        !isEmbedMode ? (
+        {(tenantSlug === 'ttc' || tenantSlug === 'planet') && !isEmbedMode ? (
           <a
             rel="noopener noreferrer"
             href={`https://www.thegoodshop.org/de/shop/`}
@@ -156,9 +141,6 @@ export default function Credits({ isMobile }: Props): ReactElement {
       <SelectLanguageAndCountry
         openModal={openLanguageModal}
         handleModalClose={handleLanguageModalClose}
-        setSelectedCurrency={setSelectedCurrency}
-        selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry}
       />
     </>
   );

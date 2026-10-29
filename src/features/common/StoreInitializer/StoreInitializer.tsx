@@ -1,12 +1,19 @@
 import type { Tenant } from '@planet-sdk/common';
 
+import { useInitializeAuth } from '../../../hooks/useInitializeAuth';
 import { useInitializeCurrency } from '../../../hooks/useInitializeCurrency';
 import { useInitializeParams } from '../../../hooks/useInitializeParams';
+import { useInitializePlanetCash } from '../../../hooks/useInitializePlanetCash';
+import { useInitializePayout } from '../../../hooks/useInitializePayout';
+import { useInitializeBulkCode } from '../../../hooks/useInitializeBulkCode';
+import { useInitializeUser } from '../../../hooks/useInitializeUser';
 import { useInitializeProject } from '../../../hooks/useInitializeProject';
 import { useInitializeIntervention } from '../../../hooks/useInitializeIntervention';
-import { useInitializeView } from '../../../hooks/useInitializeView';
+import { useInitializeMobileViewMode } from '../../../hooks/useInitializeMobileViewMode';
 import { useInitializeSingleProject } from '../../../hooks/useInitializeSingleProject';
 import { useInitializeTenant } from '../../../hooks/useInitializeTenant';
+import { useInitializeDonationReceipt } from '../../../hooks/useInitializeDonationReceipt';
+import { useInitializeLanguage } from '../../../hooks/useInitializeLanguage';
 
 interface StoreInitializerProps {
   tenantConfig?: Tenant;
@@ -31,8 +38,15 @@ export const StoreInitializer = ({
 }: StoreInitializerProps) => {
   useInitializeTenant(tenantConfig);
   useInitializeParams();
+  useInitializeLanguage(); // Sync route locale to legacy localStorage readers.
+  useInitializeAuth();
+  useInitializeUser();
   useInitializeCurrency();
-  useInitializeView(isMobile);
+  useInitializePlanetCash();
+  useInitializePayout();
+  useInitializeDonationReceipt();
+  useInitializeBulkCode();
+  useInitializeMobileViewMode(isMobile);
   useInitializeProject();
   useInitializeSingleProject();
   useInitializeIntervention();

@@ -1,10 +1,11 @@
 import { useLocale } from 'next-intl';
 import { useEffect } from 'react';
-import { useProjectStore, useViewStore } from '../stores';
+import { useProjectStore } from '../stores';
 import { useApi } from './useApi';
 import { useCurrencyStore, useTenantStore } from '../stores';
 import { useRouter } from 'next/router';
 import { isValidClassification } from '../utils/projectV2';
+import { useCurrentPage } from './useCurrentPage';
 
 export const useInitializeProject = () => {
   const locale = useLocale();
@@ -13,12 +14,10 @@ export const useInitializeProject = () => {
   const router = useRouter();
   // store: state
   const currencyCode = useCurrencyStore((state) => state.currencyCode);
-  const currentPage = useViewStore((state) => state.page);
-  const projectsCurrencyCode = useProjectStore(
-    (state) => state.projectsCurrencyCode
+  const isCurrencyResolved = useCurrencyStore(
+    (state) => state.isCurrencyResolved
   );
-  const projectsLocale = useProjectStore((state) => state.projectsLocale);
-  const projects = useProjectStore((state) => state.projects);
+  const currentPage = useCurrentPage();
   // store: action
   const fetchProjects = useProjectStore((state) => state.fetchProjects);
   const setSelectedClassification = useProjectStore(
@@ -30,15 +29,12 @@ export const useInitializeProject = () => {
   const clearFilterStates = useProjectStore((state) => state.clearFilterStates);
 
   useEffect(() => {
-    if (currentPage !== 'project-list' || !currencyCode) return;
-    // Avoid refetching if projects are already loaded for the same locale and currency
-    if (
-      projectsLocale === locale &&
-      projectsCurrencyCode === currencyCode &&
-      projects !== null
-    )
-      return;
-
+    if (currentPage !== 'project-list') return;
+    // Wait for the real currency. `currencyCode` starts at a placeholder, and
+    // fetching with it would only be superseded once `localStorage` is read.
+    if (!isCurrencyResolved || !currencyCode) return;
+    // `fetchProjects` skips redundant requests itself, keyed on locale, currency
+    // and tenant.
     fetchProjects(getApi, {
       queryParams: {
         _scope: 'map',
@@ -50,7 +46,7 @@ export const useInitializeProject = () => {
         'filter[purpose]': 'trees,conservation',
       },
     });
-  }, [currencyCode, locale, tenantId, currentPage]);
+  }, [currencyCode, isCurrencyResolved, locale, tenantId, currentPage]);
 
   useEffect(() => {
     if (router.isReady && currentPage === 'project-list') {
@@ -71,7 +67,6 @@ export const useInitializeProject = () => {
         setShowDonatableProjects(true);
       }
     }
-    // `currentPage` starts as `null` and is resolved by `useInitializeView` once the router is ready; include it so the URL filters initialize when the page becomes 'project-list' (not only on the initial `router.isReady`).
   }, [router.isReady, currentPage]);
 
   useEffect(() => {
