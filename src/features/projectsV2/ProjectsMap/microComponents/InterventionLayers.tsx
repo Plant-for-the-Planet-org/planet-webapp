@@ -10,6 +10,7 @@ import type {
   InterventionProperties,
 } from '../../../common/types/map';
 
+import { memo, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Layer, Source, Marker } from 'react-map-gl/maplibre';
 import area from '@turf/area';
@@ -45,6 +46,92 @@ const hasRenderableGeometry = (intervention: Intervention): boolean => {
   return Array.isArray(geometry.coordinates) && geometry.coordinates.length > 0;
 };
 
+const getTreeCount = (multiTree: MultiTreeRegistration) => {
+  let count = 0;
+  if (multiTree && multiTree.plantedSpecies) {
+    for (const key in multiTree.plantedSpecies) {
+      if (Object.prototype.hasOwnProperty.call(multiTree.plantedSpecies, key)) {
+        const element = multiTree.plantedSpecies[key];
+        count += element.treeCount;
+      }
+    }
+    return count;
+  } else {
+    return 0;
+  }
+};
+
+const getPlantationArea = (multiTree: MultiTreeRegistration) => {
+  if (multiTree && multiTree.type === 'multi-tree-registration') {
+    const polygonAreaSqMeters = area(multiTree.geometry);
+    return typeof polygonAreaSqMeters === 'number'
+      ? polygonAreaSqMeters / 10000
+      : 0;
+  } else {
+    return 0;
+  }
+};
+
+const getPolygonColor = (multiTree: MultiTreeRegistration) => {
+  const treeCount = getTreeCount(multiTree);
+  const plantationArea = getPlantationArea(multiTree);
+  const density = plantationArea > 0 ? treeCount / plantationArea : 0;
+  if (density > 2500) {
+    return 0.5;
+  } else if (density > 2000) {
+    return 0.4;
+  } else if (density > 1600) {
+    return 0.3;
+  } else if (density > 1000) {
+    return 0.2;
+  } else {
+    return 0.1;
+  }
+};
+
+const getDateDiff = (
+  intervention: Intervention,
+  t: ReturnType<typeof useTranslations<'Maps'>>,
+  locale: string
+) => {
+  const plantDate =
+    intervention.interventionStartDate ?? intervention.plantDate;
+  if (!plantDate) return '';
+
+  const today = new Date();
+  const plantationDate = new Date(plantDate.slice(0, 10));
+  const differenceInTime = today.getTime() - plantationDate.getTime();
+  const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+  if (differenceInDays < 1) {
+    return t('today');
+  } else if (differenceInDays < 2) {
+    return t('yesterday');
+  } else if (differenceInDays <= 10) {
+    return t('daysAgo', {
+      days: localizedAbbreviatedNumber(locale, differenceInDays, 0),
+    });
+  } else {
+    return '';
+  }
+};
+
+const makeInterventionGeoJson = (
+  geometry: InterventionGeometryType,
+  id: string,
+  extra?: Partial<Omit<InterventionProperties, 'id'>>
+): InterventionFeature => {
+  const properties = {
+    id,
+    ...extra,
+  };
+
+  return {
+    type: 'Feature',
+    properties,
+    geometry,
+  };
+};
+
 const SampleInterventionMarker = ({
   sampleIntervention,
   selectedSampleIntervention,
@@ -69,7 +156,7 @@ const SampleInterventionMarker = ({
   </Marker>
 );
 
-export default function InterventionLayers(): ReactElement {
+function InterventionLayers(): ReactElement {
   // store: state
   const interventions = useInterventionStore((state) => state.interventions);
   const hoveredIntervention = useInterventionStore(
@@ -85,7 +172,8 @@ export default function InterventionLayers(): ReactElement {
     (state) => state.selectedSampleIntervention
   );
   const isSatelliteView = useProjectMapStore((state) => state.isSatelliteView);
-  const mainMapZoom = useProjectMapStore((state) => state.viewState.zoom);
+  // A boolean, so panning and zooming only re-render this when the zoom crosses 14.
+  const isZoomedIn = useProjectMapStore((state) => state.viewState.zoom > 14);
   // store: action
   const setSelectedSampleIntervention = useInterventionStore(
     (state) => state.setSelectedSampleIntervention
@@ -114,124 +202,48 @@ export default function InterventionLayers(): ReactElement {
     }
   };
 
-  const getTreeCount = (multiTree: MultiTreeRegistration) => {
-    let count = 0;
-    if (multiTree && multiTree.plantedSpecies) {
-      for (const key in multiTree.plantedSpecies) {
-        if (
-          Object.prototype.hasOwnProperty.call(multiTree.plantedSpecies, key)
-        ) {
-          const element = multiTree.plantedSpecies[key];
-          count += element.treeCount;
-        }
-      }
-      return count;
-    } else {
-      return 0;
-    }
-  };
-  const getPlantationArea = (multiTree: MultiTreeRegistration) => {
-    if (multiTree && multiTree.type === 'multi-tree-registration') {
-      const polygonAreaSqMeters = area(multiTree.geometry);
-      return typeof polygonAreaSqMeters === 'number'
-        ? polygonAreaSqMeters / 10000
-        : 0;
-    } else {
-      return 0;
-    }
-  };
-
-  const getPolygonColor = (multiTree: MultiTreeRegistration) => {
-    const treeCount = getTreeCount(multiTree);
-    const plantationArea = getPlantationArea(multiTree);
-    const density = plantationArea > 0 ? treeCount / plantationArea : 0;
-    if (density > 2500) {
-      return 0.5;
-    } else if (density > 2000) {
-      return 0.4;
-    } else if (density > 1600) {
-      return 0.3;
-    } else if (density > 1000) {
-      return 0.2;
-    } else {
-      return 0.1;
-    }
-  };
-
-  const getDateDiff = (intervention: Intervention) => {
-    const plantDate =
-      intervention.interventionStartDate ?? intervention.plantDate;
-    if (!plantDate) return '';
-
-    const today = new Date();
-    const plantationDate = new Date(plantDate.slice(0, 10));
-    const differenceInTime = today.getTime() - plantationDate.getTime();
-    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-    if (differenceInDays < 1) {
-      return t('today');
-    } else if (differenceInDays < 2) {
-      return t('yesterday');
-    } else if (differenceInDays <= 10) {
-      return t('daysAgo', {
-        days: localizedAbbreviatedNumber(locale, differenceInDays, 0),
-      });
-    } else {
-      return '';
-    }
-  };
-
-  const makeInterventionGeoJson = (
-    geometry: InterventionGeometryType,
-    id: string,
-    extra?: Partial<Omit<InterventionProperties, 'id'>>
-  ): InterventionFeature => {
-    const properties = {
-      id,
-      ...extra,
-    };
-
-    return {
-      type: 'Feature',
-      properties,
-      geometry,
-    };
-  };
-  if (!interventions || interventions.length === 0) {
-    return <></>;
-  }
-  //TODO
-  const features = interventions
-    .filter(hasRenderableGeometry)
-    .filter(
-      (intervention) =>
-        selectedInterventionType === 'all' ||
-        (selectedInterventionType !== 'default' &&
-          intervention.type === selectedInterventionType) ||
-        (selectedInterventionType === 'default' &&
-          (intervention.type === 'multi-tree-registration' ||
-            intervention.type === 'single-tree-registration'))
-    )
-    .map((intervention) => {
-      const GeoJSON = makeInterventionGeoJson(
-        intervention.geometry,
-        intervention.id,
-        {
+  // Depends only on the data, so area() and the date diff do not run again when the type filter changes.
+  const renderableFeatures = useMemo(
+    () =>
+      (interventions ?? []).filter(hasRenderableGeometry).map((intervention) =>
+        makeInterventionGeoJson(intervention.geometry, intervention.id, {
           opacity:
             intervention.type === 'multi-tree-registration'
               ? getPolygonColor(intervention)
               : 0.5,
-          dateDiff: getDateDiff(intervention),
+          dateDiff: getDateDiff(intervention, t, locale),
           type: intervention.type,
-        }
-      );
-      return GeoJSON;
-    });
+        })
+      ),
+    [interventions, t, locale]
+  );
+
+  // Passing the same object lets react-map-gl skip its deep compare of `data`.
+  const featureCollection = useMemo(() => {
+    const features = renderableFeatures.filter(
+      ({ properties: { type } }) =>
+        selectedInterventionType === 'all' ||
+        (selectedInterventionType !== 'default' &&
+          type === selectedInterventionType) ||
+        (selectedInterventionType === 'default' &&
+          (type === 'multi-tree-registration' ||
+            type === 'single-tree-registration'))
+    );
+    return { type: 'FeatureCollection' as const, features };
+  }, [renderableFeatures, selectedInterventionType]);
 
   // Kept in its own small source so a hover change only resends these features, not the whole project.
-  const highlightedIds = [selectedIntervention?.id, hoveredIntervention?.id];
-  const highlightFeatures = features.filter((feature) =>
-    highlightedIds.includes(feature.properties.id)
-  );
+  const highlightCollection = useMemo(() => {
+    const highlightedIds = [selectedIntervention?.id, hoveredIntervention?.id];
+    const features = featureCollection.features.filter((feature) =>
+      highlightedIds.includes(feature.properties.id)
+    );
+    return { type: 'FeatureCollection' as const, features };
+  }, [featureCollection, selectedIntervention, hoveredIntervention]);
+
+  if (!interventions || interventions.length === 0) {
+    return <></>;
+  }
 
   const isValidInterventionType = [
     'multi-tree-registration',
@@ -244,19 +256,12 @@ export default function InterventionLayers(): ReactElement {
     selectedIntervention &&
     selectedIntervention.type !== 'single-tree-registration' &&
     isValidInterventionType &&
-    mainMapZoom > 14 &&
+    isZoomedIn &&
     selectedIntervention.sampleInterventions;
 
   return (
     <>
-      <Source
-        id={'display-source'}
-        type="geojson"
-        data={{
-          type: 'FeatureCollection',
-          features: [...features],
-        }}
-      >
+      <Source id={'display-source'} type="geojson" data={featureCollection}>
         <Layer
           id={MAIN_MAP_LAYERS.PLANT_POLYGON}
           type="fill"
@@ -285,14 +290,7 @@ export default function InterventionLayers(): ReactElement {
           filter={['==', ['geometry-type'], 'Point']}
         />
       </Source>
-      <Source
-        id={'highlight-source'}
-        type="geojson"
-        data={{
-          type: 'FeatureCollection',
-          features: highlightFeatures,
-        }}
-      >
+      <Source id={'highlight-source'} type="geojson" data={highlightCollection}>
         <Layer
           id={MAIN_MAP_LAYERS.SELECTED_LINE}
           type="line"
@@ -330,3 +328,5 @@ export default function InterventionLayers(): ReactElement {
     </>
   );
 }
+
+export default memo(InterventionLayers);
