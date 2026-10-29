@@ -1,120 +1,97 @@
-import type { SavedPaymentMethod } from '../types';
-
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { CreditCard, Landmark, Trash2 } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useUserStore } from '@/stores/userStore';
 
 import { usePaymentMethods } from '../hooks/usePaymentMethods';
+import { AddPaymentMethodPanel } from './paymentMethods/AddPaymentMethodPanel';
+import { SavedPaymentMethodRow } from './paymentMethods/SavedPaymentMethodRow';
 import { PaymentsEmpty } from './PaymentsEmpty';
 import { PaymentsListSkeleton } from './PaymentsListSkeleton';
 
-const isSepa = (method: SavedPaymentMethod) =>
-  method.type === 'sepa_debit' || method.brand === 'sepa';
-
-const methodLabel = (method: SavedPaymentMethod) => {
-  const last4 = method.last4 ?? '••••';
-  if (isSepa(method)) return `SEPA ···· ${last4}`;
-  const brand = method.brand
-    ? method.brand.charAt(0).toUpperCase() + method.brand.slice(1)
-    : 'Card';
-  return `${brand} ···· ${last4}`;
-};
+type SyncNotice = 'syncing' | 'delayed' | null;
 
 /**
- * Lists the profile's saved payment methods (card / SEPA) with the ability to
- * remove them. Adding a method is deferred — it requires Stripe Elements, which
- * the webapp does not yet integrate.
+ * Lists the profile's saved payment methods (card / SEPA) and lets the donor add and remove them.
  */
 export const PaymentMethodsView = () => {
-  const t = useTranslations('Me');
-  const tPayments = useTranslations('Payments');
+  const t = useTranslations('Payments');
   // local state
-  const [confirmingId, setConfirmingId] = useState<string | null>(null);
-  // store: state
-  const userCountry = useUserStore((state) => state.userProfile?.country);
+  const [isAdding, setIsAdding] = useState(false);
+  const [syncNotice, setSyncNotice] = useState<SyncNotice>(null);
 
-  const country =
-    userCountry ??
-    (typeof window !== 'undefined'
-      ? localStorage.getItem('countryCode')
-      : null) ??
-    'DE';
+  const { methods, isLoading, removingId, removeMethod, waitForMethod } =
+    usePaymentMethods();
 
-  const { methods, isLoading, removingId, removeMethod } =
-    usePaymentMethods(country);
+  const handleAdded = async (paymentMethodId: string) => {
+    setIsAdding(false);
+    setSyncNotice('syncing');
+    const found = await waitForMethod(paymentMethodId);
+    setSyncNotice(found ? null : 'delayed');
+  };
+
+  const addButton = !isAdding && (
+    <Button
+      variant="outline"
+      size="sm"
+      className="self-start"
+      onClick={() => {
+        setIsAdding(true);
+        setSyncNotice(null);
+      }}
+    >
+      <Plus className="mr-1.5 size-4" aria-hidden />
+      {t('addMethod.open')}
+    </Button>
+  );
 
   if (isLoading) return <PaymentsListSkeleton rows={3} />;
-  if (methods.length === 0)
-    return <PaymentsEmpty title={tPayments('noPaymentMethods')} />;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card">
-      <ul className="divide-y divide-border">
-        {methods.map((method) => {
-          const Icon = isSepa(method) ? Landmark : CreditCard;
-          return (
-            <li key={method.id} className="flex items-center gap-4 px-4 py-3.5">
-              <Icon
-                className="size-5 shrink-0 text-muted-foreground"
-                aria-hidden
-              />
-              <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                <span className="flex items-center gap-2 text-foreground">
-                  {methodLabel(method)}
-                  {method.isDefault && (
-                    <Badge variant="secondary">{tPayments('default')}</Badge>
-                  )}
-                </span>
-                {method.expires && (
-                  <span className="text-xs text-muted-foreground">
-                    {method.expires}
-                  </span>
-                )}
-              </div>
+    <div className="flex flex-col gap-4">
+      {methods.length === 0 && !isAdding && syncNotice === null ? (
+        <PaymentsEmpty
+          title={t('noPaymentMethods')}
+          description={t('noPaymentMethodsDescription')}
+          actionLabel={t('addMethod.open')}
+          onAction={() => setIsAdding(true)}
+        />
+      ) : (
+        <>
+          {methods.length > 0 && (
+            <div className="overflow-hidden rounded-xl border border-solid border-border bg-card">
+              <ul className="m-0 list-none divide-y divide-border p-0">
+                {methods.map((method) => (
+                  <SavedPaymentMethodRow
+                    key={method.id}
+                    method={method}
+                    isRemoving={removingId === method.id}
+                    onRemove={() => removeMethod(method.id)}
+                  />
+                ))}
+              </ul>
+            </div>
+          )}
 
-              {confirmingId === method.id ? (
-                <div className="flex items-center gap-2">
-                  <span className="hidden text-sm text-muted-foreground sm:inline">
-                    {tPayments('confirmRemoveMethod')}
-                  </span>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    disabled={removingId === method.id}
-                    onClick={() =>
-                      removeMethod(method.id).then((removed) => {
-                        if (removed) setConfirmingId(null);
-                      })
-                    }
-                  >
-                    {tPayments('remove')}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setConfirmingId(null)}
-                  >
-                    {t('cancel')}
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  aria-label={tPayments('remove')}
-                  onClick={() => setConfirmingId(method.id)}
-                >
-                  <Trash2 className="size-4" />
-                </Button>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+          {syncNotice && (
+            <p role="status" className="m-0 text-sm text-muted-foreground">
+              {syncNotice === 'syncing'
+                ? t('addMethod.syncing')
+                : t('addMethod.delayed')}
+            </p>
+          )}
+
+          {addButton}
+        </>
+      )}
+
+      {isAdding && (
+        <AddPaymentMethodPanel
+          onClose={() => setIsAdding(false)}
+          onAdded={handleAdded}
+        />
+      )}
     </div>
   );
 };

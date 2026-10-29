@@ -182,9 +182,9 @@ export interface PaymentTransferDetails {
 }
 
 /**
- * A saved Stripe payment method (card or SEPA) for the profile, per country.
- * @see UserProfileController::paymentMethods / formatPaymentMethods()
- *   GET /app/profile/paymentMethods/{country}
+ * A saved Stripe payment method (card or SEPA) of the profile, in one of the Stripe collect accounts.
+ * @see UserProfileController::allPaymentMethods
+ *   GET /app/profile/paymentMethods
  */
 export interface SavedPaymentMethod {
   /** Stripe payment method id (pm_…) — also the id passed to DELETE. */
@@ -200,6 +200,43 @@ export interface SavedPaymentMethod {
   country?: string | null;
   /** Cards only: "MM/YYYY". */
   expires?: string | null;
+  /** What charges this method. The platform refuses to remove a method while this is not empty. */
+  usedBy?: PaymentMethodUsage[];
+}
+
+export type PaymentMethodUsage =
+  | {
+      type: 'subscription';
+      /** Subscription guid. */
+      id: string;
+      status: string;
+      amount: number;
+      currency: string;
+      frequency: string | null;
+      projectName: string | null;
+    }
+  | {
+      type: 'planetCashTopUp';
+      /** PlanetCash account guid. */
+      id: string;
+      country: string | null;
+    };
+
+/** Payment method types a SetupIntent can save for later use. */
+export type SetupIntentMethod = 'card' | 'sepa_debit';
+
+/**
+ * A SetupIntent for saving a payment method without paying, in the account the donor's donations collect through.
+ * @see UserProfileController::createDefaultSetupIntent
+ *   POST /app/profile/paymentMethods/setupIntent
+ */
+export interface SetupIntentResponse {
+  clientSecret: string;
+  /** Publishable key of the country's Stripe account, the only key that can confirm the secret. */
+  publishableKey: string | null;
+  methods: SetupIntentMethod[];
+  /** Country of the account the intent was created in; cancelling goes through that country's route. */
+  accountCountry: string;
 }
 
 /** Query params accepted by GET /app/payments (see controller filter/order maps). */
