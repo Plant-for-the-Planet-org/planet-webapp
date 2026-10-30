@@ -1,4 +1,4 @@
-@import '../../../../theme/theme';
+@use '../../../../theme/theme' as *;
 
 .imageSlideshowSection {
   background-image: url('/tenants/salesforce/images/rectangle-35.png');
