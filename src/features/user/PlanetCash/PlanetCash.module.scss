@@ -1,4 +1,4 @@
-@import '../../../theme/theme';
+@use '../../../theme/theme' as *;
 
 $spacing-xs: 8px;
 $spacing-sm: 16px;
