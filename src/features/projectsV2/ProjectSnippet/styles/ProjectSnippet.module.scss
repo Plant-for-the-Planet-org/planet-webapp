@@ -1,4 +1,4 @@
-@import '../../../../theme/theme';
+@use '../../../../theme/theme' as *;
 
 .singleProject {
   border: 2px solid $dsWhite;

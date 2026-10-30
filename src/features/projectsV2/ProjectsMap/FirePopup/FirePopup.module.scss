@@ -1,4 +1,4 @@
-@import '../../../../theme/theme';
+@use '../../../../theme/theme' as *;
 
 // Fire Alert Brand Colors (not from theme)
 $fireAlertOrange: #e86f56;

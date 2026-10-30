@@ -1,4 +1,4 @@
-@import './theme';
+@use './theme' as *;
 
 .MuiTypography-body1 {
   font-size: $fontSmall !important;
