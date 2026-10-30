@@ -12,7 +12,6 @@ import {
 } from '../../../../stores';
 import { useCurrentPage } from '../../../../hooks/useCurrentPage';
 
-export type ViewMode = 'list' | 'map';
 interface ProjectsLayoutProps {
   children: ReactNode;
   isMobile: boolean;
