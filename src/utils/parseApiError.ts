@@ -9,9 +9,13 @@ import type { APIError, SerializedError } from '@planet-sdk/common';
  * for anything else — including the {"error": "..."} body the backend sends on
  * 409 Conflict responses.
  *
+ * A plain string body (e.g. thrown by fetchUserProfile) is returned as-is. This check runs before handleError, which would otherwise swap the text for a status key like "internalServerError" on 500 or drop it on other statuses.
+ *
  * This function ensures callers always receive at least one SerializedError.
  */
 export function parseApiError(err: APIError): SerializedError[] {
+  if (typeof err.errors === 'string') return [{ message: err.errors }];
+
   const serialized = handleError(err);
   if (serialized.length > 0) return serialized;
 
