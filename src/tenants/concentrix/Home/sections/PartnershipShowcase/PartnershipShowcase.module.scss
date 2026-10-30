@@ -1,5 +1,5 @@
 // cSpell:ignore possenhofen kiko Klimaneutralität
-@import '../../../../../theme/theme';
+@use '../../../../../theme/theme' as *;
 
 .partnershipShowcase {
   padding: 60px 20px;
