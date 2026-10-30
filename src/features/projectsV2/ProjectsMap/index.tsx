@@ -43,11 +43,11 @@ import {
   useInterventionStore,
   useProjectStore,
   useSingleProjectStore,
-  useViewStore,
   useQueryParamStore,
   useProjectMapStore,
 } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
+import { useCurrentPage } from '../../../hooks/useCurrentPage';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
 
@@ -71,7 +71,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const lastHoveredIdRef = useRef<string | null>(null);
   const { filteredProjects } = useFilteredProjects();
   // store: state
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
   const isEmbedded = useQueryParamStore((state) => state.embed === 'true');
   const isQueryParamsLoaded = useQueryParamStore(
     (state) => state.isContextLoaded
@@ -264,7 +264,9 @@ function ProjectsMap(props: ProjectsMapProps) {
         }
       };
 
-      const features = getFeaturesAtPoint(mapRef, e.point);
+      // react-map-gl already queried interactiveLayerIds for this event, so reuse its result instead of querying again.
+      const features = e.features;
+      e.target.getCanvas().style.cursor = features?.length ? 'pointer' : '';
       if (!features?.length) {
         clearHover();
         return;
@@ -415,7 +417,10 @@ function ProjectsMap(props: ProjectsMapProps) {
             onMove={onMove}
             onLoad={() => setMapLoaded(true)}
             onMouseMove={onMouseMove}
-            onMouseOut={() => setHoveredIntervention(null)}
+            onMouseOut={() => {
+              lastHoveredIdRef.current = null;
+              setHoveredIntervention(null);
+            }}
             onClick={onClick}
             attributionControl={false}
             ref={mapRef}
