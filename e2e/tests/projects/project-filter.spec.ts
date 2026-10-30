@@ -39,7 +39,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto(`/${LOCALE}`);
 });
 
-test('Mangroves, then Accepting Donations, narrow the project list and the map markers, and Clear Filter brings them all back', async ({
+test('classification (e.g. Mangroves) and Accepting Donations filters narrow the list and map, and Clear Filter resets both', async ({
   page,
 }) => {
   // The map renders in software without a GPU, as in CI, which is slow.
@@ -120,7 +120,7 @@ test('Mangroves, then Accepting Donations, narrow the project list and the map m
     .toEqual(slugs(startMarkers));
 });
 
-test('Accepting Donations alone hides non-donatable projects from the map without filtering by project type', async ({
+test('Accepting Donations filter alone keeps donatable projects of every classification', async ({
   page,
 }) => {
   test.slow();
@@ -153,7 +153,7 @@ test('Accepting Donations alone hides non-donatable projects from the map withou
   ).toBeVisible();
 });
 
-test('two project types show the projects of either type, and unpicking one leaves only the other', async ({
+test('two classification filters (e.g. Mangroves and Agroforestry) show both, and unpicking one keeps the other', async ({
   page,
 }) => {
   test.slow();
@@ -202,7 +202,7 @@ test('two project types show the projects of either type, and unpicking one leav
 });
 
 // The Salesforce Mangroves tenant page links to the project list this way.
-test('a link with filters in its URL opens the project list already filtered', async ({
+test('filters in the URL (e.g. ?filter=mangroves&donatable_projects_only=true) apply on page load', async ({
   page,
 }) => {
   test.slow();
