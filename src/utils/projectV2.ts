@@ -6,7 +6,7 @@ import type {
   SingleTreeRegistration,
   TreeProjectClassification,
 } from '@planet-sdk/common';
-import type { MapGeoJSONFeature, PointLike } from 'react-map-gl-v7/maplibre';
+import type { MapGeoJSONFeature, PointLike } from 'react-map-gl/maplibre';
 import type { Position } from 'geojson';
 import type { ParsedUrlQuery } from 'querystring';
 import type {
@@ -129,13 +129,13 @@ export const getProjectCategory = (
 };
 
 export const availableFilters: TreeProjectClassification[] = [
-  'large-scale-planting',
+  'restoration-tree-planting',
   'agroforestry',
   'natural-regeneration',
   'managed-regeneration',
   'urban-planting',
   'mangroves',
-  'other-planting',
+  'other-restoration',
 ];
 
 export const isValidClassification = (
@@ -179,28 +179,15 @@ export function getFeaturesAtPoint(
 ): MapGeoJSONFeature[] | undefined {
   if (!mapRef.current) return;
   const map = mapRef.current.getMap();
-  const canvas = map.getCanvas();
 
   const availableLayers = INTERACTIVE_LAYERS.filter((layerId) =>
     map.getLayer(layerId)
   );
+  if (availableLayers.length === 0) return [];
 
-  if (availableLayers.length === 0) {
-    canvas.style.cursor = '';
-    return [];
-  }
-
-  const features = map.queryRenderedFeatures(point, {
+  return map.queryRenderedFeatures(point, {
     layers: availableLayers,
   });
-
-  if (features.length === 0) {
-    canvas.style.cursor = '';
-    return [];
-  }
-
-  canvas.style.cursor = 'pointer';
-  return features;
 }
 
 /**

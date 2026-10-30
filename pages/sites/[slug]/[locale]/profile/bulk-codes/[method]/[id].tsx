@@ -16,7 +16,6 @@ import BulkCodes, {
 } from '../../../../../../../src/features/user/BulkCodes';
 import Head from 'next/head';
 import { BulkCodeMethods } from '../../../../../../../src/utils/constants/bulkCodeConstants';
-import { useBulkCode } from '../../../../../../../src/features/common/Layout/BulkCodeContext';
 import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
@@ -33,6 +32,7 @@ import {
   useUserStore,
   useErrorHandlingStore,
   useTenantStore,
+  useBulkCodeStore,
 } from '../../../../../../../src/stores';
 import { defaultTenant } from '../../../../../../../tenant.config';
 
@@ -41,84 +41,90 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
   const { localizedPath } = useLocalizedPath();
   const t = useTranslations('Me');
   const { getApiAuthenticated } = useApi();
-  const {
-    project,
-    setProject,
-    bulkMethod,
-    setBulkMethod,
-    planetCashAccount,
-    projectList,
-  } = useBulkCode();
-
   //store: state
   const isAuthReady = useAuthStore((state) =>
     Boolean(state.token && state.isAuthResolved)
   );
   const userProfile = useUserStore((state) => state.userProfile);
+  const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
+  const projectList = useBulkCodeStore((state) => state.projectList);
+  const project = useBulkCodeStore((state) => state.project);
+  const planetCashAccount = useBulkCodeStore(
+    (state) => state.planetCashAccount
+  );
   const isInitialized = useTenantStore((state) => state.isInitialized);
   //store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setBulkMethod = useBulkCodeStore((state) => state.setBulkMethod);
+  const setProject = useBulkCodeStore((state) => state.setProject);
 
-  // Checks context and sets project, bulk method if not already set within context
+  const { method } = router.query;
+  const isValidMethod =
+    method === BulkCodeMethods.GENERIC || method === BulkCodeMethods.IMPORT;
+
+  // Checks context and sets project; keeps the store's bulk method in sync
+  // with the route method, so navigating between methods doesn't leave a
+  // stale value.
   const checkContext = useCallback(async () => {
-    if (planetCashAccount && isAuthReady && projectList) {
-      if (!project) {
-        if (router.isReady) {
-          try {
-            const paymentOptions = await getApiAuthenticated<PaymentOptions>(
-              `/app/paymentOptions/${router.query.id}`,
-              {
-                queryParams: {
-                  country: planetCashAccount?.country ?? '',
-                  ...(userProfile !== null && {
-                    legacyPriceFor: userProfile.id,
-                  }),
-                },
-              }
-            );
-            if (paymentOptions) {
-              const retrievedProject = projectList.find(
-                (project) => project.guid === paymentOptions.id
-              );
-              if (!retrievedProject) {
-                throw new Error('Project not found');
-              }
-              retrievedProject.currency = paymentOptions.currency;
-              retrievedProject.unitCost = paymentOptions.unitCost;
-              retrievedProject.unitType = paymentOptions.unitType;
-              retrievedProject.purpose = paymentOptions.purpose;
-              setProject(retrievedProject);
-            }
-          } catch (err) {
-            setErrors(handleError(err as APIError));
-            router.push(localizedPath('/'));
+    if (!router.isReady) return;
+    if (!isValidMethod) {
+      router.push(localizedPath('/profile/bulk-codes'));
+      return;
+    }
+    if (!planetCashAccount || !isAuthReady || !projectList) return;
+    if (!project) {
+      try {
+        const paymentOptions = await getApiAuthenticated<PaymentOptions>(
+          `/app/paymentOptions/${router.query.id}`,
+          {
+            queryParams: {
+              country: planetCashAccount?.country ?? '',
+              ...(userProfile !== null && {
+                legacyPriceFor: userProfile.id,
+              }),
+            },
           }
-        } else {
-          router.push(localizedPath('/profile/bulk-codes'));
-        }
-      }
+        );
 
-      if (!bulkMethod) {
-        if (router.isReady) {
-          const _bulkMethod = router.query.method;
-          if (
-            _bulkMethod === BulkCodeMethods.GENERIC ||
-            _bulkMethod === BulkCodeMethods.IMPORT
-          ) {
-            setBulkMethod(_bulkMethod);
-          } else {
-            router.push(localizedPath('/profile/bulk-codes'));
-          }
-        }
+        if (!paymentOptions) return;
+
+        const retrievedProject = projectList.find(
+          (project) => project.guid === paymentOptions.id
+        );
+
+        if (!retrievedProject) throw new Error('Project not found');
+
+        Object.assign(retrievedProject, {
+          currency: paymentOptions.currency,
+          unitCost: paymentOptions.unitCost,
+          unitType: paymentOptions.unitType,
+          purpose: paymentOptions.purpose,
+        });
+
+        setProject(retrievedProject);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        router.push(localizedPath('/'));
       }
     }
-  }, [router.isReady, planetCashAccount, isAuthReady, projectList]);
+
+    if (bulkMethod !== method) setBulkMethod(method);
+  }, [
+    router.isReady,
+    planetCashAccount,
+    isAuthReady,
+    projectList,
+    project,
+    isValidMethod,
+    method,
+    bulkMethod,
+  ]);
 
   useEffect(() => {
     checkContext();
   }, [checkContext]);
 
-  if (!isInitialized) return <></>;
+  if (!isInitialized || !router.isReady || !isValidMethod) return <></>;
 
   return (
     <UserLayout>

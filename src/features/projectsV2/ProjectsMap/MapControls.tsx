@@ -2,7 +2,7 @@ import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { DropdownType } from '../../common/types/projectv2';
 import type { InterventionTypes } from '@planet-sdk/common';
-import type { Page } from '../../../stores/viewStore';
+import type { Page } from '../../../hooks/useCurrentPage';
 
 import { useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
@@ -17,7 +17,7 @@ import { clsx } from 'clsx';
 import {
   useInterventionStore,
   useSingleProjectStore,
-  useViewStore,
+  useMobileViewModeStore,
   useProjectMapStore,
   useQueryParamStore,
 } from '../../../stores';
@@ -60,7 +60,9 @@ const MapControls = ({
     (state) => state.setIsSatelliteView
   );
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
-  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
+  const setSelectedMode = useMobileViewModeStore(
+    (state) => state.setSelectedMode
+  );
 
   const availableInterventionTypes = useMemo(() => {
     if (!interventions) return [];

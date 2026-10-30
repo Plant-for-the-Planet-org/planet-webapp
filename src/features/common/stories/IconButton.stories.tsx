@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import IconButton from '../IconButton';
 import CloseIcon from '../../../../public/assets/images/icons/CloseIcon';
 

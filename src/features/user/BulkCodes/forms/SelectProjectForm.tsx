@@ -5,25 +5,28 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
-import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import ProjectSelector from '../components/ProjectSelector';
 import BulkCodesError from '../components/BulkCodesError';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useUserStore } from '../../../../stores';
+import { useBulkCodeStore } from '../../../../stores/bulkCodeStore';
 
 const SelectProjectForm = (): ReactElement | null => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const tCommon = useTranslations('Common');
   const { method } = router.query;
-  const { project, setProject, projectList, planetCashAccount } = useBulkCode();
+  // store: state
+  const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+  const project = useBulkCodeStore((state) => state.project);
+  // store: action
+  const setProject = useBulkCodeStore((state) => state.setProject);
   // local state
   const [localProject, setLocalProject] = useState<CountryProject | null>(
     project
   );
-  const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
 
   const handleFormSubmit = () => {
     if (localProject) {
@@ -40,10 +43,8 @@ const SelectProjectForm = (): ReactElement | null => {
       <StyledForm className="ProjectSelectorForm">
         <div className="inputContainer">
           <ProjectSelector
-            projectList={projectList || []}
             project={localProject}
             setProject={setLocalProject}
-            planetCashAccount={planetCashAccount}
           />
         </div>
 

@@ -25,9 +25,6 @@ import { useUserStore } from '../../../../../stores';
 const AddressManagement = () => {
   // store: state
   const userAddresses = useUserStore((state) => state.userProfile?.addresses);
-  // If addresses is null (not an empty array), it indicates a malformed API response
-  // Normal users without addresses will have an empty array, not null
-  if (!userAddresses) return null;
   const tAddressManagement = useTranslations('EditProfile.addressManagement');
   const [addressAction, setAddressAction] = useState<AddressAction | null>(
     null
@@ -37,7 +34,7 @@ const AddressManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sortedAddresses = useMemo(() => {
-    return [...userAddresses].sort((a, b) => {
+    return [...(userAddresses ?? [])].sort((a, b) => {
       return (
         addressTypeOrder.indexOf(a.type) - addressTypeOrder.indexOf(b.type)
       );
@@ -49,11 +46,11 @@ const AddressManagement = () => {
     setAddressAction(ADDRESS_ACTIONS.ADD);
   };
   const primaryAddress = useMemo(
-    () => findAddressByType(userAddresses, ADDRESS_TYPE.PRIMARY),
+    () => findAddressByType(userAddresses ?? [], ADDRESS_TYPE.PRIMARY),
     [userAddresses]
   );
   const billingAddress = useMemo(
-    () => findAddressByType(userAddresses, ADDRESS_TYPE.MAILING),
+    () => findAddressByType(userAddresses ?? [], ADDRESS_TYPE.MAILING),
     [userAddresses]
   );
 
@@ -128,6 +125,10 @@ const AddressManagement = () => {
     addressAction,
     setAddressAction,
   ]);
+
+  // If addresses is null (not an empty array), it indicates a malformed API response
+  // Normal users without addresses will have an empty array, not null
+  if (!userAddresses) return null;
 
   const canAddMoreAddresses = userAddresses.length < MAX_ADDRESS_LIMIT;
   const shouldRenderAddressList = userAddresses.length > 0;

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import ImagesSlider from '../components/microComponents/ImageCarousel';
 
 const meta: Meta<typeof ImagesSlider> = {

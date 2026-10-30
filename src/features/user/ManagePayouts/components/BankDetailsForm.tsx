@@ -11,6 +11,7 @@ import { useTranslations } from 'next-intl';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import { getStoredConfig } from '../../../../utils/storeConfig';
+import { useManagePayoutStore } from '../../../../stores';
 
 export type AccountFormData = {
   currency: string;
@@ -28,7 +29,6 @@ export type AccountFormData = {
 };
 
 interface Props {
-  payoutMinAmounts: { [key: string]: number } | null;
   account?: BankAccount;
   handleSave: (data: AccountFormData) => Promise<void>;
   isProcessing: boolean;
@@ -54,7 +54,6 @@ const extractFormValues = (account?: BankAccount): AccountFormData => {
 };
 
 const BankDetailsForm = ({
-  payoutMinAmounts,
   account,
   handleSave,
   isProcessing,
@@ -70,7 +69,10 @@ const BankDetailsForm = ({
     defaultValues: extractFormValues(account),
   });
   const currency = watch('currency');
-
+  // store: state
+  const payoutMinAmounts = useManagePayoutStore(
+    (state) => state.payoutMinAmounts
+  );
   const handlePayoutChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ): void => {

@@ -15,22 +15,22 @@ import {
 } from '../../../../../public/assets/images/icons/projectV2/PointMarkerIconsSymbol';
 import DollarIcon from '../../../../../public/assets/images/icons/projectV2/DollarIcon';
 import { clsx } from 'clsx';
-import { useProjectStore, useViewStore } from '../../../../stores';
+import { useProjectStore, useMobileViewModeStore } from '../../../../stores';
 
 const classificationItemIcons = {
-  'large-scale-planting': <TreePlanting width={'20'} height={'20'} />,
+  'restoration-tree-planting': <TreePlanting width={'20'} height={'20'} />,
   agroforestry: <Agroforestry width={'20'} height={'20'} />,
   'natural-regeneration': <NaturalRegeneration width={'20'} height={'20'} />,
   'managed-regeneration': <ManagedRegeneration width={'20'} height={'20'} />,
   'urban-planting': <UrbanRestoration width={'20'} height={'20'} />,
-  'other-planting': <OtherPlanting width={'20'} height={'20'} />,
+  'other-restoration': <OtherPlanting width={'20'} height={'20'} />,
   mangroves: <Mangroves width={'20'} height={'20'} />,
 };
 
 export const ClassificationDropDown = () => {
   const tAllProjects = useTranslations('AllProjects');
   // store: state
-  const selectedMode = useViewStore((state) => state.selectedMode);
+  const selectedMode = useMobileViewModeStore((state) => state.selectedMode);
   const selectedClassification = useProjectStore(
     (state) => state.selectedClassification
   );
@@ -66,6 +66,7 @@ export const ClassificationDropDown = () => {
         <button
           key={filterItem}
           className={styles.filterButton}
+          aria-pressed={isSelected}
           onClick={() => handleFilterSelection(filterItem)}
         >
           <div
@@ -114,6 +115,7 @@ export const ClassificationDropDown = () => {
       <button
         type="button"
         className={styles.donationFilterButton}
+        aria-pressed={showDonatableProjects}
         onClick={() => setShowDonatableProjects(!showDonatableProjects)}
       >
         <div className={styles.donationFilterLabel}>
