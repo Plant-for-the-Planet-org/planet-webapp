@@ -10,24 +10,11 @@ import {
   hasExceededRedirectLimit,
   registerRedirectAttempt,
 } from '../utils/authRedirectGuard';
+import { parseApiError } from '../utils/parseApiError';
 
-// `APIError.message` is always hardcoded to "Something went wrong" by the SDK.
-// The real failure text lives in `.errors`, which is a plain string for
-// HTTP errors and an object with a `message` field for wrapped errors
-// (see fetchUserProfile in userStore.ts). Fall back to `err.message`
-// only if neither shape matches.
-const getProfileErrorMessage = (err: APIError): string => {
-  if (typeof err.errors === 'string') return err.errors;
-  if (
-    err.errors &&
-    typeof err.errors === 'object' &&
-    'message' in err.errors &&
-    typeof err.errors.message === 'string'
-  ) {
-    return err.errors.message;
-  }
-  return err.message;
-};
+// `APIError.message` is always "Something went wrong" (set by the SDK), so read the real cause from `.errors`.
+const getProfileErrorMessage = (err: APIError): string =>
+  parseApiError(err)[0].message;
 
 const useProfileErrorHandler = () => {
   const router = useRouter();
