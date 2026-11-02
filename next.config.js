@@ -6,7 +6,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 const { withSentryConfig } = require('@sentry/nextjs/config');
 
-// MapLibre v6 loads its worker from public/, put there by scripts/copy-maplibre-worker.js via the postinstall and prebuild hooks.
+// MapLibre v6 loads its worker from public/, put there by scripts/copy-maplibre-worker.js via the prebuild and predev hooks.
 // If those files are missing every map renders blank and reports nothing, so fail the build rather than ship it.
 // This check lives here because next.config.js is read inside `next build`, so it still fires if the npm scripts are bypassed.
 const assertMaplibreWorkerCopied = () => {
@@ -78,6 +78,8 @@ const nextConfig = {
     ENABLE_EXPLORE: process.env.ENABLE_EXPLORE,
     TREEMAPPER_URL: process.env.TREEMAPPER_URL,
   },
+  // Stops Next.js from writing its own block into CLAUDE.md and AGENTS.md, which this repo maintains by hand.
+  agentRules: false,
   trailingSlash: false,
   reactStrictMode: true,
   poweredByHeader: false,

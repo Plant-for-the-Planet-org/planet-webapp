@@ -85,7 +85,7 @@ export function RecordHeader({
     <>
       <div className={styles.left}>
         {getRecordTitle()}
-        <p>{formatDate(record.created)}</p>
+        <p>{formatDate(record.created, locale)}</p>
       </div>
       <div className={styles.right}>
         <p className={clsx(styles.top, styles[netAmountStatus])}>
@@ -135,19 +135,19 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       {record.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('created')}</p>
-          <p>{formatDate(record.created)}</p>
+          <p>{formatDate(record.created, locale)}</p>
         </div>
       )}
       {record.lastUpdate && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('lastUpdate')}</p>
-          <p>{formatDate(record.lastUpdate)}</p>
+          <p>{formatDate(record.lastUpdate, locale)}</p>
         </div>
       )}
       {record.details?.paymentDate && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{tMe('paymentDate')}</p>
-          <p>{formatDate(record.details?.paymentDate)}</p>
+          <p>{formatDate(record.details?.paymentDate, locale)}</p>
         </div>
       )}
       {record.details?.paidAmount && (
@@ -316,7 +316,11 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
   );
 }
 
-export const showStatusNote = (record: PaymentHistoryRecord): ReactElement => {
+export const StatusNote = ({
+  record,
+}: {
+  record: PaymentHistoryRecord;
+}): ReactElement => {
   const t = useTranslations('Me');
   const showDonationNote = (): string => {
     switch (record.details.method) {
@@ -357,6 +361,7 @@ interface BankDetailsProps {
 
 export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
   const t = useTranslations('Me');
+  const locale = useLocale();
   return (
     <>
       {recipientBank?.bankName && (
@@ -404,13 +409,13 @@ export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
       {recipientBank?.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('created')}</p>
-          <p>{formatDate(recipientBank.created)}</p>
+          <p>{formatDate(recipientBank.created, locale)}</p>
         </div>
       )}
       {recipientBank?.updated && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('updated')}</p>
-          <p>{formatDate(recipientBank.updated)}</p>
+          <p>{formatDate(recipientBank.updated, locale)}</p>
         </div>
       )}
     </>
@@ -505,7 +510,7 @@ export default function AccountRecord({
             {record.details?.account && (
               <TransferDetails account={record.details.account} />
             )}
-            {showStatusNote(record)}
+            <StatusNote record={record} />
             {showDownloads && (
               <>
                 <div className={styles.title}>{t('downloads')}</div>

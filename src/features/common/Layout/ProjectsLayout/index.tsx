@@ -9,8 +9,8 @@ import {
   useProjectMapStore,
   useQueryParamStore,
   useUserStore,
-  useViewStore,
 } from '../../../../stores';
+import { useCurrentPage } from '../../../../hooks/useCurrentPage';
 
 interface ProjectsLayoutProps {
   children: ReactNode;
@@ -27,7 +27,7 @@ const ProjectsLayoutContent = ({ children }: ProjectsLayoutProps) => {
   const isImpersonationModeOn = useUserStore(
     (state) => state.isImpersonationModeOn
   );
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
   // store: action
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
 

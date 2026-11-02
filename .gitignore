@@ -9,9 +9,16 @@
 /coverage
 .vercel
 
+# Playwright. The .auth folder holds saved login sessions, which contain tokens.
+/test-results/
+/playwright-report/
+/playwright/.auth/
+
 # next.js
 /.next/
 /out/
+# Next.js rewrites this on every dev and build run, with different paths for each.
+next-env.d.ts
 
 # production
 /build

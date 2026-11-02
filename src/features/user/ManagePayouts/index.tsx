@@ -44,10 +44,9 @@ export default function ManagePayouts({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { getApi, getApiAuthenticated } = useApi();
+  const { getApiAuthenticated } = useApi();
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const [isDataLoading, setIsDataLoading] = useState(false);
   // store: state
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
@@ -58,15 +57,16 @@ export default function ManagePayouts({
       isTpo: state.userProfile?.type === 'tpo',
     }))
   );
-  const hasFetchedAccounts = useManagePayoutStore(
-    (state) => state.accounts !== null
-  );
+  const accountsStatus = useManagePayoutStore((state) => state.accountsStatus);
   const hasPayoutMinAmounts = useManagePayoutStore(
     (state) => state.payoutMinAmounts !== null
   );
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   const setAccounts = useManagePayoutStore((state) => state.setAccounts);
+  const setAccountsStatus = useManagePayoutStore(
+    (state) => state.setAccountsStatus
+  );
   const setPayoutMinAmounts = useManagePayoutStore(
     (state) => state.setPayoutMinAmounts
   );
@@ -75,7 +75,9 @@ export default function ManagePayouts({
     if (hasPayoutMinAmounts) return;
 
     try {
-      const res = await getApi<PayoutMinAmounts>('/app/payoutMinAmounts');
+      const res = await getApiAuthenticated<PayoutMinAmounts>(
+        '/app/payoutMinAmounts'
+      );
       setPayoutMinAmounts(res);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -87,17 +89,18 @@ export default function ManagePayouts({
   }, [step, userId]);
 
   const fetchAccounts = async () => {
-    if (hasFetchedAccounts) return;
+    if (accountsStatus !== 'idle') return;
 
-    setIsDataLoading(true);
+    setAccountsStatus('loading');
     setProgress && setProgress(70);
     try {
       const res = await getApiAuthenticated<BankAccount[]>('/app/accounts');
       setAccounts(res);
+      setAccountsStatus('ready');
     } catch (err) {
       setErrors(handleError(err as APIError));
+      setAccountsStatus('error');
     }
-    setIsDataLoading(false);
     if (setProgress) {
       setProgress(100);
       setTimeout(() => setProgress(0), 1000);
@@ -111,7 +114,7 @@ export default function ManagePayouts({
     }
 
     if (isAuthReady) fetchAccounts();
-  }, [isAuthReady, userId, hasFetchedAccounts]);
+  }, [isAuthReady, userId, accountsStatus]);
 
   useEffect(() => {
     if (isTpo) {
@@ -142,13 +145,9 @@ export default function ManagePayouts({
       case ManagePayoutTabs.ADD_BANK_DETAILS:
         return <AddBankAccount />;
       case ManagePayoutTabs.OVERVIEW:
-        return isEdit ? (
-          <EditBankAccount />
-        ) : (
-          <Overview isDataLoading={isDataLoading} />
-        );
+        return isEdit ? <EditBankAccount /> : <Overview />;
       default:
-        return <Overview isDataLoading={isDataLoading} />;
+        return <Overview />;
     }
   };
 
