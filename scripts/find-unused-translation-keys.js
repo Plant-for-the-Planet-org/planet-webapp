@@ -318,12 +318,14 @@ function main() {
 
   console.log(`\nUnused keys: ${unused.length}`);
   console.log(
-    'No reference found in code. Review before removing, the value may come from an API or config.'
+    'No reference found in code. Before removing, check if the key comes from an API or config, or is used in commented-out code.'
   );
   printGrouped(unused, { showRuntimeCalls: true });
 
   console.log(`\nKeys found only as a plain string: ${onlyAsString.length}`);
-  console.log('Likely passed to t() through a variable, so probably used.');
+  console.log(
+    'Key text appears in code, maybe passed to t() through a variable. Possibly used. Check before removing.'
+  );
   if (verbose) {
     printGrouped(onlyAsString);
   } else {
