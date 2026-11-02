@@ -4,6 +4,7 @@ import type { ApiConfigBase, ApiRequestFn } from '../hooks/useApi';
 import type {
   ExtendedProject,
   MapProject,
+  MapProjectProperties,
 } from '../features/common/types/projectv2';
 
 import { vi } from 'vitest';
@@ -90,7 +91,10 @@ export const createSite = (id: string) =>
   } as unknown as NonNullable<ExtendedProject['sites']>[number]);
 
 /** The smallest project list entry, as returned by `/app/projects`. */
-export const createMapProject = (slug: string) =>
+export const createMapProject = (
+  slug: string,
+  overrides: Partial<MapProjectProperties> = {}
+) =>
   ({
     type: 'Feature',
     geometry: { type: 'Point', coordinates: [0, 0] },
@@ -99,5 +103,6 @@ export const createMapProject = (slug: string) =>
       slug,
       purpose: 'trees',
       isTopProject: false,
+      ...overrides,
     },
   } as unknown as MapProject);

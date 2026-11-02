@@ -66,6 +66,7 @@ export const ClassificationDropDown = () => {
         <button
           key={filterItem}
           className={styles.filterButton}
+          aria-pressed={isSelected}
           onClick={() => handleFilterSelection(filterItem)}
         >
           <div
@@ -114,6 +115,7 @@ export const ClassificationDropDown = () => {
       <button
         type="button"
         className={styles.donationFilterButton}
+        aria-pressed={showDonatableProjects}
         onClick={() => setShowDonatableProjects(!showDonatableProjects)}
       >
         <div className={styles.donationFilterLabel}>

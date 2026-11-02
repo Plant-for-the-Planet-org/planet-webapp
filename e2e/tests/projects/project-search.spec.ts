@@ -1,8 +1,12 @@
 import type { Page } from '@playwright/test';
 
-import { test, expect } from './fixtures';
-import { LOCALE, allProjectsText as text, countryText } from './i18n';
-import { PROJECT, projectCards } from './projects';
+import { test, expect } from '../../support/fixtures';
+import {
+  LOCALE,
+  allProjectsText as text,
+  countryText,
+} from '../../support/i18n';
+import { PROJECT, projectCards, projectListTab } from '../../support/projects';
 
 const NO_RESULTS = text.noProjectFound;
 const NO_MATCH_QUERY = 'zzqx no such project';
@@ -10,10 +14,6 @@ const NO_MATCH_QUERY = 'zzqx no such project';
 // Role locators, not test IDs: they also check that each control has a label a screen reader can read.
 const searchBox = (page: Page) =>
   page.getByRole('textbox', { name: text.searchProject });
-
-// The tab label ends with a project count, so match only the words before it.
-const topProjectsTab = (page: Page) =>
-  page.getByRole('tab', { name: text.topProjects.split('<')[0].trim() });
 
 // The project image's alt text is the full project name.
 const projectImage = (page: Page, name: string) =>
@@ -106,7 +106,10 @@ test('Clear search closes the search and brings back the Top Projects list', asy
   await page.getByRole('button', { name: text.clearSearch }).click();
 
   await expect(searchBox(page)).toBeHidden();
-  await expect(topProjectsTab(page)).toHaveAttribute('aria-selected', 'true');
+  await expect(projectListTab(page, text.topProjects)).toHaveAttribute(
+    'aria-selected',
+    'true'
+  );
   for (const name of listedNames) {
     await expect(projectImage(page, name)).toBeVisible();
   }

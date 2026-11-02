@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { SetState } from '../../../common/types/common';
-import type { ViewMode } from '../../../common/Layout/ProjectsLayout/MobileProjectsLayout';
+import type { ViewMode } from '../../../../stores/mobileViewModeStore';
 
 import { useTranslations } from 'next-intl';
 import themeProperties from '../../../../theme/themeProperties';

@@ -1,4 +1,4 @@
-@import '../../../../theme/theme';
+@use '../../../../theme/theme' as *;
 
 .mainContainer {
   background-color: $dsBackgroundBase;
