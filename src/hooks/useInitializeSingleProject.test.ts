@@ -188,7 +188,7 @@ describe('useInitializeSingleProject', () => {
       expect(router.push).not.toHaveBeenCalled();
     });
 
-    it('leaves the selection to the intervention when the URL names only an intervention', async () => {
+    it('selects no site when the URL names only an intervention', async () => {
       const router = renderAtQuery({ p: 'yucatan', ploc: 'ploc_1' });
       await waitForProject();
 
