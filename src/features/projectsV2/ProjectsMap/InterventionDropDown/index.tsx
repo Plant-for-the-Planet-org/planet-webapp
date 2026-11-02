@@ -36,6 +36,7 @@ const InterventionDropdown = ({
   isMobile,
   availableInterventionTypes,
 }: Props) => {
+  const tProjectDetails = useTranslations('ProjectDetails');
   const tIntervention = useTranslations('ProjectDetails.intervention');
   const selectedInterventionType = useInterventionStore(
     (state) => state.selectedInterventionType
@@ -78,37 +79,48 @@ const InterventionDropdown = ({
   const interventionData = showVisibleOption();
 
   return (
-    <div className={styles.dropdownWrapper}>
-      <div className={styles.dropdownButton} onClick={toggleMenu}>
-        <div className={styles.interventionIconAndTextContainer}>
+    // Named like the site dropdown, so the control has the same name whichever type is selected.
+    <div
+      className={styles.dropdownWrapper}
+      role="group"
+      aria-label={tProjectDetails('interventionTypes')}
+    >
+      <button
+        type="button"
+        className={styles.dropdownButton}
+        aria-expanded={isMenuOpen}
+        onClick={toggleMenu}
+      >
+        {/* Spans, not divs or labels, because a button may only hold inline content. */}
+        <span className={styles.interventionIconAndTextContainer}>
           <InterventionIcon />
           <>
             {interventionData && (
-              <div className={styles.labelTextContainer}>
+              <span className={styles.labelTextContainer}>
                 {isMobile ? (
-                  <label className={styles.interventionsLabel}>
+                  <span className={styles.interventionsLabel}>
                     {truncateString(tIntervention(interventionData?.value), 40)}
-                  </label>
+                  </span>
                 ) : (
-                  <p
+                  <span
                     className={styles.interventionName}
                     style={{ marginTop: '5px' }}
                   >
                     {truncateString(tIntervention(interventionData?.value), 40)}
-                  </p>
+                  </span>
                 )}
-              </div>
+              </span>
             )}
           </>
-        </div>
-        <div className={styles.menuArrow}>
+        </span>
+        <span className={styles.menuArrow}>
           {isMenuOpen ? (
             <DropdownUpArrow width={10} />
           ) : (
             <DropdownDownArrow width={10} />
           )}
-        </div>
-      </div>
+        </span>
+      </button>
       {isMenuOpen && (
         <InterventionList
           interventionList={interventionList}
