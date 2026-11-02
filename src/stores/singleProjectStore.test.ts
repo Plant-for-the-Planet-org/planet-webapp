@@ -1,12 +1,16 @@
+import type { Intervention } from '@planet-sdk/common';
 import type { ApiRequestFn } from '../hooks/useApi';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useSingleProjectStore } from './singleProjectStore';
 import { useErrorHandlingStore } from './errorHandlingStore';
+import { useInterventionStore } from './interventionStore';
 import {
   createDeferred,
   createGetApi,
+  createMockRouter,
   createProject,
+  createSite,
   requestsTo,
   resetAllStores,
   SINGLE_PROJECT_PATH,
@@ -144,5 +148,37 @@ describe('singleProjectStore.fetchProject', () => {
     expect(projectRequests(getApi)).toHaveLength(2);
     expect(heldSlug()).toBe('yucatan');
     expect(useSingleProjectStore.getState().fetchError).toBe(false);
+  });
+});
+
+describe('singleProjectStore.selectSiteAndSyncUrl', () => {
+  beforeEach(() => {
+    resetAllStores();
+    useSingleProjectStore.setState({
+      singleProject: createProject({
+        sites: [createSite('site_a'), createSite('site_b')],
+      }),
+    });
+  });
+
+  it('selects the site, clears the intervention, and shows only the site in the URL', () => {
+    useInterventionStore.setState({
+      selectedIntervention: { hid: 'ploc_1' } as Intervention,
+      hoveredIntervention: { hid: 'ploc_2' } as Intervention,
+    });
+    const router = createMockRouter({
+      query: { p: 'yucatan', ploc: 'ploc_1' },
+    });
+
+    useSingleProjectStore.getState().selectSiteAndSyncUrl(1, 'en', router);
+
+    const { selectedIntervention, hoveredIntervention } =
+      useInterventionStore.getState();
+    expect(useSingleProjectStore.getState().selectedSite).toBe(1);
+    expect(selectedIntervention).toBeNull();
+    expect(hoveredIntervention).toBeNull();
+    expect(vi.mocked(router.replace).mock.calls[0][1]).toBe(
+      '/en/yucatan?site=site_b'
+    );
   });
 });
