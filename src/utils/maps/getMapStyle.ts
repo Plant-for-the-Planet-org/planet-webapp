@@ -44,10 +44,14 @@ export default async function getMapStyle(
       );
       return result;
     // Loaded on demand to keep these styles out of the _app chunk, since only the manage-projects and profile maps use them.
+    // A failed chunk load (e.g. a stale tab after a deploy) returns null, like a failed tile fetch, so callers never see a rejection.
     case 'openStreetMap': {
-      const { default: openStreetMap } = await import(
-        '../../../public/data/styles/OpenStreetMap.json'
-      );
+      const openStreetMap = await import(
+        /* webpackChunkName: "map-style-openstreetmap" */ '../../../public/data/styles/OpenStreetMap.json'
+      )
+        .then((m) => m.default)
+        .catch(() => null);
+      if (!openStreetMap) return null;
       result = await fetchTiles(
         openStreetMap,
         'https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer'
@@ -55,9 +59,12 @@ export default async function getMapStyle(
       return result;
     }
     case 'myForestMap': {
-      const { default: myForestMapStyle } = await import(
-        '../../../public/data/styles/MyForestMapStyles.json'
-      );
+      const myForestMapStyle = await import(
+        /* webpackChunkName: "map-style-myforest" */ '../../../public/data/styles/MyForestMapStyles.json'
+      )
+        .then((m) => m.default)
+        .catch(() => null);
+      if (!myForestMapStyle) return null;
       result = await fetchTiles(
         myForestMapStyle,
         'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
