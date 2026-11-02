@@ -76,7 +76,7 @@ const setLoadedProject = (slug: string) =>
 
 /** The URLs the site selection showed in the address bar, in order. */
 const shownUrls = (router: NextRouter) =>
-  vi.mocked(router.push).mock.calls.map(([, shownUrl]) => shownUrl);
+  vi.mocked(router.replace).mock.calls.map(([, shownUrl]) => shownUrl);
 
 describe('useInitializeSingleProject', () => {
   beforeEach(() => {
@@ -174,10 +174,18 @@ describe('useInitializeSingleProject', () => {
     it('selects no site when the project has no sites', async () => {
       getApi.mockResolvedValue(createProject());
       const router = renderAtQuery({ p: 'yucatan' });
-      await waitFor(() => expect(router.push).toHaveBeenCalled());
+      await waitFor(() => expect(router.replace).toHaveBeenCalled());
 
       expect(selectedSite()).toBeNull();
       expect(shownUrls(router)).toEqual(['/en/yucatan']);
+    });
+
+    // Pushing added a history entry, so leaving the project took two presses of Back.
+    it('syncs the URL without adding a history entry', async () => {
+      const router = renderAtQuery({ p: 'yucatan' });
+      await waitFor(() => expect(selectedSite()).toBe(0));
+
+      expect(router.push).not.toHaveBeenCalled();
     });
 
     it('leaves the selection to the intervention when the URL names only an intervention', async () => {
@@ -185,7 +193,7 @@ describe('useInitializeSingleProject', () => {
       await waitForProject();
 
       expect(selectedSite()).toBeNull();
-      expect(router.push).not.toHaveBeenCalled();
+      expect(router.replace).not.toHaveBeenCalled();
     });
 
     it('keeps an intervention that is already selected', async () => {
@@ -194,7 +202,7 @@ describe('useInitializeSingleProject', () => {
       const router = renderAtQuery({ p: 'yucatan' });
       await waitForProject();
 
-      expect(router.push).not.toHaveBeenCalled();
+      expect(router.replace).not.toHaveBeenCalled();
       expect(useInterventionStore.getState().selectedIntervention).toBe(
         intervention
       );
@@ -207,7 +215,7 @@ describe('useInitializeSingleProject', () => {
       getApi.mockReturnValueOnce(response.promise);
       const router = renderAtQuery({ p: 'yucatan' });
 
-      expect(router.push).not.toHaveBeenCalled();
+      expect(router.replace).not.toHaveBeenCalled();
 
       response.resolve(createProject({ sites: SITES }));
       await waitFor(() => expect(selectedSite()).toBe(0));
