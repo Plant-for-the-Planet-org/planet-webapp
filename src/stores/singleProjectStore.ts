@@ -65,7 +65,7 @@ interface SingleProjectStore {
   /**
    * Updates the project details route using shallow routing.
    * Keeps internal query params while exposing only visible params in the URL.
-   * Replaces the history entry, so browser Back leaves the project. Pushed entries made Back change the URL but not the selected site or intervention, and leaving took two presses.
+   * Replaces the history entry, so one press of browser Back leaves the project.
    */
   updateProjectDetailsPath: (
     locale: string,
@@ -237,7 +237,7 @@ export const useSingleProjectStore = create<SingleProjectStore>()(
 
         router?.replace(
           {
-            // Pass the route pattern, not the display path, so `router.pathname` still matches '/sites/[slug]/[locale]/[p]' after this shallow push.
+            // Pass the route pattern, not the display path, so `router.pathname` still matches '/sites/[slug]/[locale]/[p]' after this shallow replace.
             // `useCurrentPage` reads `router.pathname` to detect the page.
             pathname: router.pathname,
             query: queryParams,
