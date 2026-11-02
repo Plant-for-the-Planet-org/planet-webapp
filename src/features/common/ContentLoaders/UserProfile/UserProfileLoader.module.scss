@@ -1,4 +1,4 @@
-@import './../../../../theme/theme';
+@use './../../../../theme/theme' as *;
 
 // Screen-reader-only label: removed from the visual flow so it reserves no
 // space, while remaining announced by assistive tech.
