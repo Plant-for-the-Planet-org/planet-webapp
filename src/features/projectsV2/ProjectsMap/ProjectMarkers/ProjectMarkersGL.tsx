@@ -90,6 +90,7 @@ const ProjectMarkersGL = ({ projects }: Props) => {
 
   // Register the pin images when MapLibre needs them. MapLibre waits for them to be ready, so no warning is shown.
   // This also works after the map style changes, so the pins are added again automatically.
+  // A map holds only one missing-image resolver. If another layer needs one, share a single resolver that routes by image name instead of setting a second one.
   useEffect(() => {
     const map = mapInstance?.getMap();
     if (!map) return;
