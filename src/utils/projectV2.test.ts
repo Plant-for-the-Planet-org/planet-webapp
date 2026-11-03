@@ -7,7 +7,11 @@ import type {
 import type { MapProject } from '../features/common/types/projectv2';
 
 import { describe, expect, it } from 'vitest';
-import { filterByClassification, filterBySearch } from './projectV2';
+import {
+  buildProjectDetailsQuery,
+  filterByClassification,
+  filterBySearch,
+} from './projectV2';
 import { createMapProject } from '../test-utils';
 
 const COUNTRY_NAMES: Partial<Record<CountryCode, string>> = {
@@ -132,5 +136,48 @@ describe('filterBySearch', () => {
     ];
 
     expect(search(projects, 'chiapas')).toEqual(['tree']);
+  });
+});
+
+describe('buildProjectDetailsQuery', () => {
+  const query = {
+    p: 'yucatan',
+    site: 'site_a',
+    ploc: 'ploc_1',
+    backNavigationUrl: '/en',
+    embed: 'true',
+    callback: 'https://example.org',
+  };
+
+  it('given no site or intervention, removes site, ploc and backNavigationUrl, and keeps other params', () => {
+    expect(buildProjectDetailsQuery(query, {})).toEqual({
+      p: 'yucatan',
+      embed: 'true',
+      callback: 'https://example.org',
+    });
+  });
+
+  it('given a site, sets that site and removes any ploc', () => {
+    expect(buildProjectDetailsQuery(query, { siteId: 'site_b' })).toEqual({
+      p: 'yucatan',
+      embed: 'true',
+      callback: 'https://example.org',
+      site: 'site_b',
+    });
+  });
+
+  it('given an intervention, sets its ploc and removes any site', () => {
+    expect(buildProjectDetailsQuery(query, { plocId: 'ploc_2' })).toEqual({
+      p: 'yucatan',
+      embed: 'true',
+      callback: 'https://example.org',
+      ploc: 'ploc_2',
+    });
+  });
+
+  it('removes a param that appears more than once in the URL', () => {
+    expect(
+      buildProjectDetailsQuery({ p: 'yucatan', tag: ['a', 'b'] }, {})
+    ).toEqual({ p: 'yucatan' });
   });
 });
