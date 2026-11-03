@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import type { Geometry } from 'geojson';
 
 import { expect } from './fixtures';
 import { LOCALE, donateText, formatMessage, projectDetailsText } from './i18n';
@@ -6,12 +7,17 @@ import { PROJECT } from './projects';
 
 /** `hasShape` is false for a site without geometry, which the map leaves out. */
 export type ProjectSite = { id: string; name: string; hasShape: boolean };
-export type ProjectIntervention = { hid: string };
+/** `id` is what the map holds, `hid` is what the URL and the panel show. */
+export type ProjectIntervention = {
+  id: string;
+  hid: string;
+  geometry: Geometry | null;
+};
 
 type ProjectResponse = {
   sites?: { properties: { id: string; name: string }; geometry: unknown }[];
 };
-type InterventionsResponse = { data: { hid: string }[] | null };
+type InterventionsResponse = { data: ProjectIntervention[] | null };
 
 const INTERVENTIONS_TIMEOUT = 30_000;
 
@@ -81,7 +87,11 @@ export const openProject = async (page: Page, query = '') => {
     });
     try {
       const body = await Promise.race([interventionsJson, timeout]);
-      return (body.data ?? []).map(({ hid }) => ({ hid }));
+      return (body.data ?? []).map(({ id, hid, geometry }) => ({
+        id,
+        hid,
+        geometry,
+      }));
     } finally {
       clearTimeout(timer);
     }

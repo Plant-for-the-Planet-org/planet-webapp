@@ -24,7 +24,7 @@ export default function SiteLayers({
   const { colors } = themeProperties.designSystem;
   const { current: mapInstance } = useMap();
 
-  // Sites are drawn on a canvas, so E2E tests read them, and where the map looks, from the map itself instead of the page.
+  // Sites are drawn on a canvas, so E2E tests read them from the map's own source data instead of the page.
   useEffect(() => {
     const map = mapInstance?.getMap();
     if (!map || !areE2EHooksEnabled()) return;
@@ -37,14 +37,6 @@ export default function SiteLayers({
           id: String(feature.properties.id),
           bounds: bbox(feature) as E2EBounds,
         }));
-      },
-      getMapView: () => {
-        const center = map.getCenter();
-        return {
-          center: [center.lng, center.lat],
-          bounds: map.getBounds().toArray().flat() as E2EBounds,
-          isMoving: map.isMoving(),
-        };
       },
     });
   }, [mapInstance]);

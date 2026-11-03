@@ -24,6 +24,12 @@ export type E2EHooks = {
   getProjectSites: () => Promise<E2EProjectSite[] | null>;
   /** The map's current view, and whether it is still moving. */
   getMapView: () => E2EMapView & { isMoving: boolean };
+  /** Where a place shows on the map canvas, in CSS pixels from its top left corner. */
+  getScreenPoint: (lngLat: [number, number]) => { x: number; y: number };
+  /** The ids of the highlighted interventions, or `null` before the highlight source is added. */
+  getHighlightedInterventions: () => Promise<string[] | null>;
+  /** The id of the intervention a click at this canvas point would select, or `null` when the top feature there is not an intervention. */
+  getInterventionAt: (point: { x: number; y: number }) => string | null;
 };
 
 declare global {

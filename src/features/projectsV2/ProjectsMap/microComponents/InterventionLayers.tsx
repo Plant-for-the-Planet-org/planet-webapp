@@ -1,4 +1,6 @@
 import type { ReactElement, MouseEvent } from 'react';
+import type { GeoJSONSource } from 'maplibre-gl';
+import type { FeatureCollection } from 'geojson';
 import type {
   Intervention,
   MultiTreeRegistration,
@@ -10,15 +12,20 @@ import type {
   InterventionProperties,
 } from '../../../common/types/map';
 
-import { memo, useMemo } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Layer, Source, Marker } from 'react-map-gl/maplibre';
+import { Layer, Source, Marker, useMap } from 'react-map-gl/maplibre';
 import area from '@turf/area';
 import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { FillColor } from '../../../../utils/constants/intervention';
 import themeProperties from '../../../../theme/themeProperties';
-import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
+import {
+  INTERACTIVE_LAYERS,
+  MAIN_MAP_LAYERS,
+  isPlantFeature,
+} from '../../../../utils/projectV2';
+import { areE2EHooksEnabled, setE2EHooks } from '../../../../utils/e2eHooks';
 import { clsx } from 'clsx';
 import { useProjectMapStore, useInterventionStore } from '../../../../stores';
 
@@ -32,6 +39,7 @@ interface SampleInterventionMarkerProps {
 }
 
 const { colors } = themeProperties.designSystem;
+const HIGHLIGHT_SOURCE = 'highlight-source';
 /**
  * Guards against a single corrupt record poisoning the whole map. Maplibre
  * validates the entire FeatureCollection as one unit, so one feature with a
@@ -181,6 +189,30 @@ function InterventionLayers(): ReactElement {
 
   const t = useTranslations('Maps');
   const locale = useLocale();
+  const { current: mapInstance } = useMap();
+
+  // Interventions are drawn on a canvas, so E2E tests read the highlight, and what a click would pick, from the map itself.
+  useEffect(() => {
+    const map = mapInstance?.getMap();
+    if (!map || !areE2EHooksEnabled()) return;
+    return setE2EHooks({
+      getHighlightedInterventions: async () => {
+        const source = map.getSource<GeoJSONSource>(HIGHLIGHT_SOURCE);
+        if (!source) return null;
+        const data = (await source.getData()) as FeatureCollection<
+          InterventionGeometryType,
+          InterventionProperties
+        >;
+        return data.features.map(({ properties }) => properties.id);
+      },
+      // Queries the same layers as the map's click handler, which acts on the top feature only.
+      getInterventionAt: ({ x, y }) => {
+        const layers = INTERACTIVE_LAYERS.filter((id) => map.getLayer(id));
+        const [top] = map.queryRenderedFeatures([x, y], { layers });
+        return top && isPlantFeature(top) ? String(top.properties.id) : null;
+      },
+    });
+  }, [mapInstance]);
 
   const togglePointIntervention = (
     e: MouseEvent<HTMLDivElement>,
@@ -290,7 +322,7 @@ function InterventionLayers(): ReactElement {
           filter={['==', ['geometry-type'], 'Point']}
         />
       </Source>
-      <Source id={'highlight-source'} type="geojson" data={highlightCollection}>
+      <Source id={HIGHLIGHT_SOURCE} type="geojson" data={highlightCollection}>
         <Layer
           id={MAIN_MAP_LAYERS.SELECTED_LINE}
           type="line"
