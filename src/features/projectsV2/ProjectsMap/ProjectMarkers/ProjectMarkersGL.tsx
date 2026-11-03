@@ -19,7 +19,7 @@ import {
 import { getProjectCategory } from '../../../../utils/projectV2';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { areE2EHooksEnabled } from '../../../../utils/e2eHooks';
+import { areE2EHooksEnabled, setE2EHooks } from '../../../../utils/e2eHooks';
 
 interface Props {
   projects: MapProject[];
@@ -148,7 +148,7 @@ const ProjectMarkersGL = ({ projects }: Props) => {
   useEffect(() => {
     const map = mapInstance?.getMap();
     if (!map || !areE2EHooksEnabled()) return;
-    window.__planetE2E = {
+    return setE2EHooks({
       getProjectMarkers: async () => {
         const source = map.getSource<GeoJSONSource>(PROJECT_MARKERS_SOURCE);
         if (!source) return null;
@@ -162,10 +162,7 @@ const ProjectMarkersGL = ({ projects }: Props) => {
           }) => ({ slug, allowDonations, purpose, classification })
         );
       },
-    };
-    return () => {
-      delete window.__planetE2E;
-    };
+    });
   }, [mapInstance]);
 
   // Hover/click interactions on the marker layer.

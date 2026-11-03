@@ -1,5 +1,10 @@
 import type { Page } from '@playwright/test';
-import type { E2EProjectMarker } from '../../src/utils/e2eHooks';
+import type {
+  E2EBounds,
+  E2EHooks,
+  E2EProjectMarker,
+  E2EProjectSite,
+} from '../../src/utils/e2eHooks';
 
 import { expect } from './fixtures';
 
@@ -25,17 +30,23 @@ export const allowSoftwareWebGL = (page: Page) =>
 
 // Markers are drawn on a canvas, so they are read from the map's own data through the hook in src/utils/e2eHooks.ts.
 export const projectMarkers = async (page: Page) =>
-  (await page.evaluate(() => window.__planetE2E?.getProjectMarkers())) ?? [];
+  (await page.evaluate(() => window.__planetE2E?.getProjectMarkers?.())) ?? [];
 
-/** Waits for the map to show its first markers and returns them. */
-export const waitForProjectMarkers = async (page: Page) => {
+const waitForHook = async (page: Page, name: keyof E2EHooks) => {
   try {
-    await page.waitForFunction(() => window.__planetE2E !== undefined, null, {
-      timeout: 60_000,
-    });
+    await page.waitForFunction(
+      (hook) => window.__planetE2E?.[hook] !== undefined,
+      name,
+      { timeout: 60_000 }
+    );
   } catch {
     throw new Error(MAP_HOOK_MISSING);
   }
+};
+
+/** Waits for the map to show its first markers and returns them. */
+export const waitForProjectMarkers = async (page: Page) => {
+  await waitForHook(page, 'getProjectMarkers');
   let markers: E2EProjectMarker[] = [];
   await expect
     .poll(async () => (markers = await projectMarkers(page)).length, {
@@ -48,3 +59,51 @@ export const waitForProjectMarkers = async (page: Page) => {
 // The project type a pin shows: the classification of a tree project, such as `mangroves`, or `conservation`.
 export const markerType = ({ purpose, classification }: E2EProjectMarker) =>
   classification ?? purpose;
+
+// Sites are drawn on a canvas too, so they are read the same way.
+export const mapSites = async (page: Page) =>
+  (await page.evaluate(() => window.__planetE2E?.getProjectSites?.())) ?? [];
+
+/** Waits for the map to draw the project's sites and returns them. */
+export const waitForMapSites = async (page: Page) => {
+  await waitForHook(page, 'getProjectSites');
+  let sites: E2EProjectSite[] = [];
+  await expect
+    .poll(async () => (sites = await mapSites(page)).length, {
+      message: 'project sites on the map',
+    })
+    .toBeGreaterThan(0);
+  return sites;
+};
+
+export const boundsCenter = ([west, south, east, north]: E2EBounds): [
+  number,
+  number
+] => [(west + east) / 2, (south + north) / 2];
+
+export const boundsContain = (
+  [west, south, east, north]: E2EBounds,
+  [lng, lat]: [number, number]
+) => lng >= west && lng <= east && lat >= south && lat <= north;
+
+/**
+ * Waits until the map has stopped moving with its center on this site.
+ * The page fits the map to the site's bounds, so the center lands inside them whatever the zoom.
+ */
+export const expectMapOnSite = async (page: Page, site: E2EProjectSite) => {
+  await expect
+    .poll(
+      async () => {
+        const view = await page.evaluate(() =>
+          window.__planetE2E?.getMapView?.()
+        );
+        if (!view) return 'map not ready';
+        if (view.isMoving) return 'map still moving';
+        return boundsContain(site.bounds, view.center)
+          ? 'on the site'
+          : `center ${view.center.join(', ')} is outside the site`;
+      },
+      { message: `the map centered on site ${site.id}` }
+    )
+    .toBe('on the site');
+};
