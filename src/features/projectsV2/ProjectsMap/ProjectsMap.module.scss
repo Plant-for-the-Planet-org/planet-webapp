@@ -1,4 +1,4 @@
-@import '../../../theme/theme';
+@use '../../../theme/theme' as *;
 
 $navbarHeight: 60px;
 $navbarTopOffset: 16px;

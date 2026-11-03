@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import UNEPLogo from '../../../../../public/assets/images/footer/UNEPLogo';
 import World from '../../../../../public/assets/images/footer/World';
 import IconButton from '../../IconButton';
@@ -11,6 +11,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
 import { useTenantStore } from '../../../../stores/tenantStore';
+import { useCurrencyStore } from '../../../../stores/currencyStore';
 
 // let styles = require('./Footer.module.css');
 export default function Footer(): ReactElement | null {
@@ -18,10 +19,9 @@ export default function Footer(): ReactElement | null {
   const locale = useLocale();
   // local state
   const [openModal, setOpenModal] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedCountry, setSelectedCountry] = useState('DE');
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  const currencyCode = useCurrencyStore((state) => state.currencyCode);
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -82,20 +82,6 @@ export default function Footer(): ReactElement | null {
     },
   };
 
-  // changes the language and selected country as found in local storage
-  useEffect(() => {
-    if (typeof Storage !== 'undefined') {
-      if (localStorage.getItem('currencyCode')) {
-        const currencyCode = localStorage.getItem('currencyCode');
-        if (currencyCode) setSelectedCurrency(currencyCode);
-      }
-      if (localStorage.getItem('countryCode')) {
-        const countryCode = localStorage.getItem('countryCode');
-        if (countryCode) setSelectedCountry(countryCode);
-      }
-    }
-  }, []);
-
   return (
     <footer>
       <div className={styles.footerMainContainer}>
@@ -111,7 +97,7 @@ export default function Footer(): ReactElement | null {
               >
                 <World />
                 <p className={styles.selected_language}>
-                  {`${getLanguageName(locale)} · ${selectedCurrency}`}
+                  {`${getLanguageName(locale)} · ${currencyCode}`}
                 </p>
               </button>
               <div className={styles.footer_social_container}>
@@ -421,9 +407,6 @@ export default function Footer(): ReactElement | null {
         <SelectLanguageAndCountry
           openModal={openModal}
           handleModalClose={handleModalClose}
-          setSelectedCurrency={setSelectedCurrency}
-          selectedCountry={selectedCountry}
-          setSelectedCountry={setSelectedCountry}
         />
       </div>
     </footer>

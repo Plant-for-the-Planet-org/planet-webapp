@@ -4,7 +4,7 @@ import type { Subscription } from '../../common/types/payments';
 import { useEffect, useState, useContext } from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
 import IconButton from '../../common/IconButton';
@@ -22,6 +22,7 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import { CalendarPicker } from '@mui/x-date-pickers';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import { localeMapForDate } from '../../../utils/language/getLanguageName';
 
 interface CancelModalProps {
   cancelModalOpen: boolean;
@@ -47,6 +48,7 @@ export const CancelModal = ({
   const { putApiAuthenticated } = useApi();
   const t = useTranslations('Me');
   const tCommon = useTranslations('Common');
+  const locale = useLocale();
   //local state
   const [option, setOption] = useState('cancelImmediately');
   const [showCalender, setShowCalender] = useState(false);
@@ -163,7 +165,12 @@ export const CancelModal = ({
               </RadioGroup>
               {showCalender ? (
                 <>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
+                    adapterLocale={
+                      localeMapForDate[locale] || localeMapForDate['en']
+                    }
+                  >
                     <CalendarPicker
                       date={date}
                       onChange={(value) => {

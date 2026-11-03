@@ -15,17 +15,18 @@ const PlantingDetails = ({ plantingDensity, plantDate }: Props) => {
   const plantingDetails = [
     {
       label: tProjectDetails('plantingDate'),
-      data: plantDate ? formatDate(plantDate) : null,
+      data: plantDate ? formatDate(plantDate, locale) : null,
       shouldRender: plantDate !== null,
     },
     {
       label: tProjectDetails('plantingDensity'),
       data: tProjectDetails('plantingDensityUnit', {
-        formattedCount: plantingDensity
-          ? localizedAbbreviatedNumber(locale, plantingDensity, 1)
-          : null,
+        formattedCount:
+          plantingDensity !== null
+            ? localizedAbbreviatedNumber(locale, plantingDensity, 1)
+            : '',
       }),
-      shouldRender: plantingDensity !== null,
+      shouldRender: plantingDensity !== null && plantingDensity > 0,
     },
   ];
   return (

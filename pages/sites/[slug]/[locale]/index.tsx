@@ -6,7 +6,7 @@ import type {
 } from 'next/types';
 import type { ReactElement } from 'react';
 import type { NextPageWithLayout, PageComponentProps } from '../../../_app';
-import type { DirectGiftI } from '../../../../src/features/donations/components/DirectGift';
+import type { DirectGiftType } from '../../../../src/utils/directGift';
 import type { AbstractIntlMessages } from 'next-intl';
 import type { Tenant } from '@planet-sdk/common';
 
@@ -21,32 +21,36 @@ import MobileProjectsLayout from '../../../../src/features/common/Layout/Project
 import ProjectsSection from '../../../../src/features/projectsV2/ProjectsSection';
 import DirectGift from '../../../../src/features/donations/components/DirectGift';
 import { useTenantStore } from '../../../../src/stores/tenantStore';
+import { useAuthStore, useUserStore } from '../../../../src/stores';
 import { defaultTenant } from '../../../../tenant.config';
+import {
+  clearStoredDirectGift,
+  isSelfDirectGift,
+  readStoredDirectGift,
+} from '../../../../src/utils/directGift';
 
 const ProjectListPage: NextPageWithLayout = ({ isMobile }) => {
   const isInitialized = useTenantStore((state) => state.isInitialized);
+  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const userSlug = useUserStore((state) => state.userProfile?.slug);
 
-  const [directGift, setDirectGift] = useState<DirectGiftI | null>(null);
+  const [directGift, setDirectGift] = useState<DirectGiftType | null>(null);
 
+  // Wait for auth so a logged-in user never sees their own gift flash before the profile loads.
   useEffect(() => {
-    const storedDirectGift = localStorage.getItem('directGift');
-    if (!storedDirectGift) return;
-    try {
-      const parsedDirectGift = JSON.parse(storedDirectGift);
-      if (
-        parsedDirectGift &&
-        typeof parsedDirectGift.id === 'string' &&
-        typeof parsedDirectGift.displayName === 'string' &&
-        typeof parsedDirectGift.type === 'string'
-      ) {
-        setDirectGift(parsedDirectGift);
-      } else {
-        localStorage.removeItem('directGift');
-      }
-    } catch {
-      localStorage.removeItem('directGift');
+    if (!isAuthResolved) return;
+    const storedDirectGift = readStoredDirectGift();
+    if (
+      storedDirectGift !== null &&
+      userSlug !== undefined &&
+      isSelfDirectGift(storedDirectGift, userSlug)
+    ) {
+      clearStoredDirectGift();
+      setDirectGift(null);
+      return;
     }
-  }, []);
+    setDirectGift(storedDirectGift);
+  }, [isAuthResolved, userSlug]);
 
   if (!isInitialized) return <></>;
 
