@@ -225,7 +225,7 @@ export const findClickableIntervention = async (
       }
     )
     .toBe(true);
-  const { id, x, y } = found as unknown as { id: string; x: number; y: number };
+  const { id, x, y } = found as { id: string; x: number; y: number };
   const intervention = interventions.find((item) => item.id === id);
   if (!intervention)
     throw new Error(`Intervention ${id} is not on the project.`);
