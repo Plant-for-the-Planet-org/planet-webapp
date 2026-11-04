@@ -8,7 +8,7 @@ export interface MapState {
   maxZoom: number;
 }
 
-const EMPTY_STYLE = {
+export const EMPTY_STYLE = {
   version: 8,
   sources: {},
   layers: [] as StyleSpecification['layers'],

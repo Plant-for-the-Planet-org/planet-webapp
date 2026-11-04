@@ -47,7 +47,7 @@ export default function ProjectSpending({
   handleBack,
   token,
   handleNext,
-  userLang,
+  locale,
   projectGUID,
   isLocked,
   verificationStatus,
@@ -237,8 +237,8 @@ export default function ProjectSpending({
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
                 adapterLocale={
-                  localeMapForDate[userLang]
-                    ? localeMapForDate[userLang]
+                  localeMapForDate[locale]
+                    ? localeMapForDate[locale]
                     : localeMapForDate['en']
                 }
               >

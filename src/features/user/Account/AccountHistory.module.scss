@@ -1,4 +1,4 @@
-@import './../../../theme/theme';
+@use './../../../theme/theme' as *;
 
 .pageContainer {
   display: flex;
@@ -327,11 +327,6 @@
       display: flex;
       gap: 5px;
       align-items: center;
-
-      &:focus-visible {
-        border: 2px solid $dsPrimaryColor;
-        border-radius: 3px;
-      }
     }
   }
 }

@@ -6,14 +6,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 const { withSentryConfig } = require('@sentry/nextjs/config');
 
-// MapLibre v6 loads its worker from public/, put there by scripts/copy-maplibre-worker.js via the postinstall and prebuild hooks.
+// MapLibre v6 loads its worker from public/, put there by scripts/copy-maplibre-worker.js via the prebuild and predev hooks.
 // If those files are missing every map renders blank and reports nothing, so fail the build rather than ship it.
 // This check lives here because next.config.js is read inside `next build`, so it still fires if the npm scripts are bypassed.
 const assertMaplibreWorkerCopied = () => {
-  const missing = [
-    'maplibre-gl-worker.mjs',
-    'maplibre-gl-shared.mjs',
-  ].filter((file) => !fs.existsSync(path.join(__dirname, 'public', file)));
+  const missing = ['maplibre-gl-worker.mjs', 'maplibre-gl-shared.mjs'].filter(
+    (file) => !fs.existsSync(path.join(__dirname, 'public', file))
+  );
 
   if (missing.length) {
     throw new Error(
@@ -78,6 +77,8 @@ const nextConfig = {
     ENABLE_EXPLORE: process.env.ENABLE_EXPLORE,
     TREEMAPPER_URL: process.env.TREEMAPPER_URL,
   },
+  // Stops Next.js from writing its own block into CLAUDE.md and AGENTS.md, which this repo maintains by hand.
+  agentRules: false,
   trailingSlash: false,
   reactStrictMode: true,
   poweredByHeader: false,
@@ -155,6 +156,12 @@ const nextConfig = {
 module.exports = (phase) => {
   if (phase === PHASE_PRODUCTION_BUILD) {
     assertMaplibreWorkerCopied();
+    // `silent` below also hides Sentry's own warning when the token is missing, so keep that one signal.
+    if (!process.env.SENTRY_AUTH_TOKEN) {
+      console.warn(
+        'SENTRY_AUTH_TOKEN is not set, so source maps will not be uploaded to Sentry.'
+      );
+    }
   }
 
   const plugins = [withBundleAnalyzer];
@@ -162,6 +169,8 @@ module.exports = (phase) => {
   return withSentryConfig(config, {
     // org, project and authToken are read from the SENTRY_ORG, SENTRY_PROJECT and SENTRY_AUTH_TOKEN env vars by default.
     widenClientFileUpload: true,
+    // The upload report adds about 1,000 lines to every build log. This also hides upload errors, and a failed upload does not fail the build. Comment this out if needed for debugging on a preview deploy.
+    silent: true,
     // This app uses the Pages Router only, so there's no App Router navigation to instrument.
     suppressOnRouterTransitionStartWarning: true,
   });

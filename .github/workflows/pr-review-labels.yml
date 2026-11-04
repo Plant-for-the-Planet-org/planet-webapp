@@ -4,12 +4,9 @@ name: 'PR review labels'
 # Replaces the pr-triage[bot] GitHub App, which stopped working in mid-2023.
 
 on:
-  # pull_request_target, not pull_request: the job never runs head-branch code, and the token keeps write access.
-  # It also means pull requests opened before this file existed get labelled without a rebase.
-  # pull_request_target and workflow_dispatch need this file on the default branch, so they do nothing until merged.
-  # pull_request_review is the exception: it runs from the PR merge ref
-  # See "Events that trigger workflows" in the GitHub Actions docs.
-  pull_request_target:
+  # pull_request, not pull_request_target: GitHub blocks pull_request_target in public repos from December 2, 2026.
+  # On pull requests from forks the token is read-only, so the label write fails there. Run the manual backfill below to label those.
+  pull_request:
     types:
       - opened
       - reopened

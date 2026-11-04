@@ -116,6 +116,7 @@
     "unauthorized": "Nicht autorisiert",
     "validationError": "Validierungsfehler",
     "internalServerError": "Interner Serverfehler - Bitte versuche es später noch einmal!",
+    "internal_server_error": "Interner Serverfehler! Bitte versuche es später nochmal.",
     "serviceUnavailable": "Die App wird derzeit gewartet, bitte prüfe status.plant-for-the-planet.org für weitere Informationen",
     "account_duplicate": "Konto existiert bereits",
     "line_item_amount_deviation": "Betragsabweichung",
@@ -140,7 +141,6 @@
     "duplicate_account": "Konto existiert bereits",
     "token_expired": "Der Token ist abgelaufen. Bitte erneut anmelden",
     "project_not_available": "Projektdetails sind derzeit nicht verfügbar",
-    "project_not_found": "Das ausgewählte Projekt konnte nicht gefunden werden",
     "topProject": "Top Projekt",
     "viewReport": "Report anzeigen",
     "reviewInfo": "Das Projekt wurde im Rahmen einer mehrtägigen Überprüfung vor Ort im {reviewMonth} geprüft und erfüllt unsere <standardsLink>Standards</standardsLink>.",
@@ -184,6 +184,25 @@
         "vtoChallenge": "VTO Challenge",
         "mangroves": "Mangroven"
       }
-    }
+    },
+    "not_resource_owner": "Du hast keine Berechtigung, auf dieses Projekt zuzugreifen.",
+    "resource_not_found": "Wir konnten das Gesuchte nicht finden. Bitte lade die Seite neu und versuche es nochmal.",
+    "project_not_found": "Das ausgewählte Projekt konnte nicht gefunden werden. Vielleicht wurde es gelöscht.",
+    "invalid_status": "Diese Aktion ist nicht möglich, solange sich das Projekt im aktuellen Status befindet.",
+    "unsupported_operation": "Diese Aktion wird für dieses Projekt nicht unterstützt.",
+    "unsupported_project": "Diese Aktion wird für diese Art von Projekt nicht unterstützt.",
+    "purpose_mismatch": "Dies entspricht nicht dem Projekttyp.",
+    "validation_failed": "Einige Angaben fehlen oder sind ungültig. Bitte überprüfe das Formular und versuche es nochmal.",
+    "field_validation_failed": "Einige Angaben fehlen oder sind ungültig. Bitte überprüfe das Formular und versuche es nochmal.",
+    "form_validation_failed": "Einige Angaben fehlen oder sind ungültig. Bitte überprüfe das Formular und versuche es nochmal.",
+    "missing_required_field": "Bitte fülle alle Pflichtfelder aus.",
+    "invalid_field_value": "Einer der eingegebenen Werte ist ungültig. Bitte überprüfe die Eingabe und versuche es nochmal.",
+    "invalid_operation": "Diese Aktion ist nicht erlaubt.",
+    "bad_request": "Die Anfrage enthält einen Fehler. Bitte lade die Seite neu und versuche es nochmal.",
+    "not_project_owner": "Du hast keine Berechtigung dieses Projekt zu bearbeiten.",
+    "no_access_to_resource": "Du hast keine Berechtigung darauf zuzugreifen.",
+    "not_authorized_for_profile": "Du hast keine Berechtigung für dieses Profil zu handeln.",
+    "not_image_owner": "Du hast keine Berechtigung dieses Bild zu ändern.",
+    "not_expense_owner": "Du hast keine Berechtigung diese Ausgabe zu ändern."
   }
 }

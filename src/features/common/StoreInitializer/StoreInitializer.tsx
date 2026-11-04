@@ -9,7 +9,7 @@ import { useInitializeBulkCode } from '../../../hooks/useInitializeBulkCode';
 import { useInitializeUser } from '../../../hooks/useInitializeUser';
 import { useInitializeProject } from '../../../hooks/useInitializeProject';
 import { useInitializeIntervention } from '../../../hooks/useInitializeIntervention';
-import { useInitializeView } from '../../../hooks/useInitializeView';
+import { useInitializeMobileViewMode } from '../../../hooks/useInitializeMobileViewMode';
 import { useInitializeSingleProject } from '../../../hooks/useInitializeSingleProject';
 import { useInitializeTenant } from '../../../hooks/useInitializeTenant';
 import { useInitializeDonationReceipt } from '../../../hooks/useInitializeDonationReceipt';
@@ -46,7 +46,7 @@ export const StoreInitializer = ({
   useInitializePayout();
   useInitializeDonationReceipt();
   useInitializeBulkCode();
-  useInitializeView(isMobile);
+  useInitializeMobileViewMode(isMobile);
   useInitializeProject();
   useInitializeSingleProject();
   useInitializeIntervention();
