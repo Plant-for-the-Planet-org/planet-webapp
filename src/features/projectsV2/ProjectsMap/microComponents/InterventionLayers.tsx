@@ -20,11 +20,7 @@ import styles from '../ProjectsMap.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { FillColor } from '../../../../utils/constants/intervention';
 import themeProperties from '../../../../theme/themeProperties';
-import {
-  INTERACTIVE_LAYERS,
-  MAIN_MAP_LAYERS,
-  isPlantFeature,
-} from '../../../../utils/projectV2';
+import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 import { areE2EHooksEnabled, setE2EHooks } from '../../../../utils/e2eHooks';
 import { clsx } from 'clsx';
 import { useProjectMapStore, useInterventionStore } from '../../../../stores';
@@ -191,7 +187,7 @@ function InterventionLayers(): ReactElement {
   const locale = useLocale();
   const { current: mapInstance } = useMap();
 
-  // Interventions are drawn on a canvas, so E2E tests read the highlight, and what a click would pick, from the map itself.
+  // Interventions are drawn on a canvas, so E2E tests read the highlight from the map itself.
   useEffect(() => {
     const map = mapInstance?.getMap();
     if (!map || !areE2EHooksEnabled()) return;
@@ -204,12 +200,6 @@ function InterventionLayers(): ReactElement {
           InterventionProperties
         >;
         return data.features.map(({ properties }) => properties.id);
-      },
-      // Queries the same layers as the map's click handler, which acts on the top feature only.
-      getInterventionAt: ({ x, y }) => {
-        const layers = INTERACTIVE_LAYERS.filter((id) => map.getLayer(id));
-        const [top] = map.queryRenderedFeatures([x, y], { layers });
-        return top && isPlantFeature(top) ? String(top.properties.id) : null;
       },
     });
   }, [mapInstance]);
