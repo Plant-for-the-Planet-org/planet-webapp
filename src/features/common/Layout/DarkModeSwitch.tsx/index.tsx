@@ -4,7 +4,7 @@ import SunIcon from '../../../../../public/assets/images/footer/SunIcon';
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './DarkModeSwitch.module.scss';
 
-// Not used right now: its only use in the Footer is commented out. Decide later whether to bring dark mode back or remove this component.
+// Not used right now: its only use in the Footer is commented out. Decide later whether to bring dark mode back or remove this component, together with MoonIcon and SunIcon in public/assets/images/footer.
 function DarkModeSwitch() {
   const { theme, setTheme } = useContext(ThemeContext);
 
