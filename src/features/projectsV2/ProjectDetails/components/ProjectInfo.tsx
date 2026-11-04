@@ -12,7 +12,7 @@ import ProjectDownloads from './ProjectDownloads';
 import ContactDetails from './ContactDetails';
 import MapPreview from './MapPreview';
 import ImageSlider from './ImageSlider';
-import area from '@turf/area';
+import { area } from '@turf/area';
 import { useSingleProjectStore } from '../../../../stores';
 
 interface ProjectInfoProps {
