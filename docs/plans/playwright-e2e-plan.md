@@ -102,7 +102,7 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 
 ### Test data
 
-- Phase 1 tests are read-only. They need data that stays put, so they use a well-known staging project: `Yucatán Restoration` (slug `yucatan`), set in [e2e/support/projects.ts](../../e2e/support/projects.ts).
+- Phase 1 tests are read-only. They need data that stays put, so they use a well-known staging project: `Yucatán Restoration` (slug `yucatan`), set in [e2e/support/testProject.ts](../../e2e/support/testProject.ts).
 - Check shape, not exact values: "a project name is visible", not "1,234,567 trees", since counts change.
 - Do not rely on the order of the project list. The staging API order changed between two runs on 2026-10-12, which broke a test that assumed which projects were listed first.
 - Tests that create data come later. They need a dedicated account, unique names, and cleanup through the API after each test.
@@ -124,9 +124,11 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 - One dev dependency: `@playwright/test` 1.64. Chromium only.
 - [playwright.config.ts](../../playwright.config.ts) and an `e2e/` folder for the tests, with specs in `e2e/tests/<feature>/` and shared helpers in `e2e/support/`:
   - [e2e/support/fixtures.ts](../../e2e/support/fixtures.ts): specs import `test` from here, so every test also fails when the page throws an uncaught error.
-  - [e2e/support/projects.ts](../../e2e/support/projects.ts): the staging project the tests use, and a locator for the cards in the project list.
+  - [e2e/support/testProject.ts](../../e2e/support/testProject.ts): the staging project the tests use.
+  - [e2e/support/projects/page.ts](../../e2e/support/projects/page.ts): locators for the project list.
   - [e2e/support/i18n.ts](../../e2e/support/i18n.ts): the locale the tests open (`LOCALE`), and the app's UI text for it, read from `public/static/locales` with the same English fallback the app uses.
-  - [e2e/support/map.ts](../../e2e/support/map.ts): lets the map draw without a GPU, and reads the project markers from the map.
+  - [e2e/support/map.ts](../../e2e/support/map.ts): lets the map draw without a GPU, and waits for the map's test hooks.
+  - [e2e/support/projects/map.ts](../../e2e/support/projects/map.ts): reads the project markers from the map.
   - [e2e/tests/projects/project-search.spec.ts](../../e2e/tests/projects/project-search.spec.ts): the project search tests.
   - [e2e/tests/projects/project-filter.spec.ts](../../e2e/tests/projects/project-filter.spec.ts): the project filter tests.
 - Two scripts, named like the existing ones: `test:e2e` and `test:e2e:ui`.
