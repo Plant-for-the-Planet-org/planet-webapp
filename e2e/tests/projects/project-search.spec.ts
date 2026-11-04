@@ -6,7 +6,8 @@ import {
   allProjectsText as text,
   countryText,
 } from '../../support/i18n';
-import { PROJECT, projectCards, projectListTab } from '../../support/projects';
+import { projectCards, projectListTab } from '../../support/projects/page';
+import { PROJECT } from '../../support/testProject';
 
 const NO_RESULTS = text.noProjectFound;
 const NO_MATCH_QUERY = 'zzqx no such project';

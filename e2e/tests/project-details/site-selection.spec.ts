@@ -1,6 +1,6 @@
 import { test, expect } from '../../support/fixtures';
 import { LOCALE } from '../../support/i18n';
-import { projectCards } from '../../support/projects';
+import { projectCards } from '../../support/projects/page';
 import {
   expectSelectedSite,
   expectSelectionInUrl,

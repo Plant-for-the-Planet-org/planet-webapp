@@ -3,7 +3,7 @@ import type { Geometry } from 'geojson';
 
 import { expect } from './fixtures';
 import { LOCALE, donateText, formatMessage, projectDetailsText } from './i18n';
-import { PROJECT } from './projects';
+import { PROJECT } from './testProject';
 
 /** `hasShape` is false for a site without geometry, which the map leaves out. */
 export type ProjectSite = { id: string; name: string; hasShape: boolean };

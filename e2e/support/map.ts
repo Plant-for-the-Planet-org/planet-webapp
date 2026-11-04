@@ -2,7 +2,6 @@ import type { Page } from '@playwright/test';
 import type {
   E2EBounds,
   E2EHooks,
-  E2EProjectMarker,
   E2EProjectSite,
 } from '../../src/utils/e2eHooks';
 import type { ProjectIntervention } from './projectDetails';
@@ -11,7 +10,7 @@ import { expect } from './fixtures';
 import { INTERVENTIONS_TIMEOUT } from './projectDetails';
 
 const MAP_HOOK_MISSING = [
-  'The map never exposed window.__planetE2E, so its markers cannot be read.',
+  'The map never exposed window.__planetE2E, so the test cannot read what it draws.',
   'On a deployed preview, the build needs NEXT_PUBLIC_E2E_HOOKS=true (Vercel, Preview scope). A local dev server turns the hook on by itself.',
   'Otherwise the map did not render: check the trace for the "graphics acceleration" message.',
 ].join('\n');
@@ -30,11 +29,8 @@ export const allowSoftwareWebGL = (page: Page) =>
     };
   });
 
-// Markers are drawn on a canvas, so they are read from the map's own data through the hook in src/utils/e2eHooks.ts.
-export const projectMarkers = async (page: Page) =>
-  (await page.evaluate(() => window.__planetE2E?.getProjectMarkers?.())) ?? [];
-
-const waitForHook = async (page: Page, name: keyof E2EHooks) => {
+/** Waits until the map has set this hook, or fails with a hint on how to turn the hooks on. */
+export const waitForHook = async (page: Page, name: keyof E2EHooks) => {
   try {
     await page.waitForFunction(
       (hook) => window.__planetE2E?.[hook] !== undefined,
@@ -45,22 +41,6 @@ const waitForHook = async (page: Page, name: keyof E2EHooks) => {
     throw new Error(MAP_HOOK_MISSING);
   }
 };
-
-/** Waits for the map to show its first markers and returns them. */
-export const waitForProjectMarkers = async (page: Page) => {
-  await waitForHook(page, 'getProjectMarkers');
-  let markers: E2EProjectMarker[] = [];
-  await expect
-    .poll(async () => (markers = await projectMarkers(page)).length, {
-      message: 'project markers on the map',
-    })
-    .toBeGreaterThan(0);
-  return markers;
-};
-
-// The project type a pin shows: the classification of a tree project, such as `mangroves`, or `conservation`.
-export const markerType = ({ purpose, classification }: E2EProjectMarker) =>
-  classification ?? purpose;
 
 // Sites are drawn on a canvas too, so they are read the same way.
 export const mapSites = async (page: Page) =>
