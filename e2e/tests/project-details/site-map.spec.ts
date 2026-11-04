@@ -57,8 +57,10 @@ test('the map draws every site of the project that has a shape', async ({
 
   const onMap = await waitForMapSites(page);
 
-  const ids = (list: { id: string }[]) => list.map(({ id }) => id).sort();
-  expect(ids(onMap)).toEqual(ids(sites.filter((site) => site.hasShape)));
+  const sortedIds = (list: { id: string }[]) => list.map(({ id }) => id).sort();
+  expect(sortedIds(onMap)).toEqual(
+    sortedIds(sites.filter((site) => site.hasShape))
+  );
 });
 
 test('a shared site link moves the map to that site', async ({ page }) => {
