@@ -12,6 +12,11 @@ import {
   siteToggle,
 } from '../../support/projectDetails';
 
+test.beforeEach(() => {
+  // Interventions load from TreeMapper, which can take most of the 30 s a preview allows, and each test loads the page twice.
+  test.slow();
+});
+
 // The first load only reads live ids from staging. Each test then opens its own link, as a visitor following a shared link would.
 const readProjectData = async (page: Page) => {
   const { sites, interventions } = await openProject(page);
