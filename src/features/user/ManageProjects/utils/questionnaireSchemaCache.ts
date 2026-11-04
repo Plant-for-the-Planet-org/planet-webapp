@@ -30,14 +30,6 @@ export function getCachedSchema(
   return schemaCache.get(`${purpose}-${locale}`);
 }
 
-export function setCachedSchema(
-  purpose: string,
-  locale: string,
-  schema: QuestionnaireSchema
-): void {
-  schemaCache.set(`${purpose}-${locale}`, schema);
-}
-
 /**
  * Returns the cached schema, the in-flight request for it, or starts one.
  *

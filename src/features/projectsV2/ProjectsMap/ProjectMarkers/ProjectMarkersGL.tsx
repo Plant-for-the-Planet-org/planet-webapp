@@ -26,7 +26,7 @@ interface Props {
   projects: MapProject[];
 }
 
-export const PROJECT_MARKERS_LAYER = 'project-markers-gl';
+const PROJECT_MARKERS_LAYER = 'project-markers-gl';
 const PROJECT_MARKERS_SOURCE = 'project-markers-source';
 
 // Draw order by tier: lower value renders first (underneath). Top projects on top, non donatable at bottom

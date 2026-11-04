@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { useAuthSession } from '../../../../../hooks/useAuthSession';
 import { useUserStore } from '../../../../../stores';
 
-export const SignInButton = () => {
+const SignInButton = () => {
   const { loginWithRedirect } = useAuthSession();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();

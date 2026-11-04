@@ -2,7 +2,7 @@ import type { MultiTreeRegistration } from '@planet-sdk/common';
 
 import { Fragment, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import area from '@turf/area';
+import { area } from '@turf/area';
 import styles from '../styles/InterventionInfo.module.scss';
 import MultiTreeInfoHeader from './microComponents/MultiTreeInfoHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';

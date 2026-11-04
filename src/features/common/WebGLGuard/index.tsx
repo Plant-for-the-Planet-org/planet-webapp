@@ -4,7 +4,7 @@ import { useWebGL } from '../../../hooks/useWebGL';
 import styles from './WebGLGuard.module.scss';
 import { useTranslations } from 'next-intl';
 
-export interface WebGLGuardProps {
+interface WebGLGuardProps {
   children: ReactNode;
   fallback?: ReactNode;
   loadingComponent?: ReactNode;

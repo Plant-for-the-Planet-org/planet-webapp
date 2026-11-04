@@ -169,6 +169,7 @@
   primaryFontColor: $primaryFontColor;
 }
 
+// Only used by the commented-out dark mode switch in the Footer. Keep or remove it together with DarkModeSwitch.
 .switch {
   margin-top: 20px;
 }

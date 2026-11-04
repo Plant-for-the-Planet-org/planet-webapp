@@ -67,7 +67,7 @@ export type SiteApiPayload = {
   yearAbandoned?: number | null;
 };
 
-export interface SiteInfo {
+interface SiteInfo {
   siteId: string | null;
   siteName: string | null;
 }
