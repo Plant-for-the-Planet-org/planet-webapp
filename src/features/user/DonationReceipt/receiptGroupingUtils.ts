@@ -12,7 +12,7 @@ import type {
  * @param date - Date string in ISO format or year number
  * @returns Year as string
  */
-export const extractYear = (date: string | number): string => {
+const extractYear = (date: string | number): string => {
   if (typeof date === 'number') {
     return date.toString();
   }
@@ -40,7 +40,7 @@ export const extractYear = (date: string | number): string => {
  * @param receipt - Issued receipt data
  * @returns Year as string
  */
-export const extractYearFromReceipt = (
+const extractYearFromReceipt = (
   receipt: IssuedReceiptDataApi | UnissuedReceiptDataAPI
 ): string => {
   // Prefer the year field if available
@@ -109,7 +109,7 @@ export const getSortedYears = (
  * @param receipt - Issued receipt data
  * @returns True if receipt is verified
  */
-export const isReceiptVerified = (receipt: IssuedReceiptDataApi): boolean => {
+const isReceiptVerified = (receipt: IssuedReceiptDataApi): boolean => {
   return (
     receipt.verificationDate !== null &&
     receipt.verificationDate !== undefined &&
@@ -162,7 +162,7 @@ const determineButtonState = (
  * @returns Overview eligibility including counts, consolidated flag and button state
  */
 
-export const determineOverviewEligibility = (
+const determineOverviewEligibility = (
   year: string,
   receipts: {
     issued: IssuedReceiptDataApi[];
