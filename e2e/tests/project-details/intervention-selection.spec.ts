@@ -6,6 +6,10 @@ import {
   expectSelectedSite,
   expectSelectionInUrl,
   interventionHid,
+  interventionTypeLabel,
+  interventionTypeOption,
+  interventionTypeOptions,
+  interventionTypeToggle,
   openProject,
   projectPath,
   siteOption,
@@ -84,4 +88,35 @@ test('choosing a site while an intervention is selected clears the intervention'
   await expectSelectedSite(page, sites, 1);
   await expect(interventionHid(page, intervention)).toBeHidden();
   await expect(aboutProjectHeading(page)).toBeVisible();
+});
+
+test('choosing an intervention type from the dropdown selects it, keeps the URL and closes the list', async ({
+  page,
+}) => {
+  const { sites, interventions } = await openProject(page);
+  const [{ type }] = await interventions();
+  await expectSelectionInUrl(page, { site: sites[0].id, ploc: null });
+
+  await interventionTypeToggle(page).click();
+  await expect(interventionTypeToggle(page)).toHaveAttribute(
+    'aria-expanded',
+    'true'
+  );
+  await expect(interventionTypeOption(page, 'all')).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+
+  await interventionTypeOption(page, type).click();
+
+  await expect(interventionTypeToggle(page)).toContainText(
+    interventionTypeLabel(type)
+  );
+  // The type only filters the map. It is not in the URL, so the selected site stays.
+  await expectSelectionInUrl(page, { site: sites[0].id, ploc: null });
+  await expect(interventionTypeOptions(page)).toBeHidden();
+  await expect(interventionTypeToggle(page)).toHaveAttribute(
+    'aria-expanded',
+    'false'
+  );
 });

@@ -11,6 +11,7 @@ export type ProjectSite = { id: string; name: string; hasShape: boolean };
 export type ProjectIntervention = {
   id: string;
   hid: string;
+  type: string;
   geometry: Geometry | null;
 };
 
@@ -94,9 +95,10 @@ export const openProject = async (page: Page, query = '') => {
     });
     try {
       const body = await Promise.race([interventionsJson, timeout]);
-      return (body.data ?? []).map(({ id, hid, geometry }) => ({
+      return (body.data ?? []).map(({ id, hid, type, geometry }) => ({
         id,
         hid,
+        type,
         geometry,
       }));
     } finally {
@@ -155,6 +157,32 @@ export const expectSelectedSite = async (
   // The toggle cuts long names to 40 characters.
   await expect(siteToggle(page)).toContainText(sites[index].name.slice(0, 40));
 };
+
+/** The name the app shows for an intervention type, such as "Multi Tree Planting" for `multi-tree-registration`. */
+export const interventionTypeLabel = (type: string) => {
+  const label =
+    projectDetailsText.intervention[
+      type as keyof typeof projectDetailsText.intervention
+    ];
+  if (!label) throw new Error(`No English label for intervention type ${type}.`);
+  return label;
+};
+
+// Found by its group name, like the site dropdown, because the toggle's text changes with the chosen type.
+export const interventionTypeDropdown = (page: Page) =>
+  page.getByRole('group', { name: projectDetailsText.interventionTypes });
+
+export const interventionTypeToggle = (page: Page) =>
+  interventionTypeDropdown(page).getByRole('button').first();
+
+export const interventionTypeOptions = (page: Page) =>
+  interventionTypeDropdown(page).getByRole('list');
+
+export const interventionTypeOption = (page: Page, type: string) =>
+  interventionTypeOptions(page).getByRole('button', {
+    name: interventionTypeLabel(type),
+    exact: true,
+  });
 
 // The heading at the top of the project info, which the page swaps out for an intervention's details.
 export const aboutProjectHeading = (page: Page) =>
