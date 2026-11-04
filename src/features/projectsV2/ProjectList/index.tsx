@@ -87,7 +87,9 @@ const ProjectList = ({ tabSelected }: ProjectListProps) => {
       data={sortedProjects ?? []}
       computeItemKey={(_, project) => project.properties.id}
       itemContent={(_, project) => (
-        <div style={{ paddingBottom: 12 }}>{renderProjectSnippet(project)}</div>
+        <div data-testid="project-list-item" style={{ paddingBottom: 12 }}>
+          {renderProjectSnippet(project)}
+        </div>
       )}
       overscan={600} // px; ~3 cards above and below viewport to avoid sudden appearance while scrolling
       components={{

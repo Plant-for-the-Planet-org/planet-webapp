@@ -1,14 +1,17 @@
+// Knip comes set up for common tools like Next.js, Storybook and Vitest, and finds their pages, stories and tests on its own.
+// So this file only fixes the few false positives that knip reports in the default configuration. Real findings stay in the report until someone fixes them.
 {
   "$schema": "./node_modules/knip/schema.json",
-  // Only confirmed false positives belong here. Real findings stay in the report until they are fixed.
+
+  // Files to count as used even though nothing imports them. These add to the files knip finds on its own.
   "entry": [
     // Augments next-intl's AppConfig for typed messages. TypeScript picks it up through tsconfig, so nothing imports it.
     "src/i18n/types.ts"
   ],
+
+  // Packages we need even though no code uses them. Knip skips these when it checks package.json.
   "ignoreDependencies": [
     // Installed on purpose to fix the Chromatic build (1ef1aa06e). Nothing imports it directly.
-    "ajv",
-    // Run by .husky/pre-commit through npx. With core.autocrlf=true, Windows checkouts end the line in CRLF and knip misreads the name.
-    "validate-branch-name"
+    "ajv"
   ]
 }
