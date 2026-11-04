@@ -4,7 +4,7 @@ import type { ProjectTabs } from '..';
 
 import { useEffect, useState } from 'react';
 import ProjectListControlForMobile from '../ProjectListControlForMobile';
-import { useProjectStore, useViewStore } from '../../../../stores';
+import { useProjectStore, useMobileViewModeStore } from '../../../../stores';
 import { mockProjects } from './mockProjects';
 
 const mapOptions: MapOptions = {};
@@ -32,14 +32,14 @@ const meta: Meta<typeof ProjectListControlForMobile> = {
           isSearching: false,
           debouncedSearchValue: '',
         });
-        useViewStore.setState({ selectedMode: 'map' });
+        useMobileViewModeStore.setState({ selectedMode: 'map' });
         return null;
       });
       useEffect(
         () => () => {
           useProjectStore.getState().clearFilterStates();
           useProjectStore.setState({ projects: null, topProjects: null });
-          useViewStore.setState({ selectedMode: 'list' });
+          useMobileViewModeStore.setState({ selectedMode: 'list' });
         },
         []
       );

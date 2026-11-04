@@ -143,9 +143,10 @@ export const useProjectStore = create<ProjectStore>()(
       setIsSearching: (isSearching) =>
         set({ isSearching }, undefined, 'projectStore/set_is_searching'),
 
+      // Trimmed so a spaces-only search counts as no search, and the list shows the Top and All tabs instead of "No project found".
       setDebouncedSearchValue: (value) =>
         set(
-          { debouncedSearchValue: value },
+          { debouncedSearchValue: value.trim() },
           undefined,
           'projectStore/set_debounced_search_value'
         ),

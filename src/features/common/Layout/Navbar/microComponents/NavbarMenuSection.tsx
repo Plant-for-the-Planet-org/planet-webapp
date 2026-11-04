@@ -21,9 +21,9 @@ const NavbarMenuSection = ({
   items,
   headerKey,
 }: NavbarMenuSectionProps) => {
-  if (items.length === 0) return null;
-
   const tNavbarMenu = useTranslations('Common.navbarMenu');
+
+  if (items.length === 0) return null;
 
   const hasHeader = title !== undefined || description !== undefined;
   const isOnlyIconSection = items.every((item) => item.onlyIcon);
