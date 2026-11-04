@@ -8,6 +8,7 @@ import type {
 import type { ProjectIntervention } from './projectDetails';
 
 import { expect } from './fixtures';
+import { INTERVENTIONS_TIMEOUT } from './projectDetails';
 
 const MAP_HOOK_MISSING = [
   'The map never exposed window.__planetE2E, so its markers cannot be read.',
@@ -149,9 +150,6 @@ export const interventionBounds = ({
 // About a meter, so a point intervention, whose bounds have no size, still has room for rounding.
 const POINT_MARGIN = 0.00001;
 
-// Intervention data loads from TreeMapper before the map moves to it, so allow more time than the default Playwright timeout.
-const INTERVENTION_TIMEOUT = 30_000;
-
 /**
  * Waits until the map has stopped moving with its center on this intervention.
  * The page centers a point and fits the map to a polygon's bounds, so in both cases the center lands inside the bounds.
@@ -176,7 +174,7 @@ export const expectMapOnIntervention = (
       north + POINT_MARGIN,
     ],
     `intervention ${intervention.hid}`,
-    INTERVENTION_TIMEOUT
+    INTERVENTIONS_TIMEOUT
   );
 };
 
@@ -228,7 +226,7 @@ export const findClickableIntervention = async (
       },
       {
         message: 'an intervention the visitor can click on the map',
-        timeout: INTERVENTION_TIMEOUT,
+        timeout: INTERVENTIONS_TIMEOUT,
       }
     )
     .toBe(true);

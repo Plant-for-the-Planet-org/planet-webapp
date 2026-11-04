@@ -19,7 +19,8 @@ type ProjectResponse = {
 };
 type InterventionsResponse = { data: ProjectIntervention[] | null };
 
-const INTERVENTIONS_TIMEOUT = 30_000;
+// TreeMapper can be slow, so waits on intervention data allow more than the default Playwright timeout.
+export const INTERVENTIONS_TIMEOUT = 30_000;
 
 export const projectPath = (query = '') => `/${LOCALE}/${PROJECT.slug}${query}`;
 
@@ -31,17 +32,21 @@ const isInterventionsUrl = (url: URL) =>
   /\/project\/[^/]+\/interventions$/.test(url.pathname);
 
 /**
- * Resolves with the JSON of the first response whose URL matches, if it succeeds, and passes the response on to the page unchanged.
+ * Resolves with the JSON of the first response whose URL matches, or rejects with its status if it fails, and passes the response on to the page unchanged.
  * Read in the route, not with `waitForResponse`, because Chrome drops large bodies such as the interventions from its cache before a test can read them.
  */
 const captureJson = <T>(page: Page, matches: (url: URL) => boolean) =>
-  new Promise<T>((resolve) => {
+  new Promise<T>((resolve, reject) => {
     void page.route(
       matches,
       async (route) => {
         try {
           const response = await route.fetch();
           if (response.ok()) resolve(await response.json());
+          else
+            reject(
+              new Error(`${response.url()} answered ${response.status()}.`)
+            );
           await route.fulfill({ response });
         } catch {
           // A test that never reads interventions can end while TreeMapper is still answering, which closes the page mid-request.
@@ -61,6 +66,8 @@ export const openProject = async (page: Page, query = '') => {
     page,
     isInterventionsUrl
   );
+  // Site tests never read interventions, so a TreeMapper error must not fail them as an unhandled rejection. `interventions()` still sees it.
+  interventionsJson.catch(() => {});
 
   await page.goto(projectPath(query));
 
