@@ -1,5 +1,4 @@
 import type { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
-import type { APIError } from '@planet-sdk/common';
 import type { PlanetCashAccount } from '../../common/types/planetcash';
 import type { ReactElement } from 'react';
 
@@ -10,15 +9,10 @@ import TabbedView from '../../common/Layout/TabbedView';
 import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
-import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import {
-  useAuthStore,
-  useErrorHandlingStore,
-  usePlanetCashStore,
-} from '../../../stores';
+import { useAuthStore, usePlanetCashStore } from '../../../stores';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -42,34 +36,18 @@ export default function PlanetCash({
   const locale = useLocale();
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const [isDataLoading, setIsDataLoading] = useState(false);
   // store: state
   const planetCashAccounts = usePlanetCashStore(
     (state) => state.planetCashAccounts
   );
+  const status = usePlanetCashStore((state) => state.status);
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
   );
   // store: action
-  const setPlanetCashAccounts = usePlanetCashStore(
-    (state) => state.setPlanetCashAccounts
+  const fetchPlanetCashAccounts = usePlanetCashStore(
+    (state) => state.fetchPlanetCashAccounts
   );
-  const setIsPlanetCashActive = usePlanetCashStore(
-    (state) => state.setIsPlanetCashActive
-  );
-  const setErrors = useErrorHandlingStore((state) => state.setErrors);
-
-  const sortAccountsByActive = (
-    accounts: PlanetCashAccount[]
-  ): PlanetCashAccount[] => {
-    return accounts.sort((accountA, accountB) => {
-      if (accountA.isActive === accountB.isActive) {
-        return 0;
-      } else {
-        return accountA.isActive ? -1 : 1;
-      }
-    });
-  };
 
   // Redirect routes based on whether at least one account is created.
   // Prevents multiple account creation.
@@ -94,37 +72,22 @@ export default function PlanetCash({
     [step]
   );
 
-  const fetchAccounts = async () => {
-    // If accounts were already fetched, just handle redirects
-    if (planetCashAccounts) {
-      redirectIfNeeded(planetCashAccounts);
-      return;
-    }
-
-    try {
-      setIsDataLoading(true);
-      setProgress && setProgress(70);
-      const accounts = await getApiAuthenticated<PlanetCashAccount[]>(
-        '/app/planetCash'
-      );
-      redirectIfNeeded(accounts);
-      const sortedAccounts = sortAccountsByActive(accounts);
-      setIsPlanetCashActive(accounts.some((account) => account.isActive));
-      setPlanetCashAccounts(sortedAccounts);
-    } catch (err) {
-      setErrors(handleError(err as APIError));
-    } finally {
-      setIsDataLoading(false);
+  useEffect(() => {
+    if (!isAuthReady || status !== 'idle') return;
+    setProgress && setProgress(70);
+    fetchPlanetCashAccounts(getApiAuthenticated).finally(() => {
       if (setProgress) {
         setProgress(100);
         setTimeout(() => setProgress(0), 1000);
       }
-    }
-  };
+    });
+  }, [isAuthReady, status]);
 
   useEffect(() => {
-    if (isAuthReady) fetchAccounts();
-  }, [isAuthReady]);
+    if (status === 'ready' && planetCashAccounts) {
+      redirectIfNeeded(planetCashAccounts);
+    }
+  }, [status, planetCashAccounts, redirectIfNeeded]);
 
   const renderStep = () => {
     switch (step) {
@@ -134,7 +97,7 @@ export default function PlanetCash({
         return <CreateAccount />;
       case PlanetCashTabs.ACCOUNTS:
       default:
-        return <Accounts isDataLoading={isDataLoading} />;
+        return <Accounts />;
     }
   };
   useEffect(() => {

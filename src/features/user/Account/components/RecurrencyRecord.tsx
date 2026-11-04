@@ -91,7 +91,8 @@ export function RecordHeader({
      */
     const formatDateWithOffset = (dateString: string) =>
       formatDate(
-        new Date(new Date(dateString).valueOf() + 1000 * 3600).toISOString()
+        new Date(new Date(dateString).valueOf() + 1000 * 3600).toISOString(),
+        locale
       );
 
     // Active or Trialing - check for scheduled cancellation
@@ -104,9 +105,10 @@ export function RecordHeader({
           )} • ${t(record.frequency)}`;
         }
       }
-      return `${t('nextOn')} ${formatDate(record.currentPeriodEnd)} • ${t(
-        record.frequency
-      )}`;
+      return `${t('nextOn')} ${formatDate(
+        record.currentPeriodEnd,
+        locale
+      )} • ${t(record.frequency)}`;
     }
 
     // Paused
@@ -129,9 +131,10 @@ export function RecordHeader({
 
     // Past Due
     if (record.status === 'past_due') {
-      return `${t('lastDueOn')} ${formatDate(record.currentPeriodEnd)} • ${t(
-        record.frequency
-      )}`;
+      return `${t('lastDueOn')} ${formatDate(
+        record.currentPeriodEnd,
+        locale
+      )} • ${t(record.frequency)}`;
     }
 
     // Canceled
@@ -152,7 +155,7 @@ export function RecordHeader({
 
     // Fallback for any other status
     return null;
-  }, [record, t]);
+  }, [record, t, locale]);
 
   const headerContent = (
     <>
@@ -261,7 +264,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       {record.firstDonation?.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('firstDonation')}</p>
-          <p>{formatDate(record.firstDonation.created)}</p>
+          <p>{formatDate(record.firstDonation.created, locale)}</p>
         </div>
       )}
       {record?.destination?.type === 'planet-cash' && (

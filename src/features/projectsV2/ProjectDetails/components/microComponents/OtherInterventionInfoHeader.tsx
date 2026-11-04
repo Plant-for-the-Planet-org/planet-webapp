@@ -3,7 +3,7 @@ import type { INTERVENTION_TYPE } from '../../../../../utils/constants/intervent
 import styles from '../../styles/InterventionInfo.module.scss';
 import { formatHid } from '../../../../../utils/projectV2';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { clsx } from 'clsx';
 
 interface Props {
@@ -19,6 +19,7 @@ const OtherInterventionInfoHeader = ({
 }: Props) => {
   const tProjectDetails = useTranslations('ProjectDetails');
   const tIntervention = useTranslations('ProjectDetails.intervention');
+  const locale = useLocale();
 
   return (
     <>
@@ -40,7 +41,7 @@ const OtherInterventionInfoHeader = ({
           {tProjectDetails('intervention.interventionDate')}
         </h2>
         <p className={styles.data}>
-          {plantDate ? formatDate(plantDate) : null}
+          {plantDate ? formatDate(plantDate, locale) : null}
         </p>
       </div>
     </>

@@ -1,7 +1,7 @@
 /**
- * Custom hook to detect if the viewport width is below the specified maxWidth.
+ * Subscribes to viewport width changes below the specified maxWidth. This is a plain function, not a React hook, so it can be called inside useEffect.
  *
- * This hook uses `window.matchMedia` to check for a max-width media query and listens for changes
+ * It uses `window.matchMedia` to check for a max-width media query and listens for changes
  * in the viewport width. It invokes the provided callback with a boolean value indicating whether
  * the viewport is currently below or above the specified maxWidth.
  *
@@ -12,7 +12,7 @@
  * @returns {Function} A cleanup function to remove the event listener when no longer needed.
  */
 
-export const useMobileDetection = (
+export const subscribeToMobileDetection = (
   maxWidth: string,
   callback: (value: boolean) => void
 ) => {

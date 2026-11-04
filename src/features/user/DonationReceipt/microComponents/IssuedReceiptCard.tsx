@@ -1,6 +1,6 @@
 import type { IssuedReceiptDataApi } from '../donationReceiptTypes';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import WebappButton from '../../../common/WebappButton';
 import styles from '../DonationReceipt.module.scss';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -20,6 +20,7 @@ const IssuedReceiptCard = ({
   isProcessing,
 }: Prop) => {
   const tReceipt = useTranslations('DonationReceipt');
+  const locale = useLocale();
   const {
     amount,
     currency,
@@ -43,7 +44,7 @@ const IssuedReceiptCard = ({
         count={donationCount}
         reference={reference}
         template={template}
-        date={formatDate(paymentDate)}
+        date={formatDate(paymentDate, locale)}
         donations={donations}
       />
       {isReceiptVerified ? (

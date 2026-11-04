@@ -109,7 +109,7 @@ type ProjectApiPayload = TreeProjectApiPayload | ConservationProjectApiPayload;
 
 export default function DetailedAnalysis({
   handleBack,
-  userLang,
+  locale,
   token,
   handleNext,
   projectDetails,
@@ -604,8 +604,8 @@ export default function DetailedAnalysis({
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
                 adapterLocale={
-                  localeMapForDate[userLang]
-                    ? localeMapForDate[userLang]
+                  localeMapForDate[locale]
+                    ? localeMapForDate[locale]
                     : localeMapForDate['en']
                 }
               >
@@ -680,8 +680,8 @@ export default function DetailedAnalysis({
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
                   adapterLocale={
-                    localeMapForDate[userLang]
-                      ? localeMapForDate[userLang]
+                    localeMapForDate[locale]
+                      ? localeMapForDate[locale]
                       : localeMapForDate['en']
                   }
                 >
@@ -1360,7 +1360,7 @@ export default function DetailedAnalysis({
             projectGUID={projectGUID}
             token={token}
             setIsUploadingData={setIsUploadingData}
-            userLang={userLang}
+            locale={locale}
           />
         </div>
 
