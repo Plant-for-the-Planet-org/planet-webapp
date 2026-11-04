@@ -91,7 +91,7 @@ export const boundsContain = (
 const expectMapCenteredIn = async (
   page: Page,
   bounds: E2EBounds,
-  what: string,
+  targetName: string,
   timeout?: number
 ) => {
   await expect
@@ -104,9 +104,9 @@ const expectMapCenteredIn = async (
         if (view.isMoving) return 'map still moving';
         return boundsContain(bounds, view.center)
           ? 'centered'
-          : `center ${view.center.join(', ')} is outside ${what}`;
+          : `center ${view.center.join(', ')} is outside ${targetName}`;
       },
-      { message: `the map centered on ${what}`, timeout }
+      { message: `the map centered on ${targetName}`, timeout }
     )
     .toBe('centered');
 };
@@ -193,7 +193,7 @@ export const findClickableIntervention = async (
       ? [{ id: intervention.id, lngLat: boundsCenter(bounds) }]
       : [];
   });
-  // Cast, so TypeScript does not treat it as always null after the poll sets it.
+  // Typed with `as` so TypeScript does not assume it stays `null`. It cannot see that the poll below sets it.
   let found = null as { id: string; x: number; y: number } | null;
   await expect
     .poll(
