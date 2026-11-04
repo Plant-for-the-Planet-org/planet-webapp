@@ -9,12 +9,16 @@ import {
   interventionBounds,
   mapCanvas,
   mapCenter,
+  mapInterventionTypes,
+  waitForMapInterventionTypes,
   waitForMapSites,
 } from '../../support/map';
 import {
   aboutProjectHeading,
   expectSelectionInUrl,
   interventionHid,
+  interventionTypeOption,
+  interventionTypeToggle,
   openProject,
   projectPath,
 } from '../../support/projectDetails';
@@ -73,4 +77,25 @@ test('clicking an intervention on the map selects it', async ({ page }) => {
   await expect(aboutProjectHeading(page)).toBeHidden();
   // No highlight check here. The pointer is still over the intervention, so its hover highlight would pass for a selected one. The shared link test checks the highlight.
   await expectMapOnIntervention(page, intervention);
+});
+
+test('choosing an intervention type shows only that type on the map', async ({
+  page,
+}) => {
+  await openProject(page);
+  const typesOnMap = await waitForMapInterventionTypes(page);
+  // Each type needs another one to hide, or a map that ignored the filter would still pass.
+  expect(typesOnMap.length, 'intervention types on the map').toBeGreaterThan(1);
+
+  // Covers every type, such as points for single trees and polygons for multi trees.
+  for (const type of typesOnMap) {
+    await interventionTypeToggle(page).click();
+    await interventionTypeOption(page, type).click();
+
+    await expect
+      .poll(() => mapInterventionTypes(page), {
+        message: `intervention types on the map after choosing ${type}`,
+      })
+      .toEqual([type]);
+  }
 });

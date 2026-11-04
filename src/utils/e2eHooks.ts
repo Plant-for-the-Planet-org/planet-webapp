@@ -26,6 +26,8 @@ export type E2EHooks = {
   getMapView: () => E2EMapView & { isMoving: boolean };
   /** Where a place shows on the map canvas, in CSS pixels from its top left corner. */
   getScreenPoint: (lngLat: [number, number]) => { x: number; y: number };
+  /** The type of each intervention the map draws after the type filter, such as `multi-tree-registration`, or `null` before their source is added. */
+  getMapInterventionTypes: () => Promise<string[] | null>;
   /** The ids of the highlighted interventions, or `null` before the highlight source is added. */
   getHighlightedInterventions: () => Promise<string[] | null>;
   /** The id of the intervention a click at this canvas point would select, or `null` when the top feature there is not an intervention. */

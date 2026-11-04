@@ -183,6 +183,28 @@ export const highlightedInterventions = async (page: Page) =>
     window.__planetE2E?.getHighlightedInterventions?.()
   )) ?? [];
 
+/** The intervention types the map draws now, each listed once and sorted. */
+export const mapInterventionTypes = async (page: Page) => {
+  const types =
+    (await page.evaluate(() =>
+      window.__planetE2E?.getMapInterventionTypes?.()
+    )) ?? [];
+  return [...new Set(types)].sort();
+};
+
+/** Waits for the map to draw the project's interventions and returns their types. */
+export const waitForMapInterventionTypes = async (page: Page) => {
+  await waitForHook(page, 'getMapInterventionTypes');
+  let types: string[] = [];
+  await expect
+    .poll(async () => (types = await mapInterventionTypes(page)).length, {
+      message: 'interventions on the map',
+      timeout: INTERVENTIONS_TIMEOUT,
+    })
+    .toBeGreaterThan(0);
+  return types;
+};
+
 /**
  * Finds an intervention the visitor could click now, and the canvas point to click.
  * It must be on screen, not covered by the page, and the top feature at that point, because the click handler only acts on the top feature.
