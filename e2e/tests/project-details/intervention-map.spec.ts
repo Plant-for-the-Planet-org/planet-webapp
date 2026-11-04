@@ -1,7 +1,6 @@
 import { test, expect } from '../../support/fixtures';
 import {
   allowSoftwareWebGL,
-  boundsCenter,
   boundsContain,
   expectMapOnIntervention,
   expectMapOnSite,
@@ -29,21 +28,14 @@ test.beforeEach(async ({ page }) => {
 test('a shared intervention link moves the map to it and highlights it', async ({
   page,
 }) => {
-  // First load the project to get its available sites and interventions.
-  // The test will then open a fresh page using the selected intervention's link.
+  // The first load only reads live ids. The shared link then opens at the world view, so reaching the intervention proves the map moved.
   const { interventions } = await openProject(page);
-  const [firstSite] = await waitForMapSites(page);
-  const siteCenter = boundsCenter(firstSite.bounds);
-  // Pick an intervention away from the first site's center.
-  // Otherwise, the map might not move at all and the test could still pass.
-  const intervention = (await interventions()).find((item) => {
-    const bounds = interventionBounds(item);
-    return bounds !== null && !boundsContain(bounds, siteCenter);
-  });
+  // The map zooms only to points and polygons.
+  const intervention = (await interventions()).find(
+    (item) => interventionBounds(item) !== null
+  );
   if (!intervention) {
-    throw new Error(
-      'The project has no point or polygon intervention away from the first site center.'
-    );
+    throw new Error('The project has no point or polygon intervention.');
   }
 
   await page.goto(projectPath(`?ploc=${intervention.hid}`));
