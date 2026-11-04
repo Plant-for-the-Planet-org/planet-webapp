@@ -87,6 +87,13 @@ export const boundsContain = (
   [lng, lat]: [number, number]
 ) => lng >= west && lng <= east && lat >= south && lat <= north;
 
+/** The map's center right now, as `[lng, lat]`. */
+export const mapCenter = async (page: Page) => {
+  const view = await page.evaluate(() => window.__planetE2E?.getMapView?.());
+  if (!view) throw new Error('The map view hook is not set.');
+  return view.center;
+};
+
 // Waits until the map has stopped moving with its center inside these bounds.
 const expectMapCenteredIn = async (
   page: Page,

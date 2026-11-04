@@ -126,7 +126,7 @@ Project markers, sites and interventions are drawn on a WebGL canvas, so they ar
 #### Checking where the map is
 
 - `expectMapOnSite` and `expectMapOnIntervention` wait until the map stops moving, then check that its center is inside the target's bounds. They check the center, not the zoom, because the zoom depends on the window size.
-- Pick a target away from where the map starts. Otherwise a map that never moved would still pass. `firstAndOtherSite` in `site-map.spec.ts` does this for sites.
+- Pick a target away from where the map starts. Otherwise a map that never moved would still pass. `firstAndOtherSite` in `site-map.spec.ts` does this for sites, and the click test in `intervention-map.spec.ts` does it with `mapCenter` for interventions.
 
 #### Clicking on the map
 

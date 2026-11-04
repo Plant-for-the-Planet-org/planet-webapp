@@ -9,6 +9,7 @@ import {
   highlightedInterventions,
   interventionBounds,
   mapCanvas,
+  mapCenter,
   waitForMapSites,
 } from '../../support/map';
 import {
@@ -62,9 +63,15 @@ test('clicking an intervention on the map selects it', async ({ page }) => {
   const [firstSite] = await waitForMapSites(page);
   // Clicks only work once the map has settled on the default site, or the intervention moves away under the pointer.
   await expectMapOnSite(page, firstSite);
+  // Skip interventions around the map's center. The map is already on them, so the test would pass even if the map never moved.
+  const center = await mapCenter(page);
+  const awayFromCenter = (await interventions()).filter((item) => {
+    const bounds = interventionBounds(item);
+    return bounds !== null && !boundsContain(bounds, center);
+  });
   const { intervention, point } = await findClickableIntervention(
     page,
-    await interventions()
+    awayFromCenter
   );
 
   await mapCanvas(page).click({ position: point });
@@ -72,10 +79,6 @@ test('clicking an intervention on the map selects it', async ({ page }) => {
   await expectSelectionInUrl(page, { site: null, ploc: intervention.hid });
   await expect(interventionHid(page, intervention)).toBeVisible();
   await expect(aboutProjectHeading(page)).toBeHidden();
-  await expect
-    .poll(() => highlightedInterventions(page), {
-      message: 'the highlighted interventions',
-    })
-    .toContain(intervention.id);
+  // No highlight check here. The pointer is still over the intervention, so its hover highlight would pass for a selected one. The shared link test checks the highlight.
   await expectMapOnIntervention(page, intervention);
 });
