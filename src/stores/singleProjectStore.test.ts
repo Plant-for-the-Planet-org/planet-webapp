@@ -161,13 +161,18 @@ describe('singleProjectStore.selectSiteAndSyncUrl', () => {
     });
   });
 
-  it('selects the site, clears the intervention, and shows only the site in the URL', () => {
+  it('selects the site, clears the intervention, and swaps the ploc for the site in the URL, keeping other params', () => {
     useInterventionStore.setState({
       selectedIntervention: { hid: 'ploc_1' } as Intervention,
       hoveredIntervention: { hid: 'ploc_2' } as Intervention,
     });
     const router = createMockRouter({
-      query: { p: 'yucatan', ploc: 'ploc_1' },
+      query: {
+        p: 'yucatan',
+        ploc: 'ploc_1',
+        embed: 'true',
+        callback: 'https://example.org',
+      },
     });
 
     useSingleProjectStore.getState().selectSiteAndSyncUrl(1, 'en', router);
@@ -178,7 +183,7 @@ describe('singleProjectStore.selectSiteAndSyncUrl', () => {
     expect(selectedIntervention).toBeNull();
     expect(hoveredIntervention).toBeNull();
     expect(vi.mocked(router.replace).mock.calls[0][1]).toBe(
-      '/en/yucatan?site=site_b'
+      '/en/yucatan?embed=true&callback=https%3A%2F%2Fexample.org&site=site_b'
     );
   });
 });

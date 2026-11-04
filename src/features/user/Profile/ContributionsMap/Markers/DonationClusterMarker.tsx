@@ -1,10 +1,10 @@
-import type { ViewState } from 'react-map-gl/maplibre';
+import type { MapRef, ViewState } from 'react-map-gl/maplibre';
 import type {
   DonationProperties,
   DonationSuperclusterProperties,
 } from '../../../../common/types/myForest';
 import type { ProjectPurpose } from './ProjectTypeIcon';
-import type { MutableRefObject } from 'react';
+import type { RefObject } from 'react';
 import type { PointFeature } from 'supercluster';
 import type { TreeProjectClassification, UnitTypes } from '@planet-sdk/common';
 
@@ -19,10 +19,10 @@ import {
 import styles from '../Common/common.module.scss';
 import { useMyForestStore } from '../../../../../stores';
 
-export interface DonationClusterMarkerProps {
+interface DonationClusterMarkerProps {
   superclusterResponse: PointFeature<DonationSuperclusterProperties>;
   viewState: ViewState;
-  mapRef: MutableRefObject<null>;
+  mapRef: RefObject<MapRef>;
 }
 
 export type ExtractedProjectData = {

@@ -20,7 +20,7 @@ import type {
   ProjectSiteFeature,
 } from '../features/common/types/map';
 
-import centroid from '@turf/centroid';
+import { centroid } from '@turf/centroid';
 
 type MetaDataValue = {
   value: string;
@@ -47,7 +47,7 @@ export const MAIN_MAP_LAYERS = {
   DATE_DIFF_LABEL: 'datediff-label',
 };
 
-export const PLANT_LAYERS = [
+const PLANT_LAYERS = [
   MAIN_MAP_LAYERS.PLANT_POLYGON,
   MAIN_MAP_LAYERS.PLANT_POINT,
 ];
@@ -292,7 +292,7 @@ export const getValidFeatures = (projects: MapProject[]) =>
  */
 export const calculateCentroid = (features: MapProject[]) => {
   const featureCollection = {
-    type: 'FeatureCollection',
+    type: 'FeatureCollection' as const,
     features,
   };
   return centroid(featureCollection);

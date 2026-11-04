@@ -10,11 +10,16 @@ describe('interventionStore.selectInterventionSyncUrl', () => {
     resetAllStores();
   });
 
-  it('selects the intervention, clears the site, and shows only the ploc in the URL', () => {
+  it('selects the intervention, clears the site, and swaps the site for the ploc in the URL, keeping other params', () => {
     useSingleProjectStore.setState({ selectedSite: 0 });
     const intervention = { hid: 'ploc_1' } as Intervention;
     const router = createMockRouter({
-      query: { p: 'yucatan', site: 'site_a' },
+      query: {
+        p: 'yucatan',
+        site: 'site_a',
+        embed: 'true',
+        callback: 'https://example.org',
+      },
     });
 
     useInterventionStore
@@ -26,7 +31,7 @@ describe('interventionStore.selectInterventionSyncUrl', () => {
     );
     expect(useSingleProjectStore.getState().selectedSite).toBeNull();
     expect(vi.mocked(router.replace).mock.calls[0][1]).toBe(
-      '/en/yucatan?ploc=ploc_1'
+      '/en/yucatan?embed=true&callback=https%3A%2F%2Fexample.org&ploc=ploc_1'
     );
   });
 });

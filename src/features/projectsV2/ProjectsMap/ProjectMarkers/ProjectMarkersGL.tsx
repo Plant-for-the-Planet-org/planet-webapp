@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import ProjectPopup from '../ProjectPopup';
 import {
   getPointMarkerImageKey,
+  isPointMarkerImageKey,
   registerMarkerIcons,
   MARKER_ICON_OFFSET_Y,
 } from './markerImageRegistry';
@@ -25,7 +26,7 @@ interface Props {
   projects: MapProject[];
 }
 
-export const PROJECT_MARKERS_LAYER = 'project-markers-gl';
+const PROJECT_MARKERS_LAYER = 'project-markers-gl';
 const PROJECT_MARKERS_SOURCE = 'project-markers-source';
 
 // Draw order by tier: lower value renders first (underneath). Top projects on top, non donatable at bottom
@@ -104,23 +105,20 @@ const ProjectMarkersGL = ({ projects }: Props) => {
     [localizedPath, isEmbedMode, callbackUrl, router]
   );
 
-  // Register the per-category pin images on the map (idempotent).
+  // Register the pin images when MapLibre needs them. MapLibre waits for them to be ready, so no warning is shown.
+  // This also works after the map style changes, so the pins are added again automatically.
+  // A map holds only one missing-image resolver. If another layer needs one, share a single resolver that routes by image name instead of setting a second one.
   useEffect(() => {
     const map = mapInstance?.getMap();
     if (!map) return;
-    let cancelled = false;
-    const registerIcons = () => {
-      if (!cancelled) void registerMarkerIcons(map);
-    };
-    if (map.isStyleLoaded()) registerIcons();
-    else map.once('load', registerIcons);
-    // Safety net: re-register if an icon is missing (e.g. after a style reload).
-    // styleimagemissing fires once per missing image (~24 at initial load) - registerMarkerIcons coalesces concurrent calls so only one rasterization runs.
-    map.on('styleimagemissing', registerIcons);
+    map.setMissingStyleImageResolver(async (id) => {
+      if (!isPointMarkerImageKey(id)) return;
+      await registerMarkerIcons(map);
+      // If the style was replaced while pins were loading, some pins went into the old style. Register again so the new style gets them.
+      if (!map.hasImage(id)) await registerMarkerIcons(map);
+    });
     return () => {
-      cancelled = true;
-      map.off('load', registerIcons);
-      map.off('styleimagemissing', registerIcons);
+      map.setMissingStyleImageResolver(null);
     };
   }, [mapInstance]);
 

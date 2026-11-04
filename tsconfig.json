@@ -32,8 +32,6 @@
     "./src/**/*",
     "tenant.config.ts",
     "public/assets",
-    "folderCrawler.js",
-    "modifyJson.js",
     "vitest.config.mts"
   ]
 }

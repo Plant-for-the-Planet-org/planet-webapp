@@ -109,7 +109,7 @@ describe('useInitializeIntervention', () => {
 
     expect(selectedIntervention()).toBeNull();
 
-    const newProjectIntervention = intervention('ploc_1');
+    // Same order as fetchProject: the new project lands first, while the old interventions are still held.
     act(() => {
       useSingleProjectStore.setState({
         singleProject: createProject({
@@ -117,6 +117,12 @@ describe('useInitializeIntervention', () => {
           sites: SITES,
         }),
       });
+    });
+
+    expect(selectedIntervention()).toBeNull();
+
+    const newProjectIntervention = intervention('ploc_1');
+    act(() => {
       useInterventionStore.setState({
         interventions: [newProjectIntervention],
       });

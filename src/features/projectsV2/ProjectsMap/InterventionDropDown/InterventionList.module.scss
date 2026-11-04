@@ -1,4 +1,4 @@
-@import '../../../../theme/theme';
+@use '../../../../theme/theme' as *;
 
 $dropDownTriggerButtonHeight: 52px;
 $dropDownOpenGap: 8px;

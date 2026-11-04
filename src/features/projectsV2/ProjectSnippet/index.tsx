@@ -40,7 +40,7 @@ interface Props {
 }
 
 type ProjectSnippetContentProps = Omit<Props, 'isMobile'>;
-export interface CommonProps {
+interface CommonProps {
   slug: string;
   isApproved: boolean;
   isTopProject: boolean;

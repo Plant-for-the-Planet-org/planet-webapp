@@ -149,7 +149,7 @@ describe('buildProjectDetailsQuery', () => {
     callback: 'https://example.org',
   };
 
-  it('removes site, ploc and backNavigationUrl, and keeps other params such as embed', () => {
+  it('given no site or intervention, removes site, ploc and backNavigationUrl, and keeps other params', () => {
     expect(buildProjectDetailsQuery(query, {})).toEqual({
       p: 'yucatan',
       embed: 'true',
