@@ -1,21 +1,22 @@
 import type { Page } from '@playwright/test';
-import type { ProjectSite } from '../../support/projectDetails';
+import type { ProjectSite } from '../../support/projectDetails/data';
 
 import { test, expect } from '../../support/fixtures';
 import {
   allowSoftwareWebGL,
   boundsCenter,
   boundsContain,
+} from '../../support/map';
+import { openProject, projectPath } from '../../support/projectDetails/data';
+import {
   expectMapOnSite,
   waitForMapSites,
-} from '../../support/map';
+} from '../../support/projectDetails/map';
 import {
   expectSelectionInUrl,
-  openProject,
-  projectPath,
   siteOption,
   siteToggle,
-} from '../../support/projectDetails';
+} from '../../support/projectDetails/page';
 
 test.beforeEach(async ({ page }) => {
   await allowSoftwareWebGL(page);

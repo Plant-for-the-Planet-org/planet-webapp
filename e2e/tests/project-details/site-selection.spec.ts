@@ -1,15 +1,14 @@
 import { test, expect } from '../../support/fixtures';
 import { LOCALE } from '../../support/i18n';
-import { projectCards } from '../../support/projects';
+import { openProject, projectPath } from '../../support/projectDetails/data';
 import {
   expectSelectedSite,
   expectSelectionInUrl,
-  openProject,
-  projectPath,
   siteOption,
   siteOptions,
   siteToggle,
-} from '../../support/projectDetails';
+} from '../../support/projectDetails/page';
+import { projectCards } from '../../support/projects/page';
 
 test('a project link without a site selects the first site and adds it to the URL', async ({
   page,

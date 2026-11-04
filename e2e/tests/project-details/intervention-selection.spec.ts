@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test';
 
 import { test, expect } from '../../support/fixtures';
+import { openProject, projectPath } from '../../support/projectDetails/data';
 import {
   aboutProjectHeading,
   expectSelectedSite,
@@ -10,11 +11,9 @@ import {
   interventionTypeOption,
   interventionTypeOptions,
   interventionTypeToggle,
-  openProject,
-  projectPath,
   siteOption,
   siteToggle,
-} from '../../support/projectDetails';
+} from '../../support/projectDetails/page';
 
 test.beforeEach(() => {
   // Interventions load from TreeMapper, which can take most of the 30 s a preview allows, and each test loads the page twice.
