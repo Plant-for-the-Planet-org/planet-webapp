@@ -6,28 +6,34 @@ import { handleError } from '@planet-sdk/common';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from 'next/router';
-import { useDonationReceiptContext } from '../../common/Layout/DonationReceiptContext';
 import styles from './DonationReceipt.module.scss';
 import DonationReceiptWrapper from './DonationReceiptWrapper';
 import { useApi } from '../../../hooks/useApi';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useTranslations } from 'next-intl';
 import ReceiptVerificationErrors from './microComponents/ReceiptVerificationErrors';
-import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import {
+  useUserStore,
+  useErrorHandlingStore,
+  useDonationReceiptStore,
+} from '../../../stores';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 
 const DonationReceiptUnauthenticated = () => {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const tReceipt = useTranslations('DonationReceipt');
-  const { getApi } = useApi();
   const { dtn, year, challenge } = router.query;
-  const { initForVerification } = useDonationReceiptContext();
-  const { user } = useUserProps();
+  const { getApi } = useApi();
+  // store: action
+  const initForVerification = useDonationReceiptStore(
+    (state) => state.initForVerification
+  );
   // local state
   const [isLoading, setIsLoading] = useState(false);
   const [isReceiptInvalid, setIsReceiptInvalid] = useState(false);
-  //store
+  // store: state
+  const userProfile = useUserStore((state) => state.userProfile);
+  // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   const areParamsValid =
@@ -48,7 +54,7 @@ const DonationReceiptUnauthenticated = () => {
         )}`;
         const data = await getApi<IssuedReceiptDataApi>(url);
 
-        if (data) initForVerification(data, user);
+        if (data) initForVerification(data, userProfile);
       } catch (err) {
         const errorResponse = err as APIError;
         setErrors(handleError(errorResponse));
@@ -62,7 +68,7 @@ const DonationReceiptUnauthenticated = () => {
         setIsLoading(false);
       }
     })();
-  }, [dtn, year, challenge, router.isReady, areParamsValid, user]);
+  }, [dtn, year, challenge, router.isReady, areParamsValid, userProfile]);
 
   if (!router.isReady) return null;
 

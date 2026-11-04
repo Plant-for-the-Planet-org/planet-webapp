@@ -1,20 +1,17 @@
 import type { SetState } from '../../common/types/common';
+import type { DirectGiftType } from '../../../utils/directGift';
 
 import styles from '../styles/DirectGift.module.scss';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
+import IconButton from '../../common/IconButton';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
-
-export interface DirectGiftI {
-  id: string;
-  displayName: string;
-  type: string;
-}
+import { clearStoredDirectGift } from '../../../utils/directGift';
 
 interface Props {
-  directGift: DirectGiftI;
-  setDirectGift: SetState<DirectGiftI | null>;
+  directGift: DirectGiftType;
+  setDirectGift: SetState<DirectGiftType | null>;
 }
 
 export default function DirectGift({ directGift, setDirectGift }: Props) {
@@ -34,20 +31,17 @@ export default function DirectGift({ directGift, setDirectGift }: Props) {
         </div>
         <div className={styles.selectProject}>{t('selectProject')}</div>
       </div>
-      <button
+      <IconButton
         id={'giftClose'}
-        type="button"
-        aria-label={`${tCommon('close')} ${t('directGift')}`}
+        label={`${tCommon('close')} ${t('directGift')}`}
         onClick={() => {
-          localStorage.removeItem('directGift');
+          clearStoredDirectGift();
           setDirectGift(null);
         }}
         className={styles.closeButton}
       >
-        <span aria-hidden="true" style={{ display: 'contents' }}>
-          <CancelIcon />
-        </span>
-      </button>
+        <CancelIcon />
+      </IconButton>
     </div>
   );
 }

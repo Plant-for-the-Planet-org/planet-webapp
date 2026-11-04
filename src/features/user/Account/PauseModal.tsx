@@ -4,9 +4,10 @@ import type { Subscription } from '../../common/types/payments';
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
+import IconButton from '../../common/IconButton';
 import {
   CircularProgress,
   RadioGroup,
@@ -21,6 +22,7 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import { CalendarPicker } from '@mui/x-date-pickers';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import { localeMapForDate } from '../../../utils/language/getLanguageName';
 
 interface PauseModalProps {
   pauseModalOpen: boolean;
@@ -44,6 +46,7 @@ export const PauseModal = ({
   const { putApiAuthenticated } = useApi();
   const t = useTranslations('Me');
   const tCommon = useTranslations('Common');
+  const locale = useLocale();
   // local state
   const [option, setOption] = useState<string>();
   const [showCalender, setShowCalender] = useState(false);
@@ -116,19 +119,13 @@ export const PauseModal = ({
               }}
             >
               <h4>{t('pauseDonationConfirmation')}</h4>
-              <button
-                type="button"
-                aria-label={`${tCommon('close')} ${t('pauseDonationConfirmation')}`}
+              <IconButton
+                label={`${tCommon('close')} ${t('pauseDonationConfirmation')}`}
                 onClick={handlePauseModalClose}
-                onKeyPress={handlePauseModalClose}
-                role="button"
-                tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <span aria-hidden="true" style={{ display: 'contents' }}>
-                  <Close color={'#4d5153'} />
-                </span>
-              </button>
+                <Close color={'#4d5153'} />
+              </IconButton>
             </div>
             <div className={styles.note}>
               <p>{t('pauseDonationDescription')}</p>
@@ -170,7 +167,12 @@ export const PauseModal = ({
             </RadioGroup>
             {showCalender ? (
               <>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={
+                    localeMapForDate[locale] || localeMapForDate['en']
+                  }
+                >
                   <CalendarPicker
                     date={date}
                     onChange={(value) => {

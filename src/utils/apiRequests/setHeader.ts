@@ -1,34 +1,30 @@
-import type { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
+import type { ImpersonationData } from '../impersonation';
+import {
+  isValidImpersonationData,
+  readStoredImpersonationData,
+} from '../impersonation';
+
 /**
- * Sets keys for header in impersonation mode
+ * Returns a new header with the impersonation keys added when there is valid impersonation data.
+ * Does not mutate the header passed in.
  */
 export const setHeaderForImpersonation = (
   header: Record<string, string>,
   impersonationData?: ImpersonationData
 ) => {
-  const impersonationDataFromLocal: ImpersonationData = JSON.parse(
-    `${localStorage.getItem('impersonationData')}`
-  );
-  if (impersonationDataFromLocal || impersonationData) {
-    if (
-      impersonationData?.targetEmail ||
-      impersonationDataFromLocal?.targetEmail
-    ) {
-      header['X-SWITCH-USER'] =
-        impersonationData?.targetEmail ||
-        impersonationDataFromLocal?.targetEmail;
-    }
+  let validImpersonationData: ImpersonationData | undefined;
 
-    if (
-      impersonationData?.supportPin ||
-      impersonationDataFromLocal?.supportPin
-    ) {
-      header['X-USER-SUPPORT-PIN'] =
-        impersonationData?.supportPin || impersonationDataFromLocal?.supportPin;
-    }
-    const impersonationHeader = header;
-    return impersonationHeader;
-  } else {
-    return header;
+  if (impersonationData === undefined) {
+    validImpersonationData = readStoredImpersonationData();
+  } else if (isValidImpersonationData(impersonationData)) {
+    validImpersonationData = impersonationData;
   }
+
+  const finalHeader = { ...header };
+
+  if (validImpersonationData) {
+    finalHeader['X-SWITCH-USER'] = validImpersonationData.targetEmail;
+    finalHeader['X-USER-SUPPORT-PIN'] = validImpersonationData.supportPin;
+  }
+  return finalHeader;
 };

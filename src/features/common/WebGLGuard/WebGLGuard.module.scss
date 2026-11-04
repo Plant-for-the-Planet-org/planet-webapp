@@ -1,4 +1,4 @@
-@import '../../../theme/theme';
+@use '../../../theme/theme' as *;
 
 .loading {
   display: flex;
@@ -104,6 +104,12 @@
       }
     }
   }
+
+  p {
+    margin: 12px 0 0;
+    color: $dsSoftText;
+    font-size: $fontSmall;
+  }
 }
 
 .contactInfo {
@@ -163,7 +169,8 @@
   .solutionSteps {
     padding: 16px;
 
-    ul li {
+    ul li,
+    p {
       font-size: $fontXSmall;
     }
   }

@@ -1,10 +1,10 @@
 import type { ReactElement } from 'react';
 
-import { useCallback } from 'react';
 import Link from 'next/link';
 import { prefetchManager } from '../../../utils/prefetchManager';
 import styles from './WebappButton.module.scss';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
+import { isExternalUrl } from '../../../utils/url';
 import { clsx } from 'clsx';
 
 interface CommonProps {
@@ -42,23 +42,12 @@ function WebappButton({
     otherProps.buttonClasses
   );
   const { localizedPath } = useLocalizedPath();
-  const isExternalURL = (url: string) => {
-    try {
-      if (url.match(/^https?:\/\//)) {
-        const urlObj = new URL(url);
-        return urlObj.host !== window.location.host;
-      }
-      return url.startsWith('//') || url.includes(':');
-    } catch {
-      return false;
-    }
-  };
 
   if (otherProps.elementType === 'link') {
-    const isExternal = isExternalURL(otherProps.href);
+    const isExternal = isExternalUrl(otherProps.href);
 
     if (isExternal) {
-      const handleMouseEnter = useCallback(() => {
+      const handleMouseEnter = () => {
         if (otherProps.prefetch && !prefetchManager.has(otherProps.href)) {
           const link = document.createElement('link');
           link.rel = 'prefetch';
@@ -66,7 +55,7 @@ function WebappButton({
           document.head.appendChild(link);
           prefetchManager.add(otherProps.href);
         }
-      }, [otherProps.href, otherProps.prefetch]);
+      };
 
       return (
         <a

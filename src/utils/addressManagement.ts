@@ -18,10 +18,6 @@ export const ADDRESS_ACTIONS = {
   UNSET_BILLING: 'unsetBilling',
 } as const;
 
-export const ADDRESS_FORM_TYPE = {
-  ADD_ADDRESS: 'add',
-  EDIT_ADDRESS: 'edit',
-} as const;
 export const addressTypeOrder = ['primary', 'mailing', 'other'];
 
 export const MAX_ADDRESS_LIMIT = 5;

@@ -1,13 +1,14 @@
 import '../src/theme/global.scss';
+// Same order as pages/_app.tsx, so shadcn components render in Storybook too.
+import '../src/styles/globals.css';
 import './storybook.scss';
-import { ThemeProvider as MUIThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider as MUIThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import { ThemeProvider } from '@storybook/theming';
+import { ThemeProvider } from 'storybook/theming';
 import { useTheme } from '../src/theme/themeContext';
 // import { ThemeProvider } from 'emotion-theming';
 import getMessages from './i18n';
 import { NextIntlClientProvider } from 'next-intl';
-import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 import getGlobalStyles from '../src/theme/theme';
 
 /*
@@ -33,12 +34,11 @@ export const decorators = [
           style={{ backgroundColor: 'transparent' }}
         >
           <MUIThemeProvider theme={materialTheme}>
-            {/*  UserPropsProvider are added for ProfileCard storybook to function properly */}
-            <UserPropsProvider>
-              <ThemeProvider theme={materialTheme}>
-                <Story />
-              </ThemeProvider>
-            </UserPropsProvider>
+            {/* Matches pages/_app.tsx. Preflight is off, so this is what gives stories border-box sizing. */}
+            <CssBaseline />
+            <ThemeProvider theme={materialTheme}>
+              <Story />
+            </ThemeProvider>
           </MUIThemeProvider>
         </div>
       </NextIntlClientProvider>

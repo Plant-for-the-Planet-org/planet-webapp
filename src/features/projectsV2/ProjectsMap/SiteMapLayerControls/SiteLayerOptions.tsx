@@ -6,7 +6,7 @@ import TreeCoverIcon from '../../../../../public/assets/images/icons/projectV2/T
 import themeProperties from '../../../../theme/themeProperties';
 import { clsx } from 'clsx';
 
-export type LayerKey = 'biomass' | 'tree-cover';
+type LayerKey = 'biomass' | 'tree-cover';
 
 export type RangeLegendData = {
   type: 'range';
@@ -22,7 +22,7 @@ export type PercentLegendData = {
   gradient: string;
 };
 
-export type LegendData = RangeLegendData | PercentLegendData;
+type LegendData = RangeLegendData | PercentLegendData;
 
 export type LayerOption = {
   id: LayerKey;

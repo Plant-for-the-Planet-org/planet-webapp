@@ -13,10 +13,11 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectReports from './TopProjectReports';
 import styles from '../styles/ProjectSnippet.module.scss';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import IconButton from '../../../common/IconButton';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
+import { useCurrentPage } from '../../../../hooks/useCurrentPage';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../../stores/queryParamStore';
-import { useViewStore } from '../../../../stores';
+import { useQueryParamStore } from '../../../../stores';
 
 const MAX_NAME_LENGTH = 32;
 
@@ -46,7 +47,7 @@ const ImageSection = (props: ImageSectionProps) => {
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const callbackUrl = useQueryParamStore((state) => state.callbackUrl);
   const showBackIcon = useQueryParamStore((state) => state.showBackIcon);
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
 
   useEffect(() => {
     setMounted(true);
@@ -127,16 +128,13 @@ const ImageSection = (props: ImageSectionProps) => {
   return (
     <div className={imageContainerClasses}>
       {showBackButton && (
-        <button
-          type="button"
-          aria-label={tCommon('goBack')}
+        <IconButton
+          label={tCommon('goBack')}
           onClick={handleBackButton}
           className={styles.backButton}
         >
-          <span aria-hidden="true" style={{ display: 'contents' }}>
-            <BackButton />
-          </span>
-        </button>
+          <BackButton />
+        </IconButton>
       )}
       <ProjectBadge
         isApproved={isApproved}

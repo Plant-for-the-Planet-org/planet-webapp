@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import SliderButton from './SliderButton';
 import styles from '../../styles/Slider.module.scss';
 import CrossIcon from '../../../../../../public/assets/images/icons/projectV2/CrossIcon';
+import IconButton from '../../../../common/IconButton';
 import ImageCarousel from './ImageCarousel';
 
 interface ImageSliderModalProps {
@@ -60,16 +61,13 @@ const ImageSliderModal = ({
       <>
         {!isMobile && renderSliderButton('prev', styles.sliderButton)}
         <div className={styles.expandedImageSliderContainer}>
-          <button
-            type="button"
-            aria-label={t('close')}
+          <IconButton
+            label={t('close')}
             onClick={() => setIsModalOpen(false)}
             className={styles.closeModalButton}
           >
-            <span aria-hidden="true" style={{ display: 'contents' }}>
-              <CrossIcon width={isMobile ? 10 : 18} />
-            </span>
-          </button>
+            <CrossIcon width={isMobile ? 10 : 18} />
+          </IconButton>
 
           {isMobile &&
             renderSliderButton('prev', styles.prevMobileSliderButton)}

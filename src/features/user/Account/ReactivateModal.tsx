@@ -6,6 +6,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslations } from 'next-intl';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
+import IconButton from '../../common/IconButton';
 import { CircularProgress, Modal, Fade } from '@mui/material';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
@@ -82,19 +83,13 @@ export const ReactivateModal = ({
               }}
             >
               <h4>{t('reactivateDonationConfirmation')}</h4>
-              <button
-                type="button"
-                aria-label={`${tCommon('close')} ${t('reactivateDonationConfirmation')}`}
+              <IconButton
+                label={`${tCommon('close')} ${t('reactivateDonationConfirmation')}`}
                 onClick={handleReactivateModalClose}
-                onKeyPress={handleReactivateModalClose}
-                role="button"
-                tabIndex={0}
                 className={styles.headerCloseIcon}
               >
-                <span aria-hidden="true" style={{ display: 'contents' }}>
-                  <Close color={'#4d5153'} />
-                </span>
-              </button>
+                <Close color={'#4d5153'} />
+              </IconButton>
             </div>
             <div className={styles.note}>
               <p>

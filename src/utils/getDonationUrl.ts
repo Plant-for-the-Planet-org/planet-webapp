@@ -1,33 +1,53 @@
+import { readStoredDirectGift } from './directGift';
+
+type DonationUrlOptions = {
+  tenant: string;
+  /** Project slug, or 'planetcash' to top up a PlanetCash balance. */
+  target: string;
+  token: string | null;
+  embed?: string;
+  callbackUrl?: string;
+  /** Direct-gift recipient slug, used for the `s` param. */
+  recipientSlug?: string;
+  utmCampaign?: string;
+};
+
 // calling this function before window is loaded may cause an error
-export const getDonationUrl = (
-  tenant: string | undefined,
-  id: string,
-  token: string | null,
-  embed?: string | undefined | string[],
-  callbackUrl?: string | undefined | string[],
-  slug?: string | undefined,
-  utmCampaign?: string
-): string => {
-  const country = localStorage.getItem('countryCode');
-  const language = localStorage.getItem('language');
-  let directGift = localStorage.getItem('directGift');
-  if (directGift) {
-    directGift = JSON.parse(directGift);
-  }
+export const getDonationUrl = (options: DonationUrlOptions): string => {
+  const {
+    tenant,
+    target,
+    token,
+    embed,
+    callbackUrl,
+    recipientSlug,
+    utmCampaign,
+  } = options;
 
-  const callback_url = embed === 'true' ? callbackUrl : window.location.href;
+  const country = localStorage.getItem('countryCode') || 'DE';
+  // Legacy compatibility read, kept until the donation widget URL is migrated off localStorage.language (see issue #3234).
+  const language = localStorage.getItem('language') || 'en';
 
-  const sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${id}${
-    callback_url !== undefined ? '&callback_url=' + callback_url : ''
-  }&country=${country}&locale=${language}${token ? '&token=' + token : ''}${
-    tenant !== undefined ? '&tenant=' + tenant : ''
-  }${
-    directGift && directGift.id !== undefined
-      ? '&s=' + directGift.id
-      : slug !== undefined
-      ? '&s=' + slug
-      : ''
-  }${utmCampaign ? '&utm_campaign=' + utmCampaign : ''}`;
+  const directGift = readStoredDirectGift();
 
-  return sourceUrl;
+  const callbackUrlValue =
+    embed === 'true' ? callbackUrl : window.location.href;
+
+  // A stored direct gift takes precedence over recipientSlug for the 's' param
+  const giftSlug = directGift !== null ? directGift.id : recipientSlug;
+
+  const queryParams = [
+    `to=${encodeURIComponent(target)}`,
+    callbackUrlValue !== undefined
+      ? `callback_url=${encodeURIComponent(callbackUrlValue)}`
+      : undefined,
+    `country=${encodeURIComponent(country)}`,
+    `locale=${encodeURIComponent(language)}`,
+    token ? `token=${encodeURIComponent(token)}` : undefined,
+    tenant !== undefined ? `tenant=${encodeURIComponent(tenant)}` : undefined,
+    giftSlug !== undefined ? `s=${encodeURIComponent(giftSlug)}` : undefined,
+    utmCampaign ? `utm_campaign=${encodeURIComponent(utmCampaign)}` : undefined,
+  ].filter((param): param is string => param !== undefined);
+
+  return `${process.env.NEXT_PUBLIC_DONATION_URL}/?${queryParams.join('&')}`;
 };

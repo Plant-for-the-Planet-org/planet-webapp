@@ -11,7 +11,7 @@
   "website": "https://www.plant-for-the-planet.org",
   "repository": "https://github.com/Plant-for-the-Planet-org/planet-webapp",
   "success_url": "/",
-  "stack": "heroku-18",
+  "stack": "heroku-26",
   "env": {
     "API_ENDPOINT": {
       "required": true,

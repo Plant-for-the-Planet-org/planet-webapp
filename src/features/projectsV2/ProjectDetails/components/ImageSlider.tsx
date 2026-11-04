@@ -1,6 +1,7 @@
 import type { SliderImage } from './microComponents/ImageCarousel';
 
 import ExpandIcon from '../../../../../public/assets/images/icons/ExpandIcon';
+import IconButton from '../../../common/IconButton';
 import ImageCarousel from './microComponents/ImageCarousel';
 import styles from '../styles/Slider.module.scss';
 import { useState, useMemo } from 'react';
@@ -48,17 +49,12 @@ const ImageSlider = ({
           )}
         >
           {allowFullView && (
-            <button
-              type="button"
-              aria-label={t('expandImages')}
+            <IconButton
+              label={t('expandImages')}
               onClick={() => setIsModalOpen(true)}
             >
-              <span aria-hidden="true" style={{ display: 'contents' }}>
-                <ExpandIcon
-                  color={themeProperties.designSystem.colors.white}
-                />
-              </span>
-            </button>
+              <ExpandIcon color={themeProperties.designSystem.colors.white} />
+            </IconButton>
           )}
           <ImageCarousel
             images={validImages}

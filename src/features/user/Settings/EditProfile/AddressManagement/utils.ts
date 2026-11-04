@@ -1,4 +1,5 @@
 import type { Address, AddressType, User } from '@planet-sdk/common';
+
 import { ADDRESS_TYPE } from '../../../../../utils/addressManagement';
 
 /**
@@ -114,5 +115,24 @@ export const updateAddressesAfterTypeChange = (
   return {
     ...user,
     addresses: updatedAddresses,
+  };
+};
+
+/**
+ * Removes an address from the user profile by address ID.
+ * Used after a successful delete address API call to keep
+ * the local store state in sync with the backend.
+ */
+export const updateAddressesAfterDelete = (
+  userProfile: User | null,
+  addressId: string
+): User | null => {
+  if (!userProfile) return userProfile;
+
+  return {
+    ...userProfile,
+    addresses: userProfile.addresses.filter(
+      (address) => address.id !== addressId
+    ),
   };
 };

@@ -6,9 +6,11 @@
       "tin": "Steueridentifikationsnummer (TIN)",
       "companyName": "Firmenname",
       "name": "{type, select, individual {Name} organization {Firmenname} other {Name}}",
-      "address": "Adresse"
+      "address": "Adresse",
+      "selectAddress": "Wähle eine Adresse für die Spendenbescheinigung aus"
     },
     "donationDetails": {
+      "title": "Spenden Details",
       "referenceNumber": "Referenznummer",
       "reference": "Referenz",
       "amountDonated": "Gespendeter Betrag",

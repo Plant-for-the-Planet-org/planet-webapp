@@ -15,8 +15,7 @@ import { clsx } from 'clsx';
 import { useTenantStore } from '../../../../stores/tenantStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
-import { useCurrencyStore } from '../../../../stores/currencyStore';
+import { useErrorHandlingStore, useCurrencyStore } from '../../../../stores';
 
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
