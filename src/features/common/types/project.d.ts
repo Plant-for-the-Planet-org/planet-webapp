@@ -272,7 +272,7 @@ export interface ProjectMediaProps {
 
 export interface DetailedAnalysisProps {
   handleBack: (arg: number) => void;
-  userLang: string;
+  locale: string;
   token: string;
   handleNext: (arg: number) => void;
   projectDetails: Nullable<ExtendedProfileProjectProperties>;
@@ -355,7 +355,7 @@ export interface ProjectSpendingProps {
   handleBack: (arg: number) => void;
   token: string;
   handleNext: (arg: number) => void;
-  userLang: string;
+  locale: string;
   projectGUID: string | unknown;
   isLocked: boolean;
   verificationStatus?: string;
@@ -456,7 +456,7 @@ interface ProjectCertificatesProps {
   projectGUID: string;
   token: string;
   setIsUploadingData: Function;
-  userLang: string;
+  locale: string;
 }
 
 export interface ProjectOption {
