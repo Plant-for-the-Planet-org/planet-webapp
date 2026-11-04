@@ -49,6 +49,11 @@ export const useInitializeUser = () => {
 
   useEffect(() => {
     if (!token) return;
+    // Guards against a request that this same effect superseded (e.g. a
+    // fast token refresh re-running the effect before the previous fetch
+    // settles). Without this, the aborted request's `finally` below can
+    // still run and resolve auth before the replacement request finishes.
+    let isSuperseded = false;
     // Note: Intentionally not refetching on locale/tenant changes
     fetchUserProfile({
       token,
@@ -67,11 +72,14 @@ export const useInitializeUser = () => {
         console.error('[Profile API] Failed to fetch user profile:', err);
       })
       .finally(() => {
-        if (!hasResolvedInitialAuth.current) {
+        if (!isSuperseded && !hasResolvedInitialAuth.current) {
           hasResolvedInitialAuth.current = true;
           setIsAuthResolved(true);
         }
       });
+    return () => {
+      isSuperseded = true;
+    };
   }, [token, profileRefetchNonce, fetchUserProfile, setIsAuthResolved]);
 
   // Drop a stored direct gift to the user's own profile. Runs on every page, since after login the user may not land on the home page, and donate links read the stored gift.
