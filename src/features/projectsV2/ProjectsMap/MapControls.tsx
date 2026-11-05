@@ -2,7 +2,7 @@ import type { MobileOs } from '../../../utils/projectV2';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { DropdownType } from '../../common/types/projectv2';
 import type { InterventionTypes } from '@planet-sdk/common';
-import type { Page } from '../../../stores/viewStore';
+import type { Page } from '../../../hooks/useCurrentPage';
 
 import { useMemo, useState } from 'react';
 import ProjectSiteDropdown from './ProjectSiteDropDown';
@@ -14,12 +14,12 @@ import CrossIcon from '../../../../public/assets/images/icons/projectV2/CrossIco
 import styles from '../ProjectsMap/ProjectsMap.module.scss';
 import { AllInterventions } from '../../../utils/constants/intervention';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useProjectMapStore } from '../../../stores/projectMapStore';
 import {
   useInterventionStore,
   useSingleProjectStore,
-  useViewStore,
+  useMobileViewModeStore,
+  useProjectMapStore,
+  useQueryParamStore,
 } from '../../../stores';
 import { hasNoSites } from '../../../utils/projectV2';
 
@@ -60,7 +60,9 @@ const MapControls = ({
     (state) => state.setIsSatelliteView
   );
   const updateMapOption = useProjectMapStore((state) => state.updateMapOption);
-  const setSelectedMode = useViewStore((state) => state.setSelectedMode);
+  const setSelectedMode = useMobileViewModeStore(
+    (state) => state.setSelectedMode
+  );
 
   const availableInterventionTypes = useMemo(() => {
     if (!interventions) return [];

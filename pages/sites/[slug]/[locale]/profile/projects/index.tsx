@@ -12,22 +12,21 @@ import ProjectsContainer from '../../../../../../src/features/user/ManageProject
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
-import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../../src/utils/multiTenancy/helpers';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
-import { useTenantStore } from '../../../../../../src/stores/tenantStore';
+import { useUserStore, useTenantStore } from '../../../../../../src/stores';
 import { defaultTenant } from '../../../../../../tenant.config';
 
 export default function Register(): ReactElement {
   const t = useTranslations('Me');
-  const { user } = useUserProps();
-
   // store: state
+  const isTpo = useUserStore((state) => state.userProfile?.type === 'tpo');
   const isInitialized = useTenantStore((state) => state.isInitialized);
+
   if (!isInitialized) return <></>;
 
   return (
@@ -35,7 +34,7 @@ export default function Register(): ReactElement {
       <Head>
         <title>{t('projects')}</title>
       </Head>
-      {user?.type === 'tpo' ? <ProjectsContainer /> : <AccessDeniedLoader />}
+      {isTpo ? <ProjectsContainer /> : <AccessDeniedLoader />}
     </UserLayout>
   );
 }

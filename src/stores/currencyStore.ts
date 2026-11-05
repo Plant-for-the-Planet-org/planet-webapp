@@ -13,6 +13,14 @@ type CurrencyList = {
 interface CurrencyStore {
   supportedCurrencies: Set<CurrencyCode>;
   currencyCode: CurrencyCode;
+  /**
+   * Whether `currencyCode` is settled and safe to key requests on.
+   *
+   * `currencyCode` starts at a placeholder `'EUR'`, which is indistinguishable from a real choice, so callers that key requests on currency must wait for this rather than reading the code straight away.
+   * It becomes `true` as soon as one of these settles: a stored `localStorage` value (`initializeCurrencyCode`), an explicit user selection (`setCurrencyCode`), or the geo lookup piggybacked on the tenant config fetch, success or failure (`resolveGeoCurrencyCode`, called from `storeConfig`).
+   * On a first visit with nothing stored, this stays `false` until the geo lookup settles, so no request goes out with the EUR placeholder.
+   */
+  isCurrencyResolved: boolean;
   isFetching: boolean;
 
   fetchSupportedCurrencies: (
@@ -20,6 +28,7 @@ interface CurrencyStore {
   ) => void;
   setCurrencyCode: (code: CurrencyCode) => void;
   initializeCurrencyCode: () => void;
+  resolveGeoCurrencyCode: (code: CurrencyCode | null) => void;
 }
 
 export const useCurrencyStore = create<CurrencyStore>()(
@@ -27,6 +36,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
     (set, get) => ({
       supportedCurrencies: new Set<CurrencyCode>(),
       currencyCode: 'EUR',
+      isCurrencyResolved: false,
       isFetching: false,
 
       fetchSupportedCurrencies: async (getApi) => {
@@ -56,21 +66,46 @@ export const useCurrencyStore = create<CurrencyStore>()(
         }
       },
 
-      setCurrencyCode: (code) => set({ currencyCode: code }),
+      setCurrencyCode: (code) =>
+        set(
+          { currencyCode: code, isCurrencyResolved: true },
+          undefined,
+          'currencyStore/set_currency_code'
+        ),
 
       initializeCurrencyCode: () => {
         if (typeof window === 'undefined') return;
 
-        const storedCurrency = localStorage.getItem(
-          'currencyCode'
-        ) as CurrencyCode | null;
+        let storedCurrency: CurrencyCode | null = null;
+        try {
+          storedCurrency = localStorage.getItem(
+            'currencyCode'
+          ) as CurrencyCode | null;
+        } catch {
+          // Storage can be blocked outright in a cross-origin embed. `resolveGeoCurrencyCode` still resolves this to the default once `storeConfig`'s fetch settles.
+        }
 
+        // Resolve immediately only when a stored or explicitly selected currency exists. Otherwise, wait for `resolveGeoCurrencyCode` to avoid using the EUR placeholder.
         if (!storedCurrency) return;
 
         set(
-          { currencyCode: storedCurrency },
+          { isCurrencyResolved: true, currencyCode: storedCurrency },
           undefined,
           'currencyStore/initialize_currency_code'
+        );
+      },
+
+      resolveGeoCurrencyCode: (code) => {
+        // A stored value or an explicit selection already resolved this in the meantime, so the geo lookup is stale and must not override it.
+        if (get().isCurrencyResolved) return;
+
+        set(
+          {
+            isCurrencyResolved: true,
+            ...(code ? { currencyCode: code } : {}),
+          },
+          undefined,
+          'currencyStore/resolve_geo_currency_code'
         );
       },
     }),

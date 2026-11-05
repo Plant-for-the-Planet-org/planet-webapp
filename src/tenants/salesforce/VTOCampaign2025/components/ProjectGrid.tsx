@@ -12,9 +12,9 @@ import { clsx } from 'clsx';
 import { useTenantStore } from '../../../../stores/tenantStore';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
-import { useCurrencyStore } from '../../../../stores/currencyStore';
+import { useErrorHandlingStore, useCurrencyStore } from '../../../../stores';
 
+// Not used right now: the VTOCampaign2025 page does not import it. Decide later whether to use it or remove it with ProjectGrid.module.scss.
 export default function ProjectGrid() {
   const locale = useLocale();
   const router = useRouter();

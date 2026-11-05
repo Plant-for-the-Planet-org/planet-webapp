@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Layer, Source } from 'react-map-gl-v7/maplibre';
+import { Layer, Source } from 'react-map-gl/maplibre';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 
 const SatelliteLayer = () => {

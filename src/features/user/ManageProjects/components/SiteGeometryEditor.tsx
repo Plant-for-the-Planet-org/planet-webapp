@@ -9,13 +9,14 @@ import type {
   MapMouseEvent,
   ViewState,
   ViewStateChangeEvent,
-} from 'react-map-gl-v7/maplibre';
+} from 'react-map-gl/maplibre';
 import type { SetState } from '../../../common/types/common';
 import type { MapState } from '../../../../utils/mapsV2/mapDefaults';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import MapGL, { NavigationControl } from 'react-map-gl-v7/maplibre';
+import MapGL, { NavigationControl } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import '../../../../utils/mapsV2/maplibreWorker';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
@@ -85,6 +86,7 @@ export default function SiteGeometryEditor({
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [isSatelliteMode, setIsSatelliteMode] = useState(false);
   const [coordinates, setCoordinates] = useState<number[][]>([]);
+  const coordinatesRef = useRef<number[][]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isMapReady, setIsMapReady] = useState(false);
 
@@ -136,24 +138,41 @@ export default function SiteGeometryEditor({
   );
 
   // Handle click to add point
+  // coordinatesRef is the copy handleDoubleClick reads, so everything that discards the polygon clears both here rather than reaching for the setter.
+  const clearCoordinates = useCallback(() => {
+    setCoordinates([]);
+    coordinatesRef.current = [];
+  }, []);
+
   const handleClick = useCallback(
     (e: MapMouseEvent) => {
       setErrorMessage(null);
       if (!isDrawing) return;
       const lngLat = [e.lngLat.lng, e.lngLat.lat];
-      setCoordinates((prev) => [...prev, lngLat]);
+      setCoordinates((prev) => {
+        const updated = [...prev, lngLat];
+        coordinatesRef.current = updated;
+        return updated;
+      });
     },
     [isDrawing]
   );
 
-  // Finish drawing (double click closes polygon)
+  // Finish drawing — double-click closes the polygon.
+  // Uses coordinatesRef instead of the coordinates state value to avoid
+  // reading stale state: the two onClick events that fire before onDblClick
+  // update coordinatesRef synchronously inside the setState updater, so by
+  // the time handleDoubleClick runs the ref already reflects those 2 points.
   const handleDoubleClick = useCallback(() => {
-    if (coordinates.length < 4) {
+    // Only a double-click while drawing closes a polygon. Without this the map's own zoom gesture would complete one from whatever the ref still holds.
+    if (!isDrawing) return;
+    const coords = coordinatesRef.current;
+    if (coords.length < 4) {
       setErrorMessage(tManageProjects('errors.polygon.minimumPoints'));
-      setCoordinates([]);
+      clearCoordinates();
       return;
     }
-    const closed = [...coordinates, coordinates[0]];
+    const closed = [...coords, coords[0]];
     const newFeature: ProjectSiteFeature = {
       type: 'Feature',
       properties: {},
@@ -176,18 +195,36 @@ export default function SiteGeometryEditor({
       };
     });
 
-    setCoordinates([]);
-  }, [coordinates]);
+    clearCoordinates();
+  }, [isDrawing, clearCoordinates, tManageProjects]);
 
   useEffect(() => {
     async function loadMapStyle() {
-      const result = await getMapStyle('default');
+      const result = await getMapStyle('openStreetMap');
       if (result) {
         setMapState((prev) => ({ ...prev, mapStyle: result }));
       }
     }
     loadMapStyle();
   }, []);
+
+  // Disable double-click zoom while drawing so the dblclick event can be
+  // used to close the polygon without the map zooming in at the same time.
+  useEffect(() => {
+    if (!isMapReady) return;
+    // react-map-gl hands back a wrapper, and the interaction handlers live on
+    // the underlying MapLibre instance. Reading doubleClickZoom off the wrapper
+    // gives undefined and throws, which took the whole page down rather than
+    // just losing the zoom tweak.
+    const wrapper = mapRef.current;
+    const map = wrapper?.getMap ? wrapper.getMap() : wrapper;
+    if (!map?.doubleClickZoom) return;
+    if (isDrawing) {
+      map.doubleClickZoom.disable();
+    } else {
+      map.doubleClickZoom.enable();
+    }
+  }, [isDrawing, isMapReady]);
 
   const handleViewStateChange = useCallback(
     (newViewState: Partial<ViewState>) => {
@@ -232,7 +269,7 @@ export default function SiteGeometryEditor({
           isDrawing={isDrawing}
           setIsDrawing={setIsDrawing}
           coordinates={coordinates}
-          setCoordinates={setCoordinates}
+          clearCoordinates={clearCoordinates}
           isSatelliteMode={isSatelliteMode}
           setIsSatelliteMode={setIsSatelliteMode}
         />

@@ -5,8 +5,7 @@ import type {
   Donation,
   PrepaidDonationRequest,
 } from '@planet-sdk/common';
-import type { Recipient } from '../../../common/Layout/BulkCodeContext';
-import type { Recipient as LocalRecipient } from '../BulkCodesTypes';
+import type { RecipientPayload, RecipientUploadRow } from '../BulkCodesTypes';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -18,8 +17,6 @@ import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
 import LiveRegion from '../../../common/LiveRegion';
-import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
 import { v4 as uuidV4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
@@ -30,36 +27,44 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
-import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
+import { useUserStore, useErrorHandlingStore } from '../../../../stores';
+import { useBulkCodeStore } from '../../../../stores/bulkCodeStore';
+import { getSelfGiftRows } from '../utils';
+
+type SubmissionStatus = 'idle' | 'submitting' | 'success';
 
 const IssueCodesForm = (): ReactElement | null => {
   const t = useTranslations('BulkCodes');
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const {
-    project,
-    setProject,
-    planetCashAccount,
-    projectList,
-    bulkMethod,
-    setBulkMethod,
-  } = useBulkCode();
-  const { user, setRefetchUserData } = useUserProps();
   const { postApiAuthenticated } = useApi();
   // local state
-  const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
+  const [localRecipients, setLocalRecipients] = useState<RecipientUploadRow[]>(
+    []
+  );
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
   const [codeQuantity, setCodeQuantity] = useState('');
   const [unitsPerCode, setUnitsPerCode] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState<SubmissionStatus>('idle');
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
   const [isAddingRecipient, setIsAddingRecipient] = useState(false);
   const [notificationLocale, setNotificationLocale] = useState('');
-  // store
+  // store: state
+  const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+  const giverEmail = useUserStore((state) => state.userProfile?.email);
+  const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
+  const planetCashAccount = useBulkCodeStore(
+    (state) => state.planetCashAccount
+  );
+  const project = useBulkCodeStore((state) => state.project);
+  // store: action
+  const refetchUserProfile = useUserStore((state) => state.refetchUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const resetBulkCodeStore = useBulkCodeStore(
+    (state) => state.resetBulkCodeStore
+  );
 
   const notificationLocales = [
     {
@@ -71,10 +76,7 @@ const IssueCodesForm = (): ReactElement | null => {
       languageName: 'Deutsch',
     },
   ];
-  const resetBulkContext = (): void => {
-    setProject(null);
-    setBulkMethod(null);
-  };
+
   const getTotalUnits = (): number => {
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
@@ -87,8 +89,8 @@ const IssueCodesForm = (): ReactElement | null => {
     }
   };
 
-  const getProcessedRecipients = (): Recipient[] => {
-    const recipients: Recipient[] = [];
+  const getProcessedRecipients = (): RecipientPayload[] => {
+    const recipients: RecipientPayload[] = [];
     localRecipients.forEach((recipient) => {
       const temp = {
         recipientName: recipient.recipient_name,
@@ -110,12 +112,13 @@ const IssueCodesForm = (): ReactElement | null => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    if (status !== 'idle') return;
     if (isAddingRecipient || isEditingRecipient) {
       const shouldSubmit = confirm(t('unsavedDataWarning'));
       if (!shouldSubmit) return;
     }
 
-    setIsProcessing(true);
+    setStatus('submitting');
     if (project) {
       const donationData: PrepaidDonationRequest = {
         purpose: project.purpose,
@@ -156,15 +159,24 @@ const IssueCodesForm = (): ReactElement | null => {
         });
         // if request is successful, it will have a uid
         if (res?.uid) {
-          resetBulkContext();
-          setIsSubmitted(true);
-          setRefetchUserData(true);
-          setTimeout(() => {
-            router.push(localizedPath(`/profile/history?ref=${res.uid}`));
+          setStatus('success');
+          // The delay lets the user read the confirmation message.
+
+          // Reset and profile refresh happen after navigation because
+          // refreshing the profile here temporarily unmounts this page,
+          // which resets the form state and shows the empty form again
+          // before the redirect.
+          setTimeout(async () => {
+            await router.push(localizedPath(`/profile/history?ref=${res.uid}`));
+            resetBulkCodeStore();
+            refetchUserProfile();
           }, 5000);
+        } else {
+          setStatus('idle');
+          setErrors([{ message: t('donationError.default') }]);
         }
       } catch (err) {
-        setIsProcessing(false);
+        setStatus('idle');
         const serializedErrors = handleError(err as APIError);
         const _serializedErrors: SerializedError[] = [];
 
@@ -205,7 +217,7 @@ const IssueCodesForm = (): ReactElement | null => {
         setErrors(_serializedErrors);
       }
     } else {
-      setIsProcessing(false);
+      setStatus('idle');
       setErrors([{ message: t('projectRequired') }]);
     }
   };
@@ -233,25 +245,30 @@ const IssueCodesForm = (): ReactElement | null => {
 
   const shouldDisableSubmission = useMemo(() => {
     const hasSufficientFunds =
-      user?.planetCash != null &&
-      user.planetCash.balance + user.planetCash.creditLimit > 0;
+      userPlanetCash != null &&
+      userPlanetCash.balance + userPlanetCash.creditLimit > 0;
     const hasEnteredRequiredData =
       localRecipients.length > 0 ||
       (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
+    const hasSelfGift =
+      giverEmail !== undefined &&
+      getSelfGiftRows(localRecipients, giverEmail).length > 0;
 
     return (
       !hasSufficientFunds ||
-      isProcessing ||
+      hasSelfGift ||
+      status === 'submitting' ||
       !hasEnteredRequiredData ||
       !totalAmount ||
       totalAmount <= 0
     );
   }, [
-    user,
+    userPlanetCash,
+    giverEmail,
+    status,
     localRecipients,
     codeQuantity,
     unitsPerCode,
-    isProcessing,
     totalAmount,
   ]);
 
@@ -314,22 +331,17 @@ const IssueCodesForm = (): ReactElement | null => {
   // the visible success message or the layout.
   const statusRegion = (
     <LiveRegion politeness="polite" isVisuallyHidden>
-      {isSubmitted ? t('donationSuccess') : ''}
+      {status !== 'success' ? '' : t('donationSuccess')}
     </LiveRegion>
   );
 
-  if (!isSubmitted) {
+  if (status !== 'success') {
     return (
       <CenteredContainer>
         {statusRegion}
         <StyledFormContainer className="IssueCodesForm" component={'section'}>
           <div className="inputContainer">
-            <ProjectSelector
-              projectList={projectList || []}
-              project={project}
-              disabled={true}
-              planetCashAccount={planetCashAccount}
-            />
+            <ProjectSelector project={project} disabled={true} />
             <TextField
               onChange={(e) => setComment(e.target.value)}
               value={comment}
@@ -389,7 +401,7 @@ const IssueCodesForm = (): ReactElement | null => {
               className="formButton"
               disabled={shouldDisableSubmission}
             >
-              {isProcessing ? t('issuingCodes') : t('issueCodes')}
+              {status === 'submitting' ? t('issuingCodes') : t('issueCodes')}
             </Button>
           </form>
           <div className={styles.issueCodeTermsAndWarnings}>

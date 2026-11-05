@@ -11,12 +11,16 @@ import ViewModeTabs from './microComponents/ViewModeTabs';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
 import LiveRegion from '../../common/LiveRegion';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { clsx } from 'clsx';
-import { useQueryParamStore } from '../../../stores/queryParamStore';
-import { useProjectStore, useViewStore } from '../../../stores';
+import {
+  useProjectStore,
+  useMobileViewModeStore,
+  useUserStore,
+  useQueryParamStore,
+} from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
+import { useCurrentPage } from '../../../hooks/useCurrentPage';
 
 interface ProjectListControlForMobileProps {
   tabSelected?: ProjectTabs;
@@ -35,15 +39,18 @@ const ProjectListControlForMobile = ({
   updateMapOption,
   shouldHideProjectTabs,
 }: ProjectListControlForMobileProps) => {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const tAllProjects = useTranslations('AllProjects');
-  const { isImpersonationModeOn } = useUserProps();
+  // local state
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  // store: state
+  const isImpersonationModeOn = useUserStore(
+    (state) => state.isImpersonationModeOn
+  );
   const { filteredProjectCount } = useFilteredProjects();
-  //store: state
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
-  const selectedMode = useViewStore((state) => state.selectedMode);
-  const currentPage = useViewStore((state) => state.page);
+  const selectedMode = useMobileViewModeStore((state) => state.selectedMode);
+  const currentPage = useCurrentPage();
   const isFilterApplied = useProjectStore(
     (state) =>
       state.selectedClassification.length > 0 || state.showDonatableProjects
@@ -74,7 +81,7 @@ const ProjectListControlForMobile = ({
 
   return (
     <>
-      {/*           Hoisted above the `isSearching` branch so it stays mounted while the
+      {/* Hoisted above the `isSearching` branch so it stays mounted while the
           visible chip comes and goes, making each count change a text mutation
           in an already-observed region rather than a fresh insertion.
           Visually hidden and out of flow, so the control row is unaffected. */}

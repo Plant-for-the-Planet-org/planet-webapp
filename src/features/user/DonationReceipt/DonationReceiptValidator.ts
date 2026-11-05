@@ -23,11 +23,11 @@ const validateAddress = (address: AddressView | null): boolean => {
 
 export const validateOwnership = (
   issuedToEmail: string | null,
-  user: User | null
+  userEmail: string | undefined
 ): boolean => {
-  if (!user) return true;
+  if (!userEmail) return true;
   if (!issuedToEmail) return false;
-  return user.email.toLowerCase() === issuedToEmail.toLowerCase();
+  return userEmail.toLowerCase() === issuedToEmail.toLowerCase();
 };
 
 export const validateIssuedReceipt = (
