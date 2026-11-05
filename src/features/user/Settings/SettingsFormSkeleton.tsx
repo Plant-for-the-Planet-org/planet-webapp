@@ -10,10 +10,7 @@ interface SettingsFormSkeletonProps {
   /** Real, already-translated page title, shown via the real DashboardView header. */
   title?: string;
   /**
-   * How the page frames its content: `dashboard` (DashboardView header, the
-   * shape most of these routes use), `section` (a back-button + heading,
-   * e.g. donor contact management), or `none` (no header at all, e.g. the
-   * widgets route, which is just an embed).
+   * How the page frames its content: `dashboard` (DashboardView header, the shape most of these routes use), `section` (a back-button + heading, e.g. donor contact management), or `none` (no header at all, e.g. the widgets route, which is just an embed).
    */
   variant?: 'dashboard' | 'section' | 'none';
   /** Number of placeholder lines under the title, `dashboard` variant only. */
@@ -37,12 +34,8 @@ const FieldGroup = ({ fieldCount }: { fieldCount: number }): ReactElement => (
 );
 
 /**
- * Shared loading shape for the settings/single-form routes: api key, edit
- * profile, delete account, donation link, gift funds, impersonate user,
- * widgets, and donor contact management. Their forms share the same basic
- * shape (a header, one or more stacked field groups), so one component
- * covers all of them via props rather than duplicating a near-identical
- * skeleton per route.
+ * Shared loading shape for the settings/single-form routes: api key, edit profile, delete account, donation link, gift funds, impersonate user, widgets, and donor contact management.
+ * Their forms share the same basic shape (a header, one or more stacked field groups), so one component covers all of them via props rather than duplicating a near-identical skeleton per route.
  */
 export default function SettingsFormSkeleton({
   title,

@@ -12,9 +12,8 @@ interface SkeletonBlockProps {
 }
 
 /**
- * Rectangular skeleton primitive. Every page skeleton should build from this
- * (and SkeletonCircle) instead of importing react-loading-skeleton directly,
- * so a future skeleton library swap only touches this file.
+ * Rectangular skeleton primitive.
+ * Every page skeleton should build from this (and SkeletonCircle) instead of importing react-loading-skeleton directly, so a future skeleton library swap only touches this file.
  */
 export function SkeletonBlock({
   width,

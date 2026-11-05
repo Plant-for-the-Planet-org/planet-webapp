@@ -37,9 +37,7 @@ import {
 import useLocalizedPath from '../../../../../../src/hooks/useLocalizedPath';
 import { defaultTenant } from '../../../../../../tenant.config';
 
-// Mirrors the `type` query param ManageProjects' formRouteHandler sets when
-// navigating between steps, so the skeleton's active tab matches the step
-// being loaded instead of always defaulting to the first one.
+// Mirrors the `type` query param ManageProjects' formRouteHandler sets when navigating between steps, so the skeleton's active tab matches the step being loaded instead of always defaulting to the first one.
 const TYPE_QUERY_TO_TAB: Record<string, ProjectCreationTabs> = {
   'basic-details': ProjectCreationTabs.BASIC_DETAILS,
   media: ProjectCreationTabs.PROJECT_MEDIA,
@@ -111,9 +109,7 @@ function ManageSingleProject(): ReactElement {
 
   // Showing error to other TPOs is left
 
-  // An existing project never shows the "project type" step, so this always
-  // resolves to a real step (basic details as the fallback, since that's
-  // the step ManageProjects lands on once the type query is missing).
+  // An existing project never shows the "project type" step, so this always resolves to a real step (basic details as the fallback, since that's the step ManageProjects lands on once the type query is missing).
   const { type } = router.query;
   const step =
     (typeof type === 'string' && TYPE_QUERY_TO_TAB[type]) ||

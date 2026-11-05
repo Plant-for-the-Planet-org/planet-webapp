@@ -84,8 +84,7 @@ export default function Login(): ReactElement {
 
   if (!isInitialized) return <></>;
 
-  // No stored redirect means login will land on /profile (the default target
-  // below), so show its skeleton here instead of the content-agnostic one.
+  // No stored redirect means login will land on /profile (the default target below), so show its skeleton here instead of the content-agnostic one.
   const hasRedirectLink = !!localStorage.getItem('redirectLink');
 
   return (

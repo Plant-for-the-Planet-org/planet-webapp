@@ -13,15 +13,10 @@ interface BulkCodesSkeletonProps {
 }
 
 /**
- * Loading shape for all three bulk-codes steps (select method, select
- * project, issue codes). The DashboardView + TabbedView shell is identical
- * across steps, so it's reused as-is with its real, already-loaded title and
- * tab labels; only the step content, which differs, is a placeholder.
+ * Loading shape for all three bulk-codes steps (select method, select project, issue codes).
+ * The DashboardView + TabbedView shell is identical across steps, so it's reused as-is with its real, already-loaded title and tab labels; only the step content, which differs, is a placeholder.
  *
- * `step` must match the step of the page rendering this skeleton, so the
- * active tab and disabled state reflect the route the user is actually on
- * (e.g. a refresh on the select-project step shouldn't show the
- * select-method tab state).
+ * `step` must match the step of the page rendering this skeleton, so the active tab and disabled state reflect the route the user is actually on (e.g. a refresh on the select-project step shouldn't show the select-method tab state).
  */
 export default function BulkCodesSkeleton({
   step = BulkCodeSteps.SELECT_METHOD,
@@ -48,10 +43,7 @@ export default function BulkCodesSkeleton({
     },
   ];
 
-  // Each step's real form has a different number of top-level sections
-  // (select method: two side-by-side option cards; select project: one
-  // selector; issue codes: one form), so the placeholder count must follow
-  // the step too, not just the active tab.
+  // Each step's real form has a different number of top-level sections (select method: two stacked option cards; select project: one selector; issue codes: one form), so the placeholder count must follow the step too, not just the active tab.
   const renderContent = () => {
     switch (step) {
       case BulkCodeSteps.SELECT_PROJECT:

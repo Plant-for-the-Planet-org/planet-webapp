@@ -31,9 +31,8 @@ import { useAuthStore, useUserStore } from '../../../../stores';
 interface UserLayoutProps {
   children: ReactNode;
   /**
-   * Loading shape for this route, shown while the user context is still
-   * resolving. Falls back to a minimal, content-agnostic placeholder when
-   * omitted; never to another route's shape.
+   * Loading shape for this route, shown while the user context is still resolving.
+   * Falls back to a minimal, content-agnostic placeholder when omitted; never to another route's shape.
    */
   skeleton?: ReactNode;
 }

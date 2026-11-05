@@ -12,11 +12,8 @@ interface ProjectDetailsSkeletonProps {
 const CONTACT_ROW_COUNT = 4;
 
 /**
- * Loading shape for the project-details route: the ProjectSnippet header
- * card, then the info panel's always-present sections (about, image
- * gallery, contact details). Other sections (reviews, key info, additional
- * info, downloads) depend on project data we don't have yet, so they're
- * left out rather than guessed at.
+ * Loading shape for the project-details route: the ProjectSnippet header card, then the info panel's always-present sections (about, image gallery, contact details).
+ * Other sections (reviews, key info, additional info, downloads) depend on project data we don't have yet, so they're left out rather than guessed at.
  */
 export default function ProjectDetailsSkeleton({
   isMobile = false,

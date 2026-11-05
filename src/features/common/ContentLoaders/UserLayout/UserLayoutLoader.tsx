@@ -8,18 +8,16 @@ import styles from './UserLayoutLoader.module.scss';
 
 interface UserLayoutLoaderProps {
   /**
-   * The shape of the page being navigated to. Falls back to a minimal,
-   * content-agnostic placeholder when the route hasn't supplied one, rather
-   * than defaulting to any single page's shape.
+   * The shape of the page being navigated to.
+   * Falls back to a minimal, content-agnostic placeholder when the route hasn't supplied one, rather than defaulting to any single page's shape.
    */
   skeleton?: ReactNode;
 }
 
 /**
- * Full-page loader displayed while the user context is loading. It replaces the
- * entire UserLayout, so it reproduces the sidebar and the content frame to
- * minimize cumulative layout shift (CLS). It owns only that shared chrome;
- * the content area shows whatever skeleton the destination route supplies.
+ * Full-page loader displayed while the user context is loading.
+ * It replaces the entire UserLayout, so it reproduces the sidebar and the content frame to minimize cumulative layout shift (CLS).
+ * It owns only that shared chrome; the content area shows whatever skeleton the destination route supplies.
  */
 export const UserLayoutLoader = ({ skeleton }: UserLayoutLoaderProps) => {
   const t = useTranslations('Common');
@@ -57,11 +55,9 @@ export const UserLayoutLoader = ({ skeleton }: UserLayoutLoaderProps) => {
         </div>
       </aside>
 
-      {/* Content frame (matches .profilePageWrapper). The route-specific
-          skeleton renders inside, so this stays content-agnostic. aria-hidden
-          keeps the route skeleton's own landmarks (e.g. ProfileGridSkeleton's
-          article/section) out of the role="status" region above, which should
-          only announce the loading text. */}
+      {/* Content frame (matches .profilePageWrapper).
+          The route-specific skeleton renders inside, so this stays content-agnostic.
+          aria-hidden keeps the route skeleton's own landmarks (e.g. ProfileGridSkeleton's article/section) out of the role="status" region above, which should only announce the loading text. */}
       <div className={styles.wrapper} aria-hidden="true">
         {skeleton ?? <GenericPageSkeleton />}
       </div>

@@ -9,11 +9,8 @@ import { ManagePayoutTabs } from './index';
 import styles from './PayoutsSkeleton.module.scss';
 
 /**
- * Loading shape shared by the overview, add-bank-details, edit-bank-details,
- * and payout-schedule routes: they all render the same DashboardView +
- * TabbedView shell, reused here as-is with its real title and tab labels.
- * Only the per-tab content (a bank account list or a form), which differs,
- * is a placeholder.
+ * Loading shape shared by the overview, add-bank-details, edit-bank-details, and payout-schedule routes: they all render the same DashboardView + TabbedView shell, reused here as-is with its real title and tab labels.
+ * Only the per-tab content (a bank account list or a form), which differs, is a placeholder.
  */
 interface PayoutsSkeletonProps {
   step?: ManagePayoutTabs;

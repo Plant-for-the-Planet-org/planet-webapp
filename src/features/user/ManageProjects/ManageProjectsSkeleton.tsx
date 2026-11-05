@@ -12,19 +12,15 @@ import styles from './ManageProjectsSkeleton.module.scss';
 interface ManageProjectsSkeletonProps {
   /**
    * `list` mirrors the project list route (a CTA row and a card grid).
-   * `tabbed` mirrors the create/edit-project routes, which share a
-   * DashboardView + TabbedView shell across all of their steps.
+   * `tabbed` mirrors the create/edit-project routes, which share a DashboardView + TabbedView shell across all of their steps.
    */
   variant?: 'list' | 'tabbed';
   /** Real, already-translated title, when known ahead of any fetch (e.g. "add new project"). Left blank for the edit route, whose title is the fetched project's name. */
   title?: string;
   /**
-   * `tabbed` variant only. Must match the step of the page rendering this
-   * skeleton: the "project type" step only ever shows on its own (a project
-   * hasn't been created yet, so there's nothing else to navigate to), while
-   * every later step shows the full basic-details-through-review menu, never
-   * "project type" (an existing project can't change its type). Defaults to
-   * `PROJECT_TYPE` for the create-project route, which starts there.
+   * `tabbed` variant only.
+   * Must match the step of the page rendering this skeleton: the "project type" step only ever shows on its own (a project hasn't been created yet, so there's nothing else to navigate to), while every later step shows the full basic-details-through-review menu, never "project type" (an existing project can't change its type).
+   * Defaults to `PROJECT_TYPE` for the create-project route, which starts there.
    */
   step?: ProjectCreationTabs;
 }

@@ -87,9 +87,8 @@
   }
 }
 
-// Mirrors UserLayout `.profilePageWrapper`. Deliberately has no padding or
-// header offset of its own: those belong to whichever skeleton renders
-// inside, since that's how the real page content area behaves too.
+// Mirrors UserLayout `.profilePageWrapper`.
+// Deliberately has no padding or header offset of its own: those belong to whichever skeleton renders inside, since that's how the real page content area behaves too.
 .wrapper {
   width: 100%;
   min-height: 100vh;

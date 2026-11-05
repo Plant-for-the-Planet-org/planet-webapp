@@ -40,9 +40,7 @@ const YearGroupSkeleton = ({
 );
 
 /**
- * Loading shape for the donation receipt list (this feature's own CSS
- * classes are reused directly, in place of a shared shell component like
- * DashboardView, since the real page doesn't use one either).
+ * Loading shape for the donation receipt list (this feature's own CSS classes are reused directly, in place of a shared shell component like DashboardView, since the real page doesn't use one either).
  */
 export default function DonationReceiptsSkeleton(): ReactElement {
   return (
