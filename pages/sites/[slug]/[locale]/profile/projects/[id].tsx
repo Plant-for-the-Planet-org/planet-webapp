@@ -46,6 +46,8 @@ const TYPE_QUERY_TO_TAB: Record<string, ProjectCreationTabs> = {
   'detail-analysis': ProjectCreationTabs.DETAILED_ANALYSIS,
   'project-sites': ProjectCreationTabs.PROJECT_SITES,
   'project-spending': ProjectCreationTabs.PROJECT_SPENDING,
+  questionnaire: ProjectCreationTabs.QUESTIONNAIRE,
+  documents: ProjectCreationTabs.DOCUMENTS,
   review: ProjectCreationTabs.REVIEW,
 };
 

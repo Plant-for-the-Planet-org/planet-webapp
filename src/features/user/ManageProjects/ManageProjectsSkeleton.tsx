@@ -39,6 +39,11 @@ export default function ManageProjectsSkeleton({
 
   if (variant === 'tabbed') {
     const isProjectTypeStep = step === ProjectCreationTabs.PROJECT_TYPE;
+    // The real page shows Questionnaire and Documents together, only for projects that accept donations.
+    // That is unknown until the project loads, so show them only when the URL is already on one of those steps.
+    const isQuestionnaireOrDocumentsStep =
+      step === ProjectCreationTabs.QUESTIONNAIRE ||
+      step === ProjectCreationTabs.DOCUMENTS;
 
     const tabItems: TabItem[] = isProjectTypeStep
       ? [
@@ -74,6 +79,20 @@ export default function ManageProjectsSkeleton({
             link: '',
             step: ProjectCreationTabs.PROJECT_SPENDING,
           },
+          ...(isQuestionnaireOrDocumentsStep
+            ? [
+                {
+                  label: t('questionnaire'),
+                  link: '',
+                  step: ProjectCreationTabs.QUESTIONNAIRE,
+                },
+                {
+                  label: t('documents'),
+                  link: '',
+                  step: ProjectCreationTabs.DOCUMENTS,
+                },
+              ]
+            : []),
           {
             label: t('review'),
             link: '',
