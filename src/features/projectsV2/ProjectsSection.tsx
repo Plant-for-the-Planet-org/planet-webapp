@@ -17,7 +17,6 @@ interface ProjectsSectionProps {
 
 const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
   const { filteredProjectCount } = useFilteredProjects();
-
   // local state
   const [tabSelected, setTabSelected] = useState<ProjectTabs>('topProjects');
   // store: state
@@ -29,6 +28,7 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
     (state) => state.isProjectsFetching
   );
   const isProjectsError = useProjectStore((state) => state.isProjectsError);
+  const hasLoadedProjects = useProjectStore((state) => state.projects !== null);
   const isClassificationSelected = useProjectStore(
     (state) => state.selectedClassification.length > 0
   );
@@ -56,7 +56,11 @@ const ProjectsSection = ({ isMobile }: ProjectsSectionProps) => {
 
   const shouldHideProjectTabs = tenantConfig.topProjectsOnly === true;
 
-  if ((isProjectsFetching || isProjectsError) && !hasFilteredProjects) {
+  // Wait for the first project list. Controls shown before it flash a count of 0 projects, and since the fetch waits for the currency, this skeleton replaces them once it starts, losing any search typed meanwhile. See #3227.
+  if (
+    !hasLoadedProjects ||
+    ((isProjectsFetching || isProjectsError) && !hasFilteredProjects)
+  ) {
     return (
       <ProjectsSectionSkeleton
         isMobile={isMobile}

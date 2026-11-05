@@ -1,6 +1,6 @@
 # Accessibility Findings Report
 
-Repository-wide accessibility (a11y) inventory for **planet-webapp** (Next.js 14 pages router, React 18, MUI 5, Emotion).
+Repository-wide accessibility (a11y) inventory for **planet-webapp** (Next.js 15 pages router, React 18, MUI 5, Emotion).
 
 - Scope audited: `src/features/common` (Layout, inputs, loaders, shared), `src/features/donations`, `src/features/projectsV2`, `src/features/user` (Account, Profile, Settings, CompleteSignup, DonationReceipt, BulkCodes, GiftFunds, PlanetCash, ManagePayouts, ManageProjects, Widget, TreemapperMigration), and `pages/`.
 - Only confirmed, evidence-based accessibility issues are listed. Native MUI components are treated as accessible unless props clearly break them.

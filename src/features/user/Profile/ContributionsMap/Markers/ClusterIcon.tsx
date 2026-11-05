@@ -48,9 +48,9 @@ const ClusterIcon = ({
       return <AgroforestryClusterMarker {...IconProps} />;
     case 'urban-planting':
       return <UrbanRestorationClusterMarker {...IconProps} />;
-    case 'large-scale-planting':
+    case 'restoration-tree-planting':
       return <TreePlantingClusterMarker {...IconProps} />;
-    case 'other-planting':
+    case 'other-restoration':
       return <OtherPlantingClusterMarker {...IconProps} />;
     default:
       return null;
