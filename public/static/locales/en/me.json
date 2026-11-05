@@ -195,7 +195,7 @@
     "setTarget": "Set Target",
     "targetSave": "Save",
     "targetErrorMessage": "Number must be greater than zero",
-    "taxDeductibleReceipt": "Tax Deductible Receipt",
+    "taxDeductibleReceipt": "Donation Receipt",
     "giftCertificate": "Gift Certificate",
     "downloadCodes": "Download Codes",
     "downloadCodesGeneralError": "Download failed. Please try after some time.",

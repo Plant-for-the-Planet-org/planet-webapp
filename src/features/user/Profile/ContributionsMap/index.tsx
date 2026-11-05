@@ -1,11 +1,12 @@
-import type { StyleSpecification } from 'react-map-gl/maplibre';
-import type { MutableRefObject } from 'react';
+import type { MapRef } from 'react-map-gl/maplibre';
 import type { ProfilePageType } from '../../../common/types/myForest';
 import type { ViewState } from 'react-map-gl/maplibre';
+import type { MapState } from '../../../../utils/mapsV2/mapDefaults';
 
 import { useEffect, useState } from 'react';
 import Map from 'react-map-gl/maplibre';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { EMPTY_STYLE } from '../../../../utils/mapsV2/mapDefaults';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import '../../../../utils/mapsV2/maplibreWorker';
 import { NavigationControl } from 'react-map-gl/maplibre';
@@ -20,25 +21,12 @@ interface ContributionsMapProps {
   profilePageType: ProfilePageType;
   supportedTreecounter?: string | undefined;
 }
-interface MapState {
-  mapStyle: StyleSpecification;
-  dragPan: boolean;
-  scrollZoom: boolean;
-  minZoom: number;
-  maxZoom: number;
-}
-
-const EMPTY_STYLE = {
-  version: 8,
-  sources: {},
-  layers: [] as StyleSpecification['layers'],
-} as const;
 
 function ContributionsMap({
   profilePageType,
   supportedTreecounter,
 }: ContributionsMapProps) {
-  const mapRef: MutableRefObject<null> = useRef(null);
+  const mapRef = useRef<MapRef>(null);
   // mapState and viewState logic will need to be refined and move elsewhere (either context or props) once we fetch data from the API
   const [mapState, setMapState] = useState<MapState>({
     mapStyle: EMPTY_STYLE,

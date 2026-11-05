@@ -44,8 +44,8 @@ function isSupportedLocale(locale: string): locale is Locale {
  *   query string, and/or hash fragment.
  * @returns The pathname without the locale prefix, preserving any query
  *   string and hash fragment.
+ * @public Kept exported for useAuthSession in PR #3066.
  */
-
 export function removeLocaleFromPath(pathname: string): string {
   const normalizedPath = pathname.startsWith('/') ? pathname : `/${pathname}`;
   const match = normalizedPath.match(/^([^?#]*)([?#].*)?$/);

@@ -3,10 +3,10 @@ import type {
   DueDiligenceCharitability,
 } from '../../../common/types/dueDiligence';
 
-export type Severity = 'success' | 'info' | 'warning';
+type Severity = 'success' | 'info' | 'warning';
 
 /** Narrow on purpose: next-intl checks message keys against the English file. */
-export type StandingMessageKey =
+type StandingMessageKey =
   | 'statusLapsed'
   | 'statusConfirmed'
   | 'statusConfirmedUntil'

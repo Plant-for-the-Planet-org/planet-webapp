@@ -146,8 +146,8 @@ export const useApi = () => {
         });
       }
       headers.Authorization = `Bearer ${token}`;
+      Object.assign(headers, setHeaderForImpersonation(headers));
     }
-    const finalHeader = setHeaderForImpersonation(headers);
     const requestOptions =
       method === 'POST' || method === 'PUT'
         ? {
@@ -155,14 +155,14 @@ export const useApi = () => {
             url,
             data,
             queryParams,
-            additionalHeaders: finalHeader,
+            additionalHeaders: headers,
             responseType,
           }
         : {
             method,
             url,
             queryParams,
-            additionalHeaders: finalHeader,
+            additionalHeaders: headers,
             responseType,
           };
 
