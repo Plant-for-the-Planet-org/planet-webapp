@@ -87,7 +87,8 @@ const ProjectList = ({ tabSelected }: ProjectListProps) => {
         <div className={styles.projectList}>
           <div className={styles.noProjectFoundContainer}>
             <NoDataFound />
-            <p className={styles.noProjectFoundText}>
+            {/* aria-hidden so screen readers don't read this twice; the live region above says the same thing. Keep both shown under the same condition. */}
+            <p className={styles.noProjectFoundText} aria-hidden="true">
               {tAllProjects('noProjectFound')}
             </p>
           </div>

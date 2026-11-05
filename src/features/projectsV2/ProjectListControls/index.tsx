@@ -37,7 +37,8 @@ const ProjectListControls = ({
   const renderTabContent = useMemo(() => {
     if (isFilterApplied) {
       return (
-        <div className={styles.filterResultContainer}>
+        // aria-hidden so screen readers don't read this twice; the live region below says the same thing. Keep its text set whenever this shows.
+        <div className={styles.filterResultContainer} aria-hidden="true">
           {tAllProjects('filterResult', {
             count: filteredProjectCount,
           })}

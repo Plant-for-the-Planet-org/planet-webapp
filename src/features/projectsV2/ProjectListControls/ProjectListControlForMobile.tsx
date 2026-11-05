@@ -99,8 +99,12 @@ const ProjectListControlForMobile = ({
         </div>
       ) : (
         <div className={projectListControlsMobileClasses}>
+          {/* aria-hidden so screen readers don't read this twice; the live region above says the same thing. Keep both shown under the same condition. */}
           {shouldDisplayFilterResults && filteredProjectCount > 0 && (
-            <div className={styles.filterResultContainerMobile}>
+            <div
+              className={styles.filterResultContainerMobile}
+              aria-hidden="true"
+            >
               {tAllProjects('filterResult', {
                 count: filteredProjectCount,
               })}
