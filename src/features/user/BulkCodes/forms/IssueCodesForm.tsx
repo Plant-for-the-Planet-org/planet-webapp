@@ -393,7 +393,7 @@ const IssueCodesForm = (): ReactElement | null => {
             />
           </div>
           <BulkCodesError />
-          <form onSubmit={handleSubmit} aria-busy={isProcessing}>
+          <form onSubmit={handleSubmit} aria-busy={status === 'submitting'}>
             <Button
               type="submit"
               variant="contained"
