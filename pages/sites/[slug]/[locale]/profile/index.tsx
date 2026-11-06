@@ -17,6 +17,7 @@ import UserLayout from '../../../../../src/features/common/Layout/UserLayout/Use
 import Head from 'next/head';
 import ProfileOuterContainer from '../../../../../src/features/user/Profile/ProfileOuterContainer';
 import ProfileLayout from '../../../../../src/features/user/Profile/ProfileLayout';
+import ProfileGridSkeleton from '../../../../../src/features/user/Profile/ProfileLayout/ProfileGridSkeleton';
 import { useTenantStore } from '../../../../../src/stores/tenantStore';
 import { defaultTenant } from '../../../../../tenant.config';
 
@@ -26,7 +27,13 @@ const MyForestPage = () => {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={
+        <ProfileOuterContainer>
+          <ProfileGridSkeleton />
+        </ProfileOuterContainer>
+      }
+    >
       <Head>
         <title>{t('profile')}</title>
       </Head>
