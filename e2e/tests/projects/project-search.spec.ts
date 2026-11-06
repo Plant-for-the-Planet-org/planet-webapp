@@ -6,7 +6,12 @@ import {
   allProjectsText as text,
   countryText,
 } from '../../support/i18n';
-import { PROJECT, projectCards, projectListTab } from '../../support/projects';
+import {
+  PROJECT,
+  expectStatusMessage,
+  projectCards,
+  projectListTab,
+} from '../../support/projects';
 
 const NO_RESULTS = text.noProjectFound;
 const NO_MATCH_QUERY = 'zzqx no such project';
@@ -77,7 +82,7 @@ test('a search with no match shows the no-results message and no projects', asyn
 }) => {
   await searchFor(page, NO_MATCH_QUERY);
 
-  await expect(page.getByText(NO_RESULTS)).toBeVisible();
+  await expectStatusMessage(page, NO_RESULTS);
   await expect(projectCards(page)).toHaveCount(0);
 });
 
@@ -86,7 +91,7 @@ test('emptying the search box brings back the project list', async ({
 }) => {
   const listedNames = await listedProjectNames(page);
   await searchFor(page, NO_MATCH_QUERY);
-  await expect(page.getByText(NO_RESULTS)).toBeVisible();
+  await expectStatusMessage(page, NO_RESULTS);
 
   await searchBox(page).fill('');
 
@@ -101,7 +106,7 @@ test('Clear search closes the search and brings back the Top Projects list', asy
 }) => {
   const listedNames = await listedProjectNames(page);
   await searchFor(page, NO_MATCH_QUERY);
-  await expect(page.getByText(NO_RESULTS)).toBeVisible();
+  await expectStatusMessage(page, NO_RESULTS);
 
   await page.getByRole('button', { name: text.clearSearch }).click();
 

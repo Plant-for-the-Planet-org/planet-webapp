@@ -282,3 +282,182 @@ Hoist `handleMouseEnter` (and any other Hooks) above the conditional so they run
 
 - File: `src/features/common/WebappButton/index.tsx` (link branch).
 - Related: shared `isExternalUrl` helper in `src/utils/url.ts`.
+
+## FU-006 — Remaining modals with dangling / inert ARIA label references
+
+**Status:** Open.
+**Origin:** Surfaced during A11Y-011 (modal names, dangling label IDs, Escape, focus management). These modals show the exact same defect but are **not** in the A11Y-011 file list, so they were left untouched to keep that fix reviewable.
+**Priority:** Medium — same WCAG 4.1.2 / 1.3.1 defect as A11Y-011, just on other screens.
+
+### Background
+
+Two things are wrong at each of these sites:
+
+1. The `aria-labelledby` / `aria-describedby` IDREFs point to elements that do not exist (`simple-modal-title`, `transition-modal-title`, `address-action-modal-title`, `simple-modal-description`, `transition-modal-description`).
+2. Even a valid IDREF would not help, because the attributes are passed to MUI's `Modal`, whose root element is `role="presentation"` (see FU-007). ARIA naming attributes on a presentation node are inert.
+
+Affected sites:
+
+| File                                                                               | Dangling reference                                        |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `src/tenants/planet/LeaderBoard/components/Stats.tsx:98`–`99`                      | `simple-modal-title` / `simple-modal-description`         |
+| `src/features/common/Layout/Footer/SelectLanguageAndCountry.tsx:197`–`198`         | `transition-modal-title` / `transition-modal-description` |
+| `src/features/user/ManageProjects/components/microComponent/EditSite.tsx:99`–`100` | `transition-modal-title` / `transition-modal-description` |
+| `src/features/user/Settings/EditProfile/AddressManagement/index.tsx:162`           | `address-action-modal-title`                              |
+| `src/features/user/DonationReceipt/DonorContactManagement.tsx:190`                 | `address-action-modal-title`                              |
+
+### Proposal
+
+Apply the same fix used for A11Y-011: move `role="dialog"` plus `aria-labelledby`/`aria-describedby` onto the modal's content element, generate the IDs with `useId()`, and put them on the real visible title/description. Add `onClose` where Escape dismissal is missing.
+
+### Suggested acceptance criteria
+
+- [ ] No `aria-labelledby`/`aria-describedby` in the repo points to a missing element (axe `aria-valid-attr-value` clean).
+- [ ] Each of the five dialogs announces its visible title.
+- [ ] Escape dismisses each dialog.
+- [ ] No visual or behavioural change.
+
+### References
+
+- Finding: `ACCESSIBILITY_FINDINGS.md` → A11Y-011 (same pattern, different files), Pattern P5.
+
+## FU-007 — Introduce a reusable `AppModal` component
+
+**Status:** Open.
+**Origin:** Surfaced during A11Y-011. Already listed in `ACCESSIBILITY_FINDINGS.md` → "Shared Component Opportunities" as the global fix for Pattern P5.
+**Priority:** Medium — code-health / regression-prevention, not a user-facing defect once A11Y-011 and FU-006 land.
+
+### Background
+
+A11Y-011 applied the same three-line pattern to eleven modals:
+
+```tsx
+const titleId = useId();
+const descriptionId = useId();
+
+<Modal open={isOpen} onClose={handleClose}>
+  <div role="dialog" aria-labelledby={titleId} aria-describedby={descriptionId}>
+    <h4 id={titleId}>…</h4>
+    <div id={descriptionId}>…</div>
+  </div>
+</Modal>;
+```
+
+Two non-obvious constraints make this easy to get wrong on a new modal, which is how the original gaps appeared:
+
+- **MUI's `Modal` root is `role="presentation"`.** `aria-labelledby`/`aria-describedby` passed to `<Modal>` land on that root and do nothing. They must go on the content element together with `role="dialog"`. (`Dialog` differs — it sets `role="dialog"` itself.)
+- **The `Modal` child must accept a ref.** MUI's `FocusTrap` clones the child with a `ref` to focus it on open and to restore focus on close. A fragment or a plain function component silently disables all focus management. A11Y-011 hit both cases (`ImageSliderModal` used a fragment; `MapSettings` was not a `forwardRef`).
+
+### Proposal
+
+A shared primitive that owns the ARIA wiring and guarantees a ref-accepting child:
+
+```tsx
+<AppModal
+  open={isOpen}
+  onClose={handleClose}
+  title={t('cancelTitle')}
+  description={t('cancelDescription')}
+>
+  {/* body */}
+</AppModal>
+```
+
+Responsibilities:
+
+- Renders `role="dialog"` on its own content element with `useId()`-generated `aria-labelledby`/`aria-describedby`.
+- Lets callers choose `role="alertdialog"` for confirmations, so screen readers read the description on open (VoiceOver skips it on a plain `dialog`).
+- Sets `aria-modal="true"` on the content element, as MUI's own `Dialog` does. MUI already hides the rest of the page with `aria-hidden`, so this is a small extra signal for screen readers that use it.
+- Accepts an `aria-label` alternative for dialogs whose visible title changes with state (as `RedeemModal` needs).
+- Requires `onClose` so Escape always dismisses.
+- Keeps MUI's built-in focus trap working, so callers cannot accidentally break it.
+- Passes through `className`/`sx` and optional transition so existing visuals are preserved.
+
+### Why deferred (not implemented in the A11Y-011 fix)
+
+- **Scope discipline** — A11Y-011 is a bounded, review-driven fix across eleven files; adding a shared primitive and migrating them all is a much larger refactor.
+- **API surface** — the eleven modals vary a lot (with/without `Fade`, `hideBackdrop`, `sx`, custom backdrop timeouts, `closeAfterTransition`). Designing one API for all of them should not block the accessibility fix.
+- **Sequencing** — best landed after A11Y-011 and FU-006 are verified, using those fixes as the reference implementation.
+
+### Suggested acceptance criteria
+
+- [ ] `AppModal` added, with a required accessible name (`title` or `aria-label`) and required `onClose`.
+- [ ] Focus moves into the dialog on open and returns to the trigger on close, in every consumer.
+- [ ] Existing modals migrated incrementally with no visual or behavioural change.
+- [ ] Storybook entry + usage docs.
+
+### References
+
+- Finding: `ACCESSIBILITY_FINDINGS.md` → A11Y-011, A11Y-023, Pattern P5.
+- Related: FU-001 (`IconButton`) — same "shared primitive makes the a11y contract mandatory" approach.
+
+## FU-008 — Global `:focus { outline: none !important }` removes every focus indicator
+
+**Status:** Done.
+**Origin:** Surfaced while restoring the focus ring on the `ImageSliderModal` navigation buttons (regression fix following A11Y-011).
+
+Fixed on develop by `fdba7f7c0` (fix(a11y): show a visible keyboard focus ring), which replaced the global rule in `src/theme/global.scss` with a single `:focus-visible` ring that shows for keyboard focus only.
+The `ImageSliderModal` slider buttons no longer need `!important`; they only change the ring colour to white (`f05f63744`).
+
+## FU-009 — Remove the dead `.mobileSliderButtonCommon` class
+
+**Status:** Open.
+**Origin:** Noticed while fixing the `ImageSliderModal` mobile layout regression.
+**Priority:** Low — dead code only.
+
+`.mobileSliderButtonCommon` in `src/features/projectsV2/ProjectDetails/styles/Slider.module.scss` is grouped with `.prevMobileSliderButton` / `.nextMobileSliderButton` but is not referenced anywhere in `src/`. Drop it, or if it was meant as the shared base, have the two directional classes `@extend` it so the grouping is meaningful.
+
+## FU-010 — Give empty-state illustrations a text alternative
+
+**Status:** Open.
+**Origin:** Surfaced during A11Y-010 (live regions) while checking whether the PlanetCash empty transactions state is announced. It is not announced, but the cause is a missing text alternative (WCAG 1.1.1), not a missing live region (4.1.3), so it is out of scope for A11Y-010.
+**Priority:** Medium — `NoTransactionsFound` is a real content gap for screen reader users; the rest is consistency work.
+
+### Background
+
+`NoTransactionsFound` renders an illustration and nothing else:
+
+```tsx
+const NoTransactionsFound = (): ReactElement => {
+  return (
+    <CenteredContainer className="CenteredContainer--small">
+      <TransactionsNotFound />
+    </CenteredContainer>
+  );
+};
+```
+
+`TransactionsNotFound` is a bare inline `<svg>` with no `role`, no `<title>`, and no `aria-label`. So a sighted user sees "you have no transactions" and a screen reader user gets nothing at all: the container is empty as far as assistive tech is concerned.
+
+The neighbouring `NoDataFound` illustration in the projects list has the inverse problem. It is also unlabeled, but it sits next to a visible "No project found" paragraph that already carries the meaning, so the SVG is decorative and should be hidden rather than named.
+
+### Proposal
+
+Prefer real text over an SVG label, so the empty state is visible to everyone and translatable:
+
+1. Add a visible message to `NoTransactionsFound` (new `Me` namespace key, for example `noTransactionsFound`; no such key exists today), mirroring how `ProjectList` pairs `NoDataFound` with `noProjectFound` text.
+2. Mark both illustrations `aria-hidden="true"` once the text carries the meaning. Following the A11Y-002 convention, wrap the icon component in `<span aria-hidden="true" style={{ display: 'contents' }}>` rather than editing the SVG, unless the SVG is edited directly.
+3. Sweep for other empty-state and error illustrations that are the sole content of their container, and apply the same treatment.
+
+If a visible message is not wanted for a given state, the fallback is `role="img"` plus a localized `aria-label` on the SVG.
+
+### Why deferred (not fixed in the A11Y-010 PR)
+
+- **Different finding** — A11Y-010 covers status messages under 4.1.3. A missing text alternative is 1.1.1 and belongs with the A11Y-002 / A11Y-004 image and naming work.
+- **Adds visible UI** — a new visible string and a new i18n key is a design and copy decision, not a silent a11y fix.
+- **Scope discipline** — the sweep across other empty-state illustrations should be reviewed as its own change.
+
+### Suggested acceptance criteria
+
+- [ ] `NoTransactionsFound` exposes a localized text alternative; the empty state is conveyed to screen reader users.
+- [ ] New i18n key added to the `en` locale only (Lingohub manages the rest).
+- [ ] Decorative empty-state illustrations (`NoDataFound`, and any others found in the sweep) are `aria-hidden`, so the message is not announced twice.
+- [ ] No visual regression in either empty state.
+- [ ] Verified with a screen reader and axe (`svg-img-alt`).
+
+### References
+
+- Component: `src/features/user/PlanetCash/components/NoTransactionsFound.tsx`.
+- Illustrations: `public/assets/images/icons/TransactionsNotFound.tsx`, `public/assets/images/icons/projectV2/NoDataFound.tsx`.
+- Reference pattern: `src/features/projectsV2/ProjectList/index.tsx` (illustration + visible text).
+- Surfaced by: `ACCESSIBILITY_FINDINGS.md` → A11Y-010; related findings A11Y-002, A11Y-004.
