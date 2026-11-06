@@ -298,13 +298,13 @@ Two things are wrong at each of these sites:
 
 Affected sites:
 
-| File | Dangling reference |
-| --- | --- |
-| `src/tenants/planet/LeaderBoard/components/Stats.tsx:98`–`99` | `simple-modal-title` / `simple-modal-description` |
-| `src/features/common/Layout/Footer/SelectLanguageAndCountry.tsx:197`–`198` | `transition-modal-title` / `transition-modal-description` |
+| File                                                                               | Dangling reference                                        |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `src/tenants/planet/LeaderBoard/components/Stats.tsx:98`–`99`                      | `simple-modal-title` / `simple-modal-description`         |
+| `src/features/common/Layout/Footer/SelectLanguageAndCountry.tsx:197`–`198`         | `transition-modal-title` / `transition-modal-description` |
 | `src/features/user/ManageProjects/components/microComponent/EditSite.tsx:99`–`100` | `transition-modal-title` / `transition-modal-description` |
-| `src/features/user/Settings/EditProfile/AddressManagement/index.tsx:162` | `address-action-modal-title` |
-| `src/features/user/DonationReceipt/DonorContactManagement.tsx:190` | `address-action-modal-title` |
+| `src/features/user/Settings/EditProfile/AddressManagement/index.tsx:162`           | `address-action-modal-title`                              |
+| `src/features/user/DonationReceipt/DonorContactManagement.tsx:190`                 | `address-action-modal-title`                              |
 
 ### Proposal
 
@@ -340,7 +340,7 @@ const descriptionId = useId();
     <h4 id={titleId}>…</h4>
     <div id={descriptionId}>…</div>
   </div>
-</Modal>
+</Modal>;
 ```
 
 Two non-obvious constraints make this easy to get wrong on a new modal, which is how the original gaps appeared:
@@ -406,3 +406,58 @@ The `ImageSliderModal` slider buttons no longer need `!important`; they only cha
 **Priority:** Low — dead code only.
 
 `.mobileSliderButtonCommon` in `src/features/projectsV2/ProjectDetails/styles/Slider.module.scss` is grouped with `.prevMobileSliderButton` / `.nextMobileSliderButton` but is not referenced anywhere in `src/`. Drop it, or if it was meant as the shared base, have the two directional classes `@extend` it so the grouping is meaningful.
+
+## FU-010 — Give empty-state illustrations a text alternative
+
+**Status:** Open.
+**Origin:** Surfaced during A11Y-010 (live regions) while checking whether the PlanetCash empty transactions state is announced. It is not announced, but the cause is a missing text alternative (WCAG 1.1.1), not a missing live region (4.1.3), so it is out of scope for A11Y-010.
+**Priority:** Medium — `NoTransactionsFound` is a real content gap for screen reader users; the rest is consistency work.
+
+### Background
+
+`NoTransactionsFound` renders an illustration and nothing else:
+
+```tsx
+const NoTransactionsFound = (): ReactElement => {
+  return (
+    <CenteredContainer className="CenteredContainer--small">
+      <TransactionsNotFound />
+    </CenteredContainer>
+  );
+};
+```
+
+`TransactionsNotFound` is a bare inline `<svg>` with no `role`, no `<title>`, and no `aria-label`. So a sighted user sees "you have no transactions" and a screen reader user gets nothing at all: the container is empty as far as assistive tech is concerned.
+
+The neighbouring `NoDataFound` illustration in the projects list has the inverse problem. It is also unlabeled, but it sits next to a visible "No project found" paragraph that already carries the meaning, so the SVG is decorative and should be hidden rather than named.
+
+### Proposal
+
+Prefer real text over an SVG label, so the empty state is visible to everyone and translatable:
+
+1. Add a visible message to `NoTransactionsFound` (new `Me` namespace key, for example `noTransactionsFound`; no such key exists today), mirroring how `ProjectList` pairs `NoDataFound` with `noProjectFound` text.
+2. Mark both illustrations `aria-hidden="true"` once the text carries the meaning. Following the A11Y-002 convention, wrap the icon component in `<span aria-hidden="true" style={{ display: 'contents' }}>` rather than editing the SVG, unless the SVG is edited directly.
+3. Sweep for other empty-state and error illustrations that are the sole content of their container, and apply the same treatment.
+
+If a visible message is not wanted for a given state, the fallback is `role="img"` plus a localized `aria-label` on the SVG.
+
+### Why deferred (not fixed in the A11Y-010 PR)
+
+- **Different finding** — A11Y-010 covers status messages under 4.1.3. A missing text alternative is 1.1.1 and belongs with the A11Y-002 / A11Y-004 image and naming work.
+- **Adds visible UI** — a new visible string and a new i18n key is a design and copy decision, not a silent a11y fix.
+- **Scope discipline** — the sweep across other empty-state illustrations should be reviewed as its own change.
+
+### Suggested acceptance criteria
+
+- [ ] `NoTransactionsFound` exposes a localized text alternative; the empty state is conveyed to screen reader users.
+- [ ] New i18n key added to the `en` locale only (Lingohub manages the rest).
+- [ ] Decorative empty-state illustrations (`NoDataFound`, and any others found in the sweep) are `aria-hidden`, so the message is not announced twice.
+- [ ] No visual regression in either empty state.
+- [ ] Verified with a screen reader and axe (`svg-img-alt`).
+
+### References
+
+- Component: `src/features/user/PlanetCash/components/NoTransactionsFound.tsx`.
+- Illustrations: `public/assets/images/icons/TransactionsNotFound.tsx`, `public/assets/images/icons/projectV2/NoDataFound.tsx`.
+- Reference pattern: `src/features/projectsV2/ProjectList/index.tsx` (illustration + visible text).
+- Surfaced by: `ACCESSIBILITY_FINDINGS.md` → A11Y-010; related findings A11Y-002, A11Y-004.
