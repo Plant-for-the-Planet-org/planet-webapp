@@ -42,7 +42,8 @@ export default function CustomModal({
     >
       <div
         className={styles.modal}
-        role="dialog"
+        // Uses alertdialog so screen readers also read the subtitle on open
+        role="alertdialog"
         aria-labelledby={titleId}
         aria-describedby={subtitleId}
       >

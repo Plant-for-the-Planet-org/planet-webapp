@@ -94,7 +94,8 @@ export default function EmbedModal({
       >
         <div
           className={styles.modal}
-          role="dialog"
+          // Uses alertdialog so screen readers also read the note on open
+          role="alertdialog"
           aria-labelledby={titleId}
           aria-describedby={descriptionId}
         >

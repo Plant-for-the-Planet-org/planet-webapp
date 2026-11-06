@@ -75,7 +75,8 @@ export const ReactivateModal = ({
       <Fade in={reactivateModalOpen}>
         <div
           className={styles.manageDonationModal}
-          role="dialog"
+          // Uses alertdialog so screen readers also read the note on open
+          role="alertdialog"
           aria-labelledby={titleId}
           aria-describedby={descriptionId}
         >
