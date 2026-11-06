@@ -88,7 +88,7 @@ describe('useInitializeIntervention', () => {
     expect(router.replace).not.toHaveBeenCalled();
   });
 
-  it('waits for the interventions to load', () => {
+  it('selects the intervention only once the interventions load', () => {
     useInterventionStore.setState({ interventions: null });
     const { router } = renderAtQuery({ p: 'yucatan', ploc: 'ploc_1' });
 
@@ -102,7 +102,7 @@ describe('useInitializeIntervention', () => {
   });
 
   // The new project's ploc must not be matched against the interventions still held from the previous project.
-  it('on a project-to-project navigation, waits for the new project interventions', () => {
+  it("after moving to another project, selects the intervention only once that project's interventions load", () => {
     const { navigateTo } = renderAtQuery({ p: 'yucatan' });
 
     navigateTo({ p: 'koenigswald-ontananga', ploc: 'ploc_1' });

@@ -5,6 +5,7 @@ import type {
 import type { SelectedTab } from './ProjectMapTabs';
 import type { SingleTreeRegistration } from '@planet-sdk/common';
 import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
+import type { E2EBounds } from '../../../utils/e2eHooks';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -50,6 +51,7 @@ import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
 import { useCurrentPage } from '../../../hooks/useCurrentPage';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/router';
+import { areE2EHooksEnabled, setE2EHooks } from '../../../utils/e2eHooks';
 
 const TimeTravel = dynamic(() => import('./TimeTravel'), {
   ssr: false,
@@ -138,6 +140,31 @@ function ProjectsMap(props: ProjectsMapProps) {
     if (!mapLoaded) return;
     // Ensure the map resizes properly once it's fully loaded.
     mapRef.current?.resize();
+  }, [mapLoaded]);
+
+  // The map is drawn on a canvas, so E2E tests ask the map where it looks, where a place shows on screen, and what a click there would pick.
+  useEffect(() => {
+    const map = mapRef.current?.getMap();
+    if (!mapLoaded || !map || !areE2EHooksEnabled()) return;
+    return setE2EHooks({
+      getMapView: () => {
+        const center = map.getCenter();
+        return {
+          center: [center.lng, center.lat],
+          bounds: map.getBounds().toArray().flat() as E2EBounds,
+          isMoving: map.isMoving(),
+        };
+      },
+      getScreenPoint: (lngLat) => {
+        const { x, y } = map.project(lngLat);
+        return { x, y };
+      },
+      // Uses the same query as `onClick`, which acts on the top feature only.
+      getInterventionAt: ({ x, y }) => {
+        const [top] = getFeaturesAtPoint(mapRef, [x, y]) ?? [];
+        return top && isPlantFeature(top) ? String(top.properties.id) : null;
+      },
+    });
   }, [mapLoaded]);
 
   useEffect(() => {
