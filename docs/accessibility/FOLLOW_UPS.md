@@ -366,6 +366,8 @@ A shared primitive that owns the ARIA wiring and guarantees a ref-accepting chil
 Responsibilities:
 
 - Renders `role="dialog"` on its own content element with `useId()`-generated `aria-labelledby`/`aria-describedby`.
+- Lets callers choose `role="alertdialog"` for confirmations, so screen readers read the description on open (VoiceOver skips it on a plain `dialog`).
+- Sets `aria-modal="true"` on the content element, as MUI's own `Dialog` does. MUI already hides the rest of the page with `aria-hidden`, so this is a small extra signal for screen readers that use it.
 - Accepts an `aria-label` alternative for dialogs whose visible title changes with state (as `RedeemModal` needs).
 - Requires `onClose` so Escape always dismisses.
 - Keeps MUI's built-in focus trap working, so callers cannot accidentally break it.
@@ -391,53 +393,11 @@ Responsibilities:
 
 ## FU-008 — Global `:focus { outline: none !important }` removes every focus indicator
 
-**Status:** Open.
+**Status:** Done.
 **Origin:** Surfaced while restoring the focus ring on the `ImageSliderModal` navigation buttons (regression fix following A11Y-011).
-**Priority:** High — WCAG 2.4.7 failure affecting every interactive control in the app.
 
-### Background
-
-`src/theme/global.scss:43`–`45` contains:
-
-```scss
-:focus {
-  outline: none !important;
-}
-```
-
-This strips the focus indicator from every focusable element app-wide, so keyboard users cannot tell where focus is. Because of the `!important`, no component can override it with specificity alone — a component that wants its ring back has to declare `!important` too, which is what the `ImageSliderModal` slider buttons now do:
-
-```scss
-.sliderButton, .prevMobileSliderButton, .nextMobileSliderButton {
-  &:focus-visible {
-    outline: 2px solid $dsWhite !important;
-    outline-offset: 2px;
-  }
-}
-```
-
-That is a local workaround, not a fix. Every other control in the app is still unindicated.
-
-### Proposal
-
-1. Delete the global `:focus { outline: none !important }` rule.
-2. Add a single global `:focus-visible` treatment using a design-system token, so the ring appears for keyboard/AT users and not on mouse click (which is presumably what the rule was trying to suppress).
-3. Sweep the ~10 component-level `outline: none` declarations (`EmbedModal`, `CustomModal`, `RedeemModal`, `ErrorPopup`, `RedeemPopup`, `CookiePolicy`, `SelectLanguageAndCountry`, `StepForm`, `AccountHistory`) — most are on modal containers, where MUI gives the container `tabIndex="-1"` and focuses it on open. Those want `:focus { outline: none }` on the *container only*, not on their contents.
-4. Remove the now-redundant `!important` from the `ImageSliderModal` slider-button rule.
-
-### Suggested acceptance criteria
-
-- [ ] No global `outline: none` rule remains; a shared `:focus-visible` style is defined once.
-- [ ] Every interactive control shows a visible focus indicator when reached by keyboard, at ≥3:1 contrast against its background (WCAG 1.4.11).
-- [ ] Focus rings do not appear on mouse interaction (no visual change for pointer users).
-- [ ] Modal containers that receive programmatic focus do not show a stray ring.
-- [ ] `ImageSliderModal`'s local `!important` override removed.
-
-### References
-
-- Rule: `src/theme/global.scss:43`–`45`.
-- Local workaround: `src/features/projectsV2/ProjectDetails/styles/Slider.module.scss` (`.sliderButton` / mobile arrows).
-- WCAG: 2.4.7 Focus Visible (AA), 1.4.11 Non-text Contrast (AA).
+Fixed on develop by `fdba7f7c0` (fix(a11y): show a visible keyboard focus ring), which replaced the global rule in `src/theme/global.scss` with a single `:focus-visible` ring that shows for keyboard focus only.
+The `ImageSliderModal` slider buttons no longer need `!important`; they only change the ring colour to white (`f05f63744`).
 
 ## FU-009 — Remove the dead `.mobileSliderButtonCommon` class
 
