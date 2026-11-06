@@ -117,14 +117,12 @@
 .nextMobileSliderButton {
   right: 116px;
 }
-// `theme/global.scss` removes focus outlines globally, so restore the focus
-// ring for these buttons here (`!important` overrides the global rule). White
-// is clearly visible on both the mobile image and the desktop backdrop.
+
+// White instead of the global green focus ring, so it shows on both the photo and the dark backdrop.
 .sliderButton,
 .prevMobileSliderButton,
 .nextMobileSliderButton {
   &:focus-visible {
-    outline: 2px solid $dsWhite !important;
-    outline-offset: 2px;
+    outline-color: $dsWhite;
   }
 }
