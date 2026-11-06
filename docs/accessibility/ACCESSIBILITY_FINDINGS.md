@@ -521,6 +521,7 @@ useEffect(() => {
 | **Component / Feature** | Error popups, redeem, filter results, uploads, donations, loaders |
 | **Effort** | Small–Medium |
 | **Priority Score** | 72 / 100 |
+| **Status** | 🟡 Remediated in code (2026-07-27) — pending verification |
 
 **File(s) & Line(s):**
 - `src/features/common/Layout/ErrorPopup/index.tsx:49`
