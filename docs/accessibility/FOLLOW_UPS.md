@@ -154,7 +154,7 @@ Highest-concentration files (candidates to tackle first):
 
 ## FU-003 — Unify the address autocomplete implementation
 
-**Status:** Proposed (not started)
+**Status:** Implemented
 **Origin:** Surfaced during A11Y-006 (address suggestion listbox not keyboard operable).
 **Priority:** Medium — code-health / regression-prevention, not a user-facing defect.
 
@@ -183,10 +183,30 @@ Extract a single shared address-autocomplete component (or hook) that both call 
 
 ### Suggested acceptance criteria
 
-- [ ] Shared address-autocomplete component + suggestions hook added.
-- [ ] `SignupAddressField.tsx` and `AddressForm.tsx` both migrated to it.
-- [ ] No behaviour or visual change at either call site (signup field stays full-width).
-- [ ] Keyboard/screen-reader combobox behaviour preserved (Arrow/Enter/Escape, `aria-activedescendant`).
+- [x] Shared address-autocomplete component + suggestions hook added.
+- [x] `SignupAddressField.tsx` and `AddressForm.tsx` both migrated to it.
+- [x] No visual change at either call site (signup field stays full-width); behaviour changes are listed under Outcome.
+- [x] Keyboard/screen-reader combobox behaviour preserved (Arrow/Enter/Escape, `aria-activedescendant`).
+
+### Outcome
+
+Added:
+
+- `src/features/common/InputTypes/AddressAutocomplete.tsx` — owns the MUI `Autocomplete` markup, `freeSolo`, the `filterOptions` passthrough, `getOptionLabel`, and the `Controller` validation rules. Takes `fullWidth` and `autoComplete` props for the per-call-site differences.
+- `src/hooks/useAddressSuggestions.ts` — owns the debounced fetch, the `latestRequestIdRef` race guard, and resolving a picked suggestion via `getAddressDetailsFromText`.
+
+Removed `AddressInput.tsx` (superseded by the shared component).
+
+The shared component adopts the A11Y-006 (signup) interaction semantics everywhere, which changes three things for the settings form. All three remove redundant geocoder calls or surprising overwrites; none affect layout, labels, validation, or a11y:
+
+1. `filterOptions` is a passthrough, so MUI no longer re-filters suggestions the geocoder already scoped to the input.
+2. `onInputChange` with `reason === 'reset'` is ignored, so applying a suggestion no longer triggers a second suggestion fetch.
+3. Address details are resolved only when a suggestion object is picked, not when free text is committed with Enter.
+
+Review fixes:
+
+- Address line 2 in the settings form is now a plain text field with no suggestions. It holds a flat number, floor or c/o, and it used to share line 1's street suggestions.
+- In both forms, picking a suggestion now drops any search reply still on its way and cancels a search still waiting on the debounce timer, so the old list cannot come back. This race was already on `develop` in the signup form.
 
 ### References
 
