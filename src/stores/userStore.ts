@@ -36,15 +36,15 @@ interface UserStore {
   // Incremented on each refetch request so the fetch effect runs every time.
   profileRefetchNonce: number;
   isImpersonationModeOn: boolean;
-  profileApiError: APIError | null;
 
   setUserProfile: (profile: User | null) => void;
   setIsImpersonationModeOn: (isEnabled: boolean) => void;
   enterImpersonation: (impersonationData: ImpersonationData) => void;
   exitImpersonation: () => void;
   refetchUserProfile: () => void;
+  // Failures are returned to the caller (rejected promise), not written to
+  // store state - see #3045.
   fetchUserProfile: (params: FetchUserProfileParams) => Promise<User>;
-  clearProfileApiError: () => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -54,7 +54,6 @@ export const useUserStore = create<UserStore>()(
       userProfile: null,
       profileRefetchNonce: 0,
       isImpersonationModeOn: false,
-      profileApiError: null,
 
       //actions
       setUserProfile: (profile) =>
@@ -151,16 +150,13 @@ export const useUserStore = create<UserStore>()(
             });
           }
           set(
-            {
-              userProfile: result,
-              profileApiError: null,
-            },
+            { userProfile: result },
             undefined,
             'userStore/fetch_user_profile_success'
           );
           return result;
         } catch (error) {
-          // Impersonation-specific 403: Handle ONLY in component
+          // Impersonation-specific 403: Handle ONLY in the caller (ImpersonateUserForm).
 
           // This runs only when `impersonationData` is passed to this function.
           // Currently, only ImpersonateUserForm passes it when starting impersonation,
@@ -169,28 +165,17 @@ export const useUserStore = create<UserStore>()(
           // If another caller passes `impersonationData`, its 403 will also be handled locally.
           // If ImpersonateUserForm stops passing it, the impersonation header will be missing
           // and the API may return the support agent's profile instead of showing an error.
-
           if (
             error instanceof APIError &&
             error.statusCode === 403 &&
             impersonationData
           ) {
-            if (!isStale()) {
-              set(
-                {
-                  profileApiError: null, // do NOT trigger global handler
-                },
-                undefined,
-                'userStore/fetch_user_profile_impersonation_error'
-              );
-            }
-
-            throw error; // handled by component
+            throw error; // handled by the caller, not the global handler
           }
-          // All other errors → global handling
 
-          // Convert non-API errors into APIError so the global error handler can handle them.
-          // Keep the original error details for debugging.
+          // Convert non-API errors into APIError so every caller can rely on
+          // a consistent shape (e.g. read `statusCode`). Keep the original
+          // error details for debugging.
           let apiError: APIError;
           if (error instanceof APIError) {
             apiError = error;
@@ -207,28 +192,21 @@ export const useUserStore = create<UserStore>()(
           // or the session is no longer valid (401).
           // For temporary errors like 500 or network failures,
           // keep the existing profile so the user is not sent to /login.
-          const patch: Partial<UserStore> = { profileApiError: apiError };
-          if (apiError.statusCode === 303 || apiError.statusCode === 401) {
-            patch.userProfile = null;
+          if (
+            !isStale() &&
+            (apiError.statusCode === 303 || apiError.statusCode === 401)
+          ) {
+            set(
+              { userProfile: null },
+              undefined,
+              'userStore/fetch_user_profile_error'
+            );
           }
 
-          if (!isStale()) {
-            set(patch, undefined, 'userStore/fetch_user_profile_error');
-          }
-
-          // Rethrow so the promise never resolves with `undefined`.
-          // The global flow still runs via the `profileApiError` state above;
-          // callers that only rely on that state can ignore this rejection.
-          throw error;
+          // Reject with the normalized error so the caller decides how to handle it.
+          throw apiError;
         }
       },
-
-      clearProfileApiError: () =>
-        set(
-          { profileApiError: null },
-          undefined,
-          'userStore/clear_profile_api_error'
-        ),
     }),
     {
       name: 'UserStore',

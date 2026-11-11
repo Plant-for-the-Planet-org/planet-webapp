@@ -1,15 +1,19 @@
+import type { APIError } from '@planet-sdk/common';
+
 import { useLocale, useTranslations } from 'next-intl';
 import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
 import styles from './ImpersonateUser.module.scss';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { useAuthStore, useTenantStore, useUserStore } from '../../../../stores';
+import useProfileErrorHandler from '../../../../hooks/useProfileErrorHandler';
 
 const ImpersonationActivated = () => {
   const t = useTranslations('Me');
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const { handleProfileError } = useProfileErrorHandler();
   // store: state
   const token = useAuthStore((state) => state.token);
   const isImpersonationModeOn = useUserStore(
@@ -34,13 +38,7 @@ const ImpersonationActivated = () => {
         token,
         tenantId,
         locale,
-      }).catch((error) => {
-        // Errors are surfaced through the global `profileApiError` flow.
-        console.error(
-          '[Profile API] Failed to restore the real user profile:',
-          error
-        );
-      });
+      }).catch((error: APIError) => handleProfileError(error));
     }
   };
 

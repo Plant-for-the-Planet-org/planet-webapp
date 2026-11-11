@@ -1,6 +1,7 @@
+import type { APIError } from '@planet-sdk/common';
+
 import { useEffect, useRef } from 'react';
 import { useAuthStore, useTenantStore, useUserStore } from '../stores';
-
 import { useLocale } from 'next-intl';
 import useProfileErrorHandler from './useProfileErrorHandler';
 import { useAuthSession } from './useAuthSession';
@@ -18,7 +19,6 @@ export const useInitializeUser = () => {
     useAuthSession();
   const { handleProfileError } = useProfileErrorHandler();
   // store: state
-  const profileApiError = useUserStore((state) => state.profileApiError);
   const userSlug = useUserStore((state) => state.userProfile?.slug);
   const token = useAuthStore((state) => state.token);
   const profileRefetchNonce = useUserStore(
@@ -31,9 +31,6 @@ export const useInitializeUser = () => {
     (state) => state.setIsImpersonationModeOn
   );
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
-  const clearProfileApiError = useUserStore(
-    (state) => state.clearProfileApiError
-  );
   const setIsAuthResolved = useAuthStore((state) => state.setIsAuthResolved);
 
   // `isAuthResolved` means the first auth check and profile fetch are finished.
@@ -61,10 +58,8 @@ export const useInitializeUser = () => {
         // unrelated login or profile errors.
         clearRedirectCount();
       })
-      .catch((err) => {
-        // API errors are surfaced through `profileApiError` below.
-        // Catching here only prevents an unhandled promise rejection.
-        console.error('[Profile API] Failed to fetch user profile:', err);
+      .catch((err: APIError) => {
+        handleProfileError(err);
       })
       .finally(() => {
         if (!hasResolvedInitialAuth.current) {
@@ -72,7 +67,13 @@ export const useInitializeUser = () => {
           setIsAuthResolved(true);
         }
       });
-  }, [token, profileRefetchNonce, fetchUserProfile, setIsAuthResolved]);
+  }, [
+    token,
+    profileRefetchNonce,
+    fetchUserProfile,
+    setIsAuthResolved,
+    handleProfileError,
+  ]);
 
   // Drop a stored direct gift to the user's own profile. Runs on every page, since after login the user may not land on the home page, and donate links read the stored gift.
   useEffect(() => {
@@ -85,13 +86,6 @@ export const useInitializeUser = () => {
       clearStoredDirectGift();
     }
   }, [userSlug]);
-
-  useEffect(() => {
-    if (!profileApiError) return;
-    handleProfileError(profileApiError);
-    // Clear the error after handling it so it does not run again later.
-    clearProfileApiError();
-  }, [profileApiError, handleProfileError, clearProfileApiError]);
 
   useEffect(() => {
     if (
