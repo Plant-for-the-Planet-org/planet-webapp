@@ -185,7 +185,7 @@ Extract a single shared address-autocomplete component (or hook) that both call 
 
 - [x] Shared address-autocomplete component + suggestions hook added.
 - [x] `SignupAddressField.tsx` and `AddressForm.tsx` both migrated to it.
-- [x] No behaviour or visual change at either call site (signup field stays full-width).
+- [x] No visual change at either call site (signup field stays full-width); behaviour changes are listed under Outcome.
 - [x] Keyboard/screen-reader combobox behaviour preserved (Arrow/Enter/Escape, `aria-activedescendant`).
 
 ### Outcome
@@ -202,6 +202,11 @@ The shared component adopts the A11Y-006 (signup) interaction semantics everywhe
 1. `filterOptions` is a passthrough, so MUI no longer re-filters suggestions the geocoder already scoped to the input.
 2. `onInputChange` with `reason === 'reset'` is ignored, so applying a suggestion no longer triggers a second suggestion fetch.
 3. Address details are resolved only when a suggestion object is picked, not when free text is committed with Enter.
+
+Review fixes:
+
+- Address line 2 in the settings form is now a plain text field with no suggestions. It holds a flat number, floor or c/o, and it used to share line 1's street suggestions.
+- In both forms, picking a suggestion now drops any search reply still on its way and cancels a search still waiting on the debounce timer, so the old list cannot come back. This race was already on `develop` in the signup form.
 
 ### References
 
