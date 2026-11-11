@@ -28,6 +28,7 @@ export const useAuthSession = () => {
   const { localizedPath } = useLocalizedPath();
   const setToken = useAuthStore((state) => state.setToken);
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
+  const setHasAuthFailed = useAuthStore((state) => state.setHasAuthFailed);
 
   const logoutUser = useCallback(
     (returnUrl: string | undefined = `${window.location.origin}/`) => {
@@ -76,6 +77,7 @@ export const useAuthSession = () => {
         '[Auth] Redirect limit reached after repeated auth failures, stopping login redirects.'
       );
       resetAuthExpiryHandling();
+      setHasAuthFailed(true);
       return;
     }
     registerRedirectAttempt();
