@@ -104,16 +104,25 @@ const AddressForm = ({
         onInputChange={handleInputChange}
         onSuggestionSelect={selectSuggestion}
       />
-      <AddressAutocomplete<AddressFormData>
+      <Controller
         name="address2"
         control={control}
-        label={t('addressManagement.addressForm.address2')}
-        validationPattern={validationPattern.address}
-        validationMessages={{
-          invalid: t('validationErrors.addressInvalid'),
+        rules={{
+          pattern: {
+            value: validationPattern.address,
+            message: t('validationErrors.addressInvalid'),
+          },
         }}
-        suggestions={suggestions}
-        onInputChange={handleInputChange}
+        render={({ field: { onChange, value, onBlur } }) => (
+          <TextField
+            label={t('addressManagement.addressForm.address2')}
+            onChange={onChange}
+            onBlur={onBlur}
+            value={value ?? ''}
+            error={!!errors.address2}
+            helperText={errors.address2?.message}
+          />
+        )}
       />
       <InlineFormDisplayGroup>
         <Controller
