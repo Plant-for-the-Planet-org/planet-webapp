@@ -9,6 +9,11 @@ import {
   clearRedirectCount,
 } from '../utils/authRedirectGuard';
 import { readStoredImpersonationData } from '../utils/impersonation';
+import {
+  clearStoredDirectGift,
+  isSelfDirectGift,
+  readStoredDirectGift,
+} from '../utils/directGift';
 
 export const useInitializeUser = () => {
   const locale = useLocale();
@@ -17,6 +22,7 @@ export const useInitializeUser = () => {
   const { handleProfileError } = useProfileErrorHandler();
   // store: state
   const profileApiError = useUserStore((state) => state.profileApiError);
+  const userSlug = useUserStore((state) => state.userProfile?.slug);
   const token = useAuthStore((state) => state.token);
   const profileRefetchNonce = useUserStore(
     (state) => state.profileRefetchNonce
@@ -71,6 +77,18 @@ export const useInitializeUser = () => {
         }
       });
   }, [token, profileRefetchNonce, fetchUserProfile, setIsAuthResolved]);
+
+  // Drop a stored direct gift to the user's own profile. Runs on every page, since after login the user may not land on the home page, and donate links read the stored gift.
+  useEffect(() => {
+    if (!userSlug) return;
+    const storedDirectGift = readStoredDirectGift();
+    if (
+      storedDirectGift !== null &&
+      isSelfDirectGift(storedDirectGift, userSlug)
+    ) {
+      clearStoredDirectGift();
+    }
+  }, [userSlug]);
 
   useEffect(() => {
     if (!profileApiError) return;

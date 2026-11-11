@@ -1,8 +1,8 @@
 import type { SetState } from '../../../common/types/common';
-import type { ReactNode } from 'react';
+import type { ForwardedRef, ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
-import { useState, useEffect, useId, useRef } from 'react';
+import { forwardRef, useState, useEffect, useId, useRef } from 'react';
 import { ExploreIcon } from '../../../../../public/assets/images/icons/projectV2/ExploreIcon';
 import CrossIcon from '../../../../../public/assets/images/icons/projectV2/CrossIcon';
 import styles from './MobileMapSettingsLayout.module.scss';
@@ -15,7 +15,10 @@ interface Props {
   children: ReactNode;
 }
 
-const MobileMapSettingsLayout = ({ id, setIsOpen, children }: Props) => {
+const MobileMapSettingsLayout = (
+  { id, setIsOpen, children }: Props,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const tMaps = useTranslations('Maps');
   const [isAtBottom, setIsAtBottom] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -48,6 +51,7 @@ const MobileMapSettingsLayout = ({ id, setIsOpen, children }: Props) => {
 
   return (
     <div
+      ref={ref}
       id={id}
       className={styles.container}
       role="dialog"
@@ -79,4 +83,4 @@ const MobileMapSettingsLayout = ({ id, setIsOpen, children }: Props) => {
   );
 };
 
-export default MobileMapSettingsLayout;
+export default forwardRef(MobileMapSettingsLayout);

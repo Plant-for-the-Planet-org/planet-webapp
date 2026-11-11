@@ -1,10 +1,10 @@
 import type { APIError } from '@planet-sdk/common';
 import type { Subscription } from '../../common/types/payments';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useId, useState, useContext } from 'react';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import Close from '../../../../public/assets/images/icons/headerIcons/Close';
 import IconButton from '../../common/IconButton';
@@ -22,6 +22,7 @@ import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
 import { CalendarPicker } from '@mui/x-date-pickers';
 import { useErrorHandlingStore } from '../../../stores/errorHandlingStore';
+import { localeMapForDate } from '../../../utils/language/getLanguageName';
 
 interface CancelModalProps {
   cancelModalOpen: boolean;
@@ -47,6 +48,7 @@ export const CancelModal = ({
   const { putApiAuthenticated } = useApi();
   const t = useTranslations('Me');
   const tCommon = useTranslations('Common');
+  const locale = useLocale();
   //local state
   const [option, setOption] = useState('cancelImmediately');
   const [showCalender, setShowCalender] = useState(false);
@@ -54,6 +56,9 @@ export const CancelModal = ({
   const [disabled, setDisabled] = useState(false);
   //store
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  // Names and describes the dialog using its visible title and note
+  const titleId = useId();
+  const descriptionId = useId();
 
   useEffect(() => {
     setDisabled(false);
@@ -91,14 +96,18 @@ export const CancelModal = ({
       open={cancelModalOpen}
       onClose={handleCancelModalClose}
       closeAfterTransition
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
       BackdropProps={{
         timeout: 500,
       }}
     >
       <Fade in={cancelModalOpen}>
-        <div className={styles.manageDonationModal}>
+        <div
+          className={styles.manageDonationModal}
+          // Uses alertdialog so screen readers also read the note on open
+          role="alertdialog"
+          aria-labelledby={titleId}
+          aria-describedby={descriptionId}
+        >
           <div className={styles.modalTexts}>
             <div
               style={{
@@ -108,7 +117,7 @@ export const CancelModal = ({
                 width: '100%',
               }}
             >
-              <h4>{t('cancelDonationConfirmation')}</h4>
+              <h4 id={titleId}>{t('cancelDonationConfirmation')}</h4>
               <IconButton
                 label={`${tCommon('close')} ${t('cancelDonationConfirmation')}`}
                 onClick={handleCancelModalClose}
@@ -117,7 +126,7 @@ export const CancelModal = ({
                 <Close color={'#4d5153'} />
               </IconButton>
             </div>
-            <div className={styles.note}>
+            <div className={styles.note} id={descriptionId}>
               {record?.method === 'paypal' ? (
                 <p>{t('cancelDonationPaypalDescription')}</p>
               ) : (
@@ -163,7 +172,12 @@ export const CancelModal = ({
               </RadioGroup>
               {showCalender ? (
                 <>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
+                    adapterLocale={
+                      localeMapForDate[locale] || localeMapForDate['en']
+                    }
+                  >
                     <CalendarPicker
                       date={date}
                       onChange={(value) => {

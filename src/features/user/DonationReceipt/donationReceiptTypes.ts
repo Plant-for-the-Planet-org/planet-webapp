@@ -35,20 +35,6 @@ export type Operation = (typeof RECEIPT_STATUS)[keyof typeof RECEIPT_STATUS];
 
 // latest API
 
-export interface DonorAPI {
-  reference: string;
-  tin: string | null;
-  type: 'individual' | 'organization';
-  name: string;
-  email: string;
-  address1: string;
-  address2: string | null;
-  city: string;
-  zipCode: string;
-  country: string;
-  guid: string | null;
-}
-
 export interface IssuedReceiptDataApi {
   amount: number;
   challenge: string;

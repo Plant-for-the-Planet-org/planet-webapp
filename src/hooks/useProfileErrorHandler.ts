@@ -6,6 +6,11 @@ import { useLocale } from 'next-intl';
 import { useAuthStore, useTenantStore, useUserStore } from '../stores';
 import useLocalizedPath from './useLocalizedPath';
 import { useAuthSession } from './useAuthSession';
+import { parseApiError } from '../utils/parseApiError';
+
+// `APIError.message` is always "Something went wrong" (set by the SDK), so read the real cause from `.errors`.
+const getProfileErrorMessage = (err: APIError): string =>
+  parseApiError(err)[0].message;
 
 const useProfileErrorHandler = () => {
   const router = useRouter();
@@ -61,12 +66,15 @@ const useProfileErrorHandler = () => {
         }
         // 500: server error, nothing the client can do, just log it
         case 500:
-          console.error('[Profile API] Internal Server Error:', err.message);
+          console.error(
+            '[Profile API] Internal Server Error:',
+            getProfileErrorMessage(err)
+          );
           break;
 
         // Any other status, log it for debugging
         default:
-          console.error('[Profile API] Error:', err.message);
+          console.error('[Profile API] Error:', getProfileErrorMessage(err));
           break;
       }
     },

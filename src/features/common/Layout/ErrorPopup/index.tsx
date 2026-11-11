@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import { useEffect } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import IconButton from '../../IconButton';
+import LiveRegion from '../../LiveRegion';
 import styles from './ErrorPopup.module.scss';
 import { useTranslations } from 'next-intl';
 import { useErrorHandlingStore } from '../../../../stores/errorHandlingStore';
@@ -62,9 +63,15 @@ export default function ErrorPopup(): ReactElement {
               >
                 <CloseIcon color={'#f44336'} width={'10'} height={'10'} />
               </IconButton>
-              <div className={styles.errorContent}>
+              {/* Assertive: an API failure the user must hear immediately.
+                  Scoped to the message so the close button is not announced
+                  as part of the alert. */}
+              <LiveRegion
+                politeness="assertive"
+                className={styles.errorContent}
+              >
                 {processErrorMessage(err.message)}
-              </div>
+              </LiveRegion>
             </div>
           );
         })}

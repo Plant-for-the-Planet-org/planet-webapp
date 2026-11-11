@@ -1,5 +1,5 @@
 import type { MapState } from '../utils/mapsV2/mapDefaults';
-import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { ViewState } from 'react-map-gl/maplibre';
 import type { MapLayerOptionsType } from '../utils/mapsV2/mapSettings.config';
 import type { ProjectTimeTravelConfig } from '../utils/mapsV2/timeTravel';
 import type {
