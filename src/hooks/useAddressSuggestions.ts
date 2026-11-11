@@ -26,7 +26,7 @@ interface UseAddressSuggestionsResult {
   handleInputChange: (value: string) => void;
   /** Resolve a picked suggestion into address parts and clear the list. */
   selectSuggestion: (value: string) => Promise<void>;
-  /** Drop the current suggestions, e.g. when a form is reset. */
+  /** Drop the current suggestions and any pending search, e.g. when a form is reset. */
   clearSuggestions: () => void;
 }
 
@@ -46,7 +46,13 @@ export const useAddressSuggestions = ({
   const [suggestions, setSuggestions] = useState<AddressSuggestionsType[]>([]);
   const latestRequestIdRef = useRef(0);
 
-  const clearSuggestions = useCallback(() => setSuggestions([]), []);
+  const clearSuggestions = useCallback(() => {
+    // Ignore any reply already on its way, so it cannot bring back an old list.
+    latestRequestIdRef.current++;
+    // Cancel a debounced search that has not started yet.
+    setInputValue('');
+    setSuggestions([]);
+  }, []);
 
   const fetchSuggestions = useCallback(
     async (value: string) => {
@@ -88,15 +94,15 @@ export const useAddressSuggestions = ({
 
   const selectSuggestion = useCallback(
     async (value: string) => {
+      clearSuggestions();
       // `getAddressDetailsFromText` logs and swallows its own failures,
       // resolving to `null`, so there is nothing here left to catch.
       const details = await getAddressDetailsFromText(value);
       if (details) {
         onAddressResolved(details);
       }
-      setSuggestions([]);
     },
-    [onAddressResolved]
+    [onAddressResolved, clearSuggestions]
   );
 
   return {
