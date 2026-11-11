@@ -1,25 +1,33 @@
+import type { TreeProjectClassification } from '@planet-sdk/common';
 import type { MapProject } from '../../../common/types/projectv2';
 import type { FeatureCollection, Point } from 'geojson';
-import type { MapLayerMouseEvent, MapGeoJSONFeature } from 'maplibre-gl';
+import type {
+  GeoJSONSource,
+  MapLayerMouseEvent,
+  MapGeoJSONFeature,
+} from 'maplibre-gl';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Layer, Source, useMap } from 'react-map-gl-v7/maplibre';
+import { Layer, Source, useMap } from 'react-map-gl/maplibre';
 import { useRouter } from 'next/router';
 import ProjectPopup from '../ProjectPopup';
 import {
   getPointMarkerImageKey,
+  isPointMarkerImageKey,
   registerMarkerIcons,
   MARKER_ICON_OFFSET_Y,
 } from './markerImageRegistry';
 import { getProjectCategory } from '../../../../utils/projectV2';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useQueryParamStore } from '../../../../stores/queryParamStore';
+import { areE2EHooksEnabled } from '../../../../utils/e2eHooks';
 
 interface Props {
   projects: MapProject[];
 }
 
-export const PROJECT_MARKERS_LAYER = 'project-markers-gl';
+const PROJECT_MARKERS_LAYER = 'project-markers-gl';
+const PROJECT_MARKERS_SOURCE = 'project-markers-source';
 
 // Draw order by tier: lower value renders first (underneath). Top projects on top, non donatable at bottom
 const TIER_DRAW_ORDER: Record<string, number> = {
@@ -33,6 +41,9 @@ type ProjectMarkerProperties = {
   slug: string;
   iconKey: string;
   sortKey: number;
+  allowDonations: boolean;
+  purpose: MapProject['properties']['purpose'];
+  classification: TreeProjectClassification | null;
 };
 
 const ProjectMarkersGL = ({ projects }: Props) => {
@@ -58,6 +69,13 @@ const ProjectMarkersGL = ({ projects }: Props) => {
             iconKey,
             sortKey:
               TIER_DRAW_ORDER[getProjectCategory(project.properties)] ?? 0,
+            // Not used for drawing. E2E tests read these to check the filters.
+            allowDonations: project.properties.allowDonations,
+            purpose: project.properties.purpose,
+            classification:
+              project.properties.purpose === 'trees'
+                ? project.properties.classification
+                : null,
           } as ProjectMarkerProperties,
         };
       })
@@ -87,23 +105,64 @@ const ProjectMarkersGL = ({ projects }: Props) => {
     [localizedPath, isEmbedMode, callbackUrl, router]
   );
 
-  // Register the per-category pin images on the map (idempotent).
+  // Register the pin images when MapLibre needs them. MapLibre waits for them to be ready, so no warning is shown.
+  // This also works after the map style changes, so the pins are added again automatically.
+  // A map holds only one missing-image resolver. If another layer needs one, share a single resolver that routes by image name instead of setting a second one.
   useEffect(() => {
     const map = mapInstance?.getMap();
     if (!map) return;
-    let cancelled = false;
-    const registerIcons = () => {
-      if (!cancelled) void registerMarkerIcons(map);
-    };
-    if (map.isStyleLoaded()) registerIcons();
-    else map.once('load', registerIcons);
-    // Safety net: re-register if an icon is missing (e.g. after a style reload).
-    // styleimagemissing fires once per missing image (~24 at initial load) - registerMarkerIcons coalesces concurrent calls so only one rasterization runs.
-    map.on('styleimagemissing', registerIcons);
+    map.setMissingStyleImageResolver(async (id) => {
+      if (!isPointMarkerImageKey(id)) return;
+      await registerMarkerIcons(map);
+      // If the style was replaced while pins were loading, some pins went into the old style. Register again so the new style gets them.
+      if (!map.hasImage(id)) await registerMarkerIcons(map);
+    });
     return () => {
-      cancelled = true;
-      map.off('load', registerIcons);
-      map.off('styleimagemissing', registerIcons);
+      map.setMissingStyleImageResolver(null);
+    };
+  }, [mapInstance]);
+
+  // Explore raster layers (e.g. forest cover) are appended to the top of the style when toggled on, which hides the pins. Keep the marker layer last in the draw order.
+  useEffect(() => {
+    const map = mapInstance?.getMap();
+    if (!map) return;
+    const keepMarkersOnTop = () => {
+      const order = map.getLayersOrder();
+      if (
+        order.includes(PROJECT_MARKERS_LAYER) &&
+        order[order.length - 1] !== PROJECT_MARKERS_LAYER
+      ) {
+        map.moveLayer(PROJECT_MARKERS_LAYER);
+      }
+    };
+    keepMarkersOnTop();
+    map.on('styledata', keepMarkersOnTop);
+    return () => {
+      map.off('styledata', keepMarkersOnTop);
+    };
+  }, [mapInstance]);
+
+  // Markers are drawn on a canvas, so E2E tests read them from the map's own source data instead of the page.
+  useEffect(() => {
+    const map = mapInstance?.getMap();
+    if (!map || !areE2EHooksEnabled()) return;
+    window.__planetE2E = {
+      getProjectMarkers: async () => {
+        const source = map.getSource<GeoJSONSource>(PROJECT_MARKERS_SOURCE);
+        if (!source) return null;
+        const data = (await source.getData()) as FeatureCollection<
+          Point,
+          ProjectMarkerProperties
+        >;
+        return data.features.map(
+          ({
+            properties: { slug, allowDonations, purpose, classification },
+          }) => ({ slug, allowDonations, purpose, classification })
+        );
+      },
+    };
+    return () => {
+      delete window.__planetE2E;
     };
   }, [mapInstance]);
 
@@ -168,7 +227,7 @@ const ProjectMarkersGL = ({ projects }: Props) => {
   return (
     <>
       <Source
-        id="project-markers-source"
+        id={PROJECT_MARKERS_SOURCE}
         type="geojson"
         data={featureCollection}
       >

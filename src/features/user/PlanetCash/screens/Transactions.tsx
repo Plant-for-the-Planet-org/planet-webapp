@@ -8,6 +8,7 @@ import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
 import NoTransactionsFound from '../components/NoTransactionsFound';
+import LiveRegion from '../../../common/LiveRegion';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
 import { useIsAuthReady } from '../../../../hooks/useAuthReadiness';
@@ -114,67 +115,69 @@ const Transactions = ({
     };
   }, []);
 
-  //Initial loading state (no data yet and request in progress)
-  if (!transactionHistory && isDataLoading) {
-    return (
-      <>
-        <TransactionListLoader />
-        <TransactionListLoader />
-        <TransactionListLoader />
-      </>
-    );
-  }
+  const isInitialLoading = !transactionHistory && isDataLoading;
 
-  //No data available (nothing to render)
-  if (!transactionHistory) {
-    return null;
-  }
-
-  //Empty state (data loaded but no transactions found)
-  if (transactionHistory.items.length === 0) {
-    return <NoTransactionsFound />;
-  }
-
-  //Transactions available → render list, pagination, and modal
   return (
     <>
-      {transactionHistory.items.map((record, index) => {
-        return (
-          <AccountRecord
-            key={index}
-            handleRecordToggle={handleRecordToggle}
-            index={index}
-            selectedRecord={selectedRecord}
-            record={record}
-            isPlanetCash={true}
-          />
-        );
-      })}
+      {/* Neither loading state shows any text. The initial loading state displays
+    skeletons, and "Load more" replaces its label with a spinner, so the
+    loading message is announced here instead.
 
-      {transactionHistory._links.next && (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => fetchTransactions(true)}
-          disabled={isDataLoading}
-          className="loadingButton"
-        >
-          {isDataLoading ? (
-            <CircularProgress color="primary" size={24} />
-          ) : (
-            t('loadMore')
+    Keep the live region outside the loading branches so it stays on the page.
+    When the loading state changes, screen readers announce the updated text
+    more reliably than if the live region is added with the message. This also
+    lets the initial skeleton loading state be announced. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {isDataLoading ? t('loadingTransactions') : ''}
+      </LiveRegion>
+      {isInitialLoading ? (
+        <>
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+        </>
+      ) : transactionHistory && transactionHistory.items.length > 0 ? (
+        <>
+          {transactionHistory.items.map((record, index) => {
+            return (
+              <AccountRecord
+                key={index}
+                handleRecordToggle={handleRecordToggle}
+                index={index}
+                selectedRecord={selectedRecord}
+                record={record}
+                isPlanetCash={true}
+              />
+            );
+          })}
+          {transactionHistory._links.next && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => fetchTransactions(true)}
+              disabled={isDataLoading}
+              aria-busy={isDataLoading}
+              className="loadingButton"
+            >
+              {isDataLoading ? (
+                <CircularProgress color="primary" size={24} />
+              ) : (
+                t('loadMore')
+              )}
+            </Button>
           )}
-        </Button>
-      )}
-
-      {isModalOpen && selectedRecord !== null && (
-        <AccountRecord
-          isModal={true}
-          handleRecordToggle={handleRecordToggle}
-          selectedRecord={selectedRecord}
-          record={transactionHistory.items[selectedRecord]}
-          isPlanetCash={true}
-        />
+          {isModalOpen && selectedRecord !== null && (
+            <AccountRecord
+              isModal={true}
+              handleRecordToggle={handleRecordToggle}
+              selectedRecord={selectedRecord}
+              record={transactionHistory.items[selectedRecord]}
+              isPlanetCash={true}
+            />
+          )}
+        </>
+      ) : (
+        transactionHistory && <NoTransactionsFound />
       )}
     </>
   );
