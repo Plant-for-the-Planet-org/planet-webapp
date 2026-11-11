@@ -4,80 +4,34 @@ import type { AppProps } from 'next/app';
 import type { Tenant } from '@planet-sdk/common/build/types/tenant';
 import type { AbstractIntlMessages } from 'next-intl';
 import type { NextPage } from 'next';
+import type { AppState } from '@auth0/auth0-react';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '../src/createEmotionCache';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/theme/global.scss';
+// After global.scss on purpose: on equal specificity the later sheet wins, so
+// Tailwind utilities take precedence over the legacy global styles.
+import '../src/styles/globals.css';
 import ThemeProvider from '../src/theme/themeContext';
-import * as Sentry from '@sentry/node';
-import { RewriteFrames } from '@sentry/integrations';
-import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { browserNotCompatible } from '../src/utils/browserCheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import dynamic from 'next/dynamic';
-import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
-import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { NextIntlClientProvider } from 'next-intl';
-import { DonationReceiptProvider } from '../src/features/common/Layout/DonationReceiptContext';
 import { StoreInitializer } from '../src/features/common/StoreInitializer/StoreInitializer';
 
 const Layout = dynamic(() => import('../src/features/common/Layout'), {
   ssr: false,
 });
 
-if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
-  const config = getConfig();
-  const distDir = `${config.serverRuntimeConfig.rootDir}/.next`;
-  Sentry.init({
-    enabled: process.env.NODE_ENV === 'production',
-    integrations: [
-      new RewriteFrames({
-        iteratee: (frame) => {
-          frame.filename = frame.filename?.replace(distDir, 'app:///_next');
-          return frame;
-        },
-      }),
-    ],
-    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-    // from https://gist.github.com/pioug/b006c983538538066ea871d299d8e8bc,
-    // also see https://docs.sentry.io/platforms/javascript/configuration/filtering/#decluttering-sentry
-    ignoreErrors: [
-      /^No error$/,
-      /__show__deepen/,
-      /_avast_submit/,
-      /Access is denied/,
-      /anonymous function: captureException/,
-      /Blocked a frame with origin/,
-      /console is not defined/,
-      /cordova/,
-      /DataCloneError/,
-      /Error: AccessDeny/,
-      /event is not defined/,
-      /feedConf/,
-      /ibFindAllVideos/,
-      /myGloFrameList/,
-      /SecurityError/,
-      /MyIPhoneApp/,
-      /snapchat.com/,
-      /vid_mate_check is not defined/,
-      /win\.document\.body/,
-      /window\._sharedData\.entry_data/,
-      /ztePageScrollModule/,
-    ],
-    denyUrls: [],
-  });
-}
-
-const onRedirectCallback = (appState: any) => {
+const onRedirectCallback = (appState?: AppState) => {
   // Use Next.js's Router.replace method to replace the url
   if (appState) Router.replace(appState?.returnTo || '/');
 };
@@ -119,29 +73,27 @@ const PlanetWeb = ({
 }: AppPropsWithLayout) => {
   const router = useRouter();
   const { tenantConfig } = pageProps;
-  const [browserCompatible, setBrowserCompatible] = useState(false);
+  const [isBrowserIncompatible, setIsBrowserIncompatible] = useState(false);
   const locale = (router.query?.locale as string) ?? 'en';
 
-  const tagManagerArgs = {
-    gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
-  };
-
-  if (process.env.NODE_ENV !== 'production') {
-    if (process.env.VERCEL_URL && typeof window !== 'undefined') {
-      if (process.env.VERCEL_URL !== window.location.hostname) {
-        router.replace(`https://${process.env.VERCEL_URL}`);
-      }
+  useEffect(() => {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      process.env.VERCEL_URL &&
+      process.env.VERCEL_URL !== window.location.hostname
+    ) {
+      router.replace(`https://${process.env.VERCEL_URL}`);
     }
-  }
+  }, [router]);
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
-      TagManager.initialize(tagManagerArgs);
+      TagManager.initialize({ gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID });
     }
   }, []);
 
   useEffect(() => {
-    setBrowserCompatible(browserNotCompatible());
+    setIsBrowserIncompatible(browserNotCompatible());
   }, []);
 
   // `_document` sets `<html lang>` at SSR and on every full load, including language switches. This effect is purely defensive: it would re-sync lang if the locale ever changed without a document render, which doesn't happen today. Its `router.isReady` guard avoids overwriting the SSR value in Next's static case where query can be empty pre-hydration.
@@ -150,10 +102,15 @@ const PlanetWeb = ({
     document.documentElement.lang = locale;
   }, [locale, router.isReady]);
 
-  const isMobile = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    return window.innerWidth < 481;
-  }, [typeof window !== 'undefined' && window.innerWidth]);
+  if (isBrowserIncompatible) {
+    return <BrowserNotSupported />;
+  }
+
+  if (!tenantConfig) {
+    return null;
+  }
+
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 481;
 
   const pageComponentProps = {
     pageProps,
@@ -166,51 +123,44 @@ const PlanetWeb = ({
     pageComponentProps
   );
 
-  if (browserCompatible) {
-    return <BrowserNotSupported />;
-  } else {
-    return tenantConfig ? (
-      <NextIntlClientProvider locale={locale} messages={pageProps.messages}>
-        <CacheProvider value={emotionCache}>
-          <Auth0Provider
-            domain={process.env.AUTH0_CUSTOM_DOMAIN!}
-            clientId={
-              tenantConfig.config?.auth0ClientId
-                ? tenantConfig.config.auth0ClientId
-                : process.env.AUTH0_CLIENT_ID
-            }
-            redirectUri={
-              typeof window !== 'undefined' ? window.location.origin : ''
-            }
-            audience={'urn:plant-for-the-planet'}
-            cacheLocation={'localstorage'}
-            onRedirectCallback={onRedirectCallback}
-            useRefreshTokens={true}
-          >
-            <StoreInitializer isMobile={isMobile} tenantConfig={tenantConfig} />
-            <ThemeProvider>
-              <MuiThemeProvider theme={materialTheme}>
-                <CssBaseline />
-                <PlanetCashProvider>
-                  <PayoutsProvider>
-                    <Layout>
-                      <BulkCodeProvider>
-                        <DonationReceiptProvider>
-                          {pageContent}
-                        </DonationReceiptProvider>
-                      </BulkCodeProvider>
-                    </Layout>
-                  </PayoutsProvider>
-                </PlanetCashProvider>
-              </MuiThemeProvider>
-            </ThemeProvider>
-          </Auth0Provider>
-        </CacheProvider>
-      </NextIntlClientProvider>
-    ) : (
-      <></>
-    );
+  const domain = process.env.AUTH0_CUSTOM_DOMAIN;
+
+  if (!domain) {
+    throw new Error('AUTH0_CUSTOM_DOMAIN is not configured');
   }
+
+  const clientId =
+    tenantConfig.config?.auth0ClientId || process.env.AUTH0_CLIENT_ID;
+
+  if (!clientId) {
+    throw new Error('AUTH0_CLIENT_ID is not configured');
+  }
+
+  return (
+    <NextIntlClientProvider locale={locale} messages={pageProps.messages}>
+      <CacheProvider value={emotionCache}>
+        <Auth0Provider
+          domain={domain}
+          clientId={clientId}
+          redirectUri={
+            typeof window !== 'undefined' ? window.location.origin : ''
+          }
+          audience={'urn:plant-for-the-planet'}
+          cacheLocation={'localstorage'}
+          onRedirectCallback={onRedirectCallback}
+          useRefreshTokens={true}
+        >
+          <StoreInitializer isMobile={isMobile} tenantConfig={tenantConfig} />
+          <ThemeProvider>
+            <MuiThemeProvider theme={materialTheme}>
+              <CssBaseline />
+              <Layout>{pageContent}</Layout>
+            </MuiThemeProvider>
+          </ThemeProvider>
+        </Auth0Provider>
+      </CacheProvider>
+    </NextIntlClientProvider>
+  );
 };
 
 export default PlanetWeb;

@@ -21,7 +21,7 @@ const ProjectInfoSection = ({
 }: ProjectInfoSectionProps) => {
   const { totalContributionUnits, contributionUnitType } =
     superclusterResponse.properties.contributionInfo;
-  const { tpoName, country, purpose, slug, unitType } =
+  const { tpoName, country, purpose, slug, unitType, allowDonations } =
     superclusterResponse.properties.projectInfo;
   const tProfile = useTranslations('Profile');
   const tCountry = useTranslations('Country');
@@ -53,22 +53,24 @@ const ProjectInfoSection = ({
           })}
         </span>
       </div>
-      <div>
-        <DonateButton
-          {...(profilePageType === 'public' &&
-          supportedTreecounter !== undefined
-            ? { type: 'supported', supportedTreecounter }
-            : { type: 'unsupported' })}
-          projectPurpose={purpose}
-          buttonText={
-            profilePageType === 'private'
-              ? tProfile('myContributions.donateAgain')
-              : tProfile('myContributions.donate')
-          }
-          projectSlug={slug}
-          contributionUnitType={unitType}
-        />
-      </div>
+      {allowDonations === true && (
+        <div>
+          <DonateButton
+            {...(profilePageType === 'public' &&
+            supportedTreecounter !== undefined
+              ? { type: 'supported', supportedTreecounter }
+              : { type: 'unsupported' })}
+            projectPurpose={purpose}
+            buttonText={
+              profilePageType === 'private'
+                ? tProfile('myContributions.donateAgain')
+                : tProfile('myContributions.donate')
+            }
+            projectSlug={slug}
+            contributionUnitType={unitType}
+          />
+        </div>
+      )}
     </div>
   );
 };

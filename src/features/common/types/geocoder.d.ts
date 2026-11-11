@@ -99,6 +99,16 @@ export interface AddressType {
   candidates: Candidate[];
 }
 
+/**
+ * The subset of a candidate's attributes that `getAddressDetailsFromText`
+ * returns, ready to fan into address form fields.
+ */
+export interface ResolvedAddress {
+  address: string;
+  city: string;
+  zipCode: string;
+}
+
 export interface ReverseAddress {
   address: ConciseAddressProperties;
   location: {

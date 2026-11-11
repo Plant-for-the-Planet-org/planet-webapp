@@ -1,5 +1,5 @@
 import type { ClusterProperties, PointFeature } from 'supercluster';
-import type { MutableRefObject } from 'react';
+import type { RefObject } from 'react';
 import type {
   DonationProperties,
   DonationSuperclusterProperties,
@@ -8,18 +8,18 @@ import type {
   RegistrationSuperclusterProperties,
 } from '../../../../common/types/myForest';
 import type { SetState } from '../../../../common/types/common';
-import type { ViewState } from 'react-map-gl-v7/maplibre';
+import type { MapRef, ViewState } from 'react-map-gl/maplibre';
 
 import { useEffect, useRef, useState } from 'react';
 import { getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import DonationClusterMarker from './DonationClusterMarker';
 import PointMarkers from './PointMarkers';
 import RegisteredTreeClusterMarker from './RegisteredTreeClusterMarker';
-import center from '@turf/center';
+import { center } from '@turf/center';
 import { useMyForestStore } from '../../../../../stores';
 
 interface MarkersProps {
-  mapRef: MutableRefObject<null>;
+  mapRef: RefObject<MapRef>;
   viewState: ViewState;
   setViewState: SetState<ViewState>;
   profilePageType: ProfilePageType;
@@ -104,7 +104,7 @@ const Markers = ({
 
       if (validFeatures.length > 0) {
         const markersGeojson = {
-          type: 'FeatureCollection',
+          type: 'FeatureCollection' as const,
           features: validFeatures,
         };
 

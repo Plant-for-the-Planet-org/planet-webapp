@@ -27,7 +27,7 @@ if (!dev && cluster.isMaster) {
     );
   });
 } else {
-  const nextApp = next({ dir: '.', dev });
+  const nextApp = next({ dir: '.', dev, webpack: true });
   const nextHandler = nextApp.getRequestHandler();
 
   nextApp.prepare().then(async () => {

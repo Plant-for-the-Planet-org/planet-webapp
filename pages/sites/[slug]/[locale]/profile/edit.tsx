@@ -12,6 +12,7 @@ import Head from 'next/head';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import { useTranslations } from 'next-intl';
 import EditProfile from '../../../../../src/features/user/Settings/EditProfile';
+import SettingsFormSkeleton from '../../../../../src/features/user/Settings/SettingsFormSkeleton';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -29,7 +30,16 @@ function EditProfilePage(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={
+        <SettingsFormSkeleton
+          title={t('editProfile')}
+          subtitleLines={0}
+          sections={2}
+          fieldsPerSection={4}
+        />
+      }
+    >
       <Head>
         <title>{t('editProfile')}</title>
       </Head>

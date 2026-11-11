@@ -1,0 +1,37 @@
+import type { Intervention } from '@planet-sdk/common';
+
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { useInterventionStore } from './interventionStore';
+import { useSingleProjectStore } from './singleProjectStore';
+import { createMockRouter, resetAllStores } from '../test-utils';
+
+describe('interventionStore.selectInterventionSyncUrl', () => {
+  beforeEach(() => {
+    resetAllStores();
+  });
+
+  it('selects the intervention, clears the site, and swaps the site for the ploc in the URL, keeping other params', () => {
+    useSingleProjectStore.setState({ selectedSite: 0 });
+    const intervention = { hid: 'ploc_1' } as Intervention;
+    const router = createMockRouter({
+      query: {
+        p: 'yucatan',
+        site: 'site_a',
+        embed: 'true',
+        callback: 'https://example.org',
+      },
+    });
+
+    useInterventionStore
+      .getState()
+      .selectInterventionSyncUrl(intervention, 'en', 'yucatan', router);
+
+    expect(useInterventionStore.getState().selectedIntervention).toBe(
+      intervention
+    );
+    expect(useSingleProjectStore.getState().selectedSite).toBeNull();
+    expect(vi.mocked(router.replace).mock.calls[0][1]).toBe(
+      '/en/yucatan?embed=true&callback=https%3A%2F%2Fexample.org&ploc=ploc_1'
+    );
+  });
+});

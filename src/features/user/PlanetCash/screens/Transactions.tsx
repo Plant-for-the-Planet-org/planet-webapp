@@ -7,11 +7,15 @@ import { useTranslations } from 'next-intl';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
-import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
+import LiveRegion from '../../../common/LiveRegion';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import { useAuthStore, useErrorHandlingStore } from '../../../../stores';
+import {
+  useAuthStore,
+  useErrorHandlingStore,
+  usePlanetCashStore,
+} from '../../../../stores';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
@@ -25,7 +29,6 @@ const Transactions = ({
   const t = useTranslations('Me');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { accounts } = usePlanetCash();
   const { getApiAuthenticated } = useApi();
   // local state
   const [transactionHistory, setTransactionHistory] =
@@ -34,6 +37,10 @@ const Transactions = ({
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // store: state
+  const hasPlanetCashAccount = usePlanetCashStore(
+    (state) =>
+      state.planetCashAccounts !== null && state.planetCashAccounts.length > 0
+  );
   const isAuthReady = useAuthStore(
     (state) => state.token !== null && state.isAuthResolved
   );
@@ -101,8 +108,8 @@ const Transactions = ({
   );
 
   useEffect(() => {
-    if (isAuthReady && accounts && accounts.length > 0) fetchTransactions();
-  }, [isAuthReady, accounts]);
+    if (isAuthReady && hasPlanetCashAccount) fetchTransactions();
+  }, [isAuthReady, hasPlanetCashAccount]);
 
   useEffect(() => {
     // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.
@@ -113,53 +120,71 @@ const Transactions = ({
     };
   }, []);
 
-  return !transactionHistory && isDataLoading ? (
+  const isInitialLoading = !transactionHistory && isDataLoading;
+
+  return (
     <>
-      <TransactionListLoader />
-      <TransactionListLoader />
-      <TransactionListLoader />
-    </>
-  ) : transactionHistory && transactionHistory.items.length > 0 ? (
-    <>
-      {transactionHistory.items.map((record, index) => {
-        return (
-          <AccountRecord
-            key={index}
-            handleRecordToggle={handleRecordToggle}
-            index={index}
-            selectedRecord={selectedRecord}
-            record={record}
-            isPlanetCash={true}
-          />
-        );
-      })}
-      {transactionHistory._links.next && (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => fetchTransactions(true)}
-          disabled={isDataLoading}
-          className="loadingButton"
-        >
-          {isDataLoading ? (
-            <CircularProgress color="primary" size={24} />
-          ) : (
-            t('loadMore')
+      {/* Neither loading state shows any text. The initial loading state displays
+    skeletons, and "Load more" replaces its label with a spinner, so the
+    loading message is announced here instead.
+
+    Keep the live region outside the loading branches so it stays on the page.
+    When the loading state changes, screen readers announce the updated text
+    more reliably than if the live region is added with the message. This also
+    lets the initial skeleton loading state be announced. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {isDataLoading ? t('loadingTransactions') : ''}
+      </LiveRegion>
+      {isInitialLoading ? (
+        <>
+          <TransactionListLoader />
+          <TransactionListLoader />
+          <TransactionListLoader />
+        </>
+      ) : transactionHistory && transactionHistory.items.length > 0 ? (
+        <>
+          {transactionHistory.items.map((record, index) => {
+            return (
+              <AccountRecord
+                key={index}
+                handleRecordToggle={handleRecordToggle}
+                index={index}
+                selectedRecord={selectedRecord}
+                record={record}
+                isPlanetCash={true}
+              />
+            );
+          })}
+          {transactionHistory._links.next && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => fetchTransactions(true)}
+              disabled={isDataLoading}
+              aria-busy={isDataLoading}
+              className="loadingButton"
+            >
+              {isDataLoading ? (
+                <CircularProgress color="primary" size={24} />
+              ) : (
+                t('loadMore')
+              )}
+            </Button>
           )}
-        </Button>
-      )}
-      {isModalOpen && selectedRecord !== null && (
-        <AccountRecord
-          isModal={true}
-          handleRecordToggle={handleRecordToggle}
-          selectedRecord={selectedRecord}
-          record={transactionHistory.items[selectedRecord]}
-          isPlanetCash={true}
-        />
+          {isModalOpen && selectedRecord !== null && (
+            <AccountRecord
+              isModal={true}
+              handleRecordToggle={handleRecordToggle}
+              selectedRecord={selectedRecord}
+              record={transactionHistory.items[selectedRecord]}
+              isPlanetCash={true}
+            />
+          )}
+        </>
+      ) : (
+        transactionHistory && <NoTransactionsFound />
       )}
     </>
-  ) : (
-    transactionHistory && <NoTransactionsFound />
   );
 };
 
