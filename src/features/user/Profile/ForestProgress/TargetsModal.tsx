@@ -64,7 +64,7 @@ const TargetsModal = ({
   );
   //store: action
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
-  const refetchUserProfile = useUserStore((state) => state.refetchUserProfile);
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
   // Names the dialog using its visible title
   const titleId = useId();
@@ -106,7 +106,7 @@ const TargetsModal = ({
           payload,
         });
         const forestUserInfo = transformProfileToForestUserInfo(res);
-        refetchUserProfile();
+        setUserProfile(res);
         if (forestUserInfo !== undefined) {
           setUserInfo(forestUserInfo);
           setTreesPlantedTargetLocal(forestUserInfo.targets.treesDonated ?? 0);
