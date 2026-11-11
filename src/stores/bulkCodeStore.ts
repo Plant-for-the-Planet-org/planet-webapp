@@ -1,9 +1,5 @@
-import type {
-  APIError,
-  CountryCode,
-  CountryProject,
-  CurrencyCode,
-} from '@planet-sdk/common';
+import type { APIError, CountryProject } from '@planet-sdk/common';
+import type { BulkCodesPlanetCashAccount } from '../features/user/BulkCodes/BulkCodesTypes';
 import type { BulkCodeMethods } from '../utils/constants/bulkCodeConstants';
 import type { ApiRequestFn } from '../hooks/useApi';
 
@@ -13,31 +9,18 @@ import { useErrorHandlingStore } from './errorHandlingStore';
 import { handleError } from '@planet-sdk/common';
 import { filterEligibleProjects } from '../features/user/BulkCodes/utils';
 
-export interface PlanetCashAccount {
-  guid: string;
-  currency: CurrencyCode;
-  country: CountryCode;
-}
-
-export interface Recipient {
-  units: number;
-  recipientName: string;
-  recipientEmail: string;
-  message: string;
-  notifyRecipient: boolean;
-  // occasion: string;
-}
-
 interface BulkCodeStore {
   bulkMethod: BulkCodeMethods | null;
-  planetCashAccount: PlanetCashAccount | null;
+  planetCashAccount: BulkCodesPlanetCashAccount | null;
   project: CountryProject | null;
   projectList: CountryProject[] | null;
   isFetchingProjectList: boolean;
 
   fetchProjectList: (getApi: ApiRequestFn) => Promise<void>;
   setBulkMethod: (bulkMethod: BulkCodeMethods | null) => void;
-  setPlanetCashAccount: (planetCashAccount: PlanetCashAccount | null) => void;
+  setPlanetCashAccount: (
+    planetCashAccount: BulkCodesPlanetCashAccount | null
+  ) => void;
   setProject: (project: CountryProject | null) => void;
   resetBulkCodeStore: () => void;
 }

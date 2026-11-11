@@ -1,6 +1,7 @@
-import { cleanCoords, truncate } from '@turf/turf';
+import { cleanCoords } from '@turf/clean-coords';
+import { truncate } from '@turf/truncate';
 
-export const STAGE_MAP: Record<string, string> = {
+const STAGE_MAP: Record<string, string> = {
   barren: 'PLANNING',
   planned: 'PLANNING',
   planted: 'COMPLETED',
@@ -65,7 +66,7 @@ const sanitizeRings = (rings: number[][][]): number[][][] =>
  * 3. removeSpikePoints — drops vertices that create near-zero interior angles
  * 4. closeRing — ensures each ring's first and last coordinate are identical
  */
-export const sanitizeGeometry = (geometry: {
+const sanitizeGeometry = (geometry: {
   type: string;
   coordinates: unknown;
 }): { type: string; coordinates: unknown } => {

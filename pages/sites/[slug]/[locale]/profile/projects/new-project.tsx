@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import ManageProjects from '../../../../../../src/features/user/ManageProjects';
+import ManageProjectsSkeleton from '../../../../../../src/features/user/ManageProjects/ManageProjectsSkeleton';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../../../../src/features/common/Layout/Footer';
 import Head from 'next/head';
@@ -51,6 +52,7 @@ export default function AddProjectType(): ReactElement {
 
       loginWithRedirect({
         redirectUri: `${window.location.origin}/login`,
+        // Legacy compatibility read, kept until Auth0 redirects are migrated off localStorage.language (see issue #3234).
         ui_locales: localStorage.getItem('language') || 'en',
       });
       return;
@@ -74,7 +76,11 @@ export default function AddProjectType(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={
+        <ManageProjectsSkeleton variant="tabbed" title={t('addNewProject')} />
+      }
+    >
       <Head>
         <title>{t('addNewProject')}</title>
       </Head>

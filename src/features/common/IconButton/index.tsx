@@ -22,7 +22,7 @@ interface CommonProps {
   className?: string;
 }
 
-export interface IconButtonAsButtonProps
+interface IconButtonAsButtonProps
   extends CommonProps,
     Omit<
       ButtonHTMLAttributes<HTMLButtonElement>,
@@ -31,7 +31,7 @@ export interface IconButtonAsButtonProps
   elementType?: 'button';
 }
 
-export interface IconButtonAsLinkProps
+interface IconButtonAsLinkProps
   extends CommonProps,
     Omit<
       AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -41,7 +41,7 @@ export interface IconButtonAsLinkProps
   href: string;
 }
 
-export type IconButtonProps = IconButtonAsButtonProps | IconButtonAsLinkProps;
+type IconButtonProps = IconButtonAsButtonProps | IconButtonAsLinkProps;
 
 /**
  * Accessible icon-only button or link.
