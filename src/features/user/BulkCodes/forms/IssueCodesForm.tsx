@@ -16,6 +16,7 @@ import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
+import LiveRegion from '../../../common/LiveRegion';
 import cleanObject from '../../../../utils/cleanObject';
 import { v4 as uuidV4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
@@ -323,9 +324,21 @@ const IssueCodesForm = (): ReactElement | null => {
     );
   }, [locale, t]);
 
+  // The live region is rendered in both states, so it stays on the page while
+  // the form is submitted. When the success message appears, screen readers
+  // announce the updated text more reliably than if the live region is added
+  // with the message. The live region is visually hidden, so it does not affect
+  // the visible success message or the layout.
+  const statusRegion = (
+    <LiveRegion politeness="polite" isVisuallyHidden>
+      {status !== 'success' ? '' : t('donationSuccess')}
+    </LiveRegion>
+  );
+
   if (status !== 'success') {
     return (
       <CenteredContainer>
+        {statusRegion}
         <StyledFormContainer className="IssueCodesForm" component={'section'}>
           <div className="inputContainer">
             <ProjectSelector project={project} disabled={true} />
@@ -380,7 +393,7 @@ const IssueCodesForm = (): ReactElement | null => {
             />
           </div>
           <BulkCodesError />
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} aria-busy={status === 'submitting'}>
             <Button
               type="submit"
               variant="contained"
@@ -400,16 +413,20 @@ const IssueCodesForm = (): ReactElement | null => {
         </StyledFormContainer>
       </CenteredContainer>
     );
+  } else {
+    return (
+      <CenteredContainer className="CenteredContainer--small">
+        {statusRegion}
+        {/* Visible copy only. `CenteredContainer` is the same element type in
+            both branches and the region is the first child of each, so React
+            reconciles it to the same DOM node instead of remounting it. */}
+        <div className={styles.successMessage}>
+          {t('donationSuccess')}
+          <span className={styles.spinner} aria-hidden="true"></span>
+        </div>
+      </CenteredContainer>
+    );
   }
-
-  return (
-    <CenteredContainer className="CenteredContainer--small">
-      <div className={styles.successMessage}>
-        {t('donationSuccess')}
-        <span className={styles.spinner}></span>
-      </div>
-    </CenteredContainer>
-  );
 };
 
 export default IssueCodesForm;

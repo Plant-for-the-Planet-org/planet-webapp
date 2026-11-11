@@ -192,6 +192,7 @@
     "downloads": "Downloads",
     "account": "Konto",
     "loadMore": "Mehr laden",
+    "loadingTransactions": "Transaktionen werden geladen",
     "setTarget": "Ziel setzen",
     "targetSave": "Speichern",
     "targetErrorMessage": "Zahl muss größer als Null sein",
