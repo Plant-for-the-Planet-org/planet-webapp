@@ -5,7 +5,7 @@ import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import SearchIcon from '../../../../public/assets/images/icons/SearchIcon';
 
-export interface BaseProject {
+interface BaseProject {
   guid: string;
   name: string;
 }

@@ -1,4 +1,4 @@
-@import '../../../theme/theme';
+@use '../../../theme/theme' as *;
 
 .projectDetailsContainer {
   width: 100%;
@@ -23,8 +23,4 @@
     padding-bottom: 20px;
     height: 100%;
   }
-}
-
-.projectDetailsSkeleton {
-  height: 100%;
 }

@@ -20,7 +20,7 @@ import type {
   ProjectSiteFeature,
 } from '../features/common/types/map';
 
-import centroid from '@turf/centroid';
+import { centroid } from '@turf/centroid';
 
 type MetaDataValue = {
   value: string;
@@ -47,7 +47,7 @@ export const MAIN_MAP_LAYERS = {
   DATE_DIFF_LABEL: 'datediff-label',
 };
 
-export const PLANT_LAYERS = [
+const PLANT_LAYERS = [
   MAIN_MAP_LAYERS.PLANT_POLYGON,
   MAIN_MAP_LAYERS.PLANT_POINT,
 ];
@@ -179,28 +179,15 @@ export function getFeaturesAtPoint(
 ): MapGeoJSONFeature[] | undefined {
   if (!mapRef.current) return;
   const map = mapRef.current.getMap();
-  const canvas = map.getCanvas();
 
   const availableLayers = INTERACTIVE_LAYERS.filter((layerId) =>
     map.getLayer(layerId)
   );
+  if (availableLayers.length === 0) return [];
 
-  if (availableLayers.length === 0) {
-    canvas.style.cursor = '';
-    return [];
-  }
-
-  const features = map.queryRenderedFeatures(point, {
+  return map.queryRenderedFeatures(point, {
     layers: availableLayers,
   });
-
-  if (features.length === 0) {
-    canvas.style.cursor = '';
-    return [];
-  }
-
-  canvas.style.cursor = 'pointer';
-  return features;
 }
 
 /**
@@ -305,7 +292,7 @@ export const getValidFeatures = (projects: MapProject[]) =>
  */
 export const calculateCentroid = (features: MapProject[]) => {
   const featureCollection = {
-    type: 'FeatureCollection',
+    type: 'FeatureCollection' as const,
     features,
   };
   return centroid(featureCollection);

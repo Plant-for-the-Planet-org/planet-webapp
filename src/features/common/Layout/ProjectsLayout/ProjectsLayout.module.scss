@@ -1,4 +1,4 @@
-@import '../../../../theme/theme';
+@use '../../../../theme/theme' as *;
 
 // define a variable for the space around the layout
 $layoutPaddingTop: 24px;

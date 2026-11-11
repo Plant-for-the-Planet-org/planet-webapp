@@ -521,6 +521,7 @@ useEffect(() => {
 | **Component / Feature** | Error popups, redeem, filter results, uploads, donations, loaders |
 | **Effort** | Small–Medium |
 | **Priority Score** | 72 / 100 |
+| **Status** | 🟡 Remediated in code (2026-07-27) — pending verification |
 
 **File(s) & Line(s):**
 - `src/features/common/Layout/ErrorPopup/index.tsx:49`
@@ -572,6 +573,11 @@ useEffect(() => {
 | **Component / Feature** | Account modals, Share/Redeem/Target modals, image slider modal, map settings, embed, custom modal |
 | **Effort** | Medium |
 | **Priority Score** | 70 / 100 |
+| **Status** | 🟡 Remediated in code (2026-07-28) — pending verification |
+
+**Remediation:** All eleven modals now carry a dialog role with `useId()`-generated `aria-labelledby` (and `aria-describedby` where a description exists) **on the modal's content element**. The five confirmation modals (`CustomModal`, `CancelModal`, `PauseModal`, `ReactivateModal`, `EmbedModal`) use `role="alertdialog"`, because VoiceOver skips the description of a plain `dialog` when focus lands on it, and an `alertdialog`'s description is read on open; the forms and tools keep `role="dialog"`. The inert placeholder attributes were removed from the `<Modal>` wrappers: MUI's `Modal` root renders `role="presentation"`, so ARIA naming attributes passed to `<Modal>` never applied, valid IDREF or not. `RedeemModal` uses `aria-label={t('redeem')}` instead, because its visible heading changes with the redeem state. Escape dismissal was added to `CustomModal` (`onClose={handleCancel}`), `EmbedModal` (new shared `handleCancel`, which is also what its cancel button now calls), `ImageSliderModal` (escape only, so backdrop clicks keep doing nothing) and the mobile `MapFeatureExplorer` panel (previously it filtered for `backdropClick` and swallowed Escape). `EmbedModal`'s duplicate `id="editProfileSaveProfile"` on the cancel button became `id="editProfileCancel"`. Focus management is MUI's and was **not** re-implemented — but two modals silently disabled it, because `FocusTrap` clones the `Modal` child with a ref: `ImageSliderModal` returned a fragment (now a single `<div>` carrying the dialog role and the flex layout the modal root used to apply — including a 20px side padding that reproduces the edge inset MUI's focus-trap sentinels used to create as extra `gap`; without it the 800px image container stops shrinking to the viewport and the mobile arrows and close button fall off-screen), and the mobile `MapFeatureExplorer` panel rendered `MapSettings`, a plain function component (now `MapSettings` and `MobileMapSettingsLayout` forward the ref, so focus moves into the panel and Escape works from the keyboard). `LayerInfoPopup` was intentionally left unchanged — see below. Behaviour change: Escape now closes the four dialogs above. Visual change: the `ImageSliderModal` arrow buttons show a white focus ring. Line numbers below reflect the pre-fix code.
+
+**Not fixed here:** `LayerInfoPopup.tsx` is listed below but is not a MUI modal — it is a plain conditionally-rendered popup. Giving it an accessible name only helps once it has dialog semantics and focus management, which is exactly the scope of **A11Y-023**; splitting that work across two findings would leave it half-done. Its missing-Escape entry is a false positive: the parent `SiteMapLayerControls/index.tsx:29`–`33` already closes it on Escape.
 
 **File(s) & Line(s):**
 - Dangling `aria-labelledby="simple-modal-title"` / `aria-describedby` (no matching element): `src/features/user/Account/CancelModal.tsx:92`, `EditModal.tsx:131`, `PauseModal.tsx:99`, `ReactivateModal.tsx:66`, `src/features/user/Profile/ProfileCard/ShareModal/index.tsx:72`, `RedeemModal/index.tsx:130`, `src/features/projectsV2/ProjectDetails/components/microComponents/ImageSliderModal.tsx:52`, `src/features/projectsV2/ProjectsMap/MapFeatureExplorer/index.tsx:47`
@@ -1207,7 +1213,7 @@ useEffect(() => {
 ```tsx
 <CancelIcon aria-hidden="true" focusable="false" />
 ```
-Good existing patterns to mirror: `ContentLoaders/ButtonLoader.tsx` and `ContentLoaders/UserProfile/UserProfileLoader.tsx`.
+Good existing patterns to mirror: `ContentLoaders/ButtonLoader.tsx` and `ContentLoaders/UserLayout/UserLayoutLoader.tsx`.
 
 **Testing Steps:** Screen reader skips decorative icons. Automated: axe `svg-img-alt`.
 
@@ -1454,6 +1460,7 @@ These patterns recur across the codebase and should be fixed once (component/sou
 - **Affected files:** CancelModal, EditModal, PauseModal, ReactivateModal, ShareModal, RedeemModal, ImageSliderModal, MapFeatureExplorer, CustomModal, EmbedModal, TargetsModal, LayerInfoPopup.
 - **Shared root cause:** Copied modal template with placeholder `simple-modal-title`/`simple-modal-description` IDs never applied; missing `onClose`.
 - **Global fix:** A shared `<AppModal>` component that takes `title`/`description`, generates matching IDs, wires `aria-labelledby`/`aria-describedby`, handles Escape (`onClose`), and manages focus in/out.
+- **Status:** The eleven modals listed under A11Y-011 are remediated in place (2026-07-28); LayerInfoPopup is tracked under A11Y-023. Five further modals with the same defect fall outside A11Y-011's file list and are tracked as **FU-006**; the shared `<AppModal>` primitive is tracked as **FU-007** (`FOLLOW_UPS.md`).
 
 ### Pattern P6 — Toggle "secondary checkbox" label (see A11Y-012)
 - **Affected files:** NewToggleSwitch (source) + BasicDetails, SubmitForReview, ProjectCertificates, EditProfileForm, SignupToggles.
@@ -1553,13 +1560,17 @@ These patterns recur across the codebase and should be fixed once (component/sou
 
 ### Recommended Fix Order
 
-1. **Critical blockers:** A11Y-001, A11Y-002 (build the `Clickable` and `IconButton` primitives first).
-2. **Keyboard navigation:** A11Y-006, A11Y-007, A11Y-009, A11Y-015, A11Y-020, A11Y-021, A11Y-033.
-3. **Screen reader support:** A11Y-004, A11Y-008, A11Y-010, A11Y-012, A11Y-013, A11Y-014, A11Y-024, A11Y-026, A11Y-030, A11Y-034.
-4. **Forms:** A11Y-005, A11Y-016, A11Y-019, A11Y-029.
+1. **Critical blockers:** A11Y-001 (completed), A11Y-002 (completed) — build the `Clickable` and `IconButton` primitives first.
+2. **Keyboard navigation:** A11Y-006 (completed), A11Y-007, A11Y-009, A11Y-015, A11Y-020 (completed), A11Y-021 (completed), A11Y-033.
+3. **Screen reader support:** A11Y-004 (completed), A11Y-008 (completed), A11Y-010 (completed), A11Y-012, A11Y-013, A11Y-014, A11Y-024, A11Y-026, A11Y-030, A11Y-034.
+4. **Forms:** A11Y-005 (completed), A11Y-016 (completed), A11Y-019 (completed), A11Y-029.
 5. **Dialogs & focus management:** A11Y-011, A11Y-017, A11Y-023 (build `AppModal`).
-6. **Semantic HTML improvements:** A11Y-003, A11Y-018, A11Y-028, A11Y-031, A11Y-035.
+6. **Semantic HTML improvements:** A11Y-003 (completed), A11Y-018 (completed), A11Y-028 (completed), A11Y-031, A11Y-035 (completed).
 7. **Remaining low-priority items:** A11Y-022, A11Y-025, A11Y-027, A11Y-032.
+
+> "(completed)" means the fix is merged into `develop`. 15 of 35 findings are done: A11Y-001, 002, 003, 004, 005, 006, 008, 010, 016, 018, 019, 020, 021, 028, 035.
+>
+> Partially covered: A11Y-005 — one control is still unlabeled, tracked as FU-004 in `FOLLOW_UPS.md`. A11Y-032 was in scope of the semantic-HTML branch but was not fixed; `RedeemPopup` still uses `<a onClick>` with no `href`.
 
 ---
 

@@ -1,6 +1,8 @@
 import type { MapOptions } from '../../../common/types/map';
+import type { ForwardedRef } from 'react';
 import type { SetState } from '../../../common/types/common';
 
+import { forwardRef } from 'react';
 import MapSettingsSection from './microComponents/MapSettingsSection';
 import MobileMapSettingsLayout from './MobileMapSettingsLayout';
 import { mapSettingsConfig } from '../../../../utils/mapsV2/mapSettings.config';
@@ -15,13 +17,10 @@ type MapSettingsProps = {
   setIsOpen?: SetState<boolean>;
 };
 
-const MapSettings = ({
-  id,
-  mapOptions,
-  updateMapOption,
-  isMobile,
-  setIsOpen,
-}: MapSettingsProps) => {
+const MapSettings = (
+  { id, mapOptions, updateMapOption, isMobile, setIsOpen }: MapSettingsProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const content = (
     <>
       <MapSettingsSection
@@ -58,17 +57,18 @@ const MapSettings = ({
 
   if (isMobile && setIsOpen) {
     return (
-      <MobileMapSettingsLayout id={id} setIsOpen={setIsOpen}>
+      <MobileMapSettingsLayout ref={ref} id={id} setIsOpen={setIsOpen}>
         {content}
       </MobileMapSettingsLayout>
     );
   }
 
   return (
-    <div id={id} className={styles.exploreMainContainer}>
+    <div ref={ref} id={id} className={styles.exploreMainContainer}>
       <div className={styles.exploreItemsContainer}>{content}</div>
     </div>
   );
 };
 
-export default MapSettings;
+// Forwards the ref so the mobile MUI Modal can move focus into the panel on open and back on close
+export default forwardRef(MapSettings);

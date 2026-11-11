@@ -4,7 +4,7 @@ import type { DropdownType } from '../../../common/types/projectv2';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import area from '@turf/area';
+import { area } from '@turf/area';
 import SiteIcon from '../../../../../public/assets/images/icons/projectV2/SiteIcon';
 import styles from './SiteDropdown.module.scss';
 import DropdownUpArrow from '../../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
@@ -106,7 +106,7 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
                   <label className={styles.sitesLabel}>
                     <span className={styles.siteId}>
                       {tProjectDetails('siteCount', {
-                        siteId: getId(selectedSiteData?.id),
+                        siteId: getId(selectedSiteData?.id) ?? 0,
                         totalCount: siteList.length,
                       })}
                     </span>
