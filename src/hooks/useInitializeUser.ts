@@ -4,7 +4,10 @@ import { useAuthStore, useTenantStore, useUserStore } from '../stores';
 import { useLocale } from 'next-intl';
 import useProfileErrorHandler from './useProfileErrorHandler';
 import { useAuthSession } from './useAuthSession';
-import { clearRedirectCount } from '../utils/authRedirectGuard';
+import {
+  resetAuthExpiryHandling,
+  clearRedirectCount,
+} from '../utils/authRedirectGuard';
 import { readStoredImpersonationData } from '../utils/impersonation';
 import {
   clearStoredDirectGift,
@@ -60,6 +63,7 @@ export const useInitializeUser = () => {
         // Reset the redirect counter so old failures do not affect future,
         // unrelated login or profile errors.
         clearRedirectCount();
+        resetAuthExpiryHandling();
       })
       .catch((err) => {
         // API errors are surfaced through `profileApiError` below.
