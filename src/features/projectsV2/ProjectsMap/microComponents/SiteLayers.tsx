@@ -5,7 +5,7 @@ import type { E2EBounds } from '../../../../utils/e2eHooks';
 
 import { useEffect } from 'react';
 import { Layer, Source, useMap } from 'react-map-gl/maplibre';
-import bbox from '@turf/bbox';
+import { bbox } from '@turf/bbox';
 import themeProperties from '../../../../theme/themeProperties';
 import { MAIN_MAP_LAYERS } from '../../../../utils/projectV2';
 import { areE2EHooksEnabled, setE2EHooks } from '../../../../utils/e2eHooks';
