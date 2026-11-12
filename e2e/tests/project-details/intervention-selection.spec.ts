@@ -98,7 +98,9 @@ test('choosing an intervention type from the dropdown selects it, keeps the URL 
   page,
 }) => {
   const { sites, interventions } = await openProject(page);
-  const [{ type }] = await interventions();
+  const [intervention] = await interventions();
+  expect(intervention, 'an intervention on the project').toBeDefined();
+  const { type } = intervention;
   await expectSelectionInUrl(page, { site: sites[0].id, ploc: null });
 
   await interventionTypeToggle(page).click();
