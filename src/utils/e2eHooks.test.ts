@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { areE2EHooksEnabled } from './e2eHooks';
+import { areE2EHooksEnabled, setE2EHooks } from './e2eHooks';
 
 // Next inlines both values at build time, but under vitest they are ordinary runtime reads.
 const build = (nodeEnv: string, e2eHooks?: string) => {
@@ -36,5 +36,38 @@ describe('areE2EHooksEnabled', () => {
     build('development');
 
     expect(areE2EHooksEnabled()).toBe(true);
+  });
+});
+
+describe('setE2EHooks', () => {
+  const getProjectMarkers = async () => null;
+  const getProjectSites = async () => null;
+
+  afterEach(() => {
+    delete window.__planetE2E;
+  });
+
+  it('keeps hooks that another part of the map added', () => {
+    setE2EHooks({ getProjectMarkers });
+    setE2EHooks({ getProjectSites });
+
+    expect(window.__planetE2E).toEqual({ getProjectMarkers, getProjectSites });
+  });
+
+  it('removes only its own hooks on cleanup', () => {
+    setE2EHooks({ getProjectMarkers });
+    const cleanup = setE2EHooks({ getProjectSites });
+
+    cleanup();
+
+    expect(window.__planetE2E).toEqual({ getProjectMarkers });
+  });
+
+  it('removes window.__planetE2E when the last hook goes', () => {
+    const cleanup = setE2EHooks({ getProjectSites });
+
+    cleanup();
+
+    expect(window.__planetE2E).toBeUndefined();
   });
 });
