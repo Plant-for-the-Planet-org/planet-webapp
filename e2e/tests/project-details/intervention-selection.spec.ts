@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test';
 
 import { test, expect } from '../../support/fixtures';
+import { projectDetailsText } from '../../support/i18n';
 import {
   aboutProjectHeading,
   expectSelectedSite,
@@ -40,7 +41,10 @@ test('a shared intervention link shows that intervention instead of a site', asy
   // Interventions load after the project, so this also checks the page waits for them instead of falling back to a site.
   await expect(interventionHid(page, intervention)).toBeVisible();
   await expect(aboutProjectHeading(page)).toBeHidden();
-  await expect(siteToggle(page)).toHaveText('-');
+  // The dash is hidden from screen readers, which read "No site selected" instead.
+  await expect(siteToggle(page)).toHaveAccessibleName(
+    projectDetailsText.noSiteSelected
+  );
   await expectSelectionInUrl(page, { site: null, ploc: intervention.hid });
 });
 
