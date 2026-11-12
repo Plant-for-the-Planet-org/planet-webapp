@@ -49,8 +49,10 @@ const captureJson = <T>(page: Page, matches: (url: URL) => boolean) =>
               new Error(`${response.url()} answered ${response.status()}.`)
             );
           await route.fulfill({ response });
-        } catch {
-          // A test that never reads interventions can end while TreeMapper is still answering, which closes the page mid-request.
+        } catch (error) {
+          // A test that never reads interventions can end while TreeMapper is still answering, which closes the page mid-request. Nothing waits for the error then, so passing it on is harmless.
+          reject(error);
+          await route.abort().catch(() => {});
         }
       },
       { times: 1 }
@@ -164,7 +166,8 @@ export const interventionTypeLabel = (type: string) => {
     projectDetailsText.intervention[
       type as keyof typeof projectDetailsText.intervention
     ];
-  if (!label) throw new Error(`No English label for intervention type ${type}.`);
+  if (!label)
+    throw new Error(`No English label for intervention type ${type}.`);
   return label;
 };
 
