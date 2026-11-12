@@ -122,7 +122,13 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 ### Files and scripts
 
 - One dev dependency: `@playwright/test` 1.64. Chromium only.
-- [playwright.config.ts](../../playwright.config.ts) and an `e2e/` folder for the tests, with specs in `e2e/tests/<feature>/` and shared helpers in `e2e/support/`:
+- [playwright.config.ts](../../playwright.config.ts) and an `e2e/` folder for the tests.
+- Folder rule: ~~specs in `e2e/tests/<feature>/` and shared helpers in `e2e/support/`~~. Replaced in #3280 by:
+  - Specs go in `e2e/tests/<page>/`.
+  - Helpers for one page go in `e2e/support/<page>/`, split by what they do: `data.ts` for API data, `page.ts` for locators and checks on the page, `map.ts` for what the map draws.
+  - Helpers that more than one page uses stay at the top of `e2e/support/`. A shared helper never imports from a page folder.
+  - [TESTING.md](../../TESTING.md#writing-a-test) is the source for this rule.
+- Files so far:
   - [e2e/support/fixtures.ts](../../e2e/support/fixtures.ts): specs import `test` from here, so every test also fails when the page throws an uncaught error.
   - [e2e/support/testProject.ts](../../e2e/support/testProject.ts): the staging project the tests use.
   - [e2e/support/projects/page.ts](../../e2e/support/projects/page.ts): locators for the project list.
