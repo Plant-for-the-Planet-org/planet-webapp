@@ -90,7 +90,12 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
         color={themeProperties.designSystem.colors.coreText}
       />
       {selectedIntervention && query.ploc ? (
-        '-'
+        <>
+          <span aria-hidden="true">-</span>
+          <span className={styles.visuallyHidden}>
+            {tProjectDetails('noSiteSelected')}
+          </span>
+        </>
       ) : (
         <>
           {selectedSiteData && (

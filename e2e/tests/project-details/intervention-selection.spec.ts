@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test';
 
 import { test, expect } from '../../support/fixtures';
 import { openProject, projectPath } from '../../support/projectDetails/data';
+import { projectDetailsText } from '../../support/i18n';
 import {
   aboutProjectHeading,
   expectSelectedSite,
@@ -39,7 +40,10 @@ test('a shared intervention link shows that intervention instead of a site', asy
   // Interventions load after the project, so this also checks the page waits for them instead of falling back to a site.
   await expect(interventionHid(page, intervention)).toBeVisible();
   await expect(aboutProjectHeading(page)).toBeHidden();
-  await expect(siteToggle(page)).toHaveText('-');
+  // The dash is hidden from screen readers, which read "No site selected" instead.
+  await expect(siteToggle(page)).toHaveAccessibleName(
+    projectDetailsText.noSiteSelected
+  );
   await expectSelectionInUrl(page, { site: null, ploc: intervention.hid });
 });
 
@@ -93,7 +97,9 @@ test('choosing an intervention type from the dropdown selects it, keeps the URL 
   page,
 }) => {
   const { sites, interventions } = await openProject(page);
-  const [{ type }] = await interventions();
+  const [intervention] = await interventions();
+  expect(intervention, 'an intervention on the project').toBeDefined();
+  const { type } = intervention;
   await expectSelectionInUrl(page, { site: sites[0].id, ploc: null });
 
   await interventionTypeToggle(page).click();
@@ -102,7 +108,7 @@ test('choosing an intervention type from the dropdown selects it, keeps the URL 
     'true'
   );
   await expect(interventionTypeOption(page, 'all')).toHaveAttribute(
-    'aria-pressed',
+    'aria-current',
     'true'
   );
 

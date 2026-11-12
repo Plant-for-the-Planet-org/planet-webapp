@@ -47,14 +47,7 @@ const MapFeatureExplorer = ({
         />
       )}
       {isMobile && (
-        <Modal
-          open={isOpen}
-          onClose={(_event, reason) => {
-            if (reason === 'backdropClick') {
-              setIsOpen(false);
-            }
-          }}
-        >
+        <Modal open={isOpen} onClose={() => setIsOpen(false)}>
           <MapSettings
             id={panelId}
             mapOptions={mapOptions}

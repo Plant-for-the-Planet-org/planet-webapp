@@ -74,7 +74,7 @@ const InterventionList = ({
               className={clsx(styles.listItem, {
                 [styles.selectedItem]: isSelected,
               })}
-              aria-pressed={isSelected}
+              aria-current={isSelected ? 'true' : undefined}
               onClick={() => handleFilterSelection(intervention.value)}
             >
               <span>{tProjectDetails(intervention.value)}</span>

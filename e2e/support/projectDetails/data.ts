@@ -37,6 +37,7 @@ const isInterventionsUrl = (url: URL) =>
  */
 const captureJson = <T>(page: Page, matches: (url: URL) => boolean) =>
   new Promise<T>((resolve, reject) => {
+    // Not awaited: the page requests this data only after it hydrates, long after the route is in place. Await the route here if a request ever starts earlier, such as during server rendering.
     void page.route(
       matches,
       async (route) => {
@@ -48,8 +49,10 @@ const captureJson = <T>(page: Page, matches: (url: URL) => boolean) =>
               new Error(`${response.url()} answered ${response.status()}.`)
             );
           await route.fulfill({ response });
-        } catch {
-          // A test that never reads interventions can end while TreeMapper is still answering, which closes the page mid-request.
+        } catch (error) {
+          // A test that never reads interventions can end while TreeMapper is still answering, which closes the page mid-request. Nothing waits for the error then, so passing it on is harmless.
+          reject(error);
+          await route.abort().catch(() => {});
         }
       },
       { times: 1 }

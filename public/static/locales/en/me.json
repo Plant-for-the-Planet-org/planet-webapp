@@ -192,6 +192,7 @@
     "downloads": "Downloads",
     "account": "Account",
     "loadMore": "Load More",
+    "loadingTransactions": "Loading transactions",
     "setTarget": "Set Target",
     "targetSave": "Save",
     "targetErrorMessage": "Number must be greater than zero",

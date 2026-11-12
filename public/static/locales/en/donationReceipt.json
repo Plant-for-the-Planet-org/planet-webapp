@@ -54,6 +54,7 @@
     "donorContactManagement": "Donor Contact Management",
     "contactManagementHeader": "Update profile and address",
     "saveDataAndReturn": "Save data and return",
+    "savingDonorInfo": "Saving your details",
     "donationReceipt": "Donation Receipt",
     "verifyAndDownload": "Verify & Download",
     "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Item} other {# Items}}</u>",

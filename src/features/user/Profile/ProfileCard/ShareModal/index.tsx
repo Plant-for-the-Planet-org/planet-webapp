@@ -1,6 +1,6 @@
 import type { ProfileV2Props } from '../../../../common/types/profile';
 
-import { useContext } from 'react';
+import { useContext, useId } from 'react';
 import styles from './ShareModal.module.scss';
 import { Modal, Fade, TextField } from '@mui/material';
 import { ThemeContext } from '../../../../../theme/themeContext';
@@ -40,6 +40,8 @@ const ShareModal = ({
   const t = useTranslations('Profile');
   // store: state
   const tenantConfig = useTenantStore((state) => state.tenantConfig);
+  // Names the dialog using its visible heading
+  const titleId = useId();
 
   const linkToShare = `${tenantConfig.config.tenantURL}/t/${userProfile?.slug}`;
   const textToShare = t('shareFeature.textToShare', {
@@ -70,14 +72,16 @@ const ShareModal = ({
       open={shareModalOpen}
       onClose={handleShareModalClose}
       closeAfterTransition
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
       style={{ backdropFilter: 'blur(5px)' }}
     >
       <Fade in={shareModalOpen}>
-        <div className={styles.shareModalPopup}>
+        <div
+          className={styles.shareModalPopup}
+          role="dialog"
+          aria-labelledby={titleId}
+        >
           <div className={styles.socialMediaIconContainer}>
-            <h3>{t('shareFeature.shareVia')}</h3>
+            <h3 id={titleId}>{t('shareFeature.shareVia')}</h3>
             <div>
               <IconButton
                 label={t('shareFeature.shareOn', {

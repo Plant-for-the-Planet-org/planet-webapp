@@ -3,11 +3,12 @@ import type { E2EBounds, E2EHooks } from '../../src/utils/e2eHooks';
 
 import { expect } from './fixtures';
 
-const MAP_HOOK_MISSING = [
-  'The map never exposed window.__planetE2E, so the test cannot read what it draws.',
-  'On a deployed preview, the build needs NEXT_PUBLIC_E2E_HOOKS=true (Vercel, Preview scope). A local dev server turns the hook on by itself.',
-  'Otherwise the map did not render: check the trace for the "graphics acceleration" message.',
-].join('\n');
+const mapHookMissing = (name: keyof E2EHooks) =>
+  [
+    `The map never exposed window.__planetE2E.${name}, so the test cannot read the map.`,
+    'On a deployed preview, the build needs NEXT_PUBLIC_E2E_HOOKS=true (Vercel, Preview scope). A local dev server turns the hook on by itself.',
+    'Otherwise the map, or the map layer that sets this hook, did not render: check the trace for the "graphics acceleration" message.',
+  ].join('\n');
 
 // Without a GPU, as in CI, headless Chromium renders WebGL with SwiftShader, and the app's WebGL check then hides the map. MapLibre draws the map and markers fine on SwiftShader, so map tests hide its name from that check.
 export const allowSoftwareWebGL = (page: Page) =>
@@ -31,7 +32,7 @@ export const waitForHook = async (page: Page, name: keyof E2EHooks) => {
       { timeout: 60_000 }
     );
   } catch {
-    throw new Error(MAP_HOOK_MISSING);
+    throw new Error(mapHookMissing(name));
   }
 };
 

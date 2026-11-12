@@ -15,7 +15,11 @@ import {
   projectMarkers,
   waitForProjectMarkers,
 } from '../../support/projects/map';
-import { projectCards, projectListTab } from '../../support/projects/page';
+import {
+  expectStatusMessage,
+  projectCards,
+  projectListTab,
+} from '../../support/projects/page';
 
 const MANGROVES = 'mangroves';
 
@@ -87,14 +91,12 @@ test('classification (e.g. Mangroves) and Accepting Donations filters narrow the
     .toEqual(slugs(donatableMangroves));
 
   // The header counts the same projects the map shows. Every mangrove project has a pin, so the numbers match exactly.
-  await expect(
-    page.getByText(
-      formatMessage(text.filterResult, {
-        count: donatableMangroves.length,
-      }).trim(),
-      { exact: true }
-    )
-  ).toBeVisible();
+  await expectStatusMessage(
+    page,
+    formatMessage(text.filterResult, {
+      count: donatableMangroves.length,
+    }).trim()
+  );
   await expect(projectCards(page).first()).toBeVisible();
   await expect(
     projectCards(page).filter({
@@ -143,14 +145,10 @@ test('Accepting Donations filter alone keeps donatable projects of every classif
     .toEqual(slugs(startDonatable));
 
   // Holds while every staging project has a known type: a project without one is counted in the header but gets no pin.
-  await expect(
-    page.getByText(
-      formatMessage(text.filterResult, {
-        count: startDonatable.length,
-      }).trim(),
-      { exact: true }
-    )
-  ).toBeVisible();
+  await expectStatusMessage(
+    page,
+    formatMessage(text.filterResult, { count: startDonatable.length }).trim()
+  );
 });
 
 test('two classification filters (e.g. Mangroves and Agroforestry) show both, and unpicking one keeps the other', async ({
@@ -233,14 +231,12 @@ test('filters in the URL (e.g. ?filter=mangroves&donatable_projects_only=true) a
     .toEqual(slugs(donatableMangroves));
 
   // The header shows this count only while a filter is on, so it also proves the URL turned the filters on.
-  await expect(
-    page.getByText(
-      formatMessage(text.filterResult, {
-        count: donatableMangroves.length,
-      }).trim(),
-      { exact: true }
-    )
-  ).toBeVisible();
+  await expectStatusMessage(
+    page,
+    formatMessage(text.filterResult, {
+      count: donatableMangroves.length,
+    }).trim()
+  );
   await expect(projectCards(page).first()).toBeVisible();
   await expect(
     projectCards(page).filter({
@@ -303,10 +299,8 @@ test('a search narrows the filtered projects, and clearing the search keeps the 
       message: 'every mangrove project back on the map',
     })
     .toBe(mangroveCount);
-  await expect(
-    page.getByText(
-      formatMessage(text.filterResult, { count: mangroveCount }).trim(),
-      { exact: true }
-    )
-  ).toBeVisible();
+  await expectStatusMessage(
+    page,
+    formatMessage(text.filterResult, { count: mangroveCount }).trim()
+  );
 });

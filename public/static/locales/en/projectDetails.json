@@ -67,6 +67,7 @@
     "1Tree": "1 Tree",
     "siteCount": "Site {siteId} of {totalCount}",
     "projectSites": "Project sites",
+    "noSiteSelected": "No site selected",
     "interventionTypes": "Intervention types",
     "review": "Review",
     "externalCertifications": "External Certifications",
