@@ -9,17 +9,17 @@ import {
   formatMessage,
   projectText,
 } from '../../support/i18n';
+import { allowSoftwareWebGL } from '../../support/map';
+import {
+  markerType,
+  projectMarkers,
+  waitForProjectMarkers,
+} from '../../support/projects/map';
 import {
   expectStatusMessage,
   projectCards,
   projectListTab,
-} from '../../support/projects';
-import {
-  allowSoftwareWebGL,
-  markerType,
-  projectMarkers,
-  waitForProjectMarkers,
-} from '../../support/map';
+} from '../../support/projects/page';
 
 const MANGROVES = 'mangroves';
 

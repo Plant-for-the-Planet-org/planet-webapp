@@ -2,26 +2,27 @@ import { test, expect } from '../../support/fixtures';
 import {
   allowSoftwareWebGL,
   boundsContain,
+  mapCanvas,
+  mapCenter,
+} from '../../support/map';
+import { openProject, projectPath } from '../../support/projectDetails/data';
+import {
   expectMapOnIntervention,
   expectMapOnSite,
   findClickableIntervention,
   highlightedInterventions,
   interventionBounds,
-  mapCanvas,
-  mapCenter,
   mapInterventionTypes,
   waitForMapInterventionTypes,
   waitForMapSites,
-} from '../../support/map';
+} from '../../support/projectDetails/map';
 import {
   aboutProjectHeading,
   expectSelectionInUrl,
   interventionHid,
   interventionTypeOption,
   interventionTypeToggle,
-  openProject,
-  projectPath,
-} from '../../support/projectDetails';
+} from '../../support/projectDetails/page';
 
 test.beforeEach(async ({ page }) => {
   await allowSoftwareWebGL(page);

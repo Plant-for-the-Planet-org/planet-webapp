@@ -2,16 +2,15 @@ import type { Page } from '@playwright/test';
 
 import { test, expect } from '../../support/fixtures';
 import { LOCALE } from '../../support/i18n';
-import { projectCards } from '../../support/projects';
+import { openProject, projectPath } from '../../support/projectDetails/data';
 import {
   expectSelectedSite,
   expectSelectionInUrl,
-  openProject,
-  projectPath,
   siteOption,
   siteOptions,
   siteToggle,
-} from '../../support/projectDetails';
+} from '../../support/projectDetails/page';
+import { projectCards } from '../../support/projects/page';
 
 // Most tests here pick the second site, so they fail with a clear message when staging has fewer than two.
 const openProjectWithSites = async (page: Page, query?: string) => {
