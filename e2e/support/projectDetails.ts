@@ -38,6 +38,7 @@ const isInterventionsUrl = (url: URL) =>
  */
 const captureJson = <T>(page: Page, matches: (url: URL) => boolean) =>
   new Promise<T>((resolve, reject) => {
+    // Not awaited: the page requests this data only after it hydrates, long after the route is in place. Await the route here if a request ever starts earlier, such as during server rendering.
     void page.route(
       matches,
       async (route) => {
