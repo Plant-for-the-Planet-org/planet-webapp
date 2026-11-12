@@ -15,6 +15,12 @@ $dropDownOpenGapMobile: 6px;
   justify-content: space-between;
   cursor: pointer;
   gap: 18px;
+  // Keeps the look of the div this button replaced.
+  width: 100%;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: left;
 }
 
 .interventionIconAndTextContainer {
@@ -67,22 +73,26 @@ $dropDownOpenGapMobile: 6px;
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
   }
-  > button {
-    width: 100%;
+  list-style: none;
+  // Each option is a button in its own list item, so the last-option rule goes on the list item.
+  > li:last-child > .listItem {
+    border-bottom: none;
   }
 }
 
 .listItem {
   display: flex;
   justify-content: space-between;
+  width: 100%;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: left;
   gap: 30px;
   padding: 9px 0px;
   cursor: pointer;
   border-bottom: 1px solid $dsMediumGrey;
   font-weight: 400;
-  &:last-of-type {
-    border-bottom: none;
-  }
 }
 
 .selectedItem {

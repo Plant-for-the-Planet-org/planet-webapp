@@ -99,7 +99,9 @@ On a deployed URL, Playwright may run several workers, but it spreads only test 
 
 ### Writing a test
 
-- Put specs in `e2e/tests/<feature>/` and shared helpers in `e2e/support/`.
+- Put specs in `e2e/tests/<page>/`.
+- Put helpers for one page in `e2e/support/<page>/`, split by what they do: `data.ts` for API data, `page.ts` for locators and checks on the page, `map.ts` for what the map draws.
+- Put helpers that more than one page uses at the top of `e2e/support/`, such as `map.ts` for general map tools and `testProject.ts` for the staging project the tests open. A shared helper never imports from a page folder.
 - Import `test` and `expect` from `e2e/support/fixtures.ts`, not from `@playwright/test`. The fixture fails the test on any uncaught page error.
 - Find elements by role and name, such as `page.getByRole('button', { name: ... })`. This also checks that each control has a name a screen reader can read.
 - Take UI text from `e2e/support/i18n.ts`, so a wording change in the locale files does not break the test.
@@ -110,12 +112,34 @@ On a deployed URL, Playwright may run several workers, but it spreads only test 
 
 ### Map tests
 
-Project markers are drawn on a WebGL canvas, so they are not in the page for Playwright to find. [e2e/tests/projects/project-filter.spec.ts](e2e/tests/projects/project-filter.spec.ts) shows the pattern, using helpers from [e2e/support/map.ts](e2e/support/map.ts).
+Project markers, sites and interventions are drawn on a WebGL canvas, so they are not in the page for Playwright to find. Tests read them from the map itself, through `window.__planetE2E` from [src/utils/e2eHooks.ts](src/utils/e2eHooks.ts). [e2e/tests/projects/project-filter.spec.ts](e2e/tests/projects/project-filter.spec.ts) shows the pattern for markers, and [e2e/tests/project-details/](e2e/tests/project-details/) for sites and interventions. General map helpers are in [e2e/support/map.ts](e2e/support/map.ts). Helpers for one page's map are in that page's folder, such as [e2e/support/projects/map.ts](e2e/support/projects/map.ts) for markers and [e2e/support/projectDetails/map.ts](e2e/support/projectDetails/map.ts) for sites and interventions.
 
 - Call `allowSoftwareWebGL(page)` before `page.goto`. Without a GPU, as in CI, Chromium renders WebGL in software (SwiftShader), and the app's WebGL check would show "Graphics acceleration required" instead of the map. MapLibre draws fine in software, so the helper hides the renderer's name from that check.
-- Read markers with `waitForProjectMarkers(page)` and `projectMarkers(page)`. They call `window.__planetE2E.getProjectMarkers()` from [src/utils/e2eHooks.ts](src/utils/e2eHooks.ts), which returns each marker's `slug`, `allowDonations`, `purpose` and `classification` (`null` for conservation projects).
-- The hook is on in local development by itself. A deployed preview needs `NEXT_PUBLIC_E2E_HOOKS=true` in Vercel, set for the Preview environment only, before the build. Without it, map tests fail with a message saying so. Never set it for production.
+- Read markers with `waitForProjectMarkers(page)` and `projectMarkers(page)`. They call `window.__planetE2E.getProjectMarkers()`, which returns each marker's `slug`, `allowDonations`, `purpose` and `classification` (`null` for conservation projects).
+- The hooks are on in local development by themselves. A deployed preview needs `NEXT_PUBLIC_E2E_HOOKS=true` in Vercel, set for the Preview environment only, before the build. Without it, map tests fail with a message saying so. Never set it for production.
 - Call `test.slow()` in map tests. Software rendering is slow, and the map alone can take over 10 s to appear.
+
+#### How the hooks are set
+
+- Each part of the map adds its own hooks with `setE2EHooks` in a `useEffect`, and returns the cleanup it gives back. So a hook exists only while its part of the map is shown. For example, `getProjectSites` exists only on a project page.
+- Wait for a hook with the `waitFor...` helpers in the page's `map.ts`, not for `window.__planetE2E` alone. Another part of the map may have set `window.__planetE2E` before the hook you need is there.
+- To add a hook, add its type to `E2EHooks`, and set it from the component that owns that map data. Its `waitFor...` helper can use `waitForHook` from `e2e/support/map.ts`.
+
+#### Checking where the map is
+
+- `expectMapOnSite` and `expectMapOnIntervention` wait until the map stops moving, then check that its center is inside the target's bounds. They check the center, not the zoom, because the zoom depends on the window size.
+- Pick a target away from where the map starts. Otherwise a map that never moved would still pass. `firstAndOtherSite` in `site-map.spec.ts` does this for sites, and the click test in `intervention-map.spec.ts` does it with `mapCenter` for interventions.
+
+#### Clicking on the map
+
+- Use `findClickableIntervention` to get a point to click. It returns an intervention that is on screen, not covered by the page, and the top feature at that point. The app's click handler acts only on the top feature, so a click on any other point may select nothing.
+- Before clicking, wait for the map to settle with `expectMapOnSite`. While the map is still moving, the intervention moves away from under the pointer.
+
+#### Project data and TreeMapper
+
+- `openProject` in [e2e/support/projectDetails/data.ts](e2e/support/projectDetails/data.ts) opens a project page and returns its sites and interventions as the page fetched them. Staging data changes, so take ids and names from here. Do not hard-code them.
+- Interventions come from TreeMapper, not the Planet API, so the build needs `TREEMAPPER_URL`. `.env.development` sets it for local development. Without it, the page skips the fetch, and `interventions()` fails after 30 s with a message saying so.
+- `interventions()` waits for TreeMapper only when a test calls it. Site tests do not call it, so they still pass when TreeMapper is slow or down.
 
 ### In CI
 

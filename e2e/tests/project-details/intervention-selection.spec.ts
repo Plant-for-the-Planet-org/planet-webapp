@@ -1,0 +1,127 @@
+import type { Page } from '@playwright/test';
+
+import { test, expect } from '../../support/fixtures';
+import { openProject, projectPath } from '../../support/projectDetails/data';
+import { projectDetailsText } from '../../support/i18n';
+import {
+  aboutProjectHeading,
+  expectSelectedSite,
+  expectSelectionInUrl,
+  interventionHid,
+  interventionTypeLabel,
+  interventionTypeOption,
+  interventionTypeOptions,
+  interventionTypeToggle,
+  siteOption,
+  siteToggle,
+} from '../../support/projectDetails/page';
+
+test.beforeEach(() => {
+  // Interventions load from TreeMapper, which can take most of the 30 s a preview allows, and each test loads the page twice.
+  test.slow();
+});
+
+// The first load only reads live ids from staging. Each test then opens its own link, as a visitor following a shared link would.
+const readProjectData = async (page: Page) => {
+  const { sites, interventions } = await openProject(page);
+  const [intervention] = await interventions();
+  expect(sites.length, 'sites on the project').toBeGreaterThan(1);
+  expect(intervention, 'an intervention on the project').toBeDefined();
+  return { sites, intervention };
+};
+
+test('a shared intervention link shows that intervention instead of a site', async ({
+  page,
+}) => {
+  const { intervention } = await readProjectData(page);
+
+  await page.goto(projectPath(`?ploc=${intervention.hid}`));
+
+  // Interventions load after the project, so this also checks the page waits for them instead of falling back to a site.
+  await expect(interventionHid(page, intervention)).toBeVisible();
+  await expect(aboutProjectHeading(page)).toBeHidden();
+  // The dash is hidden from screen readers, which read "No site selected" instead.
+  await expect(siteToggle(page)).toHaveAccessibleName(
+    projectDetailsText.noSiteSelected
+  );
+  await expectSelectionInUrl(page, { site: null, ploc: intervention.hid });
+});
+
+test('an intervention link with an unknown intervention falls back to the first site', async ({
+  page,
+}) => {
+  const { sites, interventions } = await openProject(
+    page,
+    '?ploc=no-such-intervention'
+  );
+  // The fallback only happens once interventions arrive, so wait for them before checking.
+  await interventions();
+
+  await expectSelectionInUrl(page, { site: sites[0].id, ploc: null });
+  await expectSelectedSite(page, sites, 0);
+  await expect(aboutProjectHeading(page)).toBeVisible();
+});
+
+test('a link with both a site and an intervention opens the site and drops the intervention', async ({
+  page,
+}) => {
+  const { sites, intervention } = await readProjectData(page);
+  const second = sites[1];
+
+  await page.goto(projectPath(`?site=${second.id}&ploc=${intervention.hid}`));
+
+  await expectSelectionInUrl(page, { site: second.id, ploc: null });
+  await expectSelectedSite(page, sites, 1);
+  await expect(aboutProjectHeading(page)).toBeVisible();
+  await expect(interventionHid(page, intervention)).toBeHidden();
+});
+
+test('choosing a site while an intervention is selected clears the intervention', async ({
+  page,
+}) => {
+  const { sites, intervention } = await readProjectData(page);
+  const second = sites[1];
+  await page.goto(projectPath(`?ploc=${intervention.hid}`));
+  await expect(interventionHid(page, intervention)).toBeVisible();
+
+  await siteToggle(page).click();
+  await siteOption(page, second).click();
+
+  await expectSelectionInUrl(page, { site: second.id, ploc: null });
+  await expectSelectedSite(page, sites, 1);
+  await expect(interventionHid(page, intervention)).toBeHidden();
+  await expect(aboutProjectHeading(page)).toBeVisible();
+});
+
+test('choosing an intervention type from the dropdown selects it, keeps the URL and closes the list', async ({
+  page,
+}) => {
+  const { sites, interventions } = await openProject(page);
+  const [intervention] = await interventions();
+  expect(intervention, 'an intervention on the project').toBeDefined();
+  const { type } = intervention;
+  await expectSelectionInUrl(page, { site: sites[0].id, ploc: null });
+
+  await interventionTypeToggle(page).click();
+  await expect(interventionTypeToggle(page)).toHaveAttribute(
+    'aria-expanded',
+    'true'
+  );
+  await expect(interventionTypeOption(page, 'all')).toHaveAttribute(
+    'aria-current',
+    'true'
+  );
+
+  await interventionTypeOption(page, type).click();
+
+  await expect(interventionTypeToggle(page)).toContainText(
+    interventionTypeLabel(type)
+  );
+  // The type only filters the map. It is not in the URL, so the selected site stays.
+  await expectSelectionInUrl(page, { site: sites[0].id, ploc: null });
+  await expect(interventionTypeOptions(page)).toBeHidden();
+  await expect(interventionTypeToggle(page)).toHaveAttribute(
+    'aria-expanded',
+    'false'
+  );
+});
