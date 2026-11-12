@@ -46,7 +46,7 @@ const ProjectSiteList = ({
               className={clsx(styles.listItem, {
                 [styles.selectedItem]: isSelected,
               })}
-              aria-pressed={isSelected}
+              aria-current={isSelected ? 'true' : undefined}
               onClick={() => handleSiteSelection(index)}
             >
               <span>{site.siteName}</span>

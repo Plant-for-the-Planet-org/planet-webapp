@@ -103,7 +103,7 @@ test('choosing an intervention type from the dropdown selects it, keeps the URL 
     'true'
   );
   await expect(interventionTypeOption(page, 'all')).toHaveAttribute(
-    'aria-pressed',
+    'aria-current',
     'true'
   );
 

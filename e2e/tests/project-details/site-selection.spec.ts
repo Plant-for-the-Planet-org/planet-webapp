@@ -54,7 +54,7 @@ test('choosing a site from the dropdown selects it, updates the URL and closes t
   await siteToggle(page).click();
   await expect(siteToggle(page)).toHaveAttribute('aria-expanded', 'true');
   await expect(siteOption(page, sites[0])).toHaveAttribute(
-    'aria-pressed',
+    'aria-current',
     'true'
   );
 
