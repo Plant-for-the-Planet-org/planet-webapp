@@ -1,4 +1,4 @@
-@import '../../../theme/theme';
+@use '../../../theme/theme' as *;
 
 // Clears the fixed 80px header, same offset every profile page content area uses.
 .container {
