@@ -6,11 +6,8 @@ import ProjectSelectAutocomplete from '../../../common/ProjectSelectAutocomplete
 import UnitCostDisplay from './UnitCostDisplay';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import {
-  useAuthStore,
-  useUserStore,
-  useErrorHandlingStore,
-} from '../../../../stores';
+import { useIsAuthReady } from '../../../../hooks/useAuthReadiness';
+import { useUserStore, useErrorHandlingStore } from '../../../../stores';
 import { useBulkCodeStore } from '../../../../stores/bulkCodeStore';
 import { useTranslations } from 'next-intl';
 
@@ -26,10 +23,8 @@ const ProjectSelector = ({
 }: ProjectSelectorProps): ReactElement | null => {
   const tBulkCodes = useTranslations('BulkCodes');
   const { getApiAuthenticated } = useApi();
+  const isAuthReady = useIsAuthReady();
   //store: state
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
   const userProfile = useUserStore((state) => state.userProfile);
   const projectList = useBulkCodeStore((state) => state.projectList);
   const planetCashAccount = useBulkCodeStore(
