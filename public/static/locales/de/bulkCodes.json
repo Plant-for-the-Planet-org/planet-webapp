@@ -83,8 +83,10 @@
       "unitsNotProvided": "Pflicht",
       "requiredForNotifications": "Benötigt (für Email Empfänger)",
       "emailInvalid": "Ungültige Email",
-      "longRecipientName": "Maximale Länge - 35 Zeichen"
+      "longRecipientName": "Maximale Länge - 35 Zeichen",
+      "selfGift": "Du kannst dir nicht selbst eine Widmung schicken."
     },
+    "selfGiftWarning": "{count, plural, one {Zeile {rowList} enthält deine eigene Email. Du kannst dir nicht selbst ein Geschenk schicken. Editiere oder lösche diese Zeile um fortzufahren.} other {Zeilen {rowList} enhalten deine Email. Du kannst dir nicht selbst ein Geschenk schicken. Editiere oder lösche diese Zeilen um fortzufahren.}}",
     "successUploadCSV": {
       "ignoredColumns": "Zusätzliche Spalten wurden ignoriert"
     },

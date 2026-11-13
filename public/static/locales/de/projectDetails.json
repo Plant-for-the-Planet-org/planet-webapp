@@ -1,5 +1,6 @@
 {
   "ProjectDetails": {
+    "expandImages": "Bilder vergrößern",
     "satelliteAnalysis": "Satellitenanalyse",
     "diveIntoTheProject": "Ins Projekt eintauchen",
     "firePopupText": "Wir zeigen nur Brände an, die sich innerhalb der letzten 12 Monate ereignet haben.",
@@ -65,6 +66,9 @@
     "longTermPlan": "Langfristiger Plan",
     "1Tree": "1 Baum",
     "siteCount": "Fläche {siteId} von {totalCount}",
+    "projectSites": "Projektflächen",
+    "noSiteSelected": "Keine Fläche ausgewählt",
+    "interventionTypes": "Interventionsarten",
     "review": "Überprüfung",
     "externalCertifications": "Externe Zertifizierungen",
     "projectSpending": "Projekt Ausgaben",

@@ -6,6 +6,15 @@ import { useLocale } from 'next-intl';
 import { useAuthStore, useTenantStore, useUserStore } from '../stores';
 import useLocalizedPath from './useLocalizedPath';
 import { useAuthSession } from './useAuthSession';
+import {
+  hasExceededRedirectLimit,
+  registerRedirectAttempt,
+} from '../utils/authRedirectGuard';
+import { parseApiError } from '../utils/parseApiError';
+
+// `APIError.message` is always "Something went wrong" (set by the SDK), so read the real cause from `.errors`.
+const getProfileErrorMessage = (err: APIError): string =>
+  parseApiError(err)[0].message;
 
 const useProfileErrorHandler = () => {
   const router = useRouter();
@@ -16,6 +25,7 @@ const useProfileErrorHandler = () => {
   const tenantId = useTenantStore((state) => state.tenantConfig.id);
   // store: action
   const setToken = useAuthStore((state) => state.setToken);
+  const setHasAuthFailed = useAuthStore((state) => state.setHasAuthFailed);
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
   const fetchUserProfile = useUserStore((state) => state.fetchUserProfile);
 
@@ -33,8 +43,24 @@ const useProfileErrorHandler = () => {
         case 401:
           exitImpersonation();
           setToken(null);
+
+          // Use the same redirect counter as token failures.
+          // If the token keeps working but the profile keeps returning 401,
+          // the counter will eventually stop the repeated login redirects.
+          //
+          // Once the limit is reached, show the failed-sign-in screen instead of redirecting again.
+          if (hasExceededRedirectLimit()) {
+            console.error(
+              '[Profile API] Redirect limit reached after repeated 401s, stopping login redirects.'
+            );
+            setHasAuthFailed(true);
+            break;
+          }
+          registerRedirectAttempt();
+
           loginWithRedirect({
             redirectUri: `${window.location.origin}/login`,
+            // Legacy compatibility read, kept until Auth0 redirects are migrated off localStorage.language (see issue #3234).
             ui_locales: localStorage.getItem('language') || 'en',
           });
           break;
@@ -64,12 +90,15 @@ const useProfileErrorHandler = () => {
         }
         // 500: server error, nothing the client can do, just log it
         case 500:
-          console.error('[Profile API] Internal Server Error:', err.message);
+          console.error(
+            '[Profile API] Internal Server Error:',
+            getProfileErrorMessage(err)
+          );
           break;
 
         // Any other status, log it for debugging
         default:
-          console.error('[Profile API] Error:', err.message);
+          console.error('[Profile API] Error:', getProfileErrorMessage(err));
           break;
       }
     },
@@ -78,6 +107,7 @@ const useProfileErrorHandler = () => {
       loginWithRedirect,
       localizedPath,
       setToken,
+      setHasAuthFailed,
       exitImpersonation,
       fetchUserProfile,
       tenantId,

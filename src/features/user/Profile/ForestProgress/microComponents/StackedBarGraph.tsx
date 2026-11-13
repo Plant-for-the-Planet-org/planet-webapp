@@ -2,7 +2,7 @@ import type { ProgressDataProps } from './ProgressData';
 
 import styles from '../ForestProgress.module.scss';
 
-export type StackedBarGraphProps = Omit<ProgressDataProps, 'dataType'>;
+type StackedBarGraphProps = Omit<ProgressDataProps, 'dataType'>;
 
 const StackedBarGraph = ({
   personalSegmentPercentage,

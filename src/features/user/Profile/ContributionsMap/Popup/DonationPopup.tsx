@@ -5,7 +5,7 @@ import type {
   DonationProperties,
 } from '../../../../common/types/myForest';
 
-import { Popup } from 'react-map-gl-v7/maplibre';
+import { Popup } from 'react-map-gl/maplibre';
 import styles from '../ContributionsMap.module.scss';
 import ProjectInfoSection from './ProjectInfoSection';
 import PopupImageSection from './PopupImageSection';
@@ -36,6 +36,9 @@ const DonationPopup = ({
       longitude={coordinates[0]}
       className={styles.contributionPopup}
       closeButton={false}
+      // This popup opens on hover, so don't focus the Donate button.
+      // Otherwise, it shows an unwanted focus ring and takes focus away from keyboard users.
+      focusAfterOpen={false}
     >
       <div
         className={styles.donationPopupContainer}

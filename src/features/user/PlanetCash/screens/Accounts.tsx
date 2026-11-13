@@ -2,30 +2,32 @@ import type { ReactElement } from 'react';
 
 import AccountListLoader from '../../../../../public/assets/images/icons/AccountListLoader';
 import AccountDetails from '../components/AccountDetails';
-import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
+import { usePlanetCashStore } from '../../../../stores';
 import NoPlanetCashAccount from '../components/NoPlanetCashAccount';
+import PlanetCashLoadError from '../components/PlanetCashLoadError';
 
-interface AccountsProps {
-  isDataLoading: boolean;
-}
-
-const Accounts = ({ isDataLoading }: AccountsProps): ReactElement | null => {
-  const { accounts } = usePlanetCash();
-
-  return isDataLoading ? (
-    <>
-      <AccountListLoader />
-    </>
-  ) : accounts && accounts.length > 0 ? (
-    <>
-      {accounts?.map((account, index) => {
-        return <AccountDetails account={account} key={index} />;
-      })}
-    </>
-  ) : (
-    //This will never be seen, as the user is being redirected to create a new PCA when none exists
-    <NoPlanetCashAccount />
+const Accounts = (): ReactElement | null => {
+  const planetCashAccounts = usePlanetCashStore(
+    (state) => state.planetCashAccounts
   );
+  const status = usePlanetCashStore((state) => state.status);
+
+  if (status === 'idle' || status === 'loading') return <AccountListLoader />;
+
+  if (status === 'error') return <PlanetCashLoadError />;
+
+  if (planetCashAccounts && planetCashAccounts.length > 0) {
+    return (
+      <>
+        {planetCashAccounts.map((account, index) => (
+          <AccountDetails account={account} key={index} />
+        ))}
+      </>
+    );
+  }
+
+  // This will not normally be seen, as the page redirects to create a new account once the fetch confirms the list is empty.
+  return <NoPlanetCashAccount />;
 };
 
 export default Accounts;

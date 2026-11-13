@@ -13,10 +13,10 @@ import UserLayout from '../../../../../../../src/features/common/Layout/UserLayo
 import BulkCodes, {
   BulkCodeSteps,
 } from '../../../../../../../src/features/user/BulkCodes';
+import BulkCodesSkeleton from '../../../../../../../src/features/user/BulkCodes/BulkCodesSkeleton';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../../../../src/hooks/useLocalizedPath';
-import { useBulkCode } from '../../../../../../../src/features/common/Layout/BulkCodeContext';
 import { BulkCodeMethods } from '../../../../../../../src/utils/constants/bulkCodeConstants';
 import { useTranslations } from 'next-intl';
 import {
@@ -25,42 +25,54 @@ import {
 } from '../../../../../../../src/utils/multiTenancy/helpers';
 import { v4 } from 'uuid';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
-import { useTenantStore } from '../../../../../../../src/stores/tenantStore';
+import {
+  useTenantStore,
+  useBulkCodeStore,
+} from '../../../../../../../src/stores';
 import { defaultTenant } from '../../../../../../../tenant.config';
 
 export default function BulkCodeSelectProjectPage(): ReactElement {
   const t = useTranslations('Me');
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { bulkMethod, setBulkMethod } = useBulkCode();
-  //store: state
+  // store: state
+  const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
   const isInitialized = useTenantStore((state) => state.isInitialized);
+  // store: action
+  const setBulkMethod = useBulkCodeStore((state) => state.setBulkMethod);
 
-  // Sets bulk method if not already set within context when page is loaded
+  const { method } = router.query;
+  const isValidMethod =
+    method === BulkCodeMethods.GENERIC || method === BulkCodeMethods.IMPORT;
+  const isContentReady = router.isReady && isValidMethod;
+
+  // Keeps the store in sync with the route method, so navigating between
+  // methods (e.g. via browser back/forward) doesn't leave a stale value.
   useEffect(() => {
-    if (!bulkMethod) {
-      if (router.isReady) {
-        const _bulkMethod = router.query.method;
-        if (
-          _bulkMethod === BulkCodeMethods.GENERIC ||
-          _bulkMethod === BulkCodeMethods.IMPORT
-        ) {
-          setBulkMethod(_bulkMethod);
-        } else {
-          router.push(localizedPath('/profile/bulk-codes'));
-        }
-      }
+    if (!router.isReady) return;
+    if (!isValidMethod) {
+      router.push(localizedPath('/profile/bulk-codes'));
+      return;
     }
-  }, []);
+    if (bulkMethod !== method) setBulkMethod(method);
+  }, [router.isReady, isValidMethod, method, bulkMethod]);
 
   if (!isInitialized) return <></>;
 
+  const skeleton = <BulkCodesSkeleton step={BulkCodeSteps.SELECT_PROJECT} />;
+
   return (
-    <UserLayout>
-      <Head>
-        <title>{t('bulkCodesTitleStep2')}</title>
-      </Head>
-      <BulkCodes step={BulkCodeSteps.SELECT_PROJECT} />
+    <UserLayout skeleton={skeleton}>
+      {isContentReady ? (
+        <>
+          <Head>
+            <title>{t('bulkCodesTitleStep2')}</title>
+          </Head>
+          <BulkCodes step={BulkCodeSteps.SELECT_PROJECT} />
+        </>
+      ) : (
+        skeleton
+      )}
     </UserLayout>
   );
 }

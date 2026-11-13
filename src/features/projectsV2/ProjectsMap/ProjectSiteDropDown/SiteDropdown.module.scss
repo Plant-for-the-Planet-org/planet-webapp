@@ -1,4 +1,4 @@
-@import '../../../../theme/theme';
+@use '../../../../theme/theme' as *;
 
 $dropDownTriggerButtonHeight: 52px;
 $dropDownOpenGap: 8px;
@@ -18,9 +18,28 @@ $dropDownOpenGapMobile: 6px;
 }
 .dropdownButton {
   cursor: pointer;
+  // Keeps the look of the div this button replaced.
+  width: 100%;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: left;
 }
 .dropdownDetails {
   cursor: default;
+}
+
+// Screen reader text, such as "No site selected" next to the dash, that takes no space on screen.
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .siteIconAndTextContainer {
@@ -73,21 +92,25 @@ $dropDownOpenGapMobile: 6px;
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
   }
-  > button {
-    width: 100%;
+  list-style: none;
+  // Each option is a button in its own list item, so the last-option rule goes on the list item.
+  > li:last-child > .listItem {
+    border-bottom: none;
   }
 }
 .listItem {
   display: flex;
   justify-content: space-between;
+  width: 100%;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: left;
   gap: 30px;
   padding: 9px 0px;
   cursor: pointer;
   border-bottom: 1px solid $dsMediumGrey;
   font-weight: 400;
-  &:last-of-type {
-    border-bottom: none;
-  }
 }
 
 .selectedItem {

@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
-import { usePayouts } from '../../common/Layout/PayoutsContext';
 import PayoutScheduleForm from './screens/PayoutScheduleForm';
 import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
@@ -15,11 +14,12 @@ import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import { useIsAuthReady } from '../../../hooks/useAuthReadiness';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import {
-  useAuthStore,
   useUserStore,
   useErrorHandlingStore,
+  useManagePayoutStore,
 } from '../../../stores';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -44,55 +44,64 @@ export default function ManagePayouts({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
-    usePayouts();
-  const { getApi, getApiAuthenticated } = useApi();
+  const isAuthReady = useIsAuthReady();
+  const { getApiAuthenticated } = useApi();
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const [isDataLoading, setIsDataLoading] = useState(false);
   // store: state
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
   const { userId, isTpo } = useUserStore(
     useShallow((state) => ({
       userId: state.userProfile?.id,
       isTpo: state.userProfile?.type === 'tpo',
     }))
   );
+  const accountsStatus = useManagePayoutStore((state) => state.accountsStatus);
+  const hasPayoutMinAmounts = useManagePayoutStore(
+    (state) => state.payoutMinAmounts !== null
+  );
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const setAccounts = useManagePayoutStore((state) => state.setAccounts);
+  const setAccountsStatus = useManagePayoutStore(
+    (state) => state.setAccountsStatus
+  );
+  const setPayoutMinAmounts = useManagePayoutStore(
+    (state) => state.setPayoutMinAmounts
+  );
 
   const fetchPayoutMinAmounts = async () => {
-    if (!payoutMinAmounts) {
-      try {
-        const res = await getApi<PayoutMinAmounts>('/app/payoutMinAmounts');
-        setPayoutMinAmounts(res);
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-      }
+    if (hasPayoutMinAmounts) return;
+
+    try {
+      const res = await getApiAuthenticated<PayoutMinAmounts>(
+        '/app/payoutMinAmounts'
+      );
+      setPayoutMinAmounts(res);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
     }
   };
 
   useEffect(() => {
-    if (!payoutMinAmounts && isTpo) fetchPayoutMinAmounts();
+    if (!hasPayoutMinAmounts && isTpo) fetchPayoutMinAmounts();
   }, [step, userId]);
 
   const fetchAccounts = async () => {
-    if (!accounts) {
-      setIsDataLoading(true);
-      setProgress && setProgress(70);
-      try {
-        const res = await getApiAuthenticated<BankAccount[]>('/app/accounts');
-        setAccounts(res);
-      } catch (err) {
-        setErrors(handleError(err as APIError));
-      }
-      setIsDataLoading(false);
-      if (setProgress) {
-        setProgress(100);
-        setTimeout(() => setProgress(0), 1000);
-      }
+    if (accountsStatus !== 'idle') return;
+
+    setAccountsStatus('loading');
+    setProgress && setProgress(70);
+    try {
+      const res = await getApiAuthenticated<BankAccount[]>('/app/accounts');
+      setAccounts(res);
+      setAccountsStatus('ready');
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      setAccountsStatus('error');
+    }
+    if (setProgress) {
+      setProgress(100);
+      setTimeout(() => setProgress(0), 1000);
     }
   };
 
@@ -103,7 +112,7 @@ export default function ManagePayouts({
     }
 
     if (isAuthReady) fetchAccounts();
-  }, [isAuthReady, userId]);
+  }, [isAuthReady, userId, accountsStatus]);
 
   useEffect(() => {
     if (isTpo) {
@@ -134,13 +143,9 @@ export default function ManagePayouts({
       case ManagePayoutTabs.ADD_BANK_DETAILS:
         return <AddBankAccount />;
       case ManagePayoutTabs.OVERVIEW:
-        return isEdit ? (
-          <EditBankAccount />
-        ) : (
-          <Overview isDataLoading={isDataLoading} />
-        );
+        return isEdit ? <EditBankAccount /> : <Overview />;
       default:
-        return <Overview isDataLoading={isDataLoading} />;
+        return <Overview />;
     }
   };
 

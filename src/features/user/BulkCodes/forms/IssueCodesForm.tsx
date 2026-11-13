@@ -5,8 +5,7 @@ import type {
   Donation,
   PrepaidDonationRequest,
 } from '@planet-sdk/common';
-import type { Recipient } from '../../../common/Layout/BulkCodeContext';
-import type { Recipient as LocalRecipient } from '../BulkCodesTypes';
+import type { RecipientPayload, RecipientUploadRow } from '../BulkCodesTypes';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -17,7 +16,7 @@ import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
-import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
+import LiveRegion from '../../../common/LiveRegion';
 import cleanObject from '../../../../utils/cleanObject';
 import { v4 as uuidV4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
@@ -29,6 +28,8 @@ import { useApi } from '../../../../hooks/useApi';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import { useUserStore, useErrorHandlingStore } from '../../../../stores';
+import { useBulkCodeStore } from '../../../../stores/bulkCodeStore';
+import { getSelfGiftRows } from '../utils';
 
 type SubmissionStatus = 'idle' | 'submitting' | 'success';
 
@@ -37,17 +38,11 @@ const IssueCodesForm = (): ReactElement | null => {
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
-  const {
-    project,
-    setProject,
-    planetCashAccount,
-    projectList,
-    bulkMethod,
-    setBulkMethod,
-  } = useBulkCode();
   const { postApiAuthenticated } = useApi();
   // local state
-  const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
+  const [localRecipients, setLocalRecipients] = useState<RecipientUploadRow[]>(
+    []
+  );
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
   const [codeQuantity, setCodeQuantity] = useState('');
@@ -58,9 +53,18 @@ const IssueCodesForm = (): ReactElement | null => {
   const [notificationLocale, setNotificationLocale] = useState('');
   // store: state
   const userPlanetCash = useUserStore((state) => state.userProfile?.planetCash);
+  const giverEmail = useUserStore((state) => state.userProfile?.email);
+  const bulkMethod = useBulkCodeStore((state) => state.bulkMethod);
+  const planetCashAccount = useBulkCodeStore(
+    (state) => state.planetCashAccount
+  );
+  const project = useBulkCodeStore((state) => state.project);
   // store: action
   const refetchUserProfile = useUserStore((state) => state.refetchUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  const resetBulkCodeStore = useBulkCodeStore(
+    (state) => state.resetBulkCodeStore
+  );
 
   const notificationLocales = [
     {
@@ -72,10 +76,7 @@ const IssueCodesForm = (): ReactElement | null => {
       languageName: 'Deutsch',
     },
   ];
-  const resetBulkContext = (): void => {
-    setProject(null);
-    setBulkMethod(null);
-  };
+
   const getTotalUnits = (): number => {
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
@@ -88,8 +89,8 @@ const IssueCodesForm = (): ReactElement | null => {
     }
   };
 
-  const getProcessedRecipients = (): Recipient[] => {
-    const recipients: Recipient[] = [];
+  const getProcessedRecipients = (): RecipientPayload[] => {
+    const recipients: RecipientPayload[] = [];
     localRecipients.forEach((recipient) => {
       const temp = {
         recipientName: recipient.recipient_name,
@@ -167,7 +168,7 @@ const IssueCodesForm = (): ReactElement | null => {
           // before the redirect.
           setTimeout(async () => {
             await router.push(localizedPath(`/profile/history?ref=${res.uid}`));
-            resetBulkContext();
+            resetBulkCodeStore();
             refetchUserProfile();
           }, 5000);
         } else {
@@ -249,9 +250,13 @@ const IssueCodesForm = (): ReactElement | null => {
     const hasEnteredRequiredData =
       localRecipients.length > 0 ||
       (Number(codeQuantity) > 0 && Number(unitsPerCode) > 0);
+    const hasSelfGift =
+      giverEmail !== undefined &&
+      getSelfGiftRows(localRecipients, giverEmail).length > 0;
 
     return (
       !hasSufficientFunds ||
+      hasSelfGift ||
       status === 'submitting' ||
       !hasEnteredRequiredData ||
       !totalAmount ||
@@ -259,6 +264,7 @@ const IssueCodesForm = (): ReactElement | null => {
     );
   }, [
     userPlanetCash,
+    giverEmail,
     status,
     localRecipients,
     codeQuantity,
@@ -318,17 +324,24 @@ const IssueCodesForm = (): ReactElement | null => {
     );
   }, [locale, t]);
 
+  // The live region is rendered in both states, so it stays on the page while
+  // the form is submitted. When the success message appears, screen readers
+  // announce the updated text more reliably than if the live region is added
+  // with the message. The live region is visually hidden, so it does not affect
+  // the visible success message or the layout.
+  const statusRegion = (
+    <LiveRegion politeness="polite" isVisuallyHidden>
+      {status !== 'success' ? '' : t('donationSuccess')}
+    </LiveRegion>
+  );
+
   if (status !== 'success') {
     return (
       <CenteredContainer>
+        {statusRegion}
         <StyledFormContainer className="IssueCodesForm" component={'section'}>
           <div className="inputContainer">
-            <ProjectSelector
-              projectList={projectList || []}
-              project={project}
-              disabled={true}
-              planetCashAccount={planetCashAccount}
-            />
+            <ProjectSelector project={project} disabled={true} />
             <TextField
               onChange={(e) => setComment(e.target.value)}
               value={comment}
@@ -380,7 +393,7 @@ const IssueCodesForm = (): ReactElement | null => {
             />
           </div>
           <BulkCodesError />
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} aria-busy={status === 'submitting'}>
             <Button
               type="submit"
               variant="contained"
@@ -400,16 +413,20 @@ const IssueCodesForm = (): ReactElement | null => {
         </StyledFormContainer>
       </CenteredContainer>
     );
+  } else {
+    return (
+      <CenteredContainer className="CenteredContainer--small">
+        {statusRegion}
+        {/* Visible copy only. `CenteredContainer` is the same element type in
+            both branches and the region is the first child of each, so React
+            reconciles it to the same DOM node instead of remounting it. */}
+        <div className={styles.successMessage}>
+          {t('donationSuccess')}
+          <span className={styles.spinner} aria-hidden="true"></span>
+        </div>
+      </CenteredContainer>
+    );
   }
-
-  return (
-    <CenteredContainer className="CenteredContainer--small">
-      <div className={styles.successMessage}>
-        {t('donationSuccess')}
-        <span className={styles.spinner}></span>
-      </div>
-    </CenteredContainer>
-  );
 };
 
 export default IssueCodesForm;

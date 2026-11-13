@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import ProjectBadge from '../microComponents/ProjectBadge';
 
 const meta: Meta<typeof ProjectBadge> = {
