@@ -5,13 +5,10 @@ import ProfileCard from '../ProfileCard';
 import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import ForestProgress from '../ForestProgress';
 import CommunityContributions from '../CommunityContributions';
-import {
-  useAuthStore,
-  useMyForestStore,
-  useUserStore,
-} from '../../../../stores';
+import { useMyForestStore, useUserStore } from '../../../../stores';
 import MyContributions from '../MyContributions';
 import { useApi } from '../../../../hooks/useApi';
+import { useIsProfileReady } from '../../../../hooks/useAuthReadiness';
 import { clsx } from 'clsx';
 import { transformProfileToForestUserInfo } from '../../../../utils/myForestUtils';
 import { PROFILE_SECTION_HEIGHTS } from './ProfileGridSkeleton';
@@ -26,7 +23,7 @@ const ProfileLayout = () => {
   );
   const userSlug = useMyForestStore((state) => state.userInfo?.slug);
   const userProfile = useUserStore((state) => state.userProfile);
-  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const isProfileReady = useIsProfileReady();
   // store: action
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
   const fetchMyForest = useMyForestStore((state) => state.fetchMyForest);
@@ -38,11 +35,12 @@ const ProfileLayout = () => {
   );
 
   useEffect(() => {
-    if (!isAuthResolved || !userProfile) return;
+    // userProfile is re-checked here (isProfileReady already implies it) so TS can narrow it for the transform call below.
+    if (!isProfileReady || !userProfile) return;
 
     setIsPublicProfile(false);
     setUserInfo(transformProfileToForestUserInfo(userProfile));
-  }, [isAuthResolved, userProfile]);
+  }, [isProfileReady, userProfile]);
 
   useEffect(() => {
     if (userSlug) fetchMyForest(getApi, getApiAuthenticated);

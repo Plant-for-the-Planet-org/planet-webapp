@@ -14,9 +14,9 @@ import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import { useIsAuthReady } from '../../../hooks/useAuthReadiness';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import {
-  useAuthStore,
   useUserStore,
   useErrorHandlingStore,
   useManagePayoutStore,
@@ -44,13 +44,11 @@ export default function ManagePayouts({
   const locale = useLocale();
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
+  const isAuthReady = useIsAuthReady();
   const { getApiAuthenticated } = useApi();
   // local state
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   // store: state
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
   const { userId, isTpo } = useUserStore(
     useShallow((state) => ({
       userId: state.userProfile?.id,

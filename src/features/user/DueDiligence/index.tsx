@@ -20,15 +20,14 @@ import OrganizationDataForm from './components/OrganizationDataForm';
 import SubmitForReview from './components/SubmitForReview';
 import { dedupeInFlight } from '../ManageProjects/utils/dedupeInFlight';
 import { useApi } from '../../../hooks/useApi';
-import { useAuthStore, useErrorHandlingStore } from '../../../stores';
+import { useIsAuthReady } from '../../../hooks/useAuthReadiness';
+import { useErrorHandlingStore } from '../../../stores';
 
 export default function DueDiligence(): ReactElement {
   const t = useTranslations('Me.dueDiligence');
   const { getApiAuthenticated } = useApi();
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
+  const isAuthReady = useIsAuthReady();
 
   const [checklist, setChecklist] = useState<DueDiligenceChecklist | null>(null);
 
