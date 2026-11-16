@@ -1,5 +1,6 @@
 import type {
   MapLibreRef,
+  ProjectSiteFeature,
   ProjectSiteFeatureCollection,
 } from '../../features/common/types/map';
 import type { ViewState } from 'react-map-gl/maplibre';
@@ -21,7 +22,8 @@ export function zoomOutMap(map: Map, callback: () => void) {
 export function zoomInToProjectSite(
   mapRef: MapLibreRef,
   geoJson: ProjectSiteFeatureCollection | null,
-  selectedSite: number,
+  // null fits every site in geoJson, so no shape ends up outside the view.
+  selectedSiteIndex: number | null,
   handleViewStateChange: (viewState: Partial<ViewState>) => void,
   duration = 1200
 ) {
@@ -32,16 +34,24 @@ export function zoomInToProjectSite(
 
   const map = mapRef.current.getMap ? mapRef.current.getMap() : mapRef.current;
 
-  const feature = geoJson.features?.[selectedSite];
-  if (!feature || !feature.geometry) {
+  const sitesToFit =
+    selectedSiteIndex === null
+      ? geoJson.features ?? []
+      : [geoJson.features?.[selectedSiteIndex]];
+  const sitesWithGeometry = sitesToFit.filter(
+    (site): site is ProjectSiteFeature => Boolean(site?.geometry)
+  );
+  if (sitesWithGeometry.length === 0) {
     console.warn(
-      'zoomInToProjectSite: invalid selectedSite or missing geometry',
-      { selectedSite, featuresLength: geoJson.features?.length ?? 0 }
+      'zoomInToProjectSite: invalid selectedSiteIndex or missing geometry',
+      { selectedSiteIndex, featuresLength: geoJson.features?.length ?? 0 }
     );
     return;
   }
-  // Get the bounding box of the selected site
-  const bounds = bbox(feature);
+  const bounds = bbox({
+    type: 'FeatureCollection',
+    features: sitesWithGeometry,
+  });
 
   // Fit the map to the bounding box
   map.fitBounds(
