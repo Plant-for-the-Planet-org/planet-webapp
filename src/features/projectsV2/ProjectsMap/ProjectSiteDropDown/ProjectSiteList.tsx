@@ -37,17 +37,17 @@ const ProjectSiteList = ({
 
   return (
     <ul className={styles.siteListOptions}>
-      {siteList.map((site, index) => {
+      {siteList.map((site) => {
         const isSelected = site.id === selectedSiteData?.id;
         return (
-          <li key={index}>
+          <li key={site.id}>
             <button
               type="button"
               className={clsx(styles.listItem, {
                 [styles.selectedItem]: isSelected,
               })}
               aria-current={isSelected ? 'true' : undefined}
-              onClick={() => handleSiteSelection(index)}
+              onClick={() => handleSiteSelection(site.id)}
             >
               <span>{site.siteName}</span>
               <span className={styles.siteArea}>

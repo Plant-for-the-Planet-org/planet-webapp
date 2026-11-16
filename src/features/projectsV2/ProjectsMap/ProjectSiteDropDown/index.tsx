@@ -38,10 +38,12 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
     (state) => state.selectedIntervention
   );
 
+  // Sites without a shape are not on the map, so they are left out here too. `id` stays the site's index in the full list, which is what `selectedSite` holds.
   const siteList = useMemo(() => {
     if (!projectSites) return [];
-    return projectSites.map((site, index: number) => {
-      const calculatedSiteAreaInM2 = site.geometry ? area(site) : 0;
+    return projectSites.flatMap((site, index: number) => {
+      if (!site.geometry) return [];
+      const calculatedSiteAreaInM2 = area(site);
       return {
         siteName: site.properties.name,
         siteArea:
@@ -64,7 +66,9 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
   );
 
   const selectedSiteData =
-    selectedSite !== null ? siteList[selectedSite] : undefined;
+    selectedSite !== null
+      ? siteList.find((site) => site.id === selectedSite)
+      : undefined;
 
   useEffect(() => {
     if (activeDropdown === 'intervention') {
