@@ -11,8 +11,14 @@ import {
   buildProjectDetailsQuery,
   filterByClassification,
   filterBySearch,
+  getGeoJsonFeatureIndex,
+  getSitesGeoJson,
 } from './projectV2';
-import { createMapProject } from '../test-utils';
+import {
+  createMapProject,
+  createSite,
+  createSiteWithoutGeometry,
+} from '../test-utils';
 
 const COUNTRY_NAMES: Partial<Record<CountryCode, string>> = {
   DE: 'Deutschland',
@@ -179,5 +185,36 @@ describe('buildProjectDetailsQuery', () => {
     expect(
       buildProjectDetailsQuery({ p: 'yucatan', tag: ['a', 'b'] }, {})
     ).toEqual({ p: 'yucatan' });
+  });
+});
+
+// #3279: the map list drops sites without a shape, so positions in the two lists stop matching.
+describe('getGeoJsonFeatureIndex', () => {
+  const sites = [
+    createSiteWithoutGeometry('site_a'),
+    createSite('site_b'),
+    createSite('site_c'),
+  ];
+  const sitesGeoJson = getSitesGeoJson(sites);
+
+  it('finds the map feature of the same site when a site without a shape comes first', () => {
+    expect(getGeoJsonFeatureIndex(sites, sitesGeoJson, 1)).toBe(0);
+    expect(getGeoJsonFeatureIndex(sites, sitesGeoJson, 2)).toBe(1);
+  });
+
+  it('returns -1 for a site without a shape', () => {
+    expect(getGeoJsonFeatureIndex(sites, sitesGeoJson, 0)).toBe(-1);
+  });
+
+  it('returns -1 for a position past the end of the list', () => {
+    expect(getGeoJsonFeatureIndex(sites, sitesGeoJson, 3)).toBe(-1);
+  });
+
+  it('matches positions one to one when every site has a shape', () => {
+    const sitesWithGeometry = [createSite('site_a'), createSite('site_b')];
+    const geoJson = getSitesGeoJson(sitesWithGeometry);
+
+    expect(getGeoJsonFeatureIndex(sitesWithGeometry, geoJson, 0)).toBe(0);
+    expect(getGeoJsonFeatureIndex(sitesWithGeometry, geoJson, 1)).toBe(1);
   });
 });

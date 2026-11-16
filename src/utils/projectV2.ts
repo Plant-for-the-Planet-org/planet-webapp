@@ -657,6 +657,23 @@ export const getSiteIdFromIndex = (
 export const FIRST_SITE_INDEX = 0;
 
 /**
+ * Index in `sitesGeoJson.features` of the site at `siteIndex` in `sites`, or -1 when that site is not on the map.
+ *
+ * `getSitesGeoJson` drops sites without a shape, so a position in `sites` can point to a different feature. Matching by id keeps them in step. See #3279.
+ */
+export const getGeoJsonFeatureIndex = (
+  sites: ProjectSiteFeature[],
+  sitesGeoJson: ProjectSiteFeatureCollection,
+  siteIndex: number
+): number => {
+  const siteId = sites[siteIndex]?.properties.id;
+  if (!siteId) return -1;
+  return sitesGeoJson.features.findIndex(
+    (feature) => feature.properties.id === siteId
+  );
+};
+
+/**
  * Returns `true` if a project has no selectable sites.
  *
  * A project has no selectable sites when the site list is empty or every site
