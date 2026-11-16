@@ -1,7 +1,7 @@
 import type { SetState } from '../../../common/types/common';
 import type { DropdownType } from '../../../common/types/projectv2';
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { area } from '@turf/area';
@@ -55,14 +55,6 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
     [siteList.length]
   );
 
-  const getId = useCallback(
-    (selectedSiteId: number) => {
-      const index = siteList.findIndex((site) => site.id === selectedSiteId);
-      return index !== -1 ? index + 1 : null;
-    },
-    [siteList]
-  );
-
   const selectedSiteData =
     selectedSite !== null ? siteList[selectedSite] : undefined;
 
@@ -103,7 +95,7 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
               <span className={styles.sitesLabel}>
                 <span className={styles.siteId}>
                   {tProjectDetails('siteCount', {
-                    siteId: getId(selectedSiteData?.id) ?? 0,
+                    siteId: selectedSiteData.id + 1,
                     totalCount: siteList.length,
                   })}
                 </span>
