@@ -1,35 +1,43 @@
+import { readStoredDirectGift } from './directGift';
+
+type DonationUrlOptions = {
+  tenant: string;
+  /** Project slug, or 'planetcash' to top up a PlanetCash balance. */
+  target: string;
+  token: string | null;
+  embed?: string;
+  callbackUrl?: string;
+  /** Direct-gift recipient slug, used for the `s` param. */
+  recipientSlug?: string;
+  utmCampaign?: string;
+};
+
 // calling this function before window is loaded may cause an error
-export const getDonationUrl = (
-  tenant: string | undefined,
-  id: string,
-  token: string | null,
-  embed?: string,
-  callbackUrl?: string,
-  slug?: string,
-  utmCampaign?: string
-): string => {
+export const getDonationUrl = (options: DonationUrlOptions): string => {
+  const {
+    tenant,
+    target,
+    token,
+    embed,
+    callbackUrl,
+    recipientSlug,
+    utmCampaign,
+  } = options;
+
   const country = localStorage.getItem('countryCode') || 'DE';
+  // Legacy compatibility read, kept until the donation widget URL is migrated off localStorage.language (see issue #3234).
   const language = localStorage.getItem('language') || 'en';
 
-  const storedDirectGift = localStorage.getItem('directGift');
-  let directGift: { id?: string } | null = null;
-  if (storedDirectGift) {
-    try {
-      directGift = JSON.parse(storedDirectGift);
-    } catch {
-      directGift = null;
-    }
-  }
+  const directGift = readStoredDirectGift();
 
   const callbackUrlValue =
     embed === 'true' ? callbackUrl : window.location.href;
 
-  // directGift.id, when present, takes precedence over slug for the 's' param
-  const giftSlug =
-    directGift && directGift.id !== undefined ? directGift.id : slug;
+  // A stored direct gift takes precedence over recipientSlug for the 's' param
+  const giftSlug = directGift !== null ? directGift.id : recipientSlug;
 
   const queryParams = [
-    `to=${encodeURIComponent(id)}`,
+    `to=${encodeURIComponent(target)}`,
     callbackUrlValue !== undefined
       ? `callback_url=${encodeURIComponent(callbackUrlValue)}`
       : undefined,

@@ -9,6 +9,7 @@ import type {
 import type { Tenant } from '@planet-sdk/common';
 
 import ProjectsContainer from '../../../../../../src/features/user/ManageProjects/ProjectsContainer';
+import ManageProjectsSkeleton from '../../../../../../src/features/user/ManageProjects/ManageProjectsSkeleton';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslations } from 'next-intl';
@@ -30,7 +31,7 @@ export default function Register(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout skeleton={<ManageProjectsSkeleton variant="list" />}>
       <Head>
         <title>{t('projects')}</title>
       </Head>

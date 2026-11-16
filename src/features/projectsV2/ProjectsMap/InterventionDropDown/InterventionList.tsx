@@ -68,14 +68,17 @@ const InterventionList = ({
         const isSelected =
           intervention.value === selectedInterventionData?.value;
         return (
-          <li
-            className={clsx(styles.listItem, {
-              [styles.selectedItem]: isSelected,
-            })}
-            onClick={() => handleFilterSelection(intervention.value)}
-            key={intervention.value} // Use unique value as key
-          >
-            <p>{tProjectDetails(intervention.value)}</p>
+          <li key={intervention.value}>
+            <button
+              type="button"
+              className={clsx(styles.listItem, {
+                [styles.selectedItem]: isSelected,
+              })}
+              aria-current={isSelected ? 'true' : undefined}
+              onClick={() => handleFilterSelection(intervention.value)}
+            >
+              <span>{tProjectDetails(intervention.value)}</span>
+            </button>
           </li>
         );
       })}

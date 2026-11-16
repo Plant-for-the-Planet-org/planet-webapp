@@ -38,18 +38,22 @@ const ProjectSiteList = ({
   return (
     <ul className={styles.siteListOptions}>
       {siteList.map((site, index) => {
+        const isSelected = site.id === selectedSiteData?.id;
         return (
-          <li
-            className={clsx(styles.listItem, {
-              [styles.selectedItem]: site.id === selectedSiteData?.id,
-            })}
-            onClick={() => handleSiteSelection(index)}
-            key={index}
-          >
-            <p>{site.siteName}</p>
-            <p className={styles.siteArea}>
-              {getFormattedRoundedNumber(locale, site.siteArea, 0)} ha
-            </p>
+          <li key={index}>
+            <button
+              type="button"
+              className={clsx(styles.listItem, {
+                [styles.selectedItem]: isSelected,
+              })}
+              aria-current={isSelected ? 'true' : undefined}
+              onClick={() => handleSiteSelection(index)}
+            >
+              <span>{site.siteName}</span>
+              <span className={styles.siteArea}>
+                {getFormattedRoundedNumber(locale, site.siteArea, 0)} ha
+              </span>
+            </button>
           </li>
         );
       })}

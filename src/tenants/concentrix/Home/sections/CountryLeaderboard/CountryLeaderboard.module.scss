@@ -1,4 +1,4 @@
-@import '../../../../../theme/theme';
+@use '../../../../../theme/theme' as *;
 
 .countryLeaderboard {
   background-image: url('/tenants/concentrix/images/half-earth-background.png'),

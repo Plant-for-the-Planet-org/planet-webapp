@@ -1,0 +1,30 @@
+# Translation review file — project type selection
+# Keys added in commits 8346d8cf / a75ae138
+# Structure: key → locale → text
+
+restorationProjectDescription:
+  en: "A project that assists the recovery of a native ecosystem that has been degraded, damaged, or destroyed."
+  de: "Ein Projekt zur Unterstützung der Wiederherstellung eines nativen Ökosystems, das degradiert, beschädigt oder zerstört wurde."
+  es: "Un proyecto que apoya la recuperación de un ecosistema nativo que ha sido degradado, dañado o destruido."
+  fr: "Un projet qui soutient la restauration d'un écosystème natif qui a été dégradé, endommagé ou détruit."
+  it: "Un progetto che supporta il recupero di un ecosistema nativo che è stato degradato, danneggiato o distrutto."
+  pt-BR: "Um projeto que apoia a recuperação de um ecossistema nativo que foi degradado, danificado ou destruído."
+  cs: "Projekt podporující obnovu původního ekosystému, který byl degradován, poškozen nebo zničen."
+
+conservationProjectDescription:
+  en: "A project that protects an existing native ecosystem that has not yet been degraded or destroyed but is at risk."
+  de: "Ein Projekt zum Schutz eines bestehenden nativen Ökosystems, das noch nicht degradiert oder zerstört wurde, aber gefährdet ist."
+  es: "Un proyecto que protege un ecosistema nativo existente que aún no ha sido degradado ni destruido, pero que está en riesgo."
+  fr: "Un projet qui protège un écosystème natif existant qui n'a pas encore été dégradé ou détruit mais qui est menacé."
+  it: "Un progetto che protegge un ecosistema nativo esistente che non è ancora stato degradato o distrutto ma è a rischio."
+  pt-BR: "Um projeto que protege um ecossistema nativo existente que ainda não foi degradado ou destruído, mas está em risco."
+  cs: "Projekt chránící stávající původní ekosystém, který dosud nebyl degradován ani zničen, ale je ohrožen."
+
+backToProjectType:
+  en: "Back"
+  de: "Zurück"
+  es: "Atrás"
+  fr: "Retour"
+  it: "Indietro"
+  pt-BR: "Voltar"
+  cs: "Zpět"

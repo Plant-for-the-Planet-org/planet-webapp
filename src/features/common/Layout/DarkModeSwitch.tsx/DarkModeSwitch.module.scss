@@ -1,4 +1,4 @@
-@import '../../../../theme/theme';
+@use '../../../../theme/theme' as *;
 
 .darkModeLabel {
   background-color: rgba($color: #b2b2b2, $alpha: 0.4);

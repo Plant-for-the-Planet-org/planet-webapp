@@ -2,7 +2,7 @@ import type {
   MapLayerMouseEvent,
   ViewState,
   ViewStateChangeEvent,
-} from 'react-map-gl-v7/maplibre';
+} from 'react-map-gl/maplibre';
 import type {
   UseFormClearErrors,
   UseFormSetError,
@@ -20,8 +20,9 @@ import type {
 } from '../../../../common/types/map';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import MapGL, { NavigationControl, Marker } from 'react-map-gl-v7/maplibre';
+import MapGL, { NavigationControl, Marker } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import '../../../../../utils/mapsV2/maplibreWorker';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import { getAddressFromCoordinates } from '../../../../../utils/geocoder';
 import { ProjectLocationIcon } from '../../../../../../public/assets/images/icons/projectV2/ProjectLocationIcon';

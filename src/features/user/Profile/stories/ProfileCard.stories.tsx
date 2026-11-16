@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import type { User, UserPublicProfile } from '@planet-sdk/common';
 
 import ProfileCard from '../ProfileCard';

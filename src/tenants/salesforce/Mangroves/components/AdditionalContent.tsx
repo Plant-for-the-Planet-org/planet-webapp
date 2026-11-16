@@ -2,6 +2,7 @@ import { clsx } from 'clsx';
 import styles from './../styles/AdditionalContent.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 
+// Not used right now: the Mangroves page does not import it. Decide later whether to use it or remove it with AdditionalContent.module.scss.
 export default function AdditionalInfo() {
   return (
     <section className={styles.additionalContentSection}>

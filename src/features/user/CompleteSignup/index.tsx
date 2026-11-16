@@ -18,6 +18,7 @@ import { getStoredConfig } from '../../../utils/storeConfig';
 import { useTranslations } from 'next-intl';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
+import { useIsAuthReady } from '../../../hooks/useAuthReadiness';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
 import SignupToggles from './components/SignupToggles';
@@ -65,6 +66,7 @@ export default function CompleteSignup(): ReactElement | null {
   const t = useTranslations('EditProfile');
   const { postApi } = useApi();
   const { auth0User } = useAuthSession();
+  const isAuthReady = useIsAuthReady();
 
   // local state
   const [isProcessing, setIsProcessing] = useState(false);
@@ -143,7 +145,8 @@ export default function CompleteSignup(): ReactElement | null {
   };
   const handleCreateAccount = async (data: SignupFormData) => {
     setFormSubmitted(true);
-    if (!agreedToTerms || !country || !isAuthResolved || !token) return;
+    // token is re-checked here (isAuthReady already implies it) so TS can narrow it for oAuthAccessToken below.
+    if (!agreedToTerms || !country || !isAuthReady || !token) return;
 
     const { isPublic, ...otherData } = data;
     const submitData = {

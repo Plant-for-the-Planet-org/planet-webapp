@@ -13,7 +13,7 @@ import {
   ADDRESS_TYPE,
 } from '../../../../../../utils/addressManagement';
 
-export interface AddressActionItem {
+interface AddressActionItem {
   label: string;
   action: AddressAction;
   shouldRender: boolean;

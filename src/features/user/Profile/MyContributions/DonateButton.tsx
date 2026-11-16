@@ -43,14 +43,13 @@ const DonateButton = (props: DonateButtonProps) => {
   });
 
   // Construct donate link
-  const donateLink = getDonationUrl(
-    tenantId,
-    projectSlug,
+  const donateLink = getDonationUrl({
+    tenant: tenantId,
+    target: projectSlug,
     token,
-    undefined,
-    undefined,
-    type === 'supported' ? props.supportedTreecounter : undefined
-  );
+    recipientSlug:
+      type === 'supported' ? props.supportedTreecounter : undefined,
+  });
 
   return (
     <WebappButton

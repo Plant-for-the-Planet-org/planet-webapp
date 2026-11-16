@@ -13,12 +13,13 @@ import PlanetCashIcon from '../../../../../public/assets/images/icons/Sidebar/Pl
 import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/SettingsIcon';
 import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
 import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
-import { UserProfileLoader } from '../../ContentLoaders/UserProfile/UserProfileLoader';
+import { UserLayoutLoader } from '../../ContentLoaders/UserLayout/UserLayoutLoader';
 import styles from './UserLayout.module.scss';
 import TreeMapperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
 import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
 import FiberPinIcon from '@mui/icons-material/FiberPin';
+import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import IconContainer from './IconContainer';
 import LanguageSwitcher from './LanguageSwitcher';
 import NavLink from './NavLink';
@@ -27,7 +28,16 @@ import { clsx } from 'clsx';
 import { useAuthSession } from '../../../../hooks/useAuthSession';
 import { useAuthStore, useUserStore } from '../../../../stores';
 
-const UserLayout = ({ children }: { children: ReactNode }) => {
+interface UserLayoutProps {
+  children: ReactNode;
+  /**
+   * Loading shape for this route, shown while the user context is still resolving.
+   * Falls back to a minimal, content-agnostic placeholder when omitted; never to another route's shape.
+   */
+  skeleton?: ReactNode;
+}
+
+const UserLayout = ({ children, skeleton }: UserLayoutProps) => {
   const t = useTranslations('Me');
   const locale = useLocale();
   const router = useRouter();
@@ -52,6 +62,14 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
         title: t('profile'),
         path: '/profile',
         icon: <UserIcon />,
+      },
+      {
+        key: 'due-diligence',
+        title: t('dueDiligence.menuText'),
+        path: '/profile/due-diligence',
+        icon: <FactCheckOutlinedIcon />,
+        // Shown to every organisation, with or without a project. An organisation that has not created one yet still has papers to file.
+        accessLevel: ['tpo'],
       },
       {
         key: 'payments',
@@ -280,7 +298,7 @@ const UserLayout = ({ children }: { children: ReactNode }) => {
 
   // While auth state is resolving
   if (!isAuthResolved) {
-    return <UserProfileLoader />;
+    return <UserLayoutLoader skeleton={skeleton} />;
   }
 
   //Auth resolved but no user (redirect in effect)

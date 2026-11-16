@@ -3,7 +3,7 @@ import type { SetState } from '../../../common/types/common';
 
 import { Modal } from '@mui/material';
 import styles from './ForestProgress.module.scss';
-import { useEffect } from 'react';
+import { useEffect, useId } from 'react';
 import { handleError } from '@planet-sdk/common';
 import { useTranslations } from 'next-intl';
 import CrossIcon from '../../../../../public/assets/images/icons/manageProjects/Cross';
@@ -11,8 +11,8 @@ import IconButton from '../../../common/IconButton';
 import TargetFormInput from './TargetFormInput';
 import { useState } from 'react';
 import { useApi } from '../../../../hooks/useApi';
+import { useIsAuthReady } from '../../../../hooks/useAuthReadiness';
 import {
-  useAuthStore,
   useMyForestStore,
   useUserStore,
   useErrorHandlingStore,
@@ -43,6 +43,7 @@ const TargetsModal = ({
   conservationTarget,
 }: TargetsModalProps) => {
   const { putApiAuthenticated } = useApi();
+  const isAuthReady = useIsAuthReady();
   const tProfile = useTranslations('Profile.progressBar');
   const tCommon = useTranslations('Common');
   // states to manage modal
@@ -58,16 +59,12 @@ const TargetsModal = ({
   );
   const [isConservedAreaTargetActive, setIsConservedAreaTargetActive] =
     useState(conservationTarget > 0);
-  //store: state
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
   //store: action
   const setUserInfo = useMyForestStore((state) => state.setUserInfo);
-  const refetchUserProfile = useUserStore(
-    (state) => state.refetchUserProfile
-  );
+  const refetchUserProfile = useUserStore((state) => state.refetchUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
+  // Names the dialog using its visible title
+  const titleId = useId();
 
   const handleClose = () => {
     setOpen(false);
@@ -126,7 +123,11 @@ const TargetsModal = ({
   };
   return (
     <Modal open={open} onClose={handleClose}>
-      <div className={styles.targetModalMainContainer}>
+      <div
+        className={styles.targetModalMainContainer}
+        role="dialog"
+        aria-labelledby={titleId}
+      >
         <IconButton
           label={`${tCommon('close')} ${tProfile('setTargets')}`}
           className={styles.crossIconContainer}
@@ -134,7 +135,9 @@ const TargetsModal = ({
         >
           <CrossIcon />
         </IconButton>
-        <div className={styles.setTargetLabel}>{tProfile('setTargets')}</div>
+        <div className={styles.setTargetLabel} id={titleId}>
+          {tProfile('setTargets')}
+        </div>
 
         <div className={styles.targetModalSubContainer}>
           <TargetFormInput

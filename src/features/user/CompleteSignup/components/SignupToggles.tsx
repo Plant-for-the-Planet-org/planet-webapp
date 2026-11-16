@@ -6,6 +6,7 @@ import { Controller } from 'react-hook-form';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from '../CompleteSignup.module.scss';
 import NewToggleSwitch from '../../../common/InputTypes/NewToggleSwitch';
+import LiveRegion from '../../../common/LiveRegion';
 import { useState } from 'react';
 
 interface SignupTogglesProps {
@@ -114,11 +115,12 @@ const SignupToggles = ({
             id="terms"
           />
         </div>
-        {showTermError && (
-          <div className={styles.termsError}>
-            {tSignup('termAndConditionError')}
-          </div>
-        )}
+        {/* Assertive: a validation error blocking signup. The region stays
+            mounted so toggling terms off announces the error on the change
+            rather than relying on the region's own insertion. */}
+        <LiveRegion politeness="assertive" className={styles.termsError}>
+          {showTermError ? tSignup('termAndConditionError') : ''}
+        </LiveRegion>
       </div>
     </>
   );

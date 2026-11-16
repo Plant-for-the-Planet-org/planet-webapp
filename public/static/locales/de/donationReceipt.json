@@ -54,6 +54,7 @@
     "donorContactManagement": "Adressmanagement",
     "contactManagementHeader": "Profil und Adresse aktualisieren",
     "saveDataAndReturn": "Speichern und zurück",
+    "savingDonorInfo": "Details werden gespeichert",
     "donationReceipt": "Spendenbescheinigungen",
     "verifyAndDownload": "Bestätigen & Download",
     "itemsReferenceDateMultiDonation": "<u>{count, plural, one {# Spende} other {# Spenden}}</u>",

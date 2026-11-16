@@ -1,4 +1,5 @@
 import type { CountryProject } from '@planet-sdk/common';
+import type { RecipientUploadRow } from './BulkCodesTypes';
 
 /**
  * Filters and returns only eligible projects for donation.
@@ -33,4 +34,28 @@ export const filterEligibleProjects = (
 
     return isValidUnitCost && isAllowedPurpose && isAllowedForCurrency;
   });
+};
+
+// A user cannot send a gift to their own email.
+export const isSelfGift = (
+  recipientEmail: string,
+  giverEmail: string
+): boolean => {
+  const normalizedRecipientEmail = recipientEmail.trim().toLowerCase();
+  if (normalizedRecipientEmail.length === 0) return false;
+  return normalizedRecipientEmail === giverEmail.trim().toLowerCase();
+};
+
+// Returns 1-based row numbers, matching the row numbers in CSV upload errors.
+export const getSelfGiftRows = (
+  recipients: RecipientUploadRow[],
+  giverEmail: string
+): number[] => {
+  const rows: number[] = [];
+  recipients.forEach((recipient, index) => {
+    if (isSelfGift(recipient.recipient_email, giverEmail)) {
+      rows.push(index + 1);
+    }
+  });
+  return rows;
 };

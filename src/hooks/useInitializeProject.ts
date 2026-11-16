@@ -1,10 +1,11 @@
 import { useLocale } from 'next-intl';
 import { useEffect } from 'react';
-import { useProjectStore, useViewStore } from '../stores';
+import { useProjectStore } from '../stores';
 import { useApi } from './useApi';
 import { useCurrencyStore, useTenantStore } from '../stores';
 import { useRouter } from 'next/router';
 import { isValidClassification } from '../utils/projectV2';
+import { useCurrentPage } from './useCurrentPage';
 
 export const useInitializeProject = () => {
   const locale = useLocale();
@@ -16,7 +17,7 @@ export const useInitializeProject = () => {
   const isCurrencyResolved = useCurrencyStore(
     (state) => state.isCurrencyResolved
   );
-  const currentPage = useViewStore((state) => state.page);
+  const currentPage = useCurrentPage();
   // store: action
   const fetchProjects = useProjectStore((state) => state.fetchProjects);
   const setSelectedClassification = useProjectStore(
@@ -66,7 +67,6 @@ export const useInitializeProject = () => {
         setShowDonatableProjects(true);
       }
     }
-    // `currentPage` starts as `null` and is resolved by `useInitializeView` once the router is ready; include it so the URL filters initialize when the page becomes 'project-list' (not only on the initial `router.isReady`).
   }, [router.isReady, currentPage]);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
-import type { ViewState, MapStyle } from 'react-map-gl-v7/maplibre';
+import type { ViewState, StyleSpecification } from 'react-map-gl/maplibre';
 
 export interface MapState {
-  mapStyle: MapStyle;
+  mapStyle: StyleSpecification;
   dragPan: boolean;
   scrollZoom: boolean;
   minZoom: number;
@@ -11,7 +11,7 @@ export interface MapState {
 export const EMPTY_STYLE = {
   version: 8,
   sources: {},
-  layers: [] as MapStyle['layers'],
+  layers: [] as StyleSpecification['layers'],
 } as const;
 
 export const DEFAULT_VIEW_STATE: ViewState = {

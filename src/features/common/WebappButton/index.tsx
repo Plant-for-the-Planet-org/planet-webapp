@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react';
 
-import { useCallback } from 'react';
 import Link from 'next/link';
 import { prefetchManager } from '../../../utils/prefetchManager';
 import styles from './WebappButton.module.scss';
@@ -48,7 +47,7 @@ function WebappButton({
     const isExternal = isExternalUrl(otherProps.href);
 
     if (isExternal) {
-      const handleMouseEnter = useCallback(() => {
+      const handleMouseEnter = () => {
         if (otherProps.prefetch && !prefetchManager.has(otherProps.href)) {
           const link = document.createElement('link');
           link.rel = 'prefetch';
@@ -56,7 +55,7 @@ function WebappButton({
           document.head.appendChild(link);
           prefetchManager.add(otherProps.href);
         }
-      }, [otherProps.href, otherProps.prefetch]);
+      };
 
       return (
         <a

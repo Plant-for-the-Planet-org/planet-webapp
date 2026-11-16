@@ -1,5 +1,5 @@
 import type { InterventionTypes, LandOwnershipTypes } from '@planet-sdk/common';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import AdditionalInfo from '../components/AdditionalInfo';
 

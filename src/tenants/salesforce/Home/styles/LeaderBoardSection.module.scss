@@ -1,4 +1,4 @@
-@import '../../../../theme/theme';
+@use '../../../../theme/theme' as *;
 .leaderBoardSection {
   width: 100%;
   display: flex;

@@ -30,7 +30,12 @@ export default function ProjectSelection({
             );
           }}
         >
-          {t('restorationProject')}
+          <span className={styles.projectTypeTitle}>
+            {t('restorationProject')}
+          </span>
+          <span className={styles.projectTypeDescription}>
+            {t('restorationProjectDescription')}
+          </span>
         </button>
       </div>
       <div>
@@ -46,7 +51,12 @@ export default function ProjectSelection({
             );
           }}
         >
-          {t('conservationProject')}
+          <span className={styles.projectTypeTitle}>
+            {t('conservationProject')}
+          </span>
+          <span className={styles.projectTypeDescription}>
+            {t('conservationProjectDescription')}
+          </span>
         </button>
       </div>
     </div>

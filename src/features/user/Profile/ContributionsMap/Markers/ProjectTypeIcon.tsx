@@ -14,7 +14,7 @@ import {
 } from '../../../../../../public/assets/images/icons/myForestMapIcons/PointMarkerIcons';
 
 export type ProjectPurpose = 'conservation' | 'trees';
-export type UnitTypes = 'tree' | 'm2';
+type UnitTypes = 'tree' | 'm2';
 interface ProjectTypeIconProps {
   purpose: ProjectPurpose;
   classification: TreeProjectClassification | null;
@@ -60,9 +60,9 @@ const ProjectTypeIcon = ({
       return <Agroforestry {...IconProps} />;
     case 'urban-planting':
       return <UrbanRestoration {...IconProps} />;
-    case 'large-scale-planting':
+    case 'restoration-tree-planting':
       return <TreePlanting {...IconProps} />;
-    case 'other-planting':
+    case 'other-restoration':
       return <OtherPlanting {...IconProps} />;
     default:
       return null;

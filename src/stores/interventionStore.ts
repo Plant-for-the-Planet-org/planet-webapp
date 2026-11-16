@@ -97,6 +97,10 @@ export const useInterventionStore = create<InterventionStore>()(
 
           return;
         }
+        // The user may leave the project, or open another one, before a slow response arrives. Its result must not land on whatever is shown by then. See #3200.
+        const isForCurrentProject = () =>
+          useSingleProjectStore.getState().singleProject?.id === projectId;
+
         set(
           { isFetching: true, fetchError: false },
           undefined,
@@ -109,12 +113,17 @@ export const useInterventionStore = create<InterventionStore>()(
           const response = await getApi<TreemapperApiResponse<Intervention[]>>(
             `${process.env.TREEMAPPER_URL}/api/server/external/project/${projectId}/interventions`
           );
+          if (!isForCurrentProject()) return;
+
           set(
             { interventions: response.data, isFetching: false },
             undefined,
             'interventionStore/intervention_fetch_success'
           );
         } catch (error) {
+          // A late failure must not blank the interventions of the project shown now.
+          if (!isForCurrentProject()) return;
+
           // Interventions are an optional map overlay. A failure here must not
           // surface a generic connectivity error or push the user off the project
           // page — just log and render the project without the overlay.

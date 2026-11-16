@@ -10,15 +10,17 @@ import { SearchAndFilter } from './microComponents/ProjectSearchAndFilter';
 import ViewModeTabs from './microComponents/ViewModeTabs';
 import ClassificationDropDown from './microComponents/ClassificationDropDown';
 import ActiveSearchField from './microComponents/ActiveSearchField';
+import LiveRegion from '../../common/LiveRegion';
 import MapFeatureExplorer from '../ProjectsMap/MapFeatureExplorer';
 import { clsx } from 'clsx';
 import {
   useProjectStore,
-  useViewStore,
+  useMobileViewModeStore,
   useUserStore,
   useQueryParamStore,
 } from '../../../stores';
 import { useFilteredProjects } from '../../../hooks/useFilteredProjects';
+import { useCurrentPage } from '../../../hooks/useCurrentPage';
 
 interface ProjectListControlForMobileProps {
   tabSelected?: ProjectTabs;
@@ -47,8 +49,8 @@ const ProjectListControlForMobile = ({
   const { filteredProjectCount } = useFilteredProjects();
   const isEmbedMode = useQueryParamStore((state) => state.embed === 'true');
   const showProjectList = useQueryParamStore((state) => state.showProjectList);
-  const selectedMode = useViewStore((state) => state.selectedMode);
-  const currentPage = useViewStore((state) => state.page);
+  const selectedMode = useMobileViewModeStore((state) => state.selectedMode);
+  const currentPage = useCurrentPage();
   const isFilterApplied = useProjectStore(
     (state) =>
       state.selectedClassification.length > 0 || state.showDonatableProjects
@@ -79,6 +81,15 @@ const ProjectListControlForMobile = ({
 
   return (
     <>
+      {/* Hoisted above the `isSearching` branch so it stays mounted while the
+          visible chip comes and goes, making each count change a text mutation
+          in an already-observed region rather than a fresh insertion.
+          Visually hidden and out of flow, so the control row is unaffected. */}
+      <LiveRegion politeness="polite" isVisuallyHidden>
+        {shouldDisplayFilterResults && filteredProjectCount > 0
+          ? tAllProjects('filterResult', { count: filteredProjectCount })
+          : ''}
+      </LiveRegion>
       {isSearching ? (
         <div className={tabContainerClasses}>
           <ActiveSearchField setIsFilterOpen={setIsFilterOpen} />
@@ -88,8 +99,12 @@ const ProjectListControlForMobile = ({
         </div>
       ) : (
         <div className={projectListControlsMobileClasses}>
+          {/* aria-hidden so screen readers don't read this twice; the live region above says the same thing. Keep both shown under the same condition. */}
           {shouldDisplayFilterResults && filteredProjectCount > 0 && (
-            <div className={styles.filterResultContainerMobile}>
+            <div
+              className={styles.filterResultContainerMobile}
+              aria-hidden="true"
+            >
               {tAllProjects('filterResult', {
                 count: filteredProjectCount,
               })}

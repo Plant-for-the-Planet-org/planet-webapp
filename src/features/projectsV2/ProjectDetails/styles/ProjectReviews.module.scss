@@ -1,4 +1,4 @@
-@import '../../../../theme/theme';
+@use '../../../../theme/theme' as *;
 
 .reviewReportsContainer {
   background-color: $dsSoftBlue;

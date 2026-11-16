@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import ContributionCountOverflow from '../../MyContributions/ContributionCountOverflow';
 
 const meta: Meta<typeof ContributionCountOverflow> = {

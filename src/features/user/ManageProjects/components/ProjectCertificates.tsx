@@ -36,7 +36,7 @@ function ProjectCertificates({
   projectGUID,
   token,
   setIsUploadingData,
-  userLang,
+  locale,
 }: ProjectCertificatesProps): ReactElement {
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
@@ -256,8 +256,8 @@ function ProjectCertificates({
             <LocalizationProvider
               dateAdapter={AdapterDateFns}
               adapterLocale={
-                localeMapForDate[userLang]
-                  ? localeMapForDate[userLang]
+                localeMapForDate[locale]
+                  ? localeMapForDate[locale]
                   : localeMapForDate['en']
               }
             >

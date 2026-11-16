@@ -1,47 +1,11 @@
 import type { WaybackItem } from '@vannizhang/wayback-core';
 import type { Point } from 'geojson';
 
-// To remove timeTravelConfig (along with json file) once we remove the old maps code
-import timeTravelConfig from '../../../public/data/maps/time-travel.json';
 import { getWaybackItemsWithLocalChanges } from '@vannizhang/wayback-core';
 import { cacheKeyPrefix } from '../constants/cacheKeyPrefix';
 import { getCachedData } from '../../server/utils/cache';
 
-const SOURCE_NAMES = ['esri'] as const;
-
-export type SourceName = (typeof SOURCE_NAMES)[number];
-
-type SingleYearData = { year: string; raster: string };
-
-export type TimeTravelConfig = {
-  [key in SourceName]?: SingleYearData[];
-};
-
-const SOURCE_BASE_URLS: Record<SourceName, string> = {
-  esri: 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile',
-};
-
-// To remove once we remove the old maps code
-/** Process data for all time travel sources */
-export const getTimeTravelConfig = (): TimeTravelConfig => {
-  const result: TimeTravelConfig = {};
-
-  for (const source of SOURCE_NAMES) {
-    const sourceData = timeTravelConfig[source]?.wayback;
-    if (!sourceData) continue;
-
-    result[source] = [];
-
-    for (const [year, data] of Object.entries(sourceData)) {
-      if (data?.id && data.id.length > 0) {
-        const url = `${SOURCE_BASE_URLS[source]}/${data.id}/{z}/{y}/{x}`;
-        result[source].push({ year, raster: url });
-      }
-    }
-  }
-
-  return result;
-};
+export type SourceName = 'esri';
 
 /**
  * Converts WMTS URL format ({level}/{row}/{col}) to standard tile format (z/y/x)

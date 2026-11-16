@@ -1,0 +1,26 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  max-width: 356px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
+}
+
+.cardMobile {
+  max-width: 100%;
+  box-shadow: none;
+}
+
+.cardInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+}
+
+.cardInfoText {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}

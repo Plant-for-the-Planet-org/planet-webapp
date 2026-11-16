@@ -1,6 +1,6 @@
 import type { MySingleContribution } from '../../../common/types/myForest';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import GiftIcon from '../../../../../public/assets/images/icons/Gift';
 import styles from './MyContributions.module.scss';
 import format from 'date-fns/format';
@@ -16,6 +16,7 @@ interface Props {
 const UnwrappedContributionSummary = forwardRef<HTMLDivElement, Props>(
   ({ contribution, purpose }: Props, ref) => {
     const t = useTranslations('Profile');
+    const locale = useLocale();
 
     const showGiftIcon =
       contribution.dataType === 'receivedGift' || contribution.isGifted;
@@ -31,7 +32,7 @@ const UnwrappedContributionSummary = forwardRef<HTMLDivElement, Props>(
           });
 
     const contributionDate = format(new Date(contribution.plantDate), 'PP', {
-      locale: localeMapForDate[localStorage.getItem('language') || 'en'],
+      locale: localeMapForDate[locale] || localeMapForDate['en'],
     });
 
     return (

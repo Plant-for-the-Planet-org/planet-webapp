@@ -1,0 +1,2 @@
+# Husky hooks must keep LF endings on every system. CRLF on Windows checkouts makes knip misread the commands they run.
+.husky/* text eol=lf

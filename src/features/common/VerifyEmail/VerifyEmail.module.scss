@@ -1,4 +1,4 @@
-@import './../../../theme/theme';
+@use './../../../theme/theme' as *;
 
 .verifyEmailSection {
   width: 320px;

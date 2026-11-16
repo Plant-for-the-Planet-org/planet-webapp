@@ -18,8 +18,7 @@ import {
   transformProfileToPrimaryAddressView,
 } from './transformers';
 import { useApi } from '../../../hooks/useApi';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import DonationReceiptsSkeleton from './DonationReceiptsSkeleton';
 import NoDataFound from '../../../../public/assets/images/icons/projectV2/NoDataFound';
 import useLocalizedPath from '../../../hooks/useLocalizedPath';
 import { useRouter } from 'next/router';
@@ -29,11 +28,11 @@ import {
   getOverviewEligibilityForAllYears,
 } from './receiptGroupingUtils';
 import {
-  useAuthStore,
   useUserStore,
   useErrorHandlingStore,
   useDonationReceiptStore,
 } from '../../../stores';
+import { useIsProfileReady } from '../../../hooks/useAuthReadiness';
 
 const DonationReceipts = () => {
   const { getApiAuthenticated } = useApi();
@@ -56,13 +55,13 @@ const DonationReceipts = () => {
   );
   // store: state
   const userProfile = useUserStore((state) => state.userProfile);
-  const isAuthResolved = useAuthStore((state) => state.isAuthResolved);
+  const isProfileReady = useIsProfileReady();
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
   useEffect(() => {
     (async () => {
-      if (!userProfile || !isAuthResolved) return;
+      if (!isProfileReady) return;
       try {
         const response = await getApiAuthenticated<DonationReceiptsStatus>(
           '/app/donationReceiptsStatus'
@@ -165,12 +164,7 @@ const DonationReceipts = () => {
   const hasNoReceipts =
     !donationReceipts?.issued.length && !donationReceipts?.unissued.length;
 
-  if (!donationReceipts)
-    return (
-      <section className={styles.donorContactManagementLayout}>
-        <Skeleton height={600} width={524} />
-      </section>
-    );
+  if (!donationReceipts) return <DonationReceiptsSkeleton />;
 
   if (hasNoReceipts)
     return (

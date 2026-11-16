@@ -7,6 +7,7 @@ import Head from 'next/head';
 import Footer from '../../../features/common/Layout/Footer';
 import Landing from './components/Landing';
 import LeaderBoard from './components/LeaderBoardSection';
+// GrowingImpact is not used right now. Decide later whether to bring it back or remove it.
 // import GrowingImpact from './components/GrowingImpact';
 import SeaOfTrees from './components/SeaOfTrees';
 import ContentSection from './components/ContentSection';

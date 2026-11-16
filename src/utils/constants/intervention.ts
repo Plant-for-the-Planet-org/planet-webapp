@@ -118,8 +118,3 @@ export const isNonPlantationType = (
 export const findMatchingIntervention = (value: string) => {
   return AllInterventions.find((item) => item.value === value);
 };
-
-export const findInterventionHeader = (valueKey: string | undefined) => {
-  const found = AllInterventions.find((item) => item.value === valueKey);
-  return found ? found.label : '';
-};

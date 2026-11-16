@@ -103,6 +103,7 @@ const articles: Article[] = [
   },
 ];
 
+// Not used right now: its only use in the Salesforce Home page is commented out. Decide later whether to bring the section back or remove it with Timeline and their styles.
 export default function GrowingImpact() {
   return (
     <section className={styles.growingImpactSection}>

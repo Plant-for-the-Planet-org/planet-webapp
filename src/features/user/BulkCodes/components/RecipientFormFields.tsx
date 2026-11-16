@@ -1,22 +1,26 @@
 import type { Control, FieldErrors } from 'react-hook-form';
-import type { Recipient } from '../BulkCodesTypes';
+import type { RecipientUploadRow } from '../BulkCodesTypes';
 
 import { TableCell, TextField, MenuItem } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
+import { useUserStore } from '../../../../stores';
+import { isSelfGift } from '../utils';
 
 interface Props {
-  control: Control<Recipient>;
-  errors: FieldErrors<Recipient>;
+  control: Control<RecipientUploadRow>;
+  errors: FieldErrors<RecipientUploadRow>;
 }
 
 const RecipientFormFields = ({ control, errors }: Props) => {
   const t = useTranslations('BulkCodes');
+  // store: state
+  const giverEmail = useUserStore((state) => state.userProfile?.email);
   const validateRequiredIfNotify = (
     value: string,
-    formValues: Recipient
+    formValues: RecipientUploadRow
   ): string | true => {
     return formValues.recipient_notify === 'yes' && value.length === 0
       ? t('errorAddRecipient.requiredForNotifications')
@@ -61,6 +65,10 @@ const RecipientFormFields = ({ control, errors }: Props) => {
                 value.length === 0 ||
                 isEmailValid(value) ||
                 t('errorAddRecipient.emailInvalid'),
+              notSelfGift: (value) =>
+                !giverEmail ||
+                !isSelfGift(value, giverEmail) ||
+                t('errorAddRecipient.selfGift'),
             },
           }}
           render={({ field }) => (

@@ -4,7 +4,7 @@ import type { DropdownType } from '../../../common/types/projectv2';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import area from '@turf/area';
+import { area } from '@turf/area';
 import SiteIcon from '../../../../../public/assets/images/icons/projectV2/SiteIcon';
 import styles from './SiteDropdown.module.scss';
 import DropdownUpArrow from '../../../../../public/assets/images/icons/projectV2/DropdownUpArrow';
@@ -13,7 +13,6 @@ import ProjectSiteList from './ProjectSiteList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import themeProperties from '../../../../theme/themeProperties';
-import { clsx } from 'clsx';
 import {
   useInterventionStore,
   useSingleProjectStore,
@@ -83,61 +82,77 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
     }
   };
 
-  return (
-    <div className={styles.dropdownWrapper}>
-      <div
-        className={clsx({
-          [styles.dropdownButton]: hasMultipleSites,
-          [styles.dropdownDetails]: !hasMultipleSites,
-        })}
-        onClick={hasMultipleSites ? toggleSiteMenu : undefined}
-      >
-        <div className={styles.siteIconAndTextContainer}>
-          <SiteIcon
-            width={27}
-            color={themeProperties.designSystem.colors.coreText}
-          />
-          {selectedIntervention && query.ploc ? (
-            '-'
-          ) : (
-            <>
-              {selectedSiteData && (
-                <div className={styles.labelTextContainer}>
-                  <label className={styles.sitesLabel}>
-                    <span className={styles.siteId}>
-                      {tProjectDetails('siteCount', {
-                        siteId: getId(selectedSiteData?.id),
-                        totalCount: siteList.length,
-                      })}
-                    </span>
-                    <span className={styles.separator}> • </span>
-                    <span>
-                      {getFormattedRoundedNumber(
-                        locale,
-                        selectedSiteData?.siteArea,
-                        0
-                      )}{' '}
-                      ha
-                    </span>
-                  </label>
-                  <p className={styles.siteName}>
-                    {truncateString(selectedSiteData?.siteName, 40)}
-                  </p>
-                </div>
-              )}
-            </>
+  // Spans, not divs or labels, because a button may only hold inline content.
+  const selectedSiteSummary = (
+    <span className={styles.siteIconAndTextContainer}>
+      <SiteIcon
+        width={27}
+        color={themeProperties.designSystem.colors.coreText}
+      />
+      {selectedIntervention && query.ploc ? (
+        <>
+          <span aria-hidden="true">-</span>
+          <span className={styles.visuallyHidden}>
+            {tProjectDetails('noSiteSelected')}
+          </span>
+        </>
+      ) : (
+        <>
+          {selectedSiteData && (
+            <span className={styles.labelTextContainer}>
+              <span className={styles.sitesLabel}>
+                <span className={styles.siteId}>
+                  {tProjectDetails('siteCount', {
+                    siteId: getId(selectedSiteData?.id) ?? 0,
+                    totalCount: siteList.length,
+                  })}
+                </span>
+                <span className={styles.separator}> • </span>
+                <span>
+                  {getFormattedRoundedNumber(
+                    locale,
+                    selectedSiteData?.siteArea,
+                    0
+                  )}{' '}
+                  ha
+                </span>
+              </span>
+              <span className={styles.siteName}>
+                {truncateString(selectedSiteData?.siteName, 40)}
+              </span>
+            </span>
           )}
-        </div>
-        {hasMultipleSites && (
-          <div className={styles.menuArrow}>
+        </>
+      )}
+    </span>
+  );
+
+  return (
+    // The group name stays the same while the button shows `-` for a selected intervention, so assistive tech and tests can always find the control.
+    <div
+      className={styles.dropdownWrapper}
+      role="group"
+      aria-label={tProjectDetails('projectSites')}
+    >
+      {hasMultipleSites ? (
+        <button
+          type="button"
+          className={styles.dropdownButton}
+          aria-expanded={isMenuOpen}
+          onClick={toggleSiteMenu}
+        >
+          {selectedSiteSummary}
+          <span className={styles.menuArrow}>
             {isMenuOpen ? (
               <DropdownUpArrow width={10} />
             ) : (
               <DropdownDownArrow width={10} />
             )}
-          </div>
-        )}
-      </div>
+          </span>
+        </button>
+      ) : (
+        <div className={styles.dropdownDetails}>{selectedSiteSummary}</div>
+      )}
       {isMenuOpen && hasMultipleSites && (
         <ProjectSiteList
           siteList={siteList}

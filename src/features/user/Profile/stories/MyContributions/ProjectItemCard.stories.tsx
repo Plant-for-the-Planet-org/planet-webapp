@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import type { MyForestProject } from '../../../../common/types/myForest';
 import type { MyContributionsSingleProject } from '../../../../common/types/myForest';
 
@@ -18,7 +18,7 @@ const sampleProject: MyForestProject = {
   guid: 'proj_WZkyugryh35sMmZMmXCwq7YY',
   name: 'Yucatán Restoration',
   slug: 'yucatan',
-  classification: 'large-scale-planting',
+  classification: 'restoration-tree-planting',
   purpose: 'trees',
   unitType: 'tree',
   country: 'MX',

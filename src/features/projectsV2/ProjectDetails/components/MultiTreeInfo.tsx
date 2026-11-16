@@ -2,7 +2,7 @@ import type { MultiTreeRegistration } from '@planet-sdk/common';
 
 import { Fragment, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import area from '@turf/area';
+import { area } from '@turf/area';
 import styles from '../styles/InterventionInfo.module.scss';
 import MultiTreeInfoHeader from './microComponents/MultiTreeInfoHeader';
 import SpeciesPlanted from './microComponents/SpeciesPlanted';
@@ -42,7 +42,7 @@ const MultiTreeInfo = ({ activeMultiTree, isMobile }: Props) => {
       return {
         id: item.coordinates[0].id,
         image: item.coordinates[0].image ?? '',
-        description: tProjectDetails('sampleTreeTag', { tag: item.tag }),
+        description: tProjectDetails('sampleTreeTag', { tag: item.tag ?? '' }),
       };
     });
     return result;

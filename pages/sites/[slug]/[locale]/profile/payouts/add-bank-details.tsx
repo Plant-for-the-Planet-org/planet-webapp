@@ -13,6 +13,7 @@ import Head from 'next/head';
 import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../../../../src/features/user/ManagePayouts';
+import PayoutsSkeleton from '../../../../../../src/features/user/ManagePayouts/PayoutsSkeleton';
 import { useTranslations } from 'next-intl';
 import AccessDeniedLoader from '../../../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import {
@@ -33,7 +34,9 @@ export default function AddBankDetailsPage(): ReactElement {
   if (!isInitialized) return <></>;
 
   return (
-    <UserLayout>
+    <UserLayout
+      skeleton={<PayoutsSkeleton step={ManagePayoutTabs.ADD_BANK_DETAILS} />}
+    >
       <Head>
         <title>{t('managePayouts.titleAddBankDetails')}</title>
       </Head>

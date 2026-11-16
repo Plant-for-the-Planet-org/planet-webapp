@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import InfoIconPopup from '../components/microComponents/InfoIconPopup';
 import themeProperties from '../../../../theme/themeProperties';
 

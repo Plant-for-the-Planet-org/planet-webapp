@@ -28,6 +28,16 @@ export type RequestOptions = {
    * @default false
    */
   authRequired?: boolean;
+  /**
+   * How to read a successful response. Use 'blob' for file downloads.
+   * A failure is still read as JSON either way.
+   * @default 'json'
+   */
+  responseType?: 'json' | 'blob';
+  /**
+   * Optional signal to cancel the request.
+   */
+  signal?: AbortSignal;
 } & /**
  * This type enforces request payload rules based on HTTP method semantics.
  * 'GET' and 'DELETE' requests may optionally include a 'data' payload,
@@ -97,6 +107,7 @@ const apiClient = async <T>(options: RequestOptions): Promise<T> => {
     const response = await fetch(finalUrl, {
       method: options.method,
       headers,
+      signal: options.signal,
       ...(options.data !== undefined
         ? { body: JSON.stringify(options.data) }
         : {}),
@@ -106,7 +117,11 @@ const apiClient = async <T>(options: RequestOptions): Promise<T> => {
       throw new APIError(response.status, await response.json());
     }
 
-    return response.status === 204 ? (true as T) : await response.json();
+    if (response.status === 204) return true as T;
+
+    return options.responseType === 'blob'
+      ? ((await response.blob()) as T)
+      : await response.json();
   } catch (error) {
     console.error('Error during API call:', error);
     throw error;

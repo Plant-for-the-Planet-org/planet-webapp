@@ -1,5 +1,5 @@
 // TODO - review types and make more specific where possible
-import type { CurrencyCode } from '@planet-sdk/common';
+import type { CountryCode, CurrencyCode } from '@planet-sdk/common';
 
 export interface PaymentOptionsBase {
   currency: CurrencyCode;
@@ -28,7 +28,8 @@ export type PaymentOptions =
   | ConservationPaymentOptions
   | FundPaymentOptions;
 
-export interface Recipient {
+// A row parsed from the uploaded recipient CSV/XLSX, before it is turned into a donation payload.
+export interface RecipientUploadRow {
   recipient_name: string;
   recipient_email: string;
   recipient_notify: string;
@@ -37,8 +38,25 @@ export interface Recipient {
   // recipient_occasion: string;
 }
 
+// The recipient shape sent to the donations API.
+export interface RecipientPayload {
+  units: number;
+  recipientName: string;
+  recipientEmail: string;
+  message: string;
+  notifyRecipient: boolean;
+  // occasion: string;
+}
+
+// The subset of a PlanetCash account needed to issue bulk codes.
+export interface BulkCodesPlanetCashAccount {
+  guid: string;
+  currency: CurrencyCode;
+  country: CountryCode;
+}
+
 type TableHeader = {
-  key: keyof Recipient;
+  key: keyof RecipientUploadRow;
   displayText: string;
   helpText?: string;
 };
@@ -47,7 +65,7 @@ interface OtherRecipientProperties {
   [key: string]: string;
 }
 
-type ExtendedRecipient = Recipient & OtherRecipientProperties;
+type ExtendedRecipient = RecipientUploadRow & OtherRecipientProperties;
 
 type FileImportErrorCode =
   | 'fileInvalidType'

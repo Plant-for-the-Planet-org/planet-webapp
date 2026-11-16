@@ -6,7 +6,7 @@ import type {
 
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Marker, Source } from 'react-map-gl-v7/maplibre';
+import { Marker, Source } from 'react-map-gl/maplibre';
 import FireIcon from '../../../../../public/assets/images/icons/FireIcon';
 import { useApi } from '../../../../hooks/useApi';
 import FirePopup from '../FirePopup';

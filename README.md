@@ -133,6 +133,15 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. The page auto-updates as you edit the file.
 
+### Run the tests
+
+```bash
+npm run test      # unit tests (Vitest)
+npm run test:e2e  # end-to-end tests (Playwright)
+```
+
+See [TESTING.md](TESTING.md) for setup, all commands, and what to do when a test fails.
+
 ---
 
 ## Development Process

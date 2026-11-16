@@ -10,7 +10,9 @@ import type { Tenant } from '@planet-sdk/common';
 
 import { defaultTenant } from '../../../../tenant.config';
 import { useEffect } from 'react';
-import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfileLoader';
+import { UserLayoutLoader } from '../../../../src/features/common/ContentLoaders/UserLayout/UserLayoutLoader';
+import ProfileOuterContainer from '../../../../src/features/user/Profile/ProfileOuterContainer';
+import ProfileGridSkeleton from '../../../../src/features/user/Profile/ProfileLayout/ProfileGridSkeleton';
 import { useRouter } from 'next/router';
 import {
   constructPathsForTenantSlug,
@@ -75,15 +77,27 @@ export default function Login(): ReactElement {
     // Not authenticated → login
     loginWithRedirect({
       redirectUri: `${window.location.origin}/login`,
+      // Legacy compatibility read, kept until Auth0 redirects are migrated off localStorage.language (see issue #3234).
       ui_locales: localStorage.getItem('language') || 'en',
     });
   }, [userProfile, isAuthResolved, isInitialized]);
 
   if (!isInitialized) return <></>;
 
+  // No stored redirect means login will land on /profile (the default target below), so show its skeleton here instead of the content-agnostic one.
+  const hasRedirectLink = !!localStorage.getItem('redirectLink');
+
   return (
     <div>
-      <UserProfileLoader />
+      <UserLayoutLoader
+        skeleton={
+          hasRedirectLink ? undefined : (
+            <ProfileOuterContainer>
+              <ProfileGridSkeleton />
+            </ProfileOuterContainer>
+          )
+        }
+      />
     </div>
   );
 }

@@ -146,8 +146,6 @@ function AccountHistory(): ReactElement {
         >
           <History {...HistoryProps} />
         </DashboardView>
-
-        {/* <UnderMaintenance/> */}
       </UserLayout>
     </>
   );
