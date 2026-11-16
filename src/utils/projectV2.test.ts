@@ -11,6 +11,7 @@ import {
   buildProjectDetailsQuery,
   filterByClassification,
   filterBySearch,
+  getFirstSiteIndexWithGeometry,
   getGeoJsonFeatureIndex,
   getSitesGeoJson,
 } from './projectV2';
@@ -216,5 +217,27 @@ describe('getGeoJsonFeatureIndex', () => {
 
     expect(getGeoJsonFeatureIndex(sitesWithGeometry, geoJson, 0)).toBe(0);
     expect(getGeoJsonFeatureIndex(sitesWithGeometry, geoJson, 1)).toBe(1);
+  });
+});
+
+describe('getFirstSiteIndexWithGeometry', () => {
+  it('skips sites without a shape', () => {
+    expect(
+      getFirstSiteIndexWithGeometry([
+        createSiteWithoutGeometry('site_a'),
+        createSite('site_b'),
+      ])
+    ).toBe(1);
+  });
+
+  it('returns null when no site has a shape', () => {
+    expect(
+      getFirstSiteIndexWithGeometry([createSiteWithoutGeometry('site_a')])
+    ).toBeNull();
+  });
+
+  it('returns null for an empty or missing list', () => {
+    expect(getFirstSiteIndexWithGeometry([])).toBeNull();
+    expect(getFirstSiteIndexWithGeometry(undefined)).toBeNull();
   });
 });
