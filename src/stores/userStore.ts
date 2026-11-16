@@ -107,12 +107,6 @@ export const useUserStore = create<UserStore>()(
         tenantId,
         locale,
       }) => {
-        if (!process.env.API_ENDPOINT) {
-          throw new Error(
-            'API_ENDPOINT is not defined in the environment variables.'
-          );
-        }
-
         const requestId = ++latestFetchUserProfileRequestId;
         const isStale = () => requestId !== latestFetchUserProfileRequestId;
 
