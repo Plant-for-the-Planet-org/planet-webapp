@@ -41,8 +41,8 @@
     "find-unused-translation-keys": "node scripts/find-unused-translation-keys.js"
   },
   "validate-branch-name": {
-    "pattern": "^(main|develop){1}$|^(feature|hotfix|fix)/[a-z0-9-_]+$",
-    "errorMsg": "Invalid branch name. \n 1.Branch names can contain lowercase characters, numbers, hyphen and underscore. \n 2.Except for 'main' and 'develop', branch names must begin with 'feature/', 'fix', or 'hotfix/' "
+    "pattern": "^(main|develop)$|^(feature|hotfix|fix)/[a-z0-9_-]+$|^dependabot/[a-z0-9_./-]+$|^snyk-[a-z0-9-]+$|^lingohub_language_update_[0-9-]+Z$",
+    "errorMsg": "Invalid branch name. \n 1.Branch names can contain lowercase characters, numbers, hyphen and underscore. \n 2.Except for 'main' and 'develop', branch names must begin with 'feature/', 'fix/' or 'hotfix/'. \n 3.Bot branches starting with 'dependabot/', 'snyk-' or 'lingohub_language_update_' are also allowed."
   },
   "engines": {
     "node": "24.x",
@@ -64,7 +64,7 @@
     "@planet-sdk/common": "^0.3.0",
     "@radix-ui/react-slot": "^1.3.0",
     "@sentry/nextjs": "^10.77.1",
-		"@tmcw/togeojson": "^7.1.2",
+    "@tmcw/togeojson": "^7.1.2",
     "@turf/area": "^7.4.0",
     "@turf/bbox": "^7.4.0",
     "@turf/center": "^7.4.0",
@@ -96,7 +96,7 @@
     "negotiator": "^0.6.3",
     "next": "^16.4.6",
     "next-intl": "^4.13.0",
-    "papaparse": "^5.5.2",
+    "papaparse": "^5.7.1",
     "path-browserify": "^1.0.1",
     "prop-types": "^15.7.2",
     "qrcode": "^1.5.1",
