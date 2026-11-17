@@ -96,7 +96,7 @@
     "negotiator": "^0.6.3",
     "next": "^16.4.6",
     "next-intl": "^4.13.0",
-    "papaparse": "^5.5.2",
+    "papaparse": "^5.7.1",
     "path-browserify": "^1.0.1",
     "prop-types": "^15.7.2",
     "qrcode": "^1.5.1",
