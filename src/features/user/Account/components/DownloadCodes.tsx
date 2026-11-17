@@ -16,7 +16,7 @@ interface DownloadCodesProps {
 
 const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
   const t = useTranslations('Me');
-  const { getApi } = useApi();
+  const { getApiAuthenticated } = useApi();
   // local state
   const [isDownloading, setIsDownloading] = useState(false);
   //store
@@ -39,7 +39,7 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
   async function handleClick() {
     setIsDownloading(true);
     try {
-      const response = await getApi<{
+      const response = await getApiAuthenticated<{
         type: string;
         numberOfItems: number;
         items: [];
