@@ -42,7 +42,8 @@ export function zoomInToProjectSite({
   const map = mapRef.current.getMap ? mapRef.current.getMap() : mapRef.current;
 
   // bbox skips null geometries; with no shapes at all it returns Infinity values.
-  const bounds = bbox(site);
+  // recompute ignores a stored bbox, which goes stale when the editor adds a polygon to an uploaded file.
+  const bounds = bbox(site, { recompute: true });
   if (!bounds.every(Number.isFinite)) {
     console.warn('zoomInToProjectSite: site has no geometry');
     return;
