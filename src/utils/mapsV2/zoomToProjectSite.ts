@@ -21,37 +21,23 @@ export function zoomOutMap(map: Map, callback: () => void) {
 }
 export function zoomInToProjectSite(
   mapRef: MapLibreRef,
-  geoJson: ProjectSiteFeatureCollection | null,
-  // null fits every site in geoJson, so no shape ends up outside the view.
-  selectedSiteIndex: number | null,
+  site: ProjectSiteFeature | ProjectSiteFeatureCollection | null | undefined,
   handleViewStateChange: (viewState: Partial<ViewState>) => void,
   duration = 1200
 ) {
-  if (!geoJson || !mapRef.current) {
-    console.warn('Unable to zoom: geoJson or mapRef is not available');
+  if (!site || !mapRef.current) {
+    console.warn('Unable to zoom: site or mapRef is not available');
     return;
   }
 
   const map = mapRef.current.getMap ? mapRef.current.getMap() : mapRef.current;
 
-  const sitesToFit =
-    selectedSiteIndex === null
-      ? geoJson.features ?? []
-      : [geoJson.features?.[selectedSiteIndex]];
-  const sitesWithGeometry = sitesToFit.filter(
-    (site): site is ProjectSiteFeature => Boolean(site?.geometry)
-  );
-  if (sitesWithGeometry.length === 0) {
-    console.warn(
-      'zoomInToProjectSite: invalid selectedSiteIndex or missing geometry',
-      { selectedSiteIndex, featuresLength: geoJson.features?.length ?? 0 }
-    );
+  // bbox skips null geometries; with no shapes at all it returns Infinity values.
+  const bounds = bbox(site);
+  if (!bounds.every(Number.isFinite)) {
+    console.warn('zoomInToProjectSite: site has no geometry');
     return;
   }
-  const bounds = bbox({
-    type: 'FeatureCollection',
-    features: sitesWithGeometry,
-  });
 
   // Fit the map to the bounding box
   map.fitBounds(

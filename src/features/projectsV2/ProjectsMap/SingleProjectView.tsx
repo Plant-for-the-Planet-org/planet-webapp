@@ -95,8 +95,7 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
     if (canShowSites && selectedSite !== null) {
       zoomInToProjectSite(
         mapRef,
-        sitesGeoJson,
-        selectedSite,
+        sitesGeoJson.features[selectedSite],
         handleViewStateChange,
         MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
       );
