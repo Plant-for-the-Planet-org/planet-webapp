@@ -19,12 +19,19 @@ export function zoomOutMap(map: Map, callback: () => void) {
 
   map.once('moveend', () => callback());
 }
-export function zoomInToProjectSite(
-  mapRef: MapLibreRef,
-  site: ProjectSiteFeature | ProjectSiteFeatureCollection | null | undefined,
-  handleViewStateChange: (viewState: Partial<ViewState>) => void,
-  duration = 1200
-) {
+interface ZoomInToProjectSiteOptions {
+  mapRef: MapLibreRef;
+  site: ProjectSiteFeature | ProjectSiteFeatureCollection | null | undefined;
+  onViewStateChange: (viewState: Partial<ViewState>) => void;
+  duration?: number;
+}
+
+export function zoomInToProjectSite({
+  mapRef,
+  site,
+  onViewStateChange,
+  duration = 1200,
+}: ZoomInToProjectSiteOptions) {
   if (!site || !mapRef.current) {
     console.warn('Unable to zoom: site or mapRef is not available');
     return;
@@ -66,6 +73,6 @@ export function zoomInToProjectSite(
         right: 0,
       },
     };
-    handleViewStateChange(newViewState);
+    onViewStateChange(newViewState);
   });
 }
