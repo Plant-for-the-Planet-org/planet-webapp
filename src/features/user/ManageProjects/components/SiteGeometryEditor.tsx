@@ -240,7 +240,13 @@ export default function SiteGeometryEditor({
   const handleZoomToProjectSite = useCallback(() => {
     if (geoJson) {
       if (!mapRef.current) return;
-      zoomInToProjectSite(mapRef, geoJson, 0, handleViewStateChange, 2600);
+      zoomInToProjectSite({
+        mapRef,
+        site: geoJson,
+        onViewStateChange: handleViewStateChange,
+        duration: 2600,
+        padding: 40,
+      });
     } else {
       setViewPort((prev) => ({
         ...prev,
