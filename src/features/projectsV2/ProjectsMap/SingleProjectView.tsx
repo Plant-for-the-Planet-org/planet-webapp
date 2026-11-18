@@ -93,13 +93,12 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
     if (hasOnlyRequestedIntervention) return;
 
     if (canShowSites && selectedSite !== null) {
-      zoomInToProjectSite(
+      zoomInToProjectSite({
         mapRef,
-        sitesGeoJson,
-        selectedSite,
-        handleViewStateChange,
-        MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
-      );
+        site: sitesGeoJson.features[selectedSite],
+        onViewStateChange: handleViewStateChange,
+        duration: MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN,
+      });
     } else {
       const { lat: latitude, lon: longitude } = singleProject.coordinates;
       if (!(singleProject.sites?.length === 0)) return;
