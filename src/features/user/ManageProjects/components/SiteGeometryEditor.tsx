@@ -245,6 +245,7 @@ export default function SiteGeometryEditor({
         site: geoJson,
         onViewStateChange: handleViewStateChange,
         duration: 2600,
+        padding: 40,
       });
     } else {
       setViewPort((prev) => ({

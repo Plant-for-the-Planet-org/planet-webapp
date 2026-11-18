@@ -24,6 +24,7 @@ interface ZoomInToProjectSiteOptions {
   site: ProjectSiteFeature | ProjectSiteFeatureCollection | null | undefined;
   onViewStateChange: (viewState: Partial<ViewState>) => void;
   duration?: number;
+  padding?: number;
 }
 
 export function zoomInToProjectSite({
@@ -31,6 +32,7 @@ export function zoomInToProjectSite({
   site,
   onViewStateChange,
   duration = 1200,
+  padding = 0,
 }: ZoomInToProjectSiteOptions) {
   if (!site || !mapRef.current) {
     console.warn('Unable to zoom: site or mapRef is not available');
@@ -55,6 +57,7 @@ export function zoomInToProjectSite({
     {
       duration: duration,
       maxZoom: 14,
+      padding,
     }
   );
   map.once('moveend', () => {
