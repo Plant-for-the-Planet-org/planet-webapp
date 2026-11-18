@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useInterventionStore, useSingleProjectStore } from '../stores';
 import { useRouter } from 'next/router';
 import { useLocale } from 'next-intl';
-import { FIRST_SITE_INDEX, hasNoSites, isString } from '../utils/projectV2';
+import { getFirstSiteIndexWithGeometry, isString } from '../utils/projectV2';
 
 const getInterventionByHid = (
   interventions: Intervention[] | null,
@@ -72,10 +72,9 @@ export const useInitializeIntervention = () => {
     if (intervention) {
       selectInterventionSyncUrl(intervention, locale, projectSlug, router);
     } else {
-      // Invalid ploc: fall back to the first site, or none when the project has
-      // no selectable sites (all geometries null), matching useInitializeSingleProject.
+      // Invalid ploc: fall back to the first site with a shape, or none, matching useInitializeSingleProject.
       selectSiteAndSyncUrl(
-        hasNoSites(projectSites) ? null : FIRST_SITE_INDEX,
+        getFirstSiteIndexWithGeometry(projectSites),
         locale,
         router
       );

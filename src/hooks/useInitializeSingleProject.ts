@@ -9,7 +9,7 @@ import {
   useTenantStore,
 } from '../stores';
 import { useLocale } from 'next-intl';
-import { FIRST_SITE_INDEX, hasNoSites, isString } from '../utils/projectV2';
+import { getFirstSiteIndexWithGeometry, isString } from '../utils/projectV2';
 import { useApi } from './useApi';
 import useLocalizedPath from './useLocalizedPath';
 
@@ -103,8 +103,6 @@ export const useInitializeSingleProject = () => {
   }, [fetchError]);
 
   const projectSites = singleProject?.sites ?? [];
-  // A project has no sites if all site geometries are null.
-  const hasProjectSites = !hasNoSites(projectSites);
 
   /**
    * Initialize site selection for project details page.
@@ -128,15 +126,14 @@ export const useInitializeSingleProject = () => {
     if (selectedSite !== null) return;
     if (hasOnlyRequestedIntervention) return;
 
-    let siteIndex: number | null = null;
-    // If site is provided in the URL, try to resolve it
-    if (isString(requestedSite) && hasProjectSites) {
-      const index = getSiteIndexById(projectSites, requestedSite);
-      siteIndex = index !== -1 ? index : FIRST_SITE_INDEX;
-    } else {
-      // Default to first site (or null if no sites exist)
-      siteIndex = hasProjectSites ? FIRST_SITE_INDEX : null;
-    }
+    // A site without a shape is not in the dropdown or on the map, so a URL naming one falls back like an unknown site.
+    const requestedSiteIndex = isString(requestedSite)
+      ? getSiteIndexById(projectSites, requestedSite)
+      : -1;
+    const siteIndex =
+      requestedSiteIndex !== -1 && projectSites[requestedSiteIndex].geometry
+        ? requestedSiteIndex
+        : getFirstSiteIndexWithGeometry(projectSites);
 
     selectSiteAndSyncUrl(siteIndex, locale, router);
   }, [

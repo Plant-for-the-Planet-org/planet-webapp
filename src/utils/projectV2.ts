@@ -654,7 +654,34 @@ export const getSiteIdFromIndex = (
     : null;
 };
 
-export const FIRST_SITE_INDEX = 0;
+/**
+ * Index in `sites` of the first site that has a shape, or `null` when none has one.
+ *
+ * Sites without a shape are left off the map and out of the site dropdown, so they are never the default selection.
+ */
+export const getFirstSiteIndexWithGeometry = (
+  sites: ProjectSiteFeature[] | null | undefined
+): number | null => {
+  const index = sites?.findIndex((site) => !!site.geometry) ?? -1;
+  return index === -1 ? null : index;
+};
+
+/**
+ * Index in `sitesGeoJson.features` of the site at `siteIndex` in `sites`, or -1 when that site is not on the map.
+ *
+ * `getSitesGeoJson` drops sites without a shape, so a position in `sites` can point to a different feature. Matching by id keeps them in step. See #3279.
+ */
+export const getGeoJsonFeatureIndex = (
+  sites: ProjectSiteFeature[],
+  sitesGeoJson: ProjectSiteFeatureCollection,
+  siteIndex: number
+): number => {
+  const siteId = sites[siteIndex]?.properties.id;
+  if (!siteId) return -1;
+  return sitesGeoJson.features.findIndex(
+    (feature) => feature.properties.id === siteId
+  );
+};
 
 /**
  * Returns `true` if a project has no selectable sites.

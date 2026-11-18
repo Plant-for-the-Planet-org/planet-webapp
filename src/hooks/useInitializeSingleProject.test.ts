@@ -16,6 +16,7 @@ import {
   createMockRouter,
   createProject,
   createSite,
+  createSiteWithoutGeometry,
   requestsTo,
   resetAllStores,
   SINGLE_PROJECT_PATH,
@@ -169,6 +170,30 @@ describe('useInitializeSingleProject', () => {
       await waitFor(() => expect(selectedSite()).toBe(0));
 
       expect(shownUrls(router)).toEqual(['/en/yucatan?site=site_a']);
+    });
+
+    describe('when the first site has no shape', () => {
+      beforeEach(() => {
+        getApi.mockResolvedValue(
+          createProject({
+            sites: [createSiteWithoutGeometry('site_a'), ...SITES.slice(1)],
+          })
+        );
+      });
+
+      it('selects the first site that has a shape', async () => {
+        const router = renderAtQuery({ p: 'yucatan' });
+        await waitFor(() => expect(selectedSite()).toBe(1));
+
+        expect(shownUrls(router)).toEqual(['/en/yucatan?site=site_b']);
+      });
+
+      it('falls back to the first site that has a shape when the URL names the site without one', async () => {
+        const router = renderAtQuery({ p: 'yucatan', site: 'site_a' });
+        await waitFor(() => expect(selectedSite()).toBe(1));
+
+        expect(shownUrls(router)).toEqual(['/en/yucatan?site=site_b']);
+      });
     });
 
     it('selects no site when the project has no sites', async () => {

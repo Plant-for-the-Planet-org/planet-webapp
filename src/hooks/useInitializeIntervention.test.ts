@@ -9,6 +9,7 @@ import {
   createMockRouter,
   createProject,
   createSite,
+  createSiteWithoutGeometry,
   resetAllStores,
 } from '../test-utils';
 import { useInitializeIntervention } from './useInitializeIntervention';
@@ -66,6 +67,18 @@ describe('useInitializeIntervention', () => {
     expect(selectedIntervention()).toBeNull();
     expect(selectedSite()).toBe(0);
     expect(shownUrls(router)).toEqual(['/en/yucatan?site=site_a']);
+  });
+
+  it('falls back to the first site with a shape when the URL names an unknown intervention', () => {
+    useSingleProjectStore.setState({
+      singleProject: createProject({
+        sites: [createSiteWithoutGeometry('site_a'), createSite('site_b')],
+      }),
+    });
+    const { router } = renderAtQuery({ p: 'yucatan', ploc: 'ploc_unknown' });
+
+    expect(selectedSite()).toBe(1);
+    expect(shownUrls(router)).toEqual(['/en/yucatan?site=site_b']);
   });
 
   it('selects no site when the intervention is unknown and the project has no sites', () => {
