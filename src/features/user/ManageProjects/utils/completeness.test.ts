@@ -110,9 +110,7 @@ describe('getQuestionnaireMissing', () => {
   });
 
   it('does not re-list an already-answered field just because a reviewer commented on it', () => {
-    // A comment on a filled field is a request to revise it, not proof it is
-    // blank. Nothing clears the annotation client-side, so counting it as
-    // missing would block resubmission forever.
+    // A comment on a filled field is a request to revise it, not proof it is blank. Nothing clears the annotation client-side, so counting it as missing would block resubmission forever.
     expect(
       getQuestionnaireMissing(
         fields,

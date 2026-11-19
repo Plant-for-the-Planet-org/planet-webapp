@@ -32,8 +32,7 @@ export default function CustomModal({
   const subtitleId = useId();
 
   return (
-    // `onClose` only reacts to Escape here, since `hideBackdrop` leaves no
-    // backdrop to click
+    // `onClose` only reacts to Escape here, since `hideBackdrop` leaves no backdrop to click
     <Modal
       open={isOpen}
       hideBackdrop

@@ -384,9 +384,7 @@ const generateDonationGeojson = (
 
 /**
  * Creates a GeoJSON Point feature for registration entries
- * Normalizes registration location geometry (Point or Polygon)
- * into a single Point using the geometry’s center of mass,
- * making it suitable for clustering and point-based map layers.
+ * Normalizes registration location geometry (Point or Polygon) into a single Point using the geometry’s center of mass, making it suitable for clustering and point-based map layers.
  */
 const generateRegistrationGeojson = (
   registrationLocation: MapLocation,

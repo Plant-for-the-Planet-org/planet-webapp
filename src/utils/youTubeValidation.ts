@@ -37,8 +37,7 @@ export const isYouTubeDomain = (url: string): boolean => {
 
 /**
  * Validates a YouTube URL.
- * Rejects URLs with spaces, ensures the domain is YouTube or its related domains,
- * and checks for valid YouTube video ID patterns.
+ * Rejects URLs with spaces, ensures the domain is YouTube or its related domains, and checks for valid YouTube video ID patterns.
  * @param url - The URL to validate.
  * @returns True if the URL is a valid YouTube URL, false otherwise.
  */

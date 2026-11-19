@@ -34,16 +34,13 @@ type ProjectProperties = (
   | ProfileProjectPropertiesConservation
 ) & {
   /**
-   * Sent by `/app/profile/projects` for the owner's own projects. Optional
-   * because the SDK types describe the public listing, which omits it.
+   * Sent by `/app/profile/projects` for the owner's own projects. Optional because the SDK types describe the public listing, which omits it.
    */
   verificationStatus?: VerificationStatus;
 };
 
 /**
- * Label and colour for the review status shown on each card. Pre-rename statuses
- * map onto the same badge as the value that replaced them, so older projects read
- * the same as new ones.
+ * Label and colour for the review status shown on each card. Pre-rename statuses map onto the same badge as the value that replaced them, so older projects read the same as new ones.
  */
 const VERIFICATION_STATUS_BADGES = {
   draft: { labelKey: 'statusDraft', tone: 'statusNeutral' },
@@ -66,8 +63,7 @@ const VERIFICATION_STATUS_BADGES = {
 
 /**
  * Maps API classification values to `ManageProjects` translation keys.
- * Both the current and the pre-rename values are listed, since older projects
- * still carry `large-scale-planting` / `other-planting` in the database.
+ * Both the current and the pre-rename values are listed, since older projects still carry `large-scale-planting` / `other-planting` in the database.
  */
 const CLASSIFICATION_LABEL_KEYS = {
   'restoration-tree-planting': 'largeScalePlanting',
@@ -84,9 +80,7 @@ const CLASSIFICATION_LABEL_KEYS = {
 type ClassificationValue = keyof typeof CLASSIFICATION_LABEL_KEYS;
 
 /**
- * Fallback label for the type slot in the card subtitle. Only tree projects carry
- * a `classification`, so conservation and funds projects fall back to their
- * purpose and would otherwise leave the subtitle showing a bare country.
+ * Fallback label for the type slot in the card subtitle. Only tree projects carry a `classification`, so conservation and funds projects fall back to their purpose and would otherwise leave the subtitle showing a bare country.
  */
 const PURPOSE_LABEL_KEYS = {
   conservation: 'purposeConservation',
@@ -122,16 +116,13 @@ function SingleProject({ project }: { project: ProjectProperties }) {
     ? tManageProjects(labelKey)
     : classification;
   // Falls back to the purpose so the subtitle never starts with a bare country.
-  // Only tree projects carry a `classification`. This slot used to read
-  // `metadata.ecosystem` for conservation, which is nullable, is an ecosystem
-  // rather than a project type, and rendered as a raw slug when it was set.
+  // Only tree projects carry a `classification`. This slot used to read `metadata.ecosystem` for conservation, which is nullable, is an ecosystem rather than a project type, and rendered as a raw slug when it was set.
   const typeLabel =
     classificationLabel ?? tManageProjects(PURPOSE_LABEL_KEYS[project.purpose]);
   const countryLabel = project.country
     ? tCountry(project.country.toLowerCase() as Lowercase<CountryCode>)
     : undefined;
-  // Joined rather than hardcoding the separator, so a project without a
-  // classification (e.g. a funds project) doesn't render a dangling "• ".
+  // Joined rather than hardcoding the separator, so a project without a classification (e.g. a funds project) doesn't render a dangling "• ".
   const subtitleParts = [typeLabel, countryLabel].filter(Boolean);
   const statusBadge = project.verificationStatus
     ? VERIFICATION_STATUS_BADGES[project.verificationStatus]

@@ -49,12 +49,7 @@ export const useBulkCodeStore = create<BulkCodeStore>()(
         )
           return;
 
-        // The store resets on profile change (see useInitializeBulkCode),
-        // independent of this call. Comparing against the account this
-        // request was made for - rather than a monotonic counter - catches
-        // both a profile switch mid-request and a later request for a
-        // different account, so a stale response can't land in the wrong
-        // profile's store.
+        // The store resets on profile change (see useInitializeBulkCode), independent of this call. Comparing against the account this request was made for - rather than a monotonic counter - catches both a profile switch mid-request and a later request for a different account, so a stale response can't land in the wrong profile's store.
         const requestedAccountGuid = planetCashAccount.guid;
         const isStale = () =>
           get().planetCashAccount?.guid !== requestedAccountGuid;

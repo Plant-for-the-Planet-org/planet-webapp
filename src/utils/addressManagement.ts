@@ -50,8 +50,7 @@ export const findAddressByType = (
 /**
  * Retrieves the postal regex for a given country code.
  *
- * This function searches the `COUNTRY_ADDRESS_POSTALS` array for the country matching the provided
- * `country` code and returns the associated postal regex pattern. If no match is found, it returns `undefined`.
+ * This function searches the `COUNTRY_ADDRESS_POSTALS` array for the country matching the provided `country` code and returns the associated postal regex pattern. If no match is found, it returns `undefined`.
  *
  * @param country - The country code for which to retrieve the postal regex.
  * @returns The postal regex pattern for the given country, or `undefined` if no match is found.

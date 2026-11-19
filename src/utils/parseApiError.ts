@@ -4,10 +4,7 @@ import type { APIError, SerializedError } from '@planet-sdk/common';
 /**
  * Wraps handleError with a fallback for API error shapes it does not recognise.
  *
- * handleError only handles CustomError (error_code), FormError (errors),
- * HTTPError (message), and a limited set of status codes. It silently returns []
- * for anything else — including the {"error": "..."} body the backend sends on
- * 409 Conflict responses.
+ * handleError only handles CustomError (error_code), FormError (errors), HTTPError (message), and a limited set of status codes. It silently returns [] for anything else — including the {"error": "..."} body the backend sends on 409 Conflict responses.
  *
  * A non-empty string body is returned as-is. This check runs before handleError, which would otherwise swap the text for a status key like "internalServerError" on 500 or drop it on other statuses.
  *

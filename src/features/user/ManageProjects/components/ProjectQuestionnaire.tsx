@@ -131,8 +131,7 @@ function buildDefaults(
       }
       defaults[name] = matrixDefaults;
     } else if (field.type === 'species_list') {
-      // Blank padding rows are added at render time, so an unanswered field
-      // stays an empty array and never persists placeholder rows.
+      // Blank padding rows are added at render time, so an unanswered field stays an empty array and never persists placeholder rows.
       defaults[name] = Array.isArray(val) ? val : [];
     } else if (field.type === 'text' || field.type === 'string') {
       defaults[name] = typeof val === 'string' ? val : '';
@@ -182,14 +181,12 @@ export default function ProjectQuestionnaire({
   const { getApiAuthenticated, putApiAuthenticated } = useApi();
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
 
-  // Lazy initializer: check initialSchema then module cache synchronously,
-  // so the schema is available on the very first render if the parent pre-fetched it.
+  // Lazy initializer: check initialSchema then module cache synchronously, so the schema is available on the very first render if the parent pre-fetched it.
   const [schema, setSchema] = useState<QuestionnaireSchema | null>(
     () => initialSchema ?? getCachedSchema(purpose, locale) ?? null
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // Set when the schema request fails, so the form can show a retryable error
-  // instead of spinning forever on a null schema.
+  // Set when the schema request fails, so the form can show a retryable error instead of spinning forever on a null schema.
   const [schemaFailed, setSchemaFailed] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
 
@@ -216,8 +213,7 @@ export default function ProjectQuestionnaire({
 
   const watchedValues = useWatch({ control });
 
-  // Read here rather than at render time because annotations also decide
-  // requiredness: an optional field a reviewer asked about has to be answered.
+  // Read here rather than at render time because annotations also decide requiredness: an optional field a reviewer asked about has to be answered.
   const questionnaireAnnotations = useMemo(
     () =>
       projectDetails?.verificationStatus === 'revision_requested'
@@ -244,8 +240,7 @@ export default function ProjectQuestionnaire({
     [visibleFields, savedAnswers, questionnaireAnnotations]
   );
 
-  // Answered fields a reviewer commented on. Purely informational, so it never
-  // feeds the tab disc and never blocks resubmission.
+  // Answered fields a reviewer commented on. Purely informational, so it never feeds the tab disc and never blocks resubmission.
   const flaggedFields = useMemo(
     () =>
       getQuestionnaireFlagged(
@@ -294,10 +289,7 @@ export default function ProjectQuestionnaire({
       (projectDetails as ExtendedProfileProjectPropertiesTrees | null)
         ?.questionnaire ?? null;
     reset(buildDefaults(visibleFields, existing));
-    // Deliberately no trigger() here. Validating on load painted every blank
-    // required field red before the user had touched anything. The summary at
-    // the top carries that message instead, and fields turn red on blur or on
-    // save.
+    // Deliberately no trigger() here. Validating on load painted every blank required field red before the user had touched anything. The summary at the top carries that message instead, and fields turn red on blur or on save.
   }, [schema, projectDetails]);
 
   const onSubmit = async (data: QuestionnaireFormData) => {
@@ -310,8 +302,7 @@ export default function ProjectQuestionnaire({
         payload: data as Record<string, unknown>,
       });
       setProjectDetails(result);
-      // Documents shares the Questionnaire's own visibility gate (both
-      // require acceptDonations), so this step is never reached without it.
+      // Documents shares the Questionnaire's own visibility gate (both require acceptDonations), so this step is never reached without it.
       handleNext(ProjectCreationTabs.DOCUMENTS);
     } catch (err) {
       setErrors(parseApiError(err as APIError));
@@ -328,9 +319,7 @@ export default function ProjectQuestionnaire({
     const isRequired = isQuestionnaireFieldRequired(field, annotation);
     const hasError = Boolean(errors[name]);
     const fieldClassName = `${styles.formFieldLarge} ${styles.questionnaireField}`;
-    // The schema carries the hint as a flag, so the suffix is translated here
-    // rather than baked into the label the API returns. An annotated optional
-    // field drops the hint, because the reviewer has now asked for it.
+    // The schema carries the hint as a flag, so the suffix is translated here rather than baked into the label the API returns. An annotated optional field drops the hint, because the reviewer has now asked for it.
     const labelText = isRequired
       ? field.label
       : `${field.label} ${t('optionalFieldSuffix')}`;
@@ -405,8 +394,7 @@ export default function ProjectQuestionnaire({
     // ── number / integer / percentage ─────────────────────────────────────
     if (isNumericField(field.type)) {
       const isPercentage = field.type === 'percentage';
-      // The backend rejects a percentage outside 0 to 100, and reports it as a
-      // banner rather than on the field, so the bound is enforced here too.
+      // The backend rejects a percentage outside 0 to 100, and reports it as a banner rather than on the field, so the bound is enforced here too.
       const errorType = errors[name]?.type;
       return (
         <div key={name} id={fieldAnchorId(name)} className={fieldClassName}>

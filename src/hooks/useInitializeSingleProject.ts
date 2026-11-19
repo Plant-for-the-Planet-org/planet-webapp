@@ -78,8 +78,7 @@ export const useInitializeSingleProject = () => {
         queryParams: {
           _scope: 'extended',
           currency: currencyCode,
-          //passing locale/tenant as a query param to break cache when locale changes,
-          //as the browser uses the cached response even though the x-locale header is different
+          //passing locale/tenant as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
           locale,
           tenant: tenantId,
         },

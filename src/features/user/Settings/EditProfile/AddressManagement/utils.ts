@@ -120,8 +120,7 @@ export const updateAddressesAfterTypeChange = (
 
 /**
  * Removes an address from the user profile by address ID.
- * Used after a successful delete address API call to keep
- * the local store state in sync with the backend.
+ * Used after a successful delete address API call to keep the local store state in sync with the backend.
  */
 export const updateAddressesAfterDelete = (
   userProfile: User | null,

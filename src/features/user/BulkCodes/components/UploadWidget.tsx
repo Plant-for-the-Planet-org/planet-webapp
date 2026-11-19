@@ -138,10 +138,7 @@ const UploadWidget = ({
 
   const renderStatusText = () => {
     if (statusText === null) return null;
-    // An upload error is assertive: the action failed and needs a retry. An
-    // alert inserted with its text is reliably announced, so this one carries
-    // the visible message directly. Success is handled by the persistent
-    // polite region below, so it renders as plain text here.
+    // An upload error is assertive: the action failed and needs a retry. An alert inserted with its text is reliably announced, so this one carries the visible message directly. Success is handled by the persistent polite region below, so it renders as plain text here.
     return status === 'error' ? (
       <LiveRegion
         politeness="assertive"
