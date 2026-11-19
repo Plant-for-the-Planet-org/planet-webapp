@@ -37,9 +37,6 @@ jobs:
 
       - name: 'Install Node Modules'
         run: npm ci
-        env:
-          # This job never runs Cypress, so skip downloading its app. Remove this line together with Cypress.
-          CYPRESS_INSTALL_BINARY: 0
 
       - name: 'Install Playwright Chromium'
         # Headless runs only use the headless shell, so skip the full Chrome for Testing download. Drop `--only-shell` if CI ever runs headed.
