@@ -5,10 +5,6 @@ import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import storybook from 'eslint-plugin-storybook';
 import cypress from 'eslint-plugin-cypress';
-import { rules as emotionRules } from '@emotion/eslint-plugin';
-
-// @emotion/eslint-plugin only exports rules, so wrap it into a plugin object.
-const emotion = { rules: emotionRules };
 
 export default [
   {
@@ -30,7 +26,6 @@ export default [
   {
     files: ['**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}'],
     plugins: {
-      '@emotion': emotion,
       cypress,
       'react-hooks': reactHooks,
     },
@@ -104,10 +99,6 @@ export default [
       '@typescript-eslint/no-unused-expressions': 'warn',
       'react/display-name': 'off',
       'react/no-find-dom-node': 'off',
-      '@emotion/jsx-import': 'error',
-      '@emotion/no-vanilla': 'error',
-      '@emotion/import-from-emotion': 'error',
-      '@emotion/styled-import': 'error',
       '@typescript-eslint/no-require-imports': 'off',
       'react/prop-types': 'off',
       'react-hooks/rules-of-hooks': 'warn',
