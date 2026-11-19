@@ -417,9 +417,7 @@ const IssueCodesForm = (): ReactElement | null => {
     return (
       <CenteredContainer className="CenteredContainer--small">
         {statusRegion}
-        {/* Visible copy only. `CenteredContainer` is the same element type in
-            both branches and the region is the first child of each, so React
-            reconciles it to the same DOM node instead of remounting it. */}
+        {/* Visible copy only. `CenteredContainer` is the same element type in both branches and the region is the first child of each, so React reconciles it to the same DOM node instead of remounting it. */}
         <div className={styles.successMessage}>
           {t('donationSuccess')}
           <span className={styles.spinner} aria-hidden="true"></span>

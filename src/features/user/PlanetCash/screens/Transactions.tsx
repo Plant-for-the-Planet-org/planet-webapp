@@ -119,14 +119,10 @@ const Transactions = ({
 
   return (
     <>
-      {/* Neither loading state shows any text. The initial loading state displays
-    skeletons, and "Load more" replaces its label with a spinner, so the
-    loading message is announced here instead.
-
-    Keep the live region outside the loading branches so it stays on the page.
-    When the loading state changes, screen readers announce the updated text
-    more reliably than if the live region is added with the message. This also
-    lets the initial skeleton loading state be announced. */}
+      {/*
+       * Neither loading state shows any text. The initial loading state displays skeletons, and "Load more" replaces its label with a spinner, so the loading message is announced here instead.
+       * Keep the live region outside the loading branches so it stays on the page. When the loading state changes, screen readers announce the updated text more reliably than if the live region is added with the message. This also lets the initial skeleton loading state be announced.
+       */}
       <LiveRegion politeness="polite" isVisuallyHidden>
         {isDataLoading ? t('loadingTransactions') : ''}
       </LiveRegion>

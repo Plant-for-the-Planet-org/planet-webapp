@@ -158,21 +158,12 @@ const UploadWidget = ({
 
   return (
     <>
-      {/* This is a `polite` message because a successful upload is a result, not an
-    error.
-
-    Keep the live region outside the dropzone for two reasons. First, the
-    dropzone uses `aria-busy` while parsing, and screen readers may not
-    announce updates inside a busy element. Second, keeping the live region on
-    the page means screen readers announce the updated text more reliably than
-    if the live region is added with the message.
-
-    Separate live regions are used for success and error messages, so there is
-    no need to switch between `role="status"` and `role="alert"` on the same
-    element.
-
-    The live region is visually hidden, so it does not affect the widget's
-    layout. */}
+      {/*
+       * This is a `polite` message because a successful upload is a result, not an error.
+       * Keep the live region outside the dropzone for two reasons. First, the dropzone uses `aria-busy` while parsing, and screen readers may not announce updates inside a busy element. Second, keeping the live region on the page means screen readers announce the updated text more reliably than if the live region is added with the message.
+       * Separate live regions are used for success and error messages, so there is no need to switch between `role="status"` and `role="alert"` on the same element.
+       * The live region is visually hidden, so it does not affect the widget's layout.
+       */}
       <LiveRegion politeness="polite" isVisuallyHidden>
         {status === 'success' ? statusText : ''}
       </LiveRegion>
