@@ -115,7 +115,13 @@ export default function FireLocationsMarker(): ReactElement {
   const markerRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
+    // No site while an intervention is selected: keep the current site's fires on the map.
     if (!siteId) return;
+
+    setFireFeatures([]);
+    setActivePopupFeature(null);
+    // Drops a reply for a site that is no longer selected, so it cannot overwrite the newer site's fires.
+    let isCancelled = false;
 
     const fetchFires = async () => {
       try {
@@ -127,15 +133,14 @@ export default function FireLocationsMarker(): ReactElement {
           'https://fa.pp.eco/api/v1';
         const url = `${fireAlertApiUrl}/fires?${searchParams.toString()}`;
         const fetchedFires = await getApi<FireFeatureCollection>(url);
-        if (
-          fetchedFires?.type === 'FeatureCollection' &&
-          fetchedFires?.features?.length > 0
-        ) {
-          const allFeatures = fetchedFires.features;
-          const selectedFeatures = selectFiresForDisplay(allFeatures);
-          setFireFeatures(selectedFeatures);
-        }
+        if (isCancelled) return;
+        const allFeatures =
+          fetchedFires?.type === 'FeatureCollection'
+            ? fetchedFires.features ?? []
+            : [];
+        setFireFeatures(selectFiresForDisplay(allFeatures));
       } catch (error: unknown) {
+        if (isCancelled) return;
         const apiMessage = (error as { errors?: { message?: string } })?.errors
           ?.message;
         const fallbackMessage =
@@ -146,6 +151,10 @@ export default function FireLocationsMarker(): ReactElement {
       }
     };
     fetchFires();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [siteId]);
 
   const renderFireMarkers = useMemo(
