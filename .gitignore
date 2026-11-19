@@ -38,9 +38,6 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# Cypress env
-cypress.env.json
-
 # certificates
 ./certificates/localhost.crt
 ./certificates/localhost.key
@@ -49,10 +46,6 @@ certificates/localhost.pem
 
 # tenant
 # tenant.config.js
-
-/cypress/videos
-/cypress/screenshots
-/cypress/integration/examples
 
 # storybook
 /storybook-static

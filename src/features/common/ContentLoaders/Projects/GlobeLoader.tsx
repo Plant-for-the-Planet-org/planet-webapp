@@ -11,14 +11,10 @@ function GlobeContentLoader(): ReactElement {
 
   return (
     <>
-      {/* The animated globe has no text, so the loading message is announced
-    instead. The live region is placed next to the globe, not inside it,
-    because the globe uses `aria-busy`. Screen readers may ignore live region
-    updates inside a busy element until loading finishes.
-
-    The live region cannot stay on the page because this component is only
-    rendered while loading. That's okay here because the loading message never
-    changes. */}
+      {/*
+       * The animated globe has no text, so the loading message is announced instead. The live region is placed next to the globe, not inside it, because the globe uses `aria-busy`. Screen readers may ignore live region updates inside a busy element until loading finishes.
+       * The live region cannot stay on the page because this component is only rendered while loading. That's okay here because the loading message never changes.
+       */}
       <LiveRegion politeness="polite" isVisuallyHidden>
         {t('loading')}
       </LiveRegion>

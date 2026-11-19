@@ -16,9 +16,7 @@ const meta: Meta<typeof ProjectListControls> = {
   },
   decorators: [
     (Story) => {
-      // The component now reads filters/projects from the project store instead
-      // of props. Seed the store synchronously (before the component subscribes)
-      // and reset it on unmount so state doesn't leak into other stories.
+      // The component now reads filters/projects from the project store instead of props. Seed the store synchronously (before the component subscribes) and reset it on unmount so state doesn't leak into other stories.
       useState(() => {
         useProjectStore.setState({
           projects: mockProjects,

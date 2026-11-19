@@ -186,7 +186,6 @@
     "src/utils/countryZipCode/index.js",
     "src/utils/language/supportedLanguages.json",
     "tsconfig.tsbuildinfo",
-    "cypress/**",
     "app.json",
     "public/loaderio-518441ea29765d4a97c1e2a9eb8e3a90.txt",
     "reports/hardcoded-colors-report.md",

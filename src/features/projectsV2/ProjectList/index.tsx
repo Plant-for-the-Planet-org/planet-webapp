@@ -70,16 +70,11 @@ const ProjectList = ({ tabSelected }: ProjectListProps) => {
 
   return (
     <>
-      {/* This is a `polite` message because "No projects found" is the result of the
-    user's search or filter, not an error.
-
-    Keep the live region outside the conditional rendering so it stays on the
-    page. When the text changes from empty to "No projects found", screen
-    readers announce it more reliably than if the live region is added together
-    with the message.
-
-    The live region is visually hidden, so it doesn't affect the visible layout
-    or the empty state UI. */}
+      {/*
+       * This is a `polite` message because "No projects found" is the result of the user's search or filter, not an error.
+       * Keep the live region outside the conditional rendering so it stays on the page. When the text changes from empty to "No projects found", screen readers announce it more reliably than if the live region is added together with the message.
+       * The live region is visually hidden, so it doesn't affect the visible layout or the empty state UI.
+       */}
       <LiveRegion politeness="polite" isVisuallyHidden>
         {isProjectFound ? '' : tAllProjects('noProjectFound')}
       </LiveRegion>

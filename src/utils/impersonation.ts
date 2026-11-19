@@ -1,7 +1,5 @@
 /**
- * Credentials that identify an impersonation session. Kept in localStorage
- * under IMPERSONATION_STORAGE_KEY and sent as request headers by
- * setHeaderForImpersonation.
+ * Credentials that identify an impersonation session. Kept in localStorage under IMPERSONATION_STORAGE_KEY and sent as request headers by setHeaderForImpersonation.
  */
 export type ImpersonationData = {
   targetEmail: string;
@@ -24,9 +22,7 @@ export const isValidImpersonationData = (
 };
 
 /**
- * Reads IMPERSONATION_STORAGE_KEY from localStorage, returning it only if it
- * parses as valid ImpersonationData. Malformed JSON or incomplete data
- * yields undefined.
+ * Reads IMPERSONATION_STORAGE_KEY from localStorage, returning it only if it parses as valid ImpersonationData. Malformed JSON or incomplete data yields undefined.
  */
 export const readStoredImpersonationData = ():
   | ImpersonationData

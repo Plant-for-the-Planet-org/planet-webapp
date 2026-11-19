@@ -45,9 +45,7 @@ export default function CopyToClipboard({
   return (
     <>
       {customCopyButton ? (
-        // `customCopyButton` already renders its own semantic <button>, so the
-        // wrapper stays a non-interactive <span>. onClick is kept only as a
-        // bubbling target for the child button's clicks (keyboard included);
+        // `customCopyButton` already renders its own semantic <button>, so the wrapper stays a non-interactive <span>. onClick is kept only as a bubbling target for the child button's clicks (keyboard included);
         // making the wrapper a <button> would nest interactive controls.
         <span onClick={handleClick} className={containerClassName}>
           {customCopyButton}

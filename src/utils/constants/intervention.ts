@@ -25,10 +25,8 @@ const OTHER_INTERVENTION = colors.deepPurple;
 
 /**
  * MapLibre GL color configuration for visualizing forest interventions.
- * Uses a match expression: ['match', ['get', 'type'], ...interventionPairs, defaultColor]
- * where interventionPairs are 'intervention-type': 'color' pairs (e.g., 'single-tree': '#007A49')
- * Related activities share similar colors (e.g., fire management uses warm colors,
- * planting uses greens). Defaults to Single Tree color (#007A49) if no match found.
+ * Uses a match expression: ['match', ['get', 'type'], ...interventionPairs, defaultColor] where interventionPairs are 'intervention-type': 'color' pairs (e.g., 'single-tree': '#007A49')
+ * Related activities share similar colors (e.g., fire management uses warm colors, planting uses greens). Defaults to Single Tree color (#007A49) if no match found.
  */
 // prettier-ignore
 export const FillColor: DataDrivenPropertyValueSpecification<string> = [

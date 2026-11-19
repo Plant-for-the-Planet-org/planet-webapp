@@ -16,9 +16,7 @@ import { getProjectCategory } from '../../../../utils/projectV2';
 import themeProperties from '../../../../theme/themeProperties';
 
 /**
- * Rasterizes the per-category project pin SVGs into maplibre images so the
- * project markers can be drawn by a single GPU symbol layer (icon-image) instead
- * of ~259 HTML <Marker> DOM nodes. Keeps the existing custom pins + tier colors.
+ * Rasterizes the per-category project pin SVGs into maplibre images so the project markers can be drawn by a single GPU symbol layer (icon-image) instead of ~259 HTML <Marker> DOM nodes. Keeps the existing custom pins + tier colors.
  */
 
 const { colors } = themeProperties.designSystem;
@@ -62,8 +60,7 @@ const getPointMarkerType = (
 const PIN_KEY_PREFIX = 'pin-';
 
 /**
- * Data-driven `icon-image` key for a project. Returns '' when there is no icon
- * for the project's classification (matches the old behaviour of rendering no pin).
+ * Data-driven `icon-image` key for a project. Returns '' when there is no icon for the project's classification (matches the old behaviour of rendering no pin).
  */
 export const getPointMarkerImageKey = (p: MapProjectProperties): string => {
   const markerType = getPointMarkerType(p);
@@ -74,19 +71,15 @@ export const getPointMarkerImageKey = (p: MapProjectProperties): string => {
 export const isPointMarkerImageKey = (id: string): boolean =>
   id.startsWith(PIN_KEY_PREFIX);
 
-// The old HTML marker was 30px wide (ProjectMarkers.module.scss .marker); the
-// pin viewBox is ~43x49, so height ~= 34px. Rasterize at 2x for retina crispness.
+// The old HTML marker was 30px wide (ProjectMarkers.module.scss .marker); the pin viewBox is ~43x49, so height ~= 34px. Rasterize at 2x for retina crispness.
 const WIDTH = 30;
 const HEIGHT = 34;
 const RATIO = 2;
 
-// Transparent padding (display px) around the pin so the baked drop-shadow is
-// not clipped. The bottom pad doubles as the anchor offset (see MARKER_ICON_OFFSET_Y).
+// Transparent padding (display px) around the pin so the baked drop-shadow is not clipped. The bottom pad doubles as the anchor offset (see MARKER_ICON_OFFSET_Y).
 const PAD = 8;
 
-// The pin tip sits PAD px above the padded image's bottom edge; with
-// icon-anchor 'bottom' the layer must offset the icon down by PAD so the tip
-// lands on the project coordinate (the shadow then falls below it).
+// The pin tip sits PAD px above the padded image's bottom edge; with icon-anchor 'bottom' the layer must offset the icon down by PAD so the tip lands on the project coordinate (the shadow then falls below it).
 export const MARKER_ICON_OFFSET_Y = PAD;
 
 // Total rendered pin height including shadow padding.
@@ -104,8 +97,7 @@ const svgToImage = (svg: string): Promise<HTMLImageElement> =>
     img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(sized)}`;
   });
 
-// Composite the pin onto a padded canvas with the original drop-shadow baked in
-// (matches the old `drop-shadow(0 4px 4px rgba(0,0,0,0.25))`).
+// Composite the pin onto a padded canvas with the original drop-shadow baked in (matches the old `drop-shadow(0 4px 4px rgba(0,0,0,0.25))`).
 const withShadow = (img: HTMLImageElement): ImageData | HTMLImageElement => {
   const w = (WIDTH + PAD * 2) * RATIO;
   const h = (HEIGHT + PAD * 2) * RATIO;

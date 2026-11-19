@@ -39,8 +39,7 @@ function EditSite({
     formState: { errors },
     control,
   } = useForm<ProjectSitesFormData>({
-    // Seeded from the site being edited. Previously the form started empty, so
-    // saving sent null for both years and erased the stored values.
+    // Seeded from the site being edited. Previously the form started empty, so saving sent null for both years and erased the stored values.
     defaultValues: {
       name: siteDetails.name ?? '',
       // `status` the prop is the list of options; the current value is on the site

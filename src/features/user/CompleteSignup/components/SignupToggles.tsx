@@ -115,9 +115,7 @@ const SignupToggles = ({
             id="terms"
           />
         </div>
-        {/* Assertive: a validation error blocking signup. The region stays
-            mounted so toggling terms off announces the error on the change
-            rather than relying on the region's own insertion. */}
+        {/* Assertive: a validation error blocking signup. The region stays mounted so toggling terms off announces the error on the change rather than relying on the region's own insertion. */}
         <LiveRegion politeness="assertive" className={styles.termsError}>
           {showTermError ? tSignup('termAndConditionError') : ''}
         </LiveRegion>

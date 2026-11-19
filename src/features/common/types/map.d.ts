@@ -46,8 +46,7 @@ export type InterventionFeature = Feature<
 >;
 
 /**
- * Standard envelope every TreeMapper API response is wrapped in. The actual
- * payload always lives in `data`.
+ * Standard envelope every TreeMapper API response is wrapped in. The actual payload always lives in `data`.
  */
 export interface TreemapperApiResponse<T> {
   statusCode: number;

@@ -130,8 +130,7 @@ export default function RedeemModal({
     setRedeemedCodeData(undefined);
   };
   const { theme } = useContext(ThemeContext);
-  // The visible heading changes with the redeem state, so the dialog is named
-  // with aria-label instead of aria-labelledby
+  // The visible heading changes with the redeem state, so the dialog is named with aria-label instead of aria-labelledby
   const dialogLabel = t('redeem');
 
   return (

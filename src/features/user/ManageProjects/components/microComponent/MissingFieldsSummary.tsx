@@ -13,14 +13,11 @@ interface Props {
   /** Sentence above the list, e.g. "3 answers are still missing". */
   title: string;
   /**
-   * Given for summaries that point at another tab. Without it the entries jump
-   * to the field on the current page instead.
+   * Given for summaries that point at another tab. Without it the entries jump to the field on the current page instead.
    */
   hrefFor?: (key: string) => string;
   /**
-   * 'warning' (default) is for fields blocking resubmission. 'info' is for a
-   * purely informational list, such as answered fields a reviewer commented
-   * on, that do not block anything.
+   * 'warning' (default) is for fields blocking resubmission. 'info' is for a purely informational list, such as answered fields a reviewer commented on, that do not block anything.
    */
   severity?: 'warning' | 'info';
   sx?: SxProps;
@@ -31,8 +28,7 @@ function jumpToField(key: string): void {
   if (!target) return;
 
   target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  // MUI puts the id on the input itself for text fields, and on the wrapper for
-  // the table and checkbox group fields, so both cases have to be covered.
+  // MUI puts the id on the input itself for text fields, and on the wrapper for the table and checkbox group fields, so both cases have to be covered.
   const focusable = target.matches('input, textarea, select')
     ? target
     : target.querySelector<HTMLElement>('input, textarea, select, [tabindex]');
