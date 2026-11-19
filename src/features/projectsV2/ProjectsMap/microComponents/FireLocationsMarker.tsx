@@ -4,11 +4,12 @@ import type {
   FireFeatureCollection,
 } from '../../../common/types/fireLocation';
 
-import { useRouter } from 'next/router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Marker, Source } from 'react-map-gl/maplibre';
 import FireIcon from '../../../../../public/assets/images/icons/FireIcon';
 import { useApi } from '../../../../hooks/useApi';
+import { useSingleProjectStore } from '../../../../stores';
+import { getSiteIdFromIndex } from '../../../../utils/projectV2';
 import FirePopup from '../FirePopup';
 import styles from '../FirePopup/FirePopup.module.scss';
 
@@ -101,9 +102,12 @@ function selectFiresForDisplay(allFeatures: FireFeature[]): FireFeature[] {
 }
 
 export default function FireLocationsMarker(): ReactElement {
-  const { query } = useRouter();
-
-  const { site } = query;
+  const projectSites = useSingleProjectStore(
+    (state) => state.singleProject?.sites
+  );
+  const selectedSite = useSingleProjectStore((state) => state.selectedSite);
+  // Use the store's checked selection, not the URL, so an unknown site id is never sent to the API. See #3273.
+  const siteId = getSiteIdFromIndex(projectSites ?? [], selectedSite);
   const { getApi } = useApi();
   const [fireFeatures, setFireFeatures] = useState<FireFeature[]>([]);
   const [activePopupFeature, setActivePopupFeature] =
@@ -111,12 +115,12 @@ export default function FireLocationsMarker(): ReactElement {
   const markerRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
-    if (!site) return;
+    if (!siteId) return;
 
     const fetchFires = async () => {
       try {
         const searchParams = new URLSearchParams();
-        searchParams.append('remoteId', site as string);
+        searchParams.append('remoteId', siteId);
         searchParams.append('span', ALERT_DURATION);
         const fireAlertApiUrl =
           process.env.NEXT_PUBLIC_FIREALERT_ENDPOINT ??
@@ -142,7 +146,7 @@ export default function FireLocationsMarker(): ReactElement {
       }
     };
     fetchFires();
-  }, [site]);
+  }, [siteId]);
 
   const renderFireMarkers = useMemo(
     () =>
