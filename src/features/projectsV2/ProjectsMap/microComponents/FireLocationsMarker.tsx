@@ -115,7 +115,7 @@ export default function FireLocationsMarker(): ReactElement {
   const markerRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
-    // No site while an intervention is selected: keep the current site's fires on the map.
+    // No site while an intervention is selected: keep the fires already on the map. A reply still on its way for the previous site is dropped.
     if (!siteId) return;
 
     setFireFeatures([]);
