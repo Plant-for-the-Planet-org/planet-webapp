@@ -69,17 +69,13 @@ function RecordHeader({
      * - currentPeriodEnd: "2026-01-24" (date-only string, parsed as midnight UTC)
      *
      * KEY INSIGHT FROM TESTING:
-     * JavaScript parses date-only strings like "2026-01-24" as midnight UTC
-     * (not local midnight). In UTC+8, this becomes 08:00 local time on the same day.
-     * The formatDate() function has been corrected to properly extract the date
-     * portion, ensuring correct display across timezones.
+     * JavaScript parses date-only strings like "2026-01-24" as midnight UTC (not local midnight). In UTC+8, this becomes 08:00 local time on the same day.
+     * The formatDate() function has been corrected to properly extract the date portion, ensuring correct display across timezones.
      *
      * THE +1 HOUR OFFSET (LEGACY):
      * Applied only to endsAt and pauseUntil via formatDateWithOffset().
      *
-     * Originally intended to prevent dates from displaying as the previous day
-     * in negative offset timezones. However, with the corrected formatDate()
-     * function, this offset may now be unnecessary for date-only strings.
+     * Originally intended to prevent dates from displaying as the previous day in negative offset timezones. However, with the corrected formatDate() function, this offset may now be unnecessary for date-only strings.
      *
      * The offset is preserved here to maintain existing behavior without risk.
      *

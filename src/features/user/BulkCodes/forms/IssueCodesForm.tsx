@@ -162,10 +162,7 @@ const IssueCodesForm = (): ReactElement | null => {
           setStatus('success');
           // The delay lets the user read the confirmation message.
 
-          // Reset and profile refresh happen after navigation because
-          // refreshing the profile here temporarily unmounts this page,
-          // which resets the form state and shows the empty form again
-          // before the redirect.
+          // Reset and profile refresh happen after navigation because refreshing the profile here temporarily unmounts this page, which resets the form state and shows the empty form again before the redirect.
           setTimeout(async () => {
             await router.push(localizedPath(`/profile/history?ref=${res.uid}`));
             resetBulkCodeStore();
@@ -324,11 +321,7 @@ const IssueCodesForm = (): ReactElement | null => {
     );
   }, [locale, t]);
 
-  // The live region is rendered in both states, so it stays on the page while
-  // the form is submitted. When the success message appears, screen readers
-  // announce the updated text more reliably than if the live region is added
-  // with the message. The live region is visually hidden, so it does not affect
-  // the visible success message or the layout.
+  // The live region is rendered in both states, so it stays on the page while the form is submitted. When the success message appears, screen readers announce the updated text more reliably than if the live region is added with the message. The live region is visually hidden, so it does not affect the visible success message or the layout.
   const statusRegion = (
     <LiveRegion politeness="polite" isVisuallyHidden>
       {status !== 'success' ? '' : t('donationSuccess')}
@@ -417,9 +410,7 @@ const IssueCodesForm = (): ReactElement | null => {
     return (
       <CenteredContainer className="CenteredContainer--small">
         {statusRegion}
-        {/* Visible copy only. `CenteredContainer` is the same element type in
-            both branches and the region is the first child of each, so React
-            reconciles it to the same DOM node instead of remounting it. */}
+        {/* Visible copy only. `CenteredContainer` is the same element type in both branches and the region is the first child of each, so React reconciles it to the same DOM node instead of remounting it. */}
         <div className={styles.successMessage}>
           {t('donationSuccess')}
           <span className={styles.spinner} aria-hidden="true"></span>

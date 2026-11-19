@@ -11,8 +11,7 @@ type GeneralObject = { [key: string]: ObjectValue };
 type GeneralArray = Array<ObjectValue>;
 
 /**
- * Removes all null, empty objects, empty strings, and undefined values from the object
- * while preserving the original type of the input
+ * Removes all null, empty objects, empty strings, and undefined values from the object while preserving the original type of the input
  */
 function cleanObject<T>(obj: T): T {
   if (!obj || typeof obj !== 'object') {

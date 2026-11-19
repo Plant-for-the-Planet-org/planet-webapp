@@ -134,10 +134,7 @@ export default function ProjectMedia({
       >(`/app/projects/${projectGUID}/images`, {
         payload: imagePayload,
       });
-      // Functional update, because onDrop uploads every dropped file in
-      // parallel and each call would otherwise append to the same stale
-      // snapshot of uploadedImages — leaving only the last upload visible even
-      // though all of them reached the server.
+      // Functional update, because onDrop uploads every dropped file in parallel and each call would otherwise append to the same stale snapshot of uploadedImages — leaving only the last upload visible even though all of them reached the server.
       setUploadedImages((prev) => [...prev, res]);
       setIsUploadingData(false);
       setErrorMessage('');
@@ -225,9 +222,7 @@ export default function ProjectMedia({
           payload: defaultImagePayload,
         }
       );
-      // Rebuild the list rather than mutating it. The previous version reassigned
-      // fields on the existing objects and handed the same array reference back,
-      // so React saw no change and the star could fail to move.
+      // Rebuild the list rather than mutating it. The previous version reassigned fields on the existing objects and handed the same array reference back, so React saw no change and the star could fail to move.
       setUploadedImages((prev) =>
         prev.map((image, i) => ({ ...image, isDefault: i === index }))
       );

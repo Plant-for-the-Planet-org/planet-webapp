@@ -141,9 +141,7 @@ export default function ProjectSites({
   const fetchProjSites = useCallback(async () => {
     try {
       if (!projectGUID) return;
-      // Shares the key with the completeness fetch in ManageProjects: both want
-      // the same payload and both start on mount, so they collapse into one
-      // request. Not cached, so a save still reloads the real site list.
+      // Shares the key with the completeness fetch in ManageProjects: both want the same payload and both start on mount, so they collapse into one request. Not cached, so a save still reloads the real site list.
       const result = await dedupeInFlight(`sites-${projectGUID}`, () =>
         getApiAuthenticated<SitesScopeProjects>(
           `/app/profile/projects/${projectGUID}`,

@@ -44,10 +44,7 @@ export const useInitializeParams = () => {
   /**
    * Remember where to return to, for the back button on project details.
    *
-   * Kept out of the latched effect above so a client-side navigation carrying a
-   * new `backNavigationUrl` still updates it. It lives here rather than in
-   * `ProjectSnippet` because that component is not rendered when the details
-   * pane is hidden in embed mode.
+   * Kept out of the latched effect above so a client-side navigation carrying a new `backNavigationUrl` still updates it. It lives here rather than in `ProjectSnippet` because that component is not rendered when the details pane is hidden in embed mode.
    */
   useEffect(() => {
     const { backNavigationUrl } = router.query;

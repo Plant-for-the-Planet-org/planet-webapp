@@ -17,8 +17,7 @@ import {
 import { isSameFetchKey } from '../utils/fetchKey';
 
 /**
- * Conditions a fetched project depends on. Includes the slug, since a session
- * moves between projects. See `src/utils/fetchKey.ts`.
+ * Conditions a fetched project depends on. Includes the slug, since a session moves between projects. See `src/utils/fetchKey.ts`.
  */
 type SingleProjectFetchKey = {
   slug: string;
@@ -30,9 +29,7 @@ type SingleProjectFetchKey = {
 interface SingleProjectStore {
   singleProject: ExtendedProject | null;
   /**
-   * Conditions of the last successful fetch. `null` when nothing has been
-   * fetched yet, after a failure, or after `clearProjectStates`, so a failed
-   * request can always be retried.
+   * Conditions of the last successful fetch. `null` when nothing has been fetched yet, after a failure, or after `clearProjectStates`, so a failed request can always be retried.
    */
   lastFetch: SingleProjectFetchKey | null;
   /** Conditions of the request in flight, `null` when idle. */

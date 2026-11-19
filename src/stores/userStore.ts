@@ -12,17 +12,10 @@ import {
 } from '../utils/impersonation';
 import { APIError } from '@planet-sdk/common';
 
-// No real HTTP response was involved (network failure, JSON parsing, a
-// session-id/localStorage failure, ...). Mirrors the INVALID_TOKEN_STATUS_CODE
-// convention in useApi.ts for a synthetic, non-server status code.
+// No real HTTP response was involved (network failure, JSON parsing, a session-id/localStorage failure, ...). Mirrors the INVALID_TOKEN_STATUS_CODE convention in useApi.ts for a synthetic, non-server status code.
 const NON_HTTP_ERROR_STATUS_CODE = 0;
 
-// fetchUserProfile has no single owner - the token effect, the 403 handler,
-// and the impersonation enter/exit screens can all call it around the same
-// time, with no cancellation. This id lets a call detect it has been
-// superseded by a later one, so a slow, stale response cannot overwrite the
-// store with the wrong identity. It is a cheap guard, not real request
-// sequencing (no AbortController, no cancellation) - see review item #14/A3.
+// fetchUserProfile has no single owner - the token effect, the 403 handler, and the impersonation enter/exit screens can all call it around the same time, with no cancellation. This id lets a call detect it has been superseded by a later one, so a slow, stale response cannot overwrite the store with the wrong identity. It is a cheap guard, not real request sequencing (no AbortController, no cancellation) - see review item #14/A3.
 let latestFetchUserProfileRequestId = 0;
 
 type FetchUserProfileParams = {
@@ -147,12 +140,10 @@ export const useUserStore = create<UserStore>()(
           // Impersonation-specific 403: Handle ONLY in component
 
           // This runs only when `impersonationData` is passed to this function.
-          // Currently, only ImpersonateUserForm passes it when starting impersonation,
-          // so a 403 is handled by that component instead of the global handler.
+          // Currently, only ImpersonateUserForm passes it when starting impersonation, so a 403 is handled by that component instead of the global handler.
           //
           // If another caller passes `impersonationData`, its 403 will also be handled locally.
-          // If ImpersonateUserForm stops passing it, the impersonation header will be missing
-          // and the API may return the support agent's profile instead of showing an error.
+          // If ImpersonateUserForm stops passing it, the impersonation header will be missing and the API may return the support agent's profile instead of showing an error.
 
           if (
             error instanceof APIError &&
@@ -187,10 +178,8 @@ export const useUserStore = create<UserStore>()(
             apiError.cause = error;
           }
 
-          // Clear the profile only when the user must sign up again (303)
-          // or the session is no longer valid (401).
-          // For temporary errors like 500 or network failures,
-          // keep the existing profile so the user is not sent to /login.
+          // Clear the profile only when the user must sign up again (303) or the session is no longer valid (401).
+          // For temporary errors like 500 or network failures, keep the existing profile so the user is not sent to /login.
           const patch: Partial<UserStore> = { profileApiError: apiError };
           if (apiError.statusCode === 303 || apiError.statusCode === 401) {
             patch.userProfile = null;

@@ -217,8 +217,7 @@ export const getSiteIndex = (
 /**
  * Determines whether a map feature belongs to a plant intervention layer.
  *
- * This is used to distinguish plant-related map features from other
- * interactive layers such as site polygons or background layers.
+ * This is used to distinguish plant-related map features from other interactive layers such as site polygons or background layers.
  *
  * @param feature - A GeoJSON feature from the map
  * @returns `true` if the feature is from a plant layer, otherwise `false`
@@ -400,8 +399,7 @@ function tryParseJson(str: string): unknown {
 }
 
 /**
- * Type guard that checks if a value is a non-array object
- * with string `label` and `value` properties.
+ * Type guard that checks if a value is a non-array object with string `label` and `value` properties.
  */
 function isMetaDataValue(obj: unknown): obj is MetaDataValue {
   return (
@@ -476,8 +474,7 @@ function isProcessableMetadata(metadata: unknown): metadata is object {
 }
 
 /**
- * Extracts and formats the `metadata.public` section of an intervention info
- * into an array of display-friendly key-value pairs.
+ * Extracts and formats the `metadata.public` section of an intervention info into an array of display-friendly key-value pairs.
  * @param {OtherInterventions} interventionInfo - The intervention object containing public metadata.
  * @returns {{ key: string; value: string }[]} - Array of displayable metadata entries.
  */
@@ -540,9 +537,7 @@ export const filterByClassification = (
   });
 };
 
-// Stroke / bar / ligature letters that Unicode NFD does NOT decompose, so the
-// combining-mark strip below can't fold them. Mapped explicitly so search is
-// accent-insensitive for these too (e.g. Łódź → lodz, Straße → strasse).
+// Stroke / bar / ligature letters that Unicode NFD does NOT decompose, so the combining-mark strip below can't fold them. Mapped explicitly so search is accent-insensitive for these too (e.g. Łódź → lodz, Straße → strasse).
 const LATIN_FOLD: Record<string, string> = {
   ø: 'o',
   ł: 'l',
@@ -561,11 +556,7 @@ const LATIN_FOLD_REGEX = new RegExp(
   'g'
 );
 
-// Normalize a string for project search: strip diacritics (NFD + combining-mark
-// removal), fold the stroke/ligature letters NFD leaves behind, lowercase, and
-// treat a hyphen as a space (collapsing repeated separators). This makes search
-// insensitive to accents and hyphens: "Plant for Ghana" matches "Plant-for-Ghana"
-// and "Yucatan" matches "Yucatán".
+// Normalize a string for project search: strip diacritics (NFD + combining-mark removal), fold the stroke/ligature letters NFD leaves behind, lowercase, and treat a hyphen as a space (collapsing repeated separators). This makes search insensitive to accents and hyphens: "Plant for Ghana" matches "Plant-for-Ghana" and "Yucatan" matches "Yucatán".
 const normalizeForSearch = (text: string | undefined | null): string =>
   text
     ? text
@@ -588,9 +579,7 @@ const normalizeDigraph = (text: string | undefined | null): string =>
 /**
  * Filters projects based on a search keyword.
  *
- * The search is case-insensitive and tolerant of common text variations,
- * including accents/diacritics, German umlaut spellings (e.g. München ↔
- * Muenchen), and hyphens (e.g. Plant-for-Ghana ↔ Plant for Ghana).
+ * The search is case-insensitive and tolerant of common text variations, including accents/diacritics, German umlaut spellings (e.g. München ↔ Muenchen), and hyphens (e.g. Plant-for-Ghana ↔ Plant for Ghana).
  *
  * Matches against:
  * - Project name
@@ -686,8 +675,7 @@ export const getGeoJsonFeatureIndex = (
 /**
  * Returns `true` if a project has no selectable sites.
  *
- * A project has no selectable sites when the site list is empty or every site
- * has `geometry === null`.
+ * A project has no selectable sites when the site list is empty or every site has `geometry === null`.
  *
  * @param sites - Project site features
  * @returns Whether at least one site has valid geometry

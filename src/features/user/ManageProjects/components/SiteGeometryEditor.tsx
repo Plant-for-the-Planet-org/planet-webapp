@@ -159,10 +159,7 @@ export default function SiteGeometryEditor({
   );
 
   // Finish drawing — double-click closes the polygon.
-  // Uses coordinatesRef instead of the coordinates state value to avoid
-  // reading stale state: the two onClick events that fire before onDblClick
-  // update coordinatesRef synchronously inside the setState updater, so by
-  // the time handleDoubleClick runs the ref already reflects those 2 points.
+  // Uses coordinatesRef instead of the coordinates state value to avoid reading stale state: the two onClick events that fire before onDblClick update coordinatesRef synchronously inside the setState updater, so by the time handleDoubleClick runs the ref already reflects those 2 points.
   const handleDoubleClick = useCallback(() => {
     // Only a double-click while drawing closes a polygon. Without this the map's own zoom gesture would complete one from whatever the ref still holds.
     if (!isDrawing) return;
@@ -208,14 +205,10 @@ export default function SiteGeometryEditor({
     loadMapStyle();
   }, []);
 
-  // Disable double-click zoom while drawing so the dblclick event can be
-  // used to close the polygon without the map zooming in at the same time.
+  // Disable double-click zoom while drawing so the dblclick event can be used to close the polygon without the map zooming in at the same time.
   useEffect(() => {
     if (!isMapReady) return;
-    // react-map-gl hands back a wrapper, and the interaction handlers live on
-    // the underlying MapLibre instance. Reading doubleClickZoom off the wrapper
-    // gives undefined and throws, which took the whole page down rather than
-    // just losing the zoom tweak.
+    // react-map-gl hands back a wrapper, and the interaction handlers live on the underlying MapLibre instance. Reading doubleClickZoom off the wrapper gives undefined and throws, which took the whole page down rather than just losing the zoom tweak.
     const wrapper = mapRef.current;
     const map = wrapper?.getMap ? wrapper.getMap() : wrapper;
     if (!map?.doubleClickZoom) return;

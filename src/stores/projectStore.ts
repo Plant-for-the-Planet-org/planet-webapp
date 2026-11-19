@@ -10,8 +10,7 @@ import { getTopProjects } from '../utils/projectV2';
 import { isSameFetchKey } from '../utils/fetchKey';
 
 /**
- * Conditions a fetched project list depends on. No slug, unlike the single
- * project key, since there is one list. See `src/utils/fetchKey.ts`.
+ * Conditions a fetched project list depends on. No slug, unlike the single project key, since there is one list. See `src/utils/fetchKey.ts`.
  */
 type ProjectsFetchKey = {
   locale: string;
@@ -27,8 +26,7 @@ interface ProjectStore {
   isProjectsError: boolean;
   showDonatableProjects: boolean;
   /**
-   * Conditions of the last successful fetch. `null` when nothing has been
-   * fetched yet or after a failure, so a failed request can always be retried.
+   * Conditions of the last successful fetch. `null` when nothing has been fetched yet or after a failure, so a failed request can always be retried.
    */
   lastFetch: ProjectsFetchKey | null;
   /** Conditions of the request in flight, `null` when idle. */
