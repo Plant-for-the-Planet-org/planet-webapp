@@ -45,7 +45,7 @@ function RecordHeader({
           record.unitType || (record.purpose === 'trees' ? 'tree' : 'm2');
         // Sample title 1 => 5 Tree Gift . Yucatan,
         // Sample title 2 => 2 m² Donation . Sumatra
-        title = `${getFormattedNumber(locale, record.quantity)} ${tCommon(
+        title = `${getFormattedNumber(locale, record.quantity ?? 0)} ${tCommon(
           displayedUnit,
           { count: 1 }
         )} ${
@@ -59,7 +59,7 @@ function RecordHeader({
       case 'forest-protection':
       case 'sponsorship':
       case 'membership':
-        title = record.details.project;
+        title = record.details.project ?? '';
         break;
       case 'planet-cash':
       default:
