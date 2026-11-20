@@ -46,6 +46,7 @@ describe('YearHeader', () => {
 
     const button = getDownloadButton();
     expect(button.disabled).toBe(false);
+    expect(screen.getByText('Download Overview')).toBeTruthy();
     expect(screen.getByText('Overview available')).toBeTruthy();
 
     fireEvent.click(button);
