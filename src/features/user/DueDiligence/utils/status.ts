@@ -24,9 +24,7 @@ export interface Standing {
 /**
  * Where the organisation stands, in the order the facts override each other.
  *
- * A lapsed confirmation comes first because it is the one state that needs
- * action from an organisation that has already been through this once, and
- * `isCharitable` is false while it lasts.
+ * A lapsed confirmation comes first because it is the one state that needs action from an organisation that has already been through this once, and `isCharitable` is false while it lasts.
  */
 export function standingOf(
   charitability: DueDiligenceCharitability
@@ -57,8 +55,7 @@ export function standingOf(
     };
   }
 
-  // Nothing is wrong here: an organisation whose projects take no donations has
-  // no reason to file yet, and an incomplete list is not a problem for it.
+  // Nothing is wrong here: an organisation whose projects take no donations has no reason to file yet, and an incomplete list is not a problem for it.
   if (!charitability.required) {
     return { severity: 'info', messageKey: 'statusNotYetNeeded' };
   }
@@ -69,9 +66,7 @@ export function standingOf(
 /**
  * What a reviewer would find missing, documents and fields together.
  *
- * Optional documents are left out: they are on the list because they do not
- * exist in every country, and naming them as outstanding would ask an
- * organisation for something it cannot get.
+ * Optional documents are left out: they are on the list because they do not exist in every country, and naming them as outstanding would ask an organisation for something it cannot get.
  */
 export function outstandingItems(checklist: DueDiligenceChecklist): string[] {
   const documents = checklist.documents

@@ -17,8 +17,7 @@ import { useErrorHandlingStore } from '../../../../stores';
 /**
  * Empty strings rather than nulls, so every input stays controlled.
  *
- * Tolerates the whole object being absent: a backend that has not shipped these
- * fields yet should leave the form empty, not take the page down with it.
+ * Tolerates the whole object being absent: a backend that has not shipped these fields yet should leave the form empty, not take the page down with it.
  */
 function toFormValues(fields?: DueDiligenceFields): Record<string, string> {
   return Object.fromEntries(

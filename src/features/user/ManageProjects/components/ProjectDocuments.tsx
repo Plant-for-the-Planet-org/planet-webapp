@@ -27,10 +27,7 @@ import { getMissingDocuments } from '../utils/completeness';
 import { dedupeInFlight } from '../utils/dedupeInFlight';
 
 /**
- * Strips the "data:<mime>;base64," prefix FileReader.readAsDataURL adds, so
- * the payload matches what the backend expects: raw base64 content, with
- * filename/mimeType taken straight from the File object rather than parsed
- * back out of the data URI.
+ * Strips the "data:<mime>;base64," prefix FileReader.readAsDataURL adds, so the payload matches what the backend expects: raw base64 content, with filename/mimeType taken straight from the File object rather than parsed back out of the data URI.
  */
 function toBase64Payload(dataUrl: string): string {
   const commaIndex = dataUrl.indexOf(',');
@@ -123,8 +120,7 @@ function DocumentRow({
   );
 
   const { getRootProps, getInputProps } = useDropzone({
-    // Each document kind decides what it takes and how big it may be, and the backend
-    // rejects anything else, so the picker follows the checklist rather than rules of its own.
+    // Each document kind decides what it takes and how big it may be, and the backend rejects anything else, so the picker follows the checklist rather than rules of its own.
     accept: item.acceptedMimeTypes?.join(',') ?? 'application/pdf',
     multiple: false,
     maxSize: maxBytes,

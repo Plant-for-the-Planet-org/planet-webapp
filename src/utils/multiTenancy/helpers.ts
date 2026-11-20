@@ -125,8 +125,7 @@ function findTenantByHost(tenants: Tenant[], host: string): Tenant | undefined {
 }
 
 /**
- * Returns the paths for `getStaticPaths` based on the subdomain of every
- * available hostname.
+ * Returns the paths for `getStaticPaths` based on the subdomain of every available hostname.
  */
 export async function constructPathsForTenantSlug() {
   const tenants = await getTenantConfigList();

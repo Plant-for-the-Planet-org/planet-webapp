@@ -559,15 +559,13 @@ export default function DetailedAnalysis({
   const metaAnnotation = (field: string) =>
     revisionAnnotations[`metadata.${field}`];
 
-  // Same list the tab dot and the Review page read, so the three can never
-  // disagree about what is still missing.
+  // Same list the tab dot and the Review page read, so the three can never disagree about what is still missing.
   const missingFields =
     projectDetails && !isLocked
       ? getDetailedAnalysisMissing(projectDetails, tManageProjects)
       : [];
 
-  // Answered fields a reviewer commented on. Purely informational, so it
-  // never feeds into the tab dot and never blocks resubmission.
+  // Answered fields a reviewer commented on. Purely informational, so it never feeds into the tab dot and never blocks resubmission.
   const flaggedFields =
     projectDetails && !isLocked
       ? getDetailedAnalysisFlagged(

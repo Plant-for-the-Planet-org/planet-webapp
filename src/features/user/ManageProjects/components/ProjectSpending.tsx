@@ -163,8 +163,7 @@ export default function ProjectSpending({
     try {
       // Fetch spending of the project
       if (projectGUID && token) {
-        // Shares the key with the completeness fetch in ManageProjects so the
-        // two do not both request the same payload on mount.
+        // Shares the key with the completeness fetch in ManageProjects so the two do not both request the same payload on mount.
         const result = await dedupeInFlight(`expenses-${projectGUID}`, () =>
           getApiAuthenticated<ExpensesScopeProjects>(
             `/app/profile/projects/${projectGUID}`,

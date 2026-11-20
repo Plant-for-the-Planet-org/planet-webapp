@@ -1,6 +1,8 @@
 import type englishAllProjects from '../../public/static/locales/en/allProjects.json';
 import type englishCountry from '../../public/static/locales/en/country.json';
+import type englishDonate from '../../public/static/locales/en/donate.json';
 import type englishProject from '../../public/static/locales/en/project.json';
+import type englishProjectDetails from '../../public/static/locales/en/projectDetails.json';
 
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -12,6 +14,8 @@ export const LOCALE = 'en';
 type AllProjectsText = (typeof englishAllProjects)['AllProjects'];
 type CountryText = (typeof englishCountry)['Country'];
 type ProjectText = (typeof englishProject)['Project'];
+type ProjectDetailsText = (typeof englishProjectDetails)['ProjectDetails'];
+type DonateText = (typeof englishDonate)['Donate'];
 
 const readMessages = (locale: string, file: string) =>
   JSON.parse(
@@ -47,6 +51,18 @@ export const countryText: CountryText = readWithEnglishFallback(
 export const projectText: ProjectText = readWithEnglishFallback(
   'project',
   'Project'
+);
+
+// Labels on the project details page and its map controls.
+export const projectDetailsText: ProjectDetailsText = readWithEnglishFallback(
+  'projectDetails',
+  'ProjectDetails'
+);
+
+// The project details page borrows some headings, such as About Project, from the donation messages.
+export const donateText: DonateText = readWithEnglishFallback(
+  'donate',
+  'Donate'
 );
 
 // Fills a message's placeholders, plurals included, the same way the app does.

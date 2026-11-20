@@ -11,11 +11,8 @@ import NoTransactionsFound from '../components/NoTransactionsFound';
 import LiveRegion from '../../../common/LiveRegion';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../../hooks/useApi';
-import {
-  useAuthStore,
-  useErrorHandlingStore,
-  usePlanetCashStore,
-} from '../../../../stores';
+import { useIsAuthReady } from '../../../../hooks/useAuthReadiness';
+import { useErrorHandlingStore, usePlanetCashStore } from '../../../../stores';
 import { useRouter } from 'next/router';
 import useLocalizedPath from '../../../../hooks/useLocalizedPath';
 
@@ -30,6 +27,7 @@ const Transactions = ({
   const router = useRouter();
   const { localizedPath } = useLocalizedPath();
   const { getApiAuthenticated } = useApi();
+  const isAuthReady = useIsAuthReady();
   // local state
   const [transactionHistory, setTransactionHistory] =
     useState<PaymentHistory | null>(null);
@@ -40,9 +38,6 @@ const Transactions = ({
   const hasPlanetCashAccount = usePlanetCashStore(
     (state) =>
       state.planetCashAccounts !== null && state.planetCashAccounts.length > 0
-  );
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
   );
   // store: action
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
@@ -124,14 +119,10 @@ const Transactions = ({
 
   return (
     <>
-      {/* Neither loading state shows any text. The initial loading state displays
-    skeletons, and "Load more" replaces its label with a spinner, so the
-    loading message is announced here instead.
-
-    Keep the live region outside the loading branches so it stays on the page.
-    When the loading state changes, screen readers announce the updated text
-    more reliably than if the live region is added with the message. This also
-    lets the initial skeleton loading state be announced. */}
+      {/*
+       * Neither loading state shows any text. The initial loading state displays skeletons, and "Load more" replaces its label with a spinner, so the loading message is announced here instead.
+       * Keep the live region outside the loading branches so it stays on the page. When the loading state changes, screen readers announce the updated text more reliably than if the live region is added with the message. This also lets the initial skeleton loading state be announced.
+       */}
       <LiveRegion politeness="polite" isVisuallyHidden>
         {isDataLoading ? t('loadingTransactions') : ''}
       </LiveRegion>

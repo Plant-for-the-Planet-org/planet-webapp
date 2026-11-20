@@ -51,9 +51,7 @@ const NavbarMenuSection = ({
           )}
         </div>
       )}
-      {/* 
-      Special logic for tool dropdown 
-       */}
+      {/* Special logic for tool dropdown */}
       {headerKey === 'tools' && (
         <a
           className={styles.allTools}

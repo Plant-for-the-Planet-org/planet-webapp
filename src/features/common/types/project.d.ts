@@ -31,9 +31,7 @@ export interface Site {
 
 // TODO: status cleanup after deployment
 /**
- * The backend workflow uses six statuses: draft, submitted, in_review,
- * revision_requested, accepted and rejected. The rest are their pre-rename
- * predecessors, still carried by older projects in the database.
+ * The backend workflow uses six statuses: draft, submitted, in_review, revision_requested, accepted and rejected. The rest are their pre-rename predecessors, still carried by older projects in the database.
  */
 export type VerificationStatus =
   | 'draft'
@@ -116,9 +114,7 @@ export interface QuestionnaireFieldSchema {
   description: string | null;
   classifications: string[] | null;
   /**
-   * The project owner may leave this question blank. Optional questions never
-   * count towards completeness, so they cannot block a review submission,
-   * unless a reviewer has annotated the field and asked for the value.
+   * The project owner may leave this question blank. Optional questions never count towards completeness, so they cannot block a review submission, unless a reviewer has annotated the field and asked for the value.
    * Older schema payloads omit the flag, so absent means required.
    */
   optional?: boolean;
@@ -313,9 +309,7 @@ export interface SiteDetails {
   name: string;
   status: string;
   /**
-   * Carried so the edit form can be seeded with the stored values. Without them
-   * the year inputs open empty and saving writes null back, erasing whatever
-   * was captured when the site was created.
+   * Carried so the edit form can be seeded with the stored values. Without them the year inputs open empty and saving writes null back, erasing whatever was captured when the site was created.
    */
   acquisitionYear?: Nullable<number>;
   yearAbandoned?: Nullable<number>;

@@ -12,9 +12,7 @@ interface Props {
 /**
  * Where the organisation stands, which the checklist alone cannot say.
  *
- * Feedback sits alongside the standing rather than replacing it: an
- * organisation whose confirmation is still valid can be asked for a missing
- * document towards the next renewal, and both are true at once.
+ * Feedback sits alongside the standing rather than replacing it: an organisation whose confirmation is still valid can be asked for a missing document towards the next renewal, and both are true at once.
  */
 export default function CharitabilityStatus({
   charitability,

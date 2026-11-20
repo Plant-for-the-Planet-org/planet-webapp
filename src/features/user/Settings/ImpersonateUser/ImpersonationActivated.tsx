@@ -28,9 +28,7 @@ const ImpersonationActivated = () => {
   const exitImpersonation = useUserStore((state) => state.exitImpersonation);
 
   const handleExitImpersonation = () => {
-    // Exiting impersonation just clears local state, so always do it. Restoring
-    // the real profile needs a token, and the target route is protected, so
-    // gate the navigation and refetch on the token.
+    // Exiting impersonation just clears local state, so always do it. Restoring the real profile needs a token, and the target route is protected, so gate the navigation and refetch on the token.
     exitImpersonation();
     if (token) {
       router.push(localizedPath(`/profile/impersonate-user`));

@@ -31,8 +31,7 @@ function isSupportedLocale(locale: string): locale is Locale {
 }
 
 /**
- * Remove the locale segment from the beginning of a pathname,
- * while preserving query strings and hash fragments.
+ * Remove the locale segment from the beginning of a pathname, while preserving query strings and hash fragments.
  *
  * Examples:
  *  - "/en/about" → "/about"
@@ -40,10 +39,8 @@ function isSupportedLocale(locale: string): locale is Locale {
  *  - "/en/about?tab=true" → "/about?tab=true"
  *  - "/fr/contact#section1" → "/contact#section1"
  *
- * @param pathname - The pathname that may include a locale prefix,
- *   query string, and/or hash fragment.
- * @returns The pathname without the locale prefix, preserving any query
- *   string and hash fragment.
+ * @param pathname - The pathname that may include a locale prefix, query string, and/or hash fragment.
+ * @returns The pathname without the locale prefix, preserving any query string and hash fragment.
  * @public Kept exported for useAuthSession in PR #3066.
  */
 export function removeLocaleFromPath(pathname: string): string {
@@ -69,8 +66,7 @@ export function removeLocaleFromPath(pathname: string): string {
 /**
  * Build a localized path with the given locale.
  *
- * This function first removes any existing locale from the path,
- * then prepends the correct locale segment.
+ * This function first removes any existing locale from the path, then prepends the correct locale segment.
  *
  * @param path - The original pathname (may include locale).
  * @param locale - The desired locale string.

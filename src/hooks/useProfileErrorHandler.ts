@@ -38,15 +38,13 @@ const useProfileErrorHandler = () => {
           break;
 
         // 401: token rejected (expired, invalid, or revoked), clear it and get a fresh one
-        // Clear impersonation so a leftover session does not silently
-        // resume impersonating this user after the next login.
+        // Clear impersonation so a leftover session does not silently resume impersonating this user after the next login.
         case 401:
           exitImpersonation();
           setToken(null);
 
           // Use the same redirect counter as token failures.
-          // If the token keeps working but the profile keeps returning 401,
-          // the counter will eventually stop the repeated login redirects.
+          // If the token keeps working but the profile keeps returning 401, the counter will eventually stop the repeated login redirects.
           //
           // Once the limit is reached, show the failed-sign-in screen instead of redirecting again.
           if (hasExceededRedirectLimit()) {
@@ -75,8 +73,7 @@ const useProfileErrorHandler = () => {
             exitImpersonation();
             // Restore the real user's profile.
             if (token) {
-              // The refetch runs without impersonation data, so a further
-              // failure goes through this same handler again.
+              // The refetch runs without impersonation data, so a further failure is recorded in `profileApiError` and handled here again.
               fetchUserProfile({ token, tenantId, locale }).catch(
                 (error: APIError) => handleProfileError(error)
               );

@@ -1,7 +1,7 @@
 # Testing roadmap
 
 Tests are the highest-leverage way to make reviews faster, and the repo has no reliable
-automated tests today (the Cypress suite is broken and needs migration or retirement). This is
+automated tests today (the old Cypress suite was broken and has since been removed, see #3270). This is
 a separate, larger track. It supports the review process in
 [review-process-roadmap.md](./review-process-roadmap.md). It can start small.
 
@@ -75,8 +75,7 @@ exist there. The `userStore`, `authStore`, and init-hook tests target files that
 so they need 2837 merged first, or must be written on top of the migration branch. 2837 lists
 testability as a goal, so those tests can ride with it or follow right after it merges.
 
-Then, separately, decide the fate of Cypress (migrate per `cypress/MIGRATION_NEEDED.md`, or
-retire it) so the CI signal is honest.
+Cypress was retired in favour of Playwright, see #3270.
 
 ## Keep it effective
 
@@ -96,7 +95,7 @@ target files that PR creates. See the sections above for detail.
 - [x] Pure-logic tests: `validateToken.ts`, then `setHeader.ts`.
 - [x] CI job for tests: `.github/workflows/test.yml` runs `npm run test` on every pull request, and on pushes to `develop` so merges are covered too. Not a required check yet, see below.
 - [x] Project page tests (#3016, #3199): `@testing-library/react`, shared helpers in `src/test-utils/`, store tests for `singleProjectStore` and `projectStore`, hook tests for `useInitializeSingleProject` (fetch, redirect, site selection, clearing), `useInitializeProject` and `useInitializeLanguage`, and `storeConfig` currency tests. Includes regression tests for #3010, #3011, #3015, #3120 and #3200.
-- [x] Unmount rendered hooks after each test: `src/test-utils/setup.ts`, loaded through `setupFiles`. Testing Library does this by itself only with Vitest globals on, and they stay off because the Cypress types already define a global `expect`.
+- [x] Unmount rendered hooks after each test: `src/test-utils/setup.ts`, loaded through `setupFiles`. Testing Library does this by itself only with Vitest globals on, and they were kept off because the Cypress types defined a global `expect`. Cypress is gone now, so turning them on is an option.
 - [ ] Evaluate the remaining store and list hook gaps from the #3199 review: #3223.
 - [ ] `useApi` tests beyond the impersonation headers covered in #3073: logout on a missing or expired token, the version header, error wrapping, and blob responses.
 - [ ] Make the test job a required check. No longer blocked: #3041 and #3056 are closed and the suite is green. Needs a repo admin to turn it on.
@@ -104,5 +103,5 @@ target files that PR creates. See the sections above for detail.
 - [ ] Store tests (needs 2837): `userStore` actions, `authStore`.
 - [ ] Init-hook tests (needs 2837): `useInitializeUser`, `useInitializeAuth`, `useProfileErrorHandler`.
 - [ ] `renderWithProviders` helper, then page render tests. First candidate: the `ProjectsLayout` content gate that caused #3010, which needs `@testing-library/jest-dom`.
-- [ ] Decide Cypress: migrate (per `cypress/MIGRATION_NEEDED.md`) or retire.
+- [x] Decide Cypress: retired, and Playwright replaces it (#3270).
 - [ ] Playwright for a few critical-path end-to-end smoke flows. Phase 1 is in (#3203): the setup, project search tests, and a non-required CI check on Vercel previews. Next steps are in [playwright-e2e-plan.md](./playwright-e2e-plan.md).

@@ -16,7 +16,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "types": ["cypress", "cypress-plugin-stripe-elements"],
+    "types": [],
     "incremental": true,
     "plugins": [
       {

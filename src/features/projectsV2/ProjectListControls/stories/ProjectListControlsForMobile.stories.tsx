@@ -21,8 +21,7 @@ const meta: Meta<typeof ProjectListControlForMobile> = {
   decorators: [
     (Story) => {
       // Filters/projects and view mode now live in stores rather than props.
-      // Seed them synchronously (before the component subscribes) and reset on
-      // unmount so state doesn't leak into other stories.
+      // Seed them synchronously (before the component subscribes) and reset on unmount so state doesn't leak into other stories.
       useState(() => {
         useProjectStore.setState({
           projects: mockProjects,

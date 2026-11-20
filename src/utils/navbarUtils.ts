@@ -1,13 +1,10 @@
 /**
  * Subscribes to viewport width changes below the specified maxWidth. This is a plain function, not a React hook, so it can be called inside useEffect.
  *
- * It uses `window.matchMedia` to check for a max-width media query and listens for changes
- * in the viewport width. It invokes the provided callback with a boolean value indicating whether
- * the viewport is currently below or above the specified maxWidth.
+ * It uses `window.matchMedia` to check for a max-width media query and listens for changes in the viewport width. It invokes the provided callback with a boolean value indicating whether the viewport is currently below or above the specified maxWidth.
  *
  * @param {string} maxWidth - The max width for the mobile detection media query (e.g., '768px').
- * @param {Function} callback - A callback function that receives a boolean indicating whether
- * the current viewport matches the media query (true for mobile view, false for desktop view).
+ * @param {Function} callback - A callback function that receives a boolean indicating whether the current viewport matches the media query (true for mobile view, false for desktop view).
  *
  * @returns {Function} A cleanup function to remove the event listener when no longer needed.
  */
@@ -112,8 +109,7 @@ export const stripSitesSlugLocale = (pathname: string) =>
   pathname.replace(/^\/sites\/\[slug\]\/\[locale\]/, '');
 
 /**
- * Compares a given link with the current pathname,
- * after removing the `/sites/[slug]/[locale]` prefix from the pathname.
+ * Compares a given link with the current pathname, after removing the `/sites/[slug]/[locale]` prefix from the pathname.
  *
  * @param link - The link to compare against (e.g. `/about`)
  * @param pathname - The current full pathname (e.g. `/sites/[slug]/[locale]/about`)

@@ -8,10 +8,7 @@ import { useErrorHandlingStore } from '../stores';
 /**
  * Opens an uploaded document, for the due diligence and project checklists.
  *
- * Not a plain link: these documents are readable only by the organisation that
- * filed them, so the request has to be authenticated, and the path the API
- * returns is relative to the API host rather than to the webapp. Both make an
- * `<a href>` point at nothing.
+ * Not a plain link: these documents are readable only by the organisation that filed them, so the request has to be authenticated, and the path the API returns is relative to the API host rather than to the webapp. Both make an `<a href>` point at nothing.
  */
 export function useDocumentDownload() {
   const { getApiBlobAuthenticated } = useApi();
@@ -25,8 +22,7 @@ export function useDocumentDownload() {
 
       const url = window.URL.createObjectURL(blob);
       window.open(url, '_blank', 'noopener,noreferrer');
-      // The tab holds its own reference by now, so the handle can go. Revoking
-      // it keeps the blob from living until the page is closed.
+      // The tab holds its own reference by now, so the handle can go. Revoking it keeps the blob from living until the page is closed.
       window.setTimeout(() => window.URL.revokeObjectURL(url), 60_000);
     } catch (err) {
       setErrors(handleError(err as APIError));
