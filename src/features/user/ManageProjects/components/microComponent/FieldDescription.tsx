@@ -10,9 +10,7 @@ interface Props {
  * Help text for a questionnaire field.
  *
  * Always sits directly beneath its label and flush with it. MUI gives
- * FormHelperText a 14px left margin by default, which indented the description
- * relative to the caption it belongs to and made it read as a separate,
- * subordinate block rather than part of the question.
+ * FormHelperText a 14px left margin by default, which indented the description relative to the caption it belongs to and made it read as a separate, subordinate block rather than part of the question.
  */
 export default function FieldDescription({ children }: Props) {
   return (

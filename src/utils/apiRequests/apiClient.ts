@@ -5,8 +5,7 @@ import isAbsoluteUrl from '../isAbsoluteUrl';
 export type RequestOptions = {
   /**
    * The URL or path for the API endpoint.
-   * Can be absolute (starting with http:// or https://)
-   * or relative (will be prepended with apiBaseUrl).
+   * Can be absolute (starting with http:// or https://) or relative (will be prepended with apiBaseUrl).
    * @example '/users' or 'https://api.example.com/users'
    */
   url: string;

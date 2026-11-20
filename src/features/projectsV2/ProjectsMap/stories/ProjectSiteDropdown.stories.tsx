@@ -129,10 +129,7 @@ const meta: Meta<typeof ProjectSiteDropdown> = {
   component: ProjectSiteDropdown,
   decorators: [
     (Story) => {
-      // The dropdown now reads sites and the selected site from the single
-      // project store. Only `sites` is consumed here, so we cast a minimal
-      // project shape. Reset on unmount so state doesn't leak into other
-      // stories.
+      // The dropdown now reads sites and the selected site from the single project store. Only `sites` is consumed here, so we cast a minimal project shape. Reset on unmount so state doesn't leak into other stories.
       useState(() => {
         useSingleProjectStore.setState({
           singleProject: { sites: projectSites } as ExtendedProject,

@@ -10,8 +10,7 @@ const getRedisClient = () => {
     if (process.env.NODE_ENV === 'production') {
       throw new Error('REDIS_URL/REDIS_TOKEN is not defined');
     }
-    // Locally, degrade gracefully and run without a cache. Callers
-    // (cache.ts, multiTenancy/helpers.ts) already handle a null client.
+    // Locally, degrade gracefully and run without a cache. Callers (cache.ts, multiTenancy/helpers.ts) already handle a null client.
     console.warn(
       'Redis not configured (REDIS_URL/REDIS_TOKEN missing); running without cache.'
     );

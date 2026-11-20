@@ -138,10 +138,7 @@ const UploadWidget = ({
 
   const renderStatusText = () => {
     if (statusText === null) return null;
-    // An upload error is assertive: the action failed and needs a retry. An
-    // alert inserted with its text is reliably announced, so this one carries
-    // the visible message directly. Success is handled by the persistent
-    // polite region below, so it renders as plain text here.
+    // An upload error is assertive: the action failed and needs a retry. An alert inserted with its text is reliably announced, so this one carries the visible message directly. Success is handled by the persistent polite region below, so it renders as plain text here.
     return status === 'error' ? (
       <LiveRegion
         politeness="assertive"
@@ -158,21 +155,12 @@ const UploadWidget = ({
 
   return (
     <>
-      {/* This is a `polite` message because a successful upload is a result, not an
-    error.
-
-    Keep the live region outside the dropzone for two reasons. First, the
-    dropzone uses `aria-busy` while parsing, and screen readers may not
-    announce updates inside a busy element. Second, keeping the live region on
-    the page means screen readers announce the updated text more reliably than
-    if the live region is added with the message.
-
-    Separate live regions are used for success and error messages, so there is
-    no need to switch between `role="status"` and `role="alert"` on the same
-    element.
-
-    The live region is visually hidden, so it does not affect the widget's
-    layout. */}
+      {/*
+       * This is a `polite` message because a successful upload is a result, not an error.
+       * Keep the live region outside the dropzone for two reasons. First, the dropzone uses `aria-busy` while parsing, and screen readers may not announce updates inside a busy element. Second, keeping the live region on the page means screen readers announce the updated text more reliably than if the live region is added with the message.
+       * Separate live regions are used for success and error messages, so there is no need to switch between `role="status"` and `role="alert"` on the same element.
+       * The live region is visually hidden, so it does not affect the widget's layout.
+       */}
       <LiveRegion politeness="polite" isVisuallyHidden>
         {status === 'success' ? statusText : ''}
       </LiveRegion>

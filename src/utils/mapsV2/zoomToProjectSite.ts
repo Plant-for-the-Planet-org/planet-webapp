@@ -1,5 +1,6 @@
 import type {
   MapLibreRef,
+  ProjectSiteFeature,
   ProjectSiteFeatureCollection,
 } from '../../features/common/types/map';
 import type { ViewState } from 'react-map-gl/maplibre';
@@ -18,30 +19,35 @@ export function zoomOutMap(map: Map, callback: () => void) {
 
   map.once('moveend', () => callback());
 }
-export function zoomInToProjectSite(
-  mapRef: MapLibreRef,
-  geoJson: ProjectSiteFeatureCollection | null,
-  selectedSite: number,
-  handleViewStateChange: (viewState: Partial<ViewState>) => void,
-  duration = 1200
-) {
-  if (!geoJson || !mapRef.current) {
-    console.warn('Unable to zoom: geoJson or mapRef is not available');
+interface ZoomInToProjectSiteOptions {
+  mapRef: MapLibreRef;
+  site: ProjectSiteFeature | ProjectSiteFeatureCollection | null | undefined;
+  onViewStateChange: (viewState: Partial<ViewState>) => void;
+  duration?: number;
+  padding?: number;
+}
+
+export function zoomInToProjectSite({
+  mapRef,
+  site,
+  onViewStateChange,
+  duration = 1200,
+  padding = 0,
+}: ZoomInToProjectSiteOptions) {
+  if (!site || !mapRef.current) {
+    console.warn('Unable to zoom: site or mapRef is not available');
     return;
   }
 
   const map = mapRef.current.getMap ? mapRef.current.getMap() : mapRef.current;
 
-  const feature = geoJson.features?.[selectedSite];
-  if (!feature || !feature.geometry) {
-    console.warn(
-      'zoomInToProjectSite: invalid selectedSite or missing geometry',
-      { selectedSite, featuresLength: geoJson.features?.length ?? 0 }
-    );
+  // bbox skips null geometries; with no shapes at all it returns Infinity values.
+  // recompute ignores a stored bbox, which goes stale when the editor adds a polygon to an uploaded file.
+  const bounds = bbox(site, { recompute: true });
+  if (!bounds.every(Number.isFinite)) {
+    console.warn('zoomInToProjectSite: site has no geometry');
     return;
   }
-  // Get the bounding box of the selected site
-  const bounds = bbox(feature);
 
   // Fit the map to the bounding box
   map.fitBounds(
@@ -52,6 +58,7 @@ export function zoomInToProjectSite(
     {
       duration: duration,
       maxZoom: 14,
+      padding,
     }
   );
   map.once('moveend', () => {
@@ -70,6 +77,6 @@ export function zoomInToProjectSite(
         right: 0,
       },
     };
-    handleViewStateChange(newViewState);
+    onViewStateChange(newViewState);
   });
 }

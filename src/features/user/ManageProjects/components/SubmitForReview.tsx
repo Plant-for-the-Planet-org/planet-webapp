@@ -67,8 +67,7 @@ function SubmitForReview({
   const { localizedPath } = useLocalizedPath();
 
   const showQuestionnaire = projectDetails?.acceptDonations === true;
-  // Documents shares the Questionnaire's visibility gate, and sits directly
-  // before Review, so it is always the immediate previous step when shown.
+  // Documents shares the Questionnaire's visibility gate, and sits directly before Review, so it is always the immediate previous step when shown.
   const backTab = showQuestionnaire
     ? ProjectCreationTabs.DOCUMENTS
     : ProjectCreationTabs.PROJECT_SPENDING;

@@ -10,9 +10,7 @@ const STAGE_MAP: Record<string, string> = {
 };
 
 /**
- * Removes spike points from a coordinate ring by dropping any vertex whose
- * interior angle is less than minAngleDeg (default 1°). A near-zero angle
- * means the path doubles back on itself, creating a needle-like artifact.
+ * Removes spike points from a coordinate ring by dropping any vertex whose interior angle is less than minAngleDeg (default 1°). A near-zero angle means the path doubles back on itself, creating a needle-like artifact.
  *
  * No direct turf equivalent exists for angle-based spike removal.
  */

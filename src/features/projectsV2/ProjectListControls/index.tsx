@@ -70,13 +70,10 @@ const ProjectListControls = ({
 
   return (
     <>
-      {/* 
-    Keep the live region outside the `isSearching` condition so it stays on the
-    page. When the result count changes, screen readers announce the updated
-    text more reliably than if the live region is added with the message.
-
-    The live region is visually hidden, so it does not affect the layout or the
-    control bar. */}
+      {/*
+       * Keep the live region outside the `isSearching` condition so it stays on the page. When the result count changes, screen readers announce the updated text more reliably than if the live region is added with the message.
+       * The live region is visually hidden, so it does not affect the layout or the control bar.
+       */}
       <LiveRegion politeness="polite" isVisuallyHidden>
         {isFilterApplied
           ? tAllProjects('filterResult', { count: filteredProjectCount })

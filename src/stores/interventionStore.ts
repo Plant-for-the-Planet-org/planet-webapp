@@ -107,9 +107,7 @@ export const useInterventionStore = create<InterventionStore>()(
           'interventionStore/intervention_fetch_start'
         );
         try {
-          // The TreeMapper API wraps its payload in a standard envelope
-          // ({ statusCode, message, error, data, code }); the interventions array
-          // lives in `data`, so we unwrap it before storing.
+          // The TreeMapper API wraps its payload in a standard envelope ({ statusCode, message, error, data, code }); the interventions array lives in `data`, so we unwrap it before storing.
           const response = await getApi<TreemapperApiResponse<Intervention[]>>(
             `${process.env.TREEMAPPER_URL}/api/server/external/project/${projectId}/interventions`
           );
@@ -124,9 +122,7 @@ export const useInterventionStore = create<InterventionStore>()(
           // A late failure must not blank the interventions of the project shown now.
           if (!isForCurrentProject()) return;
 
-          // Interventions are an optional map overlay. A failure here must not
-          // surface a generic connectivity error or push the user off the project
-          // page — just log and render the project without the overlay.
+          // Interventions are an optional map overlay. A failure here must not surface a generic connectivity error or push the user off the project page — just log and render the project without the overlay.
           console.error('Error fetching interventions:', error);
           set(
             {

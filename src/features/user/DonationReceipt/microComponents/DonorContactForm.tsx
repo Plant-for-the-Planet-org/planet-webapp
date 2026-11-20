@@ -110,17 +110,11 @@ const DonorContactForm = ({
   const hasReachedAddressLimit = user.addresses.length >= MAX_ADDRESS_LIMIT;
   return (
     <>
-      {/* Both `polite` live regions are placed outside the form on purpose. The
-    form uses `aria-busy` while saving, and screen readers may not announce
-    updates from a live region inside a busy element.
-
-    The live regions stay on the page while the form is open, so screen
-    readers announce message updates more reliably than if the live region is
-    added with the message.
-
-    The live regions are visually hidden, so they do not affect the visible
-    UI or layout. This is important because the form uses a flex layout with a
-    10px gap, and an always-visible empty element would add extra spacing. */}
+      {/*
+       * Both `polite` live regions are placed outside the form on purpose. The form uses `aria-busy` while saving, and screen readers may not announce updates from a live region inside a busy element.
+       * The live regions stay on the page while the form is open, so screen readers announce message updates more reliably than if the live region is added with the message.
+       * The live regions are visually hidden, so they do not affect the visible UI or layout. This is important because the form uses a flex layout with a 10px gap, and an always-visible empty element would add extra spacing.
+       */}
       <LiveRegion politeness="polite" isVisuallyHidden>
         {isLoading ? tReceipt('savingDonorInfo') : ''}
       </LiveRegion>
@@ -242,8 +236,7 @@ const DonorContactForm = ({
           </div>
         )}
 
-        {/* The spinner carries no text; announced by the persistent polite
-          region above the form. */}
+        {/* The spinner carries no text; announced by the persistent polite region above the form. */}
         {isLoading && (
           <div className={styles.donationReceiptSpinner}>
             <CircularProgress color="success" />

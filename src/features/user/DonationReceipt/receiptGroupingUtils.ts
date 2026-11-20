@@ -118,8 +118,7 @@ const isReceiptVerified = (receipt: IssuedReceiptDataApi): boolean => {
 };
 
 /**
- * Determines the UI state of the overview download button based on
- * eligibility conditions for the given year.
+ * Determines the UI state of the overview download button based on eligibility conditions for the given year.
  *
  * Button state rules:
  * - If the button cannot be rendered → 'hidden'
@@ -148,8 +147,7 @@ const determineButtonState = (
 };
 
 /**
- * Calculates whether an overview receipt can be generated for a specific year,
- * and determines the corresponding button state and receipt verification details.
+ * Calculates whether an overview receipt can be generated for a specific year, and determines the corresponding button state and receipt verification details.
  *
  * Overview rendering eligibility:
  * - Year must not be in the future (year ≤ current year)

@@ -25,8 +25,7 @@ interface AddressAutocompleteProps<TFieldValues extends FieldValues> {
     invalid?: string;
   };
   /**
-   * Stretch the input to its container's width. Needed where the surrounding
-   * layout centers its children instead of stretching them.
+   * Stretch the input to its container's width. Needed where the surrounding layout centers its children instead of stretching them.
    */
   fullWidth?: boolean;
   /** Browser autofill token, e.g. `street-address`. */
@@ -34,9 +33,7 @@ interface AddressAutocompleteProps<TFieldValues extends FieldValues> {
 }
 
 /**
- * Address input backed by geocoder suggestions, rendered as a MUI
- * `Autocomplete` so the combobox keyboard and screen reader semantics
- * (Arrow/Enter/Escape, `aria-activedescendant`) come from MUI.
+ * Address input backed by geocoder suggestions, rendered as a MUI `Autocomplete` so the combobox keyboard and screen reader semantics (Arrow/Enter/Escape, `aria-activedescendant`) come from MUI.
  */
 const AddressAutocomplete = <TFieldValues extends FieldValues>({
   name,
@@ -51,8 +48,7 @@ const AddressAutocomplete = <TFieldValues extends FieldValues>({
   fullWidth = false,
   autoComplete,
 }: AddressAutocompleteProps<TFieldValues>) => {
-  // A message is only needed for the rules actually in play, so fall back to
-  // enforcing the rule without custom text rather than dropping it.
+  // A message is only needed for the rules actually in play, so fall back to enforcing the rule without custom text rather than dropping it.
   const validationRules = {
     ...(required && { required: validationMessages.required ?? true }),
     ...(validationPattern && {
@@ -76,8 +72,7 @@ const AddressAutocomplete = <TFieldValues extends FieldValues>({
           freeSolo
           fullWidth={fullWidth}
           options={suggestions}
-          // Suggestions are already relevant results from the geocoder, so
-          // keep them all instead of letting MUI filter against the input.
+          // Suggestions are already relevant results from the geocoder, so keep them all instead of letting MUI filter against the input.
           filterOptions={(options) => options}
           getOptionLabel={(option) =>
             typeof option === 'string' ? option : option.text
@@ -88,8 +83,7 @@ const AddressAutocomplete = <TFieldValues extends FieldValues>({
           }
           value={value ?? ''}
           onInputChange={(_, newValue, reason) => {
-            // MUI also fires this with reason "reset" when the value changes
-            // programmatically (e.g. right after a suggestion is applied).
+            // MUI also fires this with reason "reset" when the value changes programmatically (e.g. right after a suggestion is applied).
             // Only real typing should feed the form and the geocoder.
             if (reason === 'reset') {
               return;
@@ -101,8 +95,7 @@ const AddressAutocomplete = <TFieldValues extends FieldValues>({
             const selected =
               typeof newValue === 'string' ? newValue : newValue?.text ?? '';
             onChange(selected);
-            // Only resolve full address details when a real suggestion object
-            // is chosen, not when free text is committed via Enter.
+            // Only resolve full address details when a real suggestion object is chosen, not when free text is committed via Enter.
             if (newValue && typeof newValue !== 'string') {
               onSuggestionSelect?.(newValue.text);
             }
@@ -111,8 +104,7 @@ const AddressAutocomplete = <TFieldValues extends FieldValues>({
             <TextField
               {...params}
               label={label}
-              // Spread MUI's own input props first so the combobox ARIA
-              // attributes it injects are preserved.
+              // Spread MUI's own input props first so the combobox ARIA attributes it injects are preserved.
               inputProps={{
                 ...params.inputProps,
                 ...(autoComplete !== undefined ? { autoComplete } : {}),

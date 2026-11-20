@@ -3,8 +3,7 @@
 // Postal code: https://gist.githubusercontent.com/jamesbar2/1c677c22df8f21e869cca7e439fc3f5b/raw/21662445653ac861f8ab81caa8cfaee3185aed15/postal-codes.json
 // Postal code: https://en.wikipedia.org/wiki/List_of_postal_codes
 
-// Country/territory items with no postal code regexes or ranges either do not require postal codes
-// or there may not be enough information for that country/territory
+// Country/territory items with no postal code regexes or ranges either do not require postal codes or there may not be enough information for that country/territory
 
 const COUNTRY_ADDRESS_POSTALS = [
   {

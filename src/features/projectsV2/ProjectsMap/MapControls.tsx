@@ -99,8 +99,7 @@ const MapControls = ({
     availableInterventionTypes,
   };
   const exitMapMode = () => {
-    // Switching from map to list only changes the view mode. The current site
-    // selection and its URL state are preserved.
+    // Switching from map to list only changes the view mode. The current site selection and its URL state are preserved.
     setSelectedMode('list');
   };
 

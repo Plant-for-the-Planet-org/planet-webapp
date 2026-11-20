@@ -22,8 +22,7 @@ export interface SubMenuItemType {
    * - 'exact' (default): Only matches the exact path
    * - 'prefix': Matches this path AND any sub-paths (e.g., /profile/bulk-codes matches /profile/bulk-codes/generic)
    *
-   * ⚠️ WARNING: When using 'prefix', order matters! More specific paths should come BEFORE less specific ones
-   * in the subMenu array, otherwise the broader prefix will match first and prevent specific items from activating.
+   * ⚠️ WARNING: When using 'prefix', order matters! More specific paths should come BEFORE less specific ones in the subMenu array, otherwise the broader prefix will match first and prevent specific items from activating.
    */
   matchPattern?: 'exact' | 'prefix';
 }
@@ -44,8 +43,7 @@ export interface NavLinkType {
    * - 'exact' (default): Only matches the exact path
    * - 'prefix': Matches this path AND any sub-paths (e.g., /profile/bulk-codes matches /profile/bulk-codes/generic)
    *
-   * ⚠️ WARNING: When using 'prefix', order matters! More specific paths should come BEFORE less specific ones
-   * in the navLinks array, otherwise the broader prefix will match first and prevent specific items from activating.
+   * ⚠️ WARNING: When using 'prefix', order matters! More specific paths should come BEFORE less specific ones in the navLinks array, otherwise the broader prefix will match first and prevent specific items from activating.
    */
   matchPattern?: 'exact' | 'prefix';
 }

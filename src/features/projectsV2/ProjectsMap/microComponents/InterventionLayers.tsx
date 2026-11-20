@@ -38,11 +38,7 @@ const { colors } = themeProperties.designSystem;
 const DISPLAY_SOURCE = 'display-source';
 const HIGHLIGHT_SOURCE = 'highlight-source';
 /**
- * Guards against a single corrupt record poisoning the whole map. Maplibre
- * validates the entire FeatureCollection as one unit, so one feature with a
- * null/invalid geometry makes it reject every feature ("Input data is not a
- * valid GeoJSON object"). We drop interventions whose geometry is not a
- * structurally usable Point/Polygon before building features.
+ * Guards against a single corrupt record poisoning the whole map. Maplibre validates the entire FeatureCollection as one unit, so one feature with a null/invalid geometry makes it reject every feature ("Input data is not a valid GeoJSON object"). We drop interventions whose geometry is not a structurally usable Point/Polygon before building features.
  */
 const hasRenderableGeometry = (intervention: Intervention): boolean => {
   const geometry = intervention.geometry;

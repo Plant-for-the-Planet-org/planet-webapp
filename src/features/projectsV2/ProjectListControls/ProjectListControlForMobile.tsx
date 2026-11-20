@@ -81,10 +81,7 @@ const ProjectListControlForMobile = ({
 
   return (
     <>
-      {/* Hoisted above the `isSearching` branch so it stays mounted while the
-          visible chip comes and goes, making each count change a text mutation
-          in an already-observed region rather than a fresh insertion.
-          Visually hidden and out of flow, so the control row is unaffected. */}
+      {/* Hoisted above the `isSearching` branch so it stays mounted while the visible chip comes and goes, making each count change a text mutation in an already-observed region rather than a fresh insertion. Visually hidden and out of flow, so the control row is unaffected. */}
       <LiveRegion politeness="polite" isVisuallyHidden>
         {shouldDisplayFilterResults && filteredProjectCount > 0
           ? tAllProjects('filterResult', { count: filteredProjectCount })

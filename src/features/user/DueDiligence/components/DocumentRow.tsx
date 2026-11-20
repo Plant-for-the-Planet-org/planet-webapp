@@ -17,11 +17,8 @@ import { useDocumentDownload } from '../../../../hooks/useDocumentDownload';
 import { useErrorHandlingStore } from '../../../../stores';
 
 /**
- * Each kind carries its own accepted types and size limit, and those are what
- * the picker follows. These two are used only until a row arrives that has
- * them, so an old backend keeps the behaviour it had. Never widen them here:
- * the server check is the real gate, and a guess made here would be wrong the
- * next time the policy moves.
+ * Each kind carries its own accepted types and size limit, and those are what the picker follows. These two are used only until a row arrives that has them, so an old backend keeps the behaviour it had. Never widen them here:
+ * the server check is the real gate, and a guess made here would be wrong the next time the policy moves.
  */
 const FALLBACK_ACCEPTED_MIME_TYPE = 'application/pdf';
 const FALLBACK_MAX_BYTES = 25 * 1024 * 1024;

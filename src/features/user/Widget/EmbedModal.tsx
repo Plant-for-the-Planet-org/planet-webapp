@@ -38,8 +38,7 @@ export default function EmbedModal({
   const titleId = useId();
   const descriptionId = useId();
 
-  // Dismissing the dialog (Escape or the cancel button) leaves the widgets page,
-  // because the page only renders this dialog while the profile stays private
+  // Dismissing the dialog (Escape or the cancel button) leaves the widgets page, because the page only renders this dialog while the profile stays private
   const handleCancel = () => {
     setEmbedModalOpen(false);
     router.back();

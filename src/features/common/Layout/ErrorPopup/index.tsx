@@ -63,9 +63,7 @@ export default function ErrorPopup(): ReactElement {
               >
                 <CloseIcon color={'#f44336'} width={'10'} height={'10'} />
               </IconButton>
-              {/* Assertive: an API failure the user must hear immediately.
-                  Scoped to the message so the close button is not announced
-                  as part of the alert. */}
+              {/* Assertive: an API failure the user must hear immediately. Scoped to the message so the close button is not announced as part of the alert. */}
               <LiveRegion
                 politeness="assertive"
                 className={styles.errorContent}
