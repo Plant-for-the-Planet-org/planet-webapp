@@ -6,11 +6,12 @@ export default defineConfig({
     // Mirrors the `@/*` path in tsconfig.json.
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
+  // An inline config stops Vite from loading postcss.config.js, whose string plugin names only Next.js understands. Tests do not need PostCSS output.
+  css: { postcss: {} },
   test: {
     // jsdom gives tests a browser environment (window, localStorage). Vitest would otherwise default to node.
     environment: 'jsdom',
-    // Deliberately .ts only. Widening to .tsx pulls in YearHeader.test.tsx, which is written for Jest and needs @testing-library/jest-dom (not installed yet).
-    include: ['src/**/*.test.ts', '*.test.ts'],
+    include: ['src/**/*.test.{ts,tsx}', '*.test.ts'],
     // Unmounts rendered hooks after each test, since globals are off. See the file for why.
     setupFiles: ['./src/test-utils/setup.ts'],
     // The app logs verbosely by design, so hide console output while tests pass and show it in full when one fails.
