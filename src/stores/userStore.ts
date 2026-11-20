@@ -15,8 +15,10 @@ import { APIError } from '@planet-sdk/common';
 // No real HTTP response was involved (network failure, JSON parsing, a session-id/localStorage failure, ...). Mirrors the INVALID_TOKEN_STATUS_CODE convention in useApi.ts for a synthetic, non-server status code.
 const NON_HTTP_ERROR_STATUS_CODE = 0;
 
-// fetchUserProfile has no single owner - the token effect, the 403 handler, and the impersonation enter/exit screens can all call it around the same time, with no cancellation. This id lets a call detect it has been superseded by a later one, so a slow, stale response cannot overwrite the store with the wrong identity. It is a cheap guard, not real request sequencing (no AbortController, no cancellation) - see review item #14/A3.
-let latestFetchUserProfileRequestId = 0;
+// Multiple callers can start this action at the same time.
+// Starting a new request aborts the previous request.
+// The identity check rejects responses decoded before the abort.
+let activeFetchController: AbortController | null = null;
 
 type FetchUserProfileParams = {
   token: string;
@@ -100,8 +102,10 @@ export const useUserStore = create<UserStore>()(
         tenantId,
         locale,
       }) => {
-        const requestId = ++latestFetchUserProfileRequestId;
-        const isStale = () => requestId !== latestFetchUserProfileRequestId;
+        activeFetchController?.abort();
+        const controller = new AbortController();
+        activeFetchController = controller;
+        const isStale = () => activeFetchController !== controller;
 
         try {
           const sessionId = await getsessionId();
@@ -119,6 +123,7 @@ export const useUserStore = create<UserStore>()(
               header,
               impersonationData
             ),
+            signal: controller.signal,
           });
 
           // Superseded by a newer fetch: do not commit to store, and do not return a stale identity back to the caller (e.g. ImpersonateUserForm enters impersonation from this return value).
@@ -190,8 +195,7 @@ export const useUserStore = create<UserStore>()(
           }
 
           // Rethrow so the promise never resolves with `undefined`.
-          // The global flow still runs via the `profileApiError` state above;
-          // callers that only rely on that state can ignore this rejection.
+          // The global flow still runs via the `profileApiError` state above; callers that only rely on that state can ignore this rejection.
           throw error;
         }
       },
