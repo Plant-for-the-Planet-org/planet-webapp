@@ -45,8 +45,7 @@ type IconButtonProps = IconButtonAsButtonProps | IconButtonAsLinkProps;
 
 /**
  * Accessible icon-only button or link.
- * Requires an accessible label, hides the icon from screen readers,
- * and forwards all native button/link props.
+ * Requires an accessible label, hides the icon from screen readers, and forwards all native button/link props.
  */
 function IconButton(props: IconButtonProps): ReactElement {
   const { localizedPath } = useLocalizedPath();

@@ -41,13 +41,9 @@ export const useInitializeUser = () => {
 
   // `isAuthResolved` means the first auth check and profile fetch are finished.
   //
-  // It should become true only once, after the first profile fetch started by
-  // this hook finishes. Later profile fetches, such as impersonation changes,
-  // silent token refreshes, or manual refetches, must not set it back to false.
+  // It should become true only once, after the first profile fetch started by this hook finishes. Later profile fetches, such as impersonation changes, silent token refreshes, or manual refetches, must not set it back to false.
   //
-  // This ref tracks whether that first fetch has already finished, so
-  // `fetchUserProfile` can focus only on fetching the profile and does not
-  // need to change the auth loading state.
+  // This ref tracks whether that first fetch has already finished, so `fetchUserProfile` can focus only on fetching the profile and does not need to change the auth loading state.
   const hasResolvedInitialAuth = useRef(false);
 
   useEffect(() => {
@@ -60,8 +56,7 @@ export const useInitializeUser = () => {
     })
       .then(() => {
         // A successfully loaded profile means the session is working normally.
-        // Reset the redirect counter so old failures do not affect future,
-        // unrelated login or profile errors.
+        // Reset the redirect counter so old failures do not affect future, unrelated login or profile errors.
         clearRedirectCount();
         resetAuthExpiryHandling();
       })

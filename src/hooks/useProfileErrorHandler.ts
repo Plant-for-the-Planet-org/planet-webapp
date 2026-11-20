@@ -33,10 +33,8 @@ const useProfileErrorHandler = () => {
           router.push(localizedPath('/complete-signup'));
           break;
 
-        // 401: token rejected (expired, invalid, or revoked). Recover through
-        // the same shared path as every other authenticated request: clear
-        // the token and impersonation, preserve the current route, and
-        // redirect to /login.
+        // 401: token rejected (expired, invalid, or revoked), clear it and get a fresh one
+        // Clear impersonation so a leftover session does not silently resume impersonating this user after the next login.
         case 401:
           handleAuthExpiry();
           break;
@@ -52,8 +50,7 @@ const useProfileErrorHandler = () => {
             // Restore the real user's profile.
             if (token) {
               fetchUserProfile({ token, tenantId, locale })
-                // The refetch runs without impersonation data, so a further
-                // failure is recorded in `profileApiError` and handled here again.
+                // The refetch runs without impersonation data, so a further failure is recorded in `profileApiError` and handled here again.
                 .catch((error) =>
                   console.error(
                     '[Profile API] Failed to restore the real user profile:',

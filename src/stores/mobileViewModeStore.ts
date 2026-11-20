@@ -5,8 +5,7 @@ export type ViewMode = 'list' | 'map';
 
 interface MobileViewModeStore {
   /**
-   * View mode is primarily used for mobile layouts
-   * (e.g. map ↔ list toggle on project details, project list page).
+   * View mode is primarily used for mobile layouts (e.g. map ↔ list toggle on project details, project list page).
    */
   selectedMode: ViewMode;
 

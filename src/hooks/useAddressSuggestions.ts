@@ -33,9 +33,7 @@ interface UseAddressSuggestionsResult {
 const DEFAULT_DEBOUNCE_DELAY = 700;
 
 /**
- * Owns the geocoder wiring shared by every address autocomplete: a debounced
- * suggestion fetch, a request-ID race guard so a slow response cannot overwrite
- * a newer one, and resolving a picked suggestion into address parts.
+ * Owns the geocoder wiring shared by every address autocomplete: a debounced suggestion fetch, a request-ID race guard so a slow response cannot overwrite a newer one, and resolving a picked suggestion into address parts.
  */
 export const useAddressSuggestions = ({
   country,
@@ -59,8 +57,7 @@ export const useAddressSuggestions = ({
       // Bump request ID to track the latest API call
       latestRequestIdRef.current++;
       const currentRequestId = latestRequestIdRef.current;
-      // `getAddressSuggestions` logs and swallows its own failures, resolving
-      // to an empty list, so there is nothing here left to catch.
+      // `getAddressSuggestions` logs and swallows its own failures, resolving to an empty list, so there is nothing here left to catch.
       const results = await getAddressSuggestions(value, country);
       // Only update if this is still the latest request
       if (currentRequestId === latestRequestIdRef.current) {
@@ -80,8 +77,7 @@ export const useAddressSuggestions = ({
         return;
       }
 
-      // `getAddressSuggestions` skips the API call for inputs of 3 characters
-      // or fewer and resolves to an empty list.
+      // `getAddressSuggestions` skips the API call for inputs of 3 characters or fewer and resolves to an empty list.
       fetchSuggestions(trimmedInput);
     },
     debounceDelay,
@@ -95,8 +91,7 @@ export const useAddressSuggestions = ({
   const selectSuggestion = useCallback(
     async (value: string) => {
       clearSuggestions();
-      // `getAddressDetailsFromText` logs and swallows its own failures,
-      // resolving to `null`, so there is nothing here left to catch.
+      // `getAddressDetailsFromText` logs and swallows its own failures, resolving to `null`, so there is nothing here left to catch.
       const details = await getAddressDetailsFromText(value);
       if (details) {
         onAddressResolved(details);

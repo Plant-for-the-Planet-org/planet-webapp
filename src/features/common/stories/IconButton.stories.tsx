@@ -49,18 +49,13 @@ const meta: Meta<typeof IconButton> = {
       description: 'Accessible name, applied as `aria-label`. Required.',
     },
     elementType: {
-      // Structural discriminator of the union, not an editable option. Each
-      // story fixes it via args. Leaving it editable lets a toggle to 'link'
-      // persist (Storybook URL args override story args) onto the Button
-      // story, entering the link branch with no `href` → isExternalUrl(undefined)
-      // crashes. Kept read-only in the table for documentation.
+      // Structural discriminator of the union, not an editable option. Each story fixes it via args. Leaving it editable lets a toggle to 'link' persist (Storybook URL args override story args) onto the Button story, entering the link branch with no `href` → isExternalUrl(undefined) crashes. Kept read-only in the table for documentation.
       control: false,
       description:
         'Renders a `<button>` (default) or a `<Link>`/`<a>`. Fixed per story.',
     },
     href: {
-      // Read-only: clearing a link story's href would also enter the link
-      // branch with an undefined href and crash the same way.
+      // Read-only: clearing a link story's href would also enter the link branch with an undefined href and crash the same way.
       control: false,
       if: { arg: 'elementType', eq: 'link' },
       description: 'Destination for the link variant.',

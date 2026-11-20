@@ -3,8 +3,7 @@ import { ProfileLoader } from '../../../common/ContentLoaders/ProfileV2';
 import styles from './ProfileLayout.module.scss';
 
 /**
- * Skeleton heights for each profile section. Kept here (next to the grid CSS)
- * so the loading placeholders and the real ProfileLayout stay in sync.
+ * Skeleton heights for each profile section. Kept here (next to the grid CSS) so the loading placeholders and the real ProfileLayout stay in sync.
  */
 export const PROFILE_SECTION_HEIGHTS = {
   profile: 450,

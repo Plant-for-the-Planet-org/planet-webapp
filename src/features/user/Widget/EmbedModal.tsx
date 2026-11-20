@@ -10,11 +10,8 @@ import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { handleError } from '@planet-sdk/common';
 import { useApi } from '../../../hooks/useApi';
-import {
-  useAuthStore,
-  useUserStore,
-  useErrorHandlingStore,
-} from '../../../stores';
+import { useIsAuthReady } from '../../../hooks/useAuthReadiness';
+import { useUserStore, useErrorHandlingStore } from '../../../stores';
 interface Props {
   embedModalOpen: boolean;
   setEmbedModalOpen: Function;
@@ -30,13 +27,10 @@ export default function EmbedModal({
   const t = useTranslations('EditProfile');
   const router = useRouter();
   const { putApiAuthenticated } = useApi();
+  const isAuthReady = useIsAuthReady();
   // local state
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  //store: state
-  const isAuthReady = useAuthStore(
-    (state) => state.token !== null && state.isAuthResolved
-  );
   //store: action
   const setUserProfile = useUserStore((state) => state.setUserProfile);
   const setErrors = useErrorHandlingStore((state) => state.setErrors);
@@ -44,8 +38,7 @@ export default function EmbedModal({
   const titleId = useId();
   const descriptionId = useId();
 
-  // Dismissing the dialog (Escape or the cancel button) leaves the widgets page,
-  // because the page only renders this dialog while the profile stays private
+  // Dismissing the dialog (Escape or the cancel button) leaves the widgets page, because the page only renders this dialog while the profile stays private
   const handleCancel = () => {
     setEmbedModalOpen(false);
     router.back();

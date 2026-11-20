@@ -1,7 +1,5 @@
 /**
- * This custom hook provides a centralized and reusable way to make API requests to the 'API_ENDPOINT' configured in
- * the environment. It abstracts the complexity of handling headers, authentication, impersonation, session management,
- * and error handling, making API calls consistent and easier to manage.
+ * This custom hook provides a centralized and reusable way to make API requests to the 'API_ENDPOINT' configured in the environment. It abstracts the complexity of handling headers, authentication, impersonation, session management, and error handling, making API calls consistent and easier to manage.
  *
  * @purpose
  * - Simplify API interaction with helper methods for GET, POST, PUT, and DELETE requests.
@@ -235,8 +233,7 @@ export const useApi = () => {
   /**
    * Performs an authenticated GET request that returns the raw bytes rather than JSON.
    *
-   * Goes through callApi so a download carries the same headers as every other
-   * request, impersonation included. A hand-rolled fetch does not.
+   * Goes through callApi so a download carries the same headers as every other request, impersonation included. A hand-rolled fetch does not.
    *
    * @param {string} url The endpoint URL
    * @param {ApiConfig<never, 'GET'>} [config={}] Optional configuration for the request

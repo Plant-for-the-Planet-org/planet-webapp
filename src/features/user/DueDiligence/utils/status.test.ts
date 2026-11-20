@@ -56,8 +56,7 @@ describe('standingOf', () => {
   });
 
   /**
-   * An organisation whose projects take no donations is not behind on
-   * anything, so an empty checklist must not read as a problem.
+   * An organisation whose projects take no donations is not behind on anything, so an empty checklist must not read as a problem.
    */
   it('does not chase an organisation that does not need this yet', () => {
     const standing = standingOf(charitability({ required: false }));
@@ -85,8 +84,7 @@ describe('standingOf', () => {
   });
 
   /**
-   * Charitability lapses by the calendar rather than by anyone acting, so a
-   * lapsed organisation has to be told even though nothing changed on our side.
+   * Charitability lapses by the calendar rather than by anyone acting, so a lapsed organisation has to be told even though nothing changed on our side.
    */
   it('puts a lapsed confirmation ahead of everything else', () => {
     const standing = standingOf(
@@ -115,8 +113,7 @@ describe('outstandingItems', () => {
   });
 
   /**
-   * The optional documents are optional because they do not exist in every
-   * country, so asking for them would be asking for the unobtainable.
+   * The optional documents are optional because they do not exist in every country, so asking for them would be asking for the unobtainable.
    */
   it('never asks for an optional document', () => {
     const items = outstandingItems(

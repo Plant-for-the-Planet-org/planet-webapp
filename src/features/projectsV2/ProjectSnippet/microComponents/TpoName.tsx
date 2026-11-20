@@ -43,9 +43,7 @@ const TpoName = ({
     { [styles.projectTpoNameSecondary]: currentPage === 'project-details' }
   );
   return (
-    // Embedded widgets navigate the top browsing context to the non-localized
-    // URL (previously window.open(url, '_top')); otherwise a normal localized
-    // client-side navigation (previously router.push).
+    // Embedded widgets navigate the top browsing context to the non-localized URL (previously window.open(url, '_top')); otherwise a normal localized client-side navigation (previously router.push).
     <Link
       href={isEmbed ? url : localizedPath(url)}
       target={isEmbed ? '_top' : undefined}

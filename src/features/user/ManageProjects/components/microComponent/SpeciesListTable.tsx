@@ -69,9 +69,7 @@ function padRows(
 /**
  * Scientific-name typeahead for a single cell.
  *
- * Suggestions come from the same `/suggest.php` source the TreeMapper species
- * form uses. The stored value is the plain scientific name, not a species id,
- * because questionnaire answers are a flat JSON blob with no relations.
+ * Suggestions come from the same `/suggest.php` source the TreeMapper species form uses. The stored value is the plain scientific name, not a species id, because questionnaire answers are a flat JSON blob with no relations.
  */
 function ScientificNameCell({
   value,
@@ -140,8 +138,7 @@ function ScientificNameCell({
 }
 
 /**
- * Repeatable table for a `species_list` questionnaire field. Column types come
- * from the schema, so adding a column server-side needs no change here.
+ * Repeatable table for a `species_list` questionnaire field. Column types come from the schema, so adding a column server-side needs no change here.
  */
 export default function SpeciesListTable({
   columns,

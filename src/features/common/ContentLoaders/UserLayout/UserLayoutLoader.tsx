@@ -24,13 +24,10 @@ export const UserLayoutLoader = ({ skeleton }: UserLayoutLoaderProps) => {
 
   return (
     <div className={styles.loaderContainer} role="status" aria-live="polite">
-      {/* Announced to assistive tech; the skeleton shapes below are decorative
-          and marked aria-hidden individually so they stay direct flex children
-          (a wrapper would collapse the content width). */}
+      {/* Announced to assistive tech; the skeleton shapes below are decorative and marked aria-hidden individually so they stay direct flex children (a wrapper would collapse the content width). */}
       <span className={styles.visuallyHidden}>{t('loadingProfile')}</span>
 
-      {/* Mobile burger placeholder. Wrapped in aria-hidden to avoid exposing
-    decorative loading UI to screen readers. */}
+      {/* Mobile burger placeholder. Wrapped in aria-hidden to avoid exposing decorative loading UI to screen readers. */}
       <span aria-hidden="true">
         <SkeletonBlock className={styles.hamburgerSkeleton} borderRadius={10} />
       </span>
@@ -55,9 +52,11 @@ export const UserLayoutLoader = ({ skeleton }: UserLayoutLoaderProps) => {
         </div>
       </aside>
 
-      {/* Content frame (matches .profilePageWrapper).
-          The route-specific skeleton renders inside, so this stays content-agnostic.
-          aria-hidden keeps the route skeleton's own landmarks (e.g. ProfileGridSkeleton's article/section) out of the role="status" region above, which should only announce the loading text. */}
+      {/*
+       * Content frame (matches .profilePageWrapper).
+       * The route-specific skeleton renders inside, so this stays content-agnostic.
+       * aria-hidden keeps the route skeleton's own landmarks (e.g. ProfileGridSkeleton's article/section) out of the role="status" region above, which should only announce the loading text.
+       */}
       <div className={styles.wrapper} aria-hidden="true">
         {skeleton ?? <GenericPageSkeleton />}
       </div>

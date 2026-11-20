@@ -90,6 +90,13 @@ export const createSite = (id: string) =>
     properties: { id },
   } as unknown as NonNullable<ExtendedProject['sites']>[number]);
 
+/** A site saved without a shape. The API allows it, though the types say otherwise. */
+export const createSiteWithoutGeometry = (id: string) =>
+  ({
+    ...createSite(id),
+    geometry: null,
+  } as unknown as NonNullable<ExtendedProject['sites']>[number]);
+
 /** The smallest project list entry, as returned by `/app/projects`. */
 export const createMapProject = (
   slug: string,

@@ -4,11 +4,12 @@ import type {
   FireFeatureCollection,
 } from '../../../common/types/fireLocation';
 
-import { useRouter } from 'next/router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Marker, Source } from 'react-map-gl/maplibre';
 import FireIcon from '../../../../../public/assets/images/icons/FireIcon';
 import { useApi } from '../../../../hooks/useApi';
+import { useSingleProjectStore } from '../../../../stores';
+import { getSiteIdFromIndex } from '../../../../utils/projectV2';
 import FirePopup from '../FirePopup';
 import styles from '../FirePopup/FirePopup.module.scss';
 
@@ -101,9 +102,12 @@ function selectFiresForDisplay(allFeatures: FireFeature[]): FireFeature[] {
 }
 
 export default function FireLocationsMarker(): ReactElement {
-  const { query } = useRouter();
-
-  const { site } = query;
+  const projectSites = useSingleProjectStore(
+    (state) => state.singleProject?.sites
+  );
+  const selectedSite = useSingleProjectStore((state) => state.selectedSite);
+  // Use the store's checked selection, not the URL, so an unknown site id is never sent to the API. See #3273.
+  const siteId = getSiteIdFromIndex(projectSites ?? [], selectedSite);
   const { getApi } = useApi();
   const [fireFeatures, setFireFeatures] = useState<FireFeature[]>([]);
   const [activePopupFeature, setActivePopupFeature] =
@@ -111,27 +115,32 @@ export default function FireLocationsMarker(): ReactElement {
   const markerRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
-    if (!site) return;
+    // No site while an intervention is selected: keep the fires already on the map. A reply still on its way for the previous site is dropped.
+    if (!siteId) return;
+
+    setFireFeatures([]);
+    setActivePopupFeature(null);
+    // Drops a reply for a site that is no longer selected, so it cannot overwrite the newer site's fires.
+    let isCancelled = false;
 
     const fetchFires = async () => {
       try {
         const searchParams = new URLSearchParams();
-        searchParams.append('remoteId', site as string);
+        searchParams.append('remoteId', siteId);
         searchParams.append('span', ALERT_DURATION);
         const fireAlertApiUrl =
           process.env.NEXT_PUBLIC_FIREALERT_ENDPOINT ??
           'https://fa.pp.eco/api/v1';
         const url = `${fireAlertApiUrl}/fires?${searchParams.toString()}`;
         const fetchedFires = await getApi<FireFeatureCollection>(url);
-        if (
-          fetchedFires?.type === 'FeatureCollection' &&
-          fetchedFires?.features?.length > 0
-        ) {
-          const allFeatures = fetchedFires.features;
-          const selectedFeatures = selectFiresForDisplay(allFeatures);
-          setFireFeatures(selectedFeatures);
-        }
+        if (isCancelled) return;
+        const allFeatures =
+          fetchedFires?.type === 'FeatureCollection'
+            ? fetchedFires.features ?? []
+            : [];
+        setFireFeatures(selectFiresForDisplay(allFeatures));
       } catch (error: unknown) {
+        if (isCancelled) return;
         const apiMessage = (error as { errors?: { message?: string } })?.errors
           ?.message;
         const fallbackMessage =
@@ -142,7 +151,11 @@ export default function FireLocationsMarker(): ReactElement {
       }
     };
     fetchFires();
-  }, [site]);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [siteId]);
 
   const renderFireMarkers = useMemo(
     () =>

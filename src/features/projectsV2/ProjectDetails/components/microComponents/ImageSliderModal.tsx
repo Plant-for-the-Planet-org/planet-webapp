@@ -43,8 +43,7 @@ const ImageSliderModal = ({
     />
   );
 
-  // The dialog is a single element rather than a fragment, so the modal's focus
-  // trap can move focus into it on open and restore it to the trigger on close
+  // The dialog is a single element rather than a fragment, so the modal's focus trap can move focus into it on open and restore it to the trigger on close
   return (
     <Modal
       open={isModalOpen}

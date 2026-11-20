@@ -41,11 +41,9 @@ export const useInitializeAuth = () => {
       const accessToken = await getAccessTokenSilently();
       setToken(accessToken);
 
-      // If the token is empty, the profile fetch will not run because it needs
-      // a valid token. So auth must be resolved here instead.
+      // If the token is empty, the profile fetch will not run because it needs a valid token. So auth must be resolved here instead.
       //
-      // Keep the redirect counter unchanged. It should only be cleared after a
-      // profile loads successfully in `useInitializeUser`.
+      // Keep the redirect counter unchanged. It should only be cleared after a profile loads successfully in `useInitializeUser`.
       // Treated as a failed sign-in: the session is unusable, and a silent retry would return the same empty token.
       if (!accessToken) {
         setIsAuthResolved(true);

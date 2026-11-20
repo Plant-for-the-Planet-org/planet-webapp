@@ -14,7 +14,10 @@ import { zoomToPolygonIntervention } from '../../../utils/mapsV2/zoomToPolygonIn
 import zoomToLocation from '../../../utils/mapsV2/zoomToLocation';
 import ProjectLocationMarker from './microComponents/ProjectLocationMarker';
 import FireLocationsMarker from './microComponents/FireLocationsMarker';
-import { MAIN_MAP_ANIMATION_DURATIONS } from '../../../utils/projectV2';
+import {
+  getGeoJsonFeatureIndex,
+  MAIN_MAP_ANIMATION_DURATIONS,
+} from '../../../utils/projectV2';
 import FeatureFlag from './microComponents/FeatureFlag';
 import { isFirealertFiresEnabled } from '../../../utils/projectV2';
 import {
@@ -93,13 +96,19 @@ const SingleProjectView = ({ mapRef, selectedTab, sitesGeoJson }: Props) => {
     if (hasOnlyRequestedIntervention) return;
 
     if (canShowSites && selectedSite !== null) {
-      zoomInToProjectSite(
-        mapRef,
+      const geoJsonIndex = getGeoJsonFeatureIndex(
+        singleProject.sites ?? [],
         sitesGeoJson,
-        selectedSite,
-        handleViewStateChange,
-        MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN
+        selectedSite
       );
+      // The selected site has no shape, so stay put rather than zoom to another site.
+      if (geoJsonIndex === -1) return;
+      zoomInToProjectSite({
+        mapRef,
+        site: sitesGeoJson.features[geoJsonIndex],
+        onViewStateChange: handleViewStateChange,
+        duration: MAIN_MAP_ANIMATION_DURATIONS.ZOOM_IN,
+      });
     } else {
       const { lat: latitude, lon: longitude } = singleProject.coordinates;
       if (!(singleProject.sites?.length === 0)) return;

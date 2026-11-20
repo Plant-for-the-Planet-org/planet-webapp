@@ -65,8 +65,7 @@ const SignupAddressField = ({
         suggestions={suggestions}
         onInputChange={handleInputChange}
         onSuggestionSelect={selectSuggestion}
-        // The signup form container centers its children, so the field has to
-        // opt in to full width.
+        // The signup form container centers its children, so the field has to opt in to full width.
         fullWidth
         autoComplete="street-address"
       />

@@ -24,10 +24,7 @@ type TenantFont = {
 };
 
 /**
- * Builds the global CSS variables. Tenant fonts are passed in (the caller reads
- * them from the tenant store) so this module is synchronous — it previously
- * fetched the tenant config at module load via a top-level await, which made
- * the whole theme module (and its importers) async.
+ * Builds the global CSS variables. Tenant fonts are passed in (the caller reads them from the tenant store) so this module is synchronous — it previously fetched the tenant config at module load via a top-level await, which made the whole theme module (and its importers) async.
  */
 const getGlobalStyles = (font?: TenantFont) => {
   const primaryFontFamily = font?.primaryFontFamily || defaultFontFamily;

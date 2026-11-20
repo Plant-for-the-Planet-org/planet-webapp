@@ -30,10 +30,10 @@ Testing tools today:
 |---|---|
 | Vitest + jsdom | Works. 8 unit test files run on every PR ([test.yml](../../.github/workflows/test.yml)). A 9th (`.tsx`) waits for React Testing Library. |
 | Storybook + Chromatic | Works. 47 stories, visual snapshots on push to `develop`. |
-| Cypress 15 | Installed but broken. See below. |
+| Cypress 15 | Was broken, now removed (#3270). See below. |
 
-Why the Cypress suite cannot be used as it is:
-- The config is still the v8 format (`cypress.json`, `cypress/integration/`), see [MIGRATION_NEEDED.md](../../cypress/MIGRATION_NEEDED.md).
+Why the Cypress suite could not be used as it was:
+- The config was still the v8 format (`cypress.json`, `cypress/integration/`).
 - The `Cypress tests` workflow is disabled in GitHub, and it calls `npm run export`, which no longer exists.
 - None of the main `data-test-id` selectors it relies on (for example `donateButton`, `cardElement`, `test-thankYou`) exist in the app anymore.
 - The donation tests fill in a Stripe card form, but payment now happens in the separate donate app.
@@ -102,7 +102,7 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 
 ### Test data
 
-- Phase 1 tests are read-only. They need data that stays put, so they use a well-known staging project: `Yucatán Restoration` (slug `yucatan`), set in [e2e/support/projects.ts](../../e2e/support/projects.ts).
+- Phase 1 tests are read-only. They need data that stays put, so they use a well-known staging project: `Yucatán Restoration` (slug `yucatan`), set in [e2e/support/testProject.ts](../../e2e/support/testProject.ts).
 - Check shape, not exact values: "a project name is visible", not "1,234,567 trees", since counts change.
 - Do not rely on the order of the project list. The staging API order changed between two runs on 2026-10-12, which broke a test that assumed which projects were listed first.
 - Tests that create data come later. They need a dedicated account, unique names, and cleanup through the API after each test.
@@ -122,11 +122,19 @@ Later, only if needed: PlanetCash, bulk codes, payouts, donation receipts, and r
 ### Files and scripts
 
 - One dev dependency: `@playwright/test` 1.64. Chromium only.
-- [playwright.config.ts](../../playwright.config.ts) and an `e2e/` folder for the tests, with specs in `e2e/tests/<feature>/` and shared helpers in `e2e/support/`:
+- [playwright.config.ts](../../playwright.config.ts) and an `e2e/` folder for the tests.
+- Folder rule: ~~specs in `e2e/tests/<feature>/` and shared helpers in `e2e/support/`~~. Replaced in #3280 by:
+  - Specs go in `e2e/tests/<page>/`.
+  - Helpers for one page go in `e2e/support/<page>/`, split by what they do: `data.ts` for API data, `page.ts` for locators and checks on the page, `map.ts` for what the map draws.
+  - Helpers that more than one page uses stay at the top of `e2e/support/`. A shared helper never imports from a page folder.
+  - [TESTING.md](../../TESTING.md#writing-a-test) is the source for this rule.
+- Files so far:
   - [e2e/support/fixtures.ts](../../e2e/support/fixtures.ts): specs import `test` from here, so every test also fails when the page throws an uncaught error.
-  - [e2e/support/projects.ts](../../e2e/support/projects.ts): the staging project the tests use, and a locator for the cards in the project list.
+  - [e2e/support/testProject.ts](../../e2e/support/testProject.ts): the staging project the tests use.
+  - [e2e/support/projects/page.ts](../../e2e/support/projects/page.ts): locators for the project list.
   - [e2e/support/i18n.ts](../../e2e/support/i18n.ts): the locale the tests open (`LOCALE`), and the app's UI text for it, read from `public/static/locales` with the same English fallback the app uses.
-  - [e2e/support/map.ts](../../e2e/support/map.ts): lets the map draw without a GPU, and reads the project markers from the map.
+  - [e2e/support/map.ts](../../e2e/support/map.ts): lets the map draw without a GPU, and waits for the map's test hooks.
+  - [e2e/support/projects/map.ts](../../e2e/support/projects/map.ts): reads the project markers from the map.
   - [e2e/tests/projects/project-search.spec.ts](../../e2e/tests/projects/project-search.spec.ts): the project search tests.
   - [e2e/tests/projects/project-filter.spec.ts](../../e2e/tests/projects/project-filter.spec.ts): the project filter tests.
 - Two scripts, named like the existing ones: `test:e2e` and `test:e2e:ui`.
@@ -178,7 +186,6 @@ Where to find a failed test's recording: `test-results/<test name>/trace.zip`, o
 - The job runs only for `Preview` deployments created by `vercel[bot]`. Vercel also reports `Production`. Heroku deploys report `planet-app-sf` and `planet-app-sf-prod`, created by team members on `develop` and release commits. The job skips all of those.
 - When Vercel reports `failure`, the first step fails the job. The job must not skip it instead: GitHub counts a job skipped by `if:` as passed, even for a required check, so a PR that breaks the Vercel build would pass E2E with no tests run. 5 of the last 120 previews failed (checked 2026-10-12).
 - Steps: fail if the preview failed, check out the deployed commit, Node 24 with npm cache, `npm ci`, install Chromium's headless shell only (`npx playwright install --with-deps --only-shell chromium`), run `npm run test:e2e` with `PLAYWRIGHT_BASE_URL` set to the deployment's `environment_url`, and upload the HTML report (which holds the traces) whenever the tests ran. Green runs upload it too, so a test that passed only on a retry keeps the trace of its failed try. The report is kept for 14 days.
-- `npm ci` sets `CYPRESS_INSTALL_BINARY=0`, so it skips the large Cypress app download. Remove that line together with Cypress.
 - The workflow token is read-only (`contents: read`), and the job stops after 20 minutes.
 - Checkout sets `persist-credentials: false`. Nothing after checkout uses git, so the token is not saved on disk, where `npm ci` scripts and test code could read it.
 - The workflow uses the Node 24 versions of its actions (`checkout`, `setup-node` and `upload-artifact` at v7). Older versions run on Node 20, which GitHub has deprecated. The other workflows still use older versions: see #3225.
@@ -192,7 +199,7 @@ Where to find a failed test's recording: `test-results/<test name>/trace.zip`, o
 
 ### Cypress
 
-- Remove it in its own small PR: `cypress/`, `cypress.json`, `.github/workflows/cypress.yml`, the 3 packages (`cypress`, `cypress-plugin-stripe-elements`, `eslint-plugin-cypress`), the 2 `cypress:*` scripts, and the related `.gitignore` and ESLint lines.
+- Removed in its own small PR (#3270): `cypress/`, `cypress.json`, `.github/workflows/cypress.yml`, the 3 packages (`cypress`, `cypress-plugin-stripe-elements`, `eslint-plugin-cypress`), the 2 `cypress:*` scripts, and the related `.gitignore` and ESLint lines.
 - Keeping it would mean two tools for the same job. It also downloads a large app binary on every fresh `npm ci`.
 
 ## 6. Drawbacks and risks
@@ -248,10 +255,10 @@ Phase 2: after phase 1 is stable.
 Decided:
 - CI target: run E2E against Vercel previews, not a build in GitHub Actions. Previews are public and the tests pass against them.
 - First PR scope: the setup, the project search tests, and `e2e.yml`. The "list opens a project" test comes in a follow-up.
+- Cypress: removed in its own PR right after this one (#3270). Its old donation tests were not ported, since payment now happens in the donate app.
 
 Still open:
-1. Cypress: it comes out in its own PR, not this one. Remove it right after this PR, or later?
-2. Phase 2 login: is there a staging test account to use (the old Cypress one was `test-tpo@plant-for-the-planet.org`), and who owns Auth0? Logged-in tests on previews also need preview URLs in Auth0's allowed callback URLs, which has not been checked yet.
+1. Phase 2 login: is there a staging test account to use (the old Cypress one was `test-tpo@plant-for-the-planet.org`), and who owns Auth0? Logged-in tests on previews also need preview URLs in Auth0's allowed callback URLs, which has not been checked yet.
 
 ## Tasks
 
@@ -265,11 +272,11 @@ Done:
 - [x] Push `feature/playwright-e2e` and open a PR to `develop` ([#3203](https://github.com/Plant-for-the-Planet-org/planet-webapp/pull/3203)).
 - [x] Check that `e2e.yml` runs and passes on this branch's previews: 4 of 4 runs passed.
 - [x] Link this plan from [testing-roadmap.md](./testing-roadmap.md).
+- [x] Remove Cypress (#3270).
 
 Pending:
 - [ ] Answer the open questions.
 - [ ] Add the "list opens a project" test.
 - [ ] Make the E2E check required on `develop` after a few stable weeks. For `main`, switch to a commit status first (see [Running in CI](#running-in-ci)).
-- [ ] Remove Cypress (separate PR).
 - [ ] Phase 2: test account, login setup, and the logged-in tests. Keep login tokens out of the uploaded report first (see [Drawbacks and risks](#6-drawbacks-and-risks)).
-- [ ] Tick the Playwright task in [testing-roadmap.md](./testing-roadmap.md) when Cypress is retired.
+- [ ] Tick the Playwright task in [testing-roadmap.md](./testing-roadmap.md) once Phase 2 is done.

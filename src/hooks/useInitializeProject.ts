@@ -30,17 +30,14 @@ export const useInitializeProject = () => {
 
   useEffect(() => {
     if (currentPage !== 'project-list') return;
-    // Wait for the real currency. `currencyCode` starts at a placeholder, and
-    // fetching with it would only be superseded once `localStorage` is read.
+    // Wait for the real currency. `currencyCode` starts at a placeholder, and fetching with it would only be superseded once `localStorage` is read.
     if (!isCurrencyResolved || !currencyCode) return;
-    // `fetchProjects` skips redundant requests itself, keyed on locale, currency
-    // and tenant.
+    // `fetchProjects` skips redundant requests itself, keyed on locale, currency and tenant.
     fetchProjects(getApi, {
       queryParams: {
         _scope: 'map',
         currency: currencyCode,
-        //passing locale/tenant as a query param to break cache when locale changes,
-        //as the browser uses the cached response even though the x-locale header is different
+        //passing locale/tenant as a query param to break cache when locale changes, as the browser uses the cached response even though the x-locale header is different
         locale,
         tenant: tenantId,
         'filter[purpose]': 'trees,conservation',

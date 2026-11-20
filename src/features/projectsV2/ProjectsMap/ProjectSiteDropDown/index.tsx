@@ -13,7 +13,6 @@ import ProjectSiteList from './ProjectSiteList';
 import { truncateString } from '../../../../utils/getTruncatedString';
 import { getFormattedRoundedNumber } from '../../../../utils/getFormattedNumber';
 import themeProperties from '../../../../theme/themeProperties';
-import { clsx } from 'clsx';
 import {
   useInterventionStore,
   useSingleProjectStore,
@@ -39,10 +38,12 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
     (state) => state.selectedIntervention
   );
 
+  // Sites without a shape are not on the map, so they are left out here too. `id` stays the site's index in the full list, which is what `selectedSite` holds.
   const siteList = useMemo(() => {
     if (!projectSites) return [];
-    return projectSites.map((site, index: number) => {
-      const calculatedSiteAreaInM2 = site.geometry ? area(site) : 0;
+    return projectSites.flatMap((site, index: number) => {
+      if (!site.geometry) return [];
+      const calculatedSiteAreaInM2 = area(site);
       return {
         siteName: site.properties.name,
         siteArea:
@@ -65,7 +66,9 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
   );
 
   const selectedSiteData =
-    selectedSite !== null ? siteList[selectedSite] : undefined;
+    selectedSite !== null
+      ? siteList.find((site) => site.id === selectedSite)
+      : undefined;
 
   useEffect(() => {
     if (activeDropdown === 'intervention') {
@@ -83,61 +86,77 @@ const ProjectSiteDropdown = ({ activeDropdown, setActiveDropdown }: Props) => {
     }
   };
 
-  return (
-    <div className={styles.dropdownWrapper}>
-      <div
-        className={clsx({
-          [styles.dropdownButton]: hasMultipleSites,
-          [styles.dropdownDetails]: !hasMultipleSites,
-        })}
-        onClick={hasMultipleSites ? toggleSiteMenu : undefined}
-      >
-        <div className={styles.siteIconAndTextContainer}>
-          <SiteIcon
-            width={27}
-            color={themeProperties.designSystem.colors.coreText}
-          />
-          {selectedIntervention && query.ploc ? (
-            '-'
-          ) : (
-            <>
-              {selectedSiteData && (
-                <div className={styles.labelTextContainer}>
-                  <label className={styles.sitesLabel}>
-                    <span className={styles.siteId}>
-                      {tProjectDetails('siteCount', {
-                        siteId: getId(selectedSiteData?.id) ?? 0,
-                        totalCount: siteList.length,
-                      })}
-                    </span>
-                    <span className={styles.separator}> • </span>
-                    <span>
-                      {getFormattedRoundedNumber(
-                        locale,
-                        selectedSiteData?.siteArea,
-                        0
-                      )}{' '}
-                      ha
-                    </span>
-                  </label>
-                  <p className={styles.siteName}>
-                    {truncateString(selectedSiteData?.siteName, 40)}
-                  </p>
-                </div>
-              )}
-            </>
+  // Spans, not divs or labels, because a button may only hold inline content.
+  const selectedSiteSummary = (
+    <span className={styles.siteIconAndTextContainer}>
+      <SiteIcon
+        width={27}
+        color={themeProperties.designSystem.colors.coreText}
+      />
+      {selectedIntervention && query.ploc ? (
+        <>
+          <span aria-hidden="true">-</span>
+          <span className={styles.visuallyHidden}>
+            {tProjectDetails('noSiteSelected')}
+          </span>
+        </>
+      ) : (
+        <>
+          {selectedSiteData && (
+            <span className={styles.labelTextContainer}>
+              <span className={styles.sitesLabel}>
+                <span className={styles.siteId}>
+                  {tProjectDetails('siteCount', {
+                    siteId: getId(selectedSiteData?.id) ?? 0,
+                    totalCount: siteList.length,
+                  })}
+                </span>
+                <span className={styles.separator}> • </span>
+                <span>
+                  {getFormattedRoundedNumber(
+                    locale,
+                    selectedSiteData?.siteArea,
+                    0
+                  )}{' '}
+                  ha
+                </span>
+              </span>
+              <span className={styles.siteName}>
+                {truncateString(selectedSiteData?.siteName, 40)}
+              </span>
+            </span>
           )}
-        </div>
-        {hasMultipleSites && (
-          <div className={styles.menuArrow}>
+        </>
+      )}
+    </span>
+  );
+
+  return (
+    // The group name stays the same while the button shows `-` for a selected intervention, so assistive tech and tests can always find the control.
+    <div
+      className={styles.dropdownWrapper}
+      role="group"
+      aria-label={tProjectDetails('projectSites')}
+    >
+      {hasMultipleSites ? (
+        <button
+          type="button"
+          className={styles.dropdownButton}
+          aria-expanded={isMenuOpen}
+          onClick={toggleSiteMenu}
+        >
+          {selectedSiteSummary}
+          <span className={styles.menuArrow}>
             {isMenuOpen ? (
               <DropdownUpArrow width={10} />
             ) : (
               <DropdownDownArrow width={10} />
             )}
-          </div>
-        )}
-      </div>
+          </span>
+        </button>
+      ) : (
+        <div className={styles.dropdownDetails}>{selectedSiteSummary}</div>
+      )}
       {isMenuOpen && hasMultipleSites && (
         <ProjectSiteList
           siteList={siteList}

@@ -77,14 +77,10 @@ export default function ManageProjects({
   const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   const [projectGUID, setProjectGUID] = useState<string>(GUID ? GUID : '');
   const [tablist, setTabList] = useState<TabItem[]>([]);
-  // Seeded from the `project` prop: the page has already fetched exactly this
-  // payload from the same endpoint and only renders this component once it
-  // resolves. Starting at null meant a second, identical request ran before
-  // anything could display, so the loader stayed up for two serial round trips.
+  // Seeded from the `project` prop: the page has already fetched exactly this payload from the same endpoint and only renders this component once it resolves. Starting at null meant a second, identical request ran before anything could display, so the loader stayed up for two serial round trips.
   const [projectDetails, setProjectDetails] =
     useState<ExtendedProfileProjectProperties | null>(project ?? null);
-  // Null until the schema and project data have both landed, so the dot can
-  // stay grey rather than claiming the tab is incomplete.
+  // Null until the schema and project data have both landed, so the dot can stay grey rather than claiming the tab is incomplete.
   const [questionnaireMissing, setQuestionnaireMissing] = useState<
     MissingField[] | null
   >(null);
@@ -189,9 +185,7 @@ export default function ManageProjects({
     }
   };
 
-  // GUID (the SSR prop) and projectGUID (state seeded from it) hold the same
-  // value, so listing both as dependencies ran this twice on load and every
-  // downstream projectDetails effect with it. Guarded to one fetch per project;
+  // GUID (the SSR prop) and projectGUID (state seeded from it) hold the same value, so listing both as dependencies ran this twice on load and every downstream projectDetails effect with it. Guarded to one fetch per project;
   // creating a project changes projectGUID, which still triggers a fresh load.
   const detailsFetchedFor = useRef<string | null>(
     project ? GUID ?? null : null
@@ -252,8 +246,7 @@ export default function ManageProjects({
     hasFailed: boolean
   ) => setSectionFetchFailed((current) => ({ ...current, [key]: hasFailed }));
 
-  // Pre-compute questionnaire completeness as soon as projectDetails loads,
-  // so the menu indicator is correct before the Questionnaire tab is visited.
+  // Pre-compute questionnaire completeness as soon as projectDetails loads, so the menu indicator is correct before the Questionnaire tab is visited.
   useEffect(() => {
     if (!projectDetails?.acceptDonations) return;
     const purpose = projectDetails.purpose ?? 'trees';
@@ -266,9 +259,7 @@ export default function ManageProjects({
 
     const computeCompleteness = async () => {
       try {
-        // Shares the cache *and* any in-flight request with the prefetch above
-        // and with the Questionnaire component, so this never adds a second
-        // call for the same purpose/locale.
+        // Shares the cache *and* any in-flight request with the prefetch above and with the Questionnaire component, so this never adds a second call for the same purpose/locale.
         const schema = await getOrFetchSchema(purpose, locale, () =>
           getApiAuthenticated<QuestionnaireSchema>(
             `/app/projects/questionnaire-schema/${purpose}`,
@@ -306,11 +297,7 @@ export default function ManageProjects({
     void computeCompleteness();
   }, [projectDetails]);
 
-  // These two only feed the menu completeness dots. They key off projectDetails
-  // so they run once it is available, but projectDetails is reassigned whenever
-  // a section saves — which fired the same two requests again every time. The
-  // refs pin them to one call per project; the dots are updated directly by the
-  // section callbacks (setMediaComplete / setSitesComplete) after that.
+  // These two only feed the menu completeness dots. They key off projectDetails so they run once it is available, but projectDetails is reassigned whenever a section saves — which fired the same two requests again every time. The refs pin them to one call per project; the dots are updated directly by the section callbacks (setMediaComplete / setSitesComplete) after that.
   const mediaCompletenessFetchedFor = useRef<string | null>(null);
   const sitesCompletenessFetchedFor = useRef<string | null>(null);
 
@@ -422,10 +409,7 @@ export default function ManageProjects({
   }, [tabSelected, router.query.type, router.query.purpose]);
 
   const showQuestionnaire = projectDetails?.acceptDonations === true;
-  // Documents shares the same "this project goes through full verification"
-  // gate as the Questionnaire — the backend 404s the checklist endpoint for
-  // purposes with no requirement schema, so the component itself degrades
-  // gracefully if this ever needs to diverge from that assumption.
+  // Documents shares the same "this project goes through full verification" gate as the Questionnaire — the backend 404s the checklist endpoint for purposes with no requirement schema, so the component itself degrades gracefully if this ever needs to diverge from that assumption.
   const showDocuments = showQuestionnaire;
   // The backend exempts this project from the questionnaire and skips validating it on submit, so neither section may report itself incomplete or hold Submit back.
   // The tabs stay open and the missing-field summary stays, because filling it in is still welcome.
@@ -433,8 +417,7 @@ export default function ManageProjects({
 
   const documentsCompletenessFetchedFor = useRef<string | null>(null);
 
-  // The Review page names the required documents that are still missing, so the
-  // checklist has to be known even when the Documents step was never opened.
+  // The Review page names the required documents that are still missing, so the checklist has to be known even when the Documents step was never opened.
   useEffect(() => {
     if (!projectGUID || !showDocuments) return;
     if (documentsCompletenessFetchedFor.current === projectGUID) return;

@@ -9,6 +9,7 @@ import {
   createMockRouter,
   createProject,
   createSite,
+  createSiteWithoutGeometry,
   resetAllStores,
 } from '../test-utils';
 import { useInitializeIntervention } from './useInitializeIntervention';
@@ -68,6 +69,18 @@ describe('useInitializeIntervention', () => {
     expect(shownUrls(router)).toEqual(['/en/yucatan?site=site_a']);
   });
 
+  it('falls back to the first site with a shape when the URL names an unknown intervention', () => {
+    useSingleProjectStore.setState({
+      singleProject: createProject({
+        sites: [createSiteWithoutGeometry('site_a'), createSite('site_b')],
+      }),
+    });
+    const { router } = renderAtQuery({ p: 'yucatan', ploc: 'ploc_unknown' });
+
+    expect(selectedSite()).toBe(1);
+    expect(shownUrls(router)).toEqual(['/en/yucatan?site=site_b']);
+  });
+
   it('selects no site when the intervention is unknown and the project has no sites', () => {
     useSingleProjectStore.setState({ singleProject: createProject() });
     const { router } = renderAtQuery({ p: 'yucatan', ploc: 'ploc_unknown' });
@@ -88,7 +101,7 @@ describe('useInitializeIntervention', () => {
     expect(router.replace).not.toHaveBeenCalled();
   });
 
-  it('waits for the interventions to load', () => {
+  it('selects the intervention only once the interventions load', () => {
     useInterventionStore.setState({ interventions: null });
     const { router } = renderAtQuery({ p: 'yucatan', ploc: 'ploc_1' });
 
@@ -102,7 +115,7 @@ describe('useInitializeIntervention', () => {
   });
 
   // The new project's ploc must not be matched against the interventions still held from the previous project.
-  it('on a project-to-project navigation, waits for the new project interventions', () => {
+  it("after moving to another project, selects the intervention only once that project's interventions load", () => {
     const { navigateTo } = renderAtQuery({ p: 'yucatan' });
 
     navigateTo({ p: 'koenigswald-ontananga', ploc: 'ploc_1' });
