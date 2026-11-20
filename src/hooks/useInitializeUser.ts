@@ -45,10 +45,7 @@ export const useInitializeUser = () => {
 
   useEffect(() => {
     if (!token) return;
-    // Guards against a request that this same effect superseded (e.g. a
-    // fast token refresh re-running the effect before the previous fetch
-    // settles). Without this, the aborted request's `finally` below can
-    // still run and resolve auth before the replacement request finishes.
+    // Guards against a request that this same effect superseded (e.g. a fast token refresh re-running the effect before the previous fetch settles). Without this, the aborted request's `finally` below can still run and resolve auth before the replacement request finishes.
     let isSuperseded = false;
     // Note: Intentionally not refetching on locale/tenant changes
     fetchUserProfile({

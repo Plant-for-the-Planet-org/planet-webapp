@@ -39,8 +39,7 @@ export type RequestOptions = {
   signal?: AbortSignal;
 } & /**
  * This type enforces request payload rules based on HTTP method semantics.
- * 'GET' and 'DELETE' requests may optionally include a 'data' payload,
- * whereas 'POST' and 'PUT' requests must include a 'data' payload.
+ * 'GET' and 'DELETE' requests may optionally include a 'data' payload, whereas 'POST' and 'PUT' requests must include a 'data' payload.
  * Ensures consistency and prevents unintended omissions in API requests.
  */ (
   | { method: 'GET' | 'DELETE'; data?: Record<string, unknown> }

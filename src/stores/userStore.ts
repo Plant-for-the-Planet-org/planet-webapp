@@ -195,8 +195,7 @@ export const useUserStore = create<UserStore>()(
           }
 
           // Rethrow so the promise never resolves with `undefined`.
-          // The global flow still runs via the `profileApiError` state above;
-          // callers that only rely on that state can ignore this rejection.
+          // The global flow still runs via the `profileApiError` state above; callers that only rely on that state can ignore this rejection.
           throw error;
         }
       },
