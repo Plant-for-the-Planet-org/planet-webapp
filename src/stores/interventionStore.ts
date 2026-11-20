@@ -18,6 +18,8 @@ interface InterventionStore {
 
   isFetching: boolean;
   fetchError: boolean;
+  /** The project whose intervention fetch has finished, whether it worked, failed or was skipped. Lets callers tell "still loading" apart from "will never load", and ignore a list left over from the previous project. */
+  interventionsFinishedForProjectId: string | null;
 
   /**
    * Fetches interventions for a project.
@@ -79,6 +81,7 @@ export const useInterventionStore = create<InterventionStore>()(
       // status flags
       isFetching: false,
       fetchError: false,
+      interventionsFinishedForProjectId: null,
 
       fetchInterventions: async (getApi, projectId) => {
         if (!process.env.TREEMAPPER_URL) {
@@ -90,6 +93,7 @@ export const useInterventionStore = create<InterventionStore>()(
               interventions: null,
               isFetching: false,
               fetchError: false,
+              interventionsFinishedForProjectId: projectId,
             },
             undefined,
             'interventionStore/intervention_fetch_skipped'
@@ -114,7 +118,11 @@ export const useInterventionStore = create<InterventionStore>()(
           if (!isForCurrentProject()) return;
 
           set(
-            { interventions: response.data, isFetching: false },
+            {
+              interventions: response.data,
+              isFetching: false,
+              interventionsFinishedForProjectId: projectId,
+            },
             undefined,
             'interventionStore/intervention_fetch_success'
           );
@@ -129,6 +137,7 @@ export const useInterventionStore = create<InterventionStore>()(
               fetchError: true,
               isFetching: false,
               interventions: null,
+              interventionsFinishedForProjectId: projectId,
             },
             undefined,
             'interventionStore/intervention_fetch_error'
@@ -172,6 +181,7 @@ export const useInterventionStore = create<InterventionStore>()(
             hoveredIntervention: null,
             selectedInterventionType: 'all',
             interventions: null,
+            interventionsFinishedForProjectId: null,
           },
           undefined,
           'interventionStore/clear_intervention_states'
