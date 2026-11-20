@@ -52,7 +52,7 @@ export const getAddressSuggestions = async (
  * - ShortLabel: The formatted address string
  * - City: The city name
  * - Postal: The postal/zip code
- * See geocoder.d.ts Attributes interface for all 50+ available fields.
+ * See the Attributes interface in features/common/types/geocoder.ts for all 50+ available fields.
  *
  * @param value - The input string to search for address details
  * @returns Object with address, city, zipCode or null if no results
