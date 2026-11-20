@@ -330,7 +330,7 @@ interface Option {
   label: string;
   value: string;
 }
-interface EditSiteProps {
+export interface EditSiteProps {
   openModal: boolean;
   handleModalClose: () => void;
   changeSiteDetails: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -446,7 +446,7 @@ export type SectionFetchKey = 'media' | 'sites' | 'questionnaire' | 'documents';
 
 // Project certificate
 
-interface ProjectCertificatesProps {
+export interface ProjectCertificatesProps {
   projectGUID: string;
   token: string;
   setIsUploadingData: Function;

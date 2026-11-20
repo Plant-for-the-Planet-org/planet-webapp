@@ -55,7 +55,7 @@ export interface BulkCodesPlanetCashAccount {
   country: CountryCode;
 }
 
-type TableHeader = {
+export type TableHeader = {
   key: keyof RecipientUploadRow;
   displayText: string;
   helpText?: string;
@@ -65,7 +65,7 @@ interface OtherRecipientProperties {
   [key: string]: string;
 }
 
-type ExtendedRecipient = RecipientUploadRow & OtherRecipientProperties;
+export type ExtendedRecipient = RecipientUploadRow & OtherRecipientProperties;
 
 type FileImportErrorCode =
   | 'fileInvalidType'
