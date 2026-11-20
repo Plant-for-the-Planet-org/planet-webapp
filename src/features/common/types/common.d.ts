@@ -2,6 +2,9 @@ import type { Dispatch, SetStateAction } from 'react';
 
 export type SetState<T> = Dispatch<SetStateAction<T>>;
 
+// @planet-sdk/common defines this type but does not export it from the package root.
+export type Nullable<T> = T | null;
+
 /**
  * Date string with the following formats
  *  `YYYY-MM-DD hh:mm:ss` or `YYYY-MM-DDTHH:mm:ss.sssZ` or `YYYY-MM-DD hh:mm:ss.sssZ`
