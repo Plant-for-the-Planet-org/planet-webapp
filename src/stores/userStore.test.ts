@@ -41,6 +41,8 @@ describe('fetchUserProfile sequencing', () => {
 
     const { fetchUserProfile } = useUserStore.getState();
     const first = fetchUserProfile(PARAMS);
+    await vi.waitFor(() => expect(signals).toHaveLength(1));
+    expect(signals[0].aborted).toBe(false);
     const latest = fetchUserProfile(PARAMS);
 
     await expect(first).rejects.toMatchObject({ name: 'AbortError' });
