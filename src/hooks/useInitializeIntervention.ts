@@ -30,7 +30,11 @@ export const useInitializeIntervention = () => {
     (state) => state.selectedIntervention
   );
   const selectedSite = useSingleProjectStore((state) => state.selectedSite);
+  const lastFetch = useSingleProjectStore((state) => state.lastFetch);
   const interventions = useInterventionStore((state) => state.interventions);
+  const interventionsFinishedForProjectId = useInterventionStore(
+    (state) => state.interventionsFinishedForProjectId
+  );
   // store: action
   const clearInterventionStates = useInterventionStore(
     (state) => state.clearInterventionStates
@@ -43,14 +47,19 @@ export const useInitializeIntervention = () => {
   );
   const projectSlug = singleProject?.slug ?? '';
   const projectSites = singleProject?.sites ?? [];
-  const hasInterventions = Boolean(interventions?.length);
+  // Only tree projects fetch interventions, so for any other project there is nothing to wait for.
+  const hasFinishedLoadingInterventions =
+    singleProject !== null &&
+    lastFetch?.slug === requestedProjectSlug &&
+    (singleProject.purpose !== 'trees' ||
+      interventionsFinishedForProjectId === singleProject.id);
 
   /**
    * Initialize intervention selection for project details page.
    * Selects an intervention only when:
    * - Router is ready
    * - The URL names a project
-   * - Interventions are loaded
+   * - The project's interventions are done loading, even if they failed, were skipped or are empty
    * - No site or intervention is already selected
    * - URL explicitly requests an intervention
    * - URL does not request both site and intervention together
@@ -58,7 +67,7 @@ export const useInitializeIntervention = () => {
   useEffect(() => {
     if (!router.isReady) return;
     if (!isString(requestedProjectSlug)) return;
-    if (!hasInterventions) return;
+    if (!hasFinishedLoadingInterventions) return;
     if (selectedSite !== null) return;
     if (hasRequestedBothTogether) return;
     if (!isString(requestedIntervention)) return;
@@ -72,7 +81,7 @@ export const useInitializeIntervention = () => {
     if (intervention) {
       selectInterventionSyncUrl(intervention, locale, projectSlug, router);
     } else {
-      // Invalid ploc: fall back to the first site with a shape, or none, matching useInitializeSingleProject.
+      // Unknown ploc, or no interventions to match against: fall back to the first site with a shape, or none, matching useInitializeSingleProject.
       selectSiteAndSyncUrl(
         getFirstSiteIndexWithGeometry(projectSites),
         locale,
@@ -80,7 +89,13 @@ export const useInitializeIntervention = () => {
       );
     }
     // `requestedProjectSlug` is left out on purpose. On a direct project-to-project navigation, running when it changes would match the new `ploc` against the previous project's interventions.
-  }, [router.isReady, selectedIntervention, interventions, selectedSite]);
+  }, [
+    router.isReady,
+    selectedIntervention,
+    interventions,
+    selectedSite,
+    hasFinishedLoadingInterventions,
+  ]);
 
   // Clear together with the single-project state, whenever the URL no longer names a project. See #3200.
   useEffect(() => {
