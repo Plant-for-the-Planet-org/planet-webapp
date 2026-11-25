@@ -1,5 +1,5 @@
-import type { ProjectPurpose, UnitTypes, Nullable } from '@planet-sdk/common';
-import type { DateString } from './common';
+import type { ProjectPurpose, UnitTypes } from '@planet-sdk/common';
+import type { DateString, Nullable } from './common';
 
 export interface Fees {
   disputeFee: Nullable<number>;
@@ -71,11 +71,8 @@ export interface Links {
   prev?: string;
 }
 
-interface Filters {
-  [key: string]: string;
-}
-
 export interface Filters {
+  [key: string]: string | undefined;
   all: string;
   'donation-all': string;
   'payout-all'?: string;

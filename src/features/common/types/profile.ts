@@ -1,19 +1,5 @@
 import type { User, UserPublicProfile } from '@planet-sdk/common';
-import type { SetState } from './common';
-import type { PublicUser } from './user';
 import type { ADDRESS_ACTIONS } from '../../../utils/addressManagement';
-
-export interface UserFeaturesProps {
-  handleShare: () => void;
-  userProfile: User | PublicUser;
-  showSocialButton: boolean;
-  setShowSocialButton: SetState<boolean>;
-}
-
-export interface ProfileProps {
-  userProfile: User | PublicUser;
-  authenticatedType?: string;
-}
 
 export type PrivateProfileV2Props = {
   userProfile: User;

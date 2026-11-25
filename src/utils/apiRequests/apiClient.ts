@@ -33,10 +33,13 @@ export type RequestOptions = {
    * @default 'json'
    */
   responseType?: 'json' | 'blob';
+  /**
+   * Optional signal to cancel the request.
+   */
+  signal?: AbortSignal;
 } & /**
  * This type enforces request payload rules based on HTTP method semantics.
- * 'GET' and 'DELETE' requests may optionally include a 'data' payload,
- * whereas 'POST' and 'PUT' requests must include a 'data' payload.
+ * 'GET' and 'DELETE' requests may optionally include a 'data' payload, whereas 'POST' and 'PUT' requests must include a 'data' payload.
  * Ensures consistency and prevents unintended omissions in API requests.
  */ (
   | { method: 'GET' | 'DELETE'; data?: Record<string, unknown> }
@@ -102,6 +105,7 @@ const apiClient = async <T>(options: RequestOptions): Promise<T> => {
     const response = await fetch(finalUrl, {
       method: options.method,
       headers,
+      signal: options.signal,
       ...(options.data !== undefined
         ? { body: JSON.stringify(options.data) }
         : {}),
