@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 
 import { expect } from '../fixtures';
 
-// Found by test ID, not by role: each card is a link that wraps its own Donate link, which is invalid HTML and likely to change.
+// Found by test ID, not by role: the card wrapper is a plain div with no role. The card's own link sits on top of the card and does not wrap its content.
 export const projectCards = (page: Page) =>
   page.getByTestId('project-list-item');
 
