@@ -111,7 +111,10 @@ const ImageSection = (props: ImageSectionProps) => {
     [isTouchDevice]
   );
   const projectNameElement = (
-    <span onClick={handleClick}>
+    <span
+      onClick={handleClick}
+      className={clsx({ [styles.aboveCardLink]: isNameTruncated })}
+    >
       {isNameTruncated ? truncatedProjectName : projectName}
     </span>
   );
@@ -218,7 +221,10 @@ const ImageSection = (props: ImageSectionProps) => {
                 currentPage !== 'project-details' && showTooltipPopups
               }
               triggerElement={
-                <span className={styles.verifiedIcon} onClick={handleClick}>
+                <span
+                  className={clsx(styles.verifiedIcon, styles.aboveCardLink)}
+                  onClick={handleClick}
+                >
                   <VerifiedIcon sx={{ width: '100%' }} />
                 </span>
               }

@@ -14,7 +14,8 @@
   width: fit-content;
   cursor: pointer;
   position: absolute;
-  z-index: 1;
+  // Above the card link (z-index 1) so the badge tooltip still opens on hover.
+  z-index: 2;
   right: -2px;
   top: -2px;
 }

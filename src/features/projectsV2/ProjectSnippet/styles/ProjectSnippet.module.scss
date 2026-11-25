@@ -14,6 +14,24 @@
   }
 }
 
+.cardBody {
+  position: relative;
+  isolation: isolate;
+}
+
+.cardLink {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 14px 14px 0 0;
+}
+
+// Keeps Donate and the tooltip triggers above .cardLink so they can still be clicked or hovered.
+.aboveCardLink {
+  position: relative;
+  z-index: 2;
+}
+
 .projectDetailsSnippetMobile {
   padding: 0px 9px;
 }
