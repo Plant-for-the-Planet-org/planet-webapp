@@ -28,6 +28,7 @@ const ProjectPopup = ({
       latitude={coordinates[1]}
       longitude={coordinates[0]}
       closeButton={false}
+      focusAfterOpen={false}
       offset={POPUP_OFFSET}
       className={styles.projectPopup}
     >
@@ -36,7 +37,6 @@ const ProjectPopup = ({
         onMouseEnter={handlePopupEnter}
         onMouseLeave={handlePopupLeave}
         onClick={() => visitProject(project.properties.slug)}
-        onKeyDown={() => visitProject(project.properties.slug)}
       >
         <ProjectSnippet
           project={project.properties}
