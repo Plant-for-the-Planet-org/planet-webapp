@@ -39,7 +39,7 @@ export function zoomInToProjectSite({
     return;
   }
 
-  const map = mapRef.current.getMap ? mapRef.current.getMap() : mapRef.current;
+  const map = mapRef.current.getMap();
 
   // bbox skips null geometries; with no shapes at all it returns Infinity values.
   // recompute ignores a stored bbox, which goes stale when the editor adds a polygon to an uploaded file.

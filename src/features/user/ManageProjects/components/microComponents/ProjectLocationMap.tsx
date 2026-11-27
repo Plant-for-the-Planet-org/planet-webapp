@@ -1,5 +1,6 @@
 import type {
   MapLayerMouseEvent,
+  MapRef,
   ViewState,
   ViewStateChangeEvent,
 } from 'react-map-gl/maplibre';
@@ -14,10 +15,7 @@ import type {
   TreeFormData,
 } from '../BasicDetails';
 import type { SetState } from '../../../../common/types/common';
-import type {
-  ExtendedMapLibreMap,
-  MapLibreRef,
-} from '../../../../common/types/map';
+import type { MapLibreRef } from '../../../../common/types/map';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import MapGL, { NavigationControl, Marker } from 'react-map-gl/maplibre';
@@ -51,7 +49,7 @@ const ProjectLocationMap = ({
   setProjectCoords,
 }: ProjectLocationMapProps) => {
   const t = useTranslations('ManageProjects');
-  const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
+  const mapRef: MapLibreRef = useRef<MapRef | null>(null);
   const [viewState, setViewState] = useState(DEFAULT_VIEW_STATE);
   const [mapState, setMapState] = useState(DEFAULT_MAP_STATE);
   const [mapLoaded, setMapLoaded] = useState<boolean>(false);

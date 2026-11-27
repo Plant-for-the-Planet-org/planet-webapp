@@ -1,8 +1,6 @@
 import type { Polygon } from 'geojson';
-import type {
-  ExtendedMapLibreMap,
-  MapLibreRef,
-} from '../../../../common/types/map';
+import type { MapRef } from 'react-map-gl/maplibre';
+import type { MapLibreRef } from '../../../../common/types/map';
 
 import MapGL, { Source, Layer } from 'react-map-gl/maplibre';
 import '../../../../../utils/mapsV2/maplibreWorker';
@@ -17,7 +15,7 @@ interface StaticMapProps {
 const { colors } = themeProperties.designSystem;
 
 const SitePreviewMap = ({ siteId, siteGeometry }: StaticMapProps) => {
-  const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
+  const mapRef: MapLibreRef = useRef<MapRef | null>(null);
   const tiles = useMemo(
     () => [
       'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',

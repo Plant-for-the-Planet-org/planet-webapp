@@ -12,7 +12,7 @@ export default function zoomToLocation(
   if (!mapRef.current) {
     return;
   }
-  const map = mapRef.current.getMap ? mapRef.current.getMap() : mapRef.current;
+  const map = mapRef.current.getMap();
   map.flyTo({
     center: [longitude, latitude],
     zoom: zoom,

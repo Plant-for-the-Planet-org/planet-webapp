@@ -10,7 +10,7 @@ import type {
   Point,
   Polygon,
 } from 'geojson';
-import type { Map as MapLibreMap } from 'maplibre-gl';
+import type { MapRef } from 'react-map-gl/maplibre';
 import type { MapLayerOptionsType } from '../../../utils/mapsV2/mapSettings.config';
 
 export type Bound = [number, number, number, number];
@@ -57,10 +57,7 @@ export interface TreemapperApiResponse<T> {
 }
 
 // Map
-export interface ExtendedMapLibreMap extends MapLibreMap {
-  getMap: () => MapLibreMap;
-}
-export type MapLibreRef = MutableRefObject<ExtendedMapLibreMap | null>;
+export type MapLibreRef = MutableRefObject<MapRef | null>;
 
 // Main map: Explore feature
 
