@@ -18,6 +18,8 @@ interface InterventionStore {
 
   isFetching: boolean;
   fetchError: boolean;
+  /** The project whose intervention fetch has finished, whether it worked, failed or was skipped. Lets callers tell "still loading" apart from "will never load", and ignore a list left over from the previous project. */
+  interventionsFinishedForProjectId: string | null;
 
   /**
    * Fetches interventions for a project.
@@ -58,6 +60,9 @@ interface InterventionStore {
   clearInterventionSelectionAndHover: () => void;
 }
 
+// Counts intervention requests, so only the latest one may write its result.
+let latestInterventionRequest = 0;
+
 /**
  * InterventionStore
  *
@@ -79,6 +84,7 @@ export const useInterventionStore = create<InterventionStore>()(
       // status flags
       isFetching: false,
       fetchError: false,
+      interventionsFinishedForProjectId: null,
 
       fetchInterventions: async (getApi, projectId) => {
         if (!process.env.TREEMAPPER_URL) {
@@ -90,6 +96,7 @@ export const useInterventionStore = create<InterventionStore>()(
               interventions: null,
               isFetching: false,
               fetchError: false,
+              interventionsFinishedForProjectId: projectId,
             },
             undefined,
             'interventionStore/intervention_fetch_skipped'
@@ -98,11 +105,18 @@ export const useInterventionStore = create<InterventionStore>()(
           return;
         }
         // The user may leave the project, or open another one, before a slow response arrives. Its result must not land on whatever is shown by then. See #3200.
-        const isForCurrentProject = () =>
+        // A locale or currency change refetches the same project, so an older request for it must not write either. See #3278.
+        const requestNumber = ++latestInterventionRequest;
+        const isLatestRequestForCurrentProject = () =>
+          requestNumber === latestInterventionRequest &&
           useSingleProjectStore.getState().singleProject?.id === projectId;
 
         set(
-          { isFetching: true, fetchError: false },
+          {
+            isFetching: true,
+            fetchError: false,
+            interventionsFinishedForProjectId: null,
+          },
           undefined,
           'interventionStore/intervention_fetch_start'
         );
@@ -111,16 +125,20 @@ export const useInterventionStore = create<InterventionStore>()(
           const response = await getApi<TreemapperApiResponse<Intervention[]>>(
             `${process.env.TREEMAPPER_URL}/api/server/external/project/${projectId}/interventions`
           );
-          if (!isForCurrentProject()) return;
+          if (!isLatestRequestForCurrentProject()) return;
 
           set(
-            { interventions: response.data, isFetching: false },
+            {
+              interventions: response.data,
+              isFetching: false,
+              interventionsFinishedForProjectId: projectId,
+            },
             undefined,
             'interventionStore/intervention_fetch_success'
           );
         } catch (error) {
           // A late failure must not blank the interventions of the project shown now.
-          if (!isForCurrentProject()) return;
+          if (!isLatestRequestForCurrentProject()) return;
 
           // Interventions are an optional map overlay. A failure here must not surface a generic connectivity error or push the user off the project page — just log and render the project without the overlay.
           console.error('Error fetching interventions:', error);
@@ -129,6 +147,7 @@ export const useInterventionStore = create<InterventionStore>()(
               fetchError: true,
               isFetching: false,
               interventions: null,
+              interventionsFinishedForProjectId: projectId,
             },
             undefined,
             'interventionStore/intervention_fetch_error'
@@ -172,6 +191,7 @@ export const useInterventionStore = create<InterventionStore>()(
             hoveredIntervention: null,
             selectedInterventionType: 'all',
             interventions: null,
+            interventionsFinishedForProjectId: null,
           },
           undefined,
           'interventionStore/clear_intervention_states'
