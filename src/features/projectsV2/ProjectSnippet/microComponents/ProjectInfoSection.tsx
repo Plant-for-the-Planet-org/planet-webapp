@@ -8,6 +8,7 @@ import getFormattedCurrency from '../../../../utils/countryCurrency/getFormatted
 import WebappButton from '../../../common/WebappButton';
 import styles from '../styles/ProjectSnippet.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
+import { clsx } from 'clsx';
 import {
   useQueryParamStore,
   useAuthStore,
@@ -75,8 +76,9 @@ const ProjectInfoSection = (props: ProjectInfoProps) => {
     }
   }, [unitCount, unitType, purpose, locale]);
 
-  const donateButtonClass =
-    isTopProject && isApproved ? `${styles.topProject}` : undefined;
+  const donateButtonClass = clsx(styles.aboveCardLink, {
+    [styles.topProject]: isTopProject && isApproved,
+  });
 
   return (
     <div className={styles.projectInfo}>

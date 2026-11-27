@@ -210,9 +210,15 @@ export default function ProjectSnippet({
         {currentPage === 'project-details' ? (
           <ProjectSnippetContent {...ProjectSnippetContentProps} />
         ) : (
-          <Link href={localizedPath(projectPath)} style={{ cursor: 'pointer' }}>
+          // The link sits over the card instead of wrapping it, so the Donate link inside is not a link nested in a link.
+          <div className={styles.cardBody}>
+            <Link
+              href={localizedPath(projectPath)}
+              className={styles.cardLink}
+              aria-label={project.name?.trim() || project.slug}
+            />
             <ProjectSnippetContent {...ProjectSnippetContentProps} />
-          </Link>
+          </div>
         )}
 
         {!isMobile && <TpoName {...tpoNameProps} />}

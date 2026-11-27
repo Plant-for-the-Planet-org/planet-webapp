@@ -207,7 +207,7 @@ Where to find a failed test's recording: `test-results/<test name>/trace.zip`, o
 - Flaky tests: staging data changes (the project list order already has), staging goes down, and the dev server builds pages slowly on first visit. A red check that is not caused by the PR teaches people to ignore red. To limit this: few tests, loose checks, 2 retries in CI, and non-blocking at first.
 - Slower than unit tests: seconds per test, not milliseconds. Expect about 3 to 5 minutes per CI run, including install.
 - Upkeep: UI changes can break locators. Prefer roles and labels, and take their text from [e2e/support/i18n.ts](../../e2e/support/i18n.ts) instead of typing it, so a wording change or another locale does not break them.
-- Add `data-testid` only where no role fits. Today there is one: `project-list-item`, on each card in the project list. Each card is a link that wraps its own Donate link, which is invalid HTML (React warns about it), so a locator built on that would break once the markup is fixed.
+- Add `data-testid` only where no role fits. Today there is one: `project-list-item`, on each card in the project list. The card wrapper is a plain div with no role. The card's link sits on top of the card (named by the project name) and does not wrap the Donate link, so there is no single element with a role that holds the whole card.
 - Tests run in English. Setting `LOCALE` to `de` or `fr` works for the UI text (checked 2026-10-13), but the accent search test then fails, because staging gives the project a name per locale (German: "Yucatán Renaturierung").
 - Login is fragile: bot checks, MFA, password changes, and token expiry. Someone must own the test account.
 - Outside dependencies: if staging or Vercel is down, the E2E check fails.
