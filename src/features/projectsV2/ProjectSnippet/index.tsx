@@ -215,7 +215,7 @@ export default function ProjectSnippet({
             <Link
               href={localizedPath(projectPath)}
               className={styles.cardLink}
-              aria-label={project.name ?? undefined}
+              aria-label={project.name?.trim() || project.slug}
             />
             <ProjectSnippetContent {...ProjectSnippetContentProps} />
           </div>
