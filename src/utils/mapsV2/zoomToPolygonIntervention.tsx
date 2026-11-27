@@ -16,7 +16,7 @@ export function zoomToPolygonIntervention(
   }
   const polygonFeature = polygon([coordinates]);
   const bounds = bbox(polygonFeature);
-  const map = mapRef.current.getMap ? mapRef.current.getMap() : mapRef.current;
+  const map = mapRef.current.getMap();
   map.fitBounds(
     [
       [bounds[0], bounds[1]],

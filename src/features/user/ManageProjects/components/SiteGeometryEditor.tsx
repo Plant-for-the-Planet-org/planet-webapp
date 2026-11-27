@@ -210,7 +210,7 @@ export default function SiteGeometryEditor({
     if (!isMapReady) return;
     // react-map-gl hands back a wrapper, and the interaction handlers live on the underlying MapLibre instance. Reading doubleClickZoom off the wrapper gives undefined and throws, which took the whole page down rather than just losing the zoom tweak.
     const wrapper = mapRef.current;
-    const map = wrapper?.getMap ? wrapper.getMap() : wrapper;
+    const map = wrapper?.getMap();
     if (!map?.doubleClickZoom) return;
     if (isDrawing) {
       map.doubleClickZoom.disable();
