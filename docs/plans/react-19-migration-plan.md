@@ -12,7 +12,7 @@ Move the app from React 18.3.1 to React 19 in small, safe PRs.
 - PRs 1 to 3 upgrade libraries to versions that support both React 18 and 19. Each one ships and is tested on its own.
 - One PR, one scope. Every branch starts from the latest `develop` and targets `develop`.
 - `.npmrc` sets `legacy-peer-deps=true`, so npm will not warn about peer conflicts. Check versions by hand with `npm ls`.
-- CI does not run typecheck, and `next build` ignores type errors. Every PR compares `tsc` output with the baseline from Phase 0.
+- CI does not run typecheck, and `next build` ignores type errors. Every PR checks that it adds no new `tsc` errors compared with `develop` (see [Type error check](#type-error-check)).
 
 ## PR overview and dependencies
 
@@ -44,14 +44,35 @@ Every PR runs these. PR sections below only list extra checks.
 - [ ] `npm run build`
 - [ ] `npm run build-storybook`
 - [ ] `npm run test:e2e`
-- [ ] `tsc` diff against the Phase 0 baseline shows no new errors
+- [ ] No new `tsc` errors compared with `develop` (see [Type error check](#type-error-check))
 - [ ] No new React warnings in the browser console on the pages this PR touches
 
-To get the `tsc` list for the diff:
+### Type error check
+
+`develop` already has type errors, so compare the lists, not the counts. Line numbers are removed, so moved code does not show up as a new error.
+
+1. Build the baseline on `develop` with its own packages, before installing anything new:
 
 ```sh
-npx tsc --noEmit --incremental false 2>&1 | grep "error TS" > tsc-errors.txt
+git switch develop && git pull && npm ci
+npx tsc --noEmit --incremental false 2>&1 | grep "error TS" | sed -E 's/\([0-9]+,[0-9]+\)//' | sort > /tmp/tsc-baseline.txt
 ```
+
+2. Build the same list on your PR branch, with its packages installed:
+
+```sh
+git switch <your-branch> && npm ci
+npx tsc --noEmit --incremental false 2>&1 | grep "error TS" | sed -E 's/\([0-9]+,[0-9]+\)//' | sort > /tmp/tsc-pr.txt
+```
+
+3. Compare. Lines starting with `>` are new errors and must be fixed:
+
+```sh
+diff /tmp/tsc-baseline.txt /tmp/tsc-pr.txt
+```
+
+- The two files have different names, so a PR run never overwrites the baseline. They live in `/tmp`, so they are never committed.
+- Rebuild the baseline from `develop` any time `develop` moves. Nobody needs to share the file.
 
 ---
 
@@ -62,11 +83,11 @@ npx tsc --noEmit --incremental false 2>&1 | grep "error TS" > tsc-errors.txt
 ### Tasks
 
 - [ ] Pull the latest `develop` and run `npm ci`
-- [ ] Save the `tsc` error list (on 2026-11-27: 92 errors in 37 files)
+- [ ] Build the type error baseline with step 1 of [Type error check](#type-error-check) (on 2026-11-27: 92 errors in 37 files)
 - [ ] Run `npm test` (on 2026-11-27: 25 files, 253 tests, all pass)
 - [ ] Run the other standard checks and note any failure as pre-existing
 - [ ] Open key pages in dev and note the existing console warnings
-- [ ] Share the numbers in the PR 1 description so all PRs use the same baseline
+- [ ] Share the numbers in the PR 1 description for reference. Each PR still builds its own type error baseline from `develop`.
 
 ---
 
@@ -283,7 +304,7 @@ MUI core v5, `date-fns` v2 and `AdapterDateFns` stay as they are.
 ### Acceptance criteria
 
 - [ ] `react`, `react-dom` and their types are on 19.x, one copy each
-- [ ] No new type errors compared with Phase 0
+- [ ] No new type errors compared with `develop`
 - [ ] Phase 5 passes on the preview deploy
 
 ### Risks and blockers
