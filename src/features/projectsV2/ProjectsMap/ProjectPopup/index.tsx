@@ -36,7 +36,11 @@ const ProjectPopup = ({
         className={styles.popupContainer}
         onMouseEnter={handlePopupEnter}
         onMouseLeave={handlePopupLeave}
-        onClick={() => visitProject(project.properties.slug)}
+        onClick={(e) => {
+          // Don't navigate the current tab when the user wants to open the link in a new tab or window.
+          if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+          visitProject(project.properties.slug);
+        }}
       >
         <ProjectSnippet
           project={project.properties}
