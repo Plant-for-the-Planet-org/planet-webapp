@@ -3,10 +3,10 @@ import type {
   MapLibreRef,
   ProjectSiteFeature,
   ProjectSiteFeatureCollection,
-  ExtendedMapLibreMap,
 } from '../../../common/types/map';
 import type {
   MapMouseEvent,
+  MapRef,
   ViewState,
   ViewStateChangeEvent,
 } from 'react-map-gl/maplibre';
@@ -81,7 +81,7 @@ export default function SiteGeometryEditor({
   setErrorMessage,
 }: Props): ReactElement {
   const tManageProjects = useTranslations('ManageProjects');
-  const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
+  const mapRef: MapLibreRef = useRef<MapRef | null>(null);
   const [viewport, setViewPort] = useState<ViewState>(DEFAULT_VIEW_STATE);
   const [mapState, setMapState] = useState<MapState>(DEFAULT_MAP_STATE);
   const [isSatelliteMode, setIsSatelliteMode] = useState(false);

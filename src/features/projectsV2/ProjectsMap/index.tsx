@@ -1,10 +1,11 @@
 import type {
   MapLayerMouseEvent,
+  MapRef,
   ViewStateChangeEvent,
 } from 'react-map-gl/maplibre';
 import type { SelectedTab } from './ProjectMapTabs';
 import type { SingleTreeRegistration } from '@planet-sdk/common';
-import type { ExtendedMapLibreMap, MapLibreRef } from '../../common/types/map';
+import type { MapLibreRef } from '../../common/types/map';
 import type { E2EBounds } from '../../../utils/e2eHooks';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -68,7 +69,7 @@ function ProjectsMap(props: ProjectsMapProps) {
   const { isMobile } = props;
   const locale = useLocale();
   const router = useRouter();
-  const mapRef: MapLibreRef = useRef<ExtendedMapLibreMap | null>(null);
+  const mapRef: MapLibreRef = useRef<MapRef | null>(null);
   // track last hovered intervention to avoid duplicate state updates
   const lastHoveredIdRef = useRef<string | null>(null);
   const { filteredProjects } = useFilteredProjects();
@@ -255,9 +256,7 @@ function ProjectsMap(props: ProjectsMapProps) {
     if (currentPage === 'project-details' || !mapLoaded) return;
 
     if (mapRef.current) {
-      const map = mapRef.current.getMap
-        ? mapRef.current.getMap()
-        : mapRef.current;
+      const map = mapRef.current.getMap();
 
       try {
         zoomOutMap(map, () => {
